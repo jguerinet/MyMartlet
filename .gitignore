@@ -1,0 +1,12 @@
+.DS_Store
+bin/
+gen/
+.idea/
+.gradle
+out/
+*.iml
+local.properties
+Thumbs.db
+.metadata
+.settings/
+tmp/
