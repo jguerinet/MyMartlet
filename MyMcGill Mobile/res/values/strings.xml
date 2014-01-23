@@ -20,7 +20,7 @@
     <string name="login_error_wrong_data">The inputted username or password is incorrect. Please try again.</string>
     <string name="login_error_other">An error has occurred. Please try again later.</string>
 
-    <!-- MainActivity -->3
+    <!-- MainActivity -->
     <string name="main_logout">Logout</string>
     <string name="main_desktop">View Desktop Site</string>
     <string name="main_schedule">View Schedule</string>
