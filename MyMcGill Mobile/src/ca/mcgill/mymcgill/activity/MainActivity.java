@@ -1,5 +1,6 @@
 package ca.mcgill.mymcgill.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -17,12 +18,12 @@ public class MainActivity extends Activity {
 
     //This method is called when the desktop button is clicked
     public void viewDesktopSite(View v){
-
+        startActivity(new Intent(this, DesktopActivity.class));
     }
 
     //This method is called when the schedule button is clicked
     public void viewSchedule(View v){
-
+        startActivity(new Intent(this, ScheduleActivity.class));
     }
 
     //This method is called when the logout button is clicked
