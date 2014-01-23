@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/padding_small"
         android:paddingBottom="@dimen/padding_medium">
 
         <EditText
@@ -34,13 +33,13 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:paddingTop="@dimen/padding_small"
+            android:singleLine="true"
             android:textSize="@dimen/text_medium"/>
 
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textSize="@dimen/text_medium"
-            android:paddingLeft="@dimen/padding_micro"
+            android:textSize="@dimen/text_small"
             android:text="@string/login_email"/>
 
         </LinearLayout>
@@ -55,9 +54,9 @@
         android:id="@+id/login_password"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:paddingTop="@dimen/padding_small"
         android:textSize="@dimen/text_medium"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:singleLine="true"/>
 
     <Button
         android:layout_height="wrap_content"
