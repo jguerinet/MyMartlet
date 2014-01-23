@@ -92,6 +92,7 @@ public class LoginActivity extends Activity {
     }
 
     public void showErrorDialog(String errorMessage){
+        //Creates an alert dialog with the given string as a message, an OK button, and Error as the title
         new AlertDialog.Builder(LoginActivity.this)
                 .setTitle(getResources().getString(R.string.error))
                 .setMessage(errorMessage)
