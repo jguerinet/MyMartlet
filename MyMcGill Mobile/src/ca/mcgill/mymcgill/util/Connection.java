@@ -6,4 +6,10 @@ package ca.mcgill.mymcgill.util;
  * This package will hold the logic for logging someone in to MyMcGill
  */
 public class Connection {
+
+    public static int connect(String username, String password){
+        //TODO Put logic to connect right here
+
+        return Constants.CONNECTION_OK;
+    }
 }
