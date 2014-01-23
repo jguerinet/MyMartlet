@@ -1,6 +1,8 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +43,34 @@ public class LoginActivity extends Activity {
                 //If the connection was successful, go to MainActivity
                 if(connectionStatus == Constants.CONNECTION_OK){
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
+                //If the wrong data was given, show an alert dialog explaning this
+                else if(connectionStatus == Constants.CONNECTION_WRONG_INFO){
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle(getResources().getString(R.string.error))
+                            .setMessage(getResources().getString(R.string.login_error_wrong_data))
+                            .setNeutralButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
+                }
+                //Show general error dialog
+                else if(connectionStatus == Constants.CONNECTION_OTHER){
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle(getResources().getString(R.string.error))
+                            .setMessage(getResources().getString(R.string.login_error_other))
+                            .setNeutralButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
                 }
             }
         });
