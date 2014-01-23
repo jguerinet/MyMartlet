@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"
+            android:label="@string/login_title"
             android:screenOrientation="portrait"/>
         <activity android:name=".SplashActivity"
             android:screenOrientation="portrait">

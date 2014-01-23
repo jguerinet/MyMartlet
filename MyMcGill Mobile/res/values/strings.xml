@@ -4,5 +4,11 @@
     <string name="app_name">MyMcGill Mobile</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="login_title">Login</string>
+    <string name="login_welcome">Welcome to the MyMcGill for Mobile Application. Please input your McGill username and password below</string>
+    <string name="login_username">Username:</string>
+    <string name="login_email">\@mail.mcgill.ca</string>
+    <string name="login_password">Password:</string>
+    <string name="login_button">Login</string>
 
 </resources>

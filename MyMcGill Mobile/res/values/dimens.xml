@@ -4,6 +4,12 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Padding Sizes -->
+    <dimen name="padding_micro">10dp</dimen>
+    <dimen name="padding_small">14dp</dimen>
+    <dimen name="padding_medium">18dp</dimen>
+    <dimen name="padding_large">22dp</dimen>
+
     <!-- Font Sizes -->
     <dimen name="text_micro">12sp</dimen>
     <dimen name="text_small">14sp</dimen>
