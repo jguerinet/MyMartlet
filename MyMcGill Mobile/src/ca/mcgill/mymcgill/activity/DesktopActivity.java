@@ -19,6 +19,6 @@ public class DesktopActivity extends Activity {
         WebView webView = (WebView)findViewById(R.id.desktop_webview);
 
         //TODO Load the right URL here
-        webView.loadUrl("www.mymcgill.mcgill.ca");
+        webView.loadUrl("https://mcgill.ca");
     }
 }
