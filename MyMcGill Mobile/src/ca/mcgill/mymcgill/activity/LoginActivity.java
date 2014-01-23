@@ -56,6 +56,16 @@ public class LoginActivity extends Activity {
                 //Get the password text
                 String password = passwordView.getText().toString().trim();
 
+                //Check that both of them are not empty, create appropriate error messages if so
+                if(username.isEmpty()){
+                    showErrorDialog(getResources().getString(R.string.login_error_username_empty));
+                    return;
+                }
+                else if(password.isEmpty()){
+                    showErrorDialog(getResources().getString(R.string.login_error_password_empty));
+                    return;
+                }
+
                 //Connect
                 int connectionStatus = Connection.connect(LoginActivity.this, username, password);
 
