@@ -1,12 +1,15 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.util.Constants;
 
 public class MainActivity extends Activity {
 
@@ -28,7 +31,14 @@ public class MainActivity extends Activity {
 
     //This method is called when the logout button is clicked
     public void logout(View v){
-
+        //Remove the stored password
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPrefs.edit()
+                .remove(Constants.PASSWORD)
+                .commit();
+        //Go back to the Login Activity
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     @Override

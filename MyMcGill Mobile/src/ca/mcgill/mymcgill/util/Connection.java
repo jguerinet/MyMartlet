@@ -1,5 +1,9 @@
 package ca.mcgill.mymcgill.util;
 
+import android.content.Context;
+
+import ca.mcgill.mymcgill.R;
+
 /**
  * Author: Julien
  * Date: 22/01/14, 8:09 PM
@@ -7,7 +11,9 @@ package ca.mcgill.mymcgill.util;
  */
 public class Connection {
 
-    public static int connect(String username, String password){
+    public static int connect(Context context, String username, String password){
+        String fullUsername = username + context.getResources().getString(R.string.login_email);
+
         //TODO Put logic to connect right here
 
         return Constants.CONNECTION_OK;
