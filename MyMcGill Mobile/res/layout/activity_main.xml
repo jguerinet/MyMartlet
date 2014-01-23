@@ -14,19 +14,22 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="@string/main_desktop"
-        android:layout_marginBottom="@dimen/padding_large"/>
+        android:layout_marginBottom="@dimen/padding_large"
+        android:onClick="viewDesktopSite"/>
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="@string/main_schedule"
-        android:layout_marginBottom="@dimen/padding_large"/>
+        android:layout_marginBottom="@dimen/padding_large"
+        android:onClick="viewSchedule"/>
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="@string/main_logout"
-        android:layout_marginBottom="@dimen/padding_large"/>
+        android:layout_marginBottom="@dimen/padding_large"
+        android:onClick="logout"/>
 
 
 </LinearLayout>
