@@ -1,12 +1,15 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Constants;
 
 /**
  * Author: Julien
@@ -32,7 +35,13 @@ public class LoginActivity extends Activity {
                 //Get the password text
                 String password = passwordView.getText().toString().trim();
 
+                //Connect
+                int connectionStatus = Connection.connect(username, password);
 
+                //If the connection was successful, go to MainActivity
+                if(connectionStatus == Constants.CONNECTION_OK){
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
             }
         });
     }
