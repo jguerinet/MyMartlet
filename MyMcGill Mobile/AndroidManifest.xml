@@ -30,6 +30,8 @@
         <activity
             android:name=".activity.DesktopActivity"
             android:label="@string/title_desktop" />
+        <activity android:name=".activity.ScheduleActivity"
+            android:label="@string/title_schedule"/>
     </application>
 
 </manifest>

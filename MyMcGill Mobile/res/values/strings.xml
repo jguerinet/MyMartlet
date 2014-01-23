@@ -9,6 +9,7 @@
     <!-- Activity Titles -->
     <string name="title_desktop">Desktop Site</string>
     <string name="title_login">Login</string>
+    <string name="title_schedule">My Schedule</string>
 
     <!-- LoginActivity -->
     <string name="login_welcome">Welcome to MyMcGill for Mobile. Please input your McGill username and password below.</string>
