@@ -27,6 +27,15 @@ public class LoginActivity extends Activity {
         final EditText passwordView = (EditText) findViewById(R.id.login_password);
         Button login = (Button) findViewById(R.id.login_button);
 
+        //Check if an error message needs to be displayed, display it if so
+        int connectionStatus = getIntent().getIntExtra(Constants.CONNECTION_STATUS, -1);
+        if(connectionStatus == Constants.CONNECTION_WRONG_INFO){
+            showErrorDialog(getResources().getString(R.string.login_error_wrong_data));
+        }
+        else if(connectionStatus == Constants.CONNECTION_OTHER){
+            showErrorDialog(getResources().getString(R.string.login_error_other));
+        }
+
         //Set up the OnClickListener for the login button
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,33 +55,27 @@ public class LoginActivity extends Activity {
                 }
                 //If the wrong data was given, show an alert dialog explaning this
                 else if(connectionStatus == Constants.CONNECTION_WRONG_INFO){
-                    new AlertDialog.Builder(LoginActivity.this)
-                            .setTitle(getResources().getString(R.string.error))
-                            .setMessage(getResources().getString(R.string.login_error_wrong_data))
-                            .setNeutralButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create()
-                            .show();
+                    showErrorDialog(getResources().getString(R.string.login_error_wrong_data));
                 }
                 //Show general error dialog
                 else if(connectionStatus == Constants.CONNECTION_OTHER){
-                    new AlertDialog.Builder(LoginActivity.this)
-                            .setTitle(getResources().getString(R.string.error))
-                            .setMessage(getResources().getString(R.string.login_error_other))
-                            .setNeutralButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create()
-                            .show();
+                    showErrorDialog(getResources().getString(R.string.login_error_other));
                 }
             }
         });
+    }
+
+    public void showErrorDialog(String errorMessage){
+        new AlertDialog.Builder(LoginActivity.this)
+                .setTitle(getResources().getString(R.string.error))
+                .setMessage(errorMessage)
+                .setNeutralButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 }
