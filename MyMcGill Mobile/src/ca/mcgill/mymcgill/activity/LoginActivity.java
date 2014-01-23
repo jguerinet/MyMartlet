@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,11 +58,11 @@ public class LoginActivity extends Activity {
                 String password = passwordView.getText().toString().trim();
 
                 //Check that both of them are not empty, create appropriate error messages if so
-                if(username.isEmpty()){
+                if(TextUtils.isEmpty(username)){
                     showErrorDialog(getResources().getString(R.string.login_error_username_empty));
                     return;
                 }
-                else if(password.isEmpty()){
+                else if(TextUtils.isEmpty(password)){
                     showErrorDialog(getResources().getString(R.string.login_error_password_empty));
                     return;
                 }
