@@ -1,13 +1,19 @@
 package ca.mcgill.mymcgill.activity;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
 
 /**
@@ -28,6 +34,18 @@ public class ScheduleActivity extends Activity {
             // Show the Up button in the action bar.
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        
+        String fileContent = readFromFile("minsched.html");
+        
+        TextView textView = new TextView(this);
+        textView.setTextSize(40);
+        textView.setText(fileContent);
+
+        // Set the text view as the activity layout
+        setContentView(textView);
+        
+        
+        
     }
     
 
@@ -39,5 +57,59 @@ public class ScheduleActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    @SuppressWarnings("finally")
+	private String readFromFile(String filename) {
+
+        String ret = "blank";
+
+        try {
+            InputStream inputStream = getResources().openRawResource(R.raw.minsched);;
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.toString());
+        } catch (IOException e) {
+            System.out.println("Can not read file: " + e.toString());
+        }
+        catch(Exception e){
+        	System.out.println("Exception: " + e.toString());
+        }
+        finally{
+        	
+        	  String path = "."; 
+        	  
+        	  String files;
+        	  File folder = getFilesDir();
+        	  File[] listOfFiles = folder.listFiles(); 
+        	 
+        	  for (int i = 0; i < listOfFiles.length; i++) 
+        	  {
+        	 
+        	   if (listOfFiles[i].isFile()) 
+        	   {
+        	   files = listOfFiles[i].getName();
+        	   System.out.println(files);
+        	      }
+        	  }
+        	
+        	return ret;
+        }
+
+        //return ret;
     }
 }
