@@ -1,7 +1,6 @@
 package ca.mcgill.mymcgill.activity;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,10 +11,14 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
-
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 /**
  * Author: Shabbir
  * Date: 22/01/14, 9:07 PM
@@ -35,11 +38,16 @@ public class ScheduleActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
+        //get the schedule file in string format
         String fileContent = readFromFile("minsched.html");
         
+        Document doc = Jsoup.parse(fileContent);
+        Elements forms = doc.getElementsByTag("table");
+        
         TextView textView = new TextView(this);
-        textView.setTextSize(40);
+        textView.setTextSize(10);
         textView.setText(fileContent);
+        textView.setMovementMethod(new ScrollingMovementMethod());
 
         // Set the text view as the activity layout
         setContentView(textView);
@@ -61,8 +69,9 @@ public class ScheduleActivity extends Activity {
     
     @SuppressWarnings("finally")
 	private String readFromFile(String filename) {
-
-        String ret = "blank";
+    	
+    	//create return string
+        String ret = "";
 
         try {
             InputStream inputStream = getResources().openRawResource(R.raw.minsched);;
@@ -91,25 +100,9 @@ public class ScheduleActivity extends Activity {
         }
         finally{
         	
-        	  String path = "."; 
-        	  
-        	  String files;
-        	  File folder = getFilesDir();
-        	  File[] listOfFiles = folder.listFiles(); 
-        	 
-        	  for (int i = 0; i < listOfFiles.length; i++) 
-        	  {
-        	 
-        	   if (listOfFiles[i].isFile()) 
-        	   {
-        	   files = listOfFiles[i].getName();
-        	   System.out.println(files);
-        	      }
-        	  }
-        	
+        	//always return something
         	return ret;
         }
 
-        //return ret;
     }
 }
