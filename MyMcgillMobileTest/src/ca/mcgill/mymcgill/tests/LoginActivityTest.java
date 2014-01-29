@@ -5,7 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 /**
  * Author: Joshua
- * Date: 29/01/14, 3:01 AM
+ * Date: 29/01/14
  */
 public class LoginActivityTest
 		extends ActivityInstrumentationTestCase2<LoginActivity> {
