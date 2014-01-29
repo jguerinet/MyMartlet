@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
 /**
@@ -87,7 +88,10 @@ public class ScheduleActivity extends Activity {
     
     //populates the table element with schedule information
     private void displaySchedule(Element table){
+    	//TextView tv = new
     	
+    	//ListView lv = (ListView) findViewById(R.id.listViewTime);
+    	//lv.addChildrenForAccessibility(childrenForAccessibility);
     }
 
     @Override
