@@ -5,20 +5,22 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 /**
  * Author: Shabbir
  * Date: 22/01/14, 9:07 PM
@@ -41,20 +43,50 @@ public class ScheduleActivity extends Activity {
         //get the schedule file in string format
         String fileContent = readFromFile("minsched.html");
         
+        //get the week and schedule table
         Document doc = Jsoup.parse(fileContent);
-        Elements forms = doc.getElementsByTag("table");
+        Elements tables = doc.getElementsByTag("table");
         
-        
-        
+        //check if correct amount of tables appeared
+        if(tables.size()<7){
+        	//TODO: handle parse Error
+        }
+        else{
+	        Element week = tables.get(6);
+	        Element schedule = tables.get(7);
+	        
+	        //display week on screen
+	        displayWeek(week);
+	        
+	        //display schedule on screen
+	        displaySchedule(schedule);        
+        }
         
         
         
     }
     
-    private void getWeek(Element form){
+    //displays the current week in the TextView element
+    private void displayWeek(Element table){
+    	String tableText = table.toString();
+    	
+    	String pat = "(Week of.*?)<";
+		  Pattern p = Pattern.compile(pat);
+		  Matcher m = p.matcher(tableText);
+
+		  //If found change text
+		  if (m.find()) {
+			  
+			  //set text to extract week value
+		      String week = m.group(1);
+		      TextView timeIndicator = (TextView)findViewById(R.id.timeIndicator);
+		      timeIndicator.setText(week);
+		  }
     	
     }
-    private void getSchedule(Element form){
+    
+    //populates the table element with schedule information
+    private void displaySchedule(Element table){
     	
     }
 
