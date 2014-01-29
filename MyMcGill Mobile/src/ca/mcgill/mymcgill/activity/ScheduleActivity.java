@@ -44,18 +44,19 @@ public class ScheduleActivity extends Activity {
         Document doc = Jsoup.parse(fileContent);
         Elements forms = doc.getElementsByTag("table");
         
-        TextView textView = new TextView(this);
-        textView.setTextSize(10);
-        textView.setText(fileContent);
-        textView.setMovementMethod(new ScrollingMovementMethod());
-
-        // Set the text view as the activity layout
-        setContentView(textView);
+        
+        
         
         
         
     }
     
+    private void getWeek(Element form){
+    	
+    }
+    private void getSchedule(Element form){
+    	
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
