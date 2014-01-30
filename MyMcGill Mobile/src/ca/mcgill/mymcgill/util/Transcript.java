@@ -18,6 +18,7 @@ public class Transcript {
 
     //Logs into Minerva and returns the user's transcript as a string
     private String getTranscript(){
-
+        String transcript = "";
+        return transcript;
     }
 }
