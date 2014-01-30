@@ -29,4 +29,7 @@
     <string name="main_schedule">View Schedule</string>
     <string name="main_transcript">View Transcript</string>
 
+    <!-- TranscriptActivity -->
+    <string name="transcript_test">Get Transcript</string>
+
 </resources>
