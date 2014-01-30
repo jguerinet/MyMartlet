@@ -10,6 +10,7 @@
     <string name="title_desktop">Desktop Site</string>
     <string name="title_login">Login</string>
     <string name="title_schedule">My Schedule</string>
+    <string name="title_transcript">My Transcript</string>
 
     <!-- LoginActivity -->
     <string name="login_welcome">Welcome to MyMcGill for Mobile. Please input your McGill username and password below.</string>
@@ -26,5 +27,6 @@
     <string name="main_logout">Logout</string>
     <string name="main_desktop">View Desktop Site</string>
     <string name="main_schedule">View Schedule</string>
+    <string name="main_transcript">View Transcript</string>
 
 </resources>

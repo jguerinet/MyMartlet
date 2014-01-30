@@ -34,6 +34,14 @@
             android:label="@string/title_desktop" />
         <activity android:name=".activity.ScheduleActivity"
             android:label="@string/title_schedule"/>
+
+        <activity android:name=".activity.TranscriptActivity"
+            android:label="@string/title_transcript"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

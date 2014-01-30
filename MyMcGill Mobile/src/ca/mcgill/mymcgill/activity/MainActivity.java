@@ -29,6 +29,11 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, ScheduleActivity.class));
     }
 
+    //This method is called when the transcript button is clicked
+    public void viewTranscript(View v){
+        startActivity(new Intent(this, TranscriptActivity.class));
+    }
+
     //This method is called when the logout button is clicked
     public void logout(View v){
         //Remove the stored password
