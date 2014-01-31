@@ -22,6 +22,19 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.text.Html;
+import android.view.MenuItem;
+import android.widget.TextView;
+import ca.mcgill.mymcgill.R;
+
+import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Constants;
 /**
  * Author: Shabbir
  * Date: 22/01/14, 9:07 PM
@@ -35,6 +48,7 @@ public class ScheduleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         
+
      // Make sure we're running on Honeycomb or higher to use ActionBar APIs to return home
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
@@ -63,6 +77,13 @@ public class ScheduleActivity extends Activity {
 	        displaySchedule(schedule);        
         }
         
+        TextView textView = new TextView(this);
+        String htmlAsAString = Connection.getUrl("");
+        textView.setText(Html.fromHtml(htmlAsAString));
+        //textView.setText("hell0");
+        setContentView(textView);
+		// Show the Up button in the action bar.
+		setupActionBar();
         
         
     }
@@ -88,10 +109,7 @@ public class ScheduleActivity extends Activity {
     
     //populates the table element with schedule information
     private void displaySchedule(Element table){
-    	//TextView tv = new
     	
-    	//ListView lv = (ListView) findViewById(R.id.listViewTime);
-    	//lv.addChildrenForAccessibility(childrenForAccessibility);
     }
 
     @Override
@@ -142,4 +160,21 @@ public class ScheduleActivity extends Activity {
         }
 
     }
+
+
+	
+
+	/**
+	 * Set up the {@link android.app.ActionBar}, if the API is available.
+	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setupActionBar() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+	}
+
+
+
+
 }
