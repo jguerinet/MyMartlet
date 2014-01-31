@@ -3,15 +3,12 @@ package ca.mcgill.mymcgill.util;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.mymcgill.object.Transcript;
 
