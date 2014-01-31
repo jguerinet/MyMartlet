@@ -1,4 +1,4 @@
-package ca.mcgill.mymcgill.util;
+package ca.mcgill.mymcgill.object;
 
 /**
  * Created by Ryan Singzon on 30/01/14.

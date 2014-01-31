@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.util.Transcript;
+import ca.mcgill.mymcgill.object.Transcript;
 
 /**
  * Created by Ryan Singzon on 30/01/14.

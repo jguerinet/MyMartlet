@@ -1,4 +1,4 @@
-package ca.mcgill.mymcgill.util;
+package ca.mcgill.mymcgill.object;
 
 import java.util.ArrayList;
 
