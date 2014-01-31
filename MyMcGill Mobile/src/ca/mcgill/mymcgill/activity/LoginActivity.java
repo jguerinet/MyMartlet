@@ -105,6 +105,11 @@ public class LoginActivity extends Activity {
     
     private class ConnectToMcGill extends AsyncTask<String, Void, Integer> {
     	
+    	@Override
+    	protected void onPreExecute(){
+    		//TODO: REPLACE CONTENT VIEW WITH CIRCLE THINGY TO SHOW WE ARE LOADING
+    	}
+    	
         @Override
         protected Integer doInBackground(String... params) {
               

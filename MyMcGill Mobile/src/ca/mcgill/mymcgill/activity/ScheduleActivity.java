@@ -52,45 +52,17 @@ public class ScheduleActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        
-        //        setContentView(R.layout.activity_schedule);
-
-        /*
-        //get the schedule file in string format
-        String fileContent = readFromFile("minsched.html");
-        
-        //get the week and schedule table
-        Document doc = Jsoup.parse(fileContent);
-        Elements tables = doc.getElementsByTag("table");
-        
-        //check if correct amount of tables appeared
-        if(tables.size()<7){
-        	//TODO: handle parse Error
-        }
-        else{
-	        Element week = tables.get(6);
-	        Element schedule = tables.get(7);
-	        
-	        //display week on screen
-	        displayWeek(week);
-	        
-	        //display schedule on screen
-	        displaySchedule(schedule);        
-        }*/
-        
-//        TextView textView = new TextView(this);
-//        String htmlAsAString = Connection.getInstance().getUrl(Connection.minervaSchedule);
-//        textView.setText(Html.fromHtml(htmlAsAString));
-//        //textView.setText("hell0");
-//        setContentView(textView);
-//		// Show the Up button in the action bar.
-//		setupActionBar();
-        
+        //Start trhead to get schedule
         new ScheduleGetter().execute();
         
     }
     
     private class ScheduleGetter extends AsyncTask<String, Void, String> {
+    	
+    	@Override
+    	protected void onPreExecute(){
+    		//TODO: REPLACE CONTENT VIEW WITH CIRCLE THINGY TO SHOW WE ARE LOADING
+    	}
     	
         @Override
         protected String doInBackground(String... params) {
