@@ -55,6 +55,7 @@ public class ScheduleActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
+        /*
         //get the schedule file in string format
         String fileContent = readFromFile("minsched.html");
         
@@ -75,7 +76,7 @@ public class ScheduleActivity extends Activity {
 	        
 	        //display schedule on screen
 	        displaySchedule(schedule);        
-        }
+        }*/
         
         TextView textView = new TextView(this);
         String htmlAsAString = Connection.getInstance().getUrl(Connection.minervaSchedule);

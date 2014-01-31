@@ -27,25 +27,26 @@ public class SplashActivity extends Activity {
         String password = sharedPrefs.getString(Constants.PASSWORD, null);
 
         //If one of them is null, send the user to the LoginActivity
-        if(username == null || password == null){
+        //TODO: UNDO AUTOLOGINPAGE
+        if(true || username == null || password == null){
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
 
-        //If not, try connecting
-        int connectionStatus = Connection.getInstance().connect(this, username, password);
-
-        //Successful connection : go to MainActivity
-        if(connectionStatus == Constants.CONNECTION_OK){
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-        else{
-            //Unsuccessful connection : go to LoginActivity with error message
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra(Constants.CONNECTION_STATUS, connectionStatus);
-            startActivity(intent);
-            finish();
-        }
+//        //If not, try connecting
+//        int connectionStatus = Connection.getInstance().connect(this, username, password);
+//
+//        //Successful connection : go to MainActivity
+//        if(connectionStatus == Constants.CONNECTION_OK){
+//            startActivity(new Intent(this, MainActivity.class));
+//            finish();
+//        }
+//        else{
+//            //Unsuccessful connection : go to LoginActivity with error message
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            intent.putExtra(Constants.CONNECTION_STATUS, connectionStatus);
+//            startActivity(intent);
+//            finish();
+//        }
     }
 }
