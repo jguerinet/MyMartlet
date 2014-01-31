@@ -78,7 +78,7 @@ public class ScheduleActivity extends Activity {
         }
         
         TextView textView = new TextView(this);
-        String htmlAsAString = Connection.getUrl("");
+        String htmlAsAString = Connection.getInstance().getUrl(Connection.minervaSchedule);
         textView.setText(Html.fromHtml(htmlAsAString));
         //textView.setText("hell0");
         setContentView(textView);

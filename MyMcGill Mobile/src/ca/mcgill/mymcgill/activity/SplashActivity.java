@@ -33,7 +33,7 @@ public class SplashActivity extends Activity {
         }
 
         //If not, try connecting
-        int connectionStatus = Connection.connect(this, username, password);
+        int connectionStatus = Connection.getInstance().connect(this, username, password);
 
         //Successful connection : go to MainActivity
         if(connectionStatus == Constants.CONNECTION_OK){

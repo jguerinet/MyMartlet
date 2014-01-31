@@ -68,7 +68,7 @@ public class LoginActivity extends Activity {
                 }
 
                 //Connect
-                int connectionStatus = Connection.connect(LoginActivity.this, username, password);
+                int connectionStatus = Connection.getInstance().connect(LoginActivity.this, username, password);
 
                 //If the connection was successful, go to MainActivity
                 if(connectionStatus == Constants.CONNECTION_OK){

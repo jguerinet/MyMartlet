@@ -37,9 +37,9 @@ public class Connection {
 	
 	// constants
 
-	private final static String minervaLoginPage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
-	private final static String minervaLoginPost = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
-	private final static String minervaSchedule = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd";
+	public final static String minervaLoginPage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
+	public final static String minervaLoginPost = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
+	public final static String minervaSchedule = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd";
 	private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 	
 	//singleton architecture
@@ -83,7 +83,7 @@ public class Connection {
         return Constants.CONNECTION_OK;
     }
 	
-	public static String getUrl(String url) {
+	public String getUrl(String url) {
 		
 		String result;
 		try {
