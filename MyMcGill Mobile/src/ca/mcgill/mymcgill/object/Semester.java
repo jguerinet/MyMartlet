@@ -16,12 +16,14 @@ public class Semester {
     private int termGPA;
     private boolean fullTime;
     private String courseString;
+    private String mSemesterName;
 
     ArrayList<Course> courses;
 
 
-    public Semester(String program, int programYear, int termCredits, int termGPA,
+    public Semester(String semesterName, String program, int programYear, int termCredits, int termGPA,
                         boolean fullTime, String courseString) {
+        this.mSemesterName = semesterName;
         this.program = program;
         this.termCredits = termCredits;
         this.termGPA = termGPA;
@@ -39,6 +41,11 @@ public class Semester {
         //TODO: Create parsing code here
 
         courses = new ArrayList<Course>();
+    }
+
+    //Getter for the semester name
+    public String getSemesterName(){
+        return mSemesterName;
     }
 
     //Getter for program

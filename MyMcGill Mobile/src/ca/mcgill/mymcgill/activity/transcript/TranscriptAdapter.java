@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.List;
+
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
 
 /**
@@ -15,21 +18,21 @@ import ca.mcgill.mymcgill.object.Transcript;
  */
 public class TranscriptAdapter extends BaseAdapter {
     private Context mContext;
-    private Transcript mTranscript;
+    private List<Semester> mSemesters;
 
     public TranscriptAdapter(Context context, Transcript transcript){
         this.mContext = context;
-        this.mTranscript = transcript;
+        this.mSemesters = transcript.getSemesters();
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return mSemesters.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Semester getItem(int position) {
+        return mSemesters.get(position);
     }
 
     @Override
@@ -45,6 +48,10 @@ public class TranscriptAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.activity_transcript_semesterItem, null);
         }
+
+        //Get the current semester we are inflating
+        Semester semester = getItem(position);
+
         return null;
     }
 }
