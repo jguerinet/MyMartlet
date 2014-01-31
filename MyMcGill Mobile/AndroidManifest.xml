@@ -35,7 +35,7 @@
         <activity android:name=".activity.ScheduleActivity"
             android:label="@string/title_schedule"/>
 
-        <activity android:name=".activity.TranscriptActivity"
+        <activity android:name=".activity.transcript.TranscriptActivity"
             android:label="@string/title_transcript"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
