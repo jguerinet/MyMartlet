@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -25,10 +26,12 @@ import ca.mcgill.mymcgill.R;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
@@ -43,18 +46,15 @@ import ca.mcgill.mymcgill.util.Constants;
  */
 public class ScheduleActivity extends Activity {
 	
+	protected ScheduleActivity scheduleInstance = this;
+	
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
-        
 
-     // Make sure we're running on Honeycomb or higher to use ActionBar APIs to return home
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
         
+        //        setContentView(R.layout.activity_schedule);
+
         /*
         //get the schedule file in string format
         String fileContent = readFromFile("minsched.html");
@@ -78,15 +78,37 @@ public class ScheduleActivity extends Activity {
 	        displaySchedule(schedule);        
         }*/
         
-        TextView textView = new TextView(this);
-        String htmlAsAString = Connection.getInstance().getUrl(Connection.minervaSchedule);
-        textView.setText(Html.fromHtml(htmlAsAString));
-        //textView.setText("hell0");
-        setContentView(textView);
-		// Show the Up button in the action bar.
-		setupActionBar();
+//        TextView textView = new TextView(this);
+//        String htmlAsAString = Connection.getInstance().getUrl(Connection.minervaSchedule);
+//        textView.setText(Html.fromHtml(htmlAsAString));
+//        //textView.setText("hell0");
+//        setContentView(textView);
+//		// Show the Up button in the action bar.
+//		setupActionBar();
         
+        new ScheduleGetter().execute();
         
+    }
+    
+    private class ScheduleGetter extends AsyncTask<String, Void, String> {
+    	
+        @Override
+        protected String doInBackground(String... params) {
+              
+            return Connection.getInstance().getUrl(Connection.minervaSchedule);
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+	  		// Show the Up button in the action bar.
+	  		setupActionBar();
+	        TextView textView = new TextView(scheduleInstance);
+	        String htmlAsAString = result;
+	        textView.setText(Html.fromHtml(htmlAsAString));
+	        textView.setMovementMethod(new ScrollingMovementMethod());
+	        setContentView(textView);
+
+       }
     }
     
     //displays the current week in the TextView element

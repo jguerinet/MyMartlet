@@ -74,6 +74,9 @@ public class LoginActivity extends Activity {
                 }
 
                 new ConnectToMcGill().execute(username,password);
+                
+                //TODO: CLEAN UP BELOW
+// ==================AUTHOR PLEASE CLEAN UP BELOW===========================
 //                //Connect
 //                int connectionStatus = Connection.getInstance().connect(LoginActivity.this, username, password);
 //

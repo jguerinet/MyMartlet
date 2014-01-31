@@ -76,6 +76,8 @@ public class Connection {
 			// for authentication
 			String Post1Resp = http.sendPost(minervaLoginPost, minervaLoginPage,postParams);
 			
+			//TODO: VERIFY PROPER LOGIN HAS OCCURED
+			
 		} catch (Exception e) {
 			return Constants.CONNECTION_OTHER;
 		}
