@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.object;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ryan Singzon on 30/01/14.
@@ -19,8 +20,7 @@ public class Semester implements Serializable{
     private int termGPA;
     private boolean fullTime;
     private String courseString;
-
-    ArrayList<Course> courses;
+    private List<Course> courses;
 
 
     public Semester(String semesterName, String program, String bachelor, int programYear, int termCredits, int termGPA,
@@ -81,7 +81,7 @@ public class Semester implements Serializable{
     }
 
     //Getter for the semester's courses
-    public ArrayList<Course> getCourses(){
+    public List<Course> getCourses(){
         return courses;
     }
 }

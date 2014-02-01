@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.object;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ryan Singzon on 30/01/14.
@@ -15,8 +16,7 @@ public class Transcript implements Serializable{
     private int cgpa;
     private int totalCredits;
     private String transcriptString;
-
-    ArrayList<Semester> semesters = new ArrayList<Semester>();
+    private List<Semester> semesters = new ArrayList<Semester>();
 
     //Constructor for the Transcript object
     public Transcript(){
@@ -48,7 +48,7 @@ public class Transcript implements Serializable{
     }
 
     //Getter for semesters
-    public ArrayList<Semester> getSemesters(){
+    public List<Semester> getSemesters(){
         return semesters;
     }
 }
