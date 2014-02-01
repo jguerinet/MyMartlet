@@ -79,4 +79,9 @@ public class Semester implements Serializable{
     public boolean isFullTime() {
         return fullTime;
     }
+
+    //Getter for the semester's courses
+    public ArrayList<Course> getCourses(){
+        return courses;
+    }
 }
