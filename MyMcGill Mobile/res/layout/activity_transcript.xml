@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@android:id/list">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_horizontal_margin">
 
-</ListView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/transcript_cgpa"
+        android:textSize="@dimen/text_large"
+        android:gravity="center"
+        android:textColor="@color/red"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/transcript_credits"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="italic"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="@string/transcript_semesters"
+        android:paddingLeft="@dimen/padding_micro"
+        android:paddingTop="@dimen/padding_small"/>
+
+<ListView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:id="@android:id/list"/>
+
+</LinearLayout>

@@ -30,8 +30,10 @@
     <string name="main_transcript">View Transcript</string>
 
     <!-- TranscriptActivity -->
-    <string name="transcript_test">Get Transcript</string>
     <string name="transcript_termGPA">Term GPA: %s</string>
+    <string name="transcript_cgpa">CGPA: %s</string>
+    <string name="transcript_credits">Total Credits: %d</string>
+    <string name="transcript_semesters">Semesters:</string>
 
     <!-- SemesterActivity -->
     <string name="semester_termCredits">Term Credits: %d</string>
