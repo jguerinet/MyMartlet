@@ -1,5 +1,7 @@
 package ca.mcgill.mymcgill.object;
-import java.util.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Ryan Singzon on 30/01/14.
@@ -8,7 +10,7 @@ import java.util.*;
  * that is shown on the transcript
  *
  */
-public class Transcript {
+public class Transcript implements Serializable{
 
     private int cgpa;
     private int totalCredits;

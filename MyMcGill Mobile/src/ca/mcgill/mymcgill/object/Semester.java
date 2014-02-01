@@ -1,5 +1,6 @@
 package ca.mcgill.mymcgill.object;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * This class will contain information pertaining to each semester such as current program,
  * term credits, term GPA, and full time status
  */
-public class Semester {
+public class Semester implements Serializable{
 
     private String mSemesterName;
     private String program;
