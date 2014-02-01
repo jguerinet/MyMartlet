@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Semester;
@@ -30,7 +31,22 @@ public class SemesterActivity extends Activity{
         //Set the title as this current semester
         setTitle(mSemester.getSemesterName());
 
+        //Set the info up
+        TextView semesterBachelor = (TextView)findViewById(R.id.semester_bachelor);
+        semesterBachelor.setText(mSemester.getBachelor());
 
+        TextView semesterProgram = (TextView)findViewById(R.id.semester_program);
+        semesterProgram.setText(mSemester.getProgram());
+
+        TextView semesterGPA = (TextView)findViewById(R.id.semester_GPA);
+        semesterGPA.setText(getResources().getString(R.string.transcript_termGPA, String.valueOf(mSemester.getTermGPA())));
+
+        TextView semesterCredits = (TextView)findViewById(R.id.semester_credits);
+        semesterCredits.setText(getResources().getString(R.string.transcript_termCredits, mSemester.getTermCredits()));
+
+        TextView semesterFullTime = (TextView)findViewById(R.id.semester_fullTime);
+        semesterFullTime.setText(mSemester.isFullTime() ? getResources().getString(R.string.transcript_fullTime) :
+                getResources().getString(R.string.transcript_partTime));
     }
 
     @Override
