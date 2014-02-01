@@ -50,4 +50,19 @@
         android:id="@+id/semester_fullTime"
         android:textSize="@dimen/text_small"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/semester_courses"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_large"
+        android:paddingTop="@dimen/padding_medium"
+        android:paddingBottom="@dimen/padding_micro"/>
+    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/semester_courses_list"/>
+
     </LinearLayout>

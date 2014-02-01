@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.SemesterActivity;
+import ca.mcgill.mymcgill.activity.semester.SemesterActivity;
 import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;

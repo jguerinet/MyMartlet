@@ -1,7 +1,8 @@
-package ca.mcgill.mymcgill.activity;
+package ca.mcgill.mymcgill.activity.semester;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
@@ -42,11 +43,17 @@ public class SemesterActivity extends Activity{
         semesterGPA.setText(getResources().getString(R.string.transcript_termGPA, String.valueOf(mSemester.getTermGPA())));
 
         TextView semesterCredits = (TextView)findViewById(R.id.semester_credits);
-        semesterCredits.setText(getResources().getString(R.string.transcript_termCredits, mSemester.getTermCredits()));
+        semesterCredits.setText(getResources().getString(R.string.semester_termCredits, mSemester.getTermCredits()));
 
         TextView semesterFullTime = (TextView)findViewById(R.id.semester_fullTime);
-        semesterFullTime.setText(mSemester.isFullTime() ? getResources().getString(R.string.transcript_fullTime) :
-                getResources().getString(R.string.transcript_partTime));
+        semesterFullTime.setText(mSemester.isFullTime() ? getResources().getString(R.string.semester_fullTime) :
+                getResources().getString(R.string.semester_partTime));
+
+        //Set up the courses list
+        SemesterAdapter adapter = new SemesterAdapter(this);
+
+        ListView coursesList = (ListView)findViewById(R.id.semester_courses_list);
+        coursesList.setAdapter(adapter);
     }
 
     @Override
