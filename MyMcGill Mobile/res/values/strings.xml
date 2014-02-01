@@ -32,9 +32,11 @@
     <!-- TranscriptActivity -->
     <string name="transcript_test">Get Transcript</string>
     <string name="transcript_termGPA">Term GPA: %s</string>
+    <string name="transcript_termCredits">Term Credits: %d</string>
+    <string name="transcript_fullTime">Full Time</string>
+    <string name="transcript_partTime">Part Time</string>
     
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
-    <string name="icon_chevronDown">&#xf078;</string>
 
 </resources>

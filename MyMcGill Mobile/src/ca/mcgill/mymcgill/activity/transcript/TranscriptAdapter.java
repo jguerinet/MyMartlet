@@ -1,6 +1,7 @@
 package ca.mcgill.mymcgill.activity.transcript;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.SemesterActivity;
 import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.util.Constants;
 
 /**
  * Author: Julien
@@ -52,7 +55,7 @@ public class TranscriptAdapter extends BaseAdapter {
         }
 
         //Get the current semester we are inflating
-        Semester semester = getItem(position);
+        final Semester semester = getItem(position);
 
         //Set up the info
         TextView semesterName = (TextView)view.findViewById(R.id.semester_name);
@@ -64,6 +67,16 @@ public class TranscriptAdapter extends BaseAdapter {
         //Set up the chevron
         TextView chevron = (TextView)view.findViewById(R.id.semester_chevron);
         chevron.setTypeface(ApplicationClass.getIconFont());
+
+        //Set up the onClicklistener for the view
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SemesterActivity.class);
+                intent.putExtra(Constants.SEMESTER, semester);
+                mContext.startActivity(intent);
+            }
+        });
 
         return view;
     }

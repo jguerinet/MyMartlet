@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_micro"
+            android:paddingTop="@dimen/padding_micro">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/semester_name"
+                android:textSize="@dimen/text_medium"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/semester_termGPA"
+                android:textSize="@dimen/text_small"
+                android:paddingLeft="@dimen/padding_micro"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/semester_chevron"
+            android:gravity="center"
+            android:textSize="@dimen/text_large"
+            android:textColor="@drawable/color_grey_redpressed"
+            android:text="@string/icon_chevronRight"/>
+
+    </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/semester_program"
+            android:textSize="@dimen/text_medium"
+            android:paddingBottom="@dimen/padding_small"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:id="@+id/semester_credits"
+                android:textSize="@dimen/text_medium"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:id="@+id/semester_fullTime"
+                android:gravity="right"
+                android:textSize="@dimen/text_medium"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
