@@ -1,8 +1,7 @@
 package ca.mcgill.mymcgill.activity.semester;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
@@ -13,7 +12,7 @@ import ca.mcgill.mymcgill.util.Constants;
  * Author: Julien
  * Date: 31/01/14, 7:59 PM
  */
-public class SemesterActivity extends Activity{
+public class SemesterActivity extends ListActivity {
     private Semester mSemester;
 
     @Override
@@ -51,9 +50,7 @@ public class SemesterActivity extends Activity{
 
         //Set up the courses list
         SemesterAdapter adapter = new SemesterAdapter(this, mSemester);
-
-        ListView coursesList = (ListView)findViewById(R.id.semester_courses_list);
-        coursesList.setAdapter(adapter);
+        setListAdapter(adapter);
     }
 
     @Override
