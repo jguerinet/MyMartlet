@@ -13,7 +13,6 @@ import ca.mcgill.mymcgill.util.Constants;
  * Date: 31/01/14, 7:59 PM
  */
 public class SemesterActivity extends ListActivity {
-    private Semester mSemester;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -23,33 +22,33 @@ public class SemesterActivity extends ListActivity {
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
         //Get the semester from the intent
-        mSemester = (Semester)getIntent().getSerializableExtra(Constants.SEMESTER);
+        Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);
 
         //Quick check
-        assert (mSemester != null);
+        assert (semester != null);
 
         //Set the title as this current semester
-        setTitle(mSemester.getSemesterName());
+        setTitle(semester.getSemesterName());
 
         //Set the info up
         TextView semesterBachelor = (TextView)findViewById(R.id.semester_bachelor);
-        semesterBachelor.setText(mSemester.getBachelor());
+        semesterBachelor.setText(semester.getBachelor());
 
         TextView semesterProgram = (TextView)findViewById(R.id.semester_program);
-        semesterProgram.setText(mSemester.getProgram());
+        semesterProgram.setText(semester.getProgram());
 
         TextView semesterGPA = (TextView)findViewById(R.id.semester_GPA);
-        semesterGPA.setText(getResources().getString(R.string.transcript_termGPA, String.valueOf(mSemester.getTermGPA())));
+        semesterGPA.setText(getResources().getString(R.string.transcript_termGPA, String.valueOf(semester.getTermGPA())));
 
         TextView semesterCredits = (TextView)findViewById(R.id.semester_credits);
-        semesterCredits.setText(getResources().getString(R.string.semester_termCredits, mSemester.getTermCredits()));
+        semesterCredits.setText(getResources().getString(R.string.semester_termCredits, semester.getTermCredits()));
 
         TextView semesterFullTime = (TextView)findViewById(R.id.semester_fullTime);
-        semesterFullTime.setText(mSemester.isFullTime() ? getResources().getString(R.string.semester_fullTime) :
+        semesterFullTime.setText(semester.isFullTime() ? getResources().getString(R.string.semester_fullTime) :
                 getResources().getString(R.string.semester_partTime));
 
         //Set up the courses list
-        SemesterAdapter adapter = new SemesterAdapter(this, mSemester);
+        SemesterAdapter adapter = new SemesterAdapter(this, semester);
         setListAdapter(adapter);
     }
 
