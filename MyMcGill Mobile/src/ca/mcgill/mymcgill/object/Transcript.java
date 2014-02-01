@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Transcript implements Serializable{
 
-    private int cgpa;
+    private double cgpa;
     private int totalCredits;
     private String transcriptString;
     private List<Semester> semesters = new ArrayList<Semester>();
@@ -38,7 +38,7 @@ public class Transcript implements Serializable{
     }
 
     //Getter for CGPA
-    public int getCgpa(){
+    public double getCgpa(){
         return cgpa;
     }
 
