@@ -11,6 +11,7 @@ import ca.mcgill.mymcgill.util.Constants;
 /**
  * Author: Julien
  * Date: 31/01/14, 7:59 PM
+ * Activity that will show a specific semester from the user's transcript
  */
 public class SemesterActivity extends ListActivity {
 

@@ -18,6 +18,7 @@ import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
+ * List Adapter that will populate the list of adapters in TranscriptActivity
  * Author: Julien
  * Date: 31/01/14, 6:06 PM
  */
