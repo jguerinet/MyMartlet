@@ -38,6 +38,8 @@
     <string name="semester_fullTime">Full Time</string>
     <string name="semester_partTime">Part Time</string>
     <string name="semester_courses">Courses:</string>
+    <string name="course_credits">Credits: %d</string>
+    <string name="course_average">Class Average: %s</string>
     
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>

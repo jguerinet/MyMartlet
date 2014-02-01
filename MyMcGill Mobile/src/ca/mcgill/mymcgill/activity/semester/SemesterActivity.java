@@ -50,7 +50,7 @@ public class SemesterActivity extends Activity{
                 getResources().getString(R.string.semester_partTime));
 
         //Set up the courses list
-        SemesterAdapter adapter = new SemesterAdapter(this);
+        SemesterAdapter adapter = new SemesterAdapter(this, mSemester);
 
         ListView coursesList = (ListView)findViewById(R.id.semester_courses_list);
         coursesList.setAdapter(adapter);
