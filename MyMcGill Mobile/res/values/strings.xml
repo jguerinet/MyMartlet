@@ -31,5 +31,10 @@
 
     <!-- TranscriptActivity -->
     <string name="transcript_test">Get Transcript</string>
+    <string name="transcript_termGPA">Term GPA: %s</string>
+    
+    <!-- Icons -->
+    <string name="icon_chevronRight">&#xf054;</string>
+    <string name="icon_chevronDown">&#xf078;</string>
 
 </resources>
