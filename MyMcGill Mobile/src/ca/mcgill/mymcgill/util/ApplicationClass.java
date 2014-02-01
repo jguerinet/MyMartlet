@@ -31,7 +31,7 @@ public class ApplicationClass extends Application {
     }
 
     /* GETTER METHODS */
-    private static Typeface getIconFont(){
+    public static Typeface getIconFont(){
         if(iconFont == null){
             iconFont = Typeface.createFromAsset(context.getAssets(), "icon-font.ttf");
         }
