@@ -10,21 +10,23 @@ import java.util.ArrayList;
  */
 public class Semester {
 
+    private String mSemesterName;
     private String program;
+    private String mBachelor;
     private int programYear;
     private int termCredits;
     private int termGPA;
     private boolean fullTime;
     private String courseString;
-    private String mSemesterName;
 
     ArrayList<Course> courses;
 
 
-    public Semester(String semesterName, String program, int programYear, int termCredits, int termGPA,
+    public Semester(String semesterName, String program, String bachelor, int programYear, int termCredits, int termGPA,
                         boolean fullTime, String courseString) {
         this.mSemesterName = semesterName;
         this.program = program;
+        this.mBachelor = bachelor;
         this.termCredits = termCredits;
         this.termGPA = termGPA;
         this.programYear = programYear;
@@ -51,6 +53,11 @@ public class Semester {
     //Getter for program
     public String getProgram() {
         return program;
+    }
+
+    //Getter for the bachelor
+    public String getBachelor(){
+        return mBachelor;
     }
 
     //Getter for term credits
