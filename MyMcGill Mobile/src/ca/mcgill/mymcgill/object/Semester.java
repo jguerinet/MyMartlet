@@ -17,13 +17,13 @@ public class Semester implements Serializable{
     private String mBachelor;
     private int programYear;
     private int termCredits;
-    private int termGPA;
+    private double termGPA;
     private boolean fullTime;
     private String courseString;
     private List<Course> courses;
 
 
-    public Semester(String semesterName, String program, String bachelor, int programYear, int termCredits, int termGPA,
+    public Semester(String semesterName, String program, String bachelor, int programYear, int termCredits, double termGPA,
                         boolean fullTime, String courseString) {
         this.mSemesterName = semesterName;
         this.program = program;
@@ -67,7 +67,7 @@ public class Semester implements Serializable{
     }
 
     //Getter for term GPA
-    public int getTermGPA() {
+    public double getTermGPA() {
         return termGPA;
     }
 
