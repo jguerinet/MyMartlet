@@ -34,6 +34,7 @@
     <string name="transcript_cgpa">CGPA: %s</string>
     <string name="transcript_credits">Total Credits: %d</string>
     <string name="transcript_semesters">Semesters:</string>
+    <string name="transcript_error">We are unable to load your transcript. Please try again later.</string>
 
     <!-- SemesterActivity -->
     <string name="semester_termCredits">Term Credits: %d</string>

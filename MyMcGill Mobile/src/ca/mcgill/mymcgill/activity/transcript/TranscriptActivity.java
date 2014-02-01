@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity.transcript;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
@@ -19,6 +20,20 @@ public class TranscriptActivity extends ListActivity {
 
         //Get the transcript from the ApplicationClass
         Transcript transcript= ApplicationClass.getTranscript();
+
+        //If the transcript is null, then this means that there is a problem.
+        if(transcript == null){
+            //Alert the user
+            TextView transcriptError = (TextView)findViewById(R.id.transcript_error);
+            transcriptError.setVisibility(View.VISIBLE);
+
+            //Hide the semester TextView
+            TextView semesterTitle = (TextView)findViewById(R.id.semester_title);
+            semesterTitle.setVisibility(View.GONE);
+
+            //Nothing else should be done.
+            return;
+        }
 
         //Fill out the transcript info
         TextView cgpa = (TextView)findViewById(R.id.transcript_cgpa);

@@ -9,6 +9,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/transcript_error"
+        android:visibility="gone"
+        android:textStyle="italic"
+        android:textSize="@dimen/text_large"
+        android:gravity="center"
+        android:text="@string/transcript_error"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/transcript_cgpa"
         android:textSize="@dimen/text_large"
         android:gravity="center"
@@ -25,6 +35,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/semester_title"
         android:textSize="@dimen/text_large"
         android:textStyle="bold"
         android:textColor="@color/black"
