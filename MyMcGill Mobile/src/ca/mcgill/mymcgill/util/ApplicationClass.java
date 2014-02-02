@@ -39,7 +39,12 @@ public class ApplicationClass extends Application {
         return iconFont;
     }
 
-    public static Transcript getTranscript(){
+    public static Transcript getTranscript(String rawTranscript){
+        //If the transcript does not already exist in user's local storage, create new one
+        if(transcript == null){
+            transcript = new Transcript(rawTranscript);
+        }
+
         return transcript;
     }
 }

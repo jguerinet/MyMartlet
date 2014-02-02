@@ -13,7 +13,7 @@ import java.util.List;
 public class Semester implements Serializable{
 
     private String mSemesterName;
-    private String program;
+    private String mProgram;
     private String mBachelor;
     private int programYear;
     private int termCredits;
@@ -26,7 +26,7 @@ public class Semester implements Serializable{
     public Semester(String semesterName, String program, String bachelor, int programYear, int termCredits, double termGPA,
                         boolean fullTime, String courseString) {
         this.mSemesterName = semesterName;
-        this.program = program;
+        this.mProgram = program;
         this.mBachelor = bachelor;
         this.termCredits = termCredits;
         this.termGPA = termGPA;
@@ -53,7 +53,7 @@ public class Semester implements Serializable{
 
     //Getter for program
     public String getProgram() {
-        return program;
+        return mProgram;
     }
 
     //Getter for the bachelor
