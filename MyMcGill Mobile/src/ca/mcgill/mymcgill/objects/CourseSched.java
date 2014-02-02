@@ -16,10 +16,18 @@ public class CourseSched {
 		//TODO: parse algorithm
 	}
 	
-	public CourseSched(int crn, String courseCode, Day day, int startHour, int startMinute, int endHour, int endMinute, String room) {
+	public CourseSched(int crn, String courseCode, int day, int startHour, int startMinute, int endHour, int endMinute, String room) {
 		this.crn = crn;
 		this.courseCode = courseCode;
-        this.day = day;
+        switch (day) {
+        	case 0: this.day = Day.MONDAY;
+        	case 1: this.day = Day.TUESDAY;
+        	case 2: this.day = Day.WEDNESDAY;
+        	case 3: this.day = Day.THURSDAY;
+        	case 4: this.day = Day.FRIDAY;
+        	case 5: this.day = Day.SATURDAY;
+        	case 6: this.day = Day.SUNDAY;
+        }
 		this.startH = startHour;
 		this.startM = startMinute;
 		this.endH = endHour;

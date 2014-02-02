@@ -5,39 +5,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.TextView;
-import ca.mcgill.mymcgill.R;
-
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
-
-import ca.mcgill.mymcgill.util.Connection;
-import ca.mcgill.mymcgill.util.Constants;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import ca.mcgill.mymcgill.objects.CourseSched;
 /**
  * Author: Shabbir
  * Date: 22/01/14, 9:07 PM
@@ -45,66 +29,72 @@ import ca.mcgill.mymcgill.util.Constants;
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
 public class ScheduleActivity extends Activity {
-	
-	protected ScheduleActivity scheduleInstance = this;
-	
+	ArrayList<CourseSched> courseList = new ArrayList<CourseSched>();
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Start trhead to get schedule
-        new ScheduleGetter().execute();
+        setContentView(R.layout.activity_schedule);
+        
+     // Make sure we're running on Honeycomb or higher to use ActionBar APIs to return home
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            // Show the Up button in the action bar.
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        
+        //get the schedule file in string format
+        String fileContent = readFromFile("minsched.html");
+        
+        Document doc = Jsoup.parse(fileContent);
+        Element scheduleTable = doc.getElementsByClass("datadisplaytable").first();
+        Elements weekCell = doc.getElementsByClass("fieldlargetext");
+        Elements scheduleRows = scheduleTable.getElementsByTag("tr");
+        getWeek(weekCell.first());
+        getSchedule(scheduleRows);
+        
+        
+        
+        
         
     }
     
-    private class ScheduleGetter extends AsyncTask<String, Void, String> {
-    	
-    	@Override
-    	protected void onPreExecute(){
-    		//TODO: REPLACE CONTENT VIEW WITH CIRCLE THINGY TO SHOW WE ARE LOADING
-    	}
-    	
-        @Override
-        protected String doInBackground(String... params) {
-              
-            return Connection.getInstance().getUrl(Connection.minervaSchedule);
+    private String getWeek(Element form){
+    	return form.text();
+    }
+    
+    /**
+     * This method takes the list of rows in the table and populate the courseList
+     * @param rows
+     */
+    private void getSchedule(Elements rows){
+    	for (int i = 0; i < rows.size(); i++) {
+        	Element row = rows.get(i);
+        	Elements cells = row.getElementsByTag("td");
+        	if (cells.size() < 7) {
+        		continue;
+        	}
+        	for (int day = 0; day < cells.size(); day++) {
+        		Element cell = cells.get(day);
+        		Elements courseCells = cell.getElementsByClass("ddlabel");
+        		if (courseCells.size() < 1) {
+            		continue;
+            	}
+        		Elements cellContent = courseCells.first().getElementsByTag("a");
+        		Element courseCell = cellContent.first();
+            	String courseHtml = courseCell.html();
+            	String courseString = courseHtml.replaceAll("<br />", ",");
+            	String[] attributes = courseString.split(",");
+            	String courseCode = attributes[0];
+            	String room = attributes[3];
+            	int crn = Integer.parseInt(attributes[1].split(" ")[0]);
+            	String[] times = attributes[2].split("-");
+            	int startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+            	int startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+            	int endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+            	int endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+            	CourseSched schedule = new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room);
+            	courseList.add(schedule);
+        	}
         }
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
-	  		// Show the Up button in the action bar.
-	  		setupActionBar();
-	        TextView textView = new TextView(scheduleInstance);
-	        String htmlAsAString = result;
-	        textView.setText(Html.fromHtml(htmlAsAString));
-	        textView.setMovementMethod(new ScrollingMovementMethod());
-	        setContentView(textView);
-
-       }
-    }
-    
-    //displays the current week in the TextView element
-    private void displayWeek(Element table){
-    	String tableText = table.toString();
-    	
-    	String pat = "(Week of.*?)<";
-		  Pattern p = Pattern.compile(pat);
-		  Matcher m = p.matcher(tableText);
-
-		  //If found change text
-		  if (m.find()) {
-			  
-			  //set text to extract week value
-		      String week = m.group(1);
-		      TextView timeIndicator = (TextView)findViewById(R.id.timeIndicator);
-		      timeIndicator.setText(week);
-		  }
-    	
-    }
-    
-    //populates the table element with schedule information
-    private void displaySchedule(Element table){
-    	
     }
 
     @Override
@@ -155,21 +145,4 @@ public class ScheduleActivity extends Activity {
         }
 
     }
-
-
-	
-
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
-	}
-
-
-
-
 }
