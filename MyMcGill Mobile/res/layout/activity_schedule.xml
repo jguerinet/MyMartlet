@@ -1,7 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical" 
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    
+    <TextView
+        android:id="@+id/schedule"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/timeIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Week Of"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <LinearLayout
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:textAlignment="center" >
+		    
+            <Button
+	            android:id="@+id/emptyDay"
+	            android:layout_weight="1"
+	            android:textColor="#FFFFFF"
+	            android:textAppearance="?android:attr/textAppearanceMedium"
+	            android:background="@drawable/daysbg"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content">
+        	</Button>
+
+        	<Button
+        	    android:id="@+id/mondayButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight="1"
+        	    android:background="@drawable/daysbg"
+        	    android:gravity="left|right|center_vertical|center_horizontal"
+        	    android:text="Mon"
+        	    android:textAppearance="?android:attr/textAppearanceMedium"
+        	    android:textColor="#FFFFFF" >
+
+        	</Button>
+
+        	<Button
+        	    android:id="@+id/tuesdayButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight="1"
+        	    android:background="@drawable/daysbg"
+        	    android:gravity="left|center_vertical|center_horizontal"
+        	    android:text="Tue"
+        	    android:textAppearance="?android:attr/textAppearanceMedium"
+        	    android:textColor="#FFFFFF" >
+
+        	</Button>
+
+        	<Button
+        	    android:id="@+id/wednesdayButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight="1"
+        	    android:background="@drawable/daysbg"
+        	    android:gravity="left|center_vertical|center_horizontal"
+        	    android:text="Wed"
+        	    android:textAppearance="?android:attr/textAppearanceMedium"
+        	    android:textColor="#FFFFFF" >
+
+        	</Button>
+
+        	<Button
+        	    android:id="@+id/thursdayButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight="1"
+        	    android:background="@drawable/daysbg"
+        	    android:gravity="left|center_vertical|center_horizontal"
+        	    android:text="Thu"
+        	    android:textAppearance="?android:attr/textAppearanceMedium"
+        	    android:textColor="#FFFFFF" >
+
+        	</Button>
+
+        	<Button
+        	    android:id="@+id/fridayButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_weight="1"
+        	    android:background="@drawable/daysbg"
+        	    android:gravity="left|center_vertical|center_horizontal"
+        	    android:text="Fri"
+        	    android:textAppearance="?android:attr/textAppearanceMedium"
+        	    android:textColor="#FFFFFF" >
+
+        	</Button>
+        	
+	    
+        </LinearLayout>
+ 	
+         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:textAlignment="center" >
+        	
+        </LinearLayout>
+      
+        
+         
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+        
+	    <ListView
+	        android:id="@+id/listViewTime"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:paddingRight="5dp"
+	        android:scrollbars="none" >
+	    </ListView>
+	    <ListView
+	        android:id="@+id/listViewMon"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:paddingLeft="5dp"
+	        android:scrollbars="none" >
+	    </ListView>
+	    <ListView
+	        android:id="@+id/listViewTue"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:paddingLeft="5dp"
+	        android:scrollbars="none" >
+	    </ListView>
+	    <ListView
+	        android:id="@+id/listViewWed"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:paddingLeft="5dp"
+	        android:scrollbars="none" >
+	    </ListView>
+	    <ListView
+	        android:id="@+id/listViewThu"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:paddingLeft="5dp"
+	        android:scrollbars="none" >
+	    </ListView>
+	    <ListView
+	        android:id="@+id/listViewFri"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:paddingLeft="5dp"
+	        android:scrollbars="none" >
+	    </ListView>
+	        
+    </LinearLayout>
 
 </LinearLayout>
