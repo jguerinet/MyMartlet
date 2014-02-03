@@ -35,21 +35,41 @@ public class Transcript implements Serializable{
     private void parseTranscript(String transcriptString){
 
         //TODO: Parse transcript
-/*
         transcript = Jsoup.parse(transcriptString);
 
         //Extract program, scholarships, total credits, and CGPA
-        Element mainTable = transcript.getElementsByClass("dataentrytable").get(0);
+        Elements rows = transcript.getElementsByClass("fieldmediumtext");
 
-        //Scholarships listed in 5th <tr> tag
-        Elements rows = mainTable.getElementsByTag("tr");
-        Element scholarships = rows.get(4);
+        Boolean gpaNext = false;
+        Boolean creditsNext = false;
+        for (Element row : rows){
+            if(gpaNext){
+                try{
+                    mCgpa = Double.parseDouble(row.text());
+                }
+                catch(Exception e){
+                    mCgpa = 4.0;
+                }
+                gpaNext = false;
+            }
 
-        //Course information starts on the 7th <tr> tag
-        //A row with nothing but &nbsp; indicates the end of a semester
-*/
+            if(creditsNext){
+                try{
+                    mTotalCredits = (int)Double.parseDouble(row.text());
+                }
+                catch(Exception e){
+                    mTotalCredits = 1000;
+                }
+                creditsNext = false;
+            }
 
-
+            if(row.text().startsWith("CUM GPA:")){
+                gpaNext = true;
+            }
+            if(row.text().startsWith("TOTAL CREDITS:")){
+                creditsNext = true;
+            }
+        }
 
     }
 
