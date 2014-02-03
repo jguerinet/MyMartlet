@@ -20,13 +20,27 @@ public class CourseSched {
 		this.crn = crn;
 		this.courseCode = courseCode;
         switch (day) {
-        	case 0: this.day = Day.MONDAY;
-        	case 1: this.day = Day.TUESDAY;
-        	case 2: this.day = Day.WEDNESDAY;
-        	case 3: this.day = Day.THURSDAY;
-        	case 4: this.day = Day.FRIDAY;
-        	case 5: this.day = Day.SATURDAY;
-        	case 6: this.day = Day.SUNDAY;
+        	case 0: 
+        		this.day = Day.MONDAY;
+        		break;
+        	case 1: 
+        		this.day = Day.TUESDAY;
+        		break;
+        	case 2: 
+        		this.day = Day.WEDNESDAY;
+        		break;
+        	case 3: 
+        		this.day = Day.THURSDAY;
+        		break;
+        	case 4: 
+        		this.day = Day.FRIDAY;
+        		break;
+        	case 5: 
+        		this.day = Day.SATURDAY;
+        		break;
+        	case 6: 
+        		this.day = Day.SUNDAY;
+        		break;
         }
 		this.startH = startHour;
 		this.startM = startMinute;
