@@ -8,26 +8,40 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
-import android.text.method.ScrollingMovementMethod;
+import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
-import android.widget.TextView;
-import ca.mcgill.mymcgill.R;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.objects.CourseSched;
+import ca.mcgill.mymcgill.objects.Day;
+
 /**
  * Author: Shabbir
  * Date: 22/01/14, 9:07 PM
  * 
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
-public class ScheduleActivity extends Activity {
+public class ScheduleActivity extends FragmentActivity {
 	ArrayList<CourseSched> courseList = new ArrayList<CourseSched>();
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,11 +67,14 @@ public class ScheduleActivity extends Activity {
         	System.out.println(buildAttributeString(name, crn, data));
         	addCourseSched(buildAttributeString(name, crn, data));
         }
-        
-        
-        
-        
-        
+
+        //ViewPager stuff
+
+        SchedulePagerAdapter adapter = new SchedulePagerAdapter(getSupportFragmentManager());
+
+        ViewPager pager = (ViewPager)findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+        pager.setOffscreenPageLimit(6);        
     }
     
     private String getWeek(Element form){
@@ -154,4 +171,22 @@ public class ScheduleActivity extends Activity {
         }
 
     }
+
+    private class SchedulePagerAdapter extends FragmentStatePagerAdapter{
+        public SchedulePagerAdapter(FragmentManager fm){
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            Day currentDay = Day.getDay(i);
+            return DayFragment.newInstance(currentDay);
+        }
+
+        @Override
+        public int getCount() {
+            return 7;
+        }
+    }
+
 }
