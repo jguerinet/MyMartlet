@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
@@ -42,14 +41,18 @@ public class ScheduleActivity extends Activity {
         }
         
         //get the schedule file in string format
-        String fileContent = readFromFile("minsched.html");
+        String fileContent = readFromFile("cousched.htm");
         
         Document doc = Jsoup.parse(fileContent);
-        Element scheduleTable = doc.getElementsByClass("datadisplaytable").first();
-        Elements weekCell = doc.getElementsByClass("fieldlargetext");
-        Elements scheduleRows = scheduleTable.getElementsByTag("tr");
-        getWeek(weekCell.first());
-        getSchedule(scheduleRows);
+        Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
+        String name, crn, data;
+        for (int i = 0; i < scheduleTable.size(); i+=2) {
+        	name = getCourseName(scheduleTable.get(i));
+        	crn = getCRN(scheduleTable.get(i));
+        	data = getSchedule(scheduleTable.get(i+1));
+        	System.out.println(buildAttributeString(name, crn, data));
+        	addCourseSched(buildAttributeString(name, crn, data));
+        }
         
         
         
@@ -65,37 +68,43 @@ public class ScheduleActivity extends Activity {
      * This method takes the list of rows in the table and populate the courseList
      * @param rows
      */
-    private void getSchedule(Elements rows){
-    	for (int i = 0; i < rows.size(); i++) {
-        	Element row = rows.get(i);
-        	Elements cells = row.getElementsByTag("td");
-        	if (cells.size() < 7) {
-        		continue;
-        	}
-        	for (int day = 0; day < cells.size(); day++) {
-        		Element cell = cells.get(day);
-        		Elements courseCells = cell.getElementsByClass("ddlabel");
-        		if (courseCells.size() < 1) {
-            		continue;
-            	}
-        		Elements cellContent = courseCells.first().getElementsByTag("a");
-        		Element courseCell = cellContent.first();
-            	String courseHtml = courseCell.html();
-            	String courseString = courseHtml.replaceAll("<br />", ",");
-            	String[] attributes = courseString.split(",");
-            	String courseCode = attributes[0];
-            	String room = attributes[3];
-            	int crn = Integer.parseInt(attributes[1].split(" ")[0]);
-            	String[] times = attributes[2].split("-");
-            	int startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-            	int startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-            	int endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-            	int endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
-            	CourseSched schedule = new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room);
-            	courseList.add(schedule);
-        	}
+    private String getCourseName(Element dataDisplayTable) {
+		Element caption = dataDisplayTable.getElementsByTag("caption").first();
+		String[] texts = caption.text().split(" - ");
+		return (texts[1] + "-" + texts[2]);
+	}
+	private String getCRN(Element dataDisplayTable) {
+		Element row = dataDisplayTable.getElementsByTag("tr").get(1);
+		String crn = row.getElementsByTag("td").first().text();
+		return crn;
+	}
+	private String getSchedule(Element dataDisplayTable) {
+		Element row = dataDisplayTable.getElementsByTag("tr").get(1);
+		Elements cells = row.getElementsByTag("td");
+		String dataString = cells.get(0).text() + "," + cells.get(1).text() + "," + cells.get(2).text();
+		return dataString;
+	}
+	private String buildAttributeString(String name, String crn, String data) {
+		String attributes = name + "," + crn + "," + data;
+		return attributes;
+	}
+	private void addCourseSched(String attributeString) {
+		String[] attributes = attributeString.split(",");
+		String[] times = attributes[2].split(" - ");
+		String courseCode = attributes[0];
+		int crn = Integer.parseInt(attributes[1]);
+		String room = attributes[4];
+		char[] days = attributes[3].toCharArray();
+		int startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+        int startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+        int endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+        int endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+        for (int i = 0; i < days.length; i++) {
+    		CourseSched schedule = new CourseSched(crn, courseCode, days[i], startHour, startMinute, endHour, endMinute, room);
+    		System.out.println(schedule.getDay());
+    		courseList.add(schedule);
         }
-    }
+	}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,7 +123,7 @@ public class ScheduleActivity extends Activity {
         String ret = "";
 
         try {
-            InputStream inputStream = getResources().openRawResource(R.raw.minsched);;
+            InputStream inputStream = getResources().openRawResource(R.raw.cousched);;
 
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
