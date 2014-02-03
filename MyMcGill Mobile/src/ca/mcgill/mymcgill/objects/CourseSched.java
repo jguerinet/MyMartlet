@@ -1,11 +1,13 @@
 package ca.mcgill.mymcgill.objects;
 
+import java.io.Serializable;
+
 /**
  * CourseSched
  * @author Quang
  * 
  */
-public class CourseSched {
+public class CourseSched implements Serializable{
 	private int crn;
 	private String courseCode; //format: ECSE 428-001 (department coursenumber-section)
 	private int startH, startM, endH, endM;

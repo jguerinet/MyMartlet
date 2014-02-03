@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.fragment.DayFragment;
@@ -42,7 +43,7 @@ import ca.mcgill.mymcgill.objects.Day;
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
 public class ScheduleActivity extends FragmentActivity {
-	ArrayList<CourseSched> courseList = new ArrayList<CourseSched>();
+	List<CourseSched> courseList = new ArrayList<CourseSched>();
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +76,20 @@ public class ScheduleActivity extends FragmentActivity {
         ViewPager pager = (ViewPager)findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(6);        
+    }
+
+    //Method that returns a list of courses for a given day
+    public List<CourseSched> getCoursesForDay(Day day){
+        List<CourseSched> courses = new ArrayList<CourseSched>();
+
+        //Go through the list of courses, find which ones have the same day
+        for(CourseSched course : courseList){
+            if(course.getDay() == day){
+                courses.add(course);
+            }
+        }
+
+        return courses;
     }
     
     private String getWeek(Element form){
