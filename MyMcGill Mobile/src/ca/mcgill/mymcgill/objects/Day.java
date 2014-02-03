@@ -39,6 +39,28 @@ public enum Day {
         }
     }
 
+    //Get the day based on a character (M,T,W,R,F,S,N)
+    public static Day getDay(char dayLetter){
+        switch (dayLetter) {
+            case 'M':
+                return Day.MONDAY;
+            case 'T':
+                return Day.TUESDAY;
+            case 'W':
+                return Day.WEDNESDAY;
+            case 'R':
+                return Day.THURSDAY;
+            case 'F':
+                return Day.FRIDAY;
+            case 'S':
+                return Day.SATURDAY;
+            case 'N':
+                return Day.SUNDAY;
+            default:
+                return null;
+        }
+    }
+
     //Get the string for a given day
     public String getDayString(Context context){
         switch(this){
