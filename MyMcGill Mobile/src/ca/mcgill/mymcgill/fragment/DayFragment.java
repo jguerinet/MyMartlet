@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.objects.Day;
@@ -34,10 +35,18 @@ public class DayFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        mDay = (Day)getArguments().get(Constants.DAY);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.fragment_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_day, container, false);
+
+        TextView dayTitle = (TextView)view.findViewById(R.id.day_title);
+        dayTitle.setText(mDay.getDayString(getActivity()));
+
+
+        return view;
     }
 }
