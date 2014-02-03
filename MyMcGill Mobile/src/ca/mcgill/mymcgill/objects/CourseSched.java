@@ -16,29 +16,29 @@ public class CourseSched {
 		//TODO: parse algorithm
 	}
 	
-	public CourseSched(int crn, String courseCode, int day, int startHour, int startMinute, int endHour, int endMinute, String room) {
+	public CourseSched(int crn, String courseCode, char day, int startHour, int startMinute, int endHour, int endMinute, String room) {
 		this.crn = crn;
 		this.courseCode = courseCode;
         switch (day) {
-        	case 0: 
+        	case 'M': 
         		this.day = Day.MONDAY;
         		break;
-        	case 1: 
+        	case 'T': 
         		this.day = Day.TUESDAY;
         		break;
-        	case 2: 
+        	case 'W': 
         		this.day = Day.WEDNESDAY;
         		break;
-        	case 3: 
+        	case 'R': 
         		this.day = Day.THURSDAY;
         		break;
-        	case 4: 
+        	case 'F': 
         		this.day = Day.FRIDAY;
         		break;
-        	case 5: 
+        	case 'S': 
         		this.day = Day.SATURDAY;
         		break;
-        	case 6: 
+        	case 'N': 
         		this.day = Day.SUNDAY;
         		break;
         }
