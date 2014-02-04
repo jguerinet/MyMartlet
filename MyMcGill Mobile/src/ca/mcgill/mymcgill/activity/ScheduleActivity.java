@@ -66,68 +66,6 @@ public class ScheduleActivity extends FragmentActivity {
 
         return courses;
     }
-    
-    private String getWeek(Element form){
-    	return form.text();
-    }
-    
-    /**
-     * This method takes the list of rows in the table and populate the courseList
-     * @param dataDisplayTable
-     */
-    private String getCourseName(Element dataDisplayTable) {
-		Element caption = dataDisplayTable.getElementsByTag("caption").first();
-		String[] texts = caption.text().split(" - ");
-		return (texts[1] + "-" + texts[2]);
-	}
-	private String getCRN(Element dataDisplayTable) {
-		Element row = dataDisplayTable.getElementsByTag("tr").get(1);
-		String crn = row.getElementsByTag("td").first().text();
-		return crn;
-	}
-	private String getSchedule(Element dataDisplayTable) {
-		Element row = dataDisplayTable.getElementsByTag("tr").get(1);
-		Elements cells = row.getElementsByTag("td");
-		String dataString = cells.get(0).text() + "," + cells.get(1).text() + "," + cells.get(2).text();
-		return dataString;
-	}
-	private String buildAttributeString(String name, String crn, String data) {
-		String attributes = name + "," + crn + "," + data;
-		return attributes;
-	}
-	private void addCourseSched(String attributeString) {
-		String[] attributes = attributeString.split(",");
-		String[] times = attributes[2].split(" - ");
-		String courseCode = attributes[0];
-		int crn = Integer.parseInt(attributes[1]);
-		String room = attributes[4];
-		char[] days = attributes[3].toCharArray();
-
-        int startHour, startMinute, endHour, endMinute;
-        try{
-            startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-            startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-            endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-            endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
-        }
-        //Try/Catch for courses with no assigned times
-        catch(NumberFormatException e){
-            startHour = 0;
-            startMinute = 0;
-            endHour = 0;
-            endMinute = 0;
-        }
-
-        for (int i = 0; i < days.length; i++) {
-        	try {
-        		CourseSched schedule = new CourseSched(crn, courseCode, days[i], startHour, startMinute, endHour, endMinute, room);
-        		courseList.add(schedule);
-        	} catch (Exception e) {
-        		CourseSched schedule = new CourseSched(crn, courseCode, days[i], 0, 0, 0, 0, room);
-        		courseList.add(schedule);
-        	}
-        }
-	}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -157,12 +95,61 @@ public class ScheduleActivity extends FragmentActivity {
             //Parsing code
             Document doc = Jsoup.parse(result);
             Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
-            String name, crn, data;
+            String name, data;
+            int crn;
             for (int i = 0; i < scheduleTable.size(); i+=2) {
                 name = getCourseName(scheduleTable.get(i));
                 crn = getCRN(scheduleTable.get(i));
                 data = getSchedule(scheduleTable.get(i+1));
-                addCourseSched(buildAttributeString(name, crn, data));
+                addCourseSched(name, crn, data);
+            }
+        }
+
+        /**
+         * This method takes the list of rows in the table and populate the courseList
+         * @param dataDisplayTable
+         */
+        private String getCourseName(Element dataDisplayTable) {
+            Element caption = dataDisplayTable.getElementsByTag("caption").first();
+            String[] texts = caption.text().split(" - ");
+            return (texts[1] + "-" + texts[2]);
+        }
+
+        private int getCRN(Element dataDisplayTable) {
+            Element row = dataDisplayTable.getElementsByTag("tr").get(1);
+            String crn = row.getElementsByTag("td").first().text();
+            return Integer.parseInt(crn);
+        }
+
+        private String getSchedule(Element dataDisplayTable) {
+            Element row = dataDisplayTable.getElementsByTag("tr").get(1);
+            Elements cells = row.getElementsByTag("td");
+            return (cells.get(0).text() + "," + cells.get(1).text() + "," + cells.get(2).text());
+        }
+
+        private void addCourseSched(String courseCode, int crn, String data) {
+            String[] dataItems = data.split(",");
+            String[] times = dataItems[0].split(" - ");
+            char[] days = dataItems[1].toCharArray();
+            String room = dataItems[2];
+
+            int startHour, startMinute, endHour, endMinute;
+            try{
+                startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+                startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+                endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+                endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+            }
+            //Try/Catch for courses with no assigned times
+            catch(NumberFormatException e){
+                startHour = 0;
+                startMinute = 0;
+                endHour = 0;
+                endMinute = 0;
+            }
+
+            for (char day : days) {
+                courseList.add(new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room));
             }
         }
     }
