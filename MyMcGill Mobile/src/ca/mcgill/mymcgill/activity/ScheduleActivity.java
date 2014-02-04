@@ -1,13 +1,8 @@
 package ca.mcgill.mymcgill.activity;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +11,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,6 +33,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.objects.CourseSched;
 import ca.mcgill.mymcgill.objects.Day;
+import ca.mcgill.mymcgill.util.Connection;
 
 /**
  * Author: Shabbir
@@ -43,17 +42,15 @@ import ca.mcgill.mymcgill.objects.Day;
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
 public class ScheduleActivity extends FragmentActivity {
+    protected ScheduleActivity scheduleInstance = this;
 	List<CourseSched> courseList = new ArrayList<CourseSched>();
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-        
-     // Make sure we're running on Honeycomb or higher to use ActionBar APIs to return home
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+
+        //Start trhead to get schedule
+        new ScheduleGetter().execute();
         
         //get the schedule file in string format
         String fileContent = readFromFile("cousched.htm");
@@ -98,7 +95,7 @@ public class ScheduleActivity extends FragmentActivity {
     
     /**
      * This method takes the list of rows in the table and populate the courseList
-     * @param rows
+     * @param dataDisplayTable
      */
     private String getCourseName(Element dataDisplayTable) {
 		Element caption = dataDisplayTable.getElementsByTag("caption").first();
@@ -185,6 +182,43 @@ public class ScheduleActivity extends FragmentActivity {
         	return ret;
         }
 
+    }
+
+
+    /**
+     * Set up the {@link android.app.ActionBar}, if the API is available.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setupActionBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private class ScheduleGetter extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute(){
+            //TODO: REPLACE CONTENT VIEW WITH CIRCLE THINGY TO SHOW WE ARE LOADING
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            return Connection.getInstance().getUrl(Connection.minervaSchedule);
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            // Show the Up button in the action bar.
+            setupActionBar();
+            TextView textView = new TextView(scheduleInstance);
+            String htmlAsAString = result;
+            textView.setText(Html.fromHtml(htmlAsAString));
+            textView.setMovementMethod(new ScrollingMovementMethod());
+            setContentView(textView);
+
+        }
     }
 
     private class SchedulePagerAdapter extends FragmentStatePagerAdapter{
