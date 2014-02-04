@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/cell_30min_height"
-    android:background="@drawable/drawable_transparent_redpressed"
+    android:background="@drawable/drawable_red_whitepressed"
     android:clickable="true"
     android:layout_marginLeft="70dp">
 

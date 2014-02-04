@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/cell_30min_height"
-    android:background="#FF0000FF">
+    android:background="@null">
 
     <View
         android:layout_width="match_parent"
