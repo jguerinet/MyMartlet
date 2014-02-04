@@ -52,6 +52,12 @@ public class CourseSched implements Serializable{
 	public int getEndMinute() {
 		return endM;
 	}
+    public int getStartTimeInMinutes(){
+        return 60*startH + startM;
+    }
+    public int getEndTimeInMinutes(){
+        return 60*endH + endM;
+    }
 	public String getRoom()
     {
 		return room;

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
@@ -55,18 +54,21 @@ public class DayFragment extends Fragment{
         TextView dayTitle = (TextView)view.findViewById(R.id.day_title);
         dayTitle.setText(mDay.getDayString(getActivity()));
 
-        //Get the container for the actual schedule
+        //Get the container for the timetable
+        LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);
+        //Get the container for the schedule
         LinearLayout scheduleContainer = (LinearLayout)view.findViewById(R.id.schedule_container);
+
         //Fill it up
-        fillSchedule(inflater, scheduleContainer);
+        fillSchedule(inflater, timetableContainer, scheduleContainer);
 
         return view;
     }
 
     //Method that fills the schedule based on given data
-    public void fillSchedule(LayoutInflater inflater, LinearLayout parentView){
-        //Make a copy of the course
-        List<CourseSched> availableCourses = new ArrayList<CourseSched>(mCourses);
+    public void fillSchedule(LayoutInflater inflater, LinearLayout timetableContainer,
+                             LinearLayout scheduleContainer){
+        int currentCourseEndTime = 0;
 
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
@@ -74,63 +76,62 @@ public class DayFragment extends Fragment{
             for(int min = 0; min < 31; min+= 30){
                 CourseSched currentCourse = null;
 
+                //Start inflating a timetable cell
+                View timetableCell = inflater.inflate(R.layout.fragment_day_timetable_cell, null);
 
-
-                //Check if there is a course at this time
-                for(CourseSched course : availableCourses){
-                    if(course.getStartHour() == hour && course.getStartMinute() == min){
-                        currentCourse = course;
-                        break;
-                    }
-                }
-
-                View view;
-
-                //There is a course at this time
-                if(currentCourse != null){
-                    //Start by removing it from the list of available courses
-                    //This will speed up the loop above since there will less courses to find
-                    availableCourses.remove(currentCourse);
-
-                    //Inflate the view
-                    view = inflater.inflate(R.layout.fragment_day_cell, null);
-
-                    //Set up all of the info
-
-                    //Figure out if we need more views
-
-                    //Find out how long this course is in terms of blocks of 30 min
-                    int length = ((currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
-                            (currentCourse.getEndMinute() - currentCourse.getStartMinute())) / 30;
-
-                    //Set the height of the view depending on this height
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            (int) getActivity().getResources().getDimension(R.dimen.cell_30min_height) * length);
-                    view.setLayoutParams(lp);
-                }
-                else{
-                    //Inflate the empty view
-                    view = inflater.inflate(R.layout.fragment_day_cell_empty, null);
-                }
-
-                //Set up the time
+                //Put the correct time
                 String hours = hour == 12 ? "12" : String.valueOf(hour % 12) ;
                 String minutes = min == 0 ? "00" : "30";
-                TextView time = (TextView)view.findViewById(R.id.cell_time);
+                TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
                 time.setText(hours + ":" + minutes);
 
                 boolean am = hour / 12 == 0;
-                TextView amView = (TextView)view.findViewById(R.id.cell_am);
+                TextView amView = (TextView)timetableCell.findViewById(R.id.cell_am);
                 amView.setText(am ? "A.M." : "P.M.");
 
-                //If we are inflating a course, make sure to set back the times to after the course
-                //for the next iteration
-                if(currentCourse != null){
-                    hour = currentCourse.getEndHour();
-                    min = currentCourse.getEndMinute();
-                }
+                //Add it to the right container
+                timetableContainer.addView(timetableCell);
 
-                parentView.addView(view);
+                //Calculate time in minutes
+                int timeInMinutes = 60*hour + min;
+
+                if(currentCourseEndTime == 0 || currentCourseEndTime == timeInMinutes){
+                    currentCourseEndTime = 0;
+
+                    //Check if there is a course at this time
+                    for(CourseSched course : mCourses){
+                        if(course.getStartTimeInMinutes() == timeInMinutes){
+                            currentCourse = course;
+                            currentCourseEndTime = course.getEndTimeInMinutes();
+                            break;
+                        }
+                    }
+
+                    View view;
+
+                    //There is a course at this time
+                    if(currentCourse != null){
+                        //Inflate the view
+                        view = inflater.inflate(R.layout.fragment_day_cell, null);
+
+                        //Set up all of the info
+
+                        //Find out how long this course is in terms of blocks of 30 min
+                        int length = ((currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
+                                (currentCourse.getEndMinute() - currentCourse.getStartMinute())) / 30;
+
+                        //Set the height of the view depending on this height
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                (int) getActivity().getResources().getDimension(R.dimen.cell_30min_height) * length);
+                        view.setLayoutParams(lp);
+                    }
+                    else{
+                        //Inflate the empty view
+                        view = inflater.inflate(R.layout.fragment_day_cell_empty, null);
+                    }
+
+                    scheduleContainer.addView(view);
+                }
             }
         }
     }

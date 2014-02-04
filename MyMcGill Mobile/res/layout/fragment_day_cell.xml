@@ -5,60 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/cell_30min_height"
-    android:background="@color/red">
+    android:background="@drawable/drawable_transparent_redpressed"
+    android:clickable="true"
+    android:layout_marginLeft="70dp">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line"
         android:layout_gravity="center"
         android:background="@color/black"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/padding_micro">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cell_time"
-                android:textSize="@dimen/text_small"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cell_am"
-                android:textSize="@dimen/text_small"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/class_code"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/class_name"
-                android:textStyle="italic"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/class_place"/>
-            </LinearLayout>
-
-        </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
