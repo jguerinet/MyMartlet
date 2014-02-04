@@ -1,9 +1,7 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -40,6 +38,8 @@ public class ScheduleActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Start thread to get schedule
         new ScheduleGetter().execute();
@@ -102,10 +102,22 @@ public class ScheduleActivity extends FragmentActivity {
 		int crn = Integer.parseInt(attributes[1]);
 		String room = attributes[4];
 		char[] days = attributes[3].toCharArray();
-		int startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-        int startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-        int endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-        int endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+
+        int startHour, startMinute, endHour, endMinute;
+        try{
+            startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+            startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+            endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+            endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+        }
+        //Try/Catch for courses with no assigned times
+        catch(NumberFormatException e){
+            startHour = 0;
+            startMinute = 0;
+            endHour = 0;
+            endMinute = 0;
+        }
+
         for (int i = 0; i < days.length; i++) {
         	try {
         		CourseSched schedule = new CourseSched(crn, courseCode, days[i], startHour, startMinute, endHour, endMinute, room);
@@ -127,17 +139,6 @@ public class ScheduleActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
     private class ScheduleGetter extends AsyncTask<String, Void, String> {
 
         @Override
@@ -147,15 +148,13 @@ public class ScheduleActivity extends FragmentActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
             return Connection.getInstance().getUrl(Connection.minervaSchedule);
         }
+
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            // Show the Up button in the action bar.
-            setupActionBar();
-
+            //Parsing code
             Document doc = Jsoup.parse(result);
             Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
             String name, crn, data;
