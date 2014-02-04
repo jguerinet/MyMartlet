@@ -32,6 +32,8 @@ public class ApplicationClass extends Application {
 
         //Load the transcript
         transcript = Load.loadTranscript(this);
+        //Load the schedule
+        schedule = Load.loadSchedule(this);
     }
 
     /* GETTER METHODS */

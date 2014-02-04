@@ -33,7 +33,9 @@ import ca.mcgill.mymcgill.util.Connection;
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
 public class ScheduleActivity extends FragmentActivity {
-	List<CourseSched> courseList;
+	private List<CourseSched> mCourseList;
+    private ViewPager mPager;
+    private  FragmentManager mSupportFragmentManager;
 
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,18 +44,19 @@ public class ScheduleActivity extends FragmentActivity {
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        courseList = ApplicationClass.getSchedule();
+        //Get the first list of courses from the ApplicationClass
+        mCourseList = ApplicationClass.getSchedule();
 
         //Start thread to get schedule
         new ScheduleGetter().execute();
 
         //ViewPager stuff
+        mSupportFragmentManager = getSupportFragmentManager();
+        SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
 
-        SchedulePagerAdapter adapter = new SchedulePagerAdapter(getSupportFragmentManager());
-
-        ViewPager pager = (ViewPager)findViewById(R.id.pager);
-        pager.setAdapter(adapter);
-        pager.setOffscreenPageLimit(6);        
+        mPager = (ViewPager)findViewById(R.id.pager);
+        mPager.setAdapter(adapter);
+        mPager.setOffscreenPageLimit(6);
     }
 
     //Method that returns a list of courses for a given day
@@ -61,7 +64,7 @@ public class ScheduleActivity extends FragmentActivity {
         List<CourseSched> courses = new ArrayList<CourseSched>();
 
         //Go through the list of courses, find which ones have the same day
-        for(CourseSched course : courseList){
+        for(CourseSched course : mCourseList){
             if(course.getDay() == day){
                 courses.add(course);
             }
@@ -80,7 +83,7 @@ public class ScheduleActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class ScheduleGetter extends AsyncTask<String, Void, String> {
+    private class ScheduleGetter extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute(){
@@ -88,15 +91,11 @@ public class ScheduleActivity extends FragmentActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            return Connection.getInstance().getUrl(Connection.minervaSchedule);
-        }
+        protected Void doInBackground(Void... params) {
+            String scheduleString =  Connection.getInstance().getUrl(Connection.minervaSchedule);
 
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
             //Parsing code
-            Document doc = Jsoup.parse(result);
+            Document doc = Jsoup.parse(scheduleString);
             Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
             String name, data;
             int crn;
@@ -106,10 +105,20 @@ public class ScheduleActivity extends FragmentActivity {
                 data = getSchedule(scheduleTable.get(i+1));
                 addCourseSched(name, crn, data);
             }
+
+            return null;
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(Void result) {
+            //Reload the adapter
+            SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
+            mPager.setAdapter(adapter);
         }
 
         /**
-         * This method takes the list of rows in the table and populate the courseList
+         * This method takes the list of rows in the table and populate the mCourseList
          * @param dataDisplayTable
          */
         private String getCourseName(Element dataDisplayTable) {
@@ -152,7 +161,7 @@ public class ScheduleActivity extends FragmentActivity {
             }
 
             for (char day : days) {
-                courseList.add(new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room));
+                mCourseList.add(new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room));
             }
         }
     }
