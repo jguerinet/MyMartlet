@@ -107,9 +107,13 @@ public class ScheduleActivity extends FragmentActivity {
         int endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
         int endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
         for (int i = 0; i < days.length; i++) {
-    		CourseSched schedule = new CourseSched(crn, courseCode, days[i], startHour, startMinute, endHour, endMinute, room);
-    		System.out.println(schedule.getDay());
-    		courseList.add(schedule);
+        	try {
+        		CourseSched schedule = new CourseSched(crn, courseCode, days[i], startHour, startMinute, endHour, endMinute, room);
+        		courseList.add(schedule);
+        	} catch (Exception e) {
+        		CourseSched schedule = new CourseSched(crn, courseCode, days[i], 0, 0, 0, 0, room);
+        		courseList.add(schedule);
+        	}
         }
 	}
 
@@ -159,7 +163,6 @@ public class ScheduleActivity extends FragmentActivity {
                 name = getCourseName(scheduleTable.get(i));
                 crn = getCRN(scheduleTable.get(i));
                 data = getSchedule(scheduleTable.get(i+1));
-                System.out.println(buildAttributeString(name, crn, data));
                 addCourseSched(buildAttributeString(name, crn, data));
             }
         }
