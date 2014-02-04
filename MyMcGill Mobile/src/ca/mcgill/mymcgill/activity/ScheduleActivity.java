@@ -151,6 +151,16 @@ public class ScheduleActivity extends FragmentActivity {
                 startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
                 endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
                 endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+                String startPM = times[0].split(" ")[1];
+                String endPM = times[1].split(" ")[1];
+
+                //If it's PM, then add 12 hours to the hours for 24 hours format
+                if(startPM.equals("PM")){
+                    startHour += 12;
+                }
+                if(endPM.equals("PM")){
+                    endHour += 12;
+                }
             }
             //Try/Catch for courses with no assigned times
             catch(NumberFormatException e){
