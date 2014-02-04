@@ -23,8 +23,8 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.fragment.DayFragment;
-import ca.mcgill.mymcgill.objects.CourseSched;
-import ca.mcgill.mymcgill.objects.Day;
+import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.util.Connection;
 
 /**
