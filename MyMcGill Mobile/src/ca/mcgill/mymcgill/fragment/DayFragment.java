@@ -71,8 +71,10 @@ public class DayFragment extends Fragment{
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
             //Cycle through the half hours
-            for(int min = 0; min < 2; min++){
+            for(int min = 0; min < 31; min+= 30){
                 CourseSched currentCourse = null;
+
+
 
                 //Check if there is a course at this time
                 for(CourseSched course : availableCourses){
