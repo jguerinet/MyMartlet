@@ -23,6 +23,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 
 /**
@@ -32,14 +33,16 @@ import ca.mcgill.mymcgill.util.Connection;
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
 public class ScheduleActivity extends FragmentActivity {
-    protected ScheduleActivity scheduleInstance = this;
-	List<CourseSched> courseList = new ArrayList<CourseSched>();
+	List<CourseSched> courseList;
+
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        courseList = ApplicationClass.getSchedule();
 
         //Start thread to get schedule
         new ScheduleGetter().execute();

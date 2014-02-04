@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
+import java.util.List;
 
+import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Transcript;
 
 /**
@@ -19,6 +21,7 @@ import ca.mcgill.mymcgill.object.Transcript;
  */
 public class Load {
     private static final String TRANSCRIPT_FILE_NAME = "transcript";
+    private static final String SCHEDULE_FILE_NAME = "schedule";
 
     public static Transcript loadTranscript(Context context){
         Transcript transcript = null;
@@ -44,5 +47,27 @@ public class Load {
         }
 
         return transcript;
+    }
+
+    public static List<CourseSched> loadSchedule(Context context){
+        List<CourseSched> courses = null;
+
+        try{
+            FileInputStream fis = context.openFileInput(SCHEDULE_FILE_NAME);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            courses = (List<CourseSched>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
     }
 }
