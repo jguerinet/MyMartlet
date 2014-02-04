@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
@@ -50,7 +51,7 @@ public class Load {
     }
 
     public static List<CourseSched> loadSchedule(Context context){
-        List<CourseSched> courses = null;
+        List<CourseSched> courses = new ArrayList<CourseSched>();
 
         try{
             FileInputStream fis = context.openFileInput(SCHEDULE_FILE_NAME);
