@@ -66,18 +66,23 @@ public class DayFragment extends Fragment{
     }
 
     //Method that fills the schedule based on given data
-    public void fillSchedule(LayoutInflater inflater, LinearLayout timetableContainer,
+    private void fillSchedule(LayoutInflater inflater, LinearLayout timetableContainer,
                              LinearLayout scheduleContainer){
+        //This will be used of an end time of a course when it is added to the schedule container
         int currentCourseEndTime = 0;
 
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
             //Cycle through the half hours
             for(int min = 0; min < 31; min+= 30){
+                //Initialize the current course to null
                 CourseSched currentCourse = null;
 
                 //Start inflating a timetable cell
                 View timetableCell = inflater.inflate(R.layout.fragment_day_timetable_cell, null);
+
+                //Quick check
+                assert(timetableCell != null);
 
                 //Put the correct time
                 String hours = hour == 12 ? "12" : String.valueOf(hour % 12) ;
@@ -95,11 +100,16 @@ public class DayFragment extends Fragment{
                 //Calculate time in minutes
                 int timeInMinutes = 60*hour + min;
 
+                //if currentCourseEndTime = 0 (no course is being added) or it is equal to
+                //the current time in min (end of a course being added) we need to add a new view
                 if(currentCourseEndTime == 0 || currentCourseEndTime == timeInMinutes){
+                    //Reset currentCourseEndTime to 0
                     currentCourseEndTime = 0;
 
                     //Check if there is a course at this time
                     for(CourseSched course : mCourses){
+                        //If there is, set the current course to that time, and calculate the
+                        //ending time of this course
                         if(course.getStartTimeInMinutes() == timeInMinutes){
                             currentCourse = course;
                             currentCourseEndTime = course.getEndTimeInMinutes();
@@ -107,12 +117,15 @@ public class DayFragment extends Fragment{
                         }
                     }
 
-                    View view;
+                    View scheduleCell;
 
                     //There is a course at this time
                     if(currentCourse != null){
-                        //Inflate the view
-                        view = inflater.inflate(R.layout.fragment_day_cell, null);
+                        //Inflate the right view
+                        scheduleCell = inflater.inflate(R.layout.fragment_day_cell, null);
+
+                        //Quick check
+                        assert(scheduleCell != null);
 
                         //Set up all of the info
 
@@ -123,14 +136,18 @@ public class DayFragment extends Fragment{
                         //Set the height of the view depending on this height
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                 (int) getActivity().getResources().getDimension(R.dimen.cell_30min_height) * length);
-                        view.setLayoutParams(lp);
+                        scheduleCell.setLayoutParams(lp);
                     }
                     else{
                         //Inflate the empty view
-                        view = inflater.inflate(R.layout.fragment_day_cell_empty, null);
+                        scheduleCell = inflater.inflate(R.layout.fragment_day_cell_empty, null);
+
+                        //Quick check
+                        assert(scheduleCell != null);
                     }
 
-                    scheduleContainer.addView(view);
+                    //Add the given view to the schedule container
+                    scheduleContainer.addView(scheduleCell);
                 }
             }
         }
