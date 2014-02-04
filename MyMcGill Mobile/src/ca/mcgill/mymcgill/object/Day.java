@@ -1,4 +1,4 @@
-package ca.mcgill.mymcgill.objects;
+package ca.mcgill.mymcgill.object;
 
 import android.content.Context;
 
@@ -15,7 +15,8 @@ public enum Day {
     THURSDAY,
     FRIDAY,
     SATURDAY,
-    SUNDAY;
+    SUNDAY,
+    TBA;
 
     //Get the day based on the number from 1-7
     public static Day getDay(int dayNumber){
@@ -35,7 +36,7 @@ public enum Day {
             case 6:
                 return Day.SUNDAY;
             default:
-                return null;
+                return Day.TBA;
         }
     }
 
@@ -57,7 +58,7 @@ public enum Day {
             case 'N':
                 return Day.SUNDAY;
             default:
-                return null;
+                return Day.TBA;
         }
     }
 

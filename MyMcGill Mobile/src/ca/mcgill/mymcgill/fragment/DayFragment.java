@@ -13,8 +13,8 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
-import ca.mcgill.mymcgill.objects.CourseSched;
-import ca.mcgill.mymcgill.objects.Day;
+import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -71,8 +71,10 @@ public class DayFragment extends Fragment{
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
             //Cycle through the half hours
-            for(int min = 0; min < 2; min++){
+            for(int min = 0; min < 31; min+= 30){
                 CourseSched currentCourse = null;
+
+
 
                 //Check if there is a course at this time
                 for(CourseSched course : availableCourses){

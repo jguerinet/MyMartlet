@@ -1,4 +1,4 @@
-package ca.mcgill.mymcgill.objects;
+package ca.mcgill.mymcgill.object;
 
 import java.io.Serializable;
 

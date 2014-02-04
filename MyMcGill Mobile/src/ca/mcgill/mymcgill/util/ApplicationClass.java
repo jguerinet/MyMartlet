@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import java.util.List;
+
+import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Transcript;
 
 /**
@@ -18,6 +21,7 @@ public class ApplicationClass extends Application {
     private static Typeface iconFont;
 
     private static Transcript transcript;
+    private static List<CourseSched> schedule;
 
     @Override
     public void onCreate(){
@@ -28,6 +32,8 @@ public class ApplicationClass extends Application {
 
         //Load the transcript
         transcript = Load.loadTranscript(this);
+        //Load the schedule
+        schedule = Load.loadSchedule(this);
     }
 
     /* GETTER METHODS */
@@ -46,5 +52,9 @@ public class ApplicationClass extends Application {
         }
 
         return transcript;
+    }
+
+    public static List<CourseSched> getSchedule(){
+        return schedule;
     }
 }
