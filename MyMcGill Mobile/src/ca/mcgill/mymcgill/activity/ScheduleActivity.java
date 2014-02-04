@@ -11,21 +11,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,22 +41,8 @@ public class ScheduleActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
-        //Start trhead to get schedule
+        //Start thread to get schedule
         new ScheduleGetter().execute();
-        
-        //get the schedule file in string format
-        String fileContent = readFromFile("cousched.htm");
-        
-        Document doc = Jsoup.parse(fileContent);
-        Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
-        String name, crn, data;
-        for (int i = 0; i < scheduleTable.size(); i+=2) {
-        	name = getCourseName(scheduleTable.get(i));
-        	crn = getCRN(scheduleTable.get(i));
-        	data = getSchedule(scheduleTable.get(i+1));
-        	System.out.println(buildAttributeString(name, crn, data));
-        	addCourseSched(buildAttributeString(name, crn, data));
-        }
 
         //ViewPager stuff
 
@@ -144,45 +122,6 @@ public class ScheduleActivity extends FragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    @SuppressWarnings("finally")
-	private String readFromFile(String filename) {
-    	
-    	//create return string
-        String ret = "";
-
-        try {
-            InputStream inputStream = getResources().openRawResource(R.raw.cousched);;
-
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                ret = stringBuilder.toString();
-            }
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.toString());
-        } catch (IOException e) {
-            System.out.println("Can not read file: " + e.toString());
-        }
-        catch(Exception e){
-        	System.out.println("Exception: " + e.toString());
-        }
-        finally{
-        	
-        	//always return something
-        	return ret;
-        }
-
-    }
 
 
     /**
@@ -212,12 +151,17 @@ public class ScheduleActivity extends FragmentActivity {
         protected void onPostExecute(String result) {
             // Show the Up button in the action bar.
             setupActionBar();
-            TextView textView = new TextView(scheduleInstance);
-            String htmlAsAString = result;
-            textView.setText(Html.fromHtml(htmlAsAString));
-            textView.setMovementMethod(new ScrollingMovementMethod());
-            setContentView(textView);
 
+            Document doc = Jsoup.parse(result);
+            Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
+            String name, crn, data;
+            for (int i = 0; i < scheduleTable.size(); i+=2) {
+                name = getCourseName(scheduleTable.get(i));
+                crn = getCRN(scheduleTable.get(i));
+                data = getSchedule(scheduleTable.get(i+1));
+                System.out.println(buildAttributeString(name, crn, data));
+                addCourseSched(buildAttributeString(name, crn, data));
+            }
         }
     }
 
