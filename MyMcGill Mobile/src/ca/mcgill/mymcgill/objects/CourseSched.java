@@ -23,9 +23,11 @@ public class CourseSched implements Serializable{
 		this.courseCode = courseCode;
         this.day = Day.getDay(day);
 		this.startH = startHour;
-		this.startM = startMinute;
+        //Remove 5 minutes to the start to get round numbers
+		this.startM = (startMinute - 5) % 60;
 		this.endH = endHour;
-		this.endM = endMinute;
+        //Add 5 minutes to the end to get round numbers
+		this.endM = (endMinute + 5) % 60;
 		this.room = room;
 	}
 	
@@ -50,7 +52,8 @@ public class CourseSched implements Serializable{
 	public int getEndMinute() {
 		return endM;
 	}
-	public String getRoom() {
+	public String getRoom()
+    {
 		return room;
 	}
 
