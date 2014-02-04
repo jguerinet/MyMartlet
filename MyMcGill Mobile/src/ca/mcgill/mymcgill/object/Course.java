@@ -17,7 +17,7 @@ public class Course implements Serializable{
     private String averageGrade;
 
     //Constructor for the Course object
-    public Course(int credits, String courseCode, String courseTitle,
+    public Course(String courseTitle, String courseCode, int credits,
                     String userGrade, String averageGrade){
         this.credits = credits;
         this.courseCode = courseCode;

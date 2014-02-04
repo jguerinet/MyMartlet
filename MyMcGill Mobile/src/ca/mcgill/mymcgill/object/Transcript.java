@@ -80,15 +80,15 @@ public class Transcript implements Serializable{
                     String program = "";
                     String bachelor = "";
                     int programYear = 99;
-                    int termCredits = 9999;
-                    double termGPA = 9999;
+                    int termCredits = 0;
+                    double termGPA = 99;
                     boolean fullTime = false;
                     boolean satisfactory = false;
                     List<Course> courses = new ArrayList<Course>();
 
-                    //Search rows until term standing is found or the end of the transcript is reached
-                    int tempIndex = index +1;
-                    dataRow = rows.get(tempIndex);
+                    //Search rows until academic standing is found or the end of the transcript is reached
+                    int semesterIndex = index +1;
+                    dataRow = rows.get(semesterIndex);
 
                     while(true){
 
@@ -96,56 +96,66 @@ public class Transcript implements Serializable{
                         if(dataRow.text().startsWith(Token.BACHELOR.getString())){
                             //TODO: EXTRACT INDIVIDUAL WORDS
                             program = dataRow.text();
-                            bachelor = dataRow.text();
+                            bachelor = "";
                             programYear = 50;
                         }
 
                         //End of semester information, extract term GPA and credits
                         else if(dataRow.text().startsWith(Token.TERM_GPA.getString())){
-                            termGPA = Double.parseDouble(rows.get(tempIndex + 1).text());
+                            termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
                         }
 
                         else if(dataRow.text().startsWith(Token.TERM_CREDITS.getString())){
-                            termCredits = (int)Double.parseDouble(rows.get(tempIndex + 1).text());
+                            termCredits = (int)Double.parseDouble(rows.get(semesterIndex + 1).text());
                         }
 
                         else if(dataRow.text().startsWith(Token.STANDING.getString())){
-
-                            //TODO: Extract satisfactory/unsatisfactory
+                            //TODO: EXTRACT SATISFACTORY/UNSATISFACTORY
                             break;
                         }
 
-                        //Extract course information
-                        else{
+                        //Extract course information if row contains a course code
+                        else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
 
+                            String courseCode = dataRow.text();
+                            String courseTitle = rows.get(semesterIndex + 2).text();
+                            int credits = Integer.parseInt(rows.get(semesterIndex + 3).text());
+                            String userGrade = rows.get(semesterIndex+4).text();
+
+                            //If average grades haven't been released on minerva, index will be null
+                            String averageGrade;
+                            try{
+                                averageGrade = rows.get(semesterIndex+7).text();
+                            }
+                            catch(IndexOutOfBoundsException e){
+                                averageGrade = "";
+                            }
+
+
+                            Course course = new Course(courseTitle, courseCode, credits,
+                                    userGrade, averageGrade);
+
+                            courses.add(course);
                         }
 
-                        tempIndex++;
+                        semesterIndex++;
 
-                        //Reached the end
+                        //Reached the end of the transcript
                         try{
-                            dataRow = rows.get(tempIndex);
+                            dataRow = rows.get(semesterIndex);
                         }
                         catch(IndexOutOfBoundsException e){
                             break;
                         }
-
-
-
-
                     }
-
-
-
 
                     Semester semester = new Semester(semesterName, program, bachelor, programYear,
                             termCredits, termGPA, fullTime, satisfactory, courses);
 
                     semesters.add(semester);
-
                 }
-
             }
+
             catch(NumberFormatException e){
                 mTotalCredits = 100000;
                 mCgpa = 5;
