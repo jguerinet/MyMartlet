@@ -99,14 +99,18 @@ public class DayFragment extends Fragment{
 
                     //Figure out if we need more views
 
-                    //Find out how long this course is
-                    int length = (currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
-                            (currentCourse.getEndMinute() - currentCourse.getStartMinute());
+                    //Find out how long this course is in terms of blocks of 30 min
+                    int length = ((currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
+                            (currentCourse.getEndMinute() - currentCourse.getStartMinute())) / 30;
+
+                    //Set the height of the view depending on this height
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                            (int) getActivity().getResources().getDimension(R.dimen.cell_30min_height) * length);
+                    view.setLayoutParams(lp);
                 }
                 else{
                     //Inflate the empty view
                     view = inflater.inflate(R.layout.fragment_day_cell_empty, null);
-
                 }
 
                 //Set up the time
@@ -118,6 +122,14 @@ public class DayFragment extends Fragment{
                 boolean am = hour / 12 == 0;
                 TextView amView = (TextView)view.findViewById(R.id.cell_am);
                 amView.setText(am ? "A.M." : "P.M.");
+
+                //If we are inflating a course, make sure to set back the times to after the course
+                //for the next iteration
+                if(currentCourse != null){
+                    hour = currentCourse.getEndHour();
+                    min = currentCourse.getEndMinute();
+                }
+
                 parentView.addView(view);
             }
         }
