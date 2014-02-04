@@ -19,12 +19,12 @@ public class Semester implements Serializable{
     private int termCredits;
     private double termGPA;
     private boolean fullTime;
-    private String courseString;
+    private boolean mSatisfactory;
     private List<Course> courses;
 
 
     public Semester(String semesterName, String program, String bachelor, int programYear, int termCredits, double termGPA,
-                        boolean fullTime, String courseString) {
+                        boolean fullTime, boolean satisfactory, List<Course> courses) {
         this.mSemesterName = semesterName;
         this.mProgram = program;
         this.mBachelor = bachelor;
@@ -32,18 +32,8 @@ public class Semester implements Serializable{
         this.termGPA = termGPA;
         this.programYear = programYear;
         this.fullTime = fullTime;
-        this.courseString = courseString;
-
-        parseCourses(courseString);
-    }
-
-
-    //Takes as input a string of course information and converts it to Course objects
-    private void parseCourses(String courseString){
-
-        //TODO: Create parsing code here
-
-        courses = new ArrayList<Course>();
+        this.mSatisfactory = satisfactory;
+        this.courses = courses;
     }
 
     //Getter for the semester name
