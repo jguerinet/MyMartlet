@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
@@ -64,22 +65,58 @@ public class DayFragment extends Fragment{
 
     //Method that fills the schedule based on given data
     public void fillSchedule(LayoutInflater inflater, LinearLayout parentView){
-        //Cycle through the hours
-        for(int i = 8; i < 22; i++){
-            //Cycle through the half hours
-            for(int j = 0; j < 2; j++){
-                //Inflate the empty view
-                View emptyView = inflater.inflate(R.layout.fragment_day_cell_empty, null);
+        //Make a copy of the course
+        List<CourseSched> availableCourses = new ArrayList<CourseSched>(mCourses);
 
-                String hours = i == 12 ? "12" : String.valueOf(i % 12) ;
-                String minutes = j == 0 ? "00" : "30";
-                TextView time = (TextView)emptyView.findViewById(R.id.cell_time);
+        //Cycle through the hours
+        for(int hour = 8; hour < 22; hour++){
+            //Cycle through the half hours
+            for(int min = 0; min < 2; min++){
+                CourseSched currentCourse = null;
+
+                //Check if there is a course at this time
+                for(CourseSched course : availableCourses){
+                    if(course.getStartHour() == hour && course.getStartMinute() == min){
+                        currentCourse = course;
+                        break;
+                    }
+                }
+
+                View view;
+
+                //There is a course at this time
+                if(currentCourse != null){
+                    //Start by removing it from the list of available courses
+                    //This will speed up the loop above since there will less courses to find
+                    availableCourses.remove(currentCourse);
+
+                    //Inflate the view
+                    view = inflater.inflate(R.layout.fragment_day_cell, null);
+
+                    //Set up all of the info
+
+                    //Figure out if we need more views
+
+                    //Find out how long this course is
+                    int length = (currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
+                            (currentCourse.getEndMinute() - currentCourse.getStartMinute());
+                }
+                else{
+                    //Inflate the empty view
+                    view = inflater.inflate(R.layout.fragment_day_cell_empty, null);
+
+                }
+
+                //Set up the time
+                String hours = hour == 12 ? "12" : String.valueOf(hour % 12) ;
+                String minutes = min == 0 ? "00" : "30";
+                TextView time = (TextView)view.findViewById(R.id.cell_time);
                 time.setText(hours + ":" + minutes);
 
-                boolean am = i / 12 == 0;
-                TextView amView = (TextView)emptyView.findViewById(R.id.cell_am);
+                boolean am = hour / 12 == 0;
+                TextView amView = (TextView)view.findViewById(R.id.cell_am);
                 amView.setText(am ? "A.M." : "P.M.");
-                parentView.addView(emptyView);
+                parentView.addView(view);
             }
         }
     }
