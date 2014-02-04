@@ -8,8 +8,6 @@ import org.jsoup.*;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
-import ca.mcgill.mymcgill.objects.Token;
-
 /**
  * Created by Ryan Singzon on 30/01/14.
  *
