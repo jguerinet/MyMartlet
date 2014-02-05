@@ -59,8 +59,7 @@ public class ScheduleActivity extends FragmentActivity {
         //will block the view
         boolean refresh = !mCourseList.isEmpty();
         if(refresh){
-            SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
-            mPager.setAdapter(adapter);
+            loadInfo();
         }
 
         //Start thread to get schedule
@@ -80,6 +79,11 @@ public class ScheduleActivity extends FragmentActivity {
         }
 
         return courses;
+    }
+
+    private void loadInfo(){
+        SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
+        mPager.setAdapter(adapter);
     }
 
     @Override
@@ -132,16 +136,20 @@ public class ScheduleActivity extends FragmentActivity {
                 addCourseSched(name, crn, data);
             }
 
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //Reload the adapter
+                    loadInfo();
+                }
+            });
+
             return null;
         }
 
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(Void result) {
-            //Reload the adapter
-            SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
-            mPager.setAdapter(adapter);
-
             //Dismiss the progress dialog if there was one
             if(!mRefresh){
                 mProgressDialog.dismiss();
