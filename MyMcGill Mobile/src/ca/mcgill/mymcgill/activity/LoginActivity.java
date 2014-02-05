@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,10 +69,14 @@ public class LoginActivity extends Activity {
                     return;
                 }
 
+                final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        //TODO: REPLACE CONTENT VIEW WITH CIRCLE THINGY TO SHOW WE ARE LOADING
                         //Connect
                         int connectionStatus = Connection.getInstance().connect(LoginActivity.this, username, password);
 
@@ -90,6 +95,7 @@ public class LoginActivity extends Activity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    progressDialog.dismiss();
                                     showErrorDialog(getResources().getString(R.string.login_error_wrong_data));
                                 }
                             });
@@ -99,6 +105,7 @@ public class LoginActivity extends Activity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    progressDialog.dismiss();
                                     showErrorDialog(getResources().getString(R.string.login_error_other));
                                 }
                             });
