@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -27,11 +26,10 @@ public class SplashActivity extends Activity {
         String password = sharedPrefs.getString(Constants.PASSWORD, null);
 
         //If one of them is null, send the user to the LoginActivity
-        //TODO: UNDO AUTOLOGINPAGE
-        if(true || username == null || password == null){
+//        if(true || username == null || password == null){
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-        }
+//        }
 
     }
 }
