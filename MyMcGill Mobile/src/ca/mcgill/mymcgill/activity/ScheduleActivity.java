@@ -1,6 +1,7 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -45,18 +46,24 @@ public class ScheduleActivity extends FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Get the first list of courses from the ApplicationClass
-        mCourseList = ApplicationClass.getSchedule();
-
-        //Start thread to get schedule
-        new ScheduleGetter().execute();
+        mCourseList = ApplicationClass.getSchedule();;
 
         //ViewPager stuff
         mSupportFragmentManager = getSupportFragmentManager();
-        SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
-
         mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setAdapter(adapter);
         mPager.setOffscreenPageLimit(6);
+
+        //Only set up the adapter if we are refreshing. If we are downloading a progress dialog
+        //will block the view
+        boolean refresh = !mCourseList.isEmpty();
+        if(refresh){
+            SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
+            mPager.setAdapter(adapter);
+        }
+
+        //Start thread to get schedule
+        //If the courses list is not empty, we only need to refresh
+        new ScheduleGetter(refresh).execute();
     }
 
     //Method that returns a list of courses for a given day
@@ -84,10 +91,27 @@ public class ScheduleActivity extends FragmentActivity {
     }
 
     private class ScheduleGetter extends AsyncTask<Void, Void, Void> {
+        private boolean mRefresh;
+        private ProgressDialog mProgressDialog;
+
+        public ScheduleGetter(boolean refresh){
+            mRefresh = refresh;
+        }
 
         @Override
         protected void onPreExecute(){
-            //TODO: REPLACE CONTENT VIEW WITH CIRCLE THINGY TO SHOW WE ARE LOADING
+            //Only show a ProgressDialog if we are not refreshing the content but
+            //downloading it for the first time
+            if(!mRefresh){
+                mProgressDialog = new ProgressDialog(ScheduleActivity.this);
+                mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                mProgressDialog.show();
+            }
+            //If not, just put it in the Action bar
+            else{
+                setProgressBarIndeterminateVisibility(true);
+            }
         }
 
         @Override
@@ -115,6 +139,14 @@ public class ScheduleActivity extends FragmentActivity {
             //Reload the adapter
             SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
             mPager.setAdapter(adapter);
+
+            //Dismiss the progress dialog if there was one
+            if(!mRefresh){
+                mProgressDialog.dismiss();
+            }
+            else{
+                setProgressBarIndeterminateVisibility(false);
+            }
         }
 
         /**
