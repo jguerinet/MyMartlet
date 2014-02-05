@@ -155,10 +155,11 @@ public class ScheduleActivity extends FragmentActivity {
                 String endPM = times[1].split(" ")[1];
 
                 //If it's PM, then add 12 hours to the hours for 24 hours format
-                if(startPM.equals("PM")){
+                //Make sure it isn't noon
+                if(startPM.equals("PM") && startHour != 12){
                     startHour += 12;
                 }
-                if(endPM.equals("PM")){
+                if(endPM.equals("PM") && endHour != 12){
                     endHour += 12;
                 }
             }
