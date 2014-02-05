@@ -50,6 +50,8 @@
                 android:value=".activity.MainActivity" />
         </activity>
         <activity android:name=".activity.semester.SemesterActivity"/>
+
+        <activity android:name=".activity.CourseActivity"/>
     </application>
 
 </manifest>
