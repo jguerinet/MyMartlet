@@ -55,14 +55,19 @@ public class Load {
             ObjectInputStream in = new ObjectInputStream(fis);
             courses = (List<CourseSched>) in.readObject();
         } catch (ClassNotFoundException e) {
+            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (OptionalDataException e) {
+            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (FileNotFoundException e) {
+            Log.e("Load Schedule Failure", "File not found");
             e.printStackTrace();
         } catch (StreamCorruptedException e) {
+            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
+            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         }
 
