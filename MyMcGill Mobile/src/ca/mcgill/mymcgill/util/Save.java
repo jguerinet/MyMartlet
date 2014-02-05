@@ -11,6 +11,7 @@ import java.io.StreamCorruptedException;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.Transcript;
 
 /**
  * Author: Julien
@@ -25,6 +26,24 @@ public class Save {
             FileOutputStream fos = context.openFileOutput(Constants.SCHEDULE_FILE_NAME, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(courses);
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveTranscript(Context context){
+        Transcript transcript = ApplicationClass.getTranscript();
+
+        try{
+            FileOutputStream fos = context.openFileOutput(Constants.TRANSCRIPT_FILE_NAME, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(transcript);
         } catch (OptionalDataException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

@@ -45,17 +45,22 @@ public class ApplicationClass extends Application {
         return iconFont;
     }
 
-    public static Transcript getTranscript(String rawTranscript){
-        //If the transcript does not already exist in user's local storage, create new one
-        if(transcript == null){
-            transcript = new Transcript(rawTranscript);
-        }
+    /* GETTERS */
 
+    public static Transcript getTranscript(){
         return transcript;
     }
 
     public static List<CourseSched> getSchedule(){
         return schedule;
+    }
+
+    /* SETTERS */
+    public static void setTranscript(Transcript transcript){
+        ApplicationClass.transcript = transcript;
+
+        //Save it to internal storage when this is set
+        Save.saveTranscript(context);
     }
 
     public static void setSchedule(List<CourseSched> schedule){
