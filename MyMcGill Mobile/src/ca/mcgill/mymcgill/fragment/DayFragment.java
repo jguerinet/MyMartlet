@@ -73,29 +73,25 @@ public class DayFragment extends Fragment{
 
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
+            //Start inflating a timetable cell
+            View timetableCell = inflater.inflate(R.layout.fragment_day_timetable_cell, null);
+
+            //Quick check
+            assert(timetableCell != null);
+
+            //Put the correct time
+            boolean am = hour / 12 == 0;
+            String hours = hour == 12 ? "12" : String.valueOf(hour % 12) ;
+            TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
+            time.setText(hours + (am ? " A.M." : " P.M."));
+
+            //Add it to the right container
+            timetableContainer.addView(timetableCell);
+
             //Cycle through the half hours
             for(int min = 0; min < 31; min+= 30){
                 //Initialize the current course to null
                 CourseSched currentCourse = null;
-
-                //Start inflating a timetable cell
-                View timetableCell = inflater.inflate(R.layout.fragment_day_timetable_cell, null);
-
-                //Quick check
-                assert(timetableCell != null);
-
-                //Put the correct time
-                String hours = hour == 12 ? "12" : String.valueOf(hour % 12) ;
-                String minutes = min == 0 ? "00" : "30";
-                TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-                time.setText(hours + ":" + minutes);
-
-                boolean am = hour / 12 == 0;
-                TextView amView = (TextView)timetableCell.findViewById(R.id.cell_am);
-                amView.setText(am ? "A.M." : "P.M.");
-
-                //Add it to the right container
-                timetableContainer.addView(timetableCell);
 
                 //Calculate time in minutes
                 int timeInMinutes = 60*hour + min;

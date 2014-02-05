@@ -19,4 +19,5 @@
     <!-- Schedule Heights -->
     <dimen name="line">0.5dp</dimen>
     <dimen name="cell_30min_height">60dp</dimen>
+    <dimen name="cell_60min_height">120dp</dimen>
 </resources>

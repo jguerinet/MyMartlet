@@ -3,8 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/cell_30min_height"
-    android:minHeight="@dimen/cell_30min_height"
+    android:layout_height="@dimen/cell_60min_height"
+    android:minHeight="@dimen/cell_60min_height"
     android:background="@color/grey_light">
 
     <LinearLayout
@@ -24,14 +24,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/cell_time"
             android:textSize="@dimen/text_small"
-            android:paddingLeft="@dimen/padding_micro"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/cell_am"
-            android:textSize="@dimen/text_small"
-            android:paddingLeft="@dimen/padding_micro"/>
+            android:paddingLeft="@dimen/padding_micro"
+            android:gravity="center_horizontal"/>
 
         </LinearLayout>
 
