@@ -10,6 +10,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/day_title"
         android:textSize="@dimen/text_large"
+        android:textStyle="bold|italic"
+        android:textColor="@color/red"
+        android:paddingBottom="@dimen/padding_micro"
+        android:paddingTop="@dimen/padding_micro"
         android:gravity="center"/>
 
     <ScrollView
