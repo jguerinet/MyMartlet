@@ -29,6 +29,8 @@ public class EbillActivity extends Activity {
 	private void populateEbill(){
 		ebillList = new ArrayList<Ebill>();
 		ebillList.add(new Ebill("Statement Date","Due Date","Amount Due"));
+
+		// TODO parsed ebill elements can be added here 
 	}
 
 	
