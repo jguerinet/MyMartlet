@@ -27,7 +27,7 @@ public class ApplicationClass extends Application {
     public void onCreate(){
         super.onCreate();
 
-        //Set the static context (used in loading the font)
+        //Set the static context
         context = this;
 
         //Load the transcript
@@ -44,8 +44,6 @@ public class ApplicationClass extends Application {
 
         return iconFont;
     }
-
-    /* GETTERS */
 
     public static Transcript getTranscript(){
         return transcript;
@@ -68,5 +66,18 @@ public class ApplicationClass extends Application {
 
         //Save it to internal storage when this is set
         Save.saveSchedule(context);
+    }
+
+    /* HELPER METHODS */
+
+    /**
+     * Deletes all of the saved info (transcript, schedule)
+     */
+    public static void deleteSavedInfo(){
+        transcript = null;
+        schedule.clear();
+
+        context.deleteFile(Constants.TRANSCRIPT_FILE_NAME);
+        context.deleteFile(Constants.SCHEDULE_FILE_NAME);
     }
 }

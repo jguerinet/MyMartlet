@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -28,6 +29,9 @@ public class SplashActivity extends Activity {
 
         //If one of them is null, send the user to the LoginActivity
 //        if(!rememberMe || username == null || password == null){
+            //If we need to go back to the login, make sure to
+            //delete anything with the previous user's info
+            ApplicationClass.deleteSavedInfo();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
 //        }

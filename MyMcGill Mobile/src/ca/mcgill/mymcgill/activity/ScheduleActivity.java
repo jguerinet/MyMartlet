@@ -124,6 +124,9 @@ public class ScheduleActivity extends FragmentActivity {
         protected Void doInBackground(Void... params) {
             String scheduleString =  Connection.getInstance().getUrl(Connection.minervaSchedule);
 
+            //Clear the current course list
+            mCourseList.clear();
+
             //Parsing code
             Document doc = Jsoup.parse(scheduleString);
             Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
@@ -135,6 +138,9 @@ public class ScheduleActivity extends FragmentActivity {
                 data = getSchedule(scheduleTable.get(i+1));
                 addCourseSched(name, crn, data);
             }
+
+            //Save it to the instance variable in Application class
+            ApplicationClass.setSchedule(mCourseList);
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -216,9 +222,6 @@ public class ScheduleActivity extends FragmentActivity {
             for (char day : days) {
                 mCourseList.add(new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room));
             }
-
-            //Save it to the instance variable in Application class
-            ApplicationClass.setSchedule(mCourseList);
         }
     }
 
