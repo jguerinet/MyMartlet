@@ -43,7 +43,14 @@
     <string name="semester_courses">Courses:</string>
     <string name="course_credits">Credits: %d</string>
     <string name="course_average">Class Average: %s</string>
-    
+
+    <!-- DayFragment -->
+    <string name="am">%s A.M.</string>
+    <string name="pm">%s P.M.</string>
+    <string name="am_long">%1$s:%2$s A.M.</string>
+    <string name="pm_long">%1$s:%2$s P.M.</string>
+    <string name="course_time">%1$s-%2$s</string>
+
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
 

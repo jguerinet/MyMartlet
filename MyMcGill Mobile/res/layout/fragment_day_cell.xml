@@ -6,12 +6,36 @@
     android:layout_height="wrap_content"
     android:minHeight="@dimen/cell_30min_height"
     android:background="@drawable/drawable_red_whitepressed"
-    android:clickable="true"
-    android:layout_marginLeft="70dp">
+    android:clickable="true">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line"
         android:layout_gravity="center"
         android:background="@color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/course_code"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@drawable/color_white_blackpressed"
+        android:duplicateParentState="true"
+        android:paddingLeft="@dimen/padding_micro"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/course_time"
+        android:textColor="@drawable/color_white_blackpressed"
+        android:duplicateParentState="true"
+        android:paddingLeft="@dimen/padding_micro"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/course_location"
+        android:textColor="@drawable/color_white_blackpressed"
+        android:duplicateParentState="true"
+        android:paddingLeft="@dimen/padding_micro"/>
     </LinearLayout>

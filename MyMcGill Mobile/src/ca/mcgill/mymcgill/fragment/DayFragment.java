@@ -15,6 +15,7 @@ import ca.mcgill.mymcgill.activity.ScheduleActivity;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.Help;
 
 /**
  * Fragment that represents one day in the schedule
@@ -80,10 +81,8 @@ public class DayFragment extends Fragment{
             assert(timetableCell != null);
 
             //Put the correct time
-            boolean am = hour / 12 == 0;
-            String hours = hour == 12 ? "12" : String.valueOf(hour % 12) ;
             TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-            time.setText(hours + (am ? " A.M." : " P.M."));
+            time.setText(Help.getShortTimeString(getActivity(), hour));
 
             //Add it to the right container
             timetableContainer.addView(timetableCell);
@@ -124,6 +123,19 @@ public class DayFragment extends Fragment{
                         assert(scheduleCell != null);
 
                         //Set up all of the info
+                        TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
+                        courseName.setText(currentCourse.getCourseCode());
+
+                        TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
+                        //Get the beginning time
+                        String beginningTime = Help.getLongTimeString(getActivity(), hour, min);
+                        //Get the end time
+                        String endTime = Help.getLongTimeString(getActivity(), currentCourse.getEndHour(), currentCourse.getEndMinute());
+
+                        courseTime.setText(getResources().getString(R.string.course_time, beginningTime, endTime));
+
+                        TextView courseLocation = (TextView)scheduleCell.findViewById(R.id.course_location);
+                        courseLocation.setText(currentCourse.getRoom());
 
                         //Find out how long this course is in terms of blocks of 30 min
                         int length = ((currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
