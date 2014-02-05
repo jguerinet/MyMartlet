@@ -57,4 +57,11 @@ public class ApplicationClass extends Application {
     public static List<CourseSched> getSchedule(){
         return schedule;
     }
+
+    public static void setSchedule(List<CourseSched> schedule){
+        ApplicationClass.schedule = schedule;
+
+        //Save it to internal storage when this is set
+        Save.saveSchedule(context);
+    }
 }

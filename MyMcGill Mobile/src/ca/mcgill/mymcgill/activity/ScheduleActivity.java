@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
+import android.view.Window;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,6 +42,7 @@ public class ScheduleActivity extends FragmentActivity {
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_schedule);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -206,6 +208,9 @@ public class ScheduleActivity extends FragmentActivity {
             for (char day : days) {
                 mCourseList.add(new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room));
             }
+
+            //Save it to the instance variable in Application class
+            ApplicationClass.setSchedule(mCourseList);
         }
     }
 

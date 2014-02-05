@@ -21,14 +21,11 @@ import ca.mcgill.mymcgill.object.Transcript;
  * Class that loads objects from internal storage
  */
 public class Load {
-    private static final String TRANSCRIPT_FILE_NAME = "transcript";
-    private static final String SCHEDULE_FILE_NAME = "schedule";
-
     public static Transcript loadTranscript(Context context){
         Transcript transcript = null;
 
         try{
-            FileInputStream fis = context.openFileInput(TRANSCRIPT_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.TRANSCRIPT_FILE_NAME);
             ObjectInputStream in = new ObjectInputStream(fis);
             transcript= (Transcript) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -54,7 +51,7 @@ public class Load {
         List<CourseSched> courses = new ArrayList<CourseSched>();
 
         try{
-            FileInputStream fis = context.openFileInput(SCHEDULE_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.SCHEDULE_FILE_NAME);
             ObjectInputStream in = new ObjectInputStream(fis);
             courses = (List<CourseSched>) in.readObject();
         } catch (ClassNotFoundException e) {
