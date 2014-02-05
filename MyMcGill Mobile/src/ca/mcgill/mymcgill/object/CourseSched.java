@@ -14,10 +14,6 @@ public class CourseSched implements Serializable{
 	private String room;
     private Day day;
 	
-	public CourseSched(String a) {
-		//TODO: parse algorithm
-	}
-	
 	public CourseSched(int crn, String courseCode, char day, int startHour, int startMinute, int endHour, int endMinute, String room) {
 		this.crn = crn;
 		this.courseCode = courseCode;
