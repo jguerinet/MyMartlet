@@ -9,10 +9,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.util.Connection;
@@ -29,10 +32,21 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         //Get the necessary views
+        final Button login = (Button) findViewById(R.id.login_button);
         final EditText usernameView = (EditText) findViewById(R.id.login_username);
         final EditText passwordView = (EditText) findViewById(R.id.login_password);
+        //Set it to that when clicking the IME Action button it tries to log you in directly
+        passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_GO){
+                    login.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
         final CheckBox rememberMeView = (CheckBox) findViewById(R.id.login_remember_me);
-        Button login = (Button) findViewById(R.id.login_button);
 
         //Check if an error message needs to be displayed, display it if so
         int connectionStatus = getIntent().getIntExtra(Constants.CONNECTION_STATUS, -1);
