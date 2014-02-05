@@ -28,6 +28,10 @@ public class CourseSched implements Serializable{
 		this.endH = endHour;
         //Add 5 minutes to the end to get round numbers
 		this.endM = (endMinute + 5) % 60;
+        //Make sure it didn't loop around. If so, we need to increment the hour
+        if(this.endM == 0){
+            this.endH ++;
+        }
 		this.room = room;
 	}
 	
