@@ -93,6 +93,7 @@ public class LoginActivity extends Activity {
                                     .putString(Constants.PASSWORD, password)
                                     .putBoolean(Constants.REMEMBER_ME, rememberMeView.isChecked())
                                     .commit();
+                            progressDialog.dismiss();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                         }
