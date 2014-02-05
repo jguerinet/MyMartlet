@@ -1,12 +1,13 @@
 package ca.mcgill.mymcgill.object;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jsoup.*;
-import org.jsoup.nodes.*;
-import org.jsoup.select.*;
 
 /**
  * Created by Ryan Singzon on 30/01/14.
@@ -21,7 +22,6 @@ public class Transcript implements Serializable{
     private int mTotalCredits;
     private String mScholarships;
     private String mRawTranscript;
-    private Document transcript;
     private List<Semester> semesters = new ArrayList<Semester>();
 
     //Constructor for the Transcript object
@@ -33,8 +33,7 @@ public class Transcript implements Serializable{
 
     //Create an array of semesters and set CGPA and total credits
     private void parseTranscript(String transcriptString){
-
-        transcript = Jsoup.parse(transcriptString);
+        Document transcript = Jsoup.parse(transcriptString);
 
         //Extract program, scholarships, total credits, and CGPA
         Elements rows = transcript.getElementsByClass("fieldmediumtext");
