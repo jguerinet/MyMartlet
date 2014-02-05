@@ -1,6 +1,5 @@
 package ca.mcgill.mymcgill.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.CourseActivity;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
@@ -151,14 +149,14 @@ public class DayFragment extends Fragment{
                         //We need a final variable for the onClick listener
                         final CourseSched course = currentCourse;
                         //OnClick: CourseActivity (for a detailed description of the course)
-                        scheduleCell.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getActivity(), CourseActivity.class);
-                                intent.putExtra(Constants.COURSE, course);
-                                startActivity(intent);
-                            }
-                        });
+//                        scheduleCell.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                Intent intent = new Intent(getActivity(), CourseActivity.class);
+//                                intent.putExtra(Constants.COURSE, course);
+//                                startActivity(intent);
+//                            }
+//                        });
                     }
                     else{
                         //Inflate the empty view
