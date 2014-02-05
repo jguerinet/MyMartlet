@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import ca.mcgill.mymcgill.R;
@@ -30,6 +31,7 @@ public class LoginActivity extends Activity {
         //Get the necessary views
         final EditText usernameView = (EditText) findViewById(R.id.login_username);
         final EditText passwordView = (EditText) findViewById(R.id.login_password);
+        final CheckBox rememberMeView = (CheckBox) findViewById(R.id.login_remember_me);
         Button login = (Button) findViewById(R.id.login_button);
 
         //Check if an error message needs to be displayed, display it if so
@@ -48,6 +50,9 @@ public class LoginActivity extends Activity {
         if(username != null){
             usernameView.setText(username);
         }
+
+        //Remember Me box checked by default
+        rememberMeView.setChecked(true);
 
         //Set up the OnClickListener for the login button
         login.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +91,7 @@ public class LoginActivity extends Activity {
                             sharedPrefs.edit()
                                     .putString(Constants.USERNAME, username)
                                     .putString(Constants.PASSWORD, password)
+                                    .putBoolean(Constants.REMEMBER_ME, rememberMeView.isChecked())
                                     .commit();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();

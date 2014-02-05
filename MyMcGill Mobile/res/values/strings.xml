@@ -23,6 +23,7 @@
     <string name="login_error_other">An error has occurred. Please try again later.</string>
     <string name="login_error_username_empty">You must input a username.</string>
     <string name="login_error_password_empty">You must input a password.</string>
+    <string name="login_remember_me">Remember Me</string>
 
     <!-- MainActivity -->
     <string name="main_logout">Logout</string>

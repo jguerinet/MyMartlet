@@ -24,9 +24,10 @@ public class SplashActivity extends Activity {
         //Get the username and password stored
         String username = sharedPrefs.getString(Constants.USERNAME, null);
         String password = sharedPrefs.getString(Constants.PASSWORD, null);
+        boolean rememberMe = sharedPrefs.getBoolean(Constants.REMEMBER_ME, false);
 
         //If one of them is null, send the user to the LoginActivity
-//        if(true || username == null || password == null){
+//        if(!rememberMe || username == null || password == null){
             startActivity(new Intent(this, LoginActivity.class));
             finish();
 //        }
