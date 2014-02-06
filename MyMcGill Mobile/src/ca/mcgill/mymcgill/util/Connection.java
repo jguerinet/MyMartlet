@@ -36,16 +36,18 @@ public class Connection {
 	private List<String> cookies;
 	private HttpsURLConnection conn;
 	
-	// constants
-
+	// Constants
 	public final static String minervaLoginPage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
 	public final static String minervaLoginPost = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
 	public final static String minervaSchedule = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=201401";
     public final static String minervaTranscript = "https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
 	public final static String minervaHomepage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
+	public final static String minervaHost = "horizon.mcgill.ca";
+	public final static String minervaOrigin = "https://horizon.mcgill.ca";
+	
     private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 	
-	//singleton architecture
+	// Singleton architecture
 	private static Connection http = new Connection();
 	private Connection(){
 		//set some default value to know it was undefined
@@ -73,13 +75,19 @@ public class Connection {
 		try {
 			// 1. Send a "GET" request, so that you can extract the form's data.
 			String page = http.GetPageContent(minervaLoginPage);
+			
+			// search for "Authorization Failure"
+
+			if (page.contains("Authorization Failure"))
+			{
+				return Constants.CONNECTION_WRONG_INFO;
+			}
+			
 			postParams = http.getFormParams(page, username, password);
 			
 			// 2. Construct above post's content and then send a POST request
 			// for authentication
-			String Post1Resp = http.sendPost(minervaLoginPost, minervaLoginPage,postParams);
-			
-			//TODO: VERIFY PROPER LOGIN HAS OCCURED
+			String Post1Resp = http.sendPost(minervaLoginPost, minervaLoginPage,postParams, minervaHost, minervaOrigin);
 			
 		} catch (Exception e) {
 			return Constants.CONNECTION_OTHER;
@@ -101,7 +109,7 @@ public class Connection {
 	}
 	
 
-	private String sendPost(String url, String Referer, String postParams) throws Exception {
+	private String sendPost(String url, String Referer, String postParams, String postHost, String postOrigin) throws Exception {
 			 
 		URL obj = new URL(url);
 		conn = (HttpsURLConnection) obj.openConnection();
@@ -109,8 +117,8 @@ public class Connection {
 		// Acts like a browser
 		conn.setUseCaches(false);
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Host", "horizon.mcgill.ca");
-		conn.setRequestProperty("Origin", "https://horizon.mcgill.ca");
+		conn.setRequestProperty("Host", postHost);
+		conn.setRequestProperty("Origin", postOrigin);
 		conn.setRequestProperty("DNT", "1");
 		conn.setRequestProperty("User-Agent", USER_AGENT);
 		conn.setRequestProperty("Accept",
@@ -148,9 +156,8 @@ public class Connection {
 		}
 		in.close();
 		
+		//System.out.println(response.toString());
 		return response.toString();
-		// System.out.println(response.toString());
-	 
 	  }
 	 
 	  private String GetPageContent(String url) throws Exception {
