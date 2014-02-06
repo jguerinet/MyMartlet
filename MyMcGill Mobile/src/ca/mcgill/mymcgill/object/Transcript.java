@@ -73,7 +73,7 @@ public class Transcript implements Serializable{
                     String bachelor = "";
                     int programYear = 99;
                     int termCredits = 0;
-                    double termGPA = 99;
+                    double termGPA = 0.0;
                     boolean fullTime = false;
                     boolean satisfactory = false;
                     List<Course> courses = new ArrayList<Course>();
