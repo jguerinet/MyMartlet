@@ -82,6 +82,7 @@ public class Connection {
 			//TODO: VERIFY PROPER LOGIN HAS OCCURED
 			
 		} catch (Exception e) {
+            e.printStackTrace();
 			return Constants.CONNECTION_OTHER;
 		}
 
