@@ -14,6 +14,15 @@ import ca.mcgill.mymcgill.object.CourseSched;
  * Class that clears objects from internal storage or SharedPreferences
  */
 public class Clear {
+    public static void clearAllInfo(Context context){
+        clearSchedule(context);
+        clearTranscript(context);
+        clearPassword(context);
+        if(!Load.loadRememberUsername(context)){
+            clearUsername(context);
+        }
+    }
+
     public static void clearUsername(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
