@@ -32,6 +32,7 @@
         </activity>
         <activity
             android:name=".activity.DesktopActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_desktop" />
         
         <activity android:name=".activity.ScheduleActivity"
@@ -51,7 +52,8 @@
         </activity>
         <activity android:name=".activity.semester.SemesterActivity"/>
 
-        <activity android:name=".activity.CourseActivity"/>
+        <activity android:name=".activity.CourseActivity"
+            android:theme="@android:style/Theme.Dialog"/>
     </application>
 
 </manifest>
