@@ -61,7 +61,7 @@ public enum Token {
             case TERM_CREDITS:
                 return "TERM TOTALS:";
             case TOTAL_CREDITS:
-                return "CUM TOTALS:";
+                return "TOTAL CREDITS:";
             case TERM_GPA:
                 return "TERM GPA";
             case CUM_GPA:

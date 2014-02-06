@@ -112,6 +112,7 @@ public class Transcript implements Serializable{
                         }
 
                         //Extract course information if row contains a course code
+                        //Regex looks for a string in the form "ABCD ###"
                         else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
 
                             String courseCode = dataRow.text();
@@ -120,12 +121,16 @@ public class Transcript implements Serializable{
                             String userGrade = rows.get(semesterIndex+4).text();
 
                             //If average grades haven't been released on minerva, index will be null
-                            String averageGrade;
+                            String averageGrade = "";
                             try{
-                                averageGrade = rows.get(semesterIndex+7).text();
+                                //Regex looks for a letter grade
+                                if(rows.get(semesterIndex+7).text().matches("[ABCDF].|[ABCDF]")){
+                                    averageGrade = rows.get(semesterIndex+7).text();
+                                }
+
                             }
                             catch(IndexOutOfBoundsException e){
-                                averageGrade = "";
+                                //String not found
                             }
 
 
