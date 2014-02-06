@@ -22,6 +22,8 @@ public enum Token {
     SUMMER,
 
     BACHELOR,
+    MASTER,
+    DOCTOR,
     YEAR,
     FULL_TIME,
     PROGRAM,
@@ -50,6 +52,10 @@ public enum Token {
                 return "Summer";
             case BACHELOR:
                 return "Bachelor";
+            case MASTER:
+                return "Master";
+            case DOCTOR:
+                return "Doctor";
             case FULL_TIME:
                 return "Full-time";
             case YEAR:

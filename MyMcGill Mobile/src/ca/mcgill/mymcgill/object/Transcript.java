@@ -1,5 +1,7 @@
 package ca.mcgill.mymcgill.object;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -63,9 +65,6 @@ public class Transcript implements Serializable{
                     dataRow = rows.get(index+1);
                     mTotalCredits = (int)Double.parseDouble(dataRow.text());
                 }
-                if(row.text().startsWith(Token.CREDITS_REQUIRED.getString())){
-                    //TODO: FILL THIS IN
-                }
 
                 //Extract semester information
                 if(row.text().startsWith(Token.FALL.getString()) ||
@@ -90,11 +89,44 @@ public class Transcript implements Serializable{
                     while(true){
 
                         //Extract semester information
-                        if(dataRow.text().startsWith(Token.BACHELOR.getString())){
-                            //TODO: EXTRACT INDIVIDUAL WORDS
-                            program = dataRow.text();
-                            bachelor = "";
-                            programYear = 50;
+                        if(dataRow.text().startsWith(Token.BACHELOR.getString()) ||
+                                dataRow.text().startsWith(Token.MASTER.getString()) ||
+                                dataRow.text().startsWith(Token.DOCTOR.getString())){
+
+                            //Example string:
+                            //"Bachelor&nbps;of&nbsp;Engineering"<br>
+                            //"Full-time&nbsp;Year&nbsp;0"<br>
+                            //"Electrical&nbsp;Engineering"
+
+                            String[] degreeDetails = dataRow.text().split(" ");
+
+                            bachelor = degreeDetails[0];
+
+                            //Check if student is full time
+                            if(degreeDetails[1].startsWith("Full-time")){
+                                fullTime = true;
+                            }
+
+                            if(degreeDetails[1].contains("0")){
+                                programYear = 0;
+                            }
+                            if(degreeDetails[1].contains("1")){
+                                programYear = 1;
+                            }
+                            if(degreeDetails[1].contains("2")){
+                                programYear = 2;
+                            }
+                            if(degreeDetails[1].contains("3")){
+                                programYear = 3;
+                            }
+                            if(degreeDetails[1].contains("4")){
+                                programYear = 4;
+                            }
+                            if(degreeDetails[1].contains("5")){
+                                programYear = 5;
+                            }
+
+                            program = degreeDetails[2];
                         }
 
                         //End of semester information, extract term GPA and credits
