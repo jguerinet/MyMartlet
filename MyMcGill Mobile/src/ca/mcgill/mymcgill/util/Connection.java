@@ -75,19 +75,23 @@ public class Connection {
 		try {
 			// 1. Send a "GET" request, so that you can extract the form's data.
 			String page = http.GetPageContent(minervaLoginPage);
+			postParams = http.getFormParams(page, username, password);
 			
 			// search for "Authorization Failure"
-
-			if (page.contains("Authorization Failure"))
+			if (postParams.contains("WRONG_INFO"))
 			{
 				return Constants.CONNECTION_WRONG_INFO;
 			}
 			
-			postParams = http.getFormParams(page, username, password);
 			
 			// 2. Construct above post's content and then send a POST request
 			// for authentication
 			String Post1Resp = http.sendPost(minervaLoginPost, minervaLoginPage,postParams, minervaHost, minervaOrigin);
+		//	String check = http.GetPageContent(minervaLoginPost);
+			if (!Post1Resp.contains("WELCOME"))
+			{
+				return Constants.CONNECTION_WRONG_INFO;
+			}
 			
 		} catch (Exception e) {
             e.printStackTrace();
@@ -197,7 +201,7 @@ public class Connection {
 	 
 		// Get the response cookies
 		setCookies(conn.getHeaderFields().get("Set-Cookie"));
-	 
+		
 		return response.toString();
 	 
 	  }
