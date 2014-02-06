@@ -46,7 +46,7 @@ public class LoginActivity extends Activity {
                 return false;
             }
         });
-        final CheckBox rememberMeView = (CheckBox) findViewById(R.id.login_remember_me);
+        final CheckBox rememberUsernameView = (CheckBox) findViewById(R.id.login_remember_username);
 
         //Check if an error message needs to be displayed, display it if so
         int connectionStatus = getIntent().getIntExtra(Constants.CONNECTION_STATUS, -1);
@@ -66,7 +66,7 @@ public class LoginActivity extends Activity {
         }
 
         //Remember Me box checked by default
-        rememberMeView.setChecked(true);
+        rememberUsernameView.setChecked(true);
 
         //Set up the OnClickListener for the login button
         login.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +105,7 @@ public class LoginActivity extends Activity {
                             sharedPrefs.edit()
                                     .putString(Constants.USERNAME, username)
                                     .putString(Constants.PASSWORD, password)
-                                    .putBoolean(Constants.REMEMBER_ME, rememberMeView.isChecked())
+                                    .putBoolean(Constants.REMEMBER_USERNAME, rememberUsernameView.isChecked())
                                     .commit();
                             progressDialog.dismiss();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));

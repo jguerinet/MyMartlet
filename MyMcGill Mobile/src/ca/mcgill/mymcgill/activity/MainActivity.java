@@ -38,11 +38,20 @@ public class MainActivity extends Activity {
 
     //This method is called when the logout button is clicked
     public void logout(View v){
-        //Remove the stored password
+
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //Check if we need to remove the username
+        boolean rememberUsername = sharedPrefs.getBoolean(Constants.REMEMBER_USERNAME, false);
+        if(!rememberUsername){
+            sharedPrefs.edit()
+                    .remove(Constants.USERNAME)
+                    .commit();
+        }
+
+        //Remove the stored password
         sharedPrefs.edit()
-                .remove(Constants.PASSWORD)
-                .commit();
+            .remove(Constants.PASSWORD)
+            .commit();
         //Remove the stored info
         ApplicationClass.deleteSavedInfo();
 
