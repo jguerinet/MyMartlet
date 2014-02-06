@@ -63,10 +63,7 @@ public class TranscriptAdapter extends BaseAdapter {
         semesterName.setText(semester.getSemesterName());
 
         TextView semesterGPA = (TextView)view.findViewById(R.id.semester_termGPA);
-        //Show Term GPA only if it exists
-        if(semester.getTermGPA() != 0.0){
-            semesterGPA.setText(mContext.getResources().getString(R.string.transcript_termGPA, String.valueOf(semester.getTermGPA())));
-        }
+        semesterGPA.setText(mContext.getResources().getString(R.string.transcript_termGPA, String.valueOf(semester.getTermGPA())));
 
 
         //Set up the chevron
