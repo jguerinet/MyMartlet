@@ -1,7 +1,19 @@
 package ca.mcgill.mymcgill.activity;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.R.layout;
@@ -15,25 +27,82 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import ca.mcgill.mymcgill.objects.Ebill;
+
 public class EbillActivity extends Activity {
-	public ArrayList<Ebill> ebillList;
+	private ArrayList<Ebill> ebillList = new ArrayList<Ebill>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ebill);
-		
+
 		populateEbill();
 		populateListView();
 	}
 	
-	private void populateEbill(){
-		ebillList = new ArrayList<Ebill>();
-		ebillList.add(new Ebill("Statement Date","Due Date","Amount Due"));
+	private String readFromFile(String filename) {
+    	
+    	//create return string
+        String ret = "";
 
-		// TODO parsed ebill elements can be added here 
+        try {
+        	File file = new File(filename);
+
+            InputStream inputStream =  new FileInputStream(file);
+            
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.toString());
+        } catch (IOException e) {
+            System.out.println("Can not read file: " + e.toString());
+        }
+        catch(Exception e){
+        	System.out.println("Exception: " + e.toString());
+        }
+        finally{
+        	
+        	//always return something
+        	return ret;
+        }
+    }
+	
+	//populate ebill with parsed contents
+	private void populateEbill(){
+		String fileContent = readFromFile("ebills.htm");
+
+		Document doc = Jsoup.parse(fileContent);
+		Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
+		Elements ebillRows = ebillTable.getElementsByTag("tr");
+		getEBill(ebillRows);
+	}
+	
+	//parser algorithm
+	private void getEBill(Elements rows){
+		for (int i = 2; i < rows.size(); i+=2) {
+			Element row = rows.get(i);
+			Elements cells = row.getElementsByTag("td");
+			String statementDate = cells.get(0).text();
+			String dueDate = cells.get(3).text();
+			String amountDue = cells.get(5).text();
+			Ebill eBill = new Ebill(statementDate, dueDate, amountDue);
+			addEbill(eBill);
+		}
 	}
 
-	
 	public void addEbill(Ebill ebill)
 	{
 		ebillList.add(ebill);
@@ -49,72 +118,34 @@ public class EbillActivity extends Activity {
 		ListView list = (ListView) findViewById(R.id.ebill_listview);
 		list.setAdapter(adapter);
 	}
-	
+
 	private class listAdapter extends ArrayAdapter<Ebill>{
 		public listAdapter(){
 			super(EbillActivity.this,R.layout.item_ebill,ebillList);
 		}
-		
+
 		public View getView(int position,View convertView, ViewGroup parent){
 			View ebillView = convertView;
 			if(ebillView == null)
 			{
 				ebillView = getLayoutInflater().inflate(R.layout.item_ebill,parent,false);
 			} 
-			
+
 			Ebill ebill = ebillList.get(position);
 			TextView ebillStatement = (TextView) ebillView.findViewById(R.id.ebill_statement);
 			TextView ebillDue = (TextView) ebillView.findViewById(R.id.ebill_due);
 			TextView ebillAmount = (TextView) ebillView.findViewById(R.id.ebill_amount);
-			
+
 			ebillStatement.setText(ebill.getStatementDate());
 			ebillDue.setText(ebill.getDueDate());
 			ebillAmount.setText(ebill.getAmountDue());
-			
+
 			return ebillView;
-			
+
 		}
 	}
-	
-	
-	public class Ebill {
-		private String statementDate;
-		private String dueDate;
-		private String amountDue;
-		
-		public Ebill(String statementDate,String dueDate,String amountDue)
-		{
-			this.statementDate = statementDate;
-			this.dueDate = dueDate;
-			this.amountDue = amountDue;
-		}
 
-		public String getStatementDate() {
-			return statementDate;
-		}
 
-		public void setStatementDate(String statementDate) {
-			this.statementDate = statementDate;
-		}
-
-		public String getDueDate() {
-			return dueDate;
-		}
-
-		public void setDueDate(String dueDate) {
-			this.dueDate = dueDate;
-		}
-
-		public String getAmountDue() {
-			return amountDue;
-		}
-
-		public void setAmountDue(String amountDue) {
-			this.amountDue = amountDue;
-		}
-		
-		
-	}
 }
 
 
