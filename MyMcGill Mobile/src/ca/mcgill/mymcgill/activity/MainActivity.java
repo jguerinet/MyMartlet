@@ -10,8 +10,8 @@ import android.view.View;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
-import ca.mcgill.mymcgill.util.ApplicationClass;
-import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.Clear;
+import ca.mcgill.mymcgill.util.Load;
 
 public class MainActivity extends Activity {
 
@@ -41,19 +41,16 @@ public class MainActivity extends Activity {
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         //Check if we need to remove the username
-        boolean rememberUsername = sharedPrefs.getBoolean(Constants.REMEMBER_USERNAME, false);
-        if(!rememberUsername){
-            sharedPrefs.edit()
-                    .remove(Constants.USERNAME)
-                    .commit();
+        if(!Load.loadRememberUsername(this)){
+            Clear.clearUsername(this);
         }
 
         //Remove the stored password
-        sharedPrefs.edit()
-            .remove(Constants.PASSWORD)
-            .commit();
+        Clear.clearPassword(this);
+
         //Remove the stored info
-        ApplicationClass.deleteSavedInfo();
+        Clear.clearSchedule(this);
+        Clear.clearTranscript(this);
 
         //Go back to the Login Activity
         startActivity(new Intent(this, LoginActivity.class));

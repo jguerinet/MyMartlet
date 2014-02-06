@@ -5,9 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,13 +18,15 @@ import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.Load;
+import ca.mcgill.mymcgill.util.Save;
 
 /**
  * Author: Julien
  * Date: 22/01/14, 7:34 PM
  */
 public class LoginActivity extends Activity {
-	
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -47,6 +47,8 @@ public class LoginActivity extends Activity {
             }
         });
         final CheckBox rememberUsernameView = (CheckBox) findViewById(R.id.login_remember_username);
+        //Remember Me box checked based on user's previous preference
+        rememberUsernameView.setChecked(Load.loadRememberUsername(this));
 
         //Check if an error message needs to be displayed, display it if so
         int connectionStatus = getIntent().getIntExtra(Constants.CONNECTION_STATUS, -1);
@@ -57,16 +59,11 @@ public class LoginActivity extends Activity {
             showErrorDialog(getResources().getString(R.string.login_error_other));
         }
 
-        //Fill out the username EditText if it is stored in the SharedPrefs
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = sharedPrefs.getString(Constants.USERNAME, null);
-
+        //Fill out username text if it is present
+        String username = Load.loadUsername(this);
         if(username != null){
             usernameView.setText(username);
         }
-
-        //Remember Me box checked by default
-        rememberUsernameView.setChecked(true);
 
         //Set up the OnClickListener for the login button
         login.setOnClickListener(new View.OnClickListener() {
@@ -101,12 +98,10 @@ public class LoginActivity extends Activity {
 
                         //If the connection was successful, go to MainActivity
                         if(connectionStatus == Constants.CONNECTION_OK){
-                            //Store the login info in the shared prefs.
-                            sharedPrefs.edit()
-                                    .putString(Constants.USERNAME, username)
-                                    .putString(Constants.PASSWORD, password)
-                                    .putBoolean(Constants.REMEMBER_USERNAME, rememberUsernameView.isChecked())
-                                    .commit();
+                            //Store the login info.
+                            Save.saveUsername(LoginActivity.this, username);
+                            Save.savePassword(LoginActivity.this, password);
+                            Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
                             progressDialog.dismiss();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();

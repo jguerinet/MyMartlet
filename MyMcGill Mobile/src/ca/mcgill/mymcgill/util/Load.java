@@ -1,6 +1,8 @@
 package ca.mcgill.mymcgill.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.FileInputStream;
@@ -18,9 +20,28 @@ import ca.mcgill.mymcgill.object.Transcript;
 /**
  * Author: Julien
  * Date: 31/01/14, 5:50 PM
- * Class that loads objects from internal storage
+ * Class that loads objects from internal storage or SharedPreferences
  */
 public class Load {
+    public static String loadUsername(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getString(Constants.USERNAME, null);
+    }
+
+    public static String loadPassword(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String encryptedPassword = sharedPrefs.getString(Constants.PASSWORD, null);
+        if(encryptedPassword != null){
+            return Encryption.decode(encryptedPassword);
+        }
+        return null;
+    }
+
+    public static boolean loadRememberUsername(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.REMEMBER_USERNAME, false);
+    }
+
     public static Transcript loadTranscript(Context context){
         Transcript transcript = null;
 
