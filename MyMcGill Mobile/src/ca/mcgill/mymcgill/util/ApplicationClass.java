@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
@@ -67,23 +66,5 @@ public class ApplicationClass extends Application {
 
         //Save it to internal storage when this is set
         Save.saveSchedule(context);
-    }
-
-    /* HELPER METHODS */
-
-    /**
-     * Deletes all of the saved info (transcript, schedule)
-     */
-    public static void deleteSavedInfo(){
-        transcript = null;
-
-        //Quick check
-        if(schedule == null){
-            schedule = new ArrayList<CourseSched>();
-        }
-        schedule.clear();
-
-        context.deleteFile(Constants.TRANSCRIPT_FILE_NAME);
-        context.deleteFile(Constants.SCHEDULE_FILE_NAME);
     }
 }

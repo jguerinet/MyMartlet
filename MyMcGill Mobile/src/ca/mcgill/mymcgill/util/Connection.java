@@ -90,6 +90,7 @@ public class Connection {
 			String Post1Resp = http.sendPost(minervaLoginPost, minervaLoginPage,postParams, minervaHost, minervaOrigin);
 			
 		} catch (Exception e) {
+            e.printStackTrace();
 			return Constants.CONNECTION_OTHER;
 		}
 

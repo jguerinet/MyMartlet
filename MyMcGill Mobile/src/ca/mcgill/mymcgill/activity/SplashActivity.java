@@ -2,13 +2,13 @@ package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.util.Clear;
+import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.Load;
 
 /**
  * Author: Julien
@@ -19,22 +19,38 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        //Get the SharedPreferences
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         //Get the username and password stored
-        String username = sharedPrefs.getString(Constants.USERNAME, null);
-        String password = sharedPrefs.getString(Constants.PASSWORD, null);
-        boolean rememberMe = sharedPrefs.getBoolean(Constants.REMEMBER_ME, false);
+        final String username = Load.loadUsername(this);
+        final String password = Load.loadPassword(this);
 
         //If one of them is null, send the user to the LoginActivity
-//        if(!rememberMe || username == null || password == null){
+        if(username == null || password == null){
             //If we need to go back to the login, make sure to
             //delete anything with the previous user's info
-            ApplicationClass.deleteSavedInfo();
+            Clear.clearAllInfo(this);
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-//        }
-
+        }
+        //If not, try to log him in, and send him to the LoginActivity if there's a problem
+        else{
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int connectionResult = Connection.getInstance().connect(SplashActivity.this, username, password);
+                    //Successful connection: MainActivity
+                    if(connectionResult == Constants.CONNECTION_OK){
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    }
+                    else{
+                        Clear.clearAllInfo(SplashActivity.this);
+                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                        intent.putExtra(Constants.CONNECTION_STATUS, connectionResult);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            }).start();
+        }
     }
 }

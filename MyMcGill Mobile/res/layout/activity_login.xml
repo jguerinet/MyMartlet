@@ -24,8 +24,7 @@
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/padding_medium">
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/login_username"
@@ -44,6 +43,14 @@
 
         </LinearLayout>
 
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_remember_username"
+        android:text="@string/login_remember_username"
+        android:textSize="@dimen/text_small"
+        android:layout_marginBottom="@dimen/padding_medium"/>
+
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -58,13 +65,6 @@
         android:inputType="textPassword"
         android:singleLine="true"
         android:imeOptions="actionGo"/>
-
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/login_remember_me"
-        android:text="@string/login_remember_me"
-        android:textSize="@dimen/text_small"/>
 
     <Button
         android:id="@+id/login_button"
