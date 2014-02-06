@@ -22,14 +22,10 @@ public class Transcript implements Serializable{
 
     private double mCgpa;
     private int mTotalCredits;
-    private String mScholarships;
-    private String mRawTranscript;
     private List<Semester> semesters = new ArrayList<Semester>();
 
     //Constructor for the Transcript object
     public Transcript(String rawTranscript){
-
-        this.mRawTranscript = rawTranscript;
         parseTranscript(rawTranscript);
     }
 
@@ -82,7 +78,11 @@ public class Transcript implements Serializable{
                     boolean satisfactory = false;
                     List<Course> courses = new ArrayList<Course>();
 
-                    //Search rows until academic standing is found or the end of the transcript is reached
+                    //Search rows until the end of the semester is reached
+                    //Conditions for end of semester:
+                    //1. End of transcript is reached
+                    //2. The words "Fall" "Summer" or "Winter" appear
+
                     int semesterIndex = index +1;
                     dataRow = rows.get(semesterIndex);
 
@@ -138,11 +138,6 @@ public class Transcript implements Serializable{
                             termCredits = (int)Double.parseDouble(rows.get(semesterIndex + 1).text());
                         }
 
-                        else if(dataRow.text().startsWith(Token.STANDING.getString())){
-                            //TODO: EXTRACT SATISFACTORY/UNSATISFACTORY
-                            break;
-                        }
-
                         //Extract course information if row contains a course code
                         //Regex looks for a string in the form "ABCD ###"
                         else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
@@ -165,16 +160,49 @@ public class Transcript implements Serializable{
                                 //String not found
                             }
 
-
                             Course course = new Course(courseTitle, courseCode, credits,
                                     userGrade, averageGrade);
 
                             courses.add(course);
                         }
 
+                        //Extract transfer credit information
+                        else if(dataRow.text().startsWith(Token.CREDIT_EXCEPTION.getString())){
+                            String courseTitle = "";
+                            String courseCode = "";
+                            String userGrade = "N/A";
+                            String averageGrade = "";
+                            int credits = 0;
+
+                            try{
+                                courseCode = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
+                                courseTitle = rows.get(semesterIndex + 2).text();
+                                credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
+
+                            }
+                            catch(IndexOutOfBoundsException e){
+                                //String not found
+                            }
+
+                            Course course = new Course(courseTitle, courseCode, credits,
+                                    userGrade, averageGrade);
+
+                            courses.add(course);
+                            termCredits = credits;
+                        }
+
+                        /**
+                         * Breaks the loop if the next semester is reached
+                         */
+                        if(dataRow.text().startsWith(Token.FALL.getString()) ||
+                                dataRow.text().startsWith(Token.WINTER.getString()) ||
+                                dataRow.text().startsWith(Token.SUMMER.getString())){
+                            break;
+                        }
+
                         semesterIndex++;
 
-                        //Reached the end of the transcript
+                        //Reached the end of the transcript, break loop
                         try{
                             dataRow = rows.get(semesterIndex);
                         }
@@ -194,10 +222,8 @@ public class Transcript implements Serializable{
                 mTotalCredits = 100000;
                 mCgpa = 5;
             }
-
             index++;
         }
-
     }
 
     //Getter for CGPA
@@ -214,15 +240,4 @@ public class Transcript implements Serializable{
     public List<Semester> getSemesters(){
         return semesters;
     }
-
-    public String getmScholarships(){
-        return mScholarships;
-    }
-
-    public String getmRawTranscript(){
-        return mRawTranscript;
-    }
-
-
-
 }
