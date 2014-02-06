@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
@@ -75,6 +76,11 @@ public class ApplicationClass extends Application {
      */
     public static void deleteSavedInfo(){
         transcript = null;
+
+        //Quick check
+        if(schedule == null){
+            schedule = new ArrayList<CourseSched>();
+        }
         schedule.clear();
 
         context.deleteFile(Constants.TRANSCRIPT_FILE_NAME);
