@@ -1,4 +1,4 @@
-package ca.mcgill.mymcgill.tests;
+package ca.mcgill.mymcgill.activity.tests;
 
 import ca.mcgill.mymcgill.activity.MainActivity;
 import android.test.ActivityInstrumentationTestCase2;
