@@ -71,8 +71,20 @@ public class CourseActivity extends Activity {
         TextView courseLocation = (TextView)findViewById(R.id.course_location);
         courseLocation.setText(course.getRoom());
 
+        TextView scheduleType = (TextView)findViewById(R.id.schedule_type);
+        scheduleType.setText(course.getScheduleType());
+
         TextView courseProfessor = (TextView)findViewById(R.id.course_professor);
         courseProfessor.setText(course.getProfessorName());
+
+        TextView courseSection = (TextView)findViewById(R.id.course_section);
+        courseSection.setText(course.getCourseCode());
+
+        TextView courseCredits = (TextView)findViewById(R.id.course_credits);
+        courseCredits.setText(course.getCredits());
+
+        TextView courseCRN = (TextView)findViewById(R.id.course_crn);
+        courseCRN.setText(String.valueOf(course.getCRN()));
     }
 
     public void done(View v){

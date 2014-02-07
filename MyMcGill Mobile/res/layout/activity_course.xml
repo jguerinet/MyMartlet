@@ -81,12 +81,80 @@
                 android:textStyle="italic"
                 android:textColor="@color/black"
                 android:paddingTop="@dimen/padding_micro"
+                android:text="@string/schedule_type"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/schedule_type"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/black"
+                android:paddingLeft="@dimen/padding_small"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:textStyle="italic"
+                android:textColor="@color/black"
+                android:paddingTop="@dimen/padding_micro"
                 android:text="@string/course_prof"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/course_professor"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/black"
+                android:paddingLeft="@dimen/padding_small"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:textStyle="italic"
+                android:textColor="@color/black"
+                android:paddingTop="@dimen/padding_micro"
+                android:text="@string/course_section"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/course_section"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/black"
+                android:paddingLeft="@dimen/padding_small"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:textStyle="italic"
+                android:textColor="@color/black"
+                android:paddingTop="@dimen/padding_micro"
+                android:text="@string/course_credits_title"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/course_credits"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/black"
+                android:paddingLeft="@dimen/padding_small"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:textStyle="italic"
+                android:textColor="@color/black"
+                android:paddingTop="@dimen/padding_micro"
+                android:text="@string/course_crn"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/course_crn"
                 android:textSize="@dimen/text_medium"
                 android:textColor="@color/black"
                 android:paddingLeft="@dimen/padding_small"/>

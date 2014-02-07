@@ -59,7 +59,11 @@
     <!-- CourseActivity -->
     <string name="course_time_title">Time: </string>
     <string name="course_location">Room:  </string>
+    <string name="schedule_type">Schedule Type: </string>
     <string name="course_prof">Professor: </string>
+    <string name="course_section">Section: </string>
+    <string name="course_credits_title">Credits: </string>
+    <string name="course_crn">CRN: </string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
