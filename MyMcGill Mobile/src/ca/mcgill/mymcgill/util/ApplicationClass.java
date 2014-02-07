@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.Ebill;
 import ca.mcgill.mymcgill.object.Transcript;
 
 /**
@@ -22,6 +23,7 @@ public class ApplicationClass extends Application {
 
     private static Transcript transcript;
     private static List<CourseSched> schedule;
+    private static List<Ebill> ebill;
 
     @Override
     public void onCreate(){
@@ -34,6 +36,8 @@ public class ApplicationClass extends Application {
         transcript = Load.loadTranscript(this);
         //Load the schedule
         schedule = Load.loadSchedule(this);
+        //Load the ebill
+        ebill = Load.loadEbill(this);
     }
 
     /* GETTER METHODS */
@@ -53,6 +57,10 @@ public class ApplicationClass extends Application {
         return schedule;
     }
 
+    public static List<Ebill> getEbill(){
+        return ebill;
+    }
+
     /* SETTERS */
     public static void setTranscript(Transcript transcript){
         ApplicationClass.transcript = transcript;
@@ -66,5 +74,12 @@ public class ApplicationClass extends Application {
 
         //Save it to internal storage when this is set
         Save.saveSchedule(context);
+    }
+
+    public static void setEbill(List<Ebill> ebill){
+        ApplicationClass.ebill = ebill;
+
+        //Save it to internal storage when this is set
+        Save.saveEbill(context);
     }
 }

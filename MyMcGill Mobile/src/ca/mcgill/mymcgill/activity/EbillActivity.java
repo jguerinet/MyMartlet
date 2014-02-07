@@ -18,13 +18,15 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 
 public class EbillActivity extends Activity {
-	private ArrayList<Ebill> ebillList = new ArrayList<Ebill>();
+	private List<Ebill> mEbill = new ArrayList<Ebill>();
     private ListView mListView;
 
 	@Override
@@ -35,9 +37,12 @@ public class EbillActivity extends Activity {
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //Get the first ebill from the ApplicationClass
+        mEbill = ApplicationClass.getEbill();
+
         mListView = (ListView)findViewById(R.id.ebill_listview);
 
-        boolean refresh = !ebillList.isEmpty();
+        boolean refresh = !mEbill.isEmpty();
         if(refresh){
             loadInfo();
         }
@@ -96,7 +101,7 @@ public class EbillActivity extends Activity {
             getEBill(ebillRows);
 
             //Save it to the instance variable in the Application class
-//            ApplicationClass.setTranscript(mTranscript);
+            ApplicationClass.setEbill(mEbill);
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -129,14 +134,14 @@ public class EbillActivity extends Activity {
                 String statementDate = cells.get(0).text();
                 String dueDate = cells.get(3).text();
                 String amountDue = cells.get(5).text();
-                ebillList.add(new Ebill(statementDate, dueDate, amountDue));
+                mEbill.add(new Ebill(statementDate, dueDate, amountDue));
             }
         }
     }
 
 	private class listAdapter extends ArrayAdapter<Ebill>{
 		public listAdapter(){
-			super(EbillActivity.this,R.layout.item_ebill,ebillList);
+			super(EbillActivity.this,R.layout.item_ebill, mEbill);
 		}
 
 		public View getView(int position,View convertView, ViewGroup parent){
@@ -146,7 +151,7 @@ public class EbillActivity extends Activity {
 				ebillView = getLayoutInflater().inflate(R.layout.item_ebill,parent,false);
 			} 
 
-			Ebill ebill = ebillList.get(position);
+			Ebill ebill = mEbill.get(position);
 			TextView ebillStatement = (TextView) ebillView.findViewById(R.id.ebill_statement);
 			TextView ebillDue = (TextView) ebillView.findViewById(R.id.ebill_due);
 			TextView ebillAmount = (TextView) ebillView.findViewById(R.id.ebill_amount);

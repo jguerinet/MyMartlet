@@ -13,6 +13,7 @@ import java.io.StreamCorruptedException;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.Ebill;
 import ca.mcgill.mymcgill.object.Transcript;
 
 /**
@@ -43,6 +44,24 @@ public class Save {
                 .commit();
     }
 
+    public static void saveTranscript(Context context){
+        Transcript transcript = ApplicationClass.getTranscript();
+
+        try{
+            FileOutputStream fos = context.openFileOutput(Constants.TRANSCRIPT_FILE_NAME, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(transcript);
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void saveSchedule(Context context){
         List<CourseSched> courses = ApplicationClass.getSchedule();
 
@@ -61,13 +80,13 @@ public class Save {
         }
     }
 
-    public static void saveTranscript(Context context){
-        Transcript transcript = ApplicationClass.getTranscript();
+    public static void saveEbill(Context context){
+        List<Ebill> ebill = ApplicationClass.getEbill();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.TRANSCRIPT_FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.EBILL_FILE_NAME, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(transcript);
+            out.writeObject(ebill);
         } catch (OptionalDataException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

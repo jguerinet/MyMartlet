@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import java.util.ArrayList;
 
 import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.Ebill;
 
 /**
  * Author: Julien
@@ -17,6 +18,7 @@ public class Clear {
     public static void clearAllInfo(Context context){
         clearSchedule(context);
         clearTranscript(context);
+        clearEbill(context);
         clearPassword(context);
         if(!Load.loadRememberUsername(context)){
             clearUsername(context);
@@ -37,15 +39,21 @@ public class Clear {
                 .commit();
     }
 
+    public static void clearTranscript(Context context){
+        context.deleteFile(Constants.TRANSCRIPT_FILE_NAME);
+        //Reset the static instance in Application Class
+        ApplicationClass.setTranscript(null);
+    }
+
     public static void clearSchedule(Context context){
         context.deleteFile(Constants.SCHEDULE_FILE_NAME);
         //Reset the static instance in Application Class
         ApplicationClass.setSchedule(new ArrayList<CourseSched>());
     }
 
-    public static void clearTranscript(Context context){
-        context.deleteFile(Constants.TRANSCRIPT_FILE_NAME);
+    public static void clearEbill(Context context){
+        context.deleteFile(Constants.EBILL_FILE_NAME);
         //Reset the static instance in Application Class
-        ApplicationClass.setTranscript(null);
+        ApplicationClass.setEbill(new ArrayList<Ebill>());
     }
 }
