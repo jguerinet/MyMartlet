@@ -95,6 +95,8 @@ public class EbillActivity extends Activity {
         protected Void doInBackground(Void... params){
             String ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
 
+            mEbill.clear();
+
             Document doc = Jsoup.parse(ebillString);
             Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
             Elements ebillRows = ebillTable.getElementsByTag("tr");
