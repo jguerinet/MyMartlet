@@ -13,6 +13,7 @@ import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.Help;
 
 /**
  * Author: Julien
@@ -62,6 +63,16 @@ public class CourseActivity extends Activity {
 
         TextView courseName = (TextView)findViewById(R.id.course_name);
         courseName.setText(course.getCourseName());
+
+        TextView courseTime = (TextView)findViewById(R.id.course_time);
+        courseTime.setText(getResources().getString(R.string.course_time, Help.getLongTimeString(this, course.getStartHour(), course.getStartMinute()),
+                Help.getLongTimeString(this, course.getEndHour(), course.getEndMinute())));
+
+        TextView courseLocation = (TextView)findViewById(R.id.course_location);
+        courseLocation.setText(course.getRoom());
+
+        TextView courseProfessor = (TextView)findViewById(R.id.course_professor);
+        courseProfessor.setText(course.getProfessorName());
     }
 
     public void done(View v){

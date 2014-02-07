@@ -54,7 +54,12 @@
     <string name="pm">%s P.M.</string>
     <string name="am_long">%1$s:%2$s A.M.</string>
     <string name="pm_long">%1$s:%2$s P.M.</string>
-    <string name="course_time">%1$s-%2$s</string>
+    <string name="course_time">%1$s - %2$s</string>
+
+    <!-- CourseActivity -->
+    <string name="course_time_title">Time: </string>
+    <string name="course_location">Room:  </string>
+    <string name="course_prof">Professor: </string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
