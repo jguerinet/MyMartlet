@@ -26,8 +26,8 @@ public class DesktopActivity extends Activity {
         webView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
         webView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
-                view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
-                        Load.loadUsername(DesktopActivity.this) + "';" +
+                view.loadUrl("javascript:(window.onload = function(){document.getElementById('username').value='" +
+                        Load.loadUsername(DesktopActivity.this) + "@mail.mcgill.ca';" +
                         "document.getElementById('password').value='" +
                         Load.loadPassword(DesktopActivity.this) + "'; document.LoginForm.submit(); })()");
             }
