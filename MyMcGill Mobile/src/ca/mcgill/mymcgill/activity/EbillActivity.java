@@ -20,7 +20,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.objects.Ebill;
+import ca.mcgill.mymcgill.object.Ebill;
 import ca.mcgill.mymcgill.util.Connection;
 
 public class EbillActivity extends Activity {
@@ -146,7 +146,7 @@ public class EbillActivity extends Activity {
 				ebillView = getLayoutInflater().inflate(R.layout.item_ebill,parent,false);
 			} 
 
-			ca.mcgill.mymcgill.objects.Ebill ebill = ebillList.get(position);
+			Ebill ebill = ebillList.get(position);
 			TextView ebillStatement = (TextView) ebillView.findViewById(R.id.ebill_statement);
 			TextView ebillDue = (TextView) ebillView.findViewById(R.id.ebill_due);
 			TextView ebillAmount = (TextView) ebillView.findViewById(R.id.ebill_amount);
