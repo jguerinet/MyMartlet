@@ -12,6 +12,7 @@
     <string name="title_login">Login</string>
     <string name="title_schedule">My Schedule</string>
     <string name="title_transcript">My Transcript</string>
+    <string name="title_activity_ebill">My eBill</string>
 
     <!-- LoginActivity -->
     <string name="login_welcome">Welcome to MyMcGill for Mobile. Please input your McGill username and password below.</string>
