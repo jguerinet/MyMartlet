@@ -13,8 +13,12 @@ public class CourseSched implements Serializable{
 	private int startH, startM, endH, endM;
 	private String room;
     private Day day;
+    private String profName;
+    private String courseName;
+    private String credits;
+    private String scheduleType;
 	
-	public CourseSched(int crn, String courseCode, char day, int startHour, int startMinute, int endHour, int endMinute, String room) {
+	public CourseSched(int crn, String courseCode, char day, int startHour, int startMinute, int endHour, int endMinute, String room, String professorName, String courseName, String credits, String scheduleType) {
 		this.crn = crn;
 		this.courseCode = courseCode;
         this.day = Day.getDay(day);
@@ -29,6 +33,10 @@ public class CourseSched implements Serializable{
             this.endH ++;
         }
 		this.room = room;
+		this.profName = professorName;
+		this.courseName = courseName;
+		this.credits = credits;
+		this.scheduleType = scheduleType;
 	}
 	
 	public int getCRN(){
@@ -61,6 +69,18 @@ public class CourseSched implements Serializable{
 	public String getRoom()
     {
 		return room;
+	}
+	public String getProfessorName() {
+		return profName;
+	}
+	public String getCredits() {
+		return credits;
+	}
+	public String getCourseName() {
+		return courseName;
+	}
+	public String getScheduleType() {
+		return scheduleType;
 	}
 
 }
