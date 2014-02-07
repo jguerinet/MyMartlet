@@ -29,7 +29,7 @@ import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 
 /**
- * Author: Shabbir
+ * @author Nhat-Quang Dao
  * Date: 22/01/14, 9:07 PM
  * 
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
@@ -130,13 +130,14 @@ public class ScheduleActivity extends FragmentActivity {
             //Parsing code
             Document doc = Jsoup.parse(scheduleString);
             Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
-            String name, data;
+            String name, data, credits;
             int crn;
             for (int i = 0; i < scheduleTable.size(); i+=2) {
-                name = getCourseName(scheduleTable.get(i));
+                name = getCourseCodeAndName(scheduleTable.get(i));
                 crn = getCRN(scheduleTable.get(i));
                 data = getSchedule(scheduleTable.get(i+1));
-                addCourseSched(name, crn, data);
+                credits = getCredit(scheduleTable.get(i));
+                addCourseSched(name, crn, credits, data);
             }
 
             //Save it to the instance variable in Application class
@@ -169,10 +170,10 @@ public class ScheduleActivity extends FragmentActivity {
          * This method takes the list of rows in the table and populate the mCourseList
          * @param dataDisplayTable
          */
-        private String getCourseName(Element dataDisplayTable) {
+        private String getCourseCodeAndName(Element dataDisplayTable) {
             Element caption = dataDisplayTable.getElementsByTag("caption").first();
             String[] texts = caption.text().split(" - ");
-            return (texts[1] + "-" + texts[2]);
+            return (texts[0] + "," + texts[1] + "-" + texts[2]);
         }
 
         private int getCRN(Element dataDisplayTable) {
@@ -180,18 +181,29 @@ public class ScheduleActivity extends FragmentActivity {
             String crn = row.getElementsByTag("td").first().text();
             return Integer.parseInt(crn);
         }
-
+        private String getCredit(Element dataDisplayTable) {
+        	Element row = dataDisplayTable.getElementsByTag("tr").get(5);
+            String credit = row.getElementsByTag("td").first().text();
+            return credit;
+        }
+        
+        //return time, day, room, scheduleType, professor 
         private String getSchedule(Element dataDisplayTable) {
             Element row = dataDisplayTable.getElementsByTag("tr").get(1);
             Elements cells = row.getElementsByTag("td");
-            return (cells.get(0).text() + "," + cells.get(1).text() + "," + cells.get(2).text());
+            return (cells.get(0).text() + "," + cells.get(1).text() + "," + cells.get(2).text() + "," + cells.get(4).text() + "," + cells.get(5).text());
         }
+        
 
-        private void addCourseSched(String courseCode, int crn, String data) {
+        private void addCourseSched(String course, int crn, String credit, String data) {
             String[] dataItems = data.split(",");
             String[] times = dataItems[0].split(" - ");
             char[] days = dataItems[1].toCharArray();
             String room = dataItems[2];
+            String courseName = course.split(",")[0];
+            String courseCode = course.split(",")[1];
+            String profName = dataItems[4];
+            String scheduleType = dataItems[3];
 
             int startHour, startMinute, endHour, endMinute;
             try{
@@ -220,7 +232,7 @@ public class ScheduleActivity extends FragmentActivity {
             }
 
             for (char day : days) {
-                mCourseList.add(new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room));
+                mCourseList.add(new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room, profName, courseName, credit, scheduleType));
             }
         }
     }
