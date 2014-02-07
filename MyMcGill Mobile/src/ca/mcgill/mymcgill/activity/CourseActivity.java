@@ -7,8 +7,11 @@ import android.view.Display;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.util.Constants;
 
 /**
  * Author: Julien
@@ -22,6 +25,11 @@ public class CourseActivity extends Activity {
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_course);
+
+        //Get the course from the intent
+        CourseSched course = (CourseSched)getIntent().getSerializableExtra(Constants.COURSE);
+
+        assert (course != null);
 
         //Get the screen height
         Display display = getWindowManager().getDefaultDisplay();
@@ -46,5 +54,12 @@ public class CourseActivity extends Activity {
         params.height = (2 * displayHeight) / 3;
         params.width = (5 * displayWidth) / 6;
         layout.setLayoutParams(params);
+
+        //Set up the info
+        TextView courseCode = (TextView)findViewById(R.id.course_code);
+        courseCode.setText(course.getCourseCode());
+
+        TextView courseName = (TextView)findViewById(R.id.course_name);
+        courseName.setText(course.getCourseName());
     }
 }

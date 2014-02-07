@@ -7,4 +7,23 @@
     android:id="@+id/activity_course_container"
     android:background="@color/white">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/course_code"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/red"
+        android:gravity="center"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/course_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="italic"
+        android:gravity="center"/>
+
+
 </LinearLayout>
