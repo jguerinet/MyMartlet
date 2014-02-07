@@ -65,6 +65,7 @@ public class TranscriptAdapter extends BaseAdapter {
         TextView semesterGPA = (TextView)view.findViewById(R.id.semester_termGPA);
         semesterGPA.setText(mContext.getResources().getString(R.string.transcript_termGPA, String.valueOf(semester.getTermGPA())));
 
+
         //Set up the chevron
         TextView chevron = (TextView)view.findViewById(R.id.semester_chevron);
         chevron.setTypeface(ApplicationClass.getIconFont());

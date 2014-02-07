@@ -12,16 +12,14 @@ import ca.mcgill.mymcgill.R;
  */
 public enum Token {
 
-    //Student Information
-    SCHOLARSHIP,
-    CREDITS_REQUIRED,
-
     //Semester names
     FALL,
     WINTER,
     SUMMER,
 
     BACHELOR,
+    MASTER,
+    DOCTOR,
     YEAR,
     FULL_TIME,
     PROGRAM,
@@ -30,6 +28,7 @@ public enum Token {
     ADVANCED_STANDING,
     TERM_CREDITS,
     TOTAL_CREDITS,
+    CREDIT_EXCEPTION,
     TERM_GPA,
     CUM_GPA,
     STANDING;
@@ -38,10 +37,6 @@ public enum Token {
     public String getString(){
         switch(this){
 
-            case SCHOLARSHIP:
-                break;
-            case CREDITS_REQUIRED:
-                return "Credits Required";
             case FALL:
                 return "Fall";
             case WINTER:
@@ -50,6 +45,10 @@ public enum Token {
                 return "Summer";
             case BACHELOR:
                 return "Bachelor";
+            case MASTER:
+                return "Master";
+            case DOCTOR:
+                return "Doctor";
             case FULL_TIME:
                 return "Full-time";
             case YEAR:
@@ -61,7 +60,9 @@ public enum Token {
             case TERM_CREDITS:
                 return "TERM TOTALS:";
             case TOTAL_CREDITS:
-                return "CUM TOTALS:";
+                return "TOTAL CREDITS:";
+            case CREDIT_EXCEPTION:
+                return "Credits/Exemptions";
             case TERM_GPA:
                 return "TERM GPA";
             case CUM_GPA:

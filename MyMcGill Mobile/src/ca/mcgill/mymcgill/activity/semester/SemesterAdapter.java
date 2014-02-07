@@ -66,7 +66,11 @@ public class SemesterAdapter extends BaseAdapter {
         courseCredits.setText(mContext.getString(R.string.course_credits, currentCourse.getCredits()));
 
         TextView courseAverage = (TextView)view.findViewById(R.id.course_average);
-        courseAverage.setText(mContext.getString(R.string.course_average, currentCourse.getAverageGrade()));
+        //Don't display average if it does not exist
+        if(!currentCourse.getAverageGrade().equals("")){
+            courseAverage.setText(mContext.getString(R.string.course_average, currentCourse.getAverageGrade()));
+        }
+
 
         return view;
     }
