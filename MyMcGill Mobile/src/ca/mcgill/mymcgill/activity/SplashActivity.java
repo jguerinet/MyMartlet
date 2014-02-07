@@ -27,7 +27,7 @@ public class SplashActivity extends Activity {
         if(username == null || password == null){
             //If we need to go back to the login, make sure to
             //delete anything with the previous user's info
-            Clear.clearAllInfo(this);
+            //Clear.clearAllInfo(this);
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }

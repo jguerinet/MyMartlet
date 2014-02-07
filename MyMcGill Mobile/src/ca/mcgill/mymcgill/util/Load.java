@@ -79,18 +79,23 @@ public class Load {
         } catch (ClassNotFoundException e) {
             Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
+            return courses;
         } catch (OptionalDataException e) {
             Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
+            return courses;
         } catch (FileNotFoundException e) {
             Log.e("Load Schedule Failure", "File not found");
             e.printStackTrace();
+            return courses;
         } catch (StreamCorruptedException e) {
             Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
+            return courses;
         } catch (IOException e) {
             Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
+            return courses;
         }
 
         return courses;
