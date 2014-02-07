@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -61,5 +62,10 @@ public class CourseActivity extends Activity {
 
         TextView courseName = (TextView)findViewById(R.id.course_name);
         courseName.setText(course.getCourseName());
+    }
+
+    public void done(View v){
+        finish();
+        overridePendingTransition(R.anim.stay, R.anim.out_to_top);
     }
 }

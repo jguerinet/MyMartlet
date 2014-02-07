@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="error">Error</string>
     <string name="please_wait">Please Wait…</string>
+    <string name="done">Done</string>
     
     <!-- Activity Titles -->
     <string name="title_desktop">Desktop Site</string>
