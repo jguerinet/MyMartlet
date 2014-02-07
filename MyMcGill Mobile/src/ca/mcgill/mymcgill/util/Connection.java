@@ -88,7 +88,8 @@ public class Connection {
 			// 2. Construct above post's content and then send a POST request
 			// for authentication
 			String Post1Resp = http.sendPost(minervaLoginPost, minervaLoginPage,postParams, minervaHost, minervaOrigin);
-		//	String check = http.GetPageContent(minervaLoginPost);
+
+			// Check is connection was actually made
 			if (!Post1Resp.contains("WELCOME"))
 			{
 				return Constants.CONNECTION_WRONG_INFO;
