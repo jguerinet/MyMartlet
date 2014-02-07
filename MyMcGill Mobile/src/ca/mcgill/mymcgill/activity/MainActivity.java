@@ -33,6 +33,10 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, TranscriptActivity.class));
     }
 
+    public void viewEbill(View v){
+        startActivity(new Intent(this, EbillActivity.class));
+    }
+
     //This method is called when the logout button is clicked
     public void logout(View v){
         Clear.clearAllInfo(this);

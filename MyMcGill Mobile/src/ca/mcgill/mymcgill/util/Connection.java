@@ -1,5 +1,13 @@
 package ca.mcgill.mymcgill.util;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -13,13 +21,6 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
 import ca.mcgill.mymcgill.R;
 
 /**
@@ -39,6 +40,7 @@ public class Connection {
 	public final static String minervaLoginPage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
 	public final static String minervaLoginPost = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
 	public final static String minervaSchedule = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=201401";
+    public final static String minervaEbill = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
     public final static String minervaTranscript = "https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
 	public final static String minervaHomepage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
 	public final static String minervaHost = "horizon.mcgill.ca";

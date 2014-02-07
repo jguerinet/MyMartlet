@@ -31,6 +31,7 @@
     <string name="main_desktop">View Desktop Site</string>
     <string name="main_schedule">View Schedule</string>
     <string name="main_transcript">View Transcript</string>
+    <string name="main_ebill">View eBill</string>
 
     <!-- TranscriptActivity -->
     <string name="transcript_termGPA">Term GPA: %s</string>
