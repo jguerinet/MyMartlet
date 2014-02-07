@@ -29,7 +29,7 @@ public class DesktopActivity extends Activity {
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
                         Load.loadUsername(DesktopActivity.this) + "';" +
                         "document.getElementById('password').value='" +
-                        Load.loadPassword(DesktopActivity.this) + "';})()");
+                        Load.loadPassword(DesktopActivity.this) + "'; document.LoginForm.submit(); })()");
             }
         });
 
