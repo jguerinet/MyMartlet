@@ -1,13 +1,5 @@
 package ca.mcgill.mymcgill.util;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -21,6 +13,13 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
 import ca.mcgill.mymcgill.R;
 
 /**
@@ -55,7 +54,7 @@ public class Connection {
 		password = "undefined";
 	}
 	
-	//accessor method
+	// Accessor method
 	public static Connection getInstance(){
 		return http;
 	}
@@ -101,19 +100,26 @@ public class Connection {
         return Constants.CONNECTION_OK;
     }
 	
+	/**
+	 *  The method getURL with retrieve a webpage as text
+	 * 
+	  */
 	public String getUrl(String url) {
-		
+
 		String result;
 		try {
-		result = http.GetPageContent(url);
+			result = http.GetPageContent(url);
 		} catch (Exception e) {
 			return "00000";
 		}
-		
+
 		return result;
 	}
 	
-
+	/**
+	 *  The method
+	 * 
+	  */
 	private String sendPost(String url, String Referer, String postParams, String postHost, String postOrigin) throws Exception {
 			 
 		URL obj = new URL(url);
@@ -165,7 +171,11 @@ public class Connection {
 		return response.toString();
 	  }
 	 
-	  private String GetPageContent(String url) throws Exception {
+	/**
+	 * The method
+	 * 
+	 */
+	private String GetPageContent(String url) throws Exception {
 	 
 		URL obj = new URL(url);
 		conn = (HttpsURLConnection) obj.openConnection();

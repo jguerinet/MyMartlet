@@ -3,8 +3,11 @@ package ca.mcgill.mymcgill.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -49,7 +52,7 @@ public class LoginActivity extends Activity {
         final CheckBox rememberUsernameView = (CheckBox) findViewById(R.id.login_remember_username);
         //Remember Me box checked based on user's previous preference
         rememberUsernameView.setChecked(Load.loadRememberUsername(this));
-
+        
         //Check if an error message needs to be displayed, display it if so
         int connectionStatus = getIntent().getIntExtra(Constants.CONNECTION_STATUS, -1);
         if(connectionStatus == Constants.CONNECTION_WRONG_INFO){
@@ -93,13 +96,18 @@ public class LoginActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        //Connect
-                        int connectionStatus = Connection.getInstance().connect(LoginActivity.this, username, password);
-
-                        //If the connection was successful, go to MainActivity
-                        if(connectionStatus == Constants.CONNECTION_OK){
-                            //Store the login info.
-                            Save.saveUsername(LoginActivity.this, username);
+						int connectionStatus;
+						/*if (!isNetworkAvailable()) {
+							connectionStatus = Constants.CONNECTION_OTHER;
+						}
+						// Connect
+						else {*/
+							connectionStatus = Connection.getInstance().connect(LoginActivity.this, username,password);
+						//}
+						// If the connection was successful, go to MainActivity
+						if (connectionStatus == Constants.CONNECTION_OK) {
+							// Store the login info.
+							Save.saveUsername(LoginActivity.this, username);
                             Save.savePassword(LoginActivity.this, password);
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
                             progressDialog.dismiss();
@@ -146,4 +154,11 @@ public class LoginActivity extends Activity {
                 .create()
                 .show();
     }
+    
+    // Determine if network is available
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
 }
