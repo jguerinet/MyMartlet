@@ -14,6 +14,7 @@ import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Ebill;
 import ca.mcgill.mymcgill.object.Transcript;
@@ -24,6 +25,10 @@ import ca.mcgill.mymcgill.object.Transcript;
  * Class that loads objects from internal storage or SharedPreferences
  */
 public class Load {
+    public static String loadFullUsername(Context context){
+        return loadUsername(context) + context.getResources().getString(R.string.login_email);
+    }
+
     public static String loadUsername(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getString(Constants.USERNAME, null);

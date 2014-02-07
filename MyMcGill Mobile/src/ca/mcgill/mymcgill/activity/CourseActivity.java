@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 
 import ca.mcgill.mymcgill.R;
@@ -18,6 +19,8 @@ public class CourseActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.in_from_top, R.anim.stay);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_course);
 
         //Get the screen height

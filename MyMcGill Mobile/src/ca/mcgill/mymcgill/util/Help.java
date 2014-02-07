@@ -2,6 +2,12 @@ package ca.mcgill.mymcgill.util;
 
 import android.content.Context;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import ca.mcgill.mymcgill.R;
 
 /**
@@ -36,5 +42,42 @@ public class Help {
             return context.getResources().getString(R.string.am_long, hours, minutes);
         }
         return context.getResources().getString(R.string.pm_long, hours, minutes);
+    }
+
+    public static String readFromFile(Context context, int fileResource) {
+        //create return string
+        String ret = "";
+
+        try {
+            InputStream inputStream =  context.getResources().openRawResource(fileResource);
+
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.toString());
+        } catch (IOException e) {
+            System.out.println("Can not read file: " + e.toString());
+        }
+        catch(Exception e){
+            System.out.println("Exception: " + e.toString());
+        }
+        finally{
+
+            //always return something
+            return ret;
+        }
     }
 }
