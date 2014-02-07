@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
     }
 
     public void viewEbill(View v){
-        startActivity(new Intent(this, EbillActivity.class));
+//        startActivity(new Intent(this, EbillActivity.class));
     }
 
     //This method is called when the logout button is clicked
