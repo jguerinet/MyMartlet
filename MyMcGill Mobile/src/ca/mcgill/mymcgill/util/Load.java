@@ -116,18 +116,23 @@ public class Load {
         } catch (ClassNotFoundException e) {
             Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
+            return ebill;
         } catch (OptionalDataException e) {
             Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
+            return ebill;
         } catch (FileNotFoundException e) {
             Log.e("Load Ebill Failure", "File not found");
             e.printStackTrace();
+            return ebill;
         } catch (StreamCorruptedException e) {
             Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
+            return ebill;
         } catch (IOException e) {
             Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
+            return ebill;
         }
 
         return ebill;

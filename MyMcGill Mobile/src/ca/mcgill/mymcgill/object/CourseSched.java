@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class CourseSched implements Serializable{
 	private int crn;
-	private String courseCode; //format: ECSE 428-001 (department coursenumber-section)
+	private String courseCode, section;
 	private int startH, startM, endH, endM;
 	private String room;
     private Day day;
@@ -18,9 +18,10 @@ public class CourseSched implements Serializable{
     private String credits;
     private String scheduleType;
 	
-	public CourseSched(int crn, String courseCode, char day, int startHour, int startMinute, int endHour, int endMinute, String room, String professorName, String courseName, String credits, String scheduleType) {
+	public CourseSched(int crn, String courseCode, String section, char day, int startHour, int startMinute, int endHour, int endMinute, String room, String professorName, String courseName, String credits, String scheduleType) {
 		this.crn = crn;
 		this.courseCode = courseCode;
+        this.section = section;
         this.day = Day.getDay(day);
 		this.startH = startHour;
         //Remove 5 minutes to the start to get round numbers
@@ -45,6 +46,9 @@ public class CourseSched implements Serializable{
 	public String getCourseCode() {
 		return courseCode;
 	}
+    public String getSection(){
+        return this.section;
+    }
 	public Day getDay(){
         return day;
     }

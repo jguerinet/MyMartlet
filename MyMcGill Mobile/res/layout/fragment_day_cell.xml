@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/cell_30min_height"
-    android:background="@drawable/drawable_red_whitepressed"
+    android:background="@drawable/drawable_red_darkredpressed"
     android:clickable="true">
 
     <View
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/course_code"
         android:textSize="@dimen/text_medium"
-        android:textColor="@drawable/color_white_blackpressed"
+        android:textColor="@drawable/color_white_greypressed"
         android:duplicateParentState="true"
         android:paddingLeft="@dimen/padding_micro"/>
 
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/course_time"
-        android:textColor="@drawable/color_white_blackpressed"
+        android:textColor="@drawable/color_white_greypressed"
         android:duplicateParentState="true"
         android:paddingLeft="@dimen/padding_micro"/>
 
@@ -35,7 +35,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/course_location"
-        android:textColor="@drawable/color_white_blackpressed"
+        android:textColor="@drawable/color_white_greypressed"
+        android:duplicateParentState="true"
+        android:paddingLeft="@dimen/padding_micro"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/course_type"
+        android:textStyle="italic"
+        android:textColor="@drawable/color_white_greypressed"
         android:duplicateParentState="true"
         android:paddingLeft="@dimen/padding_micro"/>
     </LinearLayout>
