@@ -173,7 +173,7 @@ public class ScheduleActivity extends FragmentActivity {
         private String getCourseCodeAndName(Element dataDisplayTable) {
             Element caption = dataDisplayTable.getElementsByTag("caption").first();
             String[] texts = caption.text().split(" - ");
-            return (texts[0] + "," + texts[1] + "," + texts[2]);
+            return (texts[0].substring(0, texts[0].length() - 1) + "," + texts[1] + "," + texts[2]);
         }
 
         private int getCRN(Element dataDisplayTable) {
