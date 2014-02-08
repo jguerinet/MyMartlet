@@ -19,6 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
@@ -84,6 +85,33 @@ public class ScheduleActivity extends FragmentActivity {
     private void loadInfo(){
         SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
         mPager.setAdapter(adapter);
+
+        //Open it to the right day
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+
+        switch (day){
+            case Calendar.MONDAY:
+                mPager.setCurrentItem(0);
+                break;
+            case Calendar.TUESDAY:
+                mPager.setCurrentItem(1);
+                break;
+            case Calendar.WEDNESDAY:
+                mPager.setCurrentItem(2);
+                break;
+            case Calendar.THURSDAY:
+                mPager.setCurrentItem(3);
+                break;
+            case Calendar.FRIDAY:
+                mPager.setCurrentItem(4);
+                break;
+            case Calendar.SATURDAY:
+                mPager.setCurrentItem(5);
+                break;
+            case Calendar.SUNDAY:
+                mPager.setCurrentItem(6);
+                break;
+        }
     }
 
     @Override
