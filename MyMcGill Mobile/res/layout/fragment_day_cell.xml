@@ -38,4 +38,13 @@
         android:textColor="@drawable/color_white_greypressed"
         android:duplicateParentState="true"
         android:paddingLeft="@dimen/padding_micro"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/course_type"
+        android:textStyle="italic"
+        android:textColor="@drawable/color_white_greypressed"
+        android:duplicateParentState="true"
+        android:paddingLeft="@dimen/padding_micro"/>
     </LinearLayout>

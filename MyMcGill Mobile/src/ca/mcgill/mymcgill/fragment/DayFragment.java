@@ -128,6 +128,9 @@ public class DayFragment extends Fragment{
                         TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
                         courseName.setText(currentCourse.getCourseCode());
 
+                        TextView courseType = (TextView)scheduleCell.findViewById(R.id.course_type);
+                        courseType.setText(currentCourse.getScheduleType());
+
                         TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
                         //Get the beginning time
                         String beginningTime = Help.getLongTimeString(getActivity(), hour, min);
