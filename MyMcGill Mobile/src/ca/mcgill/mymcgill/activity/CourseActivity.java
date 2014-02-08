@@ -78,7 +78,7 @@ public class CourseActivity extends Activity {
         courseProfessor.setText(course.getProfessorName());
 
         TextView courseSection = (TextView)findViewById(R.id.course_section);
-        courseSection.setText(course.getCourseCode());
+        courseSection.setText(course.getSection());
 
         TextView courseCredits = (TextView)findViewById(R.id.course_credits);
         courseCredits.setText(course.getCredits());

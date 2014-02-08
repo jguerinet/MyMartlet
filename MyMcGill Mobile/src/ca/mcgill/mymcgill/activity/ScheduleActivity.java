@@ -173,7 +173,7 @@ public class ScheduleActivity extends FragmentActivity {
         private String getCourseCodeAndName(Element dataDisplayTable) {
             Element caption = dataDisplayTable.getElementsByTag("caption").first();
             String[] texts = caption.text().split(" - ");
-            return (texts[0] + "," + texts[1] + "-" + texts[2]);
+            return (texts[0] + "," + texts[1] + "," + texts[2]);
         }
 
         private int getCRN(Element dataDisplayTable) {
@@ -202,6 +202,7 @@ public class ScheduleActivity extends FragmentActivity {
             String room = dataItems[2];
             String courseName = course.split(",")[0];
             String courseCode = course.split(",")[1];
+            String section = course.split(",")[2];
             String profName = dataItems[4];
             String scheduleType = dataItems[3];
 
@@ -232,7 +233,7 @@ public class ScheduleActivity extends FragmentActivity {
             }
 
             for (char day : days) {
-                mCourseList.add(new CourseSched(crn, courseCode, day, startHour, startMinute, endHour, endMinute, room, profName, courseName, credit, scheduleType));
+                mCourseList.add(new CourseSched(crn, courseCode, section, day, startHour, startMinute, endHour, endMinute, room, profName, courseName, credit, scheduleType));
             }
         }
     }
