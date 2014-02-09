@@ -104,10 +104,9 @@ public class ScheduleActivity extends FragmentActivity {
             for(int i = 0; i < 7; i ++){
                 LinearLayout coursesLayout = new LinearLayout(this);
                 coursesLayout.setOrientation(LinearLayout.VERTICAL);
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                        300,
-//                        ViewGroup.LayoutParams.WRAP_CONTENT);
-//                coursesLayout.setLayoutParams(params);
+                coursesLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                        getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
                 fillSchedule(inflater, coursesLayout, Day.getDay(i));
                 scheduleContainer.addView(coursesLayout);
 
