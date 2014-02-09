@@ -1,9 +1,9 @@
-package ca.mcgill.mymcgill.object;
+package ca.mcgill.mymcgill.activity.transcript;
 
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import ca.mcgill.mymcgill.activity.DesktopActivity;
+
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
@@ -28,8 +28,8 @@ public class DesktopViewTest extends ActivityInstrumentationTestCase2<DesktopAct
 
 
     @Test
-    public void testTrue() {
-        assertEquals(testString, otherTestString);
+    public void testPreconditions() {
+        assertNotNull(testString);
     }
 
     /*
