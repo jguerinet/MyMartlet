@@ -24,6 +24,7 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.ConnectionStatus;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua
@@ -65,10 +66,10 @@ public class Connection {
 	
 	
 	@SuppressLint("NewApi")	//getting errors
-	public int connect(Context context, String user, String pass){
+	public ConnectionStatus connect(Context context, String user, String pass){
         //First check if the user is connected to the internet
         if(!isNetworkAvailable(context)){
-            return Constants.CONNECTION_NO_INTERNET;
+            return ConnectionStatus.CONNECTION_NO_INTERNET;
         }
 
 		//load uname and pass
@@ -87,7 +88,7 @@ public class Connection {
 			// search for "Authorization Failure"
 			if (postParams.contains("WRONG_INFO"))
 			{
-				return Constants.CONNECTION_WRONG_INFO;
+				return ConnectionStatus.CONNECTION_WRONG_INFO;
 			}
 			
 			
@@ -98,15 +99,15 @@ public class Connection {
 			// Check is connection was actually made
 			if (!Post1Resp.contains("WELCOME"))
 			{
-				return Constants.CONNECTION_WRONG_INFO;
+				return ConnectionStatus.CONNECTION_WRONG_INFO;
 			}
 			
 		} catch (Exception e) {
             e.printStackTrace();
-			return Constants.CONNECTION_OTHER;
+			return ConnectionStatus.CONNECTION_OTHER;
 		}
 
-        return Constants.CONNECTION_OK;
+        return ConnectionStatus.CONNECTION_OK;
     }
 	
 	/**
