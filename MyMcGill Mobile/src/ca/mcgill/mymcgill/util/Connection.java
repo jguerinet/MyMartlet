@@ -2,6 +2,8 @@ package ca.mcgill.mymcgill.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -64,7 +66,11 @@ public class Connection {
 	
 	@SuppressLint("NewApi")	//getting errors
 	public int connect(Context context, String user, String pass){
-		
+        //First check if the user is connected to the internet
+        if(!isNetworkAvailable(context)){
+            return Constants.CONNECTION_NO_INTERNET;
+        }
+
 		//load uname and pass
     	username = user + context.getResources().getString(R.string.login_email);
     	password = pass;
@@ -274,7 +280,12 @@ public class Connection {
 	  public void setCookies(List<String> cookies) {
 		this.cookies = cookies;
 	  }
-	 
-	
+
+    // Determine if network is available
+    private boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 	
 }

@@ -3,11 +3,8 @@ package ca.mcgill.mymcgill.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -96,14 +93,7 @@ public class LoginActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-						int connectionStatus;
-						/*if (!isNetworkAvailable()) {
-							connectionStatus = Constants.CONNECTION_OTHER;
-						}
-						// Connect
-						else {*/
-							connectionStatus = Connection.getInstance().connect(LoginActivity.this, username,password);
-						//}
+						int connectionStatus = Connection.getInstance().connect(LoginActivity.this, username,password);
 						// If the connection was successful, go to MainActivity
 						if (connectionStatus == Constants.CONNECTION_OK) {
 							// Store the login info.
@@ -121,6 +111,16 @@ public class LoginActivity extends Activity {
                                 public void run() {
                                     progressDialog.dismiss();
                                     showErrorDialog(getResources().getString(R.string.login_error_wrong_data));
+                                }
+                            });
+                        }
+                        //If the user is not connected to the internet
+                        else if(connectionStatus == Constants.CONNECTION_NO_INTERNET){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    showErrorDialog(getResources().getString(R.string.login_error_no_internet));
                                 }
                             });
                         }
@@ -154,11 +154,4 @@ public class LoginActivity extends Activity {
                 .create()
                 .show();
     }
-    
-    // Determine if network is available
-	private boolean isNetworkAvailable() {
-	    ConnectivityManager connectManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
 }
