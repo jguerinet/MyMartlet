@@ -2,6 +2,8 @@ package ca.mcgill.mymcgill.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,6 +24,7 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.ConnectionStatus;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua
@@ -63,8 +66,12 @@ public class Connection {
 	
 	
 	@SuppressLint("NewApi")	//getting errors
-	public int connect(Context context, String user, String pass){
-		
+	public ConnectionStatus connect(Context context, String user, String pass){
+        //First check if the user is connected to the internet
+        if(!isNetworkAvailable(context)){
+            return ConnectionStatus.CONNECTION_NO_INTERNET;
+        }
+
 		//load uname and pass
     	username = user + context.getResources().getString(R.string.login_email);
     	password = pass;
@@ -81,7 +88,7 @@ public class Connection {
 			// search for "Authorization Failure"
 			if (postParams.contains("WRONG_INFO"))
 			{
-				return Constants.CONNECTION_WRONG_INFO;
+				return ConnectionStatus.CONNECTION_WRONG_INFO;
 			}
 			
 			
@@ -92,15 +99,15 @@ public class Connection {
 			// Check is connection was actually made
 			if (!Post1Resp.contains("WELCOME"))
 			{
-				return Constants.CONNECTION_WRONG_INFO;
+				return ConnectionStatus.CONNECTION_WRONG_INFO;
 			}
 			
 		} catch (Exception e) {
             e.printStackTrace();
-			return Constants.CONNECTION_OTHER;
+			return ConnectionStatus.CONNECTION_OTHER;
 		}
 
-        return Constants.CONNECTION_OK;
+        return ConnectionStatus.CONNECTION_OK;
     }
 	
 	/**
@@ -274,7 +281,12 @@ public class Connection {
 	  public void setCookies(List<String> cookies) {
 		this.cookies = cookies;
 	  }
-	 
-	
+
+    // Determine if network is available
+    private boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 	
 }

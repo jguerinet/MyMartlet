@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.util.Clear;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -36,9 +37,9 @@ public class SplashActivity extends Activity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    int connectionResult = Connection.getInstance().connect(SplashActivity.this, username, password);
+                    ConnectionStatus connectionResult = Connection.getInstance().connect(SplashActivity.this, username, password);
                     //Successful connection: MainActivity
-                    if(connectionResult == Constants.CONNECTION_OK){
+                    if(connectionResult == ConnectionStatus.CONNECTION_OK){
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));
                         finish();
                     }
