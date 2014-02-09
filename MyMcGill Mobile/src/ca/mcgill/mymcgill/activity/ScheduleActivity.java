@@ -162,6 +162,9 @@ public class ScheduleActivity extends FragmentActivity {
     }
 
     private void fillTimetable(LayoutInflater inflater, LinearLayout timetableContainer){
+        //Empty view for the days
+        timetableContainer.addView(inflater.inflate(R.layout.activity_day_name, null));
+
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
             //Start inflating a timetable cell
@@ -186,6 +189,13 @@ public class ScheduleActivity extends FragmentActivity {
         int currentCourseEndTime = 0;
 
         List<CourseSched> mCourses = getCoursesForDay(currentDay);
+
+        //Day name
+        View dayView = inflater.inflate(R.layout.activity_day_name, null);
+        TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
+        dayViewTitle.setText(currentDay.getDayString(this));
+
+        scheduleContainer.addView(dayView);
 
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
