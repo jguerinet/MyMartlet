@@ -1,33 +1,31 @@
 package ca.mcgill.mymcgill.object;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
-
-import junit.framework.TestCase;
+import java.lang.ClassNotFoundException;
 
 import org.junit.Test;
 
-import android.os.Bundle;
 import android.test.AndroidTestCase;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 
 import ca.mcgill.mymcgill.object.Transcript;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Help;
 
-public class TranscriptTest extends TestCase {
+public class TranscriptTest extends AndroidTestCase {
 
 	@Test
 	public void testGetCGPA() throws IOException {
-		Scanner scan = new Scanner(new File("C:\\Users\\c\\workspace\\TestScanner\\src\\testBill.txt"));
+		Scanner scan = new Scanner(new File("test_transcript.txt"));
 		String text = "";
-		//while(scan.hasNext())
-		//{
-		//	text = text + scan.next();
-		//}
+		while(scan.hasNext())
+		{
+			text = text + scan.next();
+		}
 		Transcript testTranscript = new Transcript(text);
 		double gpa = testTranscript.getCgpa();
 		assertEquals("CGPA is incorrect", 3.92, gpa, 0.01);
@@ -35,7 +33,15 @@ public class TranscriptTest extends TestCase {
 	}
 	
 	@Test
+	public void testConstructor() {
+		Transcript test = new Transcript("test");
+		assertNotNull(test);
+	}
+	
+	
+	@Test
 	public void testGetTotalCredits() {
+				
 		TranscriptActivity testAct = new TranscriptActivity();
 		
 		String text = Help.readFromFile(testAct, R.raw.test_transcript);
