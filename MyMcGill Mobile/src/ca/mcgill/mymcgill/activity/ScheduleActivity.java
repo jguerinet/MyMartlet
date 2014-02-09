@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,8 +11,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,6 +34,7 @@ import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Help;
 
 /**
  * @author Nhat-Quang Dao
@@ -38,7 +45,7 @@ import ca.mcgill.mymcgill.util.Connection;
 public class ScheduleActivity extends FragmentActivity {
 	private List<CourseSched> mCourseList;
     private ViewPager mPager;
-    private  FragmentManager mSupportFragmentManager;
+    private FragmentManager mSupportFragmentManager;
 
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,47 @@ public class ScheduleActivity extends FragmentActivity {
         return courses;
     }
 
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            setContentView(R.layout.activity_schedule_land);
+            LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            LinearLayout timetableContainer = (LinearLayout) findViewById(R.id.timetable_container);
+            fillTimetable(inflater, timetableContainer);
+
+            LinearLayout scheduleContainer = (LinearLayout)findViewById(R.id.schedule_container);
+            for(int i = 0; i < 7; i ++){
+                LinearLayout coursesLayout = new LinearLayout(this);
+                coursesLayout.setOrientation(LinearLayout.VERTICAL);
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//                        300,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT);
+//                coursesLayout.setLayoutParams(params);
+                fillSchedule(inflater, coursesLayout, Day.getDay(i));
+                scheduleContainer.addView(coursesLayout);
+
+                //Line
+                View line = new View(this);
+                line.setBackgroundColor(getResources().getColor(R.color.black));
+                line.setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.line),
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+                scheduleContainer.addView(line);
+            }
+
+
+        }
+        else{
+            setContentView(R.layout.activity_schedule);
+            mPager = (ViewPager)findViewById(R.id.pager);
+            mPager.setOffscreenPageLimit(6);
+            loadInfo();
+        }
+        super.onConfigurationChanged(newConfig);
+    }
+
     private void loadInfo(){
         SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
         mPager.setAdapter(adapter);
@@ -111,6 +159,114 @@ public class ScheduleActivity extends FragmentActivity {
             case Calendar.SUNDAY:
                 mPager.setCurrentItem(6);
                 break;
+        }
+    }
+
+    private void fillTimetable(LayoutInflater inflater, LinearLayout timetableContainer){
+        //Cycle through the hours
+        for(int hour = 8; hour < 22; hour++){
+            //Start inflating a timetable cell
+            View timetableCell = inflater.inflate(R.layout.fragment_day_timetable_cell, null);
+
+            //Quick check
+            assert(timetableCell != null);
+
+            //Put the correct time
+            TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
+            time.setText(Help.getShortTimeString(this, hour));
+
+            //Add it to the right container
+            timetableContainer.addView(timetableCell);
+        }
+    }
+
+    //Method that fills the schedule based on given data
+    private void fillSchedule(LayoutInflater inflater,
+                              LinearLayout scheduleContainer, Day currentDay){
+        //This will be used of an end time of a course when it is added to the schedule container
+        int currentCourseEndTime = 0;
+
+        List<CourseSched> mCourses = getCoursesForDay(currentDay);
+
+        //Cycle through the hours
+        for(int hour = 8; hour < 22; hour++){
+            //Cycle through the half hours
+            for(int min = 0; min < 31; min+= 30){
+                //Initialize the current course to null
+                CourseSched currentCourse = null;
+
+                //Calculate time in minutes
+                int timeInMinutes = 60*hour + min;
+
+                //if currentCourseEndTime = 0 (no course is being added) or it is equal to
+                //the current time in min (end of a course being added) we need to add a new view
+                if(currentCourseEndTime == 0 || currentCourseEndTime == timeInMinutes){
+                    //Reset currentCourseEndTime to 0
+                    currentCourseEndTime = 0;
+
+                    //Check if there is a course at this time
+                    for(CourseSched course : mCourses){
+                        //If there is, set the current course to that time, and calculate the
+                        //ending time of this course
+                        if(course.getStartTimeInMinutes() == timeInMinutes){
+                            currentCourse = course;
+                            currentCourseEndTime = course.getEndTimeInMinutes();
+                            break;
+                        }
+                    }
+
+                    View scheduleCell;
+
+                    //There is a course at this time
+                    if(currentCourse != null){
+                        //Inflate the right view
+                        scheduleCell = inflater.inflate(R.layout.fragment_day_cell, null);
+
+                        //Quick check
+                        assert(scheduleCell != null);
+
+                        //Set up all of the info
+                        TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
+                        courseName.setText(currentCourse.getCourseCode());
+
+                        TextView courseType = (TextView)scheduleCell.findViewById(R.id.course_type);
+                        courseType.setText(currentCourse.getScheduleType());
+
+                        TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
+                        //Get the beginning time
+                        String beginningTime = Help.getLongTimeString(this, hour, min);
+                        //Get the end time
+                        String endTime = Help.getLongTimeString(this, currentCourse.getEndHour(), currentCourse.getEndMinute());
+
+                        courseTime.setText(getResources().getString(R.string.course_time, beginningTime, endTime));
+
+                        TextView courseLocation = (TextView)scheduleCell.findViewById(R.id.course_location);
+                        courseLocation.setText(currentCourse.getRoom());
+
+                        //Find out how long this course is in terms of blocks of 30 min
+                        int length = ((currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
+                                (currentCourse.getEndMinute() - currentCourse.getStartMinute())) / 30;
+
+                        //Set the height of the view depending on this height
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                (int) this.getResources().getDimension(R.dimen.cell_30min_height) * length);
+                        scheduleCell.setLayoutParams(lp);
+
+                        //OnClick: CourseActivity (for a detailed description of the course)
+                        scheduleCell.setClickable(false);
+                    }
+                    else{
+                        //Inflate the empty view
+                        scheduleCell = inflater.inflate(R.layout.fragment_day_cell_empty, null);
+
+                        //Quick check
+                        assert(scheduleCell != null);
+                    }
+
+                    //Add the given view to the schedule container
+                    scheduleContainer.addView(scheduleCell);
+                }
+            }
         }
     }
 
