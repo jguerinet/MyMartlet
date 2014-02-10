@@ -14,42 +14,22 @@ import android.webkit.WebViewClient;
 public class DesktopViewTest extends ActivityInstrumentationTestCase2<DesktopActivity> {
 
     private DesktopActivity mDesktopActivity;
-    private String testString = "test";
-
+    private WebView webView;
+    
     public DesktopViewTest(){
         super(DesktopActivity.class);
     }
-
+    
     @Override
     protected void setUp() throws Exception{
         super.setUp();
         setActivityInitialTouchMode(false);
         mDesktopActivity = getActivity();
+        webView = (WebView) mDesktopActivity.findViewById(R.id.desktop_webview);
     }
-
-
-    @Test
-    public void testTrue() {
-        assertNotNull(testString);
-    }
-
     
     @Test
     public void testWebViewExists(){
-        WebView webview = (WebView) mDesktopActivity.findViewById(R.id.desktop_webview);
-        assertNotNull("Webview does not exist", webview);
+        assertNotNull("Webview does not exist", webView);
     }
-
-
-    @Test
-    public void testValidTextAppears(){
-    	
-    }
-
- /*
-    @Test
-    public void testIncorrectLogin(){
-
-    }
-    */
 }
