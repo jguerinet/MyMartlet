@@ -7,9 +7,19 @@ import java.io.InputStreamReader;
 
 import org.junit.Test;
 
+import ca.mcgill.mymcgill.activity.LoginActivity;
+
 import android.test.AndroidTestCase;
+import android.widget.ListView;
 
 public class ConnectionTest extends AndroidTestCase{
+	
+	public LoginActivity mActivityClass;
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+		mActivityClass = this.getActivity();
+	}
 	
 	@Test
 	public static void testGetUrl() throws IOException{
