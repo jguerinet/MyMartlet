@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity.semester;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
@@ -21,6 +22,8 @@ public class SemesterActivity extends ListActivity {
         setContentView(R.layout.activity_semester);
 
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Get the semester from the intent
         Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);
@@ -57,5 +60,16 @@ public class SemesterActivity extends ListActivity {
     public void onBackPressed(){
         super.onBackPressed();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
