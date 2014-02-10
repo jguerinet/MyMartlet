@@ -43,6 +43,7 @@
         
         <activity android:name=".activity.ScheduleActivity"
             android:label="@string/title_schedule"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
