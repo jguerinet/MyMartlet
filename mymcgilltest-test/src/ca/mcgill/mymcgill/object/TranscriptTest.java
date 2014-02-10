@@ -27,6 +27,7 @@ public class TranscriptTest extends AndroidTestCase {
 			sb.append(text);
 		}
 		
+
 		return sb.toString();
 	}
 	

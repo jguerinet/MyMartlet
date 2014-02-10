@@ -44,6 +44,7 @@ public class DayFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         mDay = (Day)getArguments().get(Constants.DAY);
         //Get the courses from ScheduleActivity
