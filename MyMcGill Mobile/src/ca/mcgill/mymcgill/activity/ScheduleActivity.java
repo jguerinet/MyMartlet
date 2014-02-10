@@ -163,7 +163,14 @@ public class ScheduleActivity extends FragmentActivity {
 
     private void fillTimetable(LayoutInflater inflater, LinearLayout timetableContainer){
         //Empty view for the days
-        timetableContainer.addView(inflater.inflate(R.layout.activity_day_name, null));
+        //Day name
+        View dayView = inflater.inflate(R.layout.activity_day_name, null);
+
+        //Black line
+        View dayViewLine = dayView.findViewById(R.id.day_line);
+        dayViewLine.setVisibility(View.VISIBLE);
+
+        timetableContainer.addView(dayView);
 
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
