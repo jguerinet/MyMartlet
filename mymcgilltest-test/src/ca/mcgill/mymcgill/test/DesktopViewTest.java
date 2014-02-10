@@ -1,10 +1,12 @@
-package ca.mcgill.mymcgill.activity.transcript;
+package ca.mcgill.mymcgill.test;
 
 import org.junit.Test;
 
+import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
-
 import android.test.ActivityInstrumentationTestCase2;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * Created by Ryan Singzon on 09/02/14.
@@ -13,7 +15,6 @@ public class DesktopViewTest extends ActivityInstrumentationTestCase2<DesktopAct
 
     private DesktopActivity mDesktopActivity;
     private String testString = "test";
-    private String otherTestString = "test";
 
     public DesktopViewTest(){
         super(DesktopActivity.class);
@@ -22,30 +23,30 @@ public class DesktopViewTest extends ActivityInstrumentationTestCase2<DesktopAct
     @Override
     protected void setUp() throws Exception{
         super.setUp();
-     //  setActivityInitialTouchMode(false);
+        setActivityInitialTouchMode(false);
         mDesktopActivity = getActivity();
     }
 
 
     @Test
-    public void testPreconditions() {
+    public void testTrue() {
         assertNotNull(testString);
     }
 
-    /*
+    
     @Test
-    public void testViewDesktopSite(){
-        DesktopActivity desktop = new DesktopActivity();
-        assertEquals("Testing", true, true);
-
+    public void testWebViewExists(){
+        WebView webview = (WebView) mDesktopActivity.findViewById(R.id.desktop_webview);
+        assertNotNull("Webview does not exist", webview);
     }
 
 
     @Test
     public void testValidTextAppears(){
-
+    	
     }
 
+ /*
     @Test
     public void testIncorrectLogin(){
 
