@@ -18,7 +18,7 @@ public class ConnectionTest extends AndroidTestCase{
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		mActivityClass = this.getActivity();
+		//mActivityClass = this.getActivity();
 	}
 	
 	@Test
@@ -42,8 +42,8 @@ public class ConnectionTest extends AndroidTestCase{
 		assertEquals("Retrieved page is different", expected, actual);
 	}
 	
-	@Test
-	public static void testConnect(){
-		
-	}
+//	@Test
+//	public static void testConnect(){
+//		
+//	}
 }
