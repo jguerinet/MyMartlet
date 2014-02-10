@@ -30,11 +30,7 @@ public class TranscriptTest extends TestCase {
 		}
 		
 		text = sb.toString();
-		
-		//while(scan.hasNext())
-		//{
-		//	text = text + scan.next();
-		//}
+
 		Transcript testTranscript = new Transcript(text);
 		double gpa = testTranscript.getCgpa();
 		assertEquals("CGPA is incorrect", 3.92, gpa, 0.01);
