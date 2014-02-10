@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import org.junit.Test;
 
+import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 
 import android.test.AndroidTestCase;
@@ -14,11 +15,11 @@ import android.widget.ListView;
 
 public class ConnectionTest extends AndroidTestCase{
 	
-	public LoginActivity mActivityClass;
+	public static LoginActivity mActivityClass;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		//mActivityClass = this.getActivity();
+		mActivityClass = new LoginActivity();
 	}
 	
 	@Test
@@ -42,8 +43,4 @@ public class ConnectionTest extends AndroidTestCase{
 		assertEquals("Retrieved page is different", expected, actual);
 	}
 	
-//	@Test
-//	public static void testConnect(){
-//		
-//	}
 }
