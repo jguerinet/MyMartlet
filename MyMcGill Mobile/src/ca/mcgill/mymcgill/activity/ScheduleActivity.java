@@ -85,7 +85,6 @@ public class ScheduleActivity extends FragmentActivity {
                 courses.add(course);
             }
         }
-
         return courses;
     }
 
