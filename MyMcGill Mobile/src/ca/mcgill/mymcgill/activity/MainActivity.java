@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 import ca.mcgill.mymcgill.util.Clear;
 
@@ -33,8 +34,14 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, TranscriptActivity.class));
     }
 
+    //This method is called when the e-bill button is clicked
     public void viewEbill(View v){
         startActivity(new Intent(this, EbillActivity.class));
+    }
+
+    //This method is called when the email button is clicked
+    public void viewInbox(View v){
+        startActivity(new Intent(this, InboxActivity.class));
     }
 
     //This method is called when the logout button is clicked
