@@ -51,6 +51,14 @@ public class Connection {
 	public final static String minervaHost = "horizon.mcgill.ca";
 	public final static String minervaOrigin = "https://horizon.mcgill.ca";
 	
+	public final static String myMcGillLoginPage = "https://mymcgill.mcgill.ca/portal/page/portal/myMcGill";
+	public final static String myMcGillLoginPortal = "https://mymcgill.mcgill.ca/portal/page/portal/Login";
+	public final static String myMcGillLoginSSO= "https://login.mcgill.ca/sso/auth";
+	
+	public final static String myMcGillLoginSSOHost= "login.mcgill.ca";
+	public final static String myMcGillHost = "mymcgill.mcgill.ca";
+	public final static String myMcGillOrigin = "https://mymcgill.mcgill.ca";
+	
     private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 	
 	// Singleton architecture
@@ -214,10 +222,14 @@ public class Connection {
 		
 		//check Response Code
 		switch(responseCode){
-		case 200:
+		case HttpsURLConnection.HTTP_OK:
 			//all is good
 			break;
-		
+		case HttpsURLConnection.HTTP_MOVED_TEMP:
+		case HttpsURLConnection.HTTP_MOVED_PERM:
+			//follow the new link
+			String nextLocation = conn.getHeaderField("Location");
+			return GetPageContent(nextLocation);
 		default:
 			// all is ignored. carry on
 			break;
