@@ -63,7 +63,8 @@
             android:theme="@android:style/Theme.Dialog"/>
        <activity
             android:name=".activity.EbillActivity"
-            android:label="@string/title_activity_ebill" >
+            android:label="@string/title_activity_ebill"
+            android:screenOrientation="portrait">
        </activity>
 
        <activity android:name=".activity.inbox.InboxActivity"
