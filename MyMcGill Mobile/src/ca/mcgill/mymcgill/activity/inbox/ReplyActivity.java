@@ -15,9 +15,8 @@ public class ReplyActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_reply);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		Intent intent = getIntent();
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 	}
 
 }

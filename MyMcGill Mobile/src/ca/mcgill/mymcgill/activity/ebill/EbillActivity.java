@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity.ebill;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,14 +14,18 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.UserInfo;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Load;
 
 public class EbillActivity extends ListActivity {
 	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
@@ -99,7 +104,33 @@ public class EbillActivity extends ListActivity {
         //Retrieve content from transcript page
         @Override
         protected Void doInBackground(Void... params){
-            String ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
+            Context context = EbillActivity.this;
+            String ebillString = null;
+            try {
+                ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
+            } catch (MinervaLoggedOutException e) {
+                e.printStackTrace();
+                ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context, Load.loadFullUsername(context),Load.loadPassword(context));
+                //Successful connection: MainActivity
+                if(connectionResult == ConnectionStatus.CONNECTION_OK){
+
+                    //TRY again
+                    try {
+                        ebillString = Connection.getInstance().getUrl(Connection.minervaSchedule);
+                    } catch (Exception e1) {
+                        // TODO display error message
+                        e1.printStackTrace();
+                        return null;
+                    }
+                }
+                else{
+                    //TODO: display error Message
+                    return null;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             mEbillItems.clear();
 

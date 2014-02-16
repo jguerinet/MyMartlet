@@ -12,10 +12,12 @@ import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -25,7 +27,9 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
+import ca.mcgill.mymcgill.Exceptions.*;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua
@@ -51,6 +55,14 @@ public class Connection {
 	public final static String minervaHost = "horizon.mcgill.ca";
 	public final static String minervaOrigin = "https://horizon.mcgill.ca";
 	
+	public final static String myMcGillLoginPage = "https://mymcgill.mcgill.ca/portal/page/portal/myMcGill";
+	public final static String myMcGillLoginPortal = "https://mymcgill.mcgill.ca/portal/page/portal/Login";
+	public final static String myMcGillLoginSSO= "https://login.mcgill.ca/sso/auth";
+	
+	public final static String myMcGillLoginSSOHost= "login.mcgill.ca";
+	public final static String myMcGillHost = "mymcgill.mcgill.ca";
+	public final static String myMcGillOrigin = "https://mymcgill.mcgill.ca";
+	
     private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 	
 	// Singleton architecture
@@ -68,8 +80,8 @@ public class Connection {
 	}
 	
 	
-	@SuppressLint("NewApi")	//getting errors
-	public ConnectionStatus connect(Context context, String user, String pass){
+
+	public ConnectionStatus connectToMinerva(Context context, String user, String pass){
         //First check if the user is connected to the internet
         if(!isNetworkAvailable(context)){
             return ConnectionStatus.CONNECTION_NO_INTERNET;
@@ -105,7 +117,12 @@ public class Connection {
 				return ConnectionStatus.CONNECTION_WRONG_INFO;
 			}
 			
-		} catch (Exception e) {
+		} catch (MinervaLoggedOutException e) {
+			//throw if still logged out bubble it up
+			e.printStackTrace();
+			return ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
+		}
+		catch (Exception e) {
             e.printStackTrace();
 			return ConnectionStatus.CONNECTION_OTHER;
 		}
@@ -115,16 +132,16 @@ public class Connection {
 	
 	/**
 	 *  The method getURL with retrieve a webpage as text
+	 * @throws IOException 
+	 * @throws MinervaLoggedOutException 
 	 * 
 	  */
-	public String getUrl(String url) {
+	public String getUrl(String url) throws MinervaLoggedOutException, IOException {
 
-		String result;
-		try {
-			result = http.GetPageContent(url);
-		} catch (Exception e) {
-			return "00000";
-		}
+
+
+		String	result = http.GetPageContent(url);
+		
 
 		return result;
 	}
@@ -186,9 +203,10 @@ public class Connection {
 	 
 	/**
 	 * The method
+	 * @throws IOException 
 	 * 
 	 */
-	private String GetPageContent(String url) throws Exception {
+	private String GetPageContent(String url) throws MinervaLoggedOutException, IOException {
 	 
 		URL obj = new URL(url);
 		conn = (HttpsURLConnection) obj.openConnection();
@@ -214,10 +232,14 @@ public class Connection {
 		
 		//check Response Code
 		switch(responseCode){
-		case 200:
+		case HttpsURLConnection.HTTP_OK:
 			//all is good
 			break;
-		
+		case HttpsURLConnection.HTTP_MOVED_TEMP:
+		case HttpsURLConnection.HTTP_MOVED_PERM:
+			//follow the new link
+			String nextLocation = conn.getHeaderField("Location");
+			return GetPageContent(nextLocation);
 		default:
 			// all is ignored. carry on
 			break;
@@ -228,8 +250,8 @@ public class Connection {
 			switch(status){
 			case CONNECTION_MINERVA_LOGOUT:
 				//reconnect
+				throw new MinervaLoggedOutException();
 				
-				break;
 			default:
 				break;
 			

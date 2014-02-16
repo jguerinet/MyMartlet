@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import org.junit.Test;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 
 import android.test.AndroidTestCase;
@@ -25,7 +26,15 @@ public class ConnectionTest extends AndroidTestCase{
 	@Test
 	public static void testGetUrl() throws IOException{
 		Connection conn = Connection.getInstance();
-		String actual = conn.getUrl(Connection.minervaHomepage);
+		String actual ="";
+		
+		try {
+			actual = conn.getUrl(Connection.minervaHomepage);
+		} catch (MinervaLoggedOutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			assertEquals(e.toString(),true,false);
+		}
 		
 		String file = "res/raw/minerva_home.txt";
 		InputStream in = conn.getClass().getClassLoader().getResourceAsStream(file);
