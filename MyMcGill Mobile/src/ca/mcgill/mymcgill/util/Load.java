@@ -16,8 +16,9 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.CourseSched;
-import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
+import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
  * Author: Julien
@@ -106,13 +107,13 @@ public class Load {
         return courses;
     }
 
-    public static List<Ebill> loadEbill(Context context){
-        List<Ebill> ebill = new ArrayList<Ebill>();
+    public static List<EbillItem> loadEbill(Context context){
+        List<EbillItem> ebill = new ArrayList<EbillItem>();
 
         try{
             FileInputStream fis = context.openFileInput(Constants.EBILL_FILE_NAME);
             ObjectInputStream in = new ObjectInputStream(fis);
-            ebill = (List<Ebill>) in.readObject();
+            ebill = (List<EbillItem>) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
@@ -136,5 +137,32 @@ public class Load {
         }
 
         return ebill;
+    }
+
+    public static UserInfo loadUserInfo(Context context){
+        UserInfo userInfo = null;
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.USERINFO_FILE_NAME);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            userInfo = (UserInfo) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (OptionalDataException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            Log.e("Load UserInfo Failure", "File not found");
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        }
+
+        return userInfo;
     }
 }

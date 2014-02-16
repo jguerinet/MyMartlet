@@ -85,7 +85,6 @@ public class ScheduleActivity extends FragmentActivity {
                 courses.add(course);
             }
         }
-
         return courses;
     }
 
@@ -361,9 +360,7 @@ public class ScheduleActivity extends FragmentActivity {
             if(!mRefresh){
                 mProgressDialog.dismiss();
             }
-            else{
-                setProgressBarIndeterminateVisibility(false);
-            }
+            setProgressBarIndeterminateVisibility(false);
         }
 
         /**
