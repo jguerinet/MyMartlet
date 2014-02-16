@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:title="PreferenceCategory Language">
+        <ListPreference
+            android:key="PREF_LIST"
+            android:title="Language"
+            android:summary="ListPreference summary"
+            android:entries="@array/language_entries"
+            android:entryValues="@array/listvalues" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="PreferenceCategory DefaultHomePage">
+        <ListPreference
+            android:key="PREF_LIST"
+            android:title="Default Home Page"
+            android:summary="ListPreference summary"
+            android:entries="@array/listentries"
+            android:entryValues="@array/listvalues" />
+    </PreferenceCategory>
+</PreferenceScreen>
