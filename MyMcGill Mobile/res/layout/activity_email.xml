@@ -60,4 +60,10 @@
 
     </ScrollView>
 
+    <Button
+        android:id="@+id/bSentEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reply_button"
+        android:onClick="replyMessage" />
 </LinearLayout>

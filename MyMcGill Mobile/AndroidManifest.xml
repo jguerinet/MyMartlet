@@ -77,7 +77,9 @@
        <activity android:name=".activity.EmailActivity"
        android:parentActivityName=".activity.inbox.InboxActivity"/>
        
-       <activity android:name=".activity.inbox.ReplyActivity" android:label="@string/title_activity_reply"></activity>
+       <activity android:name=".activity.inbox.ReplyActivity"
+           android:label="@string/title_activity_reply"
+           android:windowSoftInputMode="adjustPan"></activity>
 
     </application>
 

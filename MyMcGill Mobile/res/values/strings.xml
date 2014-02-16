@@ -90,5 +90,6 @@
     <string name="reply_subject">Subject:</string>
     <string name="reply_button">Reply</string>
     <string name="reply_add_attachment">Add Attachment</string>
+    <string name="reply_send">Send</string>
 
 </resources>

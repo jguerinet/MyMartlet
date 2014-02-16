@@ -2,53 +2,22 @@ package ca.mcgill.mymcgill.activity.inbox;
 
 import ca.mcgill.mymcgill.R;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.Window;
 
-public class ReplyActivity extends Activity implements View.OnClickListener {
 
-	EditText personsEmail, intro, personsName, stupidThings, hatefulAction,
-			outro;
-	String emailAdd, beginning, name, stupidAction, hatefulAct, out;
-	Button sendEmail;
+public class ReplyActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_reply);
-		initializeVars();
-		sendEmail.setOnClickListener(this);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		Intent intent = getIntent();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
-
-	private void initializeVars() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
-
-	}
-//
-//	private void convertEditTextVarsIntoStringsAndYesThisIsAMethodWeCreated() {
-//		// TODO Auto-generated method stub
-//		emailAdd = personsEmail.getText().toString();
-//		beginning = intro.getText().toString();
-//		name = personsName.getText().toString();
-//		stupidAction = stupidThings.getText().toString();
-//		hatefulAct = hatefulAction.getText().toString();
-//		out = outro.getText().toString();
-//	}
-//
-//	@Override
-//	protected void onPause() {
-//		// TODO Auto-generated method stub
-//		super.onPause();
-//		finish();
-//	}
 
 }

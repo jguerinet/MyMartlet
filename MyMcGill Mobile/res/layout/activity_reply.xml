@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,19 +7,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
             android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/reply_to"
-                android:textSize="15dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/etEmails"
@@ -32,15 +32,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
             android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/reply_carbon_copy"
-                android:textSize="15dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/etName"
@@ -52,20 +53,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
             android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/reply_subject"
-                android:textSize="15dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/etThings"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1" >
             </EditText>
         </LinearLayout>
@@ -76,20 +78,20 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/reply_add_attachment" />
-    
+
     <EditText
         android:id="@+id/etOutro"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@android:drawable/editbox_background"
         android:gravity="top"
-        android:layout_weight="1"
         android:scrollbars="vertical" />
 
     <Button
         android:id="@+id/bSentEmail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/reply_button" />
+        android:text="@string/reply_send" />
 
 </LinearLayout>

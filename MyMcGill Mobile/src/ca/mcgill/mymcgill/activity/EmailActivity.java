@@ -1,14 +1,18 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import android.view.MenuItem;
+import android.view.View;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.object.Email;
 import ca.mcgill.mymcgill.util.Constants;
 
@@ -63,5 +67,13 @@ public class EmailActivity extends Activity {
     public void onBackPressed(){
         super.onBackPressed();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+    
+    
+    // Joshua David Alfaro
+    // Created so that I can see the activity
+    // When the user clicks the reply button
+    public void replyMessage(View view) {
+    	startActivity(new Intent(this, ReplyActivity.class));
     }
 }
