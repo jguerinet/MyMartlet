@@ -1,5 +1,6 @@
 package ca.mcgill.mymcgill.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -21,7 +22,8 @@ import ca.mcgill.mymcgill.util.Help;
  */
 public class CourseActivity extends Activity {
 
-    @Override
+    @SuppressLint("NewApi")
+	@Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
