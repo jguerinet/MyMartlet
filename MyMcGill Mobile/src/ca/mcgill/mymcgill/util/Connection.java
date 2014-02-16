@@ -222,6 +222,9 @@ public class Connection {
 		// Get the response cookies
 		setCookies(conn.getHeaderFields().get("Set-Cookie"));
 		
+		//check if Logged out
+		
+		
 		return response.toString();
 	 
 	  }
@@ -289,4 +292,6 @@ public class Connection {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 	
+    // Check headers for bad connection Response
+    
 }
