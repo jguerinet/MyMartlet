@@ -40,6 +40,8 @@ public class ApplicationClass extends Application {
         schedule = Load.loadSchedule(this);
         //Load the ebill
         ebill = Load.loadEbill(this);
+        //Load the user info
+        userInfo = Load.loadUserInfo(this);
     }
 
     /* GETTER METHODS */
