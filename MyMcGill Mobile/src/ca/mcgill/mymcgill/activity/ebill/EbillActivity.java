@@ -1,16 +1,11 @@
-package ca.mcgill.mymcgill.activity;
+package ca.mcgill.mymcgill.activity.ebill;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,9 +20,8 @@ import ca.mcgill.mymcgill.object.Ebill;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 
-public class EbillActivity extends Activity {
+public class EbillActivity extends ListActivity {
 	private List<Ebill> mEbill = new ArrayList<Ebill>();
-    private ListView mListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +33,6 @@ public class EbillActivity extends Activity {
 
         //Get the first ebill from the ApplicationClass
         mEbill = ApplicationClass.getEbill();
-
-        mListView = (ListView)findViewById(R.id.ebill_listview);
 
         boolean refresh = !mEbill.isEmpty();
         if(refresh){
@@ -62,8 +54,8 @@ public class EbillActivity extends Activity {
     }
 
     private void loadInfo(){
-        ArrayAdapter<Ebill> adapter = new listAdapter();
-        mListView.setAdapter(adapter);
+        EbillAdapter adapter = new EbillAdapter(this, mEbill);
+        setListAdapter(adapter);
     }
 
     private class EbillGetter extends AsyncTask<Void, Void, Void> {
@@ -140,33 +132,6 @@ public class EbillActivity extends Activity {
             }
         }
     }
-
-	private class listAdapter extends ArrayAdapter<Ebill>{
-		public listAdapter(){
-			super(EbillActivity.this,R.layout.item_ebill, mEbill);
-		}
-
-		public View getView(int position,View convertView, ViewGroup parent){
-			View ebillView = convertView;
-			if(ebillView == null)
-			{
-				ebillView = getLayoutInflater().inflate(R.layout.item_ebill,parent,false);
-			} 
-
-			Ebill ebill = mEbill.get(position);
-			TextView ebillStatement = (TextView) ebillView.findViewById(R.id.ebill_statement);
-			TextView ebillDue = (TextView) ebillView.findViewById(R.id.ebill_due);
-			TextView ebillAmount = (TextView) ebillView.findViewById(R.id.ebill_amount);
-
-			ebillStatement.setText(ebill.getStatementDate());
-			ebillDue.setText(ebill.getDueDate());
-			ebillAmount.setText(ebill.getAmountDue());
-
-			return ebillView;
-
-		}
-	}
-
 }
 
 

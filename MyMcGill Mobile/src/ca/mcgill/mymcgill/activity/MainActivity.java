@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 import ca.mcgill.mymcgill.util.Clear;

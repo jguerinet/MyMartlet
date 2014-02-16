@@ -69,6 +69,11 @@
     <string name="course_credits_title">Credits: </string>
     <string name="course_crn">CRN: </string>
 
+    <!-- EbillActivity -->
+    <string name="ebill_statement_date">Statement Date:</string>
+    <string name="ebill_due_date">Due Date:</string>
+    <string name="ebill_amount">Amount Due:</string>
+
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
 
