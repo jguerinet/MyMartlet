@@ -26,10 +26,10 @@ public class ReplyActivity extends Activity implements View.OnClickListener {
 	private void initializeVars() {
 		// TODO Auto-generated method stub
 		personsEmail = (EditText) findViewById(R.id.etEmails);
-		intro = (EditText) findViewById(R.id.etIntro);
+//		intro = (EditText) findViewById(R.id.etIntro);
 		personsName = (EditText) findViewById(R.id.etName);
 		stupidThings = (EditText) findViewById(R.id.etThings);
-		hatefulAction = (EditText) findViewById(R.id.etAction);
+//		hatefulAction = (EditText) findViewById(R.id.etAction);
 		outro = (EditText) findViewById(R.id.etOutro);
 		sendEmail = (Button) findViewById(R.id.bSentEmail);
 	}
