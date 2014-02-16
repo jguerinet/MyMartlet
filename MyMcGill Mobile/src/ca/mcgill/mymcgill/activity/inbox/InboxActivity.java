@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity.inbox;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -31,16 +32,14 @@ public class InboxActivity extends ListActivity{
         //Get views
         mTotalNew = (TextView)findViewById(R.id.inbox_total_new);
 
-        /**
-         * Testing: Create fake email inboxes to test the UI
-         */
-        List<Email> emails = new ArrayList<Email>();
-        emails.add(new Email("TEST", "From Test", "January 12", "Message body"));
-        emails.add(new Email("My email", "Ryan Singzon", "123", "This is a message, lsdkjflksdjf, hello"));
-        mInbox = new Inbox(emails);
-
-        //Refresh email page
-        loadInfo();
+        if(mInbox == null){
+            TextView errorMessage = (TextView)findViewById(R.id.inbox_error);
+            errorMessage.setVisibility(View.VISIBLE);
+        }
+        else{
+            //Load emails
+            loadInfo();
+        }
     }
 
     private void loadInfo(){
