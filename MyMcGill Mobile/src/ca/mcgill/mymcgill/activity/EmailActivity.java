@@ -3,6 +3,7 @@ package ca.mcgill.mymcgill.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.Html;
 import android.widget.TextView;
 
 import android.view.MenuItem;
@@ -29,9 +30,6 @@ public class EmailActivity extends Activity {
         //Get email from intent
         Email email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 
-        //Remove MyMcGill Mobile title from top bar
-        setTitle("");
-
         //Display subject
         TextView emailSubject = (TextView)findViewById(R.id.email_subject);
         emailSubject.setText(email.getSubject());
@@ -46,7 +44,7 @@ public class EmailActivity extends Activity {
 
         //Display email body
         TextView emailBody = (TextView)findViewById(R.id.email_body);
-        emailBody.setText(email.getBody());
+        emailBody.setText(Html.fromHtml(email.getBody()));
     }
 
     //Returns to parent activity when the top left button is clicked

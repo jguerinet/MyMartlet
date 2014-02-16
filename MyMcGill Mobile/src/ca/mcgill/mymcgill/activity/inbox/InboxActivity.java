@@ -36,10 +36,15 @@ public class InboxActivity extends ListActivity{
         emails.add(new Email("Test subject 1", "Bob Joe", "January 12", "This is a test message," +
                 "blahl balhblh blah hello heloo", true));
 
-        emails.add(new Email("Test subject 2", "Bob Joe", "Feb 12", "This is a test message," +
+        emails.add(new Email("HTML Content Test", "Bob Joe", "Feb 12", "<title>My email</title>" +
+                "<br><br>" +
+                "<h1>Header</h1>" +
+                "<br>" +
+                "<h2>Sub header</h2>" +
+                "<img src='http://images6.fanpop.com/image/photos/32900000/Cat-cats-32958715-1440-900.jpg'"+
                 "blahl balhblh blah hello heloo", false));
 
-        emails.add(new Email("Test subject 3", "Bob Joe", "Feb 12", "This is a test message," +
+        emails.add(new Email("Scrolling box test", "Bob Joe", "Feb 12", "This is a test message," +
                 "blahl balhblh blah hello heloo lskdjf sdlfkjlskdjf  sldkfj sldfj sldkfj sdflkj" +
                 "blahl balhblh blah hello heloo lskdjf sdlfkjlskdjf  sldkfj sldfj sldkfj sdflkj" +
                 "blahl balhblh blah hello heloo lskdjf sdlfkjlskdjf  sldkfj sldfj sldkfj sdflkj" +
