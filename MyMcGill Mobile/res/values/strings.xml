@@ -81,4 +81,8 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
 
+    <!-- Inbox Activity -->
+    <string name="inbox_error">We are unable to load your email inbox. Please try again later.</string>
+    <string name="inbox_newMessages">New messages: %d</string>
+
 </resources>
