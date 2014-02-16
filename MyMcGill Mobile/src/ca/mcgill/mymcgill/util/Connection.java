@@ -213,12 +213,22 @@ public class Connection {
 		System.out.println("Response Code : " + responseCode);
 		
 		//check Response Code
+		switch(responseCode){
+		case 200:
+			//all is good
+			break;
+		
+		default:
+			// all is ignored. carry on
+			break;
+		}
 		
 		//check headers
 		if(areHeadersOK(conn.getHeaderFields())==false){
 			switch(status){
 			case CONNECTION_MINERVA_LOGOUT:
 				//reconnect
+				
 				break;
 			default:
 				break;
@@ -318,8 +328,4 @@ public class Connection {
     	return true;
     }
     
-    //check response codes
-    private void checkResponseCode(int responseCode){
-    	
-    }
 }
