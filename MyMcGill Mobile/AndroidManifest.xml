@@ -75,6 +75,7 @@
        </activity>
 
        <activity android:name=".activity.EmailActivity"/>
+       <activity android:name=".activity.inbox.ReplyActivity" android:label="@string/title_activity_reply"></activity>
     </application>
 
 </manifest>
