@@ -10,17 +10,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.object.EbillItem;
 
 /**
  * Author: Julien
  * Date: 16/02/14, 3:30 PM
  */
 public class EbillAdapter extends BaseAdapter {
-    private List<Ebill> mEbills;
+    private List<EbillItem> mEbills;
     private Context mContext;
 
-    public EbillAdapter(Context context, List<Ebill> eBills){
+    public EbillAdapter(Context context, List<EbillItem> eBills){
         this.mContext = context;
         this.mEbills = eBills;
     }
@@ -31,7 +31,7 @@ public class EbillAdapter extends BaseAdapter {
     }
 
     @Override
-    public Ebill getItem(int position) {
+    public EbillItem getItem(int position) {
         return mEbills.get(position);
     }
 
@@ -51,7 +51,7 @@ public class EbillAdapter extends BaseAdapter {
         assert (view != null);
 
         //Get the current ebill item
-        Ebill ebillItem = getItem(position);
+        EbillItem ebillItem = getItem(position);
 
         //Fill out the info
         TextView statementDate = (TextView)view.findViewById(R.id.ebill_statement_date);

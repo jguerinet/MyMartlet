@@ -16,7 +16,7 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.CourseSched;
-import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
 
 /**
@@ -106,13 +106,13 @@ public class Load {
         return courses;
     }
 
-    public static List<Ebill> loadEbill(Context context){
-        List<Ebill> ebill = new ArrayList<Ebill>();
+    public static List<EbillItem> loadEbill(Context context){
+        List<EbillItem> ebill = new ArrayList<EbillItem>();
 
         try{
             FileInputStream fis = context.openFileInput(Constants.EBILL_FILE_NAME);
             ObjectInputStream in = new ObjectInputStream(fis);
-            ebill = (List<Ebill>) in.readObject();
+            ebill = (List<EbillItem>) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();

@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import java.util.ArrayList;
 
 import ca.mcgill.mymcgill.object.CourseSched;
-import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.object.EbillItem;
 
 /**
  * Author: Julien
@@ -54,6 +54,6 @@ public class Clear {
     public static void clearEbill(Context context){
         context.deleteFile(Constants.EBILL_FILE_NAME);
         //Reset the static instance in Application Class
-        ApplicationClass.setEbill(new ArrayList<Ebill>());
+        ApplicationClass.setEbill(new ArrayList<EbillItem>());
     }
 }

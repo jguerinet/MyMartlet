@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 
 public class EbillActivity extends ListActivity {
-	private List<Ebill> mEbill = new ArrayList<Ebill>();
+	private List<EbillItem> mEbill = new ArrayList<EbillItem>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,7 @@ public class EbillActivity extends ListActivity {
                 String statementDate = cells.get(0).text();
                 String dueDate = cells.get(3).text();
                 String amountDue = cells.get(5).text();
-                mEbill.add(new Ebill(statementDate, dueDate, amountDue));
+                mEbill.add(new EbillItem(statementDate, dueDate, amountDue));
             }
         }
     }

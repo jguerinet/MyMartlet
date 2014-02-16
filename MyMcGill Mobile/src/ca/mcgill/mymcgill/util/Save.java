@@ -13,7 +13,7 @@ import java.io.StreamCorruptedException;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
-import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
 
 /**
@@ -81,7 +81,7 @@ public class Save {
     }
 
     public static void saveEbill(Context context){
-        List<Ebill> ebill = ApplicationClass.getEbill();
+        List<EbillItem> ebill = ApplicationClass.getEbill();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.EBILL_FILE_NAME, Context.MODE_PRIVATE);
