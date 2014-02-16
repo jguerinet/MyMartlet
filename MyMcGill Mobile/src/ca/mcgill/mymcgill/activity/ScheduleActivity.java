@@ -360,9 +360,7 @@ public class ScheduleActivity extends FragmentActivity {
             if(!mRefresh){
                 mProgressDialog.dismiss();
             }
-            else{
-                setProgressBarIndeterminateVisibility(false);
-            }
+            setProgressBarIndeterminateVisibility(false);
         }
 
         /**
