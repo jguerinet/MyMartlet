@@ -11,11 +11,13 @@ import ca.mcgill.mymcgill.util.Constants;
 
 /**
  * Created by Ryan Singzon on 14/02/14.
+ * This activity will show a user's individual emails
  */
 public class EmailActivity extends ListActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_email);
 
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
