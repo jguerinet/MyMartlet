@@ -1,69 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="100" >
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="50dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reply_to"
-            android:textSize="22sp" />
+            android:orientation="horizontal" >
 
-        <EditText
-            android:id="@+id/etEmails"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content" >
-        </EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/reply_to"
+                android:textSize="15dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/etEmails"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/reply_carbon_copy"
+                android:textSize="15dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reply_subject"
+                android:textSize="15dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/etThings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+            </EditText>
+        </LinearLayout>
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/etEmails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </EditText>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/reply_carbon_copy"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_small" />
-
-    <EditText
-        android:id="@+id/etName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </EditText>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/reply_subject"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_small" />
-
-    <EditText
-        android:id="@+id/etThings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </EditText>
-
-    <EditText
-        android:id="@+id/etOutro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </EditText>
 
     <Button
         android:id="@+id/bSentEmail"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:text="Send Email" />
+        android:layout_height="wrap_content"
+        android:text="@string/reply_add_attachment" />
+    
+    <EditText
+        android:id="@+id/etOutro"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="top"
+        android:layout_weight="1"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/bSentEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reply_button" />
 
 </LinearLayout>

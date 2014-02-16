@@ -88,5 +88,7 @@
     <string name="reply_to">To:</string>
     <string name="reply_carbon_copy">CC:</string>
     <string name="reply_subject">Subject:</string>
+    <string name="reply_button">Reply</string>
+    <string name="reply_add_attachment">Add Attachment</string>
 
 </resources>
