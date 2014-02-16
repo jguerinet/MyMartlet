@@ -11,12 +11,14 @@ public class Email implements Serializable{
     private String mSender;
     private String mDate;
     private String mBody;
+    private boolean isRead;
 
-    public Email(String subject, String sender, String date, String body){
+    public Email(String subject, String sender, String date, String body, boolean isRead){
         this.mSubject = subject;
         this.mSender = sender;
         this.mDate = date;
         this.mBody = body;
+        this.isRead = isRead;
     }
 
     public String getSubject(){
@@ -33,6 +35,10 @@ public class Email implements Serializable{
 
     public String getBody() {
         return mBody;
+    }
+
+    public boolean isRead() {
+        return isRead;
     }
 
 }

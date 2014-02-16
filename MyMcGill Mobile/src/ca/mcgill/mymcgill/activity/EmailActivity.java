@@ -1,8 +1,9 @@
 package ca.mcgill.mymcgill.activity;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.ScrollView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Email;
@@ -13,7 +14,7 @@ import ca.mcgill.mymcgill.util.Constants;
  * Created by Ryan Singzon on 14/02/14.
  * This activity will show a user's individual emails
  */
-public class EmailActivity extends ListActivity {
+public class EmailActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +27,12 @@ public class EmailActivity extends ListActivity {
         //Get email from intent
         Email email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 
-        //Set title as the email subject
-        setTitle(email.getSubject());
+        //Remove MyMcGill Mobile title from top bar
+        setTitle("");
+
+        //Display subject
+        TextView emailSubject = (TextView)findViewById(R.id.email_subject);
+        emailSubject.setText(email.getSubject());
 
         //Display email sender
         TextView emailSender = (TextView)findViewById(R.id.email_sender);
@@ -42,9 +47,9 @@ public class EmailActivity extends ListActivity {
         emailBody.setText(email.getBody());
     }
 
-    @Override
+    /*@Override
     public void onBackPressed(){
         super.onBackPressed();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
-    }
+    }*/
 }

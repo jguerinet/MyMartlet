@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/email_sender"
-            android:textSize="@dimen/text_small"
+            android:textSize="@dimen/text_medium"
             android:paddingBottom="@dimen/padding_small"/>
 
         <TextView
@@ -35,19 +35,29 @@
 
     </LinearLayout>
 
-    <TextView
+    <View
+        android:layout_height="@dimen/line"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/email_body"
-        android:textSize="@dimen/text_medium"
-        android:paddingBottom="@dimen/padding_small"
+        android:background="@android:color/black"
+        android:clickable="false"
         android:paddingLeft="@dimen/padding_small"
-        />
+        android:paddingRight="@dimen/padding_small"/>
+    
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@android:id/list"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/email_body"
+            android:textSize="@dimen/text_medium"
+            android:paddingTop="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
+            />
+
+    </ScrollView>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity.inbox;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,11 @@ public class InboxAdapter extends BaseAdapter{
 
         TextView emailSender = (TextView)view.findViewById(R.id.email_sender);
         emailSender.setText(email.getSender());
+
+        //Make subject bold if unread
+        if(!email.isRead()){
+            emailSubject.setTypeface(emailSubject.getTypeface(), Typeface.BOLD);
+        }
 
         //Place chevron
         TextView chevron = (TextView)view.findViewById(R.id.email_chevron);
