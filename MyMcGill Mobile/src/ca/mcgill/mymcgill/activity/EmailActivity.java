@@ -2,8 +2,10 @@ package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.widget.TextView;
-import android.widget.ScrollView;
+
+import android.view.MenuItem;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Email;
@@ -47,9 +49,21 @@ public class EmailActivity extends Activity {
         emailBody.setText(email.getBody());
     }
 
-    /*@Override
+    //Returns to parent activity when the top left button is clicked
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed(){
         super.onBackPressed();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
-    }*/
+    }
 }

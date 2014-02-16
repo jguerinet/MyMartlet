@@ -74,7 +74,8 @@
                 android:value=".activity.MainActivity" />
        </activity>
 
-       <activity android:name=".activity.EmailActivity"/>
+       <activity android:name=".activity.EmailActivity"
+            android:parentActivityName=".activity.inbox.InboxActivity"/>
     </application>
 
 </manifest>
