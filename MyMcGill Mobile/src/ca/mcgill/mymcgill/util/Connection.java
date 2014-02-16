@@ -20,6 +20,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -38,6 +39,7 @@ public class Connection {
 	private String password;
 	private List<String> cookies;
 	private HttpsURLConnection conn;
+	private ConnectionStatus status;
 	
 	// Constants
 	public final static String minervaLoginPage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
@@ -57,6 +59,7 @@ public class Connection {
 		//set some default value to know it was undefined
 		username = "undefined";
 		password = "undefined";
+		status = ConnectionStatus.CONNECTION_OK;
 	}
 	
 	// Accessor method
@@ -208,6 +211,30 @@ public class Connection {
 		int responseCode = conn.getResponseCode();
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
+		
+		//check Response Code
+		switch(responseCode){
+		case 200:
+			//all is good
+			break;
+		
+		default:
+			// all is ignored. carry on
+			break;
+		}
+		
+		//check headers
+		if(areHeadersOK(conn.getHeaderFields())==false){
+			switch(status){
+			case CONNECTION_MINERVA_LOGOUT:
+				//reconnect
+				
+				break;
+			default:
+				break;
+			
+			}
+		}
 	 
 		BufferedReader in = 
 	            new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -289,4 +316,16 @@ public class Connection {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 	
+    // Check headers for bad connection Response
+    private boolean areHeadersOK(Map <String, List<String>> Headers){
+    	
+    	//check for minerva logout
+    	if(Headers.get("Set-Cookie").contains("SESSID=;")){
+    		status = ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
 }
