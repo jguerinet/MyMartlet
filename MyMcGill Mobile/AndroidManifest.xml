@@ -75,6 +75,7 @@
        </activity>
 
        <activity android:name=".activity.EmailActivity"/>
+       <activity android:name=".activity.settings.SettingsActivity"/>
     </application>
 
 </manifest>
