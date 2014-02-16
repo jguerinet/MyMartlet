@@ -106,9 +106,7 @@ public class TranscriptActivity extends ListActivity {
             if(!mRefresh){
                 mProgressDialog.dismiss();
             }
-            else{
-                setProgressBarIndeterminateVisibility(false);
-            }
+            setProgressBarIndeterminateVisibility(false);
         }
     }
 

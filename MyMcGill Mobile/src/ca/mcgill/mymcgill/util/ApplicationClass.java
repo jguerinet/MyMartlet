@@ -7,8 +7,9 @@ import android.graphics.Typeface;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
-import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
+import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
  * Author: Julien
@@ -23,7 +24,8 @@ public class ApplicationClass extends Application {
 
     private static Transcript transcript;
     private static List<CourseSched> schedule;
-    private static List<Ebill> ebill;
+    private static List<EbillItem> ebill;
+    private static UserInfo userInfo;
 
     @Override
     public void onCreate(){
@@ -38,6 +40,8 @@ public class ApplicationClass extends Application {
         schedule = Load.loadSchedule(this);
         //Load the ebill
         ebill = Load.loadEbill(this);
+        //Load the user info
+        userInfo = Load.loadUserInfo(this);
     }
 
     /* GETTER METHODS */
@@ -57,8 +61,12 @@ public class ApplicationClass extends Application {
         return schedule;
     }
 
-    public static List<Ebill> getEbill(){
+    public static List<EbillItem> getEbill(){
         return ebill;
+    }
+
+    public static UserInfo getUserInfo(){
+        return userInfo;
     }
 
     /* SETTERS */
@@ -76,10 +84,17 @@ public class ApplicationClass extends Application {
         Save.saveSchedule(context);
     }
 
-    public static void setEbill(List<Ebill> ebill){
+    public static void setEbill(List<EbillItem> ebill){
         ApplicationClass.ebill = ebill;
 
         //Save it to internal storage when this is set
         Save.saveEbill(context);
+    }
+
+    public static void setUserInfo(UserInfo userInfo){
+        ApplicationClass.userInfo = userInfo;
+
+        //Save it to internal storage when this is set
+        Save.saveUserInfo(context);
     }
 }

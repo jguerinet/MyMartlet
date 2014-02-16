@@ -52,6 +52,7 @@
 
         <activity android:name=".activity.transcript.TranscriptActivity"
             android:label="@string/title_transcript"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -62,8 +63,9 @@
         <activity android:name=".activity.CourseActivity"
             android:theme="@android:style/Theme.Dialog"/>
        <activity
-            android:name=".activity.EbillActivity"
-            android:label="@string/title_activity_ebill" >
+            android:name=".activity.ebill.EbillActivity"
+            android:label="@string/title_activity_ebill"
+            android:screenOrientation="portrait">
        </activity>
 
        <activity android:name=".activity.inbox.InboxActivity"
@@ -74,9 +76,12 @@
                 android:value=".activity.MainActivity" />
        </activity>
 
+       <activity android:name=".activity.settings.SettingsActivity"/>
+       
        <activity android:name=".activity.EmailActivity"
        android:parentActivityName=".activity.inbox.InboxActivity"/>
        
+
        <activity android:name=".activity.inbox.ReplyActivity"
            android:label="@string/title_activity_reply"
            android:windowSoftInputMode="adjustPan"></activity>
