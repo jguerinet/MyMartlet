@@ -15,6 +15,7 @@ import java.util.List;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
+import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
  * Author: Julien
@@ -87,6 +88,24 @@ public class Save {
             FileOutputStream fos = context.openFileOutput(Constants.EBILL_FILE_NAME, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(ebill);
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveUserInfo(Context context){
+        UserInfo userInfo = ApplicationClass.getUserInfo();
+
+        try{
+            FileOutputStream fos = context.openFileOutput(Constants.USERINFO_FILE_NAME, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(userInfo);
         } catch (OptionalDataException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

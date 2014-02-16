@@ -18,6 +18,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
+import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
  * Author: Julien
@@ -136,5 +137,32 @@ public class Load {
         }
 
         return ebill;
+    }
+
+    public static UserInfo loadUserInfo(Context context){
+        UserInfo userInfo = null;
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.USERINFO_FILE_NAME);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            userInfo = (UserInfo) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (OptionalDataException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            Log.e("Load UserInfo Failure", "File not found");
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        }
+
+        return userInfo;
     }
 }

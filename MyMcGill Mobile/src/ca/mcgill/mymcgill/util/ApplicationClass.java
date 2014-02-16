@@ -9,6 +9,7 @@ import java.util.List;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
+import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
  * Author: Julien
@@ -24,6 +25,7 @@ public class ApplicationClass extends Application {
     private static Transcript transcript;
     private static List<CourseSched> schedule;
     private static List<EbillItem> ebill;
+    private static UserInfo userInfo;
 
     @Override
     public void onCreate(){
@@ -61,6 +63,10 @@ public class ApplicationClass extends Application {
         return ebill;
     }
 
+    public static UserInfo getUserInfo(){
+        return userInfo;
+    }
+
     /* SETTERS */
     public static void setTranscript(Transcript transcript){
         ApplicationClass.transcript = transcript;
@@ -81,5 +87,12 @@ public class ApplicationClass extends Application {
 
         //Save it to internal storage when this is set
         Save.saveEbill(context);
+    }
+
+    public static void setUserInfo(UserInfo userInfo){
+        ApplicationClass.userInfo = userInfo;
+
+        //Save it to internal storage when this is set
+        Save.saveUserInfo(context);
     }
 }

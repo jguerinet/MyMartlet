@@ -19,6 +19,7 @@ public class Clear {
         clearSchedule(context);
         clearTranscript(context);
         clearEbill(context);
+        clearUserInfo(context);
         clearPassword(context);
         if(!Load.loadRememberUsername(context)){
             clearUsername(context);
@@ -55,5 +56,11 @@ public class Clear {
         context.deleteFile(Constants.EBILL_FILE_NAME);
         //Reset the static instance in Application Class
         ApplicationClass.setEbill(new ArrayList<EbillItem>());
+    }
+
+    public static void clearUserInfo(Context context){
+        context.deleteFile(Constants.USERINFO_FILE_NAME);
+        //Reset the static instance in Application Class
+        ApplicationClass.setUserInfo(null);
     }
 }

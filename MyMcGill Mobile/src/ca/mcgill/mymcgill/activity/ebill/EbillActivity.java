@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,11 +18,15 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.UserInfo;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 
 public class EbillActivity extends ListActivity {
-	private List<EbillItem> mEbill = new ArrayList<EbillItem>();
+	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
+    private UserInfo mUserInfo;
+
+    private TextView mUserName, mUserId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +36,15 @@ public class EbillActivity extends ListActivity {
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Get the first ebill from the ApplicationClass
-        mEbill = ApplicationClass.getEbill();
+        //Get the initial info from the ApplicationClass
+        mEbillItems = ApplicationClass.getEbill();
+        mUserInfo = ApplicationClass.getUserInfo();
 
-        boolean refresh = !mEbill.isEmpty();
+        //Get the views
+        mUserName = (TextView)findViewById(R.id.ebill_user_name);
+        mUserId = (TextView)findViewById(R.id.ebill_user_id);
+
+        boolean refresh = !mEbillItems.isEmpty();
         if(refresh){
             loadInfo();
         }
@@ -54,7 +64,11 @@ public class EbillActivity extends ListActivity {
     }
 
     private void loadInfo(){
-        EbillAdapter adapter = new EbillAdapter(this, mEbill);
+        if(mUserInfo != null){
+            mUserName.setText(mUserInfo.getName());
+            mUserId.setText(mUserInfo.getId());
+        }
+        EbillAdapter adapter = new EbillAdapter(this, mEbillItems);
         setListAdapter(adapter);
     }
 
@@ -87,15 +101,22 @@ public class EbillActivity extends ListActivity {
         protected Void doInBackground(Void... params){
             String ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
 
-            mEbill.clear();
+            mEbillItems.clear();
 
             Document doc = Jsoup.parse(ebillString);
             Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
             Elements ebillRows = ebillTable.getElementsByTag("tr");
             getEBill(ebillRows);
 
+            //Parse the user info
+            Elements userInfo = ebillTable.getElementsByTag("caption");
+            String id = userInfo.get(0).text().replace("Statements for ", "");
+            String[] userInfoItems = id.split("-");
+            mUserInfo = new UserInfo(userInfoItems[1].trim(), userInfoItems[0].trim());
+
             //Save it to the instance variable in the Application class
-            ApplicationClass.setEbill(mEbill);
+            ApplicationClass.setEbill(mEbillItems);
+            ApplicationClass.setUserInfo(mUserInfo);
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -128,7 +149,7 @@ public class EbillActivity extends ListActivity {
                 String statementDate = cells.get(0).text();
                 String dueDate = cells.get(3).text();
                 String amountDue = cells.get(5).text();
-                mEbill.add(new EbillItem(statementDate, dueDate, amountDue));
+                mEbillItems.add(new EbillItem(statementDate, dueDate, amountDue));
             }
         }
     }
