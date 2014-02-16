@@ -84,5 +84,9 @@
     <!-- Inbox Activity -->
     <string name="inbox_error">We are unable to load your email inbox. Please try again later.</string>
     <string name="inbox_newMessages">New messages: %d</string>
+    <string name="title_activity_reply">Reply E-Mail</string>
+    <string name="reply_to">To:</string>
+    <string name="reply_carbon_copy">CC:</string>
+    <string name="reply_subject">Subject:</string>
 
 </resources>
