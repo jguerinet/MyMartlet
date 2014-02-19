@@ -91,6 +91,7 @@ public class Connection {
     	username = user + context.getResources().getString(R.string.login_email);
     	password = pass;
     	String postParams;
+    	status = ConnectionStatus.CONNECTION_AUTHENTICATING;
 
 		// make sure cookies is turn on
 		CookieHandler.setDefault(new CookieManager());
@@ -250,7 +251,8 @@ public class Connection {
 			switch(status){
 			case CONNECTION_MINERVA_LOGOUT:
 				//reconnect
-				throw new MinervaLoggedOutException();
+				if(status !=ConnectionStatus.CONNECTION_AUTHENTICATING)//if not trying to authenticate
+					throw new MinervaLoggedOutException();
 				
 			default:
 				break;

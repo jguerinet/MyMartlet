@@ -13,7 +13,8 @@ public enum ConnectionStatus {
     CONNECTION_WRONG_INFO,
     CONNECTION_OTHER,
     CONNECTION_NO_INTERNET,
-    CONNECTION_MINERVA_LOGOUT;
+    CONNECTION_MINERVA_LOGOUT,
+    CONNECTION_AUTHENTICATING;
 
     public String getErrorString(Context context){
         switch(this){
