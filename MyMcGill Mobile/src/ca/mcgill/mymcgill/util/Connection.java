@@ -43,7 +43,7 @@ public class Connection {
 	private String password;
 	private List<String> cookies;
 	private HttpsURLConnection conn;
-	private ConnectionStatus status;
+	private ConnectionStatus status = ConnectionStatus.CONNECTION_FIRSTACCESS;
 	
 	// Constants
 	public final static String minervaLoginPage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
@@ -71,7 +71,7 @@ public class Connection {
 		//set some default value to know it was undefined
 		username = "undefined";
 		password = "undefined";
-		status = ConnectionStatus.CONNECTION_OK;
+		status = ConnectionStatus.CONNECTION_FIRSTACCESS;
 	}
 	
 	// Accessor method
@@ -86,6 +86,12 @@ public class Connection {
         if(!isNetworkAvailable(context)){
             return ConnectionStatus.CONNECTION_NO_INTERNET;
         }
+        
+        if(status == ConnectionStatus.CONNECTION_FIRSTACCESS){
+			// make sure cookies is turn on
+			CookieHandler.setDefault(new CookieManager());
+        }
+		
 
 		//load uname and pass
     	username = user + context.getResources().getString(R.string.login_email);
@@ -93,9 +99,6 @@ public class Connection {
     	String postParams;
     	status = ConnectionStatus.CONNECTION_AUTHENTICATING;
 
-		// make sure cookies is turn on
-		CookieHandler.setDefault(new CookieManager());
-		
 		try {
 			// 1. Send a "GET" request, so that you can extract the form's data.
 			String page = http.GetPageContent(minervaLoginPage);
@@ -104,6 +107,7 @@ public class Connection {
 			// search for "Authorization Failure"
 			if (postParams.contains("WRONG_INFO"))
 			{
+				status = ConnectionStatus.CONNECTION_WRONG_INFO;
 				return ConnectionStatus.CONNECTION_WRONG_INFO;
 			}
 			
@@ -115,19 +119,23 @@ public class Connection {
 			// Check is connection was actually made
 			if (!Post1Resp.contains("WELCOME"))
 			{
+				status = ConnectionStatus.CONNECTION_WRONG_INFO;
 				return ConnectionStatus.CONNECTION_WRONG_INFO;
 			}
 			
 		} catch (MinervaLoggedOutException e) {
 			//throw if still logged out bubble it up
 			e.printStackTrace();
+			status = ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
 			return ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
 		}
 		catch (Exception e) {
             e.printStackTrace();
+            status = ConnectionStatus.CONNECTION_OTHER;
 			return ConnectionStatus.CONNECTION_OTHER;
 		}
-
+		
+		status = ConnectionStatus.CONNECTION_OK;
         return ConnectionStatus.CONNECTION_OK;
     }
 	
@@ -344,11 +352,14 @@ public class Connection {
     private boolean areHeadersOK(Map <String, List<String>> Headers){
     	
     	//check for minerva logout
-    	if(Headers.get("Set-Cookie").contains("SESSID=;")){
-    		status = ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
-    		return false;
+    	List<String> setCookies = Headers.get("Set-Cookie");
+    	for(String aCookie: setCookies){    	
+	    	if(aCookie.contains("SESSID=;")){
+	    		if(status !=ConnectionStatus.CONNECTION_AUTHENTICATING)//if not trying to authenticate
+	    			status = ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
+	    		return false;
+	    	}
     	}
-    	
     	return true;
     }
     

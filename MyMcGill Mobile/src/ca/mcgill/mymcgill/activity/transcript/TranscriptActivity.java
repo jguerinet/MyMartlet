@@ -93,7 +93,7 @@ public class TranscriptActivity extends ListActivity {
 			} catch (MinervaLoggedOutException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadFullUsername(context),Load.loadPassword(context));
+				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadUsername(context),Load.loadPassword(context));
                 //Successful connection: MainActivity
                 if(connectionResult == ConnectionStatus.CONNECTION_OK){
                 	

@@ -110,7 +110,7 @@ public class EbillActivity extends ListActivity {
                 ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
             } catch (MinervaLoggedOutException e) {
                 e.printStackTrace();
-                ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context, Load.loadFullUsername(context),Load.loadPassword(context));
+                ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context, Load.loadUsername(context),Load.loadPassword(context));
                 //Successful connection: MainActivity
                 if(connectionResult == ConnectionStatus.CONNECTION_OK){
 
