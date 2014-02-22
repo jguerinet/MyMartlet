@@ -10,6 +10,7 @@ import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
+import ca.mcgill.mymcgill.object.Inbox;
 
 /**
  * Author: Julien
@@ -26,6 +27,7 @@ public class ApplicationClass extends Application {
     private static List<CourseSched> schedule;
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
+    private static Inbox inbox;
 
     @Override
     public void onCreate(){
@@ -42,6 +44,8 @@ public class ApplicationClass extends Application {
         ebill = Load.loadEbill(this);
         //Load the user info
         userInfo = Load.loadUserInfo(this);
+        //Load the user's emails
+        inbox = Load.loadInbox(this);
     }
 
     /* GETTER METHODS */
@@ -67,6 +71,10 @@ public class ApplicationClass extends Application {
 
     public static UserInfo getUserInfo(){
         return userInfo;
+    }
+
+    public static Inbox getInbox() {
+        return inbox;
     }
 
     /* SETTERS */
@@ -96,5 +104,12 @@ public class ApplicationClass extends Application {
 
         //Save it to internal storage when this is set
         Save.saveUserInfo(context);
+    }
+
+    public static void setInbox(Inbox inbox){
+        ApplicationClass.inbox = inbox;
+
+        //Save it to internal storage when this is set
+        Save.saveInbox(context);
     }
 }

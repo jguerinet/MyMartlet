@@ -16,6 +16,7 @@ import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
+import ca.mcgill.mymcgill.object.Inbox;
 
 /**
  * Author: Julien
@@ -115,5 +116,12 @@ public class Save {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void saveInbox(Context context){
+        Inbox inbox = ApplicationClass.getInbox();
+
+        //TODO: Save inbox
+
     }
 }

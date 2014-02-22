@@ -19,6 +19,7 @@ import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
+import ca.mcgill.mymcgill.object.Inbox;
 
 /**
  * Author: Julien
@@ -164,5 +165,12 @@ public class Load {
         }
 
         return userInfo;
+    }
+
+    public static Inbox loadInbox(Context context){
+        Inbox inbox = null;
+
+        //TODO: Load inbox
+        return inbox;
     }
 }
