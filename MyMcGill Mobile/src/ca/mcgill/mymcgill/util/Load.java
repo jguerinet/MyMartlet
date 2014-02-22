@@ -170,7 +170,27 @@ public class Load {
     public static Inbox loadInbox(Context context){
         Inbox inbox = null;
 
-        //TODO: Load inbox
+        try{
+            FileInputStream fis = context.openFileInput(Constants.INBOX_FILE_NAME);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            inbox = (Inbox) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (OptionalDataException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            Log.e("Load UserInfo Failure", "File not found");
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        }
+
         return inbox;
     }
 }

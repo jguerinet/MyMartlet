@@ -121,7 +121,18 @@ public class Save {
     public static void saveInbox(Context context){
         Inbox inbox = ApplicationClass.getInbox();
 
-        //TODO: Save inbox
-
+        try{
+            FileOutputStream fos = context.openFileOutput(Constants.INBOX_FILE_NAME, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(inbox);
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
