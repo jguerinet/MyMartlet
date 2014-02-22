@@ -2,10 +2,11 @@ package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.util.Load;
 
@@ -25,11 +26,17 @@ public class DesktopActivity extends Activity {
 
         webView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
         webView.setWebViewClient(new WebViewClient() {
+        	
+        	public void onPageStarted(WebView view, String url, Bitmap favicon){
+        		//view.loadUrl("javascript:(function(){document.write( '<style class=\"hideStuff\" type=\"text/css\">body {display:none;}</style>')});");
+        		view.setVisibility(View.INVISIBLE);
+        	}
             public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
                         Load.loadFullUsername(DesktopActivity.this) + "';" +
                         "document.getElementById('password').value='" +
                         Load.loadPassword(DesktopActivity.this) + "'; document.LoginForm.submit(); })()");
+                view.setVisibility(View.VISIBLE);
             }
         });
 
