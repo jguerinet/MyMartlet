@@ -336,7 +336,7 @@ public class ScheduleActivity extends FragmentActivity {
 				scheduleString = Connection.getInstance().getUrl(Connection.minervaSchedule);
 			} catch (MinervaLoggedOutException e) {
 				e.printStackTrace();
-				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadFullUsername(context),Load.loadPassword(context));
+				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadUsername(context),Load.loadPassword(context));
                 //Successful connection: MainActivity
                 if(connectionResult == ConnectionStatus.CONNECTION_OK){
                 	
