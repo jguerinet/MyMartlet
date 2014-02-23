@@ -17,6 +17,15 @@
         android:text="@string/inbox_error"/>
 
     <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/inbox_no_new"
+        android:textSize="22sp"
+        android:paddingLeft="@dimen/padding_micro"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inbox_total_new"

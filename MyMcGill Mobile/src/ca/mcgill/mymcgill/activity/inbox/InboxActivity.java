@@ -55,8 +55,20 @@ public class InboxActivity extends ListActivity{
 
     //Populates the list with the emails contained in the Inbox object
     private void loadInfo(){
-        //Get the number of new emails
-        mTotalNew.setText(getResources().getString(R.string.inbox_newMessages, mInbox.getNumNewEmails()));
+        //Show a message if the user has no new emails
+        if(mInbox.getNumNewEmails() == 0){
+            mTotalNew.setVisibility(View.GONE);
+            TextView noNew = (TextView)findViewById(R.id.inbox_no_new);
+            noNew.setVisibility(View.VISIBLE);
+        }
+        else{
+            TextView noNew = (TextView)findViewById(R.id.inbox_no_new);
+            noNew.setVisibility(View.GONE);
+
+            //Get the number of new emails
+            mTotalNew.setVisibility(View.VISIBLE);
+            mTotalNew.setText(getResources().getString(R.string.inbox_newMessages, mInbox.getNumNewEmails()));
+        }
 
         //Load adapter
         InboxAdapter adapter = new InboxAdapter(InboxActivity.this, mInbox);
