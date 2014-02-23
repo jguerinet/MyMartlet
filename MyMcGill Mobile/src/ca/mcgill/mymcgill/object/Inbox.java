@@ -61,16 +61,27 @@ public class Inbox implements Serializable{
 
             mNumNewEmails = messages.length;
 
-            //System.out.println("Number of mails = " + messages.length);
-
             for (int i = 0; i < messages.length; i++) {
 
                 Message message = messages[i];
                 Address[] from = message.getFrom();
 
-                //String subject, String sender, String date, String body, boolean isRead
-                Email newEmail = new Email(message.getSubject(), from[0].toString(), message.getSentDate().toString(), message.toString(), false);
-                mEmails.add(newEmail);
+
+                if(mEmails.isEmpty()){
+                    Email newEmail = new Email(message.getSubject(), from[0].toString(), message.getSentDate().toString(), message.toString(), false);
+                    mEmails.add(newEmail);
+                }
+
+                //Check list of emails to see if it already exists
+                for(Email email : mEmails){
+                    if(email.getDate().equals(message.getSentDate().toString()) && email.getSubject().equals(message.getSubject())){
+                        //Do not add email
+                    }
+                    else{
+                        Email newEmail = new Email(message.getSubject(), from[0].toString(), message.getSentDate().toString(), message.toString(), false);
+                        mEmails.add(newEmail);
+                    }
+                }
 
                 //processMessageBody(message);
             }
