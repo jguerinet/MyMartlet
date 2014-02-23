@@ -44,6 +44,13 @@
         android:text="@string/main_inbox"
         android:layout_marginBottom="22dp"
         android:onClick="viewInbox"/>
+    
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/main_settings"
+        android:layout_marginBottom="22dp"
+        android:onClick="viewSettings"/>
 
     <Button
         android:layout_height="wrap_content"

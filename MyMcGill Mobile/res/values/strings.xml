@@ -36,6 +36,7 @@
     <string name="main_transcript">View Transcript</string>
     <string name="main_ebill">View eBill</string>
     <string name="main_inbox">View Email</string>
+    <string name="main_settings">Settings</string>
 
 
     <!-- TranscriptActivity -->
