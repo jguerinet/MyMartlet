@@ -44,30 +44,23 @@ android:layout_height="match_parent">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/drawable_transparent_redpressed"
             android:padding="@dimen/padding_micro"
             android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
-            android:clickable="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="@string/settings_homepage"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@drawable/color_black_whitepressed"
-                android:duplicateParentState="true"/>
+            android:paddingBottom="@dimen/padding_small">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/settings_homepage"
+                android:textSize="@dimen/text_medium"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
-                android:id="@+id/settings_homepage"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@drawable/color_black_whitepressed"
-                android:duplicateParentState="true"/>
+                android:id="@+id/settings_homepage"/>
 
         </LinearLayout>
 

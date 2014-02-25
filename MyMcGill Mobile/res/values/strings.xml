@@ -105,4 +105,10 @@
         <item>English</item>
         <item>French</item>
     </string-array>
+    <string-array name="settings_homepages">
+        <item>Schedule</item>
+        <item>Transcript</item>
+        <item>Email</item>
+        <item>eBill</item>
+    </string-array>
 </resources>
