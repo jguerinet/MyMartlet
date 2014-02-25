@@ -3,11 +3,9 @@
 
     <!-- General Strings -->
     <string name="app_name">MyMcGill Mobile</string>
-    <string name="action_settings">Settings</string>
     <string name="error">Error</string>
     <string name="please_wait">Please Wait…</string>
     <string name="done">Done</string>
-    <string name="menu">Menu</string>
     
     <!-- Activity Titles -->
     <string name="title_desktop">Desktop Site</string>
@@ -18,6 +16,7 @@
     <string name="title_inbox">My Email</string>
     <string name="title_settings">Settings</string>
     <string name="title_logout">Logout</string>
+    <string name="title_reply">Reply E-Mail</string>
 
     <!-- LoginActivity -->
     <string name="login_welcome">Welcome to MyMcGill for Mobile. Please input your McGill username and password below.</string>
@@ -90,7 +89,6 @@
     <!-- Inbox Activity -->
     <string name="inbox_error">We are unable to load your email inbox. Please try again later.</string>
     <string name="inbox_newMessages">New messages: %d</string>
-    <string name="title_activity_reply">Reply E-Mail</string>
     <string name="reply_to">To:</string>
     <string name="reply_carbon_copy">CC:</string>
     <string name="reply_subject">Subject:</string>
@@ -100,7 +98,7 @@
 
     <!-- SettingsActivity -->
     <string name="settings_language">Language</string>
-    <string name="settings_homepage">Default Homepage</string>
+    <string name="settings_homepage">Homepage</string>
     <string-array name="settings_languages">
         <item>English</item>
         <item>French</item>

@@ -65,7 +65,7 @@
        
 
        <activity android:name=".activity.inbox.ReplyActivity"
-           android:label="@string/title_activity_reply"
+           android:label="@string/title_reply"
            android:windowSoftInputMode="adjustPan"/>
 
     </application>
