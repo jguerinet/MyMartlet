@@ -11,10 +11,77 @@ android:layout_height="match_parent">
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/setting_list"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/drawable_transparent_redpressed"
+            android:padding="@dimen/padding_micro"
+            android:paddingTop="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_small"
+            android:clickable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/settings_language"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@drawable/color_black_whitepressed"
+                android:duplicateParentState="true"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:id="@+id/settings_language"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@drawable/color_black_whitepressed"
+                android:duplicateParentState="true"/>
+
+            </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:background="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/drawable_transparent_redpressed"
+            android:padding="@dimen/padding_micro"
+            android:paddingTop="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_small"
+            android:clickable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/settings_homepage"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@drawable/color_black_whitepressed"
+                android:duplicateParentState="true"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:id="@+id/settings_homepage"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@drawable/color_black_whitepressed"
+                android:duplicateParentState="true"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:background="@color/black"/>
 
     </LinearLayout>
 

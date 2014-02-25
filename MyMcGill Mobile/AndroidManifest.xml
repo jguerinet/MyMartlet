@@ -57,7 +57,8 @@
        <activity android:name=".activity.inbox.InboxActivity"
             android:label="@string/title_inbox"/>
 
-       <activity android:name=".activity.settings.SettingsActivity"/>
+       <activity android:name=".activity.SettingsActivity"
+           android:label="@string/title_settings"/>
        
        <activity android:name=".activity.EmailActivity"
        android:parentActivityName=".activity.inbox.InboxActivity"/>

@@ -98,4 +98,8 @@
     <string name="reply_add_attachment">Add Attachment</string>
     <string name="reply_send">Send</string>
 
+    <!-- SettingsActivity -->
+    <string name="settings_language">Language</string>
+    <string name="settings_homepage">Default Homepage</string>
+
 </resources>
