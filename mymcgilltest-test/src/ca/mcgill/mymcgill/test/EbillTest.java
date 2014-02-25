@@ -2,9 +2,8 @@ package ca.mcgill.mymcgill.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
-import junit.framework.TestCase;
 import ca.mcgill.mymcgill.activity.EbillActivity;
-import ca.mcgill.mymcgill.activity.LoginActivity;
+
 
 public class EbillTest extends ActivityInstrumentationTestCase2<EbillActivity> {
 public EbillActivity mActivityClass;
