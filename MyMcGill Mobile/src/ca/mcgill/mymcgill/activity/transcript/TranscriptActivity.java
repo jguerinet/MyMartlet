@@ -1,16 +1,19 @@
 package ca.mcgill.mymcgill.activity.transcript;
 
-import java.io.IOException;
-
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.ListView;
 import android.widget.TextView;
-import ca.mcgill.mymcgill.R;
+
+import java.io.IOException;
+
 import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
+import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
@@ -21,14 +24,16 @@ import ca.mcgill.mymcgill.util.Load;
  * Author: Ryan Singzon
  * Date: 30/01/14, 6:01 PM
  */
-public class TranscriptActivity extends ListActivity {
+public class TranscriptActivity extends DrawerActivity {
     private Transcript mTranscript;
     private TextView mCGPA, mTotalCredits;
+    private ListView mListView;
 
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_transcript);
+        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.TRANSCRIPT_POSITION);
+        super.onCreate(savedInstanceState);
 
         //Get the stored transcript from the ApplicationClass
         mTranscript = ApplicationClass.getTranscript();
@@ -36,6 +41,7 @@ public class TranscriptActivity extends ListActivity {
         //Get the views
         mCGPA = (TextView)findViewById(R.id.transcript_cgpa);
         mTotalCredits = (TextView)findViewById(R.id.transcript_credits);
+        mListView = (ListView)findViewById(android.R.id.list);
 
         //If it is not null, we only need to refresh it
         boolean refresh = (mTranscript != null);
@@ -55,7 +61,7 @@ public class TranscriptActivity extends ListActivity {
 
         //Reload the adapter
         TranscriptAdapter adapter = new TranscriptAdapter(TranscriptActivity.this, mTranscript);
-        setListAdapter(adapter);
+        mListView.setAdapter(adapter);
     }
 
     private class TranscriptGetter extends AsyncTask<Void, Void, Void> {
@@ -94,7 +100,6 @@ public class TranscriptActivity extends ListActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadUsername(context),Load.loadPassword(context));
-                //Successful connection: MainActivity
                 if(connectionResult == ConnectionStatus.CONNECTION_OK){
                 	
                 	//TRY again

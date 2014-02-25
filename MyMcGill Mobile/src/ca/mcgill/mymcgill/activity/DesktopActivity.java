@@ -1,24 +1,27 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
  * Author: Julien
  * Date: 22/01/14, 9:05 PM
  */
-public class DesktopActivity extends Activity {
+public class DesktopActivity extends DrawerActivity{
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desktop);
+        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.DESKTOP_POSITION);
+        super.onCreate(savedInstanceState);
 
         //Get the Webview
         final WebView webView = (WebView)findViewById(R.id.desktop_webview);

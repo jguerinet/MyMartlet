@@ -1,12 +1,11 @@
 package ca.mcgill.mymcgill.activity.ebill;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.Window;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -20,6 +19,8 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.UserInfo;
@@ -27,19 +28,19 @@ import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Load;
 
-public class EbillActivity extends ListActivity {
+public class EbillActivity extends DrawerActivity {
 	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
     private UserInfo mUserInfo;
 
     private TextView mUserName, mUserId;
+    private ListView mListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_ebill);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EBILL_POSITION);
+        super.onCreate(savedInstanceState);
 
         //Get the initial info from the ApplicationClass
         mEbillItems = ApplicationClass.getEbill();
@@ -48,6 +49,7 @@ public class EbillActivity extends ListActivity {
         //Get the views
         mUserName = (TextView)findViewById(R.id.ebill_user_name);
         mUserId = (TextView)findViewById(R.id.ebill_user_id);
+        mListView = (ListView)findViewById(android.R.id.list);
 
         boolean refresh = !mEbillItems.isEmpty();
         if(refresh){
@@ -59,22 +61,13 @@ public class EbillActivity extends ListActivity {
         new EbillGetter(refresh).execute();
 	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void loadInfo(){
         if(mUserInfo != null){
             mUserName.setText(mUserInfo.getName());
             mUserId.setText(mUserInfo.getId());
         }
         EbillAdapter adapter = new EbillAdapter(this, mEbillItems);
-        setListAdapter(adapter);
+        mListView.setAdapter(adapter);
     }
 
     private class EbillGetter extends AsyncTask<Void, Void, Void> {
@@ -111,7 +104,6 @@ public class EbillActivity extends ListActivity {
             } catch (MinervaLoggedOutException e) {
                 e.printStackTrace();
                 ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context, Load.loadUsername(context),Load.loadPassword(context));
-                //Successful connection: MainActivity
                 if(connectionResult == ConnectionStatus.CONNECTION_OK){
 
                     //TRY again

@@ -38,9 +38,9 @@ public class SplashActivity extends Activity {
                 @Override
                 public void run() {
                     ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(SplashActivity.this, username, password);
-                    //Successful connection: MainActivity
+                    //Successful connection: ScheduleActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK){
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        startActivity(new Intent(SplashActivity.this, ScheduleActivity.class));
                         finish();
                     }
                     else{

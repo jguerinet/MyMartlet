@@ -3,18 +3,14 @@ package ca.mcgill.mymcgill.activity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -31,16 +27,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
+import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
+import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.util.ApplicationClass;
-import ca.mcgill.mymcgill.util.Clear;
 import ca.mcgill.mymcgill.util.Connection;
-import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Help;
 import ca.mcgill.mymcgill.util.Load;
 
@@ -50,18 +46,17 @@ import ca.mcgill.mymcgill.util.Load;
  * 
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
-public class ScheduleActivity extends FragmentActivity {
+public class ScheduleActivity extends DrawerFragmentActivity {
 	private List<CourseSched> mCourseList;
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
 
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_schedule);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.SCHEDULE_POSITION);
+        super.onCreate(savedInstanceState);
 
         //Get the first list of courses from the ApplicationClass
         mCourseList = ApplicationClass.getSchedule();;
@@ -293,16 +288,6 @@ public class ScheduleActivity extends FragmentActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private class ScheduleGetter extends AsyncTask<Void, Void, Void> {
         private boolean mRefresh;
         private ProgressDialog mProgressDialog;
@@ -337,7 +322,6 @@ public class ScheduleActivity extends FragmentActivity {
 			} catch (MinervaLoggedOutException e) {
 				e.printStackTrace();
 				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadUsername(context),Load.loadPassword(context));
-                //Successful connection: MainActivity
                 if(connectionResult == ConnectionStatus.CONNECTION_OK){
                 	
                 	//TRY again

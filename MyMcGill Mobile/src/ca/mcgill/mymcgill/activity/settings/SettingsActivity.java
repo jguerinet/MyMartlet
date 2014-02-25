@@ -1,14 +1,17 @@
 package ca.mcgill.mymcgill.activity.settings;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-public class SettingsActivity extends Activity {
+import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
+
+public class SettingsActivity extends DrawerActivity {
 	@Override
 	 protected void onCreate(Bundle savedInstanceState) {
-	  super.onCreate(savedInstanceState);
+        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.SETTINGS_POSITION);
+        super.onCreate(savedInstanceState);
 	    
 	  SettingsFragment setFragment = new SettingsFragment();
 	  FragmentManager fragmentManager = getFragmentManager();

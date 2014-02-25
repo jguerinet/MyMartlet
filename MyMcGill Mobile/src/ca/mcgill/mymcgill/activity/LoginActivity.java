@@ -92,14 +92,14 @@ public class LoginActivity extends Activity {
                     @Override
                     public void run() {
 						final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(LoginActivity.this, username,password);
-						// If the connection was successful, go to MainActivity
+						// If the connection was successful, go to ScheduleActivity
 						if (connectionStatus == ConnectionStatus.CONNECTION_OK) {
 							// Store the login info.
 							Save.saveUsername(LoginActivity.this, username);
                             Save.savePassword(LoginActivity.this, password);
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
                             progressDialog.dismiss();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this, ScheduleActivity.class));
                             finish();
                         }
                         //Else show error dialog

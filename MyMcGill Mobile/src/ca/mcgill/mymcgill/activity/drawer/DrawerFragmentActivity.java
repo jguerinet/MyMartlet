@@ -1,16 +1,16 @@
 package ca.mcgill.mymcgill.activity.drawer;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
 
-public class DrawerActivity extends Activity{
+public class DrawerFragmentActivity extends FragmentActivity{
 
     public DrawerLayout drawerLayout;
     public ListView drawerList;

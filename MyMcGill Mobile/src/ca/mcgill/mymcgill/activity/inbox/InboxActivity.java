@@ -1,46 +1,43 @@
 package ca.mcgill.mymcgill.activity.inbox;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-
-import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.object.ConnectionStatus;
+import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.Inbox;
-import ca.mcgill.mymcgill.object.Email;
-import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
-import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
  * Created by Ryan Singzon on 14/02/14.
  */
-public class InboxActivity extends ListActivity{
+public class InboxActivity extends DrawerActivity{
 
     private Inbox mInbox;
     private TextView mTotalNew;
+    private ListView mListView;
 
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_inbox);
+        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EMAIL_POSITION);
+        super.onCreate(savedInstanceState);
 
         //Get the stored inbox from the ApplicationClass
         mInbox = ApplicationClass.getInbox();
 
         //Get views
         mTotalNew = (TextView)findViewById(R.id.inbox_total_new);
+
+        mListView = (ListView)findViewById(android.R.id.list);
 
         //If inbox is not null, we only need to refresh it
         boolean refresh = (mInbox != null);
@@ -72,7 +69,7 @@ public class InboxActivity extends ListActivity{
 
         //Load adapter
         InboxAdapter adapter = new InboxAdapter(InboxActivity.this, mInbox);
-        setListAdapter(adapter);
+        mListView.setAdapter(adapter);
 
     }
 

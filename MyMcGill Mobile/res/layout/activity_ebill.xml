@@ -1,8 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/activity_horizontal_margin">
+    android:layout_height="match_parent">
+
+    <!-- The main content view -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/activity_horizontal_margin">
 
     <TextView
         android:layout_width="match_parent"
@@ -28,5 +35,10 @@
         android:layout_weight="1"
         android:clickable="false" >
     </ListView>
+    </LinearLayout>
 
-</LinearLayout>
+    <!-- The navigation drawer -->
+    <include layout="@layout/drawer"/>
+
+</android.support.v4.widget.DrawerLayout>
+

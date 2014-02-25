@@ -16,6 +16,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
+import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.settings.SettingsActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
@@ -63,7 +64,7 @@ public class DrawerAdapter extends BaseAdapter {
                 mActivity.getResources().getString(R.string.icon_email)));
 
         //Ebill
-        mDrawerItems.add(EBILL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_activity_ebill),
+        mDrawerItems.add(EBILL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_ebill),
                 mActivity.getResources().getString(R.string.icon_ebill)));
 
         //Desktop
@@ -71,11 +72,11 @@ public class DrawerAdapter extends BaseAdapter {
                 mActivity.getResources().getString(R.string.icon_desktop)));
 
         //Settings
-        mDrawerItems.add(SETTINGS_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.main_settings),
+        mDrawerItems.add(SETTINGS_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_settings),
                 mActivity.getResources().getString(R.string.icon_settings)));
 
         //Logout
-        mDrawerItems.add(LOGOUT_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.main_logout),
+        mDrawerItems.add(LOGOUT_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_logout),
                 mActivity.getResources().getString(R.string.icon_logout)));
     }
 
@@ -115,11 +116,6 @@ public class DrawerAdapter extends BaseAdapter {
         TextView title = (TextView)view.findViewById(R.id.drawerItem_title);
         title.setText(currentItem.getTitle());
 
-        //If it's the selected position, set it's background to red
-        if(position == mSelectedPosition){
-            view.setBackgroundColor(mActivity.getResources().getColor(R.color.red));
-        }
-
         //OnClick
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,34 +123,38 @@ public class DrawerAdapter extends BaseAdapter {
                 switch(position){
                     case SCHEDULE_POSITION:
                         mActivity.startActivity(new Intent(mActivity, ScheduleActivity.class));
-                        mActivity.finish();
                         break;
                     case TRANSCRIPT_POSITION:
                         mActivity.startActivity(new Intent(mActivity, TranscriptActivity.class));
-                        mActivity.finish();
                         break;
                     case EMAIL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, InboxActivity.class));
-                        mActivity.finish();
+                        break;
+                    case EBILL_POSITION:
+                        mActivity.startActivity(new Intent(mActivity, EbillActivity.class));
                         break;
                     case DESKTOP_POSITION:
                         mActivity.startActivity(new Intent(mActivity, DesktopActivity.class));
-                        mActivity.finish();
                         break;
                     case SETTINGS_POSITION:
                         mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
-                        mActivity.finish();
                         break;
                     case LOGOUT_POSITION:
                         Clear.clearAllInfo(mActivity);
 
                         //Go back to LoginActivity
                         mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
-                        mActivity.finish();
                         break;
                 }
+                mActivity.finish();
             }
         });
+
+        //If it's the selected position, set it's background to red
+        if(position == mSelectedPosition){
+            view.setBackgroundColor(mActivity.getResources().getColor(R.color.red));
+            view.setClickable(false);
+        }
 
         return view;
     }
