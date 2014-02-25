@@ -15,6 +15,7 @@ public class DrawerActivity extends Activity{
 
     public DrawerLayout drawerLayout;
     public ListView drawerList;
+    public DrawerAdapter mDrawerAdapter;
     private ActionBarDrawerToggle drawerToggle;
 
     protected void onCreate(Bundle savedInstanceState){
@@ -40,14 +41,7 @@ public class DrawerActivity extends Activity{
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawerList = (ListView) findViewById(R.id.left_drawer);
-        drawerList.setAdapter(new DrawerAdapter(this));
-
-//        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-//                map.drawerClickEvent(pos);
-//            }
-//        });
+        drawerList.setAdapter(mDrawerAdapter);
     }
 
     @Override

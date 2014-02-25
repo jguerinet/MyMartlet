@@ -7,6 +7,7 @@ import android.view.View;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.settings.SettingsActivity;
@@ -18,6 +19,7 @@ public class MainActivity extends DrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
+        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.DESKTOP_POSITION);
         super.onCreate(savedInstanceState);
     }
 
@@ -28,7 +30,7 @@ public class MainActivity extends DrawerActivity {
 
     //This method is called when the schedule button is clicked
     public void viewSchedule(View v){
-        startActivity(new Intent(this, ScheduleActivity.class));
+
     }
 
     //This method is called when the transcript button is clicked
