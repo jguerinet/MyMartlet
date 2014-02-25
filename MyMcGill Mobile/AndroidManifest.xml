@@ -58,7 +58,7 @@
             android:label="@string/title_inbox"/>
 
        <activity android:name=".activity.SettingsActivity"
-           android:label="@string/title_settings"/>
+           android:screenOrientation="portrait"/>
        
        <activity android:name=".activity.EmailActivity"
        android:parentActivityName=".activity.inbox.InboxActivity"/>

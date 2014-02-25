@@ -21,6 +21,8 @@ public class SettingsActivity extends DrawerActivity {
         mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.SETTINGS_POSITION);
         super.onCreate(savedInstanceState);
 
+        setTitle(getResources().getString(R.string.title_settings));
+
         //Set up the info
         Spinner languages = (Spinner)findViewById(R.id.settings_language);
         //Standard ArrayAdapter
