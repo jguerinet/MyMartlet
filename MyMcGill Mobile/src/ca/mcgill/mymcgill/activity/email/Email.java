@@ -18,7 +18,7 @@ import javax.mail.internet.*;
 
 public class Email {
 	private final static String port = "587";
-	private final static String host = "smtp.gmail.com";
+	private final static String host = "smtp.mcgill.ca";
 	
 	private final static boolean debug = true;
 	
@@ -43,8 +43,8 @@ public class Email {
 	 * email object has not been filled properly.
 	 */
 	public void send(){
-		Properties props = setProperties();
-		Authenticator auth = setAuthenticator();
+		Properties props = this.setProperties();
+		Authenticator auth = this.setAuthenticator();
 		
 		Session session = Session.getInstance(props, auth);
 		session.setDebug(debug);
