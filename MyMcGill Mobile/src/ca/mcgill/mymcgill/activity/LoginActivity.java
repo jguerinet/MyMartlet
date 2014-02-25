@@ -91,7 +91,7 @@ public class LoginActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-						final ConnectionStatus connectionStatus = Connection.getInstance().connect(LoginActivity.this, username,password);
+						final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(LoginActivity.this, username,password);
 						// If the connection was successful, go to MainActivity
 						if (connectionStatus == ConnectionStatus.CONNECTION_OK) {
 							// Store the login info.

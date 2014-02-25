@@ -2,8 +2,10 @@ package ca.mcgill.mymcgill.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
-import ca.mcgill.mymcgill.activity.EbillActivity;
 
+import junit.framework.TestCase;
+import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
+import ca.mcgill.mymcgill.activity.LoginActivity;
 
 public class EbillTest extends ActivityInstrumentationTestCase2<EbillActivity> {
 public EbillActivity mActivityClass;
@@ -11,7 +13,7 @@ public ListView listView;
 
 	@SuppressWarnings("deprecation")
 	public EbillTest(){
-		super("ca.mcgill.mymcgill.activity.EbillActivity",EbillActivity.class);
+		super("ca.mcgill.mymcgill.activity.ebill.EbillActivity",EbillActivity.class);
 	}
 	
 	public void testListView(){
@@ -23,7 +25,8 @@ public ListView listView;
 		super.setUp();
 		mActivityClass = this.getActivity();
 		
-		listView = (ListView) mActivityClass.findViewById(ca.mcgill.mymcgill.R.id.ebill_listview);
+		// This was changed (JDA)
+		listView = (ListView) mActivityClass.findViewById(android.R.id.list);
 	}
 	
 	@Override

@@ -1,15 +1,12 @@
-package ca.mcgill.mymcgill.activity;
+package ca.mcgill.mymcgill.activity.ebill;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -17,17 +14,24 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.object.Ebill;
+import ca.mcgill.mymcgill.object.ConnectionStatus;
+import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.UserInfo;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Load;
 
-public class EbillActivity extends Activity {
-	private List<Ebill> mEbill = new ArrayList<Ebill>();
-    private ListView mListView;
+public class EbillActivity extends ListActivity {
+	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
+    private UserInfo mUserInfo;
+
+    private TextView mUserName, mUserId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +41,15 @@ public class EbillActivity extends Activity {
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Get the first ebill from the ApplicationClass
-        mEbill = ApplicationClass.getEbill();
+        //Get the initial info from the ApplicationClass
+        mEbillItems = ApplicationClass.getEbill();
+        mUserInfo = ApplicationClass.getUserInfo();
 
-        mListView = (ListView)findViewById(R.id.ebill_listview);
+        //Get the views
+        mUserName = (TextView)findViewById(R.id.ebill_user_name);
+        mUserId = (TextView)findViewById(R.id.ebill_user_id);
 
-        boolean refresh = !mEbill.isEmpty();
+        boolean refresh = !mEbillItems.isEmpty();
         if(refresh){
             loadInfo();
         }
@@ -62,8 +69,12 @@ public class EbillActivity extends Activity {
     }
 
     private void loadInfo(){
-        ArrayAdapter<Ebill> adapter = new listAdapter();
-        mListView.setAdapter(adapter);
+        if(mUserInfo != null){
+            mUserName.setText(mUserInfo.getName());
+            mUserId.setText(mUserInfo.getId());
+        }
+        EbillAdapter adapter = new EbillAdapter(this, mEbillItems);
+        setListAdapter(adapter);
     }
 
     private class EbillGetter extends AsyncTask<Void, Void, Void> {
@@ -93,17 +104,50 @@ public class EbillActivity extends Activity {
         //Retrieve content from transcript page
         @Override
         protected Void doInBackground(Void... params){
-            String ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
+            Context context = EbillActivity.this;
+            String ebillString = null;
+            try {
+                ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
+            } catch (MinervaLoggedOutException e) {
+                e.printStackTrace();
+                ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context, Load.loadUsername(context),Load.loadPassword(context));
+                //Successful connection: MainActivity
+                if(connectionResult == ConnectionStatus.CONNECTION_OK){
 
-            mEbill.clear();
+                    //TRY again
+                    try {
+                        ebillString = Connection.getInstance().getUrl(Connection.minervaSchedule);
+                    } catch (Exception e1) {
+                        // TODO display error message
+                        e1.printStackTrace();
+                        return null;
+                    }
+                }
+                else{
+                    //TODO: display error Message
+                    return null;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            mEbillItems.clear();
 
             Document doc = Jsoup.parse(ebillString);
             Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
             Elements ebillRows = ebillTable.getElementsByTag("tr");
             getEBill(ebillRows);
 
+            //Parse the user info
+            Elements userInfo = ebillTable.getElementsByTag("caption");
+            String id = userInfo.get(0).text().replace("Statements for ", "");
+            String[] userInfoItems = id.split("-");
+            mUserInfo = new UserInfo(userInfoItems[1].trim(), userInfoItems[0].trim());
+
             //Save it to the instance variable in the Application class
-            ApplicationClass.setEbill(mEbill);
+            ApplicationClass.setEbill(mEbillItems);
+            ApplicationClass.setUserInfo(mUserInfo);
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -123,9 +167,7 @@ public class EbillActivity extends Activity {
             if(!mRefresh){
                 mProgressDialog.dismiss();
             }
-            else{
-                setProgressBarIndeterminateVisibility(false);
-            }
+            setProgressBarIndeterminateVisibility(false);
         }
 
         //parser algorithm
@@ -136,37 +178,10 @@ public class EbillActivity extends Activity {
                 String statementDate = cells.get(0).text();
                 String dueDate = cells.get(3).text();
                 String amountDue = cells.get(5).text();
-                mEbill.add(new Ebill(statementDate, dueDate, amountDue));
+                mEbillItems.add(new EbillItem(statementDate, dueDate, amountDue));
             }
         }
     }
-
-	private class listAdapter extends ArrayAdapter<Ebill>{
-		public listAdapter(){
-			super(EbillActivity.this,R.layout.item_ebill, mEbill);
-		}
-
-		public View getView(int position,View convertView, ViewGroup parent){
-			View ebillView = convertView;
-			if(ebillView == null)
-			{
-				ebillView = getLayoutInflater().inflate(R.layout.item_ebill,parent,false);
-			} 
-
-			Ebill ebill = mEbill.get(position);
-			TextView ebillStatement = (TextView) ebillView.findViewById(R.id.ebill_statement);
-			TextView ebillDue = (TextView) ebillView.findViewById(R.id.ebill_due);
-			TextView ebillAmount = (TextView) ebillView.findViewById(R.id.ebill_amount);
-
-			ebillStatement.setText(ebill.getStatementDate());
-			ebillDue.setText(ebill.getDueDate());
-			ebillAmount.setText(ebill.getAmountDue());
-
-			return ebillView;
-
-		}
-	}
-
 }
 
 

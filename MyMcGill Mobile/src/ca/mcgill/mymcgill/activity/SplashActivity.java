@@ -37,7 +37,7 @@ public class SplashActivity extends Activity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    ConnectionStatus connectionResult = Connection.getInstance().connect(SplashActivity.this, username, password);
+                    ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(SplashActivity.this, username, password);
                     //Successful connection: MainActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK){
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));

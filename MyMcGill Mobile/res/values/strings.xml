@@ -14,6 +14,7 @@
     <string name="title_schedule">My Schedule</string>
     <string name="title_transcript">My Transcript</string>
     <string name="title_activity_ebill">My eBill</string>
+    <string name="title_inbox">My Email</string>
 
     <!-- LoginActivity -->
     <string name="login_welcome">Welcome to MyMcGill for Mobile. Please input your McGill username and password below.</string>
@@ -34,6 +35,9 @@
     <string name="main_schedule">View Schedule</string>
     <string name="main_transcript">View Transcript</string>
     <string name="main_ebill">View eBill</string>
+    <string name="main_inbox">View Email</string>
+    <string name="main_settings">Settings</string>
+
 
     <!-- TranscriptActivity -->
     <string name="transcript_termGPA">Term GPA: %s</string>
@@ -66,6 +70,11 @@
     <string name="course_credits_title">Credits: </string>
     <string name="course_crn">CRN: </string>
 
+    <!-- EbillActivity -->
+    <string name="ebill_statement_date">Statement Date:</string>
+    <string name="ebill_due_date">Due Date:</string>
+    <string name="ebill_amount">Amount Due:</string>
+
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
 
@@ -77,5 +86,16 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+
+    <!-- Inbox Activity -->
+    <string name="inbox_error">We are unable to load your email inbox. Please try again later.</string>
+    <string name="inbox_newMessages">New messages: %d</string>
+    <string name="title_activity_reply">Reply E-Mail</string>
+    <string name="reply_to">To:</string>
+    <string name="reply_carbon_copy">CC:</string>
+    <string name="reply_subject">Subject:</string>
+    <string name="reply_button">Reply</string>
+    <string name="reply_add_attachment">Add Attachment</string>
+    <string name="reply_send">Send</string>
 
 </resources>

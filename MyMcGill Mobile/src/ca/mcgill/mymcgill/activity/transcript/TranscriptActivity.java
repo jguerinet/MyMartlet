@@ -1,16 +1,21 @@
 package ca.mcgill.mymcgill.activity.transcript;
 
+import java.io.IOException;
+
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
-
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
+import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Load;
 
 /**
  * Author: Ryan Singzon
@@ -80,7 +85,35 @@ public class TranscriptActivity extends ListActivity {
         //Retrieve content from transcript page
         @Override
         protected Void doInBackground(Void... params){
-            String transcriptString = Connection.getInstance().getUrl(Connection.minervaTranscript);
+        	Context context = TranscriptActivity.this;
+            String transcriptString="";
+            
+			try {
+				transcriptString = Connection.getInstance().getUrl(Connection.minervaTranscript);
+			} catch (MinervaLoggedOutException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadUsername(context),Load.loadPassword(context));
+                //Successful connection: MainActivity
+                if(connectionResult == ConnectionStatus.CONNECTION_OK){
+                	
+                	//TRY again
+                	try {
+                		transcriptString = Connection.getInstance().getUrl(Connection.minervaSchedule);
+					} catch (Exception e1) {
+						// TODO display error message
+						e1.printStackTrace();
+						return null;
+					} 
+                }
+                else{
+                    //TODO: display error Message
+                	return null;
+                }
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
             //Parse the transcript
             mTranscript = new Transcript(transcriptString);
@@ -106,9 +139,7 @@ public class TranscriptActivity extends ListActivity {
             if(!mRefresh){
                 mProgressDialog.dismiss();
             }
-            else{
-                setProgressBarIndeterminateVisibility(false);
-            }
+            setProgressBarIndeterminateVisibility(false);
         }
     }
 
