@@ -1,4 +1,4 @@
-package ca.mcgill.mymcgill.activity;
+package ca.mcgill.mymcgill.activity.drawer;
 
 import android.app.Activity;
 import android.content.res.Configuration;
@@ -7,16 +7,14 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
 
-public class BaseActivity extends Activity{
+public class DrawerActivity extends Activity{
 
     public DrawerLayout drawerLayout;
     public ListView drawerList;
-    public String[] layers;
     private ActionBarDrawerToggle drawerToggle;
 
     protected void onCreate(Bundle savedInstanceState){
@@ -41,15 +39,8 @@ public class BaseActivity extends Activity{
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        layers = new String[4];
-        layers[0] = "test1";
-        layers[1] = "test2";
-        layers[2] = "test3";
-        layers[3] = "test4";
-
         drawerList = (ListView) findViewById(R.id.left_drawer);
-        drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,
-                layers));
+        drawerList.setAdapter(new DrawerAdapter(this));
 
 //        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override

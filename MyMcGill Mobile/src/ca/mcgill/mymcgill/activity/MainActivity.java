@@ -6,13 +6,14 @@ import android.view.Menu;
 import android.view.View;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.settings.SettingsActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 import ca.mcgill.mymcgill.util.Clear;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends DrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
