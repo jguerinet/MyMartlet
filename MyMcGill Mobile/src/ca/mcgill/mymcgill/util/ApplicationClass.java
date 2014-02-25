@@ -2,15 +2,18 @@ package ca.mcgill.mymcgill.util;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 
 import java.util.List;
+import java.util.Locale;
 
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Inbox;
+import ca.mcgill.mymcgill.object.Language;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
-import ca.mcgill.mymcgill.object.Inbox;
 
 /**
  * Author: Julien
@@ -23,6 +26,7 @@ public class ApplicationClass extends Application {
 
     private static Typeface iconFont;
 
+    private static Language language;
     private static Transcript transcript;
     private static List<CourseSched> schedule;
     private static List<EbillItem> ebill;
@@ -46,6 +50,9 @@ public class ApplicationClass extends Application {
         userInfo = Load.loadUserInfo(this);
         //Load the user's emails
         inbox = Load.loadInbox(this);
+        //Load the user's chosen language and update the locale
+        language = Load.loadLanguage(this);
+        updateLocale();
     }
 
     /* GETTER METHODS */
@@ -75,6 +82,10 @@ public class ApplicationClass extends Application {
 
     public static Inbox getInbox() {
         return inbox;
+    }
+
+    public static Language getLanguage(){
+        return language;
     }
 
     /* SETTERS */
@@ -111,5 +122,25 @@ public class ApplicationClass extends Application {
 
         //Save it to internal storage when this is set
         Save.saveInbox(context);
+    }
+
+    public static void setLanguage(Language language){
+        ApplicationClass.language = language;
+
+        //Save it to internal storage when this is set
+        Save.saveLanguage(context);
+
+        //Update the locale
+        updateLocale();
+    }
+
+    /* HELPER METHODS */
+    private static void updateLocale(){
+        //Update locale and config
+        Locale locale = new Locale(language.getLanguageString());
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        context.getResources().updateConfiguration(config, null);
     }
 }

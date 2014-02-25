@@ -17,9 +17,10 @@ import java.util.List;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Inbox;
+import ca.mcgill.mymcgill.object.Language;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
-import ca.mcgill.mymcgill.object.Inbox;
 
 /**
  * Author: Julien
@@ -27,6 +28,11 @@ import ca.mcgill.mymcgill.object.Inbox;
  * Class that loads objects from internal storage or SharedPreferences
  */
 public class Load {
+    public static Language loadLanguage(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return Language.getLanguage(sharedPrefs.getInt(Constants.LANGUAGE_FILE_NAME, 0));
+    }
+
     public static String loadFullUsername(Context context){
         return loadUsername(context) + context.getResources().getString(R.string.login_email);
     }

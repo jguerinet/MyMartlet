@@ -14,9 +14,9 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
-import ca.mcgill.mymcgill.object.Inbox;
 
 /**
  * Author: Julien
@@ -24,6 +24,13 @@ import ca.mcgill.mymcgill.object.Inbox;
  * Class that saves objects into internal storage or SharedPreferences
  */
 public class Save {
+    public static void saveLanguage(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putInt(Constants.LANGUAGE_FILE_NAME, ApplicationClass.getLanguage().getLanguageInt())
+                .commit();
+    }
+
     public static void saveUsername(Context context, String username){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General Strings -->
+    <string name="app_name">MyMcGill Mobile</string>
+    <string name="action_settings">Settings</string>
+    <string name="error">Error</string>
+    <string name="please_wait">Please Wait…</string>
+    <string name="done">Done</string>
+    <string name="menu">Menu</string>
+    
+    <!-- Activity Titles -->
+    <string name="title_desktop">TEST</string>
+    <string name="title_login">TEST</string>
+    <string name="title_schedule">TEST</string>
+    <string name="title_transcript">TEST</string>
+    <string name="title_ebill">TEST</string>
+    <string name="title_inbox">TEST</string>
+    <string name="title_settings">TEST</string>
+    <string name="title_logout">TEST</string>
+
+    <!-- LoginActivity -->
+    <string name="login_welcome">Welcome to MyMcGill for Mobile. Please input your McGill username and password below.</string>
+    <string name="login_username">Username:</string>
+    <string name="login_email">\@mail.mcgill.ca</string>
+    <string name="login_password">Password:</string>
+    <string name="login_button">Login</string>
+    <string name="login_error_wrong_data">The inputted username or password is incorrect. Please try again.</string>
+    <string name="login_error_other">An error has occurred. Please try again later.</string>
+    <string name="login_error_no_internet">You are not connected to the internet. Please connect to the internet and try again.</string>
+    <string name="login_error_username_empty">You must input a username.</string>
+    <string name="login_error_password_empty">You must input a password.</string>
+    <string name="login_remember_username">Remember my Username</string>
+
+    <!-- TranscriptActivity -->
+    <string name="transcript_termGPA">Term GPA: %s</string>
+    <string name="transcript_cgpa">CGPA: %s</string>
+    <string name="transcript_credits">Total Credits: %d</string>
+    <string name="transcript_semesters">Semesters:</string>
+    <string name="transcript_error">We are unable to load your transcript. Please try again later.</string>
+
+    <!-- SemesterActivity -->
+    <string name="semester_termCredits">Term Credits: %d</string>
+    <string name="semester_fullTime">Full Time</string>
+    <string name="semester_partTime">Part Time</string>
+    <string name="semester_courses">Courses:</string>
+    <string name="course_credits">Credits: %d</string>
+    <string name="course_average">Class Average: %s</string>
+
+    <!-- DayFragment -->
+    <string name="am">%s A.M.</string>
+    <string name="pm">%s P.M.</string>
+    <string name="am_long">%1$s:%2$s A.M.</string>
+    <string name="pm_long">%1$s:%2$s P.M.</string>
+    <string name="course_time">%1$s - %2$s</string>
+
+    <!-- CourseActivity -->
+    <string name="course_time_title">Time: </string>
+    <string name="course_location">Room:  </string>
+    <string name="schedule_type">Schedule Type: </string>
+    <string name="course_prof">Professor: </string>
+    <string name="course_section">Section: </string>
+    <string name="course_credits_title">Credits: </string>
+    <string name="course_crn">CRN: </string>
+
+    <!-- EbillActivity -->
+    <string name="ebill_statement_date">Statement Date:</string>
+    <string name="ebill_due_date">Due Date:</string>
+    <string name="ebill_amount">Amount Due:</string>
+
+    <!-- Icons -->
+    <string name="icon_chevronRight">&#xf054;</string>
+    <string name="icon_schedule">&#xf073;</string>
+    <string name="icon_settings">&#xf013;</string>
+    <string name="icon_desktop">&#xf108;</string>
+    <string name="icon_email">&#xf0e0;</string>
+    <string name="icon_ebill">&#xf155;</string>
+    <string name="icon_transcript">&#xf15c;</string>
+    <string name="icon_logout">&#xf0a9;</string>
+
+    <!-- Days -->
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+    <!-- Inbox Activity -->
+    <string name="inbox_error">We are unable to load your email inbox. Please try again later.</string>
+    <string name="inbox_newMessages">New messages: %d</string>
+    <string name="title_activity_reply">Reply E-Mail</string>
+    <string name="reply_to">To:</string>
+    <string name="reply_carbon_copy">CC:</string>
+    <string name="reply_subject">Subject:</string>
+    <string name="reply_button">Reply</string>
+    <string name="reply_add_attachment">Add Attachment</string>
+    <string name="reply_send">Send</string>
+
+    <!-- SettingsActivity -->
+    <string name="settings_language">Language</string>
+    <string name="settings_homepage">Default Homepage</string>
+    <string-array name="settings_languages">
+        <item>English</item>
+        <item>French</item>
+    </string-array>
+    <string-array name="settings_homepages">
+        <item>Schedule</item>
+        <item>Transcript</item>
+        <item>Email</item>
+        <item>eBill</item>
+    </string-array>
+</resources>
