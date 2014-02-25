@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
+import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.CourseSched;

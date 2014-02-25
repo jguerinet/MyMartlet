@@ -1,6 +1,5 @@
 package ca.mcgill.mymcgill.util;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,7 +16,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -27,9 +25,8 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
+import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
-import ca.mcgill.mymcgill.Exceptions.*;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua

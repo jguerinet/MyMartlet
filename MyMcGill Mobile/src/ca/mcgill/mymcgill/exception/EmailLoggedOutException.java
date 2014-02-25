@@ -1,4 +1,4 @@
-package ca.mcgill.mymcgill.Exceptions;
+package ca.mcgill.mymcgill.exception;
 
 public class EmailLoggedOutException extends LoggedOutException{
 	public EmailLoggedOutException() {
