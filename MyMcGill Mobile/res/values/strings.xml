@@ -78,6 +78,13 @@
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
+    <string name="icon_schedule">&#xf073;</string>
+    <string name="icon_settings">&#xf013;</string>
+    <string name="icon_desktop">&#xf108;</string>
+    <string name="icon_email">&#xf0e0;</string>
+    <string name="icon_ebill">&#xf155;</string>
+    <string name="icon_transcript">&#xf15c;</string>
+    <string name="icon_logout">&#xf0a9;</string>
 
     <!-- Days -->
     <string name="monday">Monday</string>

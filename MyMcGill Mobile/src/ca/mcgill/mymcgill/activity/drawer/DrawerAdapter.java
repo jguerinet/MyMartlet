@@ -30,9 +30,33 @@ public class DrawerAdapter extends BaseAdapter {
 
     //This will generate the drawer items
     private void generateDrawerItems(){
-        mDrawerItems.add(new DrawerItem("Schedule", ""));
-        mDrawerItems.add(new DrawerItem("Transcript", ""));
-        mDrawerItems.add(new DrawerItem("Settings", ""));
+        //Schedule
+        mDrawerItems.add(new DrawerItem(mContext.getResources().getString(R.string.title_schedule),
+                mContext.getResources().getString(R.string.icon_schedule)));
+
+        //Transcript
+        mDrawerItems.add(new DrawerItem(mContext.getResources().getString(R.string.title_transcript),
+                mContext.getResources().getString(R.string.icon_transcript)));
+
+        //Email
+        mDrawerItems.add(new DrawerItem(mContext.getResources().getString(R.string.title_inbox),
+                mContext.getResources().getString(R.string.icon_email)));
+
+        //Ebill
+        mDrawerItems.add(new DrawerItem(mContext.getResources().getString(R.string.title_activity_ebill),
+                mContext.getResources().getString(R.string.icon_ebill)));
+
+        //Desktop
+        mDrawerItems.add(new DrawerItem(mContext.getResources().getString(R.string.title_desktop),
+                mContext.getResources().getString(R.string.icon_desktop)));
+
+        //Settings
+        mDrawerItems.add(new DrawerItem(mContext.getResources().getString(R.string.main_settings),
+                mContext.getResources().getString(R.string.icon_settings)));
+
+        //Logout
+        mDrawerItems.add(new DrawerItem(mContext.getResources().getString(R.string.main_logout),
+                mContext.getResources().getString(R.string.icon_logout)));
     }
 
     @Override
