@@ -101,5 +101,8 @@
     <!-- SettingsActivity -->
     <string name="settings_language">Language</string>
     <string name="settings_homepage">Default Homepage</string>
-
+    <string-array name="settings_languages">
+        <item>English</item>
+        <item>French</item>
+    </string-array>
 </resources>
