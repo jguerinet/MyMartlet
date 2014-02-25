@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Language;
 import ca.mcgill.mymcgill.object.Transcript;
@@ -27,6 +28,7 @@ public class ApplicationClass extends Application {
     private static Typeface iconFont;
 
     private static Language language;
+    private static HomePage homePage;
     private static Transcript transcript;
     private static List<CourseSched> schedule;
     private static List<EbillItem> ebill;
@@ -53,6 +55,8 @@ public class ApplicationClass extends Application {
         //Load the user's chosen language and update the locale
         language = Load.loadLanguage(this);
         updateLocale();
+        //Load the user's chosen homepage
+        homePage = Load.loadHomePage(this);
     }
 
     /* GETTER METHODS */
@@ -86,6 +90,10 @@ public class ApplicationClass extends Application {
 
     public static Language getLanguage(){
         return language;
+    }
+
+    public static HomePage getHomePage(){
+        return homePage;
     }
 
     /* SETTERS */
@@ -132,6 +140,13 @@ public class ApplicationClass extends Application {
 
         //Update the locale
         updateLocale();
+    }
+
+    public static void setHomePage(HomePage homePage){
+        ApplicationClass.homePage = homePage;
+
+        //Save it to internal storage when this is set
+        Save.saveHomePage(context);
     }
 
     /* HELPER METHODS */

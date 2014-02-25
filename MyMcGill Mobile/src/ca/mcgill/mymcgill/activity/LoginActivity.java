@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Load;
@@ -92,14 +93,14 @@ public class LoginActivity extends Activity {
                     @Override
                     public void run() {
 						final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(LoginActivity.this, username,password);
-						// If the connection was successful, go to ScheduleActivity
+						// If the connection was successful, go to Homepage
 						if (connectionStatus == ConnectionStatus.CONNECTION_OK) {
 							// Store the login info.
 							Save.saveUsername(LoginActivity.this, username);
                             Save.savePassword(LoginActivity.this, password);
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
                             progressDialog.dismiss();
-                            startActivity(new Intent(LoginActivity.this, ScheduleActivity.class));
+                            startActivity(new Intent(LoginActivity.this, ApplicationClass.getHomePage().getHomePageClass()));
                             finish();
                         }
                         //Else show error dialog

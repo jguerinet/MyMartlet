@@ -17,6 +17,7 @@ import java.util.List;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Language;
 import ca.mcgill.mymcgill.object.Transcript;
@@ -30,7 +31,12 @@ import ca.mcgill.mymcgill.object.UserInfo;
 public class Load {
     public static Language loadLanguage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return Language.getLanguage(sharedPrefs.getInt(Constants.LANGUAGE_FILE_NAME, 0));
+        return Language.values()[(sharedPrefs.getInt(Constants.LANGUAGE_FILE_NAME, 0))];
+    }
+
+    public static HomePage loadHomePage(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return HomePage.values()[sharedPrefs.getInt(Constants.HOMEPAGE_FILE_NAME, 0)];
     }
 
     public static String loadFullUsername(Context context){

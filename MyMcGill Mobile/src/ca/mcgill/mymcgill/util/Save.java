@@ -27,7 +27,14 @@ public class Save {
     public static void saveLanguage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
-                .putInt(Constants.LANGUAGE_FILE_NAME, ApplicationClass.getLanguage().getLanguageInt())
+                .putInt(Constants.LANGUAGE_FILE_NAME, ApplicationClass.getLanguage().ordinal())
+                .commit();
+    }
+
+    public static void saveHomePage(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putInt(Constants.HOMEPAGE_FILE_NAME, ApplicationClass.getHomePage().ordinal())
                 .commit();
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Clear;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -40,7 +41,7 @@ public class SplashActivity extends Activity {
                     ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(SplashActivity.this, username, password);
                     //Successful connection: ScheduleActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK){
-                        startActivity(new Intent(SplashActivity.this, ScheduleActivity.class));
+                        startActivity(new Intent(SplashActivity.this, ApplicationClass.getHomePage().getHomePageClass()));
                         finish();
                     }
                     else{
