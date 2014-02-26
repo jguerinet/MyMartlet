@@ -97,6 +97,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     {
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
             setContentView(R.layout.activity_schedule_land);
+            showDrawer(false);
             LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
 
             LinearLayout timetableContainer = (LinearLayout) findViewById(R.id.timetable_container);
@@ -124,6 +125,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         }
         else{
             setContentView(R.layout.activity_schedule);
+            showDrawer(true);
             mPager = (ViewPager)findViewById(R.id.pager);
             mPager.setOffscreenPageLimit(6);
             loadInfo();

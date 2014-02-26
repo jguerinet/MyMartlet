@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
@@ -20,24 +21,33 @@ public class DrawerFragmentActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        showDrawer(true);
+    }
+
+    public void showDrawer(boolean showDrawer){
         assert (getActionBar() != null);
 
-        // R.id.drawer_layout should be in every activity with exactly the same id.
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if(showDrawer){
+            // R.id.drawer_layout should be in every activity with exactly the same id.
+            drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        //Set up the drawer toggle
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
-        drawerLayout.setDrawerListener(drawerToggle);
+            //Set up the drawer toggle
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+            drawerLayout.setDrawerListener(drawerToggle);
 
-        //Make Sure the Adapter is not null
-        if(mDrawerAdapter == null){
-            mDrawerAdapter = new DrawerAdapter(this, 100);
+            //Make Sure the Adapter is not null
+            if(mDrawerAdapter == null){
+                mDrawerAdapter = new DrawerAdapter(this, -1);
+                Log.e("Drawer", "Drawer Adapter was null");
+            }
+
+            drawerList = (ListView) findViewById(R.id.left_drawer);
+            drawerList.setAdapter(mDrawerAdapter);
         }
 
-        drawerList = (ListView) findViewById(R.id.left_drawer);
-        drawerList.setAdapter(mDrawerAdapter);
+        drawerToggle.setDrawerIndicatorEnabled(showDrawer);
+        getActionBar().setDisplayHomeAsUpEnabled(showDrawer);
     }
 
     @Override
