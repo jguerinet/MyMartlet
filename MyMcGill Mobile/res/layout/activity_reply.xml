@@ -23,8 +23,9 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/etEmails"
+                android:id="@+id/replyEmails"
                 android:layout_width="0dp"
+                android:inputType="textEmailAddress"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
             </EditText>
@@ -44,8 +45,9 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/etName"
+                android:id="@+id/replyCarbonCopy"
                 android:layout_width="0dp"
+                android:inputType="textEmailAddress"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
             </EditText>
@@ -65,8 +67,9 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/etThings"
+                android:id="@+id/replySubject"
                 android:layout_width="0dp"
+                android:inputType="textEmailSubject"
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
             </EditText>
@@ -86,6 +89,7 @@
         android:layout_weight="1"
         android:background="@android:drawable/editbox_background"
         android:gravity="top"
+        android:inputType="textLongMessage"
         android:scrollbars="vertical" />
 
     <Button
