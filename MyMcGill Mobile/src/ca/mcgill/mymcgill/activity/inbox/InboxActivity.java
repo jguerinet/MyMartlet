@@ -97,7 +97,7 @@ public class InboxActivity extends DrawerActivity{
             }
         }
 
-        //Retrieve content from transcript page
+        //Retrieve content from inbox page
         @Override
         protected Void doInBackground(Void... params){
             Context context = InboxActivity.this;
@@ -124,7 +124,7 @@ public class InboxActivity extends DrawerActivity{
             return null;
         }
 
-        //Update or create transcript object and display data
+        //Update or create email object and display data
         @Override
         protected void onPostExecute(Void result){
             //Dismiss the progress dialog if there was one

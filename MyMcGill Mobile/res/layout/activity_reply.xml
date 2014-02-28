@@ -89,7 +89,7 @@
         android:layout_weight="1"
         android:background="@android:drawable/editbox_background"
         android:gravity="top"
-        android:inputType="textLongMessage"
+        android:inputType="textMultiLine"
         android:scrollbars="vertical" />
 
     <Button

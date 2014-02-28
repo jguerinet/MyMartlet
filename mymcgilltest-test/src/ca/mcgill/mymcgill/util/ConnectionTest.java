@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import org.junit.Test;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.Exceptions.MinervaLoggedOutException;
+import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 
 import android.test.AndroidTestCase;

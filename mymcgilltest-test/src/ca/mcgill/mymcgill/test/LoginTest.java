@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import ca.mcgill.mymcgill.activity.LoginActivity;
+import ca.mcgill.mymcgill.util.Clear;
+import ca.mcgill.mymcgill.util.Constants;
 
 public class LoginTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 	public LoginActivity mActivityClass;
@@ -34,6 +36,18 @@ public class LoginTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 		assertNotNull(rememberView);
 	}
 	
+	// Joshua David Alfaro
+	// Test Logout
+	public void testClear() {
+		Clear.clearUsername(this.getActivity());
+		Clear.clearUsername(this.getActivity());
+		if (Constants.USERNAME.equals(usernameView.toString())){
+			fail();
+		} else if (Constants.PASSWORD.equals(passwordView.toString())) {
+			fail();
+		}
+	}
+	
 	@Override
 	protected void setUp() throws Exception {
 		// TODO Auto-generated method stub
@@ -44,7 +58,7 @@ public class LoginTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 		rememberView = (CheckBox) mActivityClass.findViewById(ca.mcgill.mymcgill.R.id.login_remember_username);
 		loginButton = (Button) mActivityClass.findViewById(ca.mcgill.mymcgill.R.id.login_button);
 		
-		String username = "rafi.uddin";
+		//String username = "";
 		//String password = "";
 		// TODO INSERT REAL USERNAME AND PASSWORD
 		//usernameView.setText(username);

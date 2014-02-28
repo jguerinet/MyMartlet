@@ -40,5 +40,9 @@ public class Email implements Serializable{
     public boolean isRead() {
         return isRead;
     }
+    
+    public void read() {
+    	isRead = true;
+    }
 
 }

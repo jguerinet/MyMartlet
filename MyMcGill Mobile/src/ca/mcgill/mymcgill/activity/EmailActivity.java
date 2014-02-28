@@ -14,6 +14,7 @@ import android.view.View;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.object.Email;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 
 
@@ -49,6 +50,12 @@ public class EmailActivity extends Activity {
         //Display email body
         TextView emailBody = (TextView)findViewById(R.id.email_body);
         emailBody.setText(Html.fromHtml(email.getBody()));
+        
+        // mark as read
+        if(!email.isRead()) {
+        	email.read();
+        	ApplicationClass.getInbox().decrementNumNewEmails();
+        }
     }
 
     //Returns to parent activity when the top left button is clicked

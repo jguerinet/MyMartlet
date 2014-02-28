@@ -174,5 +174,10 @@ public class Inbox implements Serializable{
     public int getNumNewEmails(){
         return mNumNewEmails;
     }
+    
+    // JDA
+    public void decrementNumNewEmails(){
+        mNumNewEmails--;
+    }
 
 }

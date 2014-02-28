@@ -69,6 +69,8 @@ public class InboxAdapter extends BaseAdapter{
         //Make subject bold if unread
         if(!email.isRead()){
             emailSubject.setTypeface(emailSubject.getTypeface(), Typeface.BOLD);
+        } else {
+        	emailSubject.setTypeface(emailSubject.getTypeface(), Typeface.NORMAL);
         }
 
         //Place chevron
@@ -80,7 +82,7 @@ public class InboxAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, EmailActivity.class);
-                intent.putExtra(Constants.EMAIL, email);
+				intent.putExtra(Constants.EMAIL, email);
                 mContext.startActivity(intent);
             }
         });
