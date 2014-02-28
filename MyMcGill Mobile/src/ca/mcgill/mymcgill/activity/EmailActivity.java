@@ -24,6 +24,8 @@ import ca.mcgill.mymcgill.util.Constants;
  */
 public class EmailActivity extends Activity {
 
+	Email email;
+	 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email);
@@ -33,7 +35,7 @@ public class EmailActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Get email from intent
-        Email email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
+        email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 
         //Display subject
         TextView emailSubject = (TextView)findViewById(R.id.email_subject);
@@ -81,6 +83,8 @@ public class EmailActivity extends Activity {
     // Created so that I can see the activity
     // When the user clicks the reply button
     public void replyMessage(View view) {
-    	startActivity(new Intent(this, ReplyActivity.class));
+    	Intent intent = new Intent(this, ReplyActivity.class);
+		intent.putExtra(Constants.EMAIL, email);
+    	startActivity(intent);
     }
 }

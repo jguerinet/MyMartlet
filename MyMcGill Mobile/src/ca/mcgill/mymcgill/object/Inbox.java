@@ -91,7 +91,9 @@ public class Inbox implements Serializable{
 
                 //If the email does not exist, add it to the inbox
                 if(!emailExists){
-                    Email newEmail = new Email(message.getSubject(), from[0].toString(), message.getSentDate().toString(), body, false);
+                	List<String> emails = new ArrayList<String>();
+                	emails.add(from[0].toString());
+                    Email newEmail = new Email(message.getSubject(), emails, message.getSentDate().toString(), body, false);
                     mEmails.add(newEmail);
                 }
             }
