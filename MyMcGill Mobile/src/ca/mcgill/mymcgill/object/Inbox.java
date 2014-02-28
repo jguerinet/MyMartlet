@@ -37,7 +37,9 @@ public class Inbox implements Serializable{
     private String mPassword;
 
     private List<Email> mEmails = new ArrayList<Email>();
-    private int mNumNewEmails;
+    private int mNumNewEmails = 0;
+    private int numEmails;
+    private int emailsToRetrieve = 20;
 
     public Inbox(String username, String password){
         this.mUserName = username;
@@ -67,9 +69,15 @@ public class Inbox implements Serializable{
             store.connect();
             inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
-            Message messages[] = inbox.search(new FlagTerm(new Flags(Flag.SEEN), false));
 
-            mNumNewEmails = messages.length;
+            //Message messages[] = inbox.search(new FlagTerm(new Flags(Flag.SEEN), false));
+
+            //Get total number of emails
+            numEmails = inbox.getMessageCount();
+
+
+            //Retrieve the number of emails the user specifies (default 20)
+            Message messages[] = inbox.getMessages(numEmails - emailsToRetrieve, numEmails);
 
             //Add each message to the inbox object
             for (int i = 0; i < messages.length; i++) {
@@ -89,12 +97,20 @@ public class Inbox implements Serializable{
                     }
                 }
 
+                //Increment the unread message count if unread
+                if(!message.isSet(Flag.SEEN)){
+                    mNumNewEmails++;
+                }
+
                 //If the email does not exist, add it to the inbox
                 if(!emailExists){
-                    Email newEmail = new Email(message.getSubject(), from[0].toString(), message.getSentDate().toString(), body, false);
+                    Email newEmail = new Email(message.getSubject(), from[0].toString(), message.getSentDate().toString(), body, message.isSet(Flag.SEEN));
                     mEmails.add(newEmail);
                 }
             }
+
+
+
             inbox.close(true);
             store.close();
         } catch (NoSuchProviderException e) {

@@ -79,6 +79,7 @@
     <!-- Inbox Activity -->
     <string name="inbox_error">Nous n\'arrivons pas à charger votre boîte de récéption. Veuillez réessayer plus tard.</string>
     <string name="inbox_newMessages">Nouveaux Messages: %d</string>
+    <string name="inbox_no_new">Vous n\'avez pas de nouveaux emails.</string>
     <string name="reply_to">A:</string>
     <string name="reply_carbon_copy">CC:</string>
     <string name="reply_subject">Sujet:</string>

@@ -30,7 +30,8 @@
             android:textSize="22sp"
             android:paddingLeft="@dimen/padding_micro"
             android:gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:text="@string/inbox_no_new"/>
 
         <TextView
             android:layout_width="match_parent"
