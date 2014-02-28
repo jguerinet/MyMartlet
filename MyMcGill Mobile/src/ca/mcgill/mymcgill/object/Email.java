@@ -13,7 +13,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
+import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.Load;
 
 /**
  * Created by Ryan Singzon on 15/02/14.
@@ -47,8 +50,8 @@ public class Email implements Serializable{
         this.mBody = body;
         this.isRead = isRead;
 
-        this.password = Constants.PASSWORD;
-        this.from = Constants.USERNAME + "@mail.mcgill.ca";
+        this.password = "";
+        this.from = "joshua.alfaro@mail.mcgill.ca";
     }
 
 	/**
@@ -66,18 +69,19 @@ public class Email implements Serializable{
 		MimeMessage message = new MimeMessage(session);
 		
 		try{
-			message.setFrom(new InternetAddress(this.from));
+			message.setFrom(new InternetAddress("joshua.alfaro@mail.mcgill.ca"));
 		
-			for(String s: to){
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
-			}
-			for(String s: cc){
-				message.addRecipient(Message.RecipientType.CC, new InternetAddress(s));
-			}
-			for(String s: bcc){
-				message.addRecipient(Message.RecipientType.BCC, new InternetAddress(s));
-			}
+//			for(String s: to){
+//				message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
+//			}
+//			for(String s: cc){
+//				message.addRecipient(Message.RecipientType.CC, new InternetAddress(s));
+//			}
+//			for(String s: bcc){
+//				message.addRecipient(Message.RecipientType.BCC, new InternetAddress(s));
+//			}
 
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress("ryan.singzon@mail.mcgill.ca"));
 			message.setSubject(mSubject);
 			message.setText(mBody);
 			

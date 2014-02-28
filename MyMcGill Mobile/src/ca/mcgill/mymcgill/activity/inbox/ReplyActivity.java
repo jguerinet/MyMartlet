@@ -8,13 +8,20 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
+import ca.mcgill.mymcgill.activity.LoginActivity;
+import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.Email;
+import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.Save;
 
 
 public class ReplyActivity extends Activity {
 
 	Email email;
+	
+	Email replyEmail;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +43,24 @@ public class ReplyActivity extends Activity {
 	
 	public void sendMessage(View v) {
 		EditText body = (EditText) findViewById(R.id.replyBody);
-		Email replyEmail = new Email(email.getSubject(), email.getSenderList(), "No Date", body.toString(), false);
-		replyEmail.send();
+		replyEmail = new Email(email.getSubject(), email.getSenderList(), "No Date", body.toString(), false);
+		new Thread(new Runnable() {
+            @Override
+            public void run() {
+				replyEmail.send();
+				finish();
+                    };
+                
+            
+        }).start();
+		
+		//replyEmail.send();
 	}
+
+	public Email getEmail() {
+		return replyEmail;
+	}
+		
+		
 
 }
