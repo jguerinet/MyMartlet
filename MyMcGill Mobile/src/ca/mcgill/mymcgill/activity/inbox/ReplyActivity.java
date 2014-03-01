@@ -20,6 +20,7 @@ import ca.mcgill.mymcgill.util.Save;
 public class ReplyActivity extends Activity {
 
 	Email email;
+	EditText emailSubject;
 	
 	Email replyEmail;
 	
@@ -37,13 +38,17 @@ public class ReplyActivity extends Activity {
         emails.setText(email.getSender());
         
 		//Display subject
-        EditText emailSubject = (EditText)findViewById(R.id.replySubject);
-        emailSubject.setText("RE: " + email.getSubject());
+        emailSubject = (EditText)findViewById(R.id.replySubject);
+        if (email.getSubject().contains("RE:")) {
+        	emailSubject.setText(email.getSubject());
+        } else {
+        	emailSubject.setText("RE: " + email.getSubject());
+        }
 	}
 	
 	public void sendMessage(View v) {
 		EditText body = (EditText) findViewById(R.id.replyBody);
-		replyEmail = new Email(email.getSubject(), email.getSenderList(), "No Date", body.toString(), false);
+		replyEmail = new Email(emailSubject.getText().toString(), email.getSenderList(), body.getText().toString(), this);
 		new Thread(new Runnable() {
             @Override
             public void run() {
@@ -53,14 +58,5 @@ public class ReplyActivity extends Activity {
                 
             
         }).start();
-		
-		//replyEmail.send();
 	}
-
-	public Email getEmail() {
-		return replyEmail;
-	}
-		
-		
-
 }

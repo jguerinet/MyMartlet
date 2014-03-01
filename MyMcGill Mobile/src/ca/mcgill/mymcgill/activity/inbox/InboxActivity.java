@@ -24,6 +24,8 @@ public class InboxActivity extends DrawerActivity{
     private Inbox mInbox;
     private TextView mTotalNew;
     private ListView mListView;
+    
+    InboxAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -49,9 +51,16 @@ public class InboxActivity extends DrawerActivity{
         //Start thread to retrieve inbox
         new InboxGetter(refresh).execute();
     }
+    
+    //JDA
+    @Override
+    protected void onResume() {
+       super.onResume();
+       //adapter.notifyDataSetInvalidated();
+    }
 
     //Populates the list with the emails contained in the Inbox object
-    private void loadInfo(){
+    public void loadInfo(){
         //Show a message if the user has no new emails
         if(mInbox.getNumNewEmails() == 0){
             mTotalNew.setVisibility(View.GONE);
@@ -68,7 +77,7 @@ public class InboxActivity extends DrawerActivity{
         }
 
         //Load adapter
-        InboxAdapter adapter = new InboxAdapter(InboxActivity.this, mInbox);
+        adapter = new InboxAdapter(InboxActivity.this, mInbox);
         mListView.setAdapter(adapter);
 
     }

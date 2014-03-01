@@ -5,24 +5,25 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
+import javax.mail.Flags;
+import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
-import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
-import ca.mcgill.mymcgill.util.Constants;
+import android.content.Context;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
  * Created by Ryan Singzon on 15/02/14.
  */
 public class Email implements Serializable{
-
+	
     private String mSubject;
     private String mSender;
     private String mDate;
@@ -50,12 +51,48 @@ public class Email implements Serializable{
         this.mBody = body;
         this.isRead = isRead;
 
-        this.password = "";
-        this.from = "joshua.alfaro@mail.mcgill.ca";
+        //this.password = "";
+        //this.from = "joshua.alfaro@mail.mcgill.ca";
+    }
+    
+    // Second Constructor for reply/send emails (to add context)
+    public Email(String subject, List<String> sender, String body, Context context){
+        this.mSubject = subject;
+        this.to = sender;
+        this.mBody = body;
+
+        this.password = Load.loadPassword(context);
+        this.from = Load.loadFullUsername(context);
     }
 
+    public void markAsRead() {
+    	isRead = true;
+    	
+    	Properties props = this.setProperties();
+		Authenticator auth = this.setAuthenticator();
+		
+		Session session = Session.getInstance(props, auth);
+		session.setDebug(debug);
+		try {
+			Store store = session.getStore("https://exchange.mcgill.ca/owa/auth/logon.aspx?replaceCurrent=1&url=https%3a%2f%2fexchange.mcgill.ca%2fowa%2f");
+			// Get folder
+			Folder folder = store.getFolder("INBOX");
+			if (folder != null && !folder.exists()) {
+				folder.open(Folder.READ_ONLY);
+				folder.getMessage(0).getContent();	// number is incorrect
+				folder.close(false);
+				MimeMessage source = (MimeMessage) folder.getMessage(0);
+				MimeMessage copy = new MimeMessage(source);
+				folder.getMessage(0).setFlag(Flags.Flag.SEEN, true);
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    
 	/**
-	 * Sends a simple email. I.e. no attachment, only subject and messgae sent to the recipients
+	 * Sends a simple email. I.e. no attachment, only subject and message sent to the recipients
 	 * that were specified. No validation of the values is done, so method will not succeed if
 	 * email object has not been filled properly.
 	 */
@@ -69,11 +106,11 @@ public class Email implements Serializable{
 		MimeMessage message = new MimeMessage(session);
 		
 		try{
-			message.setFrom(new InternetAddress("joshua.alfaro@mail.mcgill.ca"));
+			message.setFrom(new InternetAddress(from));
 		
-//			for(String s: to){
-//				message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
-//			}
+			for(String s: to){
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
+			}
 //			for(String s: cc){
 //				message.addRecipient(Message.RecipientType.CC, new InternetAddress(s));
 //			}
@@ -81,7 +118,6 @@ public class Email implements Serializable{
 //				message.addRecipient(Message.RecipientType.BCC, new InternetAddress(s));
 //			}
 
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress("ryan.singzon@mail.mcgill.ca"));
 			message.setSubject(mSubject);
 			message.setText(mBody);
 			
@@ -146,10 +182,5 @@ public class Email implements Serializable{
 
     public boolean isRead() {
         return isRead;
-    }
-    
-    public void read() {
-    	isRead = true;
-    }
-
+    }    
 }

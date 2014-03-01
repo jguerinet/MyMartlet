@@ -54,10 +54,9 @@ public class EmailActivity extends Activity {
         emailBody.setText(Html.fromHtml(email.getBody()));
         
         // mark as read
-        if(!email.isRead()) {
-        	email.read();
-        	ApplicationClass.getInbox().decrementNumNewEmails();
-        }
+        //if(!email.isRead()) {
+        	email.markAsRead(); 
+        //}
     }
 
     //Returns to parent activity when the top left button is clicked
