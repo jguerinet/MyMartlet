@@ -101,7 +101,6 @@ public class InboxActivity extends DrawerActivity{
         @Override
         protected Void doInBackground(Void... params){
             Context context = InboxActivity.this;
-            String inboxString="";
 
             //Retrieve inbox
             if(mInbox != null){

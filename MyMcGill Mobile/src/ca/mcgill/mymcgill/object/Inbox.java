@@ -39,14 +39,13 @@ public class Inbox implements Serializable{
     private List<Email> mEmails = new ArrayList<Email>();
     private int mNumNewEmails = 0;
     private int numEmails;
-    private int emailsToRetrieve = 20;
+    private int emailsToRetrieve = 10;
 
     public Inbox(String username, String password){
         this.mUserName = username;
         this.mPassword = password;
         retrieveEmail();
     }
-
 
     //Fetches the user's emails from their McGill email account
     public void retrieveEmail(){
@@ -70,25 +69,27 @@ public class Inbox implements Serializable{
             inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
 
-            //Message messages[] = inbox.search(new FlagTerm(new Flags(Flag.SEEN), false));
-
             //Get total number of emails
             numEmails = inbox.getMessageCount();
 
-
-            //Retrieve the number of emails the user specifies (default 20)
+            //Retrieve the number of emails the user specifies (default 10)
             Message messages[] = inbox.getMessages(numEmails - emailsToRetrieve, numEmails);
 
             //Add each message to the inbox object
-            for (int i = 0; i < messages.length; i++) {
+            for (int i = messages.length-1; i > 0; i--) {
 
                 Message message = messages[i];
-                Address[] from = message.getFrom();
-                String body = "";
+
+                //Get email senders
+                List<String> from = new ArrayList<String>();
+                for(Address address : message.getFrom()){
+                    from.add(address.toString());
+                }
+
+                String body;
+                body = getMessageBody(message);
 
                 boolean emailExists = false;
-
-                body = getMessageBody(message);
 
                 //Check to see if the email already exists in the inbox
                 for(Email email : mEmails){
@@ -97,21 +98,17 @@ public class Inbox implements Serializable{
                     }
                 }
 
-                //Increment the unread message count if unread
-                if(!message.isSet(Flag.SEEN)){
-                    mNumNewEmails++;
-                }
-
                 //If the email does not exist, add it to the inbox
                 if(!emailExists){
-                	List<String> emails = new ArrayList<String>();
-                	emails.add(from[0].toString());
-                    Email newEmail = new Email(message.getSubject(), emails, message.getSentDate().toString(), body, false);
+                    Email newEmail = new Email(message.getSubject(), from, message.getSentDate().toString(), body, message.isSet(Flag.SEEN));
                     mEmails.add(newEmail);
+
+                    //Increment the unread message count if unread
+                    if(!message.isSet(Flag.SEEN)){
+                        mNumNewEmails++;
+                    }
                 }
             }
-
-
 
             inbox.close(true);
             store.close();

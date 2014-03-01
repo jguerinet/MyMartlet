@@ -126,7 +126,8 @@ public class Email implements Serializable{
     public String getSender(){
     	String s = "";
     	for(int i = 0; i < to.size(); i++) {
-    		s = s + to.get(i) +";";
+            if(i > 0) s += ";";
+    		s = s + to.get(i);
     	}
         return s;
     }
