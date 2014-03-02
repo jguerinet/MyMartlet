@@ -1,12 +1,12 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -56,13 +56,11 @@ public class EmailActivity extends Activity {
         TextView emailBody = (TextView)findViewById(R.id.email_body);
         emailBody.setText(Html.fromHtml(email.getBody()));
 
+        final Context context = this;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// mark as read
-				// if(!email.isRead()) {
-				email.markAsRead();
-				// }
+				email.markAsRead(context);
 			};
 
 		}).start();

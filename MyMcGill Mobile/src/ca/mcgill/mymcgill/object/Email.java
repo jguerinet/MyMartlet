@@ -17,6 +17,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import android.content.Context;
+import android.util.Log;
+import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
@@ -66,28 +68,46 @@ public class Email implements Serializable{
         this.from = Load.loadFullUsername(context);
     }
 
-    public void markAsRead() {
-    	isRead = true;
+    public void markAsRead(Context context) {
+    	this.password = Load.loadPassword(context);
+        this.from = Load.loadFullUsername(context);
     	
-    	Properties props = this.setProperties();
-		Authenticator auth = this.setAuthenticator();
-		
-		Session session = Session.getInstance(props, auth);
-		session.setDebug(debug);
+    	//isRead = true;
+    	
+    	
+        
+    	Properties props;
+    	//Set properties for McGill email server
+    	props = new Properties();
+    	props.setProperty("mail.host", Constants.MAIL_HOST);
+    	props.setProperty("mail.port", Constants.MAIL_PORT);
+    	props.setProperty("mail.transport.protocol", Constants.MAIL_PROTOCOL);
+    	Session session;
+        session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(from, password);
+                    }
+                });
 		try {
-			Store store = session.getStore("imaps");
-			store.connect(host, 587, from, password);
+			Store store = session.getStore(Constants.MAIL_PROTOCOL);
+            store.connect();
+			//store.connect(Constants.MAIL_HOST, from, password);
 			// Get folder
-			Folder folder = store.getFolder("Inbox");
-			if (folder != null && !folder.exists()) {
+			Folder folder = store.getFolder("INBOX");
+			//if (folder != null && !folder.exists()) {
 				folder.open(Folder.READ_WRITE);
-				folder.getMessage(0).getContent();	// number is incorrect
-				MimeMessage source = (MimeMessage) folder.getMessage(0);
-				MimeMessage copy = new MimeMessage(source);
-				folder.getMessage(0).setFlag(Flags.Flag.SEEN, true);
-				folder.close(false);
+				int count = folder.getMessageCount();
+				Log.e("count", ""+count);
+			//	for (int i = 0; i < count; i++) {
+					folder.getMessage(count-1).setFlag(Flags.Flag.SEEN, true);
+					//folder.getMessage(i).getContent();
+			//	}
+//				folder.getMessage(count-1).getContent();	// number is incorrect
+//				folder.getMessage(count-1).setFlag(Flags.Flag.SEEN, false);
+				folder.close(true);
 				store.close();
-	        }
+	     //   }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
