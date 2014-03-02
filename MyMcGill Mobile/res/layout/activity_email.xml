@@ -64,6 +64,8 @@
         android:id="@+id/bSentEmail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:onClick="replyMessage"
         android:text="@string/reply_button"
-        android:onClick="replyMessage" />
+        android:visibility="invisible" />
+
 </LinearLayout>

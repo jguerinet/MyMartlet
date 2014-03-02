@@ -23,11 +23,12 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/replyEmails"
+                android:id="@+id/emailRecipient"
                 android:layout_width="0dp"
-                android:inputType="textEmailAddress"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:inputType="textEmailAddress" >
+
             </EditText>
         </LinearLayout>
 
@@ -45,11 +46,12 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/replyCarbonCopy"
+                android:id="@+id/emailCarbonCopy"
                 android:layout_width="0dp"
-                android:inputType="textEmailAddress"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:inputType="textEmailAddress" >
+
             </EditText>
         </LinearLayout>
 
@@ -67,17 +69,18 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/replySubject"
+                android:id="@+id/emailSubject"
                 android:layout_width="0dp"
-                android:inputType="textEmailSubject"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:inputType="textEmailSubject" >
+
             </EditText>
         </LinearLayout>
     </LinearLayout>
 
     <EditText
-        android:id="@+id/replyBody"
+        android:id="@+id/emailBody"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -87,11 +90,10 @@
         android:scrollbars="vertical" />
 
     <Button
-        android:id="@+id/replyEmail"
+        android:id="@+id/sendEmailButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="sendMessage"
-        android:text="@string/reply_send"
-        />
+        android:text="@string/reply_send" />
 
 </LinearLayout>

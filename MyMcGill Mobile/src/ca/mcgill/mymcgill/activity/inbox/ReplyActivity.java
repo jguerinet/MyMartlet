@@ -44,14 +44,15 @@ public class ReplyActivity extends Activity {
 		}
 		else isSending = false;
 		
+		// TODO Modify for Forward Email
 		if (!isSending)
 		{
 			//Display email sender
-			EditText emails = (EditText) findViewById(R.id.replyEmails);
+			EditText emails = (EditText) findViewById(R.id.emailRecipient);
 			emails.setText(email.getSender());
 			
 			//Display subject
-			emailSubject = (EditText)findViewById(R.id.replySubject);
+			emailSubject = (EditText)findViewById(R.id.emailSubject);
 			if (email.getSubject().contains("RE:")) {
 				emailSubject.setText(email.getSubject());
 			} else {
@@ -69,8 +70,7 @@ public class ReplyActivity extends Activity {
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // add attachement    
+        switch (item.getItemId()) {   
             case Constants.MENU_ITEM_ADD_ATTACH:
             	// TODO add attachements
             	return true;
@@ -79,16 +79,14 @@ public class ReplyActivity extends Activity {
     }
 
 	public void sendMessage(View v) {
-		EditText body = (EditText) findViewById(R.id.replyBody);
+		EditText body = (EditText) findViewById(R.id.emailBody);
 		replyEmail = new Email(emailSubject.getText().toString(), email.getSenderList(), body.getText().toString(), this);
 		new Thread(new Runnable() {
             @Override
             public void run() {
 				replyEmail.send();
 				finish();
-                    };
-                
-            
+                    };          
         }).start();
 	}
 }

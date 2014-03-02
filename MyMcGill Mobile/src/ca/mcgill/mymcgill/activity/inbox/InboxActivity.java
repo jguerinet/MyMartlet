@@ -81,7 +81,6 @@ public class InboxActivity extends DrawerActivity{
     }
 
 
-
 	//JDA
     @Override
     protected void onResume() {

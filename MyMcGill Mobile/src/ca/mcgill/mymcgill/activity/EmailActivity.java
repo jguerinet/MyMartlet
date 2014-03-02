@@ -77,6 +77,11 @@ public class EmailActivity extends Activity {
                 replyIntent.putExtra(Constants.EMAIL, email);
                 this.startActivity(replyIntent);
             	return true;
+            case Constants.MENU_ITEM_FORWARD:
+            	// TODO switch to forward activity
+                Intent forwardIntent = new Intent(this,ReplyActivity.class);
+                this.startActivity(forwardIntent);
+            	return true;
         }
         return super.onOptionsItemSelected(item);
     }
