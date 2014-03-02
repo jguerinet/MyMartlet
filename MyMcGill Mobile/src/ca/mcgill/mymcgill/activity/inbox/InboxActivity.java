@@ -2,15 +2,20 @@ package ca.mcgill.mymcgill.activity.inbox;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.EmailActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.Inbox;
@@ -58,9 +63,22 @@ public class InboxActivity extends DrawerActivity{
 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-    	menu.add(Menu.NONE, Constants.MENU_ITEM_REPLY, Menu.NONE, R.string.reply_send);
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_SEND, Menu.NONE, R.string.reply_send);
 		return super.onCreateOptionsMenu(menu);
 	}
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) 
+        {   
+            case Constants.MENU_ITEM_SEND:
+            	//TODO 
+                Intent replyIntent = new Intent(this,ReplyActivity.class);
+                this.startActivity(replyIntent);
+            	return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 

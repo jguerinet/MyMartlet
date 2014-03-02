@@ -76,12 +76,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/bSentEmail"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/reply_add_attachment" />
-
     <EditText
         android:id="@+id/replyBody"
         android:layout_width="match_parent"

@@ -4,10 +4,15 @@ import ca.mcgill.mymcgill.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import ca.mcgill.mymcgill.activity.EmailActivity;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.Email;
@@ -21,7 +26,6 @@ public class ReplyActivity extends Activity {
 
 	Email email;
 	EditText emailSubject;
-	
 	Email replyEmail;
 	
 	@Override
@@ -30,22 +34,50 @@ public class ReplyActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_reply);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
+		boolean isSending;
 		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 		
-        //Display email sender
-        EditText emails = (EditText) findViewById(R.id.replyEmails);
-        emails.setText(email.getSender());
-        
-		//Display subject
-        emailSubject = (EditText)findViewById(R.id.replySubject);
-        if (email.getSubject().contains("RE:")) {
-        	emailSubject.setText(email.getSubject());
-        } else {
-        	emailSubject.setText("RE: " + email.getSubject());
-        }
+		if (email == null)
+		{
+			isSending = true;
+			this.setTitle("Send Email");
+		}
+		else isSending = false;
+		
+		if (!isSending)
+		{
+			//Display email sender
+			EditText emails = (EditText) findViewById(R.id.replyEmails);
+			emails.setText(email.getSender());
+			
+			//Display subject
+			emailSubject = (EditText)findViewById(R.id.replySubject);
+			if (email.getSubject().contains("RE:")) {
+				emailSubject.setText(email.getSubject());
+			} else {
+				emailSubject.setText("RE: " + email.getSubject());
+			}			
+		}
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// add attachment menu item
+		menu.add(Menu.NONE, Constants.MENU_ITEM_ADD_ATTACH, Menu.NONE,R.string.reply_add_attachment);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // add attachement    
+            case Constants.MENU_ITEM_ADD_ATTACH:
+            	// TODO add attachements
+            	return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 	public void sendMessage(View v) {
 		EditText body = (EditText) findViewById(R.id.replyBody);
 		replyEmail = new Email(emailSubject.getText().toString(), email.getSenderList(), body.getText().toString(), this);

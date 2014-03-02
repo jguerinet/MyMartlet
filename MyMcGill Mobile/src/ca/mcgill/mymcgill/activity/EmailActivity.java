@@ -72,8 +72,6 @@ public class EmailActivity extends Activity {
                 return true;
             // Switches to reply activity    
             case Constants.MENU_ITEM_REPLY:
-            	Toast msg = Toast.makeText(EmailActivity.this, "Reply", Toast.LENGTH_LONG);
-            	msg.show();
             	// TODO switch to reply activity
                 Intent replyIntent = new Intent(this,ReplyActivity.class);
                 replyIntent.putExtra(Constants.EMAIL, email);
@@ -86,7 +84,10 @@ public class EmailActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
+    	// reply menu item
     	menu.add(Menu.NONE, Constants.MENU_ITEM_REPLY, Menu.NONE,R.string.reply_button);
+    	// forward menu item
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_FORWARD, Menu.NONE,R.string.email_forward);
     	return super.onCreateOptionsMenu(menu);
     }
     @Override
