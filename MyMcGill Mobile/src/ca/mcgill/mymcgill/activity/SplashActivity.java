@@ -1,9 +1,13 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.util.ApplicationClass;
@@ -43,8 +47,9 @@ public class SplashActivity extends Activity {
                     if(connectionResult == ConnectionStatus.CONNECTION_OK){
                     	
                     	//Retrieve the number of new emails so it can be displayed in the drawer
-                    	Inbox dummy = ApplicationClass.getInbox();
-//                    	Constants.NUMBER_UNREAD_EMAILS = dummy.getNumNewEmails();
+                    	Context context = SplashActivity.this;
+                    	Inbox dummy = new Inbox(Load.loadFullUsername(context),Load.loadPassword(context));
+                    	Constants.NUMBER_UNREAD_EMAILS = dummy.getNumNewEmails();
                     	
                         startActivity(new Intent(SplashActivity.this, ApplicationClass.getHomePage().getHomePageClass()));
                         finish();
