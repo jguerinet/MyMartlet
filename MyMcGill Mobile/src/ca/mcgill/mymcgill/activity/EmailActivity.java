@@ -1,16 +1,16 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.Html;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.object.Email;
@@ -24,10 +24,6 @@ import ca.mcgill.mymcgill.util.Constants;
 public class EmailActivity extends Activity {
 
 	Email email;
-	// menu option constants for email activity 
-	// TODO Move it to Constants
-	final int  MENU_ITEM_REPLY = 1, MENU_ITEM_SEND = 2, MENU_ITEM_ADD_ATTACH = 3;
-	
 	 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +49,21 @@ public class EmailActivity extends Activity {
         emailDate.setText(email.getDate());
 
         //Display email body
-        TextView emailBody = (TextView)findViewById(R.id.email_body);
-        emailBody.setText(Html.fromHtml(email.getBody()));
+        WebView emailBody = (WebView)findViewById(R.id.email_body);
+        emailBody.getSettings().setLoadWithOverviewMode(true);
+        emailBody.getSettings().setUseWideViewPort(false);
+        emailBody.getSettings().setBuiltInZoomControls(true);
+        emailBody.getSettings().setDisplayZoomControls(false);
+        emailBody.loadData(email.getBody(), "text/html", "UTF-8");
         
-        // mark as read
-        //if(!email.isRead()) {
-        	email.markAsRead(); 
-        //}
+        final Context context = this;
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				email.markAsRead(context);
+			};
+
+		}).start();
     }
 
     @Override
