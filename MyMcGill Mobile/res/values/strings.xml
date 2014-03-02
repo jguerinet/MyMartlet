@@ -93,9 +93,10 @@
     <string name="reply_to">To:</string>
     <string name="reply_carbon_copy">CC:</string>
     <string name="reply_subject">Subject:</string>
-    <string name="reply_button">Reply</string>
+    <string name="reply_button">Reply Email</string>
     <string name="reply_add_attachment">Add Attachment</string>
-    <string name="reply_send">Send</string>
+    <string name="reply_send">Send Email</string>
+    <string name="email_forward">Forward Email</string>
 
     <!-- SettingsActivity -->
     <string name="settings_language">Language</string>

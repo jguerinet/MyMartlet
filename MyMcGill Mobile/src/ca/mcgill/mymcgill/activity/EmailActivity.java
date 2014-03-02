@@ -5,16 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
-import android.widget.EditText;
-import android.widget.TextView;
-
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.widget.TextView;
+import android.widget.Toast;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.object.Email;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 
 
@@ -25,6 +24,10 @@ import ca.mcgill.mymcgill.util.Constants;
 public class EmailActivity extends Activity {
 
 	Email email;
+	// menu option constants for email activity 
+	// TODO Move it to Constants
+	final int  MENU_ITEM_REPLY = 1, MENU_ITEM_SEND = 2, MENU_ITEM_ADD_ATTACH = 3;
+	
 	 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,18 +62,39 @@ public class EmailActivity extends Activity {
         //}
     }
 
-    //Returns to parent activity when the top left button is clicked
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        	//Returns to parent activity when the top left button is clicked
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 return true;
+            // Switches to reply activity    
+            case Constants.MENU_ITEM_REPLY:
+            	// TODO switch to reply activity
+                Intent replyIntent = new Intent(this,ReplyActivity.class);
+                replyIntent.putExtra(Constants.EMAIL, email);
+                this.startActivity(replyIntent);
+            	return true;
+            case Constants.MENU_ITEM_FORWARD:
+            	// TODO switch to forward activity
+                Intent forwardIntent = new Intent(this,ReplyActivity.class);
+                this.startActivity(forwardIntent);
+            	return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+    	// reply menu item
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_REPLY, Menu.NONE,R.string.reply_button);
+    	// forward menu item
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_FORWARD, Menu.NONE,R.string.email_forward);
+    	return super.onCreateOptionsMenu(menu);
+    }
     @Override
     public void onBackPressed(){
         super.onBackPressed();

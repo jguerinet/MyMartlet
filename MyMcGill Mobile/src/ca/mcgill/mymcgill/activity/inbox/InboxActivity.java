@@ -2,18 +2,25 @@ package ca.mcgill.mymcgill.activity.inbox;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.EmailActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
@@ -52,7 +59,29 @@ public class InboxActivity extends DrawerActivity{
         new InboxGetter(refresh).execute();
     }
     
-    //JDA
+    
+
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_SEND, Menu.NONE, R.string.reply_send);
+		return super.onCreateOptionsMenu(menu);
+	}
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) 
+        {   
+            case Constants.MENU_ITEM_SEND:
+            	//TODO 
+                Intent replyIntent = new Intent(this,ReplyActivity.class);
+                this.startActivity(replyIntent);
+            	return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+	//JDA
     @Override
     protected void onResume() {
        super.onResume();
