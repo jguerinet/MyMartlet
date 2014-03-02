@@ -52,11 +52,17 @@ public class EmailActivity extends Activity {
         //Display email body
         TextView emailBody = (TextView)findViewById(R.id.email_body);
         emailBody.setText(Html.fromHtml(email.getBody()));
-        
-        // mark as read
-        //if(!email.isRead()) {
-        	email.markAsRead(); 
-        //}
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// mark as read
+				// if(!email.isRead()) {
+				email.markAsRead();
+				// }
+			};
+
+		}).start();
     }
 
     //Returns to parent activity when the top left button is clicked

@@ -51,8 +51,9 @@ public class Email implements Serializable{
         this.mBody = body;
         this.isRead = isRead;
 
-        //this.password = "";
-        //this.from = "joshua.alfaro@mail.mcgill.ca";
+        // real info here
+        this.password = "";
+        this.from = "";
     }
     
     // Second Constructor for reply/send emails (to add context)
@@ -74,16 +75,18 @@ public class Email implements Serializable{
 		Session session = Session.getInstance(props, auth);
 		session.setDebug(debug);
 		try {
-			Store store = session.getStore("https://exchange.mcgill.ca/owa/auth/logon.aspx?replaceCurrent=1&url=https%3a%2f%2fexchange.mcgill.ca%2fowa%2f");
+			Store store = session.getStore("imaps");
+			store.connect(host, 587, from, password);
 			// Get folder
-			Folder folder = store.getFolder("INBOX");
+			Folder folder = store.getFolder("Inbox");
 			if (folder != null && !folder.exists()) {
-				folder.open(Folder.READ_ONLY);
+				folder.open(Folder.READ_WRITE);
 				folder.getMessage(0).getContent();	// number is incorrect
-				folder.close(false);
 				MimeMessage source = (MimeMessage) folder.getMessage(0);
 				MimeMessage copy = new MimeMessage(source);
 				folder.getMessage(0).setFlag(Flags.Flag.SEEN, true);
+				folder.close(false);
+				store.close();
 	        }
 		} catch (Exception e) {
 			e.printStackTrace();
