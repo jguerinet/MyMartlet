@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
@@ -14,6 +15,7 @@ import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
@@ -52,7 +54,17 @@ public class InboxActivity extends DrawerActivity{
         new InboxGetter(refresh).execute();
     }
     
-    //JDA
+    
+
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_REPLY, Menu.NONE, R.string.reply_send);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+
+
+	//JDA
     @Override
     protected void onResume() {
        super.onResume();
