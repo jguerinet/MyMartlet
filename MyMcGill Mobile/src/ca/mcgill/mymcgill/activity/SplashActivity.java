@@ -3,9 +3,9 @@ package ca.mcgill.mymcgill.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
+import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Clear;
 import ca.mcgill.mymcgill.util.Connection;
@@ -41,6 +41,11 @@ public class SplashActivity extends Activity {
                     ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(SplashActivity.this, username, password);
                     //Successful connection: ScheduleActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK){
+                    	
+                    	//Retrieve the number of new emails so it can be displayed in the drawer
+                    	Inbox dummy = ApplicationClass.getInbox();
+//                    	Constants.NUMBER_UNREAD_EMAILS = dummy.getNumNewEmails();
+                    	
                         startActivity(new Intent(SplashActivity.this, ApplicationClass.getHomePage().getHomePageClass()));
                         finish();
                     }

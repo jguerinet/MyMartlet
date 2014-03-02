@@ -37,6 +37,7 @@ import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Help;
 import ca.mcgill.mymcgill.util.Load;
 
@@ -72,7 +73,9 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         if(refresh){
             loadInfo();
         }
-
+        
+        //assert(Constants.NUMBER_UNREAD_EMAILS == 3);
+        
         //Start thread to get schedule
         //If the courses list is not empty, we only need to refresh
         new ScheduleGetter(refresh).execute();

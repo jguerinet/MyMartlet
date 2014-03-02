@@ -1,28 +1,25 @@
 package ca.mcgill.mymcgill.object;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
 import javax.mail.Address;
 import javax.mail.BodyPart;
-import javax.mail.Flags;
+import javax.mail.Flags.Flag;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
+import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
-import javax.mail.Flags.Flag;
-import javax.mail.search.FlagTerm;
 
 import ca.mcgill.mymcgill.util.Constants;
-import org.apache.commons.io.IOUtils;
 
 /**
  * Created by Ryan Singzon on 15/02/14.
@@ -86,8 +83,11 @@ public class Inbox implements Serializable{
                     from.add(address.toString());
                 }
 
-                String body;
-                body = getMessageBody(message);
+                String body = "";
+                try{
+                    body = getText(message);
+                }catch(Exception e){}
+
 
                 boolean emailExists = false;
 
@@ -121,41 +121,41 @@ public class Inbox implements Serializable{
 
 
     //Gets the message body from the Message object
-    public String getMessageBody(Message message) {
-        String body = "";
-        try {
-            Object content = message.getContent();
-
-            //Check if the message content is a String
-            if (content instanceof String) {
-                body += content;
-            }
-
-            //If it is not, check if it is a Multipart
-            else if (content instanceof Multipart) {
-                Multipart multiPart = (Multipart) content;
-                body += processMultiPart(multiPart);
-            }
-
-            else if (content instanceof InputStream) {
-                InputStream inStream = (InputStream) content;
-
-                StringWriter writer = new StringWriter();
-                IOUtils.copy(inStream, writer, "UTF-8");
-                body += writer.toString();
-
-                /*int ch;
-                while ((ch = inStream.read()) != -1) {
-                    body += ch;
-                }*/
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
+    public String getText(Part p) throws MessagingException, IOException {
+        if (p.isMimeType("text/*")) {
+            String s = (String)p.getContent();
+            return s;
         }
-        return body;
+
+        if (p.isMimeType("multipart/alternative")) {
+            // prefer html text over plain text
+            Multipart mp = (Multipart)p.getContent();
+            String text = null;
+            for (int i = 0; i < mp.getCount(); i++) {
+                Part bp = mp.getBodyPart(i);
+                if (bp.isMimeType("text/plain")) {
+                    if (text == null)
+                        text = getText(bp);
+                    continue;
+                } else if (bp.isMimeType("text/html")) {
+                    String s = getText(bp);
+                    if (s != null)
+                        return s;
+                } else {
+                    return getText(bp);
+                }
+            }
+            return text;
+        } else if (p.isMimeType("multipart/*")) {
+            Multipart mp = (Multipart)p.getContent();
+            for (int i = 0; i < mp.getCount(); i++) {
+                String s = getText(mp.getBodyPart(i));
+                if (s != null)
+                    return s;
+            }
+        }
+
+        return null;
     }
 
     public String processMultiPart(Multipart content) {
