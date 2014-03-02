@@ -69,45 +69,37 @@ public class Email implements Serializable{
     }
 
     public void markAsRead(Context context) {
-    	this.password = Load.loadPassword(context);
-        this.from = Load.loadFullUsername(context);
+    	password = Load.loadPassword(context);
+        from = Load.loadFullUsername(context);
     	
-    	//isRead = true;
-    	
-    	
-        
-    	Properties props;
-    	//Set properties for McGill email server
-    	props = new Properties();
-    	props.setProperty("mail.host", Constants.MAIL_HOST);
-    	props.setProperty("mail.port", Constants.MAIL_PORT);
-    	props.setProperty("mail.transport.protocol", Constants.MAIL_PROTOCOL);
-    	Session session;
-        session = Session.getInstance(props,
+    	///Set properties for McGill email server
+        Properties mProperties = new Properties();
+        mProperties.setProperty("mail.host", Constants.MAIL_HOST);
+        mProperties.setProperty("mail.port", Constants.MAIL_PORT);
+        mProperties.setProperty("mail.transport.protocol", Constants.MAIL_PROTOCOL);
+        Session session = Session.getInstance(mProperties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(from, password);
                     }
                 });
-		try {
-			Store store = session.getStore(Constants.MAIL_PROTOCOL);
+
+        //Open a connection to the McGill server and fetch emails
+        try {
+            Store store = session.getStore(Constants.MAIL_PROTOCOL);
             store.connect();
-			//store.connect(Constants.MAIL_HOST, from, password);
-			// Get folder
-			Folder folder = store.getFolder("INBOX");
-			//if (folder != null && !folder.exists()) {
-				folder.open(Folder.READ_WRITE);
-				int count = folder.getMessageCount();
-				Log.e("count", ""+count);
-			//	for (int i = 0; i < count; i++) {
-					folder.getMessage(count-1).setFlag(Flags.Flag.SEEN, true);
-					//folder.getMessage(i).getContent();
-			//	}
-//				folder.getMessage(count-1).getContent();	// number is incorrect
-//				folder.getMessage(count-1).setFlag(Flags.Flag.SEEN, false);
-				folder.close(true);
-				store.close();
-	     //   }
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_WRITE);
+			int count = inbox.getMessageCount();
+			Log.e("Count", "" + count);
+			for (int i = count-1; i > count-10; i--) {
+				inbox.getMessage(i).setFlag(Flags.Flag.SEEN, true);
+				Log.e("Count", "" + count);
+			}
+			// folder.getMessage(count-1).getContent(); // number is incorrect
+			// folder.getMessage(count-1).setFlag(Flags.Flag.SEEN, false);
+			inbox.close(true);
+			store.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
