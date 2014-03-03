@@ -31,6 +31,7 @@ public class Email implements Serializable{
     private String mDate;
     private String mBody;
     private boolean isRead;
+    private int index;
     
     private final static String port = "587";
 	private final static String host = "smtp.mcgill.ca";
@@ -46,12 +47,14 @@ public class Email implements Serializable{
 						cc,
 						bcc;
 
-    public Email(String subject, List<String> sender, String date, String body, boolean isRead){
+    public Email(String subject, List<String> sender, String date, String body, boolean isRead, int emailIndex){
         this.mSubject = subject;
         this.to = sender;
         this.mDate = date;
         this.mBody = body;
         this.isRead = isRead;
+        this.index = emailIndex;
+        
 
         // real info here
         this.password = "";
@@ -90,14 +93,8 @@ public class Email implements Serializable{
             store.connect();
 			Folder inbox = store.getFolder("INBOX");
 			inbox.open(Folder.READ_WRITE);
-			int count = inbox.getMessageCount();
-			Log.e("Count", "" + count);
-			for (int i = count-1; i > count-10; i--) {
-				inbox.getMessage(i).setFlag(Flags.Flag.SEEN, true);
-				Log.e("Count", "" + count);
-			}
-			// folder.getMessage(count-1).getContent(); // number is incorrect
-			// folder.getMessage(count-1).setFlag(Flags.Flag.SEEN, false);
+			inbox.getMessage(index).setFlag(Flags.Flag.SEEN, true);
+			Log.e("Email", "" + index);
 			inbox.close(true);
 			store.close();
 		} catch (Exception e) {

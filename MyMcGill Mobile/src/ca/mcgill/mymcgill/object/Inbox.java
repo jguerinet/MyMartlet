@@ -100,7 +100,7 @@ public class Inbox implements Serializable{
 
                 //If the email does not exist, add it to the inbox
                 if(!emailExists){
-                    Email newEmail = new Email(message.getSubject(), from, message.getSentDate().toString(), body, message.isSet(Flag.SEEN));
+                    Email newEmail = new Email(message.getSubject(), from, message.getSentDate().toString(), body, message.isSet(Flag.SEEN), (numEmails-(emailsToRetrieve-i)));
                     mEmails.add(newEmail);
 
                     //Increment the unread message count if unread
@@ -189,10 +189,4 @@ public class Inbox implements Serializable{
     public int getNumNewEmails(){
         return mNumNewEmails;
     }
-    
-    // JDA
-    public void decrementNumNewEmails(){
-        //mNumNewEmails--;
-    }
-
 }
