@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
@@ -89,13 +88,10 @@ public class TranscriptActivity extends DrawerActivity {
         //Retrieve content from transcript page
         @Override
         protected Void doInBackground(Void... params){
-            String transcriptString = null;
+            String transcriptString;
             final Activity activity = TranscriptActivity.this;
-            try {
-                transcriptString = Connection.getInstance().getUrl(activity, Connection.minervaTranscript);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            transcriptString = Connection.getInstance().getUrl(activity, Connection.minervaTranscript);
 
             if(transcriptString == null){
                 activity.runOnUiThread(new Runnable() {
@@ -105,6 +101,10 @@ public class TranscriptActivity extends DrawerActivity {
                                 activity.getResources().getString(R.string.login_error_other));
                     }
                 });
+                return null;
+            }
+            //Empty String: no need for an alert dialog but no need to reload
+            else if(TextUtils.isEmpty(transcriptString)){
                 return null;
             }
 

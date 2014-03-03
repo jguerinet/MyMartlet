@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,7 +14,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,18 +97,9 @@ public class EbillActivity extends DrawerActivity {
         protected Void doInBackground(Void... params){
 
             final Activity activity = EbillActivity.this;
-            String ebillString = null;
+            String ebillString;
 
-
-            try {
-                ebillString = Connection.getInstance().getUrl(EbillActivity.this, Connection.minervaEbill);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (Exception e)
-            {
-            	e.printStackTrace();
-            }
+            ebillString = Connection.getInstance().getUrl(EbillActivity.this, Connection.minervaEbill);
 
             if(ebillString == null){
                 activity.runOnUiThread(new Runnable() {
@@ -119,6 +109,10 @@ public class EbillActivity extends DrawerActivity {
                                 activity.getResources().getString(R.string.login_error_other));
                     }
                 });
+                return null;
+            }
+            //Empty String: no need for an alert dialog but no need to reload
+            else if(TextUtils.isEmpty(ebillString)){
                 return null;
             }
 

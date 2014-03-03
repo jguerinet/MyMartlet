@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -316,14 +316,10 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String scheduleString = null;
+            String scheduleString;
             final Activity activity = ScheduleActivity.this;
-            
-			try {
-				scheduleString = Connection.getInstance().getUrl(ScheduleActivity.this, Connection.minervaSchedule);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+
+  			scheduleString = Connection.getInstance().getUrl(ScheduleActivity.this, Connection.minervaSchedule);
 
             if(scheduleString == null){
                 activity.runOnUiThread(new Runnable() {
@@ -333,6 +329,10 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                                 activity.getResources().getString(R.string.login_error_other));
                     }
                 });
+                return null;
+            }
+            //Empty String: no need for an alert dialog but no need to reload
+            else if(TextUtils.isEmpty(scheduleString)){
                 return null;
             }
 

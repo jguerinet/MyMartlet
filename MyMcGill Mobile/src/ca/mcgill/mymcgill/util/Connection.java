@@ -1,6 +1,8 @@
 package ca.mcgill.mymcgill.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -24,6 +26,8 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 
@@ -138,30 +142,78 @@ public class Connection {
 	
 	/**
 	 *  The method getURL with retrieve a webpage as text
-	 * @throws IOException
 	 * 
 	  */
-	public String getUrl(Context context, String url) throws IOException {
+	public String getUrl(final Activity activity, String url){
+        //Initial internet check
+        if(!isNetworkAvailable(activity)){
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                            activity.getResources().getString(R.string.login_error_no_internet));
+                }
+            });
+
+            //Return empty String
+            return "";
+        }
 
         String	result = null;
         try {
             result = http.getPageContent(url);
         } catch (MinervaLoggedOutException e) {
             //User has been logged out, so we need to log him back in
-            ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context);
+            final ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(activity);
 
             //Successfully logged him back in, try retrieving the stuff again
             if(connectionResult == ConnectionStatus.CONNECTION_OK){
                 try{
                     result = http.getPageContent(url);
-                } catch (MinervaLoggedOutException exception){
+                } catch (Exception exception){
                     //Another logged out exception: doesn't work so this will just return null
                 }
             }
-            //Not successfully logged in, so just return null
+            //Wrong credentials: back to login screen
+            else if(connectionResult == ConnectionStatus.CONNECTION_WRONG_INFO){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Clear.clearAllInfo(activity);
+
+                        //Go back to LoginActivity
+                        Intent intent = new Intent(activity, LoginActivity.class);
+                        intent.putExtra(Constants.CONNECTION_STATUS, connectionResult);
+                        activity.startActivity(intent);
+
+                        //Finish this activity
+                        activity.finish();
+                    }
+                });
+
+                //Return empty String
+                result = "";
+            }
+            //No internet: show no internet dialog
+            else if(connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                activity.getResources().getString(R.string.login_error_no_internet));
+                    }
+                });
+
+                //Return empty String
+                result = "";
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
         }
 
-		return result;
+        //Other problems will return null
+        return result;
 	}
 	
 	/**
@@ -225,8 +277,8 @@ public class Connection {
 	 * 
 	 */
 	private String getPageContent(String url) throws MinervaLoggedOutException, IOException {
-	 
-		URL obj = new URL(url);
+		//Initial check for internet connection
+        URL obj = new URL(url);
 		conn = (HttpsURLConnection) obj.openConnection();
 	 
 		// default is GET
