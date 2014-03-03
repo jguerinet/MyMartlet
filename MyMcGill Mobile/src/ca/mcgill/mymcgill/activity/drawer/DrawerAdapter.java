@@ -23,7 +23,6 @@ import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 import ca.mcgill.mymcgill.object.DrawerItem;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Clear;
-import ca.mcgill.mymcgill.util.Constants;
 
 /**
  * Author: Shabbir
@@ -33,6 +32,8 @@ public class DrawerAdapter extends BaseAdapter {
     private Activity mActivity;
     private List<DrawerItem> mDrawerItems;
     private int mSelectedPosition;
+    private int mUnreadMessages;
+    private TextView mUnreadMessagesView;
 
     //Easy way to keep track of the list order (for the OnClick)
     public static final int SCHEDULE_POSITION = 0;
@@ -47,6 +48,7 @@ public class DrawerAdapter extends BaseAdapter {
         this.mActivity = activity;
         this.mDrawerItems = new ArrayList<DrawerItem>();
         this.mSelectedPosition = selectedPosition;
+        this.mUnreadMessages = 0;
         generateDrawerItems();
     }
 
@@ -118,9 +120,9 @@ public class DrawerAdapter extends BaseAdapter {
         title.setText(currentItem.getTitle());
         
         TextView badge = (TextView)view.findViewById(R.id.drawer_email_count);
-        badge.setText(String.valueOf(Constants.NUMBER_UNREAD_EMAILS));
         if(position == EMAIL_POSITION){
-        	badge.setVisibility(View.VISIBLE);
+            mUnreadMessagesView = badge;
+            updateUnreadMessages(mUnreadMessages);
         }
         else{
         	badge.setVisibility(View.INVISIBLE);
@@ -167,5 +169,20 @@ public class DrawerAdapter extends BaseAdapter {
         }
 
         return view;
+    }
+
+    public void updateUnreadMessages(int unreadMessages){
+        mUnreadMessages = unreadMessages;
+
+        if(mUnreadMessagesView != null){
+            if(unreadMessages == 0){
+                mUnreadMessagesView.setVisibility(View.INVISIBLE);
+            }
+            else{
+                mUnreadMessagesView.setVisibility(View.VISIBLE);
+                mUnreadMessagesView.setText(String.valueOf(mUnreadMessages));
+            }
+            notifyDataSetChanged();
+        }
     }
 }
