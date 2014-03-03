@@ -23,6 +23,7 @@ import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 import ca.mcgill.mymcgill.object.DrawerItem;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Clear;
+import ca.mcgill.mymcgill.util.Constants;
 
 /**
  * Author: Shabbir
@@ -115,7 +116,16 @@ public class DrawerAdapter extends BaseAdapter {
 
         TextView title = (TextView)view.findViewById(R.id.drawerItem_title);
         title.setText(currentItem.getTitle());
-
+        
+        TextView badge = (TextView)view.findViewById(R.id.drawer_email_count);
+        badge.setText(String.valueOf(Constants.NUMBER_UNREAD_EMAILS));
+        if(position == EMAIL_POSITION){
+        	badge.setVisibility(View.VISIBLE);
+        }
+        else{
+        	badge.setVisibility(View.INVISIBLE);
+        }
+        
         //OnClick
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,6 +23,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import android.content.Context;
+import android.util.Log;
+import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
@@ -35,6 +37,7 @@ public class Email implements Serializable{
     private String mDate;
     private String mBody;
     private boolean isRead;
+    private int index;
     
     private final static String port = "587";
 	private final static String host = "smtp.mcgill.ca";
@@ -50,15 +53,18 @@ public class Email implements Serializable{
 						cc,
 						bcc;
 
-    public Email(String subject, List<String> sender, String date, String body, boolean isRead){
+    public Email(String subject, List<String> sender, String date, String body, boolean isRead, int emailIndex){
         this.mSubject = subject;
         this.to = sender;
         this.mDate = date;
         this.mBody = body;
         this.isRead = isRead;
+        this.index = emailIndex;
+        
 
-        //this.password = "";
-        //this.from = "joshua.alfaro@mail.mcgill.ca";
+        // real info here
+        this.password = "";
+        this.from = "";
     }
     
     // Second Constructor for reply/send emails (to add context)
@@ -71,26 +77,34 @@ public class Email implements Serializable{
         this.from = Load.loadFullUsername(context);
     }
 
-    public void markAsRead() {
+    public void markAsRead(Context context) {
     	isRead = true;
     	
-    	Properties props = this.setProperties();
-		Authenticator auth = this.setAuthenticator();
-		
-		Session session = Session.getInstance(props, auth);
-		session.setDebug(debug);
-		try {
-			Store store = session.getStore("https://exchange.mcgill.ca/owa/auth/logon.aspx?replaceCurrent=1&url=https%3a%2f%2fexchange.mcgill.ca%2fowa%2f");
-			// Get folder
-			Folder folder = store.getFolder("INBOX");
-			if (folder != null && !folder.exists()) {
-				folder.open(Folder.READ_ONLY);
-				folder.getMessage(0).getContent();	// number is incorrect
-				folder.close(false);
-				MimeMessage source = (MimeMessage) folder.getMessage(0);
-				MimeMessage copy = new MimeMessage(source);
-				folder.getMessage(0).setFlag(Flags.Flag.SEEN, true);
-	        }
+    	password = Load.loadPassword(context);
+        from = Load.loadFullUsername(context);
+    	
+    	///Set properties for McGill email server
+        Properties mProperties = new Properties();
+        mProperties.setProperty("mail.host", Constants.MAIL_HOST);
+        mProperties.setProperty("mail.port", Constants.MAIL_PORT);
+        mProperties.setProperty("mail.transport.protocol", Constants.MAIL_PROTOCOL);
+        Session session = Session.getInstance(mProperties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(from, password);
+                    }
+                });
+
+        //Open a connection to the McGill server and fetch emails
+        try {
+            Store store = session.getStore(Constants.MAIL_PROTOCOL);
+            store.connect();
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_WRITE);
+			inbox.getMessage(index).setFlag(Flags.Flag.SEEN, true);
+			Log.e("Email", "" + index);
+			inbox.close(true);
+			store.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,6 +1,7 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -55,10 +56,14 @@ public class EmailActivity extends Activity {
         emailBody.getSettings().setDisplayZoomControls(false);
         emailBody.loadData(email.getBody(), "text/html", "UTF-8");
         
-        // mark as read
-        //if(!email.isRead()) {
-        	email.markAsRead(); 
-        //}
+        final Context context = this;
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				email.markAsRead(context);
+			};
+
+		}).start();
     }
 
     @Override
