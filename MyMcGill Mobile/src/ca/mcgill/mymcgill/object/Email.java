@@ -31,6 +31,7 @@ public class Email implements Serializable{
     private String mDate;
     private String mBody;
     private boolean isRead;
+    private int index;
     
     private final static String port = "587";
 	private final static String host = "smtp.mcgill.ca";
@@ -46,12 +47,14 @@ public class Email implements Serializable{
 						cc,
 						bcc;
 
-    public Email(String subject, List<String> sender, String date, String body, boolean isRead){
+    public Email(String subject, List<String> sender, String date, String body, boolean isRead, int emailIndex){
         this.mSubject = subject;
         this.to = sender;
         this.mDate = date;
         this.mBody = body;
         this.isRead = isRead;
+        this.index = emailIndex;
+        
 
         // real info here
         this.password = "";
@@ -69,45 +72,33 @@ public class Email implements Serializable{
     }
 
     public void markAsRead(Context context) {
-    	this.password = Load.loadPassword(context);
-        this.from = Load.loadFullUsername(context);
+    	isRead = true;
     	
-    	//isRead = true;
+    	password = Load.loadPassword(context);
+        from = Load.loadFullUsername(context);
     	
-    	
-        
-    	Properties props;
-    	//Set properties for McGill email server
-    	props = new Properties();
-    	props.setProperty("mail.host", Constants.MAIL_HOST);
-    	props.setProperty("mail.port", Constants.MAIL_PORT);
-    	props.setProperty("mail.transport.protocol", Constants.MAIL_PROTOCOL);
-    	Session session;
-        session = Session.getInstance(props,
+    	///Set properties for McGill email server
+        Properties mProperties = new Properties();
+        mProperties.setProperty("mail.host", Constants.MAIL_HOST);
+        mProperties.setProperty("mail.port", Constants.MAIL_PORT);
+        mProperties.setProperty("mail.transport.protocol", Constants.MAIL_PROTOCOL);
+        Session session = Session.getInstance(mProperties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(from, password);
                     }
                 });
-		try {
-			Store store = session.getStore(Constants.MAIL_PROTOCOL);
+
+        //Open a connection to the McGill server and fetch emails
+        try {
+            Store store = session.getStore(Constants.MAIL_PROTOCOL);
             store.connect();
-			//store.connect(Constants.MAIL_HOST, from, password);
-			// Get folder
-			Folder folder = store.getFolder("INBOX");
-			//if (folder != null && !folder.exists()) {
-				folder.open(Folder.READ_WRITE);
-				int count = folder.getMessageCount();
-				Log.e("count", ""+count);
-			//	for (int i = 0; i < count; i++) {
-					folder.getMessage(count-1).setFlag(Flags.Flag.SEEN, true);
-					//folder.getMessage(i).getContent();
-			//	}
-//				folder.getMessage(count-1).getContent();	// number is incorrect
-//				folder.getMessage(count-1).setFlag(Flags.Flag.SEEN, false);
-				folder.close(true);
-				store.close();
-	     //   }
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_WRITE);
+			inbox.getMessage(index).setFlag(Flags.Flag.SEEN, true);
+			Log.e("Email", "" + index);
+			inbox.close(true);
+			store.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
