@@ -1,25 +1,19 @@
 package ca.mcgill.mymcgill.activity.inbox;
 
-import ca.mcgill.mymcgill.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import ca.mcgill.mymcgill.activity.EmailActivity;
-import ca.mcgill.mymcgill.activity.LoginActivity;
-import ca.mcgill.mymcgill.object.ConnectionStatus;
+import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Email;
-import ca.mcgill.mymcgill.util.ApplicationClass;
-import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
-import ca.mcgill.mymcgill.util.Save;
 
 
 public class ReplyActivity extends Activity {
@@ -27,6 +21,8 @@ public class ReplyActivity extends Activity {
 	Email email;
 	EditText emailSubject;
 	Email replyEmail;
+	String attachFilePath;
+	LinearLayout layout;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +32,9 @@ public class ReplyActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		boolean isSending;
 		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
+		TextView attachText = (TextView) findViewById(R.id.attachText);
+		attachFilePath = null;
+		
 		
 		if (email == null)
 		{
@@ -50,7 +49,8 @@ public class ReplyActivity extends Activity {
 			//Display email sender
 			EditText emails = (EditText) findViewById(R.id.emailRecipient);
 			emails.setText(email.getSender());
-			
+			//get Layout
+			layout = (LinearLayout) findViewById(R.id.LinearLayout1);
 			//Display subject
 			emailSubject = (EditText)findViewById(R.id.emailSubject);
 			if (email.getSubject().contains("RE:")) {
@@ -73,19 +73,39 @@ public class ReplyActivity extends Activity {
         switch (item.getItemId()) {   
             case Constants.MENU_ITEM_ADD_ATTACH:
             	// TODO add attachements
-            	this.startActivity(new Intent(ReplyActivity.this,ca.mcgill.mymcgill.activity.inbox.AttachActivity.class));
+            	Intent attachIntent = new Intent(ReplyActivity.this,ca.mcgill.mymcgill.activity.inbox.AttachActivity.class);
+            	//attachIntent.putExtra(name, value)
+            	this.startActivity(attachIntent);
+            	
             	return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		attachFilePath = (String) getIntent().getStringExtra("file");
+		Toast.makeText(this,attachFilePath, Toast.LENGTH_SHORT).show();
+		TextView attachText = (TextView) findViewById(R.id.attachText);
+		if (attachFilePath == null) attachText.setText(attachText.getText() + " no files attached");
+		else attachText.setText(attachText.getText() + attachFilePath);
+		
+		
+
+	}
+
 	public void sendMessage(View v) {
 		EditText body = (EditText) findViewById(R.id.emailBody);
 		replyEmail = new Email(emailSubject.getText().toString(), email.getSenderList(), body.getText().toString(), this);
+		
 		new Thread(new Runnable() {
             @Override
             public void run() {
 				replyEmail.send();
+				if (attachFilePath != null) ; // attach file
 				finish();
                     };          
         }).start();
