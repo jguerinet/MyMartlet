@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -98,8 +99,10 @@ public class EbillActivity extends DrawerActivity {
         @Override
         protected Void doInBackground(Void... params){
             Context context = EbillActivity.this;
-            String ebillString = null;
+            Log.d("test", "context loaded");
+            String ebillString = null ;
             try {
+            	Log.d("test", "pre retrieve");
                 ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
             } catch (MinervaLoggedOutException e) {
                 e.printStackTrace();
@@ -122,6 +125,10 @@ public class EbillActivity extends DrawerActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            catch (Exception e)
+            {
+            	e.printStackTrace();
             }
 
             mEbillItems.clear();
