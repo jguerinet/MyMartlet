@@ -187,19 +187,19 @@ public class Load {
             ObjectInputStream in = new ObjectInputStream(fis);
             inbox = (Inbox) in.readObject();
         } catch (ClassNotFoundException e) {
-            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Inbox Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (OptionalDataException e) {
-            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Inbox Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (FileNotFoundException e) {
-            Log.e("Load UserInfo Failure", "File not found");
+            Log.e("Load Inbox Failure", "File not found");
             e.printStackTrace();
         } catch (StreamCorruptedException e) {
-            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Inbox Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Inbox Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         }
 
