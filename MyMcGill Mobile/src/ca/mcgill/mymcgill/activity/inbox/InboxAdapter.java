@@ -68,9 +68,9 @@ public class InboxAdapter extends BaseAdapter{
 
         //Make subject bold if unread
         if(!email.isRead()){
-            emailSubject.setTypeface(emailSubject.getTypeface(), Typeface.BOLD);
+            emailSubject.setTypeface(null, Typeface.BOLD);
         } else {
-        	emailSubject.setTypeface(emailSubject.getTypeface(), Typeface.NORMAL);
+        	emailSubject.setTypeface(null, Typeface.NORMAL);
         }
 
         //Place chevron

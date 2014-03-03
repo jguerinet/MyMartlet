@@ -19,6 +19,7 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
 
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -31,14 +32,14 @@ public class Inbox implements Serializable{
     private String mPassword;
 
     private List<Email> mEmails = new ArrayList<Email>();
-    private int mNumNewEmails = 0;
+    private int mNumNewEmails;
     private int numEmails;
     private int emailsToRetrieve = 10;
 
     public Inbox(String username, String password){
         this.mUserName = username;
         this.mPassword = password;
-        retrieveEmail();
+        this.mNumNewEmails = 0;
     }
 
     //Fetches the user's emails from their McGill email account
@@ -69,6 +70,9 @@ public class Inbox implements Serializable{
             //Retrieve the number of emails the user specifies (default 10)
             Message messages[] = inbox.getMessages(numEmails - emailsToRetrieve, numEmails);
 
+            //Reset the number of new emails to 0
+            mNumNewEmails = 0;
+
             //Add each message to the inbox object
             for (int i = messages.length-1; i > 0; i--) {
 
@@ -92,6 +96,8 @@ public class Inbox implements Serializable{
                 for(Email email : mEmails){
                     if(email.getDate().equals(message.getSentDate().toString()) && email.getSubject().equals(message.getSubject())){
                         emailExists = true;
+                        //Update the seen variable
+                        email.setRead(message.isSet(Flag.SEEN));
                     }
                 }
 
@@ -99,11 +105,11 @@ public class Inbox implements Serializable{
                 if(!emailExists){
                     Email newEmail = new Email(message.getSubject(), from, message.getSentDate().toString(), body, message.isSet(Flag.SEEN), (numEmails-(emailsToRetrieve-i)));
                     mEmails.add(newEmail);
+                }
 
-                    //Increment the unread message count if unread
-                    if(!message.isSet(Flag.SEEN)){
-                        mNumNewEmails++;
-                    }
+                //Increment the unread message count if unread
+                if(!message.isSet(Flag.SEEN)){
+                    mNumNewEmails++;
                 }
             }
 
@@ -114,6 +120,9 @@ public class Inbox implements Serializable{
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+
+        //Resave the inbox to the ApplicationClass
+        ApplicationClass.setInbox(this);
     }
 
 

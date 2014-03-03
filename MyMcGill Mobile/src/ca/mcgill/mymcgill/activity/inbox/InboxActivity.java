@@ -5,17 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.EmailActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.Inbox;
@@ -31,6 +28,7 @@ public class InboxActivity extends DrawerActivity{
     private Inbox mInbox;
     private TextView mTotalNew;
     private ListView mListView;
+    private boolean mFirstLoad = false;
     
     InboxAdapter adapter;
 
@@ -39,6 +37,8 @@ public class InboxActivity extends DrawerActivity{
         setContentView(R.layout.activity_inbox);
         mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EMAIL_POSITION);
         super.onCreate(savedInstanceState);
+
+        mFirstLoad = true;
 
         //Get the stored inbox from the ApplicationClass
         mInbox = ApplicationClass.getInbox();
@@ -84,8 +84,14 @@ public class InboxActivity extends DrawerActivity{
 	//JDA
     @Override
     protected void onResume() {
-       super.onResume();
-       //adapter.notifyDataSetInvalidated();
+        super.onResume();
+        if(!mFirstLoad){
+            //Update
+            new InboxGetter(true).execute();
+        }
+        else{
+            mFirstLoad = false;
+        }
     }
 
     //Populates the list with the emails contained in the Inbox object
@@ -108,7 +114,6 @@ public class InboxActivity extends DrawerActivity{
         //Load adapter
         adapter = new InboxAdapter(InboxActivity.this, mInbox);
         mListView.setAdapter(adapter);
-
     }
 
     private class InboxGetter extends AsyncTask<Void, Void, Void> {
@@ -140,15 +145,13 @@ public class InboxActivity extends DrawerActivity{
         protected Void doInBackground(Void... params){
             Context context = InboxActivity.this;
 
-            //Retrieve inbox
-            if(mInbox != null){
-                mInbox.retrieveEmail();
-            } else{
+            //If null, create new Inbox
+            if(mInbox == null){
                 mInbox = new Inbox(Load.loadFullUsername(context),Load.loadPassword(context));
             }
 
-            //Save it to the instance variable in the Application class
-            ApplicationClass.setInbox(mInbox);
+            //Check messages
+            mInbox.retrieveEmail();
 
             runOnUiThread(new Runnable() {
                 @Override

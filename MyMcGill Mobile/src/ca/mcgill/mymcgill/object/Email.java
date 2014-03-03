@@ -1,5 +1,8 @@
 package ca.mcgill.mymcgill.object;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
@@ -22,8 +25,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import android.content.Context;
-import android.util.Log;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Load;
 
@@ -108,6 +109,10 @@ public class Email implements Serializable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+    }
+
+    public void setRead(boolean isRead){
+        this.isRead = isRead;
     }
     
     
