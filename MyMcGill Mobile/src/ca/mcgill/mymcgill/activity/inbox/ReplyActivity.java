@@ -88,24 +88,21 @@ public class ReplyActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		attachFilePath = (String) getIntent().getStringExtra("file");
-		Toast.makeText(this,attachFilePath, Toast.LENGTH_SHORT).show();
+		
 		TextView attachText = (TextView) findViewById(R.id.attachText);
-		if (attachFilePath == null) attachText.setText(attachText.getText() + " no files attached");
-		else attachText.setText(attachText.getText() + attachFilePath);
-		
-		
+		if (attachFilePath == null) attachText.setText("no files attached");
+		else attachText.setText("Files Attached: " + attachFilePath);
 
 	}
 
 	public void sendMessage(View v) {
 		EditText body = (EditText) findViewById(R.id.emailBody);
 		replyEmail = new Email(emailSubject.getText().toString(), email.getSenderList(), body.getText().toString(), this);
-		
+		//Toast.makeText(this, "Sending : " + attachFilePath, Toast.LENGTH_SHORT).show();
 		new Thread(new Runnable() {
             @Override
             public void run() {
 				replyEmail.send();
-				if (attachFilePath != null) ; // attach file
 				finish();
                     };          
         }).start();
