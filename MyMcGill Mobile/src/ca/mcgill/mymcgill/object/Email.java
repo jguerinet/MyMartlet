@@ -196,13 +196,22 @@ public class Email implements Serializable{
 	
 	private Properties setProperties(){
 		Properties props = System.getProperties();
-		props.setProperty("mail.smtp.port", port);
-		props.put("mail.smtp.starttls.enable", true);
-		props.setProperty("mail.smtp.host", host);
-		
-		props.put("mail.smtp.auth", true);
-		
-		return props;
+
+        props.put("mail.smtp.user", from);
+        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.host", host);
+        props.put("mail.debug", "true");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable","true");
+        props.put("mail.smtp.EnableSSL.enable","false");
+
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.port", port);
+        props.setProperty("mail.smtp.socketFactory.port", port);
+
+
+
+        return props;
 	}
 	
 	private Authenticator setAuthenticator(){
