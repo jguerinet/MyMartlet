@@ -1,9 +1,7 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,6 +18,7 @@ import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.DialogHelper;
 import ca.mcgill.mymcgill.util.Load;
 import ca.mcgill.mymcgill.util.Save;
 
@@ -55,7 +54,9 @@ public class LoginActivity extends Activity {
         //Check if an error message needs to be displayed, display it if so
         ConnectionStatus connectionStatus = (ConnectionStatus)getIntent().getSerializableExtra(Constants.CONNECTION_STATUS);
         if(connectionStatus != null){
-            showErrorDialog(connectionStatus.getErrorString(this));
+            DialogHelper.showNeutralAlertDialog(LoginActivity.this,
+                    LoginActivity.this.getResources().getString(R.string.error),
+                    connectionStatus.getErrorString(this));
         }
 
         //Fill out username text if it is present
@@ -76,11 +77,15 @@ public class LoginActivity extends Activity {
 
                 //Check that both of them are not empty, create appropriate error messages if so
                 if(TextUtils.isEmpty(username)){
-                    showErrorDialog(getResources().getString(R.string.login_error_username_empty));
+                    DialogHelper.showNeutralAlertDialog(LoginActivity.this,
+                            LoginActivity.this.getResources().getString(R.string.error),
+                            getResources().getString(R.string.login_error_username_empty));
                     return;
                 }
                 else if(TextUtils.isEmpty(password)){
-                    showErrorDialog(getResources().getString(R.string.login_error_password_empty));
+                    DialogHelper.showNeutralAlertDialog(LoginActivity.this,
+                            LoginActivity.this.getResources().getString(R.string.error),
+                            getResources().getString(R.string.login_error_password_empty));
                     return;
                 }
 
@@ -92,7 +97,10 @@ public class LoginActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-						final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(LoginActivity.this, username,password);
+                        //Set the username and password
+                        Connection.getInstance().setUsername(username + LoginActivity.this.getResources().getString(R.string.login_email));
+                        Connection.getInstance().setPassword(password);
+						final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(LoginActivity.this);
 						// If the connection was successful, go to Homepage
 						if (connectionStatus == ConnectionStatus.CONNECTION_OK) {
 							// Store the login info.
@@ -109,7 +117,9 @@ public class LoginActivity extends Activity {
                                 @Override
                                 public void run() {
                                     progressDialog.dismiss();
-                                    showErrorDialog(connectionStatus.getErrorString(LoginActivity.this));
+                                    DialogHelper.showNeutralAlertDialog(LoginActivity.this,
+                                            LoginActivity.this.getResources().getString(R.string.error),
+                                            connectionStatus.getErrorString(LoginActivity.this));
                                 }
                             });
                         }
@@ -117,20 +127,5 @@ public class LoginActivity extends Activity {
                 }).start();
             }
         });
-    }
-    
-    public void showErrorDialog(String errorMessage){
-        //Creates an alert dialog with the given string as a message, an OK button, and Error as the title
-        new AlertDialog.Builder(LoginActivity.this)
-                .setTitle(getResources().getString(R.string.error))
-                .setMessage(errorMessage)
-                .setNeutralButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create()
-                .show();
     }
 }

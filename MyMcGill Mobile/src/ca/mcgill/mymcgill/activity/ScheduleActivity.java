@@ -1,8 +1,8 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,16 +30,13 @@ import java.util.List;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
-import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.fragment.DayFragment;
-import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
-import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.DialogHelper;
 import ca.mcgill.mymcgill.util.Help;
-import ca.mcgill.mymcgill.util.Load;
 
 /**
  * @author Nhat-Quang Dao
@@ -319,36 +316,25 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String scheduleString = "";
-            Context context = ScheduleActivity.this; 
+            String scheduleString = null;
+            final Activity activity = ScheduleActivity.this;
             
 			try {
-				scheduleString = Connection.getInstance().getUrl(Connection.minervaSchedule);
-			} catch (MinervaLoggedOutException e) {
-				e.printStackTrace();
-				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadUsername(context),Load.loadPassword(context));
-                if(connectionResult == ConnectionStatus.CONNECTION_OK){
-                	
-                	//TRY again
-                	try {
-						scheduleString = Connection.getInstance().getUrl(Connection.minervaSchedule);
-					} catch (Exception e1) {
-						// TODO display error message
-						e1.printStackTrace();
-						return null;
-					} 
-                }
-                else{
-                    //TODO: display error Message
-                	return null;
-                }
-				
+				scheduleString = Connection.getInstance().getUrl(ScheduleActivity.this, Connection.minervaSchedule);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				
-				return null;
 			}
+
+            if(scheduleString == null){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                activity.getResources().getString(R.string.login_error_other));
+                    }
+                });
+                return null;
+            }
 
             //Clear the current course list
             mCourseList.clear();

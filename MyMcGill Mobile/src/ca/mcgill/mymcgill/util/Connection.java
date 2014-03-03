@@ -24,7 +24,6 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 
@@ -65,9 +64,6 @@ public class Connection {
 	// Singleton architecture
 	private static Connection http = new Connection();
 	private Connection(){
-		//set some default value to know it was undefined
-		username = "undefined";
-		password = "undefined";
 		status = ConnectionStatus.CONNECTION_FIRSTACCESS;
 	}
 	
@@ -76,9 +72,17 @@ public class Connection {
 		return http;
 	}
 	
-	
+	//Setting username
+    public void setUsername(String username){
+        this.username = username;
+    }
 
-	public ConnectionStatus connectToMinerva(Context context, String user, String pass){
+    //Setting password
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+	public ConnectionStatus connectToMinerva(Context context){
         //First check if the user is connected to the internet
         if(!isNetworkAvailable(context)){
             return ConnectionStatus.CONNECTION_NO_INTERNET;
@@ -88,17 +92,13 @@ public class Connection {
 			// make sure cookies is turn on
 			CookieHandler.setDefault(new CookieManager());
         }
-		
 
-		//load uname and pass
-    	username = user + context.getResources().getString(R.string.login_email);
-    	password = pass;
     	String postParams;
     	status = ConnectionStatus.CONNECTION_AUTHENTICATING;
 
 		try {
 			// 1. Send a "GET" request, so that you can extract the form's data.
-			String page = http.GetPageContent(minervaLoginPage);
+			String page = http.getPageContent(minervaLoginPage);
 			postParams = http.getFormParams(page, username, password);
 			
 			// search for "Authorization Failure"
@@ -138,16 +138,28 @@ public class Connection {
 	
 	/**
 	 *  The method getURL with retrieve a webpage as text
-	 * @throws IOException 
-	 * @throws MinervaLoggedOutException 
+	 * @throws IOException
 	 * 
 	  */
-	public String getUrl(String url) throws MinervaLoggedOutException, IOException {
+	public String getUrl(Context context, String url) throws IOException {
 
+        String	result = null;
+        try {
+            result = http.getPageContent(url);
+        } catch (MinervaLoggedOutException e) {
+            //User has been logged out, so we need to log him back in
+            ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context);
 
-
-		String	result = http.GetPageContent(url);
-		
+            //Successfully logged him back in, try retrieving the stuff again
+            if(connectionResult == ConnectionStatus.CONNECTION_OK){
+                try{
+                    result = http.getPageContent(url);
+                } catch (MinervaLoggedOutException exception){
+                    //Another logged out exception: doesn't work so this will just return null
+                }
+            }
+            //Not successfully logged in, so just return null
+        }
 
 		return result;
 	}
@@ -212,7 +224,7 @@ public class Connection {
 	 * @throws IOException 
 	 * 
 	 */
-	private String GetPageContent(String url) throws MinervaLoggedOutException, IOException {
+	private String getPageContent(String url) throws MinervaLoggedOutException, IOException {
 	 
 		URL obj = new URL(url);
 		conn = (HttpsURLConnection) obj.openConnection();
@@ -245,7 +257,7 @@ public class Connection {
 		case HttpsURLConnection.HTTP_MOVED_PERM:
 			//follow the new link
 			String nextLocation = conn.getHeaderField("Location");
-			return GetPageContent(nextLocation);
+			return getPageContent(nextLocation);
 		default:
 			// all is ignored. carry on
 			break;
