@@ -43,9 +43,8 @@ public class AttachActivity extends ListActivity {
 			//Toast.makeText(this,currentDir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
 			Intent replyIntent = new Intent(this,ReplyActivity.class);
 			replyIntent.putExtra("file", currentDir.getAbsolutePath() + "/" + o.getName());
-			startActivity(replyIntent);
-			finish();
-			
+			setResult(RESULT_OK, replyIntent);
+			finish();	
 		}
 	}
 

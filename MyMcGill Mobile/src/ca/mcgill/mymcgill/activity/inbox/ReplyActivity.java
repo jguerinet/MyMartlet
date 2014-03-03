@@ -24,6 +24,8 @@ public class ReplyActivity extends Activity {
 	String attachFilePath;
 	LinearLayout layout;
 	
+	private static final int FILE_CODE = 100;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,8 +35,8 @@ public class ReplyActivity extends Activity {
 		boolean isSending;
 		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 		TextView attachText = (TextView) findViewById(R.id.attachText);
-		attachFilePath = null;
 		
+		attachFilePath = null;	
 		
 		if (email == null)
 		{
@@ -46,6 +48,7 @@ public class ReplyActivity extends Activity {
 		// TODO Modify for Forward Email
 		if (!isSending)
 		{
+			this.setTitle("Reply Email");
 			//Display email sender
 			EditText emails = (EditText) findViewById(R.id.emailRecipient);
 			emails.setText(email.getSender());
@@ -74,8 +77,7 @@ public class ReplyActivity extends Activity {
             case Constants.MENU_ITEM_ADD_ATTACH:
             	// TODO add attachements
             	Intent attachIntent = new Intent(ReplyActivity.this,ca.mcgill.mymcgill.activity.inbox.AttachActivity.class);
-            	//attachIntent.putExtra(name, value)
-            	this.startActivity(attachIntent);
+            	this.startActivityForResult(attachIntent, FILE_CODE);
             	
             	return true;
         }
@@ -87,7 +89,7 @@ public class ReplyActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		attachFilePath = (String) getIntent().getStringExtra("file");
+		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 		
 		TextView attachText = (TextView) findViewById(R.id.attachText);
 		if (attachFilePath == null) attachText.setText("no files attached");
@@ -102,9 +104,20 @@ public class ReplyActivity extends Activity {
 		new Thread(new Runnable() {
             @Override
             public void run() {
-				replyEmail.send();
+				replyEmail.send(attachFilePath);
 				finish();
                     };          
         }).start();
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == FILE_CODE){
+			if(resultCode == RESULT_OK){				
+				attachFilePath = data.getStringExtra("file");
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }
+
