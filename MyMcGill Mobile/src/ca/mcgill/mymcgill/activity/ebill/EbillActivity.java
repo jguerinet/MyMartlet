@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -95,13 +96,19 @@ public class EbillActivity extends DrawerActivity {
         //Retrieve content from transcript page
         @Override
         protected Void doInBackground(Void... params){
+
             final Activity activity = EbillActivity.this;
             String ebillString = null;
+
 
             try {
                 ebillString = Connection.getInstance().getUrl(EbillActivity.this, Connection.minervaEbill);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            catch (Exception e)
+            {
+            	e.printStackTrace();
             }
 
             if(ebillString == null){

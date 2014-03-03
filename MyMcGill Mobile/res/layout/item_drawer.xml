@@ -4,8 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/padding_micro"
-    android:paddingTop="@dimen/padding_micro"
+    android:padding="@dimen/padding_micro"
     android:background="@drawable/drawable_drawerblack_darkredpressed">
 
     <TextView
@@ -16,7 +15,6 @@
         android:textSize="@dimen/text_large"
         android:duplicateParentState="true"
         android:gravity="center"
-        android:paddingLeft="@dimen/padding_micro"
         android:paddingRight="@dimen/padding_micro"
         android:textColor="@color/white"/>
 
@@ -33,10 +31,13 @@
     <TextView
         android:id="@+id/drawer_email_count"
         android:layout_width="wrap_content"
-  		android:layout_height="wrap_content"
-  		android:textColor="#FFF"
+  		android:layout_height="match_parent"
+  		android:textColor="@color/white"
   		android:textSize="@dimen/text_small"
   		android:textStyle="bold"
+        android:gravity="center"
+        android:paddingLeft="@dimen/padding_micro"
+        android:paddingRight="@dimen/padding_micro"
  		android:background="@drawable/badge_circle"/>
 
 </LinearLayout>

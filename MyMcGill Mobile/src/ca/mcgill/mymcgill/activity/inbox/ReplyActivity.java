@@ -73,6 +73,7 @@ public class ReplyActivity extends Activity {
         switch (item.getItemId()) {   
             case Constants.MENU_ITEM_ADD_ATTACH:
             	// TODO add attachements
+            	this.startActivity(new Intent(ReplyActivity.this,ca.mcgill.mymcgill.activity.inbox.AttachActivity.class));
             	return true;
         }
         return super.onOptionsItemSelected(item);
