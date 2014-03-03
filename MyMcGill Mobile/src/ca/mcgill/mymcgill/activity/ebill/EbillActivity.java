@@ -1,7 +1,7 @@
 package ca.mcgill.mymcgill.activity.ebill;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,13 +21,11 @@ import java.util.List;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
-import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
-import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.UserInfo;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
-import ca.mcgill.mymcgill.util.Load;
+import ca.mcgill.mymcgill.util.DialogHelper;
 
 public class EbillActivity extends DrawerActivity {
 	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
@@ -98,37 +96,30 @@ public class EbillActivity extends DrawerActivity {
         //Retrieve content from transcript page
         @Override
         protected Void doInBackground(Void... params){
-            Context context = EbillActivity.this;
-            Log.d("test", "context loaded");
-            String ebillString = null ;
+
+            final Activity activity = EbillActivity.this;
+            String ebillString = null;
+
+
             try {
-            	Log.d("test", "pre retrieve");
-                ebillString = Connection.getInstance().getUrl(Connection.minervaEbill);
-            } catch (MinervaLoggedOutException e) {
-                e.printStackTrace();
-                ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context, Load.loadUsername(context),Load.loadPassword(context));
-                if(connectionResult == ConnectionStatus.CONNECTION_OK){
-
-                    //TRY again
-                    try {
-                        ebillString = Connection.getInstance().getUrl(Connection.minervaSchedule);
-                    } catch (Exception e1) {
-                        // TODO display error message
-                        e1.printStackTrace();
-                        return null;
-                    }
-                }
-                else{
-                    //TODO: display error Message
-                    return null;
-                }
-
+                ebillString = Connection.getInstance().getUrl(EbillActivity.this, Connection.minervaEbill);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             catch (Exception e)
             {
             	e.printStackTrace();
+            }
+
+            if(ebillString == null){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                activity.getResources().getString(R.string.login_error_other));
+                    }
+                });
+                return null;
             }
 
             mEbillItems.clear();

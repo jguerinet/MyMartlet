@@ -1,7 +1,7 @@
 package ca.mcgill.mymcgill.activity.transcript;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Window;
@@ -13,12 +13,10 @@ import java.io.IOException;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
-import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
-import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
-import ca.mcgill.mymcgill.util.Load;
+import ca.mcgill.mymcgill.util.DialogHelper;
 
 /**
  * Author: Ryan Singzon
@@ -91,34 +89,24 @@ public class TranscriptActivity extends DrawerActivity {
         //Retrieve content from transcript page
         @Override
         protected Void doInBackground(Void... params){
-        	Context context = TranscriptActivity.this;
-            String transcriptString="";
-            
-			try {
-				transcriptString = Connection.getInstance().getUrl(Connection.minervaTranscript);
-			} catch (MinervaLoggedOutException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context,Load.loadUsername(context),Load.loadPassword(context));
-                if(connectionResult == ConnectionStatus.CONNECTION_OK){
-                	
-                	//TRY again
-                	try {
-                		transcriptString = Connection.getInstance().getUrl(Connection.minervaSchedule);
-					} catch (Exception e1) {
-						// TODO display error message
-						e1.printStackTrace();
-						return null;
-					} 
-                }
-                else{
-                    //TODO: display error Message
-                	return null;
-                }
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            String transcriptString = null;
+            final Activity activity = TranscriptActivity.this;
+            try {
+                transcriptString = Connection.getInstance().getUrl(activity, Connection.minervaTranscript);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if(transcriptString == null){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                activity.getResources().getString(R.string.login_error_other));
+                    }
+                });
+                return null;
+            }
 
             //Parse the transcript
             mTranscript = new Transcript(transcriptString);

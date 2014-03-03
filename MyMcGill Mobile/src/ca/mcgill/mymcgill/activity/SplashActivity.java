@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.util.ApplicationClass;
@@ -42,7 +40,10 @@ public class SplashActivity extends Activity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(SplashActivity.this, username, password);
+                    //Set the username and password
+                    Connection.getInstance().setUsername(username + SplashActivity.this.getResources().getString(R.string.login_email));
+                    Connection.getInstance().setPassword(password);
+                    ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(SplashActivity.this);
                     //Successful connection: ScheduleActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK){
                     	
