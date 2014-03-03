@@ -4,17 +4,23 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import android.content.Context;
 import ca.mcgill.mymcgill.util.Load;
@@ -127,6 +133,52 @@ public class Email implements Serializable{
 			e.printStackTrace();
 		}
 	}
+
+    //Sends an email with an attachment
+    public void send(String attachmentPath){
+        Properties props = this.setProperties();
+        Authenticator auth = this.setAuthenticator();
+        Session session = Session.getInstance(props, auth);
+        MimeMessage message = new MimeMessage(session);
+
+        try{
+            message.setFrom(new InternetAddress(from));
+
+            for(String s: to){
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
+            }
+
+            message.setSubject(mSubject);
+
+            //Create a MimeBodyPart for the message of the email
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText(mBody);
+
+            //Create a multipart for the email
+            Multipart multipart = new MimeMultipart();
+
+            //Set the message in the multipart
+            multipart.addBodyPart(messageBodyPart);
+
+            //Create a MimeBodyPart for the attachment
+            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(attachmentPath);
+
+            attachmentBodyPart.setDataHandler(new DataHandler(source));
+            attachmentBodyPart.setFileName(attachmentPath);
+
+            multipart.addBodyPart(attachmentBodyPart);
+
+            //Put parts into the message
+            message.setContent(multipart);
+
+            //Send message
+            Transport.send(message);
+
+        }catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	private Properties setProperties(){
 		Properties props = System.getProperties();
