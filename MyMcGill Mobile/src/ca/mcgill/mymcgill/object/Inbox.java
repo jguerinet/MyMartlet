@@ -43,7 +43,7 @@ public class Inbox implements Serializable{
 
     //Fetches the user's emails from their McGill email account
     public void retrieveEmail(){
-
+    	
         //Set properties for McGill email server
         mProperties = new Properties();
         mProperties.setProperty("mail.host", Constants.MAIL_HOST);

@@ -72,6 +72,8 @@ public class Email implements Serializable{
     }
 
     public void markAsRead(Context context) {
+    	isRead = true;
+    	
     	password = Load.loadPassword(context);
         from = Load.loadFullUsername(context);
     	
