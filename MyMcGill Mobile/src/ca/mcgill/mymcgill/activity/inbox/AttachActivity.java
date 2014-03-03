@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -24,6 +25,7 @@ public class AttachActivity extends ListActivity {
 		
 		currentDir =  new File(Environment.getExternalStorageDirectory().toString());
 		fill(currentDir);
+		
 	}
 	
 	@Override
@@ -38,7 +40,11 @@ public class AttachActivity extends ListActivity {
 		}
 		else
 		{
-			Toast.makeText(this,currentDir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this,currentDir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+			Intent replyIntent = new Intent(this,ReplyActivity.class);
+			replyIntent.putExtra("file", currentDir.getAbsolutePath() + "/" + o.getName());
+			startActivity(replyIntent);
+			finish();
 			
 		}
 	}

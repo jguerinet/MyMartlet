@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -83,7 +84,7 @@
         android:id="@+id/emailBody"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.94"
         android:background="@android:drawable/editbox_background"
         android:gravity="top"
         android:inputType="textMultiLine"
@@ -95,5 +96,11 @@
         android:layout_height="wrap_content"
         android:onClick="sendMessage"
         android:text="@string/reply_send" />
+
+    <TextView
+        android:id="@+id/attachText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/attached_files" />
 
 </LinearLayout>
