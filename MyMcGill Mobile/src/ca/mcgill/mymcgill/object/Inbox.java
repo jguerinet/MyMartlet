@@ -27,9 +27,6 @@ import ca.mcgill.mymcgill.util.Constants;
 public class Inbox implements Serializable{
 
     Properties mProperties = null;
-    private Session session = null;
-    private Store store = null;
-    private Folder inbox = null;
     private String mUserName;
     private String mPassword;
 
@@ -52,7 +49,7 @@ public class Inbox implements Serializable{
         mProperties.setProperty("mail.host", Constants.MAIL_HOST);
         mProperties.setProperty("mail.port", Constants.MAIL_PORT);
         mProperties.setProperty("mail.transport.protocol", Constants.MAIL_PROTOCOL);
-        session = Session.getInstance(mProperties,
+        Session session = Session.getInstance(mProperties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(mUserName, mPassword);
@@ -61,9 +58,9 @@ public class Inbox implements Serializable{
 
         //Open a connection to the McGill server and fetch emails
         try {
-            store = session.getStore(Constants.MAIL_PROTOCOL);
+            Store store = session.getStore(Constants.MAIL_PROTOCOL);
             store.connect();
-            inbox = store.getFolder("INBOX");
+            Folder inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
 
             //Get total number of emails
