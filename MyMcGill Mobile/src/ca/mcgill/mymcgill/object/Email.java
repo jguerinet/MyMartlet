@@ -173,15 +173,17 @@ public class Email implements Serializable{
 
             //Set the message in the multipart
             multipart.addBodyPart(messageBodyPart);
-
-            //Create a MimeBodyPart for the attachment
-            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-            DataSource source = new FileDataSource(attachmentPath);
-
-            attachmentBodyPart.setDataHandler(new DataHandler(source));
-            attachmentBodyPart.setFileName(attachmentPath);
-
-            multipart.addBodyPart(attachmentBodyPart);
+            if (attachmentPath != null)
+            { 	
+            	//Create a MimeBodyPart for the attachment
+            	MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+            	DataSource source = new FileDataSource(attachmentPath);
+            	
+            	attachmentBodyPart.setDataHandler(new DataHandler(source));
+            	attachmentBodyPart.setFileName(attachmentPath);
+            	
+            	multipart.addBodyPart(attachmentBodyPart);
+            }
 
             //Put parts into the message
             message.setContent(multipart);
