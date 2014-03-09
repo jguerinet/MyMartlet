@@ -1,6 +1,10 @@
 package ca.mcgill.mymcgill.activity.inbox;
 
+import java.util.Arrays;
+import java.util.List;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +14,6 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Email;
 import ca.mcgill.mymcgill.util.Constants;
@@ -23,6 +26,9 @@ public class ReplyActivity extends Activity {
 	Email replyEmail;
 	String attachFilePath;
 	LinearLayout layout;
+	Context ReplyContext;
+	boolean isSending;
+	EditText emails;
 	
 	private static final int FILE_CODE = 100;
 	
@@ -32,16 +38,21 @@ public class ReplyActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_reply);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		boolean isSending;
 		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 		TextView attachText = (TextView) findViewById(R.id.attachText);
+		ReplyContext = getApplicationContext();
 		
 		attachFilePath = null;	
+		layout = (LinearLayout) findViewById(R.id.LinearLayout1);
+		emails = (EditText) findViewById(R.id.emailRecipient);
+		emailSubject = (EditText)findViewById(R.id.emailSubject);
 		
+		//sending a fresh email
 		if (email == null)
 		{
 			isSending = true;
 			this.setTitle("Send Email");
+			
 		}
 		else isSending = false;
 		
@@ -49,13 +60,8 @@ public class ReplyActivity extends Activity {
 		if (!isSending)
 		{
 			this.setTitle("Reply Email");
-			//Display email sender
-			EditText emails = (EditText) findViewById(R.id.emailRecipient);
 			emails.setText(email.getSender());
-			//get Layout
-			layout = (LinearLayout) findViewById(R.id.LinearLayout1);
-			//Display subject
-			emailSubject = (EditText)findViewById(R.id.emailSubject);
+			
 			if (email.getSubject().contains("RE:")) {
 				emailSubject.setText(email.getSubject());
 			} else {
@@ -99,7 +105,16 @@ public class ReplyActivity extends Activity {
 
 	public void sendMessage(View v) {
 		EditText body = (EditText) findViewById(R.id.emailBody);
-		replyEmail = new Email(emailSubject.getText().toString(), email.getSenderList(), body.getText().toString(), this);
+		List<String> Senders =null;
+		
+		if(isSending){
+			Senders = Arrays.asList(emails.getText().toString().split(";"));
+		}
+		else{
+			Senders=email.getSenderList();
+		}
+		
+		replyEmail = new Email(emailSubject.getText().toString(), Senders, body.getText().toString(), ReplyContext);
 		//Toast.makeText(this, "Sending : " + attachFilePath, Toast.LENGTH_SHORT).show();
 		new Thread(new Runnable() {
             @Override
