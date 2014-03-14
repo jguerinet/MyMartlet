@@ -16,7 +16,7 @@
         android:duplicateParentState="true"
         android:gravity="center"
         android:paddingRight="@dimen/padding_micro"
-        android:textColor="@color/white"/>
+        android:textColor="@drawable/color_black_whitepressed"/>
 
     <TextView
         android:layout_width="0dp"
@@ -26,7 +26,7 @@
         android:textSize="@dimen/text_medium"
         android:duplicateParentState="true"
         android:gravity="center_vertical"
-        android:textColor="@color/white"/>
+        android:textColor="@drawable/color_black_whitepressed"/>
     
     <TextView
         android:id="@+id/drawer_email_count"

@@ -171,10 +171,13 @@ public class DrawerAdapter extends BaseAdapter {
             }
         });
 
-        //If it's the selected position, set its background to red
+        //If it's the selected position, set its background to red and the text to white
         if(position == mSelectedPosition){
             view.setBackgroundColor(mActivity.getResources().getColor(R.color.red));
             view.setClickable(false);
+
+            icon.setTextColor(mActivity.getResources().getColor(R.color.white));
+            title.setTextColor(mActivity.getResources().getColor(R.color.white));
         }
 
         return view;

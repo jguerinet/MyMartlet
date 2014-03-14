@@ -5,6 +5,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:choiceMode="singleChoice"
-    android:divider="@android:color/white"
+    android:divider="@android:color/black"
     android:dividerHeight="@dimen/line"
-    android:background="@color/black_drawer"/>
+    android:background="@color/grey_light"/>
