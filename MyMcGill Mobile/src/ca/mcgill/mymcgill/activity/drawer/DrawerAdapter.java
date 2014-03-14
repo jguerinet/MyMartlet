@@ -15,6 +15,7 @@ import java.util.List;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.LoginActivity;
+import ca.mcgill.mymcgill.activity.MapActivity;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
 import ca.mcgill.mymcgill.activity.SettingsActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
@@ -40,9 +41,10 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int TRANSCRIPT_POSITION = 1;
     public static final int EMAIL_POSITION = 2;
     public static final int EBILL_POSITION = 3;
-    public static final int DESKTOP_POSITION = 4;
-    public static final int SETTINGS_POSITION = 5;
-    public static final int LOGOUT_POSITION = 6;
+    public static final int MAP_POSITION = 4;
+    public static final int DESKTOP_POSITION = 5;
+    public static final int SETTINGS_POSITION = 6;
+    public static final int LOGOUT_POSITION = 7;
 
     public DrawerAdapter(Activity activity, int selectedPosition){
         this.mActivity = activity;
@@ -69,6 +71,10 @@ public class DrawerAdapter extends BaseAdapter {
         //Ebill
         mDrawerItems.add(EBILL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_ebill),
                 mActivity.getResources().getString(R.string.icon_ebill)));
+
+        //Map
+        mDrawerItems.add(MAP_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_map),
+                mActivity.getResources().getString(R.string.icon_map)));
 
         //Desktop
         mDrawerItems.add(DESKTOP_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_desktop),
@@ -145,6 +151,9 @@ public class DrawerAdapter extends BaseAdapter {
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));
                         break;
+                    case MAP_POSITION:
+                        mActivity.startActivity(new Intent(mActivity, MapActivity.class));
+                        break;
                     case DESKTOP_POSITION:
                         mActivity.startActivity(new Intent(mActivity, DesktopActivity.class));
                         break;
@@ -162,7 +171,7 @@ public class DrawerAdapter extends BaseAdapter {
             }
         });
 
-        //If it's the selected position, set it's background to red
+        //If it's the selected position, set its background to red
         if(position == mSelectedPosition){
             view.setBackgroundColor(mActivity.getResources().getColor(R.color.red));
             view.setClickable(false);

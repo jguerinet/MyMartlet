@@ -73,6 +73,9 @@
             android:name="ca.mcgill.mymcgill.activity.inbox.AttachActivity"
             android:label="@string/title_activity_attach" >
         </activity>
+        <activity
+            android:name="ca.mcgill.mymcgill.activity.MapActivity"
+            android:label="@string/title_map" />
     </application>
 
 </manifest>
