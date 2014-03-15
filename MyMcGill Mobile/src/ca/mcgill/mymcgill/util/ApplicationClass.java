@@ -96,6 +96,13 @@ public class ApplicationClass extends Application {
         return homePage;
     }
 
+    public static int getUnreadEmails(){
+        if(inbox != null){
+            return inbox.getNumNewEmails();
+        }
+        return 0;
+    }
+
     /* SETTERS */
     public static void setTranscript(Transcript transcript){
         ApplicationClass.transcript = transcript;

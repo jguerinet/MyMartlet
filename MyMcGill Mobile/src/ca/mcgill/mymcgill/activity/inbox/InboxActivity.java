@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
-import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
@@ -35,7 +34,6 @@ public class InboxActivity extends DrawerActivity{
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_inbox);
-        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EMAIL_POSITION);
         super.onCreate(savedInstanceState);
 
         mFirstLoad = true;
@@ -172,6 +170,9 @@ public class InboxActivity extends DrawerActivity{
                 mProgressDialog.dismiss();
             }
             setProgressBarIndeterminateVisibility(false);
+
+            //Update the number of unread messages in the drawer
+            updateUnreadMessages();
         }
     }
 }

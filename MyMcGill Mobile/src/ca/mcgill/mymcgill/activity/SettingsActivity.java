@@ -9,7 +9,6 @@ import android.widget.Spinner;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
-import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Language;
 import ca.mcgill.mymcgill.util.ApplicationClass;
@@ -18,7 +17,6 @@ public class SettingsActivity extends DrawerActivity {
 	@Override
 	 protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_settings);
-        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.SETTINGS_POSITION);
         super.onCreate(savedInstanceState);
 
         setTitle(getResources().getString(R.string.title_settings));
