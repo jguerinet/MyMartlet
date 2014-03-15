@@ -85,6 +85,11 @@ public class Inbox implements Serializable{
                 }
 
                 String body = "";
+                String subject = message.getSubject();
+                if(subject == null){
+                    subject = "(No subject)";
+                }
+
                 try{
                     body = getText(message);
                 }catch(Exception e){}
@@ -94,16 +99,18 @@ public class Inbox implements Serializable{
 
                 //Check to see if the email already exists in the inbox
                 for(Email email : mEmails){
-                    if(email.getDate().equals(message.getSentDate().toString()) && email.getSubject().equals(message.getSubject())){
-                        emailExists = true;
-                        //Update the seen variable
-                        email.setRead(message.isSet(Flag.SEEN));
+                    if(subject != null){
+                        if(email.getDate().equals(message.getSentDate().toString()) && email.getSubject().equals(subject)){
+                            emailExists = true;
+                            //Update the seen variable
+                            email.setRead(message.isSet(Flag.SEEN));
+                        }
                     }
                 }
 
                 //If the email does not exist, add it to the inbox
                 if(!emailExists){
-                    Email newEmail = new Email(message.getSubject(), from, message.getSentDate().toString(), body, message.isSet(Flag.SEEN), (numEmails-(emailsToRetrieve-i)));
+                    Email newEmail = new Email(subject, from, message.getSentDate().toString(), body, message.isSet(Flag.SEEN), (numEmails-(emailsToRetrieve-i)));
                     mEmails.add(newEmail);
                 }
 
