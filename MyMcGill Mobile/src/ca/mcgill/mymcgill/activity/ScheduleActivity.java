@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -35,6 +36,7 @@ import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
 import ca.mcgill.mymcgill.util.Help;
 
@@ -463,6 +465,15 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         public int getCount() {
             return 7;
         }
+    }
+    
+    // JDAlfaro
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+    	// change semester menu item
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE,R.string.schedule_change);
+    	return super.onCreateOptionsMenu(menu);
     }
 
 }

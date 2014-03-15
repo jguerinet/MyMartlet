@@ -101,4 +101,5 @@
         <item>Email</item>
         <item>eBill</item>
     </string-array>
+    <string name="schedule_change">Changer Session</string>
 </resources>

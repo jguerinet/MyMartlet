@@ -119,5 +119,6 @@
     <string name="attached_files">Files Attached: </string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="schedule_change">Change Semester</string>
 
 </resources>

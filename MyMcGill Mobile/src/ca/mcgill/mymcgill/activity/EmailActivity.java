@@ -99,6 +99,7 @@ public class EmailActivity extends Activity {
     	menu.add(Menu.NONE, Constants.MENU_ITEM_FORWARD, Menu.NONE,R.string.email_forward);
     	return super.onCreateOptionsMenu(menu);
     }
+    
     @Override
     public void onBackPressed(){
         super.onBackPressed();
@@ -107,8 +108,6 @@ public class EmailActivity extends Activity {
     
     
     // Joshua David Alfaro
-    // Created so that I can see the activity
-    // When the user clicks the reply button
     public void replyMessage(View view) {
     	Intent intent = new Intent(this, ReplyActivity.class);
 		intent.putExtra(Constants.EMAIL, email);
