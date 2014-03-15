@@ -1,5 +1,7 @@
 package ca.mcgill.mymcgill.object;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.internet.MimeMessage;
 
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
@@ -44,7 +47,6 @@ public class Inbox implements Serializable{
 
     //Fetches the user's emails from their McGill email account
     public void retrieveEmail(){
-    	
         //Set properties for McGill email server
         mProperties = new Properties();
         mProperties.setProperty("mail.host", Constants.MAIL_HOST);
@@ -75,7 +77,6 @@ public class Inbox implements Serializable{
 
             //Add each message to the inbox object
             for (int i = messages.length-1; i > 0; i--) {
-
                 Message message = messages[i];
 
                 //Get email senders
@@ -92,30 +93,42 @@ public class Inbox implements Serializable{
 
                 try{
                     body = getText(message);
-                }catch(Exception e){}
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+                Email currentEmail = null;
 
-                boolean emailExists = false;
+                //Get the message ID
+                String messageID = ((MimeMessage) message).getMessageID();
+                //If there is none, just use the index of the message
+                //This should happen rarely
+                if(messageID == null){
+                    messageID = String.valueOf(numEmails - (emailsToRetrieve - i));
+                }
+                Log.e("Message ID:", messageID);
 
                 //Check to see if the email already exists in the inbox
+                //Check if the same message ID
                 for(Email email : mEmails){
-                    if(subject != null){
-                        if(email.getDate().equals(message.getSentDate().toString()) && email.getSubject().equals(subject)){
-                            emailExists = true;
-                            //Update the seen variable
-                            email.setRead(message.isSet(Flag.SEEN));
-                        }
+                    if(messageID.equals(email.getMessageID())){
+                        currentEmail = email;
+                        //Update the seen variable
+                        email.setRead(message.isSet(Flag.SEEN));
+
+                        break;
                     }
                 }
 
                 //If the email does not exist, add it to the inbox
-                if(!emailExists){
-                    Email newEmail = new Email(subject, from, message.getSentDate().toString(), body, message.isSet(Flag.SEEN), (numEmails-(emailsToRetrieve-i)));
-                    mEmails.add(newEmail);
+                if(currentEmail == null){
+                    currentEmail = new Email(subject, from, message.getSentDate().toString(),
+                            body, message.isSet(Flag.SEEN), messageID);
+                    mEmails.add(currentEmail);
                 }
 
                 //Increment the unread message count if unread
-                if(!message.isSet(Flag.SEEN)){
+                if(!currentEmail.isRead()){
                     mNumNewEmails++;
                 }
             }
