@@ -1,9 +1,5 @@
 package ca.mcgill.mymcgill.activity.inbox;
 
-import java.util.Arrays;
-import java.util.List;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +10,17 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Arrays;
+import java.util.List;
+
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.Email;
 import ca.mcgill.mymcgill.util.Constants;
 
 
-public class ReplyActivity extends Activity {
+public class ReplyActivity extends BaseActivity {
 
 	Email email;
 	EditText emailSubject;
@@ -33,7 +34,7 @@ public class ReplyActivity extends Activity {
 	private static final int FILE_CODE = 100;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_reply);

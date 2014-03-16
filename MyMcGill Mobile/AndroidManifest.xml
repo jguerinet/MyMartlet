@@ -31,10 +31,10 @@
         <activity
             android:name="ca.mcgill.mymcgill.activity.LoginActivity"
             android:label="@string/title_login"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.SplashActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,7 +44,7 @@
         <activity
             android:name="ca.mcgill.mymcgill.activity.DesktopActivity"
             android:label="@string/title_desktop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.ScheduleActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -53,39 +53,42 @@
             android:name="ca.mcgill.mymcgill.activity.transcript.TranscriptActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_transcript" />
-        <activity android:name="ca.mcgill.mymcgill.activity.semester.SemesterActivity" />
+        <activity android:name="ca.mcgill.mymcgill.activity.semester.SemesterActivity"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.CourseActivity"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.ebill.EbillActivity"
             android:label="@string/title_ebill"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="ca.mcgill.mymcgill.activity.inbox.InboxActivity"
-            android:label="@string/title_inbox" />
+            android:label="@string/title_inbox"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.SettingsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.EmailActivity"
-            android:parentActivityName=".activity.inbox.InboxActivity" />
+            android:parentActivityName=".activity.inbox.InboxActivity"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.inbox.ReplyActivity"
             android:label="@string/title_reply"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.inbox.AttachActivity"
-            android:label="@string/title_activity_attach" >
+            android:label="@string/title_activity_attach">
         </activity>
         <activity
             android:name="ca.mcgill.mymcgill.activity.MapActivity"
-            android:label="@string/title_map" />
+            android:label="@string/title_map"/>
         
         <activity
             android:name="ca.mcgill.mymcgill.activity.ChangeSemesterActivity"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -93,8 +96,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyARrfyIRGoPZjbmatLu8XyBS4JW8xjOfak"/>
-        
-        
 
     </application>
 

@@ -2,11 +2,9 @@ package ca.mcgill.mymcgill.util;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Typeface;
 
 import java.util.List;
-import java.util.Locale;
 
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
@@ -54,7 +52,6 @@ public class ApplicationClass extends Application {
         inbox = Load.loadInbox(this);
         //Load the user's chosen language and update the locale
         language = Load.loadLanguage(this);
-        updateLocale();
         //Load the user's chosen homepage
         homePage = Load.loadHomePage(this);
     }
@@ -144,9 +141,6 @@ public class ApplicationClass extends Application {
 
         //Save it to internal storage when this is set
         Save.saveLanguage(context);
-
-        //Update the locale
-        updateLocale();
     }
 
     public static void setHomePage(HomePage homePage){
@@ -157,12 +151,4 @@ public class ApplicationClass extends Application {
     }
 
     /* HELPER METHODS */
-    private static void updateLocale(){
-        //Update locale and config
-        Locale locale = new Locale(language.getLanguageString());
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        context.getResources().updateConfiguration(config, null);
-    }
 }

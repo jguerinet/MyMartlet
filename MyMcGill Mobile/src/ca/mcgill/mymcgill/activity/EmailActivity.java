@@ -1,6 +1,5 @@
 package ca.mcgill.mymcgill.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.object.Email;
 import ca.mcgill.mymcgill.util.Constants;
@@ -21,7 +21,7 @@ import ca.mcgill.mymcgill.util.Constants;
  * Created by Ryan Singzon on 14/02/14.
  * This activity will show a user's individual emails
  */
-public class EmailActivity extends Activity {
+public class EmailActivity extends BaseActivity {
 
 	Email email;
 	 

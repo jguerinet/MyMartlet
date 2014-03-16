@@ -2,9 +2,7 @@ package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -12,21 +10,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -40,11 +32,9 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
-import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
-import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -105,8 +95,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
             setContentView(R.layout.activity_schedule_land);
             showDrawer(false);
@@ -142,7 +132,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             mPager.setOffscreenPageLimit(6);
             loadInfo();
         }
-        super.onConfigurationChanged(newConfig);
     }
 
     private void loadInfo(){

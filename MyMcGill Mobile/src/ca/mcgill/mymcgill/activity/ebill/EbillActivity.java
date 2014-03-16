@@ -33,7 +33,7 @@ public class EbillActivity extends DrawerActivity {
     private ListView mListView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_ebill);
         super.onCreate(savedInstanceState);

@@ -24,7 +24,7 @@ android:layout_height="match_parent">
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="@string/settings_language"
+                android:id="@+id/settings_language_title"
                 android:textSize="@dimen/text_medium"/>
 
             <Spinner
@@ -53,7 +53,7 @@ android:layout_height="match_parent">
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="@string/settings_homepage"
+                android:id="@+id/settings_homepage_title"
                 android:textSize="@dimen/text_medium"/>
 
             <Spinner

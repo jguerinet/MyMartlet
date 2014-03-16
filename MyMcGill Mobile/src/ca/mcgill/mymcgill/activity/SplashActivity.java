@@ -1,10 +1,10 @@
 package ca.mcgill.mymcgill.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Clear;
@@ -16,7 +16,8 @@ import ca.mcgill.mymcgill.util.Load;
  * Author: Julien
  * Date: 22/01/14, 7:34 PM
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);

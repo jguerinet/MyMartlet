@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
@@ -14,12 +15,17 @@ import ca.mcgill.mymcgill.object.Language;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 
 public class SettingsActivity extends DrawerActivity {
-	@Override
-	 protected void onCreate(Bundle savedInstanceState) {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_settings);
         super.onCreate(savedInstanceState);
 
-        setTitle(getResources().getString(R.string.title_settings));
+        TextView languageTitle = (TextView)findViewById(R.id.settings_language_title);
+        languageTitle.setText(getResources().getString(R.string.settings_language));
+
+        TextView homepageTitle = (TextView)findViewById(R.id.settings_homepage_title);
+        homepageTitle.setText(getResources().getString(R.string.settings_homepage));
 
         //Set up the info
         Spinner languages = (Spinner)findViewById(R.id.settings_language);

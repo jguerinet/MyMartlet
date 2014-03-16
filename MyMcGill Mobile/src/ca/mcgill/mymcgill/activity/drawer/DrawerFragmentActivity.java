@@ -3,7 +3,6 @@ package ca.mcgill.mymcgill.activity.drawer;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,14 +10,15 @@ import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
+import ca.mcgill.mymcgill.activity.base.BaseFragmentActivity;
 
-public class DrawerFragmentActivity extends FragmentActivity{
+public class DrawerFragmentActivity extends BaseFragmentActivity {
 
     public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
 
-    protected void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         showDrawer(true);

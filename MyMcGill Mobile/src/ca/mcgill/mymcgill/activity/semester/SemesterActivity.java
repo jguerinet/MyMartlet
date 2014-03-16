@@ -1,11 +1,11 @@
 package ca.mcgill.mymcgill.activity.semester;
 
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseListActivity;
 import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.util.Constants;
 
@@ -14,7 +14,7 @@ import ca.mcgill.mymcgill.util.Constants;
  * Date: 31/01/14, 7:59 PM
  * Activity that will show a specific semester from the user's transcript
  */
-public class SemesterActivity extends ListActivity {
+public class SemesterActivity extends BaseListActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState){

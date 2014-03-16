@@ -1,7 +1,6 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -12,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Help;
@@ -20,7 +20,7 @@ import ca.mcgill.mymcgill.util.Help;
  * Author: Julien
  * Date: 04/02/14, 8:22 PM
  */
-public class CourseActivity extends Activity {
+public class CourseActivity extends BaseActivity {
 
     @SuppressLint("NewApi")
 	@Override

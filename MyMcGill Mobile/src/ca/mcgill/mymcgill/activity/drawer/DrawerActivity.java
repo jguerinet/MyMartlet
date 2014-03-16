@@ -1,6 +1,5 @@
 package ca.mcgill.mymcgill.activity.drawer;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -13,18 +12,19 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.MapActivity;
 import ca.mcgill.mymcgill.activity.SettingsActivity;
+import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 
-public class DrawerActivity extends Activity{
+public class DrawerActivity extends BaseActivity {
 
     public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerAdapter mDrawerAdapter;
 
-    protected void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         assert (getActionBar() != null);

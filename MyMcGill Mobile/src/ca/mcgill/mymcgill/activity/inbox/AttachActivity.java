@@ -1,25 +1,25 @@
 package ca.mcgill.mymcgill.activity.inbox;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
-import ca.mcgill.mymcgill.R;
 
-public class AttachActivity extends ListActivity {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseListActivity;
+
+public class AttachActivity extends BaseListActivity {
 	
 	private File currentDir;
 	private FileArrayAdapter adapter;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.activity_attach);
 		

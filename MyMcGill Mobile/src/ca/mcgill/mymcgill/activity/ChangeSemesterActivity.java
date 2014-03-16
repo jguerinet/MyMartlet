@@ -1,20 +1,14 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 
@@ -23,7 +17,7 @@ import ca.mcgill.mymcgill.util.ApplicationClass;
  * Author: JDA
  * Date: 15/03/14
  */
-public class ChangeSemesterActivity extends Activity {
+public class ChangeSemesterActivity extends BaseActivity {
 
     @SuppressLint("NewApi")
 	@Override

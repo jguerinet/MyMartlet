@@ -1,6 +1,5 @@
 package ca.mcgill.mymcgill.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
@@ -26,7 +26,7 @@ import ca.mcgill.mymcgill.util.Save;
  * Author: Julien
  * Date: 22/01/14, 7:34 PM
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
