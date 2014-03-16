@@ -20,5 +20,27 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
-    </string-array>    
+    </string-array>
+    
+    <string-array name="season_entries">
+        <item >Summer</item>
+        <item >Fall</item>
+        <item >Winter</item>
+    </string-array>
+    <string-array name="season_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array><string-array name="year_entries">
+        <item>2014</item>
+        <item>2013</item>
+        <item>2011</item>
+    </string-array>
+    
+    
+    <string-array name="year_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>  
 </resources>

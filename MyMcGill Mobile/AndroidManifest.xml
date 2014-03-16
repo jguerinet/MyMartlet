@@ -82,6 +82,10 @@
         <activity
             android:name="ca.mcgill.mymcgill.activity.MapActivity"
             android:label="@string/title_map" />
+        
+        <activity
+            android:name="ca.mcgill.mymcgill.activity.ChangeSemesterActivity"
+            android:theme="@android:style/Theme.Dialog" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -89,6 +93,8 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyARrfyIRGoPZjbmatLu8XyBS4JW8xjOfak"/>
+        
+        
 
     </application>
 

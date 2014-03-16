@@ -120,5 +120,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="schedule_change">Change Semester</string>
+    <string name="change_semester_season">Season</string>
+    <string name="change_semester_year">Year</string>
 
 </resources>

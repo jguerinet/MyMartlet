@@ -7,10 +7,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+//import com.google.android.gms.maps.GoogleMap;
+//import com.google.android.gms.maps.MapFragment;
+//import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.MarkerOptions;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
@@ -22,7 +22,7 @@ import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
  */
 public class MapActivity extends DrawerActivity {
 
-    private GoogleMap mMap;
+    //private GoogleMap mMap;
 
     @SuppressLint("NewApi")
      @Override
