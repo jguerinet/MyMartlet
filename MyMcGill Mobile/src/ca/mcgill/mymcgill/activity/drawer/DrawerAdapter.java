@@ -3,6 +3,8 @@ package ca.mcgill.mymcgill.activity.drawer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ public class DrawerAdapter extends BaseAdapter {
     private int mSelectedPosition;
     private int mUnreadMessages;
     private TextView mUnreadMessagesView;
+    private DrawerLayout mDrawerLayout;
 
     //Easy way to keep track of the list order (for the OnClick)
     public static final int SCHEDULE_POSITION = 0;
@@ -46,8 +49,9 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int SETTINGS_POSITION = 6;
     public static final int LOGOUT_POSITION = 7;
 
-    public DrawerAdapter(Activity activity, int selectedPosition){
+    public DrawerAdapter(Activity activity, DrawerLayout drawerLayout, int selectedPosition){
         this.mActivity = activity;
+        this.mDrawerLayout = drawerLayout;
         this.mDrawerItems = new ArrayList<DrawerItem>();
         this.mSelectedPosition = selectedPosition;
         this.mUnreadMessages = ApplicationClass.getUnreadEmails();
@@ -174,7 +178,12 @@ public class DrawerAdapter extends BaseAdapter {
         //If it's the selected position, set its background to red and the text to white
         if(position == mSelectedPosition){
             view.setBackgroundColor(mActivity.getResources().getColor(R.color.red));
-            view.setClickable(false);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
+            });
 
             icon.setTextColor(mActivity.getResources().getColor(R.color.white));
             title.setTextColor(mActivity.getResources().getColor(R.color.white));

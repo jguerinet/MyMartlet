@@ -39,10 +39,10 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
             //Set up the adapter
             DrawerAdapter drawerAdapter;
             if(this instanceof ScheduleActivity){
-                drawerAdapter = new DrawerAdapter(this, DrawerAdapter.SCHEDULE_POSITION);
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SCHEDULE_POSITION);
             }
             else{
-                drawerAdapter = new DrawerAdapter(this, -1);
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
                 Log.e("Drawer", "Drawer Adapter was null");
             }
 

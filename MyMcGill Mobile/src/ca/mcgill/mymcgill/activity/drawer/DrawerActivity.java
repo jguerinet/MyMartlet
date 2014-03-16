@@ -40,26 +40,26 @@ public class DrawerActivity extends BaseActivity {
 
         //Set up the adapter
         if(this instanceof TranscriptActivity){
-            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.TRANSCRIPT_POSITION);
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.TRANSCRIPT_POSITION);
         }
         else if(this instanceof InboxActivity){
-            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EMAIL_POSITION);
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EMAIL_POSITION);
         }
         else if(this instanceof EbillActivity){
-            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EBILL_POSITION);
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EBILL_POSITION);
         }
         else if(this instanceof MapActivity){
-            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.MAP_POSITION);
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MAP_POSITION);
         }
         else if(this instanceof DesktopActivity){
-            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.DESKTOP_POSITION);
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.DESKTOP_POSITION);
         }
         else if(this instanceof SettingsActivity){
-            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.SETTINGS_POSITION);
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SETTINGS_POSITION);
         }
         else{
             Log.e("Drawer Adapter", "not well initialized");
-            mDrawerAdapter = new DrawerAdapter(this, -1);
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
         }
 
         drawerList = (ListView) findViewById(R.id.left_drawer);
