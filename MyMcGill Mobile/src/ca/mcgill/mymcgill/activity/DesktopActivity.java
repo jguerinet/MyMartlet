@@ -9,7 +9,6 @@ import android.webkit.WebViewClient;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
-import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
@@ -20,7 +19,6 @@ public class DesktopActivity extends DrawerActivity{
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_desktop);
-        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.DESKTOP_POSITION);
         super.onCreate(savedInstanceState);
 
         //Get the Webview

@@ -41,6 +41,12 @@ public class EbillAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        //Items are not clickable
+        return false;
+    }
+
+    @Override
     public View getView(int position, View view, ViewGroup parent) {
         if(view == null){
             LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -24,6 +24,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.search.MessageIDTerm;
+import javax.mail.search.SearchTerm;
 
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Load;
@@ -38,7 +40,7 @@ public class Email implements Serializable{
     private String mDate;
     private String mBody;
     private boolean isRead;
-    private int index;
+    private String mMessageID;
     
     private final static String port = "587";
 	private final static String host = "smtp.mcgill.ca";
@@ -54,13 +56,13 @@ public class Email implements Serializable{
 						cc,
 						bcc;
 
-    public Email(String subject, List<String> sender, String date, String body, boolean isRead, int emailIndex){
+    public Email(String subject, List<String> sender, String date, String body, boolean isRead, String messageID){
         this.mSubject = subject;
         this.to = sender;
         this.mDate = date;
         this.mBody = body;
         this.isRead = isRead;
-        this.index = emailIndex;
+        this.mMessageID = messageID;
         
 
         // real info here
@@ -102,8 +104,12 @@ public class Email implements Serializable{
             store.connect();
 			Folder inbox = store.getFolder("INBOX");
 			inbox.open(Folder.READ_WRITE);
-			inbox.getMessage(index).setFlag(Flags.Flag.SEEN, true);
-			Log.e("Email", "" + index);
+            SearchTerm searchTerm = new MessageIDTerm(mMessageID);
+            Message[] messages = inbox.search(searchTerm);
+            for(Message message : messages){
+                message.setFlag(Flags.Flag.SEEN, true);
+            }
+			Log.e("Email", mMessageID);
 			inbox.close(true);
 			store.close();
 		} catch (Exception e) {
@@ -264,5 +270,9 @@ public class Email implements Serializable{
 
     public boolean isRead() {
         return isRead;
-    }    
+    }
+
+    public String getMessageID(){
+        return this.mMessageID;
+    }
 }

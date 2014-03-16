@@ -39,7 +39,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
@@ -67,7 +66,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_schedule);
-        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.SCHEDULE_POSITION);
         super.onCreate(savedInstanceState);
 
         //Get the first list of courses from the ApplicationClass

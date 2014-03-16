@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
-import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
@@ -29,7 +28,6 @@ public class TranscriptActivity extends DrawerActivity {
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_transcript);
-        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.TRANSCRIPT_POSITION);
         super.onCreate(savedInstanceState);
 
         //Get the stored transcript from the ApplicationClass

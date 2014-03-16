@@ -50,7 +50,7 @@ public class DrawerAdapter extends BaseAdapter {
         this.mActivity = activity;
         this.mDrawerItems = new ArrayList<DrawerItem>();
         this.mSelectedPosition = selectedPosition;
-        this.mUnreadMessages = 0;
+        this.mUnreadMessages = ApplicationClass.getUnreadEmails();
         generateDrawerItems();
     }
 
@@ -128,7 +128,7 @@ public class DrawerAdapter extends BaseAdapter {
         TextView badge = (TextView)view.findViewById(R.id.drawer_email_count);
         if(position == EMAIL_POSITION){
             mUnreadMessagesView = badge;
-            updateUnreadMessages(mUnreadMessages);
+            updateUnreadMessages();
         }
         else{
         	badge.setVisibility(View.INVISIBLE);
@@ -183,11 +183,11 @@ public class DrawerAdapter extends BaseAdapter {
         return view;
     }
 
-    public void updateUnreadMessages(int unreadMessages){
-        mUnreadMessages = unreadMessages;
+    public void updateUnreadMessages(){
+        mUnreadMessages = ApplicationClass.getUnreadEmails();
 
         if(mUnreadMessagesView != null){
-            if(unreadMessages == 0){
+            if(mUnreadMessages == 0){
                 mUnreadMessagesView.setVisibility(View.INVISIBLE);
             }
             else{

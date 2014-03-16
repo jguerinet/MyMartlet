@@ -5,19 +5,24 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.object.Inbox;
-import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.activity.DesktopActivity;
+import ca.mcgill.mymcgill.activity.MapActivity;
+import ca.mcgill.mymcgill.activity.SettingsActivity;
+import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
+import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
+import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 
 public class DrawerActivity extends Activity{
 
     public DrawerLayout drawerLayout;
     public ListView drawerList;
-    public DrawerAdapter mDrawerAdapter;
     private ActionBarDrawerToggle drawerToggle;
+    private DrawerAdapter mDrawerAdapter;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -33,32 +38,38 @@ public class DrawerActivity extends Activity{
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Make Sure the Adapter is not null
-        if(mDrawerAdapter == null){
-            mDrawerAdapter = new DrawerAdapter(this, 100);
+        //Set up the adapter
+        if(this instanceof TranscriptActivity){
+            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.TRANSCRIPT_POSITION);
         }
-
-        //Show the number of unread emails initially stored on the phone
-        final Inbox inbox = ApplicationClass.getInbox();
-        if(inbox != null){
-            mDrawerAdapter.updateUnreadMessages(inbox.getNumNewEmails());
-            //Update the number of emails in a separate thread
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    inbox.retrieveEmail();
-                    DrawerActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mDrawerAdapter.updateUnreadMessages(inbox.getNumNewEmails());
-                        }
-                    });
-                }
-            }).start();
+        else if(this instanceof InboxActivity){
+            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EMAIL_POSITION);
+        }
+        else if(this instanceof EbillActivity){
+            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EBILL_POSITION);
+        }
+        else if(this instanceof MapActivity){
+            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.MAP_POSITION);
+        }
+        else if(this instanceof DesktopActivity){
+            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.DESKTOP_POSITION);
+        }
+        else if(this instanceof SettingsActivity){
+            mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.SETTINGS_POSITION);
+        }
+        else{
+            Log.e("Drawer Adapter", "not well initialized");
+            mDrawerAdapter = new DrawerAdapter(this, -1);
         }
 
         drawerList = (ListView) findViewById(R.id.left_drawer);
         drawerList.setAdapter(mDrawerAdapter);
+    }
+
+    public void updateUnreadMessages(){
+        if(mDrawerAdapter != null){
+            mDrawerAdapter.updateUnreadMessages();
+        }
     }
 
     @Override

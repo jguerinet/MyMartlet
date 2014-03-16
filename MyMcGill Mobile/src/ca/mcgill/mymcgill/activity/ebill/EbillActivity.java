@@ -19,7 +19,6 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
-import ca.mcgill.mymcgill.activity.drawer.DrawerAdapter;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.UserInfo;
 import ca.mcgill.mymcgill.util.ApplicationClass;
@@ -37,7 +36,6 @@ public class EbillActivity extends DrawerActivity {
 	protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_ebill);
-        mDrawerAdapter = new DrawerAdapter(this, DrawerAdapter.EBILL_POSITION);
         super.onCreate(savedInstanceState);
 
         //Get the initial info from the ApplicationClass
