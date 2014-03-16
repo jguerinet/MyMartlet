@@ -127,5 +127,14 @@
     <string name="schedule_change">Change Semester</string>
     <string name="change_semester_season">Season</string>
     <string name="change_semester_year">Year</string>
+    <string name="change_semester_ok">Ok</string>
+    <string name="change_semester_cancel">Cancel</string>
+    <string name="change_semester_default">Set as Default</string>
+    <string-array name="change_semester_season">
+        <item >Summer</item>
+        <item >Fall</item>
+        <item >Winter</item>
+    </string-array>
+    <string name="change_semester_title">Change Semester</string>
 
 </resources>

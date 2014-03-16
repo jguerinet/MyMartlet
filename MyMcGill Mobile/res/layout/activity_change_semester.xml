@@ -6,6 +6,13 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:text="@string/change_semester_title"
+        android:textSize="@dimen/text_medium" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,11 +36,6 @@
             android:gravity="right|center_vertical" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line"
-        android:background="@color/black" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,4 +58,42 @@
             android:layout_height="match_parent"
             android:gravity="right|center_vertical" />
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/change_semester_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_medium"
+        android:text="@string/change_semester_default"
+        android:textSize="@dimen/text_small" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingTop="@dimen/padding_small" >
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/padding_large"
+            android:text="@string/change_semester_cancel"
+            android:textSize="@dimen/text_medium"
+            android:onClick="cancelPress" />
+
+        <Button
+            android:id="@+id/ok_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/padding_large"
+            android:text="@string/change_semester_ok"
+            android:textSize="@dimen/text_medium"
+            android:onClick="okPress" />
+    </LinearLayout>
+
 </LinearLayout>
