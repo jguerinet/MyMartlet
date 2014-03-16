@@ -61,14 +61,17 @@ public class InboxActivity extends DrawerActivity{
 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_REFRESH, Menu.NONE, R.string.refresh);
     	menu.add(Menu.NONE, Constants.MENU_ITEM_SEND, Menu.NONE, R.string.reply_send);
 		return super.onCreateOptionsMenu(menu);
-	}
+    }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) 
-        {   
+        switch (item.getItemId()) {
+            case Constants.MENU_ITEM_REFRESH:
+                new InboxGetter(true).execute();
+                return true;
             case Constants.MENU_ITEM_SEND:
             	//TODO 
                 Intent replyIntent = new Intent(this,ReplyActivity.class);
