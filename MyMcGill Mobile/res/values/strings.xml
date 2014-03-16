@@ -116,10 +116,14 @@
         <item>eBill</item>
     </string-array>
 
+    <!-- ReplyActivity -->
+    <string name="sent_message_success">Your message has been sent.</string>
+    <string name="sent_message_error">There was an error sending your message. Please try again later.</string>
+
+
     <string name="title_activity_attach">Attachement</string>
     <string name="attached_files">Files Attached: </string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="schedule_change">Change Semester</string>
     <string name="change_semester_season">Season</string>
     <string name="change_semester_year">Year</string>

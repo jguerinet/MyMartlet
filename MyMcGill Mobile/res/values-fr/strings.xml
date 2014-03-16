@@ -103,4 +103,8 @@
         <item>eBill</item>
     </string-array>
     <string name="schedule_change">Changer Session</string>
+
+    <!-- ReplyActivity -->
+    <string name="sent_message_success">Votre message a été envoyé avec succès.</string>
+    <string name="sent_message_error">Une erreur est survenue en envoyant votre message. Veuillez réessayer plus tard.</string>
 </resources>

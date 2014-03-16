@@ -1,7 +1,9 @@
 package ca.mcgill.mymcgill.activity.inbox;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,9 +12,12 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
@@ -82,7 +87,6 @@ public class ReplyActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {   
             case Constants.MENU_ITEM_ADD_ATTACH:
-            	// TODO add attachements
             	Intent attachIntent = new Intent(ReplyActivity.this,ca.mcgill.mymcgill.activity.inbox.AttachActivity.class);
             	this.startActivityForResult(attachIntent, FILE_CODE);
             	
@@ -94,7 +98,6 @@ public class ReplyActivity extends BaseActivity {
     
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 		
@@ -116,14 +119,8 @@ public class ReplyActivity extends BaseActivity {
 		}
 		
 		replyEmail = new Email(emailSubject.getText().toString(), Senders, body.getText().toString(), ReplyContext);
-		//Toast.makeText(this, "Sending : " + attachFilePath, Toast.LENGTH_SHORT).show();
-		new Thread(new Runnable() {
-            @Override
-            public void run() {
-				replyEmail.send(attachFilePath);
-				finish();
-                    };          
-        }).start();
+
+        new SendEmail().execute();
 	}
 	
 	@Override
@@ -135,5 +132,53 @@ public class ReplyActivity extends BaseActivity {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
+    private class SendEmail extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog mProgressDialog;
+
+        @Override
+        protected void onPreExecute(){
+            //Show ProgressDialog
+            mProgressDialog = new ProgressDialog(ReplyActivity.this);
+            mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.show();
+        }
+
+        //Retrieve content from inbox page
+        @Override
+        protected Void doInBackground(Void... params){
+            try{
+                replyEmail.send(attachFilePath);
+                //Show Success Message
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.sent_message_success), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                finish();
+            }
+            catch(MessagingException e){
+                e.printStackTrace();
+                //Show Error message
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.sent_message_error), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            return null;
+        }
+
+        //Update or create email object and display data
+        @Override
+        protected void onPostExecute(Void result){
+            //Dismiss the progress dialog
+            mProgressDialog.dismiss();
+        }
+    }
 }
 

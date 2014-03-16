@@ -160,51 +160,46 @@ public class Email implements Serializable{
 	}
 
     //Sends an email with an attachment
-    public void send(String attachmentPath){
+    public void send(String attachmentPath) throws MessagingException {
         Properties props = this.setProperties();
         Authenticator auth = this.setAuthenticator();
         Session session = Session.getInstance(props, auth);
         MimeMessage message = new MimeMessage(session);
 
-        try{
-            message.setFrom(new InternetAddress(from));
+        message.setFrom(new InternetAddress(from));
 
-            for(String s: to){
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
-            }
-
-            message.setSubject(mSubject);
-
-            //Create a MimeBodyPart for the message of the email
-            MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText(mBody);
-
-            //Create a multipart for the email
-            Multipart multipart = new MimeMultipart();
-
-            //Set the message in the multipart
-            multipart.addBodyPart(messageBodyPart);
-            if (attachmentPath != null)
-            { 	
-            	//Create a MimeBodyPart for the attachment
-            	MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-            	DataSource source = new FileDataSource(attachmentPath);
-            	
-            	attachmentBodyPart.setDataHandler(new DataHandler(source));
-            	attachmentBodyPart.setFileName(attachmentPath);
-            	
-            	multipart.addBodyPart(attachmentBodyPart);
-            }
-
-            //Put parts into the message
-            message.setContent(multipart);
-
-            //Send message
-            Transport.send(message);
-
-        }catch (MessagingException e) {
-            e.printStackTrace();
+        for(String s: to){
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
         }
+
+        message.setSubject(mSubject);
+
+        //Create a MimeBodyPart for the message of the email
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setText(mBody);
+
+        //Create a multipart for the email
+        Multipart multipart = new MimeMultipart();
+
+        //Set the message in the multipart
+        multipart.addBodyPart(messageBodyPart);
+        if (attachmentPath != null)
+        {
+            //Create a MimeBodyPart for the attachment
+            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(attachmentPath);
+
+            attachmentBodyPart.setDataHandler(new DataHandler(source));
+            attachmentBodyPart.setFileName(attachmentPath);
+
+            multipart.addBodyPart(attachmentBodyPart);
+        }
+
+        //Put parts into the message
+        message.setContent(multipart);
+
+        //Send message
+        Transport.send(message);
     }
 	
 	private Properties setProperties(){
