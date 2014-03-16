@@ -7,7 +7,7 @@
     android:id="@+id/activity_course_container"
     android:background="@color/white">
 
-    <TextView
+    <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/course_code"
