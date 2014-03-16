@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
@@ -30,6 +32,14 @@ public class InboxAdapter extends BaseAdapter{
     public InboxAdapter(Context context, Inbox inbox){
         this.mContext = context;
         this.mEmails = inbox.getEmails();
+
+        //Sort them in reverse chronological order
+        Collections.sort(mEmails, new Comparator<Email>() {
+            @Override
+            public int compare(Email email, Email email2) {
+                return email2.getDate().compareTo(email.getDate());
+            }
+        });
     }
 
     @Override

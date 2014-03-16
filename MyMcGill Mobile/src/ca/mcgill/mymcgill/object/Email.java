@@ -3,6 +3,8 @@ package ca.mcgill.mymcgill.object;
 import android.content.Context;
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
@@ -37,7 +39,7 @@ public class Email implements Serializable{
 	
     private String mSubject;
     private String mSender;
-    private String mDate;
+    private DateTime mDate;
     private String mBody;
     private boolean isRead;
     private String mMessageID;
@@ -56,7 +58,7 @@ public class Email implements Serializable{
 						cc,
 						bcc;
 
-    public Email(String subject, List<String> sender, String date, String body, boolean isRead, String messageID){
+    public Email(String subject, List<String> sender, DateTime date, String body, boolean isRead, String messageID){
         this.mSubject = subject;
         this.to = sender;
         this.mDate = date;
@@ -255,8 +257,12 @@ public class Email implements Serializable{
         return to;
     }
 
-    public String getDate(){
+    public DateTime getDate(){
         return mDate;
+    }
+
+    public String getDateString(){
+        return mDate.toString();
     }
 
     public String getBody() {

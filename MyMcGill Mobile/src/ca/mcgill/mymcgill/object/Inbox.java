@@ -2,6 +2,8 @@ package ca.mcgill.mymcgill.object;
 
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -122,7 +124,7 @@ public class Inbox implements Serializable{
 
                 //If the email does not exist, add it to the inbox
                 if(currentEmail == null){
-                    currentEmail = new Email(subject, from, message.getSentDate().toString(),
+                    currentEmail = new Email(subject, from, new DateTime(message.getSentDate()),
                             body, message.isSet(Flag.SEEN), messageID);
                     mEmails.add(currentEmail);
                 }

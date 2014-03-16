@@ -46,7 +46,7 @@ public class EmailActivity extends BaseActivity {
 
         //Display date received
         TextView emailDate = (TextView)findViewById(R.id.email_date_received);
-        emailDate.setText(email.getDate());
+        emailDate.setText(email.getDateString());
 
         //Display email body
         WebView emailBody = (WebView)findViewById(R.id.email_body);
