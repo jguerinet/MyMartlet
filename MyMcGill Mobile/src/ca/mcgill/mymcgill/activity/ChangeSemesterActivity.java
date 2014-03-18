@@ -30,6 +30,10 @@ import ca.mcgill.mymcgill.util.ApplicationClass;
 public class ChangeSemesterActivity extends BaseActivity {
 
 	private List<Semester> semesters = new ArrayList<Semester>();
+	private List<String> seasonList;
+	private List<String> yearList;
+	private String seasonNum;
+	private String yearNum;
 	
     @SuppressLint("NewApi")
 	@Override
@@ -65,7 +69,7 @@ public class ChangeSemesterActivity extends BaseActivity {
 
         // Extract all the seasons that the user has registered in
         semesters = ApplicationClass.getTranscript().getSemesters();
-        List<String> seasonList = new ArrayList<String>();
+        seasonList = new ArrayList<String>();
         String seasonName;
         Boolean old;
         for(int i = 0; i < semesters.size(); i = i + 1) {
@@ -89,15 +93,18 @@ public class ChangeSemesterActivity extends BaseActivity {
         seasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
         season.setAdapter(seasonAdapter);
-        //season.setSelection(ApplicationClass.getHomePage().ordinal());
+        // TODO: Need to be better done
+        season.setSelection(0);
         season.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                //Get the chosen language
-                HomePage chosenHomePage = HomePage.values()[position];
-
-                //Update it in the ApplicationClass
-                    ApplicationClass.setHomePage(chosenHomePage);
+            	if (seasonList.get(position).equals("Fall")) {
+                	seasonNum = "09";
+                } else if (seasonList.get(position).equals("Fall")) {
+                	seasonNum = "01";
+                } else {
+                	seasonNum = "05";
+                }
             }
 
             @Override
@@ -105,7 +112,7 @@ public class ChangeSemesterActivity extends BaseActivity {
         });
         
         // Extract all the years that the user has registered in
-        List<String> yearList = new ArrayList<String>();
+        yearList = new ArrayList<String>();
         String yearName;
         for(int i = 0; i < semesters.size(); i = i + 1) {
         	old = false;
@@ -128,20 +135,17 @@ public class ChangeSemesterActivity extends BaseActivity {
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
         year.setAdapter(yearAdapter);
-//        season.setSelection(ApplicationClass.getHomePage().ordinal());
-//        year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-//                //Get the chosen language
-//                HomePage chosenHomePage = HomePage.values()[position];
-//
-//                //Update it in the ApplicationClass
-//                    ApplicationClass.setHomePage(chosenHomePage);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {}
-//        });
+        // TODO: Need to be better done
+        year.setSelection(0);
+        year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+            	seasonNum = yearList.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
     }
 
     public void cancelPress(View v){
