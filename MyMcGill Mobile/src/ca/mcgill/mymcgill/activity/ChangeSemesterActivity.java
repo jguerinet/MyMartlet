@@ -1,5 +1,8 @@
 package ca.mcgill.mymcgill.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -15,6 +18,8 @@ import android.widget.Spinner;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.HomePage;
+import ca.mcgill.mymcgill.object.Semester;
+import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 
 
@@ -24,6 +29,8 @@ import ca.mcgill.mymcgill.util.ApplicationClass;
  */
 public class ChangeSemesterActivity extends BaseActivity {
 
+	private List<Semester> semesters = new ArrayList<Semester>();
+	
     @SuppressLint("NewApi")
 	@Override
     public void onCreate(Bundle savedInstanceState){
@@ -56,11 +63,28 @@ public class ChangeSemesterActivity extends BaseActivity {
         params.width = (5 * displayWidth) / 6;
         layout.setLayoutParams(params);
 
+        // Extract all the seasons that the user has registered in
+        semesters = ApplicationClass.getTranscript().getSemesters();
+        List<String> seasonList = new ArrayList<String>();
+        String seasonName;
+        Boolean old;
+        for(int i = 0; i < semesters.size(); i = i + 1) {
+        	old = false;
+        	seasonName = semesters.get(i).getSemesterName().replaceAll("[^A-Za-z]+", "");
+        	for(int j = 0; j < seasonList.size();j = j + 1) {
+        		if(seasonName.equals(seasonList.get(j))){
+        			old = true;
+        		}
+        	}
+        	if (!old) {
+        		seasonList.add(seasonName);
+        	}
+        }
+        
         Spinner season = (Spinner) findViewById(R.id.change_semester_season);
     	
     	//Standard ArrayAdapter
-        ArrayAdapter<CharSequence> seasonAdapter = ArrayAdapter.createFromResource(this,
-                R.array.change_semester_season, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> seasonAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, seasonList);
         //Specify the layout to use when the list of choices appears
         seasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
@@ -80,11 +104,26 @@ public class ChangeSemesterActivity extends BaseActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
         
+        // Extract all the years that the user has registered in
+        List<String> yearList = new ArrayList<String>();
+        String yearName;
+        for(int i = 0; i < semesters.size(); i = i + 1) {
+        	old = false;
+        	yearName = semesters.get(i).getSemesterName().replaceAll("\\D+","");;
+        	for(int j = 0; j < yearList.size();j = j + 1) {
+        		if(yearName.equals(yearList.get(j))){
+        			old = true;
+        		}
+        	}
+        	if (!old) {
+        		yearList.add(yearName);
+        	}
+        }
+        
         Spinner year = (Spinner) findViewById(R.id.change_semester_year);
     	
     	//Standard ArrayAdapter
-        ArrayAdapter<CharSequence> yearAdapter = ArrayAdapter.createFromResource(this,
-                R.array.year_entries, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, yearList);
         //Specify the layout to use when the list of choices appears
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
