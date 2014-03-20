@@ -35,6 +35,7 @@ import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
+import ca.mcgill.mymcgill.object.Email;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -59,7 +60,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         super.onCreate(savedInstanceState);
 
         //Get the first list of courses from the ApplicationClass
-        mCourseList = ApplicationClass.getSchedule();;
+        mCourseList = ApplicationClass.getSchedule();
 
         //ViewPager stuff
         mSupportFragmentManager = getSupportFragmentManager();
@@ -77,7 +78,14 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         
         //Start thread to get schedule
         //If the courses list is not empty, we only need to refresh
-        new ScheduleGetter(refresh).execute();
+        if((getIntent().hasExtra(Constants.SEASON)) || getIntent().hasExtra(Constants.YEAR)) {
+        	String season = ((String)getIntent().getSerializableExtra("season"));
+        	String year = ((String)getIntent().getSerializableExtra("year"));
+        	String newURL = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=" + year + season;
+        	new ScheduleGetter(true,newURL).execute();
+        } else {
+        	new ScheduleGetter(refresh,Connection.minervaSchedule).execute();
+        }
     }
 
     //Method that returns a list of courses for a given day
@@ -294,9 +302,11 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private class ScheduleGetter extends AsyncTask<Void, Void, Void> {
         private boolean mRefresh;
         private ProgressDialog mProgressDialog;
+        private String scheduleURL;
 
-        public ScheduleGetter(boolean refresh){
+        public ScheduleGetter(boolean refresh, String url){
             mRefresh = refresh;
+            scheduleURL = url;
         }
 
         @Override
@@ -320,7 +330,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             String scheduleString;
             final Activity activity = ScheduleActivity.this;
 
-  			scheduleString = Connection.getInstance().getUrl(ScheduleActivity.this, Connection.minervaSchedule);
+  			scheduleString = Connection.getInstance().getUrl(ScheduleActivity.this, scheduleURL);
 
             if(scheduleString == null){
                 activity.runOnUiThread(new Runnable() {

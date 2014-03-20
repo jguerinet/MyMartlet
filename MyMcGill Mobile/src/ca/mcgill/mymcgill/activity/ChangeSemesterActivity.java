@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -17,10 +18,12 @@ import android.widget.Spinner;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
+import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.util.Constants;
 
 
 /**
@@ -100,7 +103,7 @@ public class ChangeSemesterActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
             	if (seasonList.get(position).equals("Fall")) {
                 	seasonNum = "09";
-                } else if (seasonList.get(position).equals("Fall")) {
+                } else if (seasonList.get(position).equals("Winter")) {
                 	seasonNum = "01";
                 } else {
                 	seasonNum = "05";
@@ -134,13 +137,13 @@ public class ChangeSemesterActivity extends BaseActivity {
         //Specify the layout to use when the list of choices appears
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
-        year.setAdapter(yearAdapter);
+        year.setAdapter(yearAdapter);  
         // TODO: Need to be better done
         year.setSelection(0);
         year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-            	seasonNum = yearList.get(position);
+            	yearNum = yearList.get(position);
             }
 
             @Override
@@ -148,13 +151,21 @@ public class ChangeSemesterActivity extends BaseActivity {
         });
     }
 
+    // Cancel Button
+    // Simply closes the dialog
     public void cancelPress(View v){
         finish();
         overridePendingTransition(R.anim.stay, R.anim.out_to_top);
     }
     
+    // Ok Button
+    // Accepts changes and changes the schedule
     public void okPress(View v){
         finish();
         overridePendingTransition(R.anim.stay, R.anim.out_to_top);
+        Intent replyIntent = new Intent(this,ScheduleActivity.class);
+        replyIntent.putExtra("season", seasonNum);
+        replyIntent.putExtra("year", yearNum);
+        this.startActivity(replyIntent);
     }
 }
