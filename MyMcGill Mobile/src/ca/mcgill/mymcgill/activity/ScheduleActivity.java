@@ -81,7 +81,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         if((getIntent().hasExtra(Constants.SEASON)) || getIntent().hasExtra(Constants.YEAR)) {
         	String season = ((String)getIntent().getSerializableExtra("season"));
         	String year = ((String)getIntent().getSerializableExtra("year"));
-        	String newURL = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=" + year + season;
+        	String newURL = Connection.minervaSchedulePrefix + year + season;
         	new ScheduleGetter(true,newURL).execute();
         } else {
         	new ScheduleGetter(refresh,Connection.minervaSchedule).execute();
@@ -353,6 +353,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             //Parsing code
             Document doc = Jsoup.parse(scheduleString);
             Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
+            
             String name, data, credits;
             int crn;
             for (int i = 0; i < scheduleTable.size(); i+=2) {

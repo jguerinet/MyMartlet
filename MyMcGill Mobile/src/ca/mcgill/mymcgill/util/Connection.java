@@ -54,6 +54,7 @@ public class Connection {
 	public final static String minervaHomepage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
 	public final static String minervaHost = "horizon.mcgill.ca";
 	public final static String minervaOrigin = "https://horizon.mcgill.ca";
+	public final static String minervaSchedulePrefix = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
 	
 	public final static String myMcGillLoginPage = "https://mymcgill.mcgill.ca/portal/page/portal/myMcGill";
 	public final static String myMcGillLoginPortal = "https://mymcgill.mcgill.ca/portal/page/portal/Login";

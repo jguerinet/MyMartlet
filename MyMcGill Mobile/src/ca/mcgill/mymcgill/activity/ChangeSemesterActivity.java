@@ -3,10 +3,20 @@ package ca.mcgill.mymcgill.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +28,10 @@ import android.widget.Spinner;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
-import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
-import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Semester;
-import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.ApplicationClass;
-import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.DialogHelper;
 
 
 /**
@@ -37,6 +45,8 @@ public class ChangeSemesterActivity extends BaseActivity {
 	private List<String> yearList;
 	private String seasonNum;
 	private String yearNum;
+	
+	private Boolean invalid;
 	
     @SuppressLint("NewApi")
 	@Override
@@ -108,6 +118,7 @@ public class ChangeSemesterActivity extends BaseActivity {
                 } else {
                 	seasonNum = "05";
                 }
+            	new ScheduleChecker(true,Connection.minervaSchedulePrefix+yearNum+seasonNum).execute();
             }
 
             @Override
@@ -144,6 +155,7 @@ public class ChangeSemesterActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
             	yearNum = yearList.get(position);
+            	new ScheduleChecker(true,Connection.minervaSchedulePrefix+yearNum+seasonNum).execute();
             }
 
             @Override
@@ -161,11 +173,86 @@ public class ChangeSemesterActivity extends BaseActivity {
     // Ok Button
     // Accepts changes and changes the schedule
     public void okPress(View v){
-        finish();
-        overridePendingTransition(R.anim.stay, R.anim.out_to_top);
-        Intent replyIntent = new Intent(this,ScheduleActivity.class);
-        replyIntent.putExtra("season", seasonNum);
-        replyIntent.putExtra("year", yearNum);
-        this.startActivity(replyIntent);
+		if (invalid) {
+			DialogHelper.showNeutralAlertDialog(this, this
+					.getResources().getString(R.string.error), "You are not currently registered for the term selected");
+		} else {
+			finish();
+			overridePendingTransition(R.anim.stay, R.anim.out_to_top);
+			Intent replyIntent = new Intent(this, ScheduleActivity.class);
+			replyIntent.putExtra("season", seasonNum);
+			replyIntent.putExtra("year", yearNum);
+			this.startActivity(replyIntent);
+		}
+	}
+    
+    private class ScheduleChecker extends AsyncTask<Void, Void, Void> {
+        private boolean mRefresh;
+        private ProgressDialog mProgressDialog;
+        private String scheduleURL;
+
+        public ScheduleChecker(boolean refresh, String url){
+            mRefresh = refresh;
+            scheduleURL = url;
+        }
+
+        @Override
+        protected void onPreExecute(){
+            //Only show a ProgressDialog if we are not refreshing the content but
+            //downloading it for the first time
+            if(!mRefresh){
+                mProgressDialog = new ProgressDialog( ChangeSemesterActivity.this);
+                mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                mProgressDialog.show();
+            }
+            //If not, just put it in the Action bar
+            else{
+                setProgressBarIndeterminateVisibility(true);
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            String scheduleString;
+            final Activity activity = ChangeSemesterActivity.this;
+            
+  			scheduleString = Connection.getInstance().getUrl(ChangeSemesterActivity.this, scheduleURL);
+  			
+            if(scheduleString == null){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                activity.getResources().getString(R.string.login_error_other));
+                    }
+                });
+                return null;
+            }
+            //Empty String: no need for an alert dialog but no need to reload
+            else if(TextUtils.isEmpty(scheduleString)){
+                return null;
+            }
+            
+            Document doc = Jsoup.parse(scheduleString);
+            String all = doc.text();
+            if(all.contains("You are not currently registered for the term.")) {
+            	invalid = true;
+            } else {
+            	invalid = false;
+            }
+
+            return null;
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(Void result) {
+            //Dismiss the progress dialog if there was one
+            if(!mRefresh){
+                mProgressDialog.dismiss();
+            }
+            setProgressBarIndeterminateVisibility(false);
+        }
     }
 }

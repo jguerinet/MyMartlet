@@ -149,4 +149,8 @@ public class Save {
             e.printStackTrace();
         }
     }
+    
+    public static void saveDefaultSchedule(Context context){
+    	
+    }
 }

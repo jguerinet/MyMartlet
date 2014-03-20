@@ -28,7 +28,10 @@ public class ApplicationClass extends Application {
     private static Language language;
     private static HomePage homePage;
     private static Transcript transcript;
+    
     private static List<CourseSched> schedule;
+    private static String defaultSchedule;
+    
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
     private static Inbox inbox;
