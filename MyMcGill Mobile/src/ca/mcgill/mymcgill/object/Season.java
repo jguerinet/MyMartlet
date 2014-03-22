@@ -13,6 +13,19 @@ public enum Season {
     WINTER,
     SUMMER;
 
+    public static Season findSeason(String season){
+        if(season.equalsIgnoreCase(Token.FALL.getString())){
+            return FALL;
+        }
+        else if(season.equalsIgnoreCase(Token.WINTER.getString())){
+            return WINTER;
+        }
+        else if(season.equalsIgnoreCase(Token.SUMMER.getString())){
+            return SUMMER;
+        }
+        return null;
+    }
+
     public String toString(Context context){
         switch(this){
             case FALL:
