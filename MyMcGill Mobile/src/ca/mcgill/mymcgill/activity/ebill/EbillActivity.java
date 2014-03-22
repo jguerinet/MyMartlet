@@ -9,11 +9,6 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,16 +111,9 @@ public class EbillActivity extends DrawerActivity {
 
             mEbillItems.clear();
 
-            Document doc = Jsoup.parse(ebillString);
-            Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
-            Elements ebillRows = ebillTable.getElementsByTag("tr");
-            getEBill(ebillRows);
-
-            //Parse the user info
-            Elements userInfo = ebillTable.getElementsByTag("caption");
-            String id = userInfo.get(0).text().replace("Statements for ", "");
-            String[] userInfoItems = id.split("-");
-            mUserInfo = new UserInfo(userInfoItems[1].trim(), userInfoItems[0].trim());
+            //Parse the ebill and the user info
+            mEbillItems = EbillItem.parseEbill(ebillString);
+            mUserInfo = new UserInfo(ebillString);
 
             //Save it to the instance variable in the Application class
             ApplicationClass.setEbill(mEbillItems);
@@ -150,18 +138,6 @@ public class EbillActivity extends DrawerActivity {
                 mProgressDialog.dismiss();
             }
             setProgressBarIndeterminateVisibility(false);
-        }
-
-        //parser algorithm
-        private void getEBill(Elements rows){
-            for (int i = 2; i < rows.size(); i+=2) {
-                Element row = rows.get(i);
-                Elements cells = row.getElementsByTag("td");
-                String statementDate = cells.get(0).text();
-                String dueDate = cells.get(3).text();
-                String amountDue = cells.get(5).text();
-                mEbillItems.add(new EbillItem(statementDate, dueDate, amountDue));
-            }
         }
     }
 }
