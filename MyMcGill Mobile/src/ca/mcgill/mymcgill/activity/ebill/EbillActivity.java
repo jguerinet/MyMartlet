@@ -1,7 +1,6 @@
 package ca.mcgill.mymcgill.activity.ebill;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -42,14 +41,11 @@ public class EbillActivity extends DrawerActivity {
         mUserId = (TextView)findViewById(R.id.ebill_user_id);
         mListView = (ListView)findViewById(android.R.id.list);
 
-        boolean refresh = !mEbillItems.isEmpty();
-        if(refresh){
-            loadInfo();
-        }
+        //Load the stored info
+        loadInfo();
 
         //Start the thread to get the ebill
-        //If the ebill list is not empty, we only need to refresh
-        new EbillGetter(refresh).execute();
+        new EbillGetter().execute();
 	}
 
     private void loadInfo(){
@@ -61,38 +57,20 @@ public class EbillActivity extends DrawerActivity {
         mListView.setAdapter(adapter);
     }
 
-    private class EbillGetter extends AsyncTask<Void, Void, Void> {
-        private boolean mRefresh;
-        private ProgressDialog mProgressDialog;
-
-        public EbillGetter(boolean refresh){
-            this.mRefresh = refresh;
-        }
-
+    private class EbillGetter extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPreExecute(){
-            //Only show a ProgressDialog if we are not refreshing the content but
-            //downloading it for the first timeC
-            if(!mRefresh){
-                mProgressDialog = new ProgressDialog(EbillActivity.this);
-                mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                mProgressDialog.show();
-            }
-            //If not, just put it in the Action bar
-            else{
-                setProgressBarIndeterminateVisibility(true);
-            }
+            //Show the user we are refreshing his content
+            setProgressBarIndeterminateVisibility(true);
+
         }
 
         //Retrieve content from transcript page
         @Override
-        protected Void doInBackground(Void... params){
-
+        protected Boolean doInBackground(Void... params){
             final Activity activity = EbillActivity.this;
-            String ebillString;
 
-            ebillString = Connection.getInstance().getUrl(EbillActivity.this, Connection.minervaEbill);
+            String ebillString = Connection.getInstance().getUrl(activity, Connection.minervaEbill);
 
             if(ebillString == null){
                 activity.runOnUiThread(new Runnable() {
@@ -102,11 +80,11 @@ public class EbillActivity extends DrawerActivity {
                                 activity.getResources().getString(R.string.login_error_other));
                     }
                 });
-                return null;
+                return false;
             }
             //Empty String: no need for an alert dialog but no need to reload
             else if(TextUtils.isEmpty(ebillString)){
-                return null;
+                return false;
             }
 
             mEbillItems.clear();
@@ -119,24 +97,17 @@ public class EbillActivity extends DrawerActivity {
             ApplicationClass.setEbill(mEbillItems);
             ApplicationClass.setUserInfo(mUserInfo);
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Reload the info in the views
-                    loadInfo();
-                }
-            });
-
-            return null;
+            return true;
         }
 
         //Update or create transcript object and display data
         @Override
-        protected void onPostExecute(Void result){
-            //Dismiss the progress dialog if there was one
-            if(!mRefresh){
-                mProgressDialog.dismiss();
+        protected void onPostExecute(Boolean loadInfo){
+            if(loadInfo){
+                //Reload the info in the views
+                loadInfo();
             }
+
             setProgressBarIndeterminateVisibility(false);
         }
     }

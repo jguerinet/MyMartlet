@@ -2,7 +2,6 @@ package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -61,24 +60,18 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         mPager = (ViewPager)findViewById(R.id.pager);
         mPager.setOffscreenPageLimit(6);
 
-        //Only set up the adapter if we are refreshing. If we are downloading a progress dialog
-        //will block the view
-        boolean refresh = !mCourseList.isEmpty();
-        if(refresh){
-            loadInfo();
-        }
-        
-        //assert(Constants.NUMBER_UNREAD_EMAILS == 3);
-        
+        //Load the stored info
+        loadInfo();
+
         //Start thread to get schedule
         //If the courses list is not empty, we only need to refresh
         if((getIntent().hasExtra(Constants.SEASON)) || getIntent().hasExtra(Constants.YEAR)) {
         	String season = ((String)getIntent().getSerializableExtra("season"));
         	String year = ((String)getIntent().getSerializableExtra("year"));
         	String newURL = Connection.minervaSchedulePrefix + year + season;
-        	new ScheduleGetter(true,newURL).execute();
+        	new ScheduleGetter(newURL).execute();
         } else {
-        	new ScheduleGetter(refresh,Connection.minervaSchedule).execute();
+        	new ScheduleGetter(Connection.minervaSchedule).execute();
         }
     }
 
@@ -293,34 +286,21 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         }
     }
 
-    private class ScheduleGetter extends AsyncTask<Void, Void, Void> {
-        private boolean mRefresh;
-        private ProgressDialog mProgressDialog;
+    private class ScheduleGetter extends AsyncTask<Void, Void, Boolean> {
         private String scheduleURL;
 
-        public ScheduleGetter(boolean refresh, String url){
-            mRefresh = refresh;
+        public ScheduleGetter(String url){
             scheduleURL = url;
         }
 
         @Override
         protected void onPreExecute(){
-            //Only show a ProgressDialog if we are not refreshing the content but
-            //downloading it for the first time
-            if(!mRefresh){
-                mProgressDialog = new ProgressDialog(ScheduleActivity.this);
-                mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                mProgressDialog.show();
-            }
-            //If not, just put it in the Action bar
-            else{
-                setProgressBarIndeterminateVisibility(true);
-            }
+            //Show the user we are refreshing
+            setProgressBarIndeterminateVisibility(true);
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             String scheduleString;
             final Activity activity = ScheduleActivity.this;
 
@@ -334,11 +314,11 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                                 activity.getResources().getString(R.string.login_error_other));
                     }
                 });
-                return null;
+                return false;
             }
             //Empty String: no need for an alert dialog but no need to reload
             else if(TextUtils.isEmpty(scheduleString)){
-                return null;
+                return false;
             }
 
             //Clear the current course list
@@ -350,24 +330,17 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             //Save it to the instance variable in Application class
             ApplicationClass.setSchedule(mCourseList);
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Reload the adapter
-                    loadInfo();
-                }
-            });
-
-            return null;
+            return true;
         }
 
         // onPostExecute displays the results of the AsyncTask.
         @Override
-        protected void onPostExecute(Void result) {
-            //Dismiss the progress dialog if there was one
-            if(!mRefresh){
-                mProgressDialog.dismiss();
+        protected void onPostExecute(Boolean loadInfo) {
+            if(loadInfo){
+                //Reload the adapter
+                loadInfo();
             }
+
             setProgressBarIndeterminateVisibility(false);
         }
     }
