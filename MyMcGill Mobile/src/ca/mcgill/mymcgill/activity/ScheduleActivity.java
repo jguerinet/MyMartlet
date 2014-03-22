@@ -46,6 +46,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
 
+    private static final int CHANGE_SEMESTER_CODE = 100;
+
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -377,9 +379,24 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             // Opens the context menu    
             case Constants.MENU_ITEM_CHANGE_SEMESTER:
             	Intent intent = new Intent(this, ChangeSemesterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             	return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CHANGE_SEMESTER_CODE){
+            if(resultCode == RESULT_OK){
+                String season = ((String)data.getSerializableExtra("season"));
+                String year = ((String)data.getSerializableExtra("year"));
+                String newURL = Connection.minervaSchedulePrefix + year + season;
+                new ScheduleGetter(newURL).execute();
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
