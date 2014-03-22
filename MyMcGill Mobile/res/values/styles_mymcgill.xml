@@ -18,6 +18,22 @@
 
     </style>
 
+    <style name="DialogTheme.Mymcgill" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_mymcgill</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Mymcgill</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Mymcgill</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Mymcgill</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Mymcgill</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Mymcgill</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_mymcgill</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_mymcgill</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Mymcgill</item>
+
+        <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.Mymcgill.Widget</item>
+
+    </style>
+
     <style name="ActionBar.Solid.Mymcgill" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/ab_solid_mymcgill</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_mymcgill</item>

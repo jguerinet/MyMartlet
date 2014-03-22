@@ -62,7 +62,7 @@
         <activity android:name="ca.mcgill.mymcgill.activity.semester.SemesterActivity"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.CourseActivity"
-            android:theme="@android:style/Theme.Dialog"
+            android:theme="@style/DialogMyMcGill"
             android:screenOrientation="portrait"/>
         <activity
             android:name="ca.mcgill.mymcgill.activity.ebill.EbillActivity"
@@ -93,7 +93,7 @@
         
         <activity
             android:name="ca.mcgill.mymcgill.activity.ChangeSemesterActivity"
-            android:theme="@android:style/Theme.Dialog"
+            android:theme="@style/DialogMyMcGill"
             android:screenOrientation="portrait"/>
 
         <!--

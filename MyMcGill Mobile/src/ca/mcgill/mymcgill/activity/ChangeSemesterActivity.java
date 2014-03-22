@@ -1,13 +1,5 @@
 package ca.mcgill.mymcgill.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -16,7 +8,6 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
@@ -68,7 +65,6 @@ public class ChangeSemesterActivity extends BaseActivity {
         }
 
         int displayWidth = size.x;
-        int displayHeight = size.y;
 
         //Set the width and height to 2/3 of the screen
         LinearLayout layout = (LinearLayout) findViewById(R.id.activity_change_semester);
@@ -76,7 +72,6 @@ public class ChangeSemesterActivity extends BaseActivity {
         ViewGroup.LayoutParams params = layout.getLayoutParams();
         //Quick check
         assert (params != null);
-        params.height = (2 * displayHeight) / 3;
         params.width = (5 * displayWidth) / 6;
         layout.setLayoutParams(params);
 
