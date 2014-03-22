@@ -11,7 +11,7 @@ import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Language;
-import ca.mcgill.mymcgill.object.ScheduleSemester;
+import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
 
@@ -31,7 +31,7 @@ public class ApplicationClass extends Application {
     private static Transcript transcript;
     
     private static List<CourseSched> schedule;
-    private static ScheduleSemester defaultSemester;
+    private static Semester defaultSemester;
     
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
@@ -99,7 +99,7 @@ public class ApplicationClass extends Application {
         return homePage;
     }
 
-    public static ScheduleSemester getDefaultSemester(){
+    public static Semester getDefaultSemester(){
         return defaultSemester;
     }
 
@@ -160,7 +160,7 @@ public class ApplicationClass extends Application {
         Save.saveHomePage(context);
     }
 
-    public static void setDefaultSemester(ScheduleSemester semester){
+    public static void setDefaultSemester(Semester semester){
         ApplicationClass.defaultSemester = semester;
 
         //Save it to internal storage when this is set
