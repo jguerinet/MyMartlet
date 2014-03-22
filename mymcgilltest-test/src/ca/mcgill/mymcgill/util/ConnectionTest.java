@@ -28,13 +28,7 @@ public class ConnectionTest extends AndroidTestCase{
 		Connection conn = Connection.getInstance();
 		String actual ="";
 		
-		try {
-			actual = conn.getUrl(Connection.minervaHomepage);
-		} catch (MinervaLoggedOutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			assertEquals(e.toString(),true,false);
-		}
+		actual = conn.getUrl(mActivityClass, Connection.minervaHomepage);
 		
 		String file = "res/raw/minerva_home.txt";
 		InputStream in = conn.getClass().getClassLoader().getResourceAsStream(file);

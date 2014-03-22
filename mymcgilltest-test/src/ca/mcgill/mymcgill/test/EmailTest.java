@@ -3,12 +3,14 @@ package ca.mcgill.mymcgill.test;
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
+import android.widget.Button;
 import android.widget.EditText;
 import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 
 public class EmailTest extends ActivityInstrumentationTestCase2<ReplyActivity> {
 	public Activity testActivity;
-	EditText subject,cc,email,body;
+	EditText subject,cc,body;
+	Button emailButton;
 	
 	
 	public EmailTest()
@@ -19,10 +21,10 @@ public class EmailTest extends ActivityInstrumentationTestCase2<ReplyActivity> {
 	@UiThreadTest
 	public void testUIElements()
 	{
-		assertEquals(subject.getText(),"");
-		assertEquals(cc.getText(),"");
-		assertEquals(email.getText(),"");
-		assertEquals(body.getText(),"");
+		assertNotNull(subject.getText());
+		assertNotNull(cc.getText());
+		assertNotNull(emailButton.getText());
+		assertNotNull(body.getText());
 	}
 	@Override
 	protected void setUp() throws Exception {
@@ -32,7 +34,7 @@ public class EmailTest extends ActivityInstrumentationTestCase2<ReplyActivity> {
 		testActivity = (ReplyActivity) getActivity();
 		subject = (EditText) testActivity.findViewById(ca.mcgill.mymcgill.R.id.emailSubject);
 		cc = (EditText) testActivity.findViewById(ca.mcgill.mymcgill.R.id.emailCarbonCopy);
-		email = (EditText) testActivity.findViewById(ca.mcgill.mymcgill.R.id.sendEmailButton);
+		emailButton = (Button) testActivity.findViewById(ca.mcgill.mymcgill.R.id.sendEmailButton);
 		body = (EditText) testActivity.findViewById(ca.mcgill.mymcgill.R.id.emailBody);		
 	}
 
