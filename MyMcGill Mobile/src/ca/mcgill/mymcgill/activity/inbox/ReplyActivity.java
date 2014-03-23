@@ -57,7 +57,7 @@ public class ReplyActivity extends BaseActivity {
 		if (email == null)
 		{
 			isSending = true;
-			this.setTitle("Send Email");
+			this.setTitle(R.string.send_email);
 			
 		}
 		else isSending = false;
@@ -65,7 +65,7 @@ public class ReplyActivity extends BaseActivity {
 		// TODO Modify for Forward Email
 		if (!isSending)
 		{
-			this.setTitle("Reply Email");
+			this.setTitle(R.string.reply_email);
 			emails.setText(email.getSender());
 			
 			if (email.getSubject().contains("RE:")) {
@@ -102,8 +102,8 @@ public class ReplyActivity extends BaseActivity {
 		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 		
 		TextView attachText = (TextView) findViewById(R.id.attachText);
-		if (attachFilePath == null) attachText.setText("no files attached");
-		else attachText.setText("Files Attached: " + attachFilePath);
+		if (attachFilePath == null) attachText.setText(R.string.no_attachments);
+		else attachText.setText(R.string.files_attached + attachFilePath);
 
 	}
 

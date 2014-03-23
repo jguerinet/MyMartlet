@@ -36,13 +36,13 @@ public class TranscriptActivityTest extends ActivityInstrumentationTestCase2<Tra
 	@Test
 	public void testCgpaLabel() {
 		String Cgpa = cgpaText.getText().toString();
-	    assertTrue("Does not contain 'CGPA'", Cgpa.contains("CGPA:"));
+	    assertEquals("Does not contain 'CGPA'", Cgpa);
 	}
 	
 	@Test
 	public void testCreditsLabel() {
 		String credits = creditsText.getText().toString();
-		assertTrue("Does not contain 'CGPA'", credits.contains("Total Credits:"));
+		assertEquals("Does not contain 'CGPA'", credits.contains("Total Credits:"));
 	}
 	
 	

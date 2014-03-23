@@ -2,6 +2,7 @@ package ca.mcgill.mymcgill.activity.transcript;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.res.Resources.NotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -95,8 +96,13 @@ public class TranscriptActivity extends DrawerActivity {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                activity.getResources().getString(R.string.login_error_other));
+                        try {
+							DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+							        activity.getResources().getString(R.string.login_error_other));
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                     }
                 });
                 return null;

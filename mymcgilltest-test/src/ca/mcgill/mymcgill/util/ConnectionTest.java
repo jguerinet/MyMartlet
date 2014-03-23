@@ -28,11 +28,14 @@ public class ConnectionTest extends AndroidTestCase{
 		Connection conn = Connection.getInstance();
 		String actual ="";
 		
-		actual = conn.getUrl(mActivityClass, Connection.minervaHomepage);
+		actual = conn.getUrl(mActivityClass, Connection.minervaHomepage);	
 		
 		String file = "res/raw/minerva_home.txt";
 		InputStream in = conn.getClass().getClassLoader().getResourceAsStream(file);
+		assertNotNull(in);
+		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		assertNotNull(reader);		
 		
 		String text ="";
 		StringBuilder sb = new StringBuilder();
@@ -42,6 +45,8 @@ public class ConnectionTest extends AndroidTestCase{
 		}
 		
 		String expected = sb.toString();
+		
+		// sb is the actual page
 		
 		assertEquals("Retrieved page is different", expected, actual);
 	}
