@@ -138,27 +138,27 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 
         switch (day){
-            case Calendar.MONDAY:
-                mPager.setCurrentItem(0);
-                break;
-            case Calendar.TUESDAY:
-                mPager.setCurrentItem(1);
-                break;
-            case Calendar.WEDNESDAY:
-                mPager.setCurrentItem(2);
-                break;
-            case Calendar.THURSDAY:
-                mPager.setCurrentItem(3);
-                break;
-            case Calendar.FRIDAY:
-                mPager.setCurrentItem(4);
-                break;
-            case Calendar.SATURDAY:
-                mPager.setCurrentItem(5);
-                break;
-            case Calendar.SUNDAY:
-                mPager.setCurrentItem(6);
-                break;
+	        case Calendar.MONDAY:
+	            mPager.setCurrentItem(500003);
+	            break;
+	        case Calendar.TUESDAY:
+	            mPager.setCurrentItem(500004);
+	            break;
+	        case Calendar.WEDNESDAY:
+	            mPager.setCurrentItem(500005);
+	            break;
+	        case Calendar.THURSDAY:
+	            mPager.setCurrentItem(500006);
+	            break;
+	        case Calendar.FRIDAY:
+	            mPager.setCurrentItem(500007);
+	            break;
+	        case Calendar.SATURDAY:
+	            mPager.setCurrentItem(500008);
+	            break;
+	        case Calendar.SUNDAY:
+	            mPager.setCurrentItem(500009);
+	            break;
         }
     }
 
@@ -353,13 +353,13 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         @Override
         public Fragment getItem(int i) {
-            Day currentDay = Day.getDay(i);
+            Day currentDay = Day.getDay(i%7);
             return DayFragment.newInstance(currentDay);
         }
 
         @Override
         public int getCount() {
-            return 7;
+            return 1000000;
         }
     }
     

@@ -177,20 +177,40 @@ public class Transcript implements Serializable{
                             String averageGrade = "";
                             int credits = 0;
 
+                            //Courses list credits
                             try{
-                                courseCode = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
                                 courseTitle = rows.get(semesterIndex + 2).text();
+                                courseCode = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
                                 credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
 
+                                Course course = new Course(courseTitle, courseCode, credits, userGrade, averageGrade);
+                                courses.add(course);
                             }
+
                             catch(IndexOutOfBoundsException e){
                                 //String not found
+
+                                //Try configuration with no credits after course title
+                                try{
+                                    courseTitle = rows.get(semesterIndex + 2).text();
+
+                                    int addedIndex = 3;
+                                    while(rows.get(semesterIndex + addedIndex).text() != null || rows.get(semesterIndex + addedIndex).text() != ""){
+                                        courseCode = rows.get(semesterIndex + addedIndex).text() + " " + rows.get(semesterIndex+addedIndex+1).text();
+                                        addedIndex = addedIndex + 2;
+
+                                        Course course = new Course(courseTitle, courseCode, credits, userGrade, averageGrade);
+                                        courses.add(course);
+                                    }
+
+                                } catch(IndexOutOfBoundsException e2){
+                                    //End of transfer credits
+                                }
                             }
 
-                            Course course = new Course(courseTitle, courseCode, credits,
-                                    userGrade, averageGrade);
 
-                            courses.add(course);
+
+
                             termCredits = credits;
                         }
 
