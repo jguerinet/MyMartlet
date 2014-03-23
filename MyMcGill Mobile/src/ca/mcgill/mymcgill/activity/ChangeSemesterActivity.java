@@ -82,7 +82,7 @@ public class ChangeSemesterActivity extends BaseActivity {
         Boolean old;
         for(int i = 0; i < semesters.size(); i = i + 1) {
         	old = false;
-        	seasonName = semesters.get(i).getSemesterName().replaceAll("[^A-Za-z]+", "");
+        	seasonName = semesters.get(i).getSemesterName(this).replaceAll("[^A-Za-z]+", "");
         	for(int j = 0; j < seasonList.size();j = j + 1) {
         		if(seasonName.equals(seasonList.get(j))){
         			old = true;
@@ -125,7 +125,7 @@ public class ChangeSemesterActivity extends BaseActivity {
         String yearName;
         for(int i = 0; i < semesters.size(); i = i + 1) {
         	old = false;
-        	yearName = semesters.get(i).getSemesterName().replaceAll("\\D+","");;
+        	yearName = semesters.get(i).getSemesterName(this).replaceAll("\\D+","");;
         	for(int j = 0; j < yearList.size();j = j + 1) {
         		if(yearName.equals(yearList.get(j))){
         			old = true;

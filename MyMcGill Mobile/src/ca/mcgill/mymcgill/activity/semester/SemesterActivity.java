@@ -32,7 +32,7 @@ public class SemesterActivity extends BaseListActivity {
         assert (semester != null);
 
         //Set the title as this current semester
-        setTitle(semester.getSemesterName());
+        setTitle(semester.getSemesterName(this));
 
         //Set the info up
         TextView semesterBachelor = (TextView)findViewById(R.id.semester_bachelor);
