@@ -46,6 +46,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 	private List<CourseSched> mCourseList;
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
+    private Semester mCurrentSemester;
 
     private static final int CHANGE_SEMESTER_CODE = 100;
 
@@ -54,6 +55,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_schedule);
         super.onCreate(savedInstanceState);
+
+        mCurrentSemester = ApplicationClass.getDefaultSemester();
 
         //Get the first list of courses from the ApplicationClass
         mCourseList = ApplicationClass.getSchedule();
@@ -67,15 +70,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         loadInfo();
 
         //Start thread to get schedule
-        //If the courses list is not empty, we only need to refresh
-        if((getIntent().hasExtra(Constants.SEASON)) || getIntent().hasExtra(Constants.YEAR)) {
-        	String season = ((String)getIntent().getSerializableExtra("season"));
-        	String year = ((String)getIntent().getSerializableExtra("year"));
-        	String newURL = Connection.minervaSchedulePrefix + year + season;
-        	new ScheduleGetter(newURL).execute();
-        } else {
-        	new ScheduleGetter(Connection.minervaSchedule).execute();
-        }
+        new ScheduleGetter(ApplicationClass.getDefaultSemester().getURL()).execute();
     }
 
     //Method that returns a list of courses for a given day
@@ -133,6 +128,9 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     }
 
     private void loadInfo(){
+        //Title
+        setTitle(mCurrentSemester.getSemesterName(this));
+
         SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
         mPager.setAdapter(adapter);
 
@@ -390,12 +388,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == CHANGE_SEMESTER_CODE){
             if(resultCode == RESULT_OK){
-                Semester semester = ((Semester)data.getSerializableExtra(Constants.SEMESTER));
+                mCurrentSemester = ((Semester)data.getSerializableExtra(Constants.SEMESTER));
 
                 //Quick Check
-                assert (semester != null);
+                assert (mCurrentSemester != null);
 
-                new ScheduleGetter(semester.getURL()).execute();
+                new ScheduleGetter(mCurrentSemester.getURL()).execute();
             }
         }
         else{

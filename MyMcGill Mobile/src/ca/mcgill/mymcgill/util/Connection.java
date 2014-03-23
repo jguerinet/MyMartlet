@@ -32,6 +32,7 @@ import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
 
@@ -95,13 +96,33 @@ public class Connection {
     public void downloadAll(Activity activity){
         Connection connection = getInstance();
 
-        //Download the schedule
-        String scheduleString = connection.getUrl(activity, minervaSchedule);
-        ApplicationClass.setSchedule(CourseSched.parseCourseList(scheduleString));
-
         //Download the transcript
         String transcriptString = connection.getUrl(activity, minervaTranscript);
-        ApplicationClass.setTranscript(new Transcript(transcriptString));
+        Transcript transcript = new Transcript(transcriptString);
+        ApplicationClass.setTranscript(transcript);
+
+        //Set the default Semester
+        List<Semester> semesters = transcript.getSemesters();
+        //Find the latest semester
+        Semester defaultSemester = semesters.get(0);
+        for(Semester semester : semesters){
+            //If the year is higher than the current year, swtich
+            if(semester.getYear() > defaultSemester.getYear()){
+                defaultSemester = semester;
+            }
+            //If same year and the month is higher than th edefault month, change it
+            else if(semester.getYear() == defaultSemester.getYear()){
+                if(Integer.valueOf(semester.getSeason().getSeasonNumber()) >
+                        Integer.valueOf(defaultSemester.getSeason().getSeasonNumber())){
+                    defaultSemester = semester;
+                }
+            }
+        }
+        ApplicationClass.setDefaultSemester(defaultSemester);
+
+        //Download the schedule
+        String scheduleString = connection.getUrl(activity, defaultSemester.getURL());
+        ApplicationClass.setSchedule(CourseSched.parseCourseList(scheduleString));
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);

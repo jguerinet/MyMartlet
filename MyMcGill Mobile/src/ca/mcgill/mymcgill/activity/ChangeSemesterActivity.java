@@ -43,14 +43,13 @@ import ca.mcgill.mymcgill.util.DialogHelper;
  */
 public class ChangeSemesterActivity extends BaseActivity {
 
-    private List<Season> seasonList;
-	private List<Integer> yearList;
+    private List<Season> mSeasonList;
+	private List<Integer> mYearList;
     private List<Semester> mSemesters;
 	private Season mSeason;
 	private int mYear;
-	
-	private Boolean invalid;
-	
+    private CheckBox mDefaultCheckbox;
+
     @SuppressLint("NewApi")
 	@Override
     public void onCreate(Bundle savedInstanceState){
@@ -81,17 +80,20 @@ public class ChangeSemesterActivity extends BaseActivity {
         params.width = (5 * displayWidth) / 6;
         layout.setLayoutParams(params);
 
+        //Get the current default semester
+        Semester defaultSemester = ApplicationClass.getDefaultSemester();
+
         // Extract all the seasons that the user has registered in
         mSemesters = ApplicationClass.getTranscript().getSemesters();
-        seasonList = new ArrayList<Season>();
+        mSeasonList = new ArrayList<Season>();
         for (Semester semester : mSemesters) {
-            if(!seasonList.contains(semester.getSeason())){
-                seasonList.add(semester.getSeason());
+            if(!mSeasonList.contains(semester.getSeason())){
+                mSeasonList.add(semester.getSeason());
             }
         }
 
         //Order them alphabetically
-        Collections.sort(seasonList, new Comparator<Season>() {
+        Collections.sort(mSeasonList, new Comparator<Season>() {
             @Override
             public int compare(Season season, Season season2) {
                 return season.toString(ChangeSemesterActivity.this).compareTo(season2.toString(ChangeSemesterActivity.this));
@@ -100,7 +102,7 @@ public class ChangeSemesterActivity extends BaseActivity {
 
         //Make a list with their strings
         List<String> seasonStrings = new ArrayList<String>();
-        for(Season season : seasonList){
+        for(Season season : mSeasonList){
             seasonStrings.add(season.toString(this));
         }
 
@@ -111,32 +113,31 @@ public class ChangeSemesterActivity extends BaseActivity {
         //Set up the season spinner
         Spinner season = (Spinner) findViewById(R.id.change_semester_season);
         season.setAdapter(seasonAdapter);
-        // TODO: Need to be better done
-        season.setSelection(0);
+        season.setSelection(mSeasonList.indexOf(defaultSemester.getSeason()));
         season.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
             	//Get the selected season
-                mSeason = seasonList.get(position);
+                mSeason = mSeasonList.get(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
         
         // Extract all the years that the user has registered in
-        yearList = new ArrayList<Integer>();
+        mYearList = new ArrayList<Integer>();
         for (Semester semester : mSemesters) {
-            if(!yearList.contains(semester.getYear())){
-                yearList.add(semester.getYear());
+            if(!mYearList.contains(semester.getYear())){
+                mYearList.add(semester.getYear());
             }
         }
 
         //Order them chronologically
-        Collections.sort(yearList);
+        Collections.sort(mYearList);
 
         //Get a list with their strings
         List<String> yearStrings = new ArrayList<String>();
-        for(Integer year : yearList){
+        for(Integer year : mYearList){
             yearStrings.add(String.valueOf(year));
         }
 
@@ -147,12 +148,11 @@ public class ChangeSemesterActivity extends BaseActivity {
         //Set up the year spinner
         Spinner year = (Spinner) findViewById(R.id.change_semester_year);
         year.setAdapter(yearAdapter);
-        // TODO: Need to be better done
-        year.setSelection(0);
+        year.setSelection(mYearList.indexOf(defaultSemester.getYear()));
         year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-            	mYear = yearList.get(position);
+            	mYear = mYearList.get(position);
             }
 
             @Override
@@ -160,7 +160,7 @@ public class ChangeSemesterActivity extends BaseActivity {
         });
 
         //Set up the default checkbox
-        CheckBox defaultCheckbox = (CheckBox)findViewById(R.id.change_semester_default);
+        mDefaultCheckbox = (CheckBox)findViewById(R.id.change_semester_default);
     }
 
     // Cancel Button
@@ -247,6 +247,12 @@ public class ChangeSemesterActivity extends BaseActivity {
             mProgressDialog.dismiss();
 
             if(valid){
+                //Check if the default checkbox is checked
+                if(mDefaultCheckbox.isChecked()){
+                    //Store this semester as the default semester if it is
+                    ApplicationClass.setDefaultSemester(mSemester);
+                }
+
                 Intent replyIntent = new Intent();
                 replyIntent.putExtra(Constants.SEMESTER, mSemester);
                 setResult(RESULT_OK, replyIntent);
