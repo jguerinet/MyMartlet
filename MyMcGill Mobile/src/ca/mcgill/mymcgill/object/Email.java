@@ -137,20 +137,18 @@ public class Email implements Serializable{
 		session.setDebug(debug);
 		
 		MimeMessage message = new MimeMessage(session);
-		
 		try{
 			message.setFrom(new InternetAddress(from));
 		
 			for(String s: to){
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
 			}
-//			for(String s: cc){
-//				message.addRecipient(Message.RecipientType.CC, new InternetAddress(s));
-//			}
-//			for(String s: bcc){
-//				message.addRecipient(Message.RecipientType.BCC, new InternetAddress(s));
-//			}
-
+			for(String s: cc){
+				message.addRecipient(Message.RecipientType.CC, new InternetAddress(s));
+			}
+			for(String s: bcc){
+				message.addRecipient(Message.RecipientType.BCC, new InternetAddress(s));
+			}
 			message.setSubject(mSubject);
 			message.setText(mBody);
 			

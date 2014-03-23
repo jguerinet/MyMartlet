@@ -35,6 +35,8 @@ public class ReplyActivity extends BaseActivity {
 	Context ReplyContext;
 	boolean isSending;
 	EditText emails;
+	EditText carbonCopy;
+	
 	
 	private static final int FILE_CODE = 100;
 	
@@ -46,12 +48,16 @@ public class ReplyActivity extends BaseActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 		TextView attachText = (TextView) findViewById(R.id.attachText);
+		
 		ReplyContext = getApplicationContext();
+		carbonCopy = (EditText) findViewById(R.id.emailCarbonCopy);
 		
 		attachFilePath = null;	
 		layout = (LinearLayout) findViewById(R.id.LinearLayout1);
 		emails = (EditText) findViewById(R.id.emailRecipient);
 		emailSubject = (EditText)findViewById(R.id.emailSubject);
+		
+		
 		
 		//sending a fresh email
 		if (email == null)
@@ -117,7 +123,15 @@ public class ReplyActivity extends BaseActivity {
 		else{
 			Senders=email.getSenderList();
 		}
+		Senders.addAll(Arrays.asList(carbonCopy.getText().toString().split(";")));
 		
+		
+//		String sendString = "";
+//		for (int i = 0 ;i < Senders.size();i ++ )
+//		{
+//			sendString += Senders.get(i) + "\n";
+//		}
+//		//body.setText(sendString);
 		replyEmail = new Email(emailSubject.getText().toString(), Senders, body.getText().toString(), ReplyContext);
 
         new SendEmail().execute();
