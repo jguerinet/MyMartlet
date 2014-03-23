@@ -66,7 +66,8 @@ public class Transcript implements Serializable{
                         row.text().startsWith(Token.SUMMER.getString())){
 
                     //Initialize variables
-                    String[] scheduleSemesterItems = row.text().trim().split(" ");
+                    String scheduleSemester = row.text().trim();
+                    String[] scheduleSemesterItems = scheduleSemester.split("\\s+");
                     //Find the right season and year
                     Season season = Season.findSeason(scheduleSemesterItems[0]);
                     int year = Integer.valueOf(scheduleSemesterItems[1]);

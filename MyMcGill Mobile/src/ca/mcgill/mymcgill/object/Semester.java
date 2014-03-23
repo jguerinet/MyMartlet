@@ -46,6 +46,16 @@ public class Semester implements Serializable{
         return mSeason.toString(context) + " " + mYear;
     }
 
+    //Getter for the Season
+    public Season getSeason(){
+        return mSeason;
+    }
+
+    //Getter for the year
+    public int getYear(){
+        return mYear;
+    }
+
     //Getter for program
     public String getProgram() {
         return mProgram;

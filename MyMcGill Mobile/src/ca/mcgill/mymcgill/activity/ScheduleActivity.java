@@ -29,6 +29,7 @@ import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
+import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -389,10 +390,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == CHANGE_SEMESTER_CODE){
             if(resultCode == RESULT_OK){
-                String season = ((String)data.getSerializableExtra("season"));
-                String year = ((String)data.getSerializableExtra("year"));
-                String newURL = Connection.minervaSchedulePrefix + year + season;
-                new ScheduleGetter(newURL).execute();
+                Semester semester = ((Semester)data.getSerializableExtra(Constants.SEMESTER));
+
+                //Quick Check
+                assert (semester != null);
+
+                new ScheduleGetter(semester.getURL()).execute();
             }
         }
         else{
