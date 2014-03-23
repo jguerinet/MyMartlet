@@ -12,7 +12,7 @@
     <string name="title_desktop">Site PC</string>
     <string name="title_login">Connexion</string>
     <string name="title_schedule">Mon Calendrier</string>
-    <string name="title_transcript">Ma Transcription</string>
+    <string name="title_transcript">Ma Bulletin</string>
     <string name="title_ebill">Mon eBill</string>
     <string name="title_inbox">Mon Email</string>
     <string name="title_settings">Réglages</string>
@@ -98,7 +98,7 @@
     </string-array>
     <string-array name="settings_homepages">
         <item>Calendrier</item>
-        <item>Transcription</item>
+        <item>Bulletin</item>
         <item>Email</item>
         <item>eBill</item>
     </string-array>
