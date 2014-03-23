@@ -10,7 +10,6 @@ import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
-import ca.mcgill.mymcgill.activity.MapActivity;
 import ca.mcgill.mymcgill.activity.SettingsActivity;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
@@ -47,9 +46,6 @@ public class DrawerActivity extends BaseActivity {
         }
         else if(this instanceof EbillActivity){
             mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EBILL_POSITION);
-        }
-        else if(this instanceof MapActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MAP_POSITION);
         }
         else if(this instanceof DesktopActivity){
             mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.DESKTOP_POSITION);
