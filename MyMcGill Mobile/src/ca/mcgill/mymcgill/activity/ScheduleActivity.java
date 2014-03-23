@@ -64,7 +64,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         //ViewPager stuff
         mSupportFragmentManager = getSupportFragmentManager();
         mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setOffscreenPageLimit(6);
 
         //Load the stored info
         loadInfo();
@@ -92,7 +91,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         super.onConfigurationChanged(newConfig);
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
             setContentView(R.layout.activity_schedule_land);
-            showDrawer(false);
             LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
 
             LinearLayout timetableContainer = (LinearLayout) findViewById(R.id.timetable_container);
@@ -120,11 +118,11 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         }
         else{
             setContentView(R.layout.activity_schedule);
-            showDrawer(true);
             mPager = (ViewPager)findViewById(R.id.pager);
-            mPager.setOffscreenPageLimit(6);
             loadInfo();
         }
+
+        loadDrawer();
     }
 
     private void loadInfo(){
