@@ -3,7 +3,6 @@ package ca.mcgill.mymcgill.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -71,7 +70,7 @@ public class EmailActivity extends BaseActivity {
         switch (item.getItemId()) {
         	//Returns to parent activity when the top left button is clicked
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 return true;
             // Switches to reply activity    
