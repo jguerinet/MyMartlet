@@ -119,6 +119,10 @@
     <!-- ReplyActivity -->
     <string name="sent_message_success">Your message has been sent.</string>
     <string name="sent_message_error">There was an error sending your message. Please try again later.</string>
+    <string name="send_email">Send Email</string>
+    <string name="reply_email">Reply Email</string>
+    <string name="no_attachments">No files attached</string>
+    <string name="files_attached">Files attached: </string>
 
 
     <string name="title_activity_attach">Attachement</string>

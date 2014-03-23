@@ -107,4 +107,8 @@
     <!-- ReplyActivity -->
     <string name="sent_message_success">Votre message a été envoyé avec succès.</string>
     <string name="sent_message_error">Une erreur est survenue en envoyant votre message. Veuillez réessayer plus tard.</string>
+    <string name="send_email">Envoyer un message</string>
+    <string name="reply_email">Répondre à un message</string>
+    <string name="no_attachments">Pas de fichiers joints</string>
+    <string name="files_attached">Fichiers joints: </string>
 </resources>
