@@ -30,6 +30,10 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
+import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Transcript;
+import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua
@@ -85,6 +89,24 @@ public class Connection {
     //Setting password
     public void setPassword(String password){
         this.password = password;
+    }
+
+    //Download all of the info (upon login)
+    public void downloadAll(Activity activity){
+        Connection connection = getInstance();
+
+        //Download the schedule
+        String scheduleString = connection.getUrl(activity, minervaSchedule);
+        ApplicationClass.setSchedule(CourseSched.parseCourseList(scheduleString));
+
+        //Download the transcript
+        String transcriptString = connection.getUrl(activity, minervaTranscript);
+        ApplicationClass.setTranscript(new Transcript(transcriptString));
+
+        //Download the ebill and user info
+        String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);
+        ApplicationClass.setEbill(EbillItem.parseEbill(ebillString));
+        ApplicationClass.setUserInfo(new UserInfo(ebillString));
     }
 
 	public ConnectionStatus connectToMinerva(Context context){

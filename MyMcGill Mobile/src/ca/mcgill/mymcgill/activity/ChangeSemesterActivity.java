@@ -1,13 +1,5 @@
 package ca.mcgill.mymcgill.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -16,7 +8,6 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
@@ -68,15 +65,13 @@ public class ChangeSemesterActivity extends BaseActivity {
         }
 
         int displayWidth = size.x;
-        int displayHeight = size.y;
 
-        //Set the width and height to 2/3 of the screen
+        //Set the width to 2/3 of the screen
         LinearLayout layout = (LinearLayout) findViewById(R.id.activity_change_semester);
 
         ViewGroup.LayoutParams params = layout.getLayoutParams();
         //Quick check
         assert (params != null);
-        params.height = (2 * displayHeight) / 3;
         params.width = (5 * displayWidth) / 6;
         layout.setLayoutParams(params);
 
@@ -87,7 +82,7 @@ public class ChangeSemesterActivity extends BaseActivity {
         Boolean old;
         for(int i = 0; i < semesters.size(); i = i + 1) {
         	old = false;
-        	seasonName = semesters.get(i).getSemesterName().replaceAll("[^A-Za-z]+", "");
+        	seasonName = semesters.get(i).getSemesterName(this).replaceAll("[^A-Za-z]+", "");
         	for(int j = 0; j < seasonList.size();j = j + 1) {
         		if(seasonName.equals(seasonList.get(j))){
         			old = true;
@@ -130,7 +125,7 @@ public class ChangeSemesterActivity extends BaseActivity {
         String yearName;
         for(int i = 0; i < semesters.size(); i = i + 1) {
         	old = false;
-        	yearName = semesters.get(i).getSemesterName().replaceAll("\\D+","");;
+        	yearName = semesters.get(i).getSemesterName(this).replaceAll("\\D+","");;
         	for(int j = 0; j < yearList.size();j = j + 1) {
         		if(yearName.equals(yearList.get(j))){
         			old = true;
@@ -166,6 +161,7 @@ public class ChangeSemesterActivity extends BaseActivity {
     // Cancel Button
     // Simply closes the dialog
     public void cancelPress(View v){
+        setResult(RESULT_CANCELED);
         finish();
         overridePendingTransition(R.anim.stay, R.anim.out_to_top);
     }
@@ -177,12 +173,12 @@ public class ChangeSemesterActivity extends BaseActivity {
 			DialogHelper.showNeutralAlertDialog(this, this
 					.getResources().getString(R.string.error), "You are not currently registered for the term selected");
 		} else {
-			finish();
-			overridePendingTransition(R.anim.stay, R.anim.out_to_top);
-			Intent replyIntent = new Intent(this, ScheduleActivity.class);
+			Intent replyIntent = new Intent();
 			replyIntent.putExtra("season", seasonNum);
 			replyIntent.putExtra("year", yearNum);
-			this.startActivity(replyIntent);
+            setResult(RESULT_OK, replyIntent);
+            finish();
+            overridePendingTransition(R.anim.stay, R.anim.out_to_top);
 		}
 	}
     

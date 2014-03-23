@@ -20,6 +20,7 @@ import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Language;
+import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
 
@@ -204,5 +205,32 @@ public class Load {
         }
 
         return inbox;
+    }
+
+    public static Semester loadDefaultSemester(Context context){
+        Semester defaultSemester = null;
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.DEFAULT_SEMESTER_FILE_NAME);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            defaultSemester = (Semester) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load Default Semester Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (OptionalDataException e) {
+            Log.e("Load Default Semester Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            Log.e("Load Default Semester Failure", "File not found");
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            Log.e("Load Default Semester Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("Load Default Semester Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+        }
+
+        return defaultSemester;
     }
 }

@@ -107,8 +107,15 @@ public class LoginActivity extends BaseActivity {
 							Save.saveUsername(LoginActivity.this, username);
                             Save.savePassword(LoginActivity.this, password);
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
-                            progressDialog.dismiss();
+
+                            Connection.getInstance().downloadAll(LoginActivity.this);
                             startActivity(new Intent(LoginActivity.this, ApplicationClass.getHomePage().getHomePageClass()));
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                }
+                            });
                             finish();
                         }
                         //Else show error dialog

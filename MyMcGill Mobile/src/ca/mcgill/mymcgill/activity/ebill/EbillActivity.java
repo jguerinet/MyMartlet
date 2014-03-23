@@ -1,18 +1,12 @@
 package ca.mcgill.mymcgill.activity.ebill;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +41,11 @@ public class EbillActivity extends DrawerActivity {
         mUserId = (TextView)findViewById(R.id.ebill_user_id);
         mListView = (ListView)findViewById(android.R.id.list);
 
-        boolean refresh = !mEbillItems.isEmpty();
-        if(refresh){
-            loadInfo();
-        }
+        //Load the stored info
+        loadInfo();
 
         //Start the thread to get the ebill
-        //If the ebill list is not empty, we only need to refresh
-        new EbillGetter(refresh).execute();
+        new EbillGetter().execute();
 	}
 
     private void loadInfo(){
@@ -66,38 +57,20 @@ public class EbillActivity extends DrawerActivity {
         mListView.setAdapter(adapter);
     }
 
-    private class EbillGetter extends AsyncTask<Void, Void, Void> {
-        private boolean mRefresh;
-        private ProgressDialog mProgressDialog;
-
-        public EbillGetter(boolean refresh){
-            this.mRefresh = refresh;
-        }
-
+    private class EbillGetter extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPreExecute(){
-            //Only show a ProgressDialog if we are not refreshing the content but
-            //downloading it for the first timeC
-            if(!mRefresh){
-                mProgressDialog = new ProgressDialog(EbillActivity.this);
-                mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                mProgressDialog.show();
-            }
-            //If not, just put it in the Action bar
-            else{
-                setProgressBarIndeterminateVisibility(true);
-            }
+            //Show the user we are refreshing his content
+            setProgressBarIndeterminateVisibility(true);
+
         }
 
         //Retrieve content from transcript page
         @Override
-        protected Void doInBackground(Void... params){
-
+        protected Boolean doInBackground(Void... params){
             final Activity activity = EbillActivity.this;
-            String ebillString;
 
-            ebillString = Connection.getInstance().getUrl(EbillActivity.this, Connection.minervaEbill);
+            String ebillString = Connection.getInstance().getUrl(activity, Connection.minervaEbill);
 
             if(ebillString == null){
                 activity.runOnUiThread(new Runnable() {
@@ -107,61 +80,35 @@ public class EbillActivity extends DrawerActivity {
                                 activity.getResources().getString(R.string.login_error_other));
                     }
                 });
-                return null;
+                return false;
             }
             //Empty String: no need for an alert dialog but no need to reload
             else if(TextUtils.isEmpty(ebillString)){
-                return null;
+                return false;
             }
 
             mEbillItems.clear();
 
-            Document doc = Jsoup.parse(ebillString);
-            Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
-            Elements ebillRows = ebillTable.getElementsByTag("tr");
-            getEBill(ebillRows);
-
-            //Parse the user info
-            Elements userInfo = ebillTable.getElementsByTag("caption");
-            String id = userInfo.get(0).text().replace("Statements for ", "");
-            String[] userInfoItems = id.split("-");
-            mUserInfo = new UserInfo(userInfoItems[1].trim(), userInfoItems[0].trim());
+            //Parse the ebill and the user info
+            mEbillItems = EbillItem.parseEbill(ebillString);
+            mUserInfo = new UserInfo(ebillString);
 
             //Save it to the instance variable in the Application class
             ApplicationClass.setEbill(mEbillItems);
             ApplicationClass.setUserInfo(mUserInfo);
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Reload the info in the views
-                    loadInfo();
-                }
-            });
-
-            return null;
+            return true;
         }
 
         //Update or create transcript object and display data
         @Override
-        protected void onPostExecute(Void result){
-            //Dismiss the progress dialog if there was one
-            if(!mRefresh){
-                mProgressDialog.dismiss();
+        protected void onPostExecute(Boolean loadInfo){
+            if(loadInfo){
+                //Reload the info in the views
+                loadInfo();
             }
-            setProgressBarIndeterminateVisibility(false);
-        }
 
-        //parser algorithm
-        private void getEBill(Elements rows){
-            for (int i = 2; i < rows.size(); i+=2) {
-                Element row = rows.get(i);
-                Elements cells = row.getElementsByTag("td");
-                String statementDate = cells.get(0).text();
-                String dueDate = cells.get(3).text();
-                String amountDue = cells.get(5).text();
-                mEbillItems.add(new EbillItem(statementDate, dueDate, amountDue));
-            }
+            setProgressBarIndeterminateVisibility(false);
         }
     }
 }

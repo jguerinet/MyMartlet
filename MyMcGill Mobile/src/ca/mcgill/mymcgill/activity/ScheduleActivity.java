@@ -2,7 +2,6 @@ package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -21,11 +20,6 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -35,7 +29,6 @@ import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
-import ca.mcgill.mymcgill.object.Email;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -53,6 +46,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
 
+    private static final int CHANGE_SEMESTER_CODE = 100;
+
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -67,24 +62,18 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         mPager = (ViewPager)findViewById(R.id.pager);
         mPager.setOffscreenPageLimit(6);
 
-        //Only set up the adapter if we are refreshing. If we are downloading a progress dialog
-        //will block the view
-        boolean refresh = !mCourseList.isEmpty();
-        if(refresh){
-            loadInfo();
-        }
-        
-        //assert(Constants.NUMBER_UNREAD_EMAILS == 3);
-        
+        //Load the stored info
+        loadInfo();
+
         //Start thread to get schedule
         //If the courses list is not empty, we only need to refresh
         if((getIntent().hasExtra(Constants.SEASON)) || getIntent().hasExtra(Constants.YEAR)) {
         	String season = ((String)getIntent().getSerializableExtra("season"));
         	String year = ((String)getIntent().getSerializableExtra("year"));
         	String newURL = Connection.minervaSchedulePrefix + year + season;
-        	new ScheduleGetter(true,newURL).execute();
+        	new ScheduleGetter(newURL).execute();
         } else {
-        	new ScheduleGetter(refresh,Connection.minervaSchedule).execute();
+        	new ScheduleGetter(Connection.minervaSchedule).execute();
         }
     }
 
@@ -299,34 +288,21 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         }
     }
 
-    private class ScheduleGetter extends AsyncTask<Void, Void, Void> {
-        private boolean mRefresh;
-        private ProgressDialog mProgressDialog;
+    private class ScheduleGetter extends AsyncTask<Void, Void, Boolean> {
         private String scheduleURL;
 
-        public ScheduleGetter(boolean refresh, String url){
-            mRefresh = refresh;
+        public ScheduleGetter(String url){
             scheduleURL = url;
         }
 
         @Override
         protected void onPreExecute(){
-            //Only show a ProgressDialog if we are not refreshing the content but
-            //downloading it for the first time
-            if(!mRefresh){
-                mProgressDialog = new ProgressDialog(ScheduleActivity.this);
-                mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                mProgressDialog.show();
-            }
-            //If not, just put it in the Action bar
-            else{
-                setProgressBarIndeterminateVisibility(true);
-            }
+            //Show the user we are refreshing
+            setProgressBarIndeterminateVisibility(true);
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             String scheduleString;
             final Activity activity = ScheduleActivity.this;
 
@@ -340,123 +316,34 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                                 activity.getResources().getString(R.string.login_error_other));
                     }
                 });
-                return null;
+                return false;
             }
             //Empty String: no need for an alert dialog but no need to reload
             else if(TextUtils.isEmpty(scheduleString)){
-                return null;
+                return false;
             }
 
             //Clear the current course list
             mCourseList.clear();
 
-            //Parsing code
-            Document doc = Jsoup.parse(scheduleString);
-            Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
-            
-            String name, data, credits;
-            int crn;
-            for (int i = 0; i < scheduleTable.size(); i+=2) {
-                name = getCourseCodeAndName(scheduleTable.get(i));
-                crn = getCRN(scheduleTable.get(i));
-                data = getSchedule(scheduleTable.get(i+1));
-                credits = getCredit(scheduleTable.get(i));
-                addCourseSched(name, crn, credits, data);
-            }
+            //Get the new schedule
+            mCourseList = CourseSched.parseCourseList(scheduleString);
 
             //Save it to the instance variable in Application class
             ApplicationClass.setSchedule(mCourseList);
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Reload the adapter
-                    loadInfo();
-                }
-            });
-
-            return null;
+            return true;
         }
 
         // onPostExecute displays the results of the AsyncTask.
         @Override
-        protected void onPostExecute(Void result) {
-            //Dismiss the progress dialog if there was one
-            if(!mRefresh){
-                mProgressDialog.dismiss();
+        protected void onPostExecute(Boolean loadInfo) {
+            if(loadInfo){
+                //Reload the adapter
+                loadInfo();
             }
+
             setProgressBarIndeterminateVisibility(false);
-        }
-
-        /**
-         * This method takes the list of rows in the table and populate the mCourseList
-         * @param dataDisplayTable
-         */
-        private String getCourseCodeAndName(Element dataDisplayTable) {
-            Element caption = dataDisplayTable.getElementsByTag("caption").first();
-            String[] texts = caption.text().split(" - ");
-            return (texts[0].substring(0, texts[0].length() - 1) + "," + texts[1] + "," + texts[2]);
-        }
-
-        private int getCRN(Element dataDisplayTable) {
-            Element row = dataDisplayTable.getElementsByTag("tr").get(1);
-            String crn = row.getElementsByTag("td").first().text();
-            return Integer.parseInt(crn);
-        }
-        private String getCredit(Element dataDisplayTable) {
-        	Element row = dataDisplayTable.getElementsByTag("tr").get(5);
-            String credit = row.getElementsByTag("td").first().text();
-            return credit;
-        }
-        
-        //return time, day, room, scheduleType, professor 
-        private String getSchedule(Element dataDisplayTable) {
-            Element row = dataDisplayTable.getElementsByTag("tr").get(1);
-            Elements cells = row.getElementsByTag("td");
-            return (cells.get(0).text() + "," + cells.get(1).text() + "," + cells.get(2).text() + "," + cells.get(4).text() + "," + cells.get(5).text());
-        }
-        
-
-        private void addCourseSched(String course, int crn, String credit, String data) {
-            String[] dataItems = data.split(",");
-            String[] times = dataItems[0].split(" - ");
-            char[] days = dataItems[1].toCharArray();
-            String room = dataItems[2];
-            String courseName = course.split(",")[0];
-            String courseCode = course.split(",")[1];
-            String section = course.split(",")[2];
-            String profName = dataItems[4];
-            String scheduleType = dataItems[3];
-
-            int startHour, startMinute, endHour, endMinute;
-            try{
-                startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-                startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-                endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-                endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
-                String startPM = times[0].split(" ")[1];
-                String endPM = times[1].split(" ")[1];
-
-                //If it's PM, then add 12 hours to the hours for 24 hours format
-                //Make sure it isn't noon
-                if(startPM.equals("PM") && startHour != 12){
-                    startHour += 12;
-                }
-                if(endPM.equals("PM") && endHour != 12){
-                    endHour += 12;
-                }
-            }
-            //Try/Catch for courses with no assigned times
-            catch(NumberFormatException e){
-                startHour = 0;
-                startMinute = 0;
-                endHour = 0;
-                endMinute = 0;
-            }
-
-            for (char day : days) {
-                mCourseList.add(new CourseSched(crn, courseCode, section, day, startHour, startMinute, endHour, endMinute, room, profName, courseName, credit, scheduleType));
-            }
         }
     }
 
@@ -492,9 +379,24 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             // Opens the context menu    
             case Constants.MENU_ITEM_CHANGE_SEMESTER:
             	Intent intent = new Intent(this, ChangeSemesterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             	return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CHANGE_SEMESTER_CODE){
+            if(resultCode == RESULT_OK){
+                String season = ((String)data.getSerializableExtra("season"));
+                String year = ((String)data.getSerializableExtra("year"));
+                String newURL = Connection.minervaSchedulePrefix + year + season;
+                new ScheduleGetter(newURL).execute();
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

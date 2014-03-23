@@ -46,4 +46,45 @@
 
   </style>
 
+    <style name="DialogMyMcGill" parent="@style/DialogTheme.Mymcgill">
+
+    <item name="android:editTextBackground">@drawable/mymcgill_edit_text_holo_light</item>
+
+    <item name="android:textColorHighlight">#99db231e</item>
+    <item name="android:textSelectHandleLeft">@drawable/mymcgill_text_select_handle_left</item>
+    <item name="android:textSelectHandleRight">@drawable/mymcgill_text_select_handle_right</item>
+    <item name="android:textSelectHandle">@drawable/mymcgill_text_select_handle_middle</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewMyMcGill</item>
+
+    <item name="android:listChoiceIndicatorMultiple">@drawable/mymcgill_btn_check_holo_light</item>
+
+    <item name="android:listChoiceIndicatorSingle">@drawable/mymcgill_btn_radio_holo_light</item>
+
+    <item name="android:buttonStyle">@style/ButtonMyMcGill</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonMyMcGill</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerMyMcGill</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarMyMcGill</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarMyMcGill</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarMyMcGill</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigMyMcGill</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallMyMcGill</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleMyMcGill</item>
+
+    <item name="android:listChoiceBackgroundIndicator">@drawable/mymcgill_list_selector_holo_light</item>
+
+    <item name="android:activatedBackgroundIndicator">@drawable/mymcgill_activated_background_holo_light</item>
+
+    <item name="android:fastScrollThumbDrawable">@drawable/mymcgill_fastscroll_thumb_holo</item>
+
+   </style>
+
 </resources>

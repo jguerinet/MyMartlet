@@ -1,8 +1,11 @@
 package ca.mcgill.mymcgill.object;
 
+import android.content.Context;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import ca.mcgill.mymcgill.util.Connection;
 
 /**
  * Created by Ryan Singzon on 30/01/14.
@@ -12,7 +15,8 @@ import java.util.List;
  */
 public class Semester implements Serializable{
 
-    private String mSemesterName;
+    private Season mSeason;
+    private int mYear;
     private String mProgram;
     private String mBachelor;
     private int programYear;
@@ -23,9 +27,10 @@ public class Semester implements Serializable{
     private List<Course> courses;
 
 
-    public Semester(String semesterName, String program, String bachelor, int programYear, int termCredits, double termGPA,
+    public Semester(Season season, int year , String program, String bachelor, int programYear, int termCredits, double termGPA,
                         boolean fullTime, boolean satisfactory, List<Course> courses) {
-        this.mSemesterName = semesterName;
+        this.mSeason = season;
+        this.mYear = year;
         this.mProgram = program;
         this.mBachelor = bachelor;
         this.termCredits = termCredits;
@@ -37,8 +42,8 @@ public class Semester implements Serializable{
     }
 
     //Getter for the semester name
-    public String getSemesterName(){
-        return mSemesterName;
+    public String getSemesterName(Context context){
+        return mSeason.toString(context) + " " + mYear;
     }
 
     //Getter for program
@@ -73,5 +78,9 @@ public class Semester implements Serializable{
     //Getter for the semester's courses
     public List<Course> getCourses(){
         return courses;
+    }
+
+    public String getURL(){
+        return Connection.minervaSchedulePrefix + mYear + mSeason.getSeasonNumber();
     }
 }

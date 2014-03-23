@@ -1,7 +1,5 @@
 package ca.mcgill.mymcgill.object;
 
-import android.util.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -68,7 +66,11 @@ public class Transcript implements Serializable{
                         row.text().startsWith(Token.SUMMER.getString())){
 
                     //Initialize variables
-                    String semesterName = row.text();
+                    String[] scheduleSemesterItems = row.text().trim().split(" ");
+                    //Find the right season and year
+                    Season season = Season.findSeason(scheduleSemesterItems[0]);
+                    int year = Integer.valueOf(scheduleSemesterItems[1]);
+
                     String program = "";
                     String bachelor = "";
                     int programYear = 99;
@@ -211,7 +213,7 @@ public class Transcript implements Serializable{
                         }
                     }
 
-                    Semester semester = new Semester(semesterName, program, bachelor, programYear,
+                    Semester semester = new Semester(season, year, program, bachelor, programYear,
                             termCredits, termGPA, fullTime, satisfactory, courses);
 
                     semesters.add(semester);

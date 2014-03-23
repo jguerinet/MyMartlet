@@ -15,6 +15,7 @@ import java.util.List;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Inbox;
+import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
 
@@ -150,7 +151,21 @@ public class Save {
         }
     }
     
-    public static void saveDefaultSchedule(Context context){
-    	
+    public static void saveDefaultSemester(Context context){
+        Semester defaultSemester = ApplicationClass.getDefaultSemester();
+
+        try{
+            FileOutputStream fos = context.openFileOutput(Constants.DEFAULT_SEMESTER_FILE_NAME, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(defaultSemester);
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
