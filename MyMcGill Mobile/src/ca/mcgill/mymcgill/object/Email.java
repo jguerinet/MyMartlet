@@ -6,6 +6,7 @@ import android.util.Log;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Properties;
 
@@ -26,6 +27,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 import javax.mail.search.MessageIDTerm;
 import javax.mail.search.SearchTerm;
 
@@ -248,7 +250,12 @@ public class Email implements Serializable{
     	String s = "";
     	for(int i = 0; i < to.size(); i++) {
             if(i > 0) s += ";";
-    		s = s + to.get(i);
+    		try {
+				s = s + MimeUtility.decodeText(to.get(i));
+			} catch (UnsupportedEncodingException e) {
+				s = s + to.get(i);
+				e.printStackTrace();
+			}
     	}
         return s;
     }
