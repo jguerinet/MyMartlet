@@ -271,7 +271,7 @@ public class Email implements Serializable{
     }
 
     public String getBody() {
-        return mBody;
+		return mBody;
     }
 
     public boolean isRead() {
