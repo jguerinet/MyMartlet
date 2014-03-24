@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
+import ca.mcgill.mymcgill.activity.MyCoursesActivity;
 import ca.mcgill.mymcgill.activity.SettingsActivity;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
@@ -52,6 +53,9 @@ public class DrawerActivity extends BaseActivity {
         }
         else if(this instanceof SettingsActivity){
             mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SETTINGS_POSITION);
+        }
+        else if(this instanceof MyCoursesActivity){
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MYCOURSES_POSITION);
         }
         else{
             Log.e("Drawer Adapter", "not well initialized");

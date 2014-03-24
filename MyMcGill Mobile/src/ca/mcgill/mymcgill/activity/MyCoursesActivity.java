@@ -1,13 +1,15 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.DialogHelper;
 import ca.mcgill.mymcgill.util.Load;
 
 public class MyCoursesActivity extends DrawerActivity{
@@ -17,7 +19,13 @@ public class MyCoursesActivity extends DrawerActivity{
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_desktop);
         super.onCreate(savedInstanceState);
-        
+
+        if(!Connection.isNetworkAvailable(this)){
+            DialogHelper.showNeutralAlertDialog(this, this.getResources().getString(R.string.error),
+                    this.getResources().getString(R.string.login_error_no_internet));
+            return;
+        }
+
         //Get the Webview
         final WebView webView = (WebView)findViewById(R.id.desktop_webview);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -25,12 +33,6 @@ public class MyCoursesActivity extends DrawerActivity{
 
         webView.loadUrl("https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=https://shibboleth.mcgill.ca/idp/shibboleth&target=https%3A%2F%2Fmycourses2.mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l");
         webView.setWebViewClient(new WebViewClient() {
-        	
-        	@Override
-			public void onPageStarted(WebView view, String url, Bitmap favicon){
-        		view.setVisibility(View.INVISIBLE);
-        	}
-        	
             @Override
 			public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function f(){" +

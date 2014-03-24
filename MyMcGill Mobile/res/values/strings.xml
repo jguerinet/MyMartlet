@@ -76,7 +76,7 @@
     <string name="icon_settings">&#xf013;</string>
     <string name="icon_desktop">&#xf108;</string>
     <string name="icon_email">&#xf0e0;</string>
-    <string name="icon_mycourses">&#xf108;</string>
+    <string name="icon_mycourses">&#xf02d;</string>
     <string name="icon_ebill">&#xf155;</string>
     <string name="icon_transcript">&#xf15c;</string>
     <string name="icon_map">&#xf041;</string>
@@ -115,7 +115,9 @@
         <item>Schedule</item>
         <item>Transcript</item>
         <item>Email</item>
+        <item>MyCourses</item>
         <item>eBill</item>
+        <item>Campus Map</item>
     </string-array>
 
     <!-- ReplyActivity -->
