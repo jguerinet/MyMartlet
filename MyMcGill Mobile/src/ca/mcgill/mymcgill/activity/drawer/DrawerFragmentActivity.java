@@ -22,41 +22,39 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        showDrawer(true);
+        loadDrawer();
     }
 
-    public void showDrawer(boolean showDrawer){
+    public void loadDrawer(){
         assert (getActionBar() != null);
 
-        if(showDrawer){
-            // R.id.drawer_layout should be in every activity with exactly the same id.
-            drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // R.id.drawer_layout should be in every activity with exactly the same id.
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-            if(drawerLayout != null){
-                //Set up the drawer toggle
-                drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
+        if(drawerLayout != null){
+            //Set up the drawer toggle
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
 
-                drawerLayout.setDrawerListener(drawerToggle);
+            drawerLayout.setDrawerListener(drawerToggle);
 
-                //Set up the adapter
-                DrawerAdapter drawerAdapter;
-                if(this instanceof ScheduleActivity){
-                    drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SCHEDULE_POSITION);
-                }
-                else if(this instanceof MapActivity){
-                    drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MAP_POSITION);
-                }
-                else{
-                    drawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
-                    Log.e("Drawer", "Drawer Adapter was null");
-                }
-
-                drawerList = (ListView) findViewById(R.id.left_drawer);
-                drawerList.setAdapter(drawerAdapter);
-
-                drawerToggle.setDrawerIndicatorEnabled(showDrawer);
-                getActionBar().setDisplayHomeAsUpEnabled(showDrawer);
+            //Set up the adapter
+            DrawerAdapter drawerAdapter;
+            if(this instanceof ScheduleActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SCHEDULE_POSITION);
             }
+            else if(this instanceof MapActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MAP_POSITION);
+            }
+            else{
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
+                Log.e("Drawer", "Drawer Adapter was null");
+            }
+
+            drawerList = (ListView) findViewById(R.id.left_drawer);
+            drawerList.setAdapter(drawerAdapter);
+
+            drawerToggle.setDrawerIndicatorEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -78,9 +76,5 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    public void configureDrawer(){
-
     }
 }

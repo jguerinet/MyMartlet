@@ -13,6 +13,7 @@
     <string name="title_login">Login</string>
     <string name="title_schedule">My Schedule</string>
     <string name="title_transcript">My Transcript</string>
+    <string name="title_mycourses">MyCourses</string>
     <string name="title_ebill">My eBill</string>
     <string name="title_inbox">My Email</string>
     <string name="title_settings">Settings</string>
@@ -75,6 +76,7 @@
     <string name="icon_settings">&#xf013;</string>
     <string name="icon_desktop">&#xf108;</string>
     <string name="icon_email">&#xf0e0;</string>
+    <string name="icon_mycourses">&#xf108;</string>
     <string name="icon_ebill">&#xf155;</string>
     <string name="icon_transcript">&#xf15c;</string>
     <string name="icon_map">&#xf041;</string>

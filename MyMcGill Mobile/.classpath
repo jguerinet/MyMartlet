@@ -2,10 +2,18 @@
 <classpath>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="C:/Users/Quang/Documents/GitHub/mymcgill-mobile/google-play-services_lib/libs/google-play-services.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/google-play-services_lib"/>
+=======
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/google-play-services_lib"/>
+	<classpathentry exported="true" kind="lib" path="/google-play-services_lib/libs/google-play-services.jar"/>
+>>>>>>> bc9e20f09a7e66ee1f83fbd2df7c669b3ed7d86a
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
