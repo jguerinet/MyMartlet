@@ -9,6 +9,8 @@ import android.webkit.WebViewClient;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.DialogHelper;
 import ca.mcgill.mymcgill.util.Load;
 
 /**
@@ -21,13 +23,22 @@ public class DesktopActivity extends DrawerActivity{
         setContentView(R.layout.activity_desktop);
         super.onCreate(savedInstanceState);
 
+        if(!Connection.isNetworkAvailable(this)){
+            DialogHelper.showNeutralAlertDialog(this, this.getResources().getString(R.string.error),
+                    this.getResources().getString(R.string.login_error_no_internet));
+            return;
+        }
+
         //Get the Webview
         final WebView webView = (WebView)findViewById(R.id.desktop_webview);
+        webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
 
         webView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
         webView.setWebViewClient(new WebViewClient() {
-        	
+
         	public void onPageStarted(WebView view, String url, Bitmap favicon){
         		//view.loadUrl("javascript:(function(){document.write( '<style class=\"hideStuff\" type=\"text/css\">body {display:none;}</style>')});");
         		view.setVisibility(View.INVISIBLE);
