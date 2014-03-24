@@ -65,6 +65,11 @@
             android:theme="@style/DialogMyMcGill"
             android:screenOrientation="portrait"/>
         <activity
+            android:name="ca.mcgill.mymcgill.activity.MyCoursesActivity"
+            android:label="@string/title_mycourses"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name="ca.mcgill.mymcgill.activity.ebill.EbillActivity"
             android:label="@string/title_ebill"
             android:screenOrientation="portrait">
