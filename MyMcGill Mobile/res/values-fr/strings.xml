@@ -100,7 +100,9 @@
         <item>Calendrier</item>
         <item>Bulletin</item>
         <item>Email</item>
+        <item>MyCourses</item>
         <item>eBill</item>
+        <item>Carte du Campus</item>
     </string-array>
     <string name="schedule_change">Changer Session</string>
 

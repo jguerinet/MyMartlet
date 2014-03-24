@@ -115,7 +115,9 @@
         <item>Schedule</item>
         <item>Transcript</item>
         <item>Email</item>
+        <item>MyCourses</item>
         <item>eBill</item>
+        <item>Campus Map</item>
     </string-array>
 
     <!-- ReplyActivity -->
