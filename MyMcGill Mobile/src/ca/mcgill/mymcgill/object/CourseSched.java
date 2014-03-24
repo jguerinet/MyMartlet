@@ -110,7 +110,7 @@ public class CourseSched implements Serializable{
 			name = getCourseCodeAndName(scheduleTable.get(i));
 			crn = getCRN(scheduleTable.get(i));
 			credits = getCredit(scheduleTable.get(i));
-			if (i+1 >= scheduleTable.size() && scheduleTable.get(i+1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
+			if (i+1 < scheduleTable.size() && scheduleTable.get(i+1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
 				data = getSchedule(scheduleTable.get(i+1));
 			} else {
 				data = "";
