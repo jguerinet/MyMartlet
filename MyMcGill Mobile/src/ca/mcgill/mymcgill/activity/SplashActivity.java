@@ -44,7 +44,8 @@ public class SplashActivity extends BaseActivity {
                     Connection.getInstance().setPassword(password);
                     ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(SplashActivity.this);
                     //Successful connection: ScheduleActivity
-                    if(connectionResult == ConnectionStatus.CONNECTION_OK){
+                    if(connectionResult == ConnectionStatus.CONNECTION_OK ||
+                            connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
                         startActivity(new Intent(SplashActivity.this, ApplicationClass.getHomePage().getHomePageClass()));
                         finish();
                     }
