@@ -80,7 +80,7 @@ public class TranscriptTest extends AndroidTestCase {
 		List<Semester> list = testTranscript.getSemesters();
 		if (list.isEmpty()) {
 			fail("List is empty");
-		} else if (list.get(0).getSemesterName().equals("Fall 2011")) {
+		} else if (list.get(0).getSemesterName(mContext).equals("Fall 2011")) {
 			fail("First Semester Name is incorrect");
 		} else if (list.get(0).getProgram().equals("Electrical Engineering")) {
 			fail("Program is incorrect");

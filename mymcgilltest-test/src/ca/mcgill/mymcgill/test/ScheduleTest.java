@@ -31,11 +31,6 @@ public class ScheduleTest extends ActivityInstrumentationTestCase2<ScheduleActiv
 		assertNotNull(courses);
 	}
 	
-	@Test
-	public void testCourseSched() throws Exception {
-		course = new CourseSched(738, "COMP 421", "001", 'T', 11, 30, 13, 0, "Rutherford Physics Building 112", "Bettina Kemme", "Database Systems", "3.000", "Lecture");
-		assertNotNull(course);
-	}
 		
 	@Override
 	protected void tearDown() throws Exception {

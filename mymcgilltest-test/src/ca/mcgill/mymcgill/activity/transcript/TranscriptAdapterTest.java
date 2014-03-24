@@ -49,7 +49,7 @@ public class TranscriptAdapterTest extends AndroidTestCase {
 	
 	@Test
 	public void testGetSemester() {
-		assertTrue("Incorrect Semester", test.getItem(0).getSemesterName().contains("Fall") && test.getItem(0).getSemesterName().contains("2011"));
+		assertTrue("Incorrect Semester", test.getItem(0).getSemesterName(mContext).contains("Fall") && test.getItem(0).getSemesterName(mContext).contains("2011"));
 	}
 
 	@Override
