@@ -103,11 +103,14 @@ public class CourseSched implements Serializable{
 
 		String name, data, credits;
 		int crn;
+		if (scheduleTable.isEmpty()) {
+			return schedule;
+		}
 		for (int i = 0; i < scheduleTable.size(); i+=2) {
 			name = getCourseCodeAndName(scheduleTable.get(i));
 			crn = getCRN(scheduleTable.get(i));
 			credits = getCredit(scheduleTable.get(i));
-			if (scheduleTable.get(i+1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
+			if (scheduleTable.size() > 1 && scheduleTable.get(i+1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
 				data = getSchedule(scheduleTable.get(i+1));
 			} else {
 				data = "";
