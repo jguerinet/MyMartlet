@@ -31,6 +31,7 @@
         android:allowClearUserData="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
+        android:logo="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/MyMcGill"
         android:vmSafeMode="true" >
