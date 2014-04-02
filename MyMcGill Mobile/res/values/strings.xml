@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General Strings -->
-    <string name="app_name">MyMcGill Mobile</string>
+    <string name="app_name">McGill Mobile</string>
     <string name="error">Error</string>
     <string name="please_wait">Please Wait…</string>
     <string name="done">Done</string>
@@ -22,7 +22,7 @@
     <string name="title_map">Campus Map</string>
 
     <!-- LoginActivity -->
-    <string name="login_welcome">Welcome to MyMcGill for Mobile. Please input your McGill username and password below.</string>
+    <string name="login_welcome">Welcome to McGill Mobile. Please input your McGill username and password below.</string>
     <string name="login_username">Username:</string>
     <string name="login_email">\@mail.mcgill.ca</string>
     <string name="login_password">Password:</string>
