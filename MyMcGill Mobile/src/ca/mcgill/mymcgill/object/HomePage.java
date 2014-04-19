@@ -1,5 +1,6 @@
 package ca.mcgill.mymcgill.object;
 
+import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.MapActivity;
 import ca.mcgill.mymcgill.activity.MyCoursesActivity;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
@@ -13,7 +14,8 @@ public enum HomePage {
     EMAIL,
     MY_COURSES,
     EBILL,
-    CAMPUS_MAP;
+    CAMPUS_MAP,
+    DESKTOP;
 
     public Class<?> getHomePageClass(){
         switch(this){
@@ -29,6 +31,8 @@ public enum HomePage {
                 return EbillActivity.class;
             case CAMPUS_MAP:
                 return MapActivity.class;
+            case DESKTOP:
+                return DesktopActivity.class;
             default:
                 return ScheduleActivity.class;
         }
