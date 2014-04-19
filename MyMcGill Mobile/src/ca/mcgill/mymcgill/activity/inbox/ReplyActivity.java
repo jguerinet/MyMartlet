@@ -168,7 +168,7 @@ public class ReplyActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.sent_message_success), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.send_message_success), Toast.LENGTH_SHORT).show();
                     }
                 });
                 finish();
@@ -179,7 +179,7 @@ public class ReplyActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.sent_message_error), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.send_message_error), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

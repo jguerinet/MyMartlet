@@ -46,7 +46,7 @@ public class TranscriptActivity extends DrawerActivity {
 
     private void loadInfo(){
         //Fill out the transcript info
-        mCGPA.setText(getResources().getString(R.string.transcript_cgpa, mTranscript.getCgpa()));
+        mCGPA.setText(getResources().getString(R.string.transcript_CGPA, mTranscript.getCgpa()));
         mTotalCredits.setText(getResources().getString(R.string.transcript_credits, mTranscript.getTotalCredits()));
 
         //Reload the adapter

@@ -8,6 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.HomePage;
@@ -29,9 +33,14 @@ public class SettingsActivity extends DrawerActivity {
 
         //Set up the info
         Spinner languages = (Spinner)findViewById(R.id.settings_language);
+        //Set up the array of languages
+        List<String> languageStrings = new ArrayList<String>();
+        languageStrings.add(getResources().getString(R.string.english));
+        languageStrings.add(getResources().getString(R.string.french));
+        Collections.sort(languageStrings);
         //Standard ArrayAdapter
-        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this,
-                R.array.settings_languages, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, languageStrings);
         //Specify the layout to use when the list of choices appears
         languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
@@ -57,9 +66,19 @@ public class SettingsActivity extends DrawerActivity {
         });
 
         Spinner homepages = (Spinner)findViewById(R.id.settings_homepage);
+        //Set up the array of languages
+        //NOTE : ORDER MATTERS HERE
+        final List<String> homepageStrings = new ArrayList<String>();
+        homepageStrings.add(getResources().getString(R.string.homepage_schedule));
+        homepageStrings.add(getResources().getString(R.string.homepage_transcript));
+        homepageStrings.add(getResources().getString(R.string.homepage_email));
+        homepageStrings.add(getResources().getString(R.string.homepage_mycourses));
+        homepageStrings.add(getResources().getString(R.string.homepage_ebill));
+        homepageStrings.add(getResources().getString(R.string.homepage_map));
+        homepageStrings.add(getResources().getString(R.string.homepage_desktop));
         //Standard ArrayAdapter
-        ArrayAdapter<CharSequence> homepageAdapter = ArrayAdapter.createFromResource(this,
-                R.array.settings_homepages, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> homepageAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, homepageStrings);
         //Specify the layout to use when the list of choices appears
         homepageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
@@ -70,7 +89,6 @@ public class SettingsActivity extends DrawerActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 //Get the chosen language
                 HomePage chosenHomePage = HomePage.values()[position];
-
                 //Update it in the ApplicationClass
                     ApplicationClass.setHomePage(chosenHomePage);
             }

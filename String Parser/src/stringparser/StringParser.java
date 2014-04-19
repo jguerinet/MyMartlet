@@ -173,6 +173,9 @@ public class StringParser{
             //Unescaped apostrophes
             string = string.replace("\'", "\\" + "\'");
 
+            //Unescaped @ signs
+            string = string.replace("@", "\\" + "@");
+
             if(string.contains("<html>") || string.contains("<HTML>")){
                 //Take care of html tags
                 string = string.replace("<html>", "<![CDATA[");
