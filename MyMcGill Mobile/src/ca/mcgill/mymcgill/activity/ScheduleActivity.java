@@ -310,7 +310,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                     @Override
                     public void run() {
                         DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                activity.getResources().getString(R.string.login_error_other));
+                                activity.getResources().getString(R.string.error_other));
                     }
                 });
                 return false;
@@ -366,7 +366,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
     	// change semester menu item
-    	menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE,R.string.schedule_change);
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE,R.string.schedule_change_semester);
     	return super.onCreateOptionsMenu(menu);
     }
     

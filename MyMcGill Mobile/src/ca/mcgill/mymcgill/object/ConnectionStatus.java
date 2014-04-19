@@ -24,9 +24,9 @@ public enum ConnectionStatus {
             case CONNECTION_WRONG_INFO:
                 return context.getResources().getString(R.string.login_error_wrong_data);
             case CONNECTION_NO_INTERNET:
-                return context.getResources().getString(R.string.login_error_no_internet);
+                return context.getResources().getString(R.string.error_no_internet);
             default:
-                return context.getResources().getString(R.string.login_error_other);
+                return context.getResources().getString(R.string.error_other);
         }
     }
 }

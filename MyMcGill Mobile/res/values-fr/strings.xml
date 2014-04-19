@@ -27,8 +27,8 @@
     <string name="login_password">Mot de Passe:</string>
     <string name="login_button">Connexion</string>
     <string name="login_error_wrong_data">Le nom d\'utilisateur ou mot de passe est incorrect. Veuillez réessayer s\'il vous plaît.</string>
-    <string name="login_error_other">Une erreur est survenue. Veuillez réessayer plus tard.</string>
-    <string name="login_error_no_internet">Vous n\'êtes pas connecté à internet. Veuillez vous connecter à internet et réessayer.</string>
+    <string name="error_other">Une erreur est survenue. Veuillez réessayer plus tard.</string>
+    <string name="error_no_internet">Vous n\'êtes pas connecté à internet. Veuillez vous connecter à internet et réessayer.</string>
     <string name="login_error_username_empty">Vous devez entrer un nom d\'utilisateur.</string>
     <string name="login_error_password_empty">Vous devez entrer un mot de passe.</string>
     <string name="login_remember_username">Se Rappeler de mon Nom d\'Utilisateur</string>
@@ -79,15 +79,15 @@
     <string name="sunday">Dimanche</string>
 
     <!-- Inbox Activity -->
-    <string name="inbox_error">Nous n\'arrivons pas à charger votre boîte de récéption. Veuillez réessayer plus tard.</string>
-    <string name="inbox_newMessages">Nouveaux Messages: %d</string>
-    <string name="inbox_no_new">Vous n\'avez pas de nouveaux emails.</string>
-    <string name="reply_to">A:</string>
-    <string name="reply_carbon_copy">CC:</string>
-    <string name="reply_subject">Sujet:</string>
-    <string name="reply_button">Répondre</string>
-    <string name="reply_add_attachment">Ajouter une Pièce Jointe</string>
-    <string name="reply_send">Envoyer</string>
+    <string name="email_error">Nous n\'arrivons pas à charger votre boîte de récéption. Veuillez réessayer plus tard.</string>
+    <string name="email_newMessages">Nouveaux Messages: %d</string>
+    <string name="email_noNew">Vous n\'avez pas de nouveaux emails.</string>
+    <string name="send_to">A:</string>
+    <string name="send_carbon_copy">CC:</string>
+    <string name="send_subject">Sujet:</string>
+    <string name="email_reply">Répondre</string>
+    <string name="send_add_attachment">Ajouter une Pièce Jointe</string>
+    <string name="send_email">Envoyer</string>
 
     <!-- SettingsActivity -->
     <string name="settings_language">Langue</string>
@@ -104,13 +104,11 @@
         <item>eBill</item>
         <item>Carte du Campus</item>
     </string-array>
-    <string name="schedule_change">Changer Session</string>
+    <string name="schedule_change_semester">Changer Session</string>
 
     <!-- ReplyActivity -->
     <string name="sent_message_success">Votre message a été envoyé avec succès.</string>
     <string name="sent_message_error">Une erreur est survenue en envoyant votre message. Veuillez réessayer plus tard.</string>
-    <string name="send_email">Envoyer un message</string>
-    <string name="reply_email">Répondre à un message</string>
-    <string name="no_attachments">Pas de fichiers joints</string>
-    <string name="files_attached">Fichiers joints: </string>
+    <string name="send_no_attachments">Pas de fichiers joints</string>
+    <string name="send_attachments">Fichiers joints: </string>
 </resources>
