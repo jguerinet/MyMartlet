@@ -138,17 +138,37 @@ public class Transcript implements Serializable{
                         }
 
                         else if(dataRow.text().startsWith(Token.TERM_CREDITS.getString())){
-                            termCredits = (int)Double.parseDouble(rows.get(semesterIndex + 1).text());
+                            termCredits = (int)Double.parseDouble(rows.get(semesterIndex + 2).text());
                         }
 
                         //Extract course information if row contains a course code
                         //Regex looks for a string in the form "ABCD ###"
-                        else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
+                        else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*")){
 
                             String courseCode = dataRow.text();
                             String courseTitle = rows.get(semesterIndex + 2).text();
-                            int credits = Integer.parseInt(rows.get(semesterIndex + 3).text());
+
+                            //Failed courses are missing the earned credits row
+                            int credits = 0;
+
+                            //Check row to see if earned credit exists
+                            try{
+                                credits = Integer.parseInt(rows.get(semesterIndex + 6).text());
+                            }
+                            catch(NumberFormatException e){
+                                //Course failed -> Earned credit = 0
+                            }
+                            catch(IndexOutOfBoundsException e){
+
+                            }
+
+                            //Obtain user's grade
                             String userGrade = rows.get(semesterIndex+4).text();
+
+                            //Check for deferred classes
+                            if(userGrade.equals("L")){
+                                userGrade = rows.get(semesterIndex+13).text();
+                            }
 
                             //If average grades haven't been released on minerva, index will be null
                             String averageGrade = "";
@@ -157,7 +177,10 @@ public class Transcript implements Serializable{
                                 if(rows.get(semesterIndex+7).text().matches("[ABCDF].|[ABCDF]")){
                                     averageGrade = rows.get(semesterIndex+7).text();
                                 }
-
+                                //Failed course, average grade appears one row earlier
+                                else if(rows.get(semesterIndex+6).text().matches("[ABCDF].|[ABCDF]")){
+                                    averageGrade = rows.get(semesterIndex+6).text();
+                                }
                             }
                             catch(IndexOutOfBoundsException e){
                                 //String not found
@@ -170,46 +193,65 @@ public class Transcript implements Serializable{
                         }
 
                         //Extract transfer credit information
-                        else if(dataRow.text().startsWith(Token.CREDIT_EXCEPTION.getString())){
-                            String courseTitle = "";
-                            String courseCode = "";
+                        else if(dataRow.text().startsWith(Token.CREDIT_EXEMPTION.getString())){
+                            String courseTitle;
+                            String courseCode;
                             String userGrade = "N/A";
                             String averageGrade = "";
                             int credits = 0;
 
-                            //Courses list credits
-                            try{
-                                courseTitle = rows.get(semesterIndex + 2).text();
-                                courseCode = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
-                                credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
-
-                                Course course = new Course(courseTitle, courseCode, credits, userGrade, averageGrade);
+                            //Individual transferred courses not listed
+                            if(!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")){
+                                courseCode = rows.get(semesterIndex + 2).text();
+                                Course course = new Course("", courseCode, credits, userGrade, averageGrade);
                                 courses.add(course);
                             }
 
-                            catch(IndexOutOfBoundsException e){
-                                //String not found
+                            //Individual transferred courses listed
+                            else{
 
-                                //Try configuration with no credits after course title
+                                //Try checking for the number of credits transferred per course
                                 try{
-                                    courseTitle = rows.get(semesterIndex + 2).text();
+                                    courseCode = rows.get(semesterIndex + 2).text();
+                                    courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
+                                    credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
 
-                                    int addedIndex = 3;
-                                    while(rows.get(semesterIndex + addedIndex).text() != null || rows.get(semesterIndex + addedIndex).text() != ""){
-                                        courseCode = rows.get(semesterIndex + addedIndex).text() + " " + rows.get(semesterIndex+addedIndex+1).text();
-                                        addedIndex = addedIndex + 2;
+                                    Course course = new Course(courseTitle, courseCode, credits, userGrade, averageGrade);
+                                    courses.add(course);
+                                }
+
+                                //Number of credits per course not listed
+                                catch(NumberFormatException e){
+                                    try{
+                                        courseCode = rows.get(semesterIndex + 2).text();
+                                        courseTitle = "";
+                                        int addedIndex = 3;
+                                        boolean first = true;
+
+                                        //Add the course codes for transferred courses
+                                        while(rows.get(semesterIndex + addedIndex).text().matches("[A-Za-z]{4}.*")){
+                                            if(!first){
+                                                courseTitle += "\n";
+                                            }
+                                            courseTitle = courseTitle + rows.get(semesterIndex + addedIndex).text() + " " + rows.get(semesterIndex+addedIndex+1).text();
+                                            addedIndex = addedIndex + 2;
+                                            first = false;
+                                        }
 
                                         Course course = new Course(courseTitle, courseCode, credits, userGrade, averageGrade);
                                         courses.add(course);
-                                    }
 
-                                } catch(IndexOutOfBoundsException e2){
-                                    //End of transfer credits
+                                    }
+                                    catch(IndexOutOfBoundsException e2){
+                                        Course course = new Course("INDEX OUT OF BOUNDS", "INDEX OUT OF BOUNDS", credits, userGrade, averageGrade);
+                                        courses.add(course);
+                                    }
+                                    catch(Exception e3){
+                                        Course course = new Course("EXCEPTION", "EXCEPTION", credits, userGrade, averageGrade);
+                                        courses.add(course);
+                                    }
                                 }
                             }
-
-
-
 
                             termCredits = credits;
                         }
