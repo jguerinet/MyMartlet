@@ -1,9 +1,5 @@
 package ca.mcgill.mymcgill.object;
 
-import android.content.Context;
-
-import ca.mcgill.mymcgill.R;
-
 /**
  * Author: Ryan
  * Date: 04/02/14, 12:50 PM
@@ -28,7 +24,7 @@ public enum Token {
     ADVANCED_STANDING,
     TERM_CREDITS,
     TOTAL_CREDITS,
-    CREDIT_EXCEPTION,
+    CREDIT_EXEMPTION,
     TERM_GPA,
     CUM_GPA,
     STANDING;
@@ -61,7 +57,7 @@ public enum Token {
                 return "TERM TOTALS:";
             case TOTAL_CREDITS:
                 return "TOTAL CREDITS:";
-            case CREDIT_EXCEPTION:
+            case CREDIT_EXEMPTION:
                 return "Credits/Exemptions";
             case TERM_GPA:
                 return "TERM GPA";

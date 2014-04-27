@@ -203,6 +203,10 @@ public class Transcript implements Serializable{
                             //Individual transferred courses not listed
                             if(!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")){
                                 courseCode = rows.get(semesterIndex + 2).text();
+
+                                //Extract the number of credits granted
+                                credits = extractCredits(new String(courseCode));
+
                                 Course course = new Course("", courseCode, credits, userGrade, averageGrade);
                                 courses.add(course);
                             }
@@ -225,10 +229,12 @@ public class Transcript implements Serializable{
                                     try{
                                         courseCode = rows.get(semesterIndex + 2).text();
                                         courseTitle = "";
-                                        int addedIndex = 3;
-                                        boolean first = true;
+
+                                        credits = extractCredits(new String(courseCode));
 
                                         //Add the course codes for transferred courses
+                                        int addedIndex = 3;
+                                        boolean first = true;
                                         while(rows.get(semesterIndex + addedIndex).text().matches("[A-Za-z]{4}.*")){
                                             if(!first){
                                                 courseTitle += "\n";
@@ -243,12 +249,10 @@ public class Transcript implements Serializable{
 
                                     }
                                     catch(IndexOutOfBoundsException e2){
-                                        Course course = new Course("INDEX OUT OF BOUNDS", "INDEX OUT OF BOUNDS", credits, userGrade, averageGrade);
-                                        courses.add(course);
+                                        e.printStackTrace();
                                     }
                                     catch(Exception e3){
-                                        Course course = new Course("EXCEPTION", "EXCEPTION", credits, userGrade, averageGrade);
-                                        courses.add(course);
+                                        e.printStackTrace();
                                     }
                                 }
                             }
@@ -288,6 +292,24 @@ public class Transcript implements Serializable{
                 mCgpa = 5;
             }
             index++;
+        }
+    }
+
+    private int extractCredits(String creditString){
+        int numCredits;
+
+        try{
+            creditString = creditString.replaceAll("\\s", "");
+            String[] creditArray = creditString.split("-");
+            creditArray = creditArray[1].split("credits");
+            numCredits = Integer.parseInt(creditArray[0]);
+            return numCredits;
+        }
+        catch (NumberFormatException e){
+            return 99;
+        }
+        catch(Exception e){
+            return 88;
         }
     }
 
