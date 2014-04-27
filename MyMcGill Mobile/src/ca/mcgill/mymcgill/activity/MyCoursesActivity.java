@@ -22,7 +22,7 @@ public class MyCoursesActivity extends DrawerActivity{
 
         if(!Connection.isNetworkAvailable(this)){
             DialogHelper.showNeutralAlertDialog(this, this.getResources().getString(R.string.error),
-                    this.getResources().getString(R.string.login_error_no_internet));
+                    this.getResources().getString(R.string.error_no_internet));
             return;
         }
 

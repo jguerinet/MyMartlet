@@ -93,7 +93,7 @@ public class EmailActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
     	// reply menu item
-    	menu.add(Menu.NONE, Constants.MENU_ITEM_REPLY, Menu.NONE,R.string.reply_button);
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_REPLY, Menu.NONE,R.string.email_reply);
     	// forward menu item
     	menu.add(Menu.NONE, Constants.MENU_ITEM_FORWARD, Menu.NONE,R.string.email_forward);
     	return super.onCreateOptionsMenu(menu);

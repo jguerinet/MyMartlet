@@ -195,7 +195,7 @@ public class Connection {
                 @Override
                 public void run() {
                     DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                            activity.getResources().getString(R.string.login_error_no_internet));
+                            activity.getResources().getString(R.string.error_no_internet));
                 }
             });
 
@@ -244,7 +244,7 @@ public class Connection {
                     @Override
                     public void run() {
                         DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                activity.getResources().getString(R.string.login_error_no_internet));
+                                activity.getResources().getString(R.string.error_no_internet));
                     }
                 });
 

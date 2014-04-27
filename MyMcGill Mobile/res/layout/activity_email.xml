@@ -61,7 +61,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="replyMessage"
-        android:text="@string/reply_button"
+        android:text="@string/email_reply"
         android:visibility="invisible" />
 
 </LinearLayout>
