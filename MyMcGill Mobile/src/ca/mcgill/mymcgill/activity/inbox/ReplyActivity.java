@@ -71,7 +71,7 @@ public class ReplyActivity extends BaseActivity {
 		// TODO Modify for Forward Email
 		if (!isSending)
 		{
-			this.setTitle(R.string.reply_email);
+			this.setTitle(R.string.email_reply);
 			emails.setText(email.getSender());
 			
 			if (email.getSubject().contains("RE:")) {
@@ -85,7 +85,7 @@ public class ReplyActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// add attachment menu item
-		menu.add(Menu.NONE, Constants.MENU_ITEM_ADD_ATTACH, Menu.NONE,R.string.reply_add_attachment);
+		menu.add(Menu.NONE, Constants.MENU_ITEM_ADD_ATTACH, Menu.NONE,R.string.send_add_attachment);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -108,8 +108,8 @@ public class ReplyActivity extends BaseActivity {
 		email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);
 		
 		TextView attachText = (TextView) findViewById(R.id.attachText);
-		if (attachFilePath == null) attachText.setText(R.string.no_attachments);
-		else attachText.setText(R.string.files_attached + attachFilePath);
+		if (attachFilePath == null) attachText.setText(R.string.send_no_attachments);
+		else attachText.setText(R.string.send_attachments + attachFilePath);
 
 	}
 
@@ -168,7 +168,7 @@ public class ReplyActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.sent_message_success), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.send_message_success), Toast.LENGTH_SHORT).show();
                     }
                 });
                 finish();
@@ -179,7 +179,7 @@ public class ReplyActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.sent_message_error), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReplyActivity.this, getResources().getString(R.string.send_message_error), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

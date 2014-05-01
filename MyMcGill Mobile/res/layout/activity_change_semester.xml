@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:text="@string/change_semester_title"
+        android:text="@string/title_change_semester"
         android:textSize="@dimen/text_medium"
         android:textStyle="bold"
         android:textColor="@color/red"/>
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="@dimen/padding_large"
-            android:text="@string/change_semester_cancel"
+            android:text="@android:string/cancel"
             android:textSize="@dimen/text_medium"
             android:onClick="cancelPress" />
 
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="@dimen/padding_large"
-            android:text="@string/change_semester_ok"
+            android:text="@android:string/ok"
             android:textSize="@dimen/text_medium"
             android:onClick="okPress" />
     </LinearLayout>

@@ -77,7 +77,7 @@ public class EbillActivity extends DrawerActivity {
                     @Override
                     public void run() {
                         DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                activity.getResources().getString(R.string.login_error_other));
+                                activity.getResources().getString(R.string.error_other));
                     }
                 });
                 return false;

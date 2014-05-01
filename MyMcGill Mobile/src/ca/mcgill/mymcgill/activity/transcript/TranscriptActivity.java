@@ -1,7 +1,6 @@
 package ca.mcgill.mymcgill.activity.transcript;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,7 +46,7 @@ public class TranscriptActivity extends DrawerActivity {
 
     private void loadInfo(){
         //Fill out the transcript info
-        mCGPA.setText(getResources().getString(R.string.transcript_cgpa, mTranscript.getCgpa()));
+        mCGPA.setText(getResources().getString(R.string.transcript_CGPA, mTranscript.getCgpa()));
         mTotalCredits.setText(getResources().getString(R.string.transcript_credits, mTranscript.getTotalCredits()));
 
         //Reload the adapter
@@ -75,7 +74,7 @@ public class TranscriptActivity extends DrawerActivity {
                     public void run() {
                         try {
 							DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-							        activity.getResources().getString(R.string.login_error_other));
+							        activity.getResources().getString(R.string.error_other));
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

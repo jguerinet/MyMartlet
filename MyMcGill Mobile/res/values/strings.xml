@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- General Strings -->
+    <!-- Titles -->
     <string name="app_name">McGill Mobile</string>
-    <string name="error">Error</string>
-    <string name="please_wait">Please Wait…</string>
-    <string name="done">Done</string>
-    <string name="refresh">Refresh</string>
-
-    <!-- Activity Titles -->
-    <string name="title_desktop">Desktop Site</string>
     <string name="title_login">Login</string>
+    <string name="title_desktop">Desktop Site</string>
     <string name="title_schedule">My Schedule</string>
     <string name="title_transcript">My Transcript</string>
     <string name="title_mycourses">MyCourses</string>
@@ -18,57 +12,20 @@
     <string name="title_inbox">My Email</string>
     <string name="title_settings">Settings</string>
     <string name="title_logout">Logout</string>
-    <string name="title_reply">Reply E-Mail</string>
+    <string name="title_reply">Reply Email</string>
     <string name="title_map">Campus Map</string>
+    <string name="title_attach">Attachment</string>
+    <string name="title_change_semester">Change Semester</string>
 
-    <!-- LoginActivity -->
-    <string name="login_welcome">Welcome to McGill Mobile. Please input your McGill username and password below.</string>
-    <string name="login_username">Username:</string>
-    <string name="login_email">\@mail.mcgill.ca</string>
-    <string name="login_password">Password:</string>
-    <string name="login_button">Login</string>
-    <string name="login_error_wrong_data">The inputted username or password is incorrect. Please try again.</string>
-    <string name="login_error_other">An error has occurred. Please try again later.</string>
-    <string name="login_error_no_internet">You are not connected to the internet. Please connect to the internet and try again.</string>
-    <string name="login_error_username_empty">You must input a username.</string>
-    <string name="login_error_password_empty">You must input a password.</string>
-    <string name="login_remember_username">Remember my Username</string>
-
-    <!-- TranscriptActivity -->
-    <string name="transcript_termGPA">Term GPA: %s</string>
-    <string name="transcript_cgpa">CGPA: %s</string>
-    <string name="transcript_credits">Total Credits: %d</string>
-    <string name="transcript_semesters">Semesters:</string>
-    <string name="transcript_error">We are unable to load your transcript. Please try again later.</string>
-
-    <!-- SemesterActivity -->
-    <string name="semester_termCredits">Term Credits: %d</string>
-    <string name="semester_fullTime">Full Time</string>
-    <string name="semester_partTime">Part Time</string>
-    <string name="semester_courses">Courses:</string>
-    <string name="course_credits">Credits: %d</string>
-    <string name="course_average">Class Average: %s</string>
-
-    <!-- DayFragment -->
-    <string name="am">%s A.M.</string>
-    <string name="pm">%s P.M.</string>
-    <string name="am_long">%1$s:%2$s A.M.</string>
-    <string name="pm_long">%1$s:%2$s P.M.</string>
-    <string name="course_time">%1$s - %2$s</string>
-
-    <!-- CourseActivity -->
-    <string name="course_time_title">Time: </string>
-    <string name="course_location">Room:  </string>
-    <string name="schedule_type">Schedule Type: </string>
-    <string name="course_prof">Professor: </string>
-    <string name="course_section">Section: </string>
-    <string name="course_credits_title">Credits: </string>
-    <string name="course_crn">CRN: </string>
-
-    <!-- EbillActivity -->
-    <string name="ebill_statement_date">Statement Date:</string>
-    <string name="ebill_due_date">Due Date:</string>
-    <string name="ebill_amount">Amount Due:</string>
+    <!-- General Strings -->
+    <string name="error">Error</string>
+    <string name="please_wait">Please Wait&#8230;</string>
+    <string name="done">done</string>
+    <string name="refresh">Refresh</string>
+    <string name="error_no_internet">You are not connected to the internet. Please connect to the internet and try again. </string>
+    <string name="error_other">An error has occurred. Please try again later.</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
@@ -82,7 +39,7 @@
     <string name="icon_map">&#xf041;</string>
     <string name="icon_logout">&#xf0a9;</string>
 
-    <!-- Days -->
+    <!-- Day Names -->
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>
@@ -91,61 +48,90 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
 
-    <!-- Inbox Activity -->
-    <string name="inbox_error">We are unable to load your email inbox. Please try again later.</string>
-    <string name="inbox_newMessages">New messages: %d</string>
-    <string name="inbox_no_new">You have no new emails</string>
-    <string name="reply_to">To:</string>
-    <string name="reply_carbon_copy">CC:</string>
-    <string name="reply_subject">Subject:</string>
-    <string name="reply_button">Reply Email</string>
-    <string name="reply_add_attachment">Add Attachment</string>
-    <string name="reply_send">Send Email</string>
-    <string name="email_forward">Forward Email</string>
-
-    <!-- SettingsActivity -->
-    <string name="settings_language">Language</string>
-    <string name="settings_homepage">Homepage</string>
-
-    <string-array name="settings_languages">
-        <item>English</item>
-        <item>French</item>
-    </string-array>
-    <string-array name="settings_homepages">
-        <item>Schedule</item>
-        <item>Transcript</item>
-        <item>Email</item>
-        <item>MyCourses</item>
-        <item>eBill</item>
-        <item>Campus Map</item>
-    </string-array>
-
-    <!-- ReplyActivity -->
-    <string name="sent_message_success">Your message has been sent.</string>
-    <string name="sent_message_error">There was an error sending your message. Please try again later.</string>
-    <string name="send_email">Send Email</string>
-    <string name="reply_email">Reply Email</string>
-    <string name="no_attachments">No files attached</string>
-    <string name="files_attached">Files attached: </string>
-
-
-    <string name="title_activity_attach">Attachement</string>
-    <string name="attached_files">Files Attached: </string>
-    <string name="action_settings">Settings</string>
-    <string name="schedule_change">Change Semester</string>
-    <string name="change_semester_season">Season: </string>
-    <string name="change_semester_year">Year: </string>
-    <string name="change_semester_ok">OK</string>
-    <string name="change_semester_cancel">Cancel</string>
-    <string name="change_semester_default">Set as Default</string>
-    <string-array name="change_semester_season">
-        <item >Summer</item>
-        <item >Fall</item>
-        <item >Winter</item>
-    </string-array>
-    <string name="change_semester_title">Change Semester</string>
+    <!-- Season Names -->
     <string name="fall">Fall</string>
     <string name="winter">Winter</string>
     <string name="summer">Summer</string>
 
+    <!-- Login Screen -->
+    <string name="login_welcome">Welcome to McGill Mobile. Please input your McGill username and password below.</string>
+    <string name="login_username">Username: </string>
+    <string name="login_email">\@mail.mcgill.ca</string>
+    <string name="login_password">Password: </string>
+    <string name="login_button">Login</string>
+    <string name="login_error_wrong_data">The inputted username or password is incorrect. Please try again.</string>
+    <string name="login_error_username_empty">You must input a username.</string>
+    <string name="login_error_password_empty">You must input a password. </string>
+    <string name="login_remember_username">Remember my Username</string>
+
+    <!-- Transcript Screen -->
+    <string name="transcript_termGPA">Term GPA: %s</string>
+    <string name="transcript_CGPA">CGPA: %s</string>
+    <string name="transcript_credits">Total Credits: %d</string>
+    <string name="transcript_semesters">Semesters: </string>
+    <string name="transcript_error">We are unable to load your transcript. Please try again later.</string>
+
+    <!-- Semester Screen -->
+    <string name="semester_termCredits">Term Credits: %d</string>
+    <string name="semester_fullTime">Full Time</string>
+    <string name="semester_partTime">Part Time</string>
+    <string name="semester_courses">Courses: </string>
+    <string name="course_credits">Credits: %d</string>
+    <string name="course_average">Class Average: %s</string>
+
+    <!-- Schedule Screen -->
+    <string name="am">%s A.M.</string>
+    <string name="pm">%s P.M.</string>
+    <string name="am_long">%1$s:%2$s A.M.</string>
+    <string name="pm_long">%1$s:%2$s P.M.</string>
+    <string name="course_time">%1$s - %2$s</string>
+    <string name="schedule_change_semester">Change Semester</string>
+
+    <!-- Course Screen -->
+    <string name="course_time_title">Time: </string>
+    <string name="course_location">Room: </string>
+    <string name="schedule_type">Schedule Type: </string>
+    <string name="course_prof">Professor: </string>
+    <string name="course_section">Section: </string>
+    <string name="course_credits_title">Credits: </string>
+    <string name="course_crn">CRN: </string>
+
+    <!-- eBill Screen -->
+    <string name="ebill_statement_date">Statement Date:</string>
+    <string name="ebill_due_date">Due Date:</string>
+    <string name="ebill_amount">Amount Due: </string>
+
+    <!-- Email Screen -->
+    <string name="email_error">We are unable to load your email inbox. Please try again later. </string>
+    <string name="email_newMessages">New Messages: %d</string>
+    <string name="email_noNew">You have no new emails. </string>
+    <string name="email_forward">Forward Email</string>
+    <string name="email_reply">Reply to Email</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_language">Language</string>
+    <string name="settings_homepage">Homepage</string>
+    <string name="homepage_schedule">Schedule</string>
+    <string name="homepage_transcript">Transcript</string>
+    <string name="homepage_email">Email</string>
+    <string name="homepage_mycourses">MyCourses</string>
+    <string name="homepage_ebill">eBill</string>
+    <string name="homepage_map">Campus Map</string>
+    <string name="homepage_desktop">Desktop Site</string>
+
+    <!-- Send Email Screen -->
+    <string name="send_message_success">Your message has been sent. </string>
+    <string name="send_message_error">There was an error sending your message. Please try again later. </string>
+    <string name="send_to">To:</string>
+    <string name="send_carbon_copy">CC:</string>
+    <string name="send_subject">Subject:</string>
+    <string name="send_add_attachment">Add Attachment</string>
+    <string name="send_email">Send Email</string>
+    <string name="send_no_attachments">No files attached</string>
+    <string name="send_attachments">Files Attached: </string>
+
+    <!-- Change Semester Page -->
+    <string name="change_semester_season">Season: </string>
+    <string name="change_semester_year">Year:</string>
+    <string name="change_semester_default">Set as Default</string>
 </resources>
