@@ -22,7 +22,7 @@
     <string name="please_wait">Veuillez attendre s\'il vous plaît…</string>
     <string name="done">Terminer</string>
     <string name="refresh">Rafraîchir</string>
-    <string name="error_no_internet">Vous n\'êtes pas connecté à internet. Veuillez vous connecter à internet et réessayer.</string>
+    <string name="error_no_internet">Vous n\'êtes pas connecté à l\'internet. Veuillez vous connecter à l\'internet et réessayer.</string>
     <string name="error_other">Une erreur est survenue. Veuillez réessayer plus tard.</string>
     <string name="english">Anglais</string>
     <string name="french">Français</string>
