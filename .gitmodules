@@ -1,3 +1,4 @@
 [submodule "StringParser"]
 	path = StringParser
 	url = https://bitbucket.org/jguerinet/string-parser
+	ignore = dirty
