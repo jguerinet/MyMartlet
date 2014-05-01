@@ -1,5 +1,5 @@
 URL: https://docs.google.com/spreadsheet/pub?key=0AhHWqylMWqY4dGZFcEZQYThKV1ZjRVhIQ3dHOWNsOFE&single=true&gid=1&output=csv
 Platform: Android
 
-Android English Path: MyMcGill Mobile/strings.xml
-Android French Path: strings.xml
+Android English Path: MyMcGill Mobile/res/values/strings.xml
+Android French Path: MyMcGill Mobile/res/values-fr/strings.xml
