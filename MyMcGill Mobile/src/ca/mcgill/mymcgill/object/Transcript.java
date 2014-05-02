@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -325,6 +326,10 @@ public class Transcript implements Serializable{
 
     //Getter for semesters
     public List<Semester> getSemesters(){
-        return semesters;
+
+        //Return semesters in reverse chronological order
+        ArrayList<Semester> reversedSemesters = new ArrayList<Semester>(semesters);
+        Collections.reverse(reversedSemesters);
+        return reversedSemesters;
     }
 }
