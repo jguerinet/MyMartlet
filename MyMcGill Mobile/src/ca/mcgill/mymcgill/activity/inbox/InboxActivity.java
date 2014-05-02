@@ -62,7 +62,7 @@ public class InboxActivity extends DrawerActivity{
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
     	menu.add(Menu.NONE, Constants.MENU_ITEM_REFRESH, Menu.NONE, R.string.refresh);
-    	menu.add(Menu.NONE, Constants.MENU_ITEM_SEND, Menu.NONE, R.string.reply_send);
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_SEND, Menu.NONE, R.string.email_reply);
 		return super.onCreateOptionsMenu(menu);
     }
     
@@ -109,7 +109,7 @@ public class InboxActivity extends DrawerActivity{
 
             //Get the number of new emails
             mTotalNew.setVisibility(View.VISIBLE);
-            mTotalNew.setText(getResources().getString(R.string.inbox_newMessages, mInbox.getNumNewEmails()));
+            mTotalNew.setText(getResources().getString(R.string.email_newMessages, mInbox.getNumNewEmails()));
         }
 
         //Load adapter
