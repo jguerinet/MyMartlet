@@ -69,7 +69,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         loadInfo();
 
         //Start thread to get schedule
-        new ScheduleGetter(ApplicationClass.getDefaultSemester().getURL()).execute();
+        new ScheduleGetter(mCurrentSemester.getURL()).execute();
     }
 
     //Method that returns a list of courses for a given day
@@ -365,9 +365,11 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
+        getMenuInflater().inflate(R.menu.refresh, menu);
+
     	// change semester menu item
     	menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE,R.string.schedule_change_semester);
-    	return super.onCreateOptionsMenu(menu);
+    	return true;
     }
     
     @Override
@@ -378,6 +380,10 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             	Intent intent = new Intent(this, ChangeSemesterActivity.class);
                 startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             	return true;
+            case R.id.action_refresh:
+                //Start thread to retrieve inbox
+                new ScheduleGetter(mCurrentSemester.getURL()).execute();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -110,6 +112,23 @@ public class EbillActivity extends DrawerActivity {
 
             setProgressBarIndeterminateVisibility(false);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.refresh, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                //Start thread to retrieve inbox
+                new EbillGetter().execute();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

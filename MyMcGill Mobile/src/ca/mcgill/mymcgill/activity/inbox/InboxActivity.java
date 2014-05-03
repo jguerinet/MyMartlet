@@ -61,9 +61,10 @@ public class InboxActivity extends DrawerActivity{
 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.refresh, menu);
     	menu.add(Menu.NONE, Constants.MENU_ITEM_REFRESH, Menu.NONE, R.string.refresh);
     	menu.add(Menu.NONE, Constants.MENU_ITEM_SEND, Menu.NONE, R.string.email_reply);
-		return super.onCreateOptionsMenu(menu);
+		return true;
     }
     
     @Override
@@ -77,6 +78,10 @@ public class InboxActivity extends DrawerActivity{
                 Intent replyIntent = new Intent(this,ReplyActivity.class);
                 this.startActivity(replyIntent);
             	return true;
+            case R.id.action_refresh:
+                //Start thread to retrieve inbox
+                new InboxGetter(true).execute();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
