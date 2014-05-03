@@ -146,7 +146,25 @@ public class Transcript implements Serializable{
                         //Regex looks for a string in the form "ABCD ###"
                         else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*")){
 
-                            String courseCode = dataRow.text();
+                            String courseCode = "";
+                            //One semester courses are in the form ABCD ###
+                            if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
+                                courseCode = dataRow.text();
+                            }
+
+                            //Multi semester courses are in the form ABCD ###D#
+                            else{
+
+                                //Extract first seven characters from string
+                                try{
+                                    courseCode = dataRow.text().substring(0, 10);
+                                }
+                                catch(Exception e){
+                                    e.printStackTrace();
+                                }
+
+                            }
+
                             String courseTitle = rows.get(semesterIndex + 2).text();
 
                             //Failed courses are missing the earned credits row
