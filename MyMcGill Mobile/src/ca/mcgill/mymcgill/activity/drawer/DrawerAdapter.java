@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.BrowseCoursesActivity;
+import ca.mcgill.mymcgill.activity.RegistrationActivity;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.activity.MapActivity;
@@ -81,7 +81,7 @@ public class DrawerAdapter extends BaseAdapter {
                 mActivity.getResources().getString(R.string.icon_mycourses)));
 
         //Browse Courses
-        mDrawerItems.add(BROWSE_COURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_browse_courses),
+        mDrawerItems.add(BROWSE_COURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_registration),
                 mActivity.getResources().getString(R.string.icon_browse_courses)));
         
         //Ebill
@@ -168,7 +168,7 @@ public class DrawerAdapter extends BaseAdapter {
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
                         break;
                     case BROWSE_COURSES_POSITION:
-                        mActivity.startActivity(new Intent(mActivity, BrowseCoursesActivity.class));
+                        mActivity.startActivity(new Intent(mActivity, RegistrationActivity.class));
                         break;
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));

@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.BrowseCoursesActivity;
+import ca.mcgill.mymcgill.activity.RegistrationActivity;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.MyCoursesActivity;
 import ca.mcgill.mymcgill.activity.SettingsActivity;
@@ -46,7 +46,7 @@ public class DrawerActivity extends BaseActivity {
         else if(this instanceof InboxActivity){
             mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EMAIL_POSITION);
         }
-        else if(this instanceof BrowseCoursesActivity){
+        else if(this instanceof RegistrationActivity){
             mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.BROWSE_COURSES_POSITION);
         }
         else if(this instanceof EbillActivity){

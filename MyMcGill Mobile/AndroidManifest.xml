@@ -98,8 +98,8 @@
             android:label="@string/title_map"/>
 
         <activity
-            android:name="ca.mcgill.mymcgill.activity.BrowseCoursesActivity"
-            android:label="@string/title_browse_courses"/>
+            android:name=".activity.RegistrationActivity"
+            android:label="@string/title_registration"/>
 
         <activity
             android:name="ca.mcgill.mymcgill.activity.ChangeSemesterActivity"

@@ -16,7 +16,7 @@
     <string name="title_map">Campus Map</string>
     <string name="title_attach">Attachment</string>
     <string name="title_change_semester">Change Semester</string>
-    <string name="title_browse_courses">Browse Courses</string>
+    <string name="title_registration">Registration</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
