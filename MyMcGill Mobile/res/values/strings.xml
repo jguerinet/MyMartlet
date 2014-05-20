@@ -16,6 +16,7 @@
     <string name="title_map">Campus Map</string>
     <string name="title_attach">Attachment</string>
     <string name="title_change_semester">Change Semester</string>
+    <string name="title_browse_courses">Browse Courses</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -34,6 +35,7 @@
     <string name="icon_desktop">&#xf108;</string>
     <string name="icon_email">&#xf0e0;</string>
     <string name="icon_mycourses">&#xf02d;</string>
+    <string name="icon_browse_courses">&#xf02d;</string>
     <string name="icon_ebill">&#xf155;</string>
     <string name="icon_transcript">&#xf15c;</string>
     <string name="icon_map">&#xf041;</string>
