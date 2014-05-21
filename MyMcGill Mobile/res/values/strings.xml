@@ -16,7 +16,7 @@
     <string name="title_map">Campus Map</string>
     <string name="title_attach">Attachment</string>
     <string name="title_change_semester">Change Semester</string>
-    <string name="title_registration">Registration</string>
+    <string name="title_registration">My Course Wishlist</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -136,4 +136,9 @@
     <string name="change_semester_season">Season: </string>
     <string name="change_semester_year">Year:</string>
     <string name="change_semester_default">Set as Default</string>
+
+    <!-- Register Page -->
+    <string name="registration_semester">Semester</string>
+    <string name="registration_subject">Subject</string>
+    <string name="registration_course_number">Course number (Optional)</string>
 </resources>
