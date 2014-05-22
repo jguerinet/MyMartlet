@@ -104,6 +104,16 @@
             android:textSize="@dimen/text_medium"
             android:onClick="searchCourses" />
 
+        <TextView
+            android:id="@+id/registration_debug"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:text="Debug area"
+            android:gravity="center"
+            android:textSize="@dimen/text_medium"
+            android:paddingBottom="@dimen/padding_large"/>
+
     </LinearLayout>
 
     <!-- The navigation drawer -->

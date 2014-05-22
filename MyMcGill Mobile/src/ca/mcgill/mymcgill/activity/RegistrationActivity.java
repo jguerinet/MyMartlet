@@ -1,7 +1,10 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,21 +13,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
-import ca.mcgill.mymcgill.object.Season;
-import ca.mcgill.mymcgill.object.Semester;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.DialogHelper;
 
 /**
  * Created by Ryan Singzon on 19/05/14.
  */
 public class RegistrationActivity extends DrawerActivity{
 
+    private String mCourseSearchUrl;
     private String mMinervaUrl;
 
     private List<String> mSemesterStrings;
@@ -65,7 +70,7 @@ public class RegistrationActivity extends DrawerActivity{
     }
 
     //Searches for the selected courses
-    public String searchCourses(View v){
+    public void searchCourses(View v){
         Spinner semesterSpinner = (Spinner) findViewById(R.id.registration_semester);
         String semester = semesterSpinner.getSelectedItem().toString();
 
@@ -80,25 +85,69 @@ public class RegistrationActivity extends DrawerActivity{
         }
 
         EditText subjectBox = (EditText) findViewById(R.id.registration_subject);
-        String subject = subjectBox.getText().toString();
+        String subject = subjectBox.getText().toString().toUpperCase();
 
         EditText courseNumBox = (EditText) findViewById(R.id.registration_course_number);
         String courseNumber = courseNumBox.getText().toString();
 
-        String courseSearchUrl = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?term_in=";
-        courseSearchUrl += semester;
-        courseSearchUrl += "&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy" +
+        mCourseSearchUrl = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?term_in=";
+        mCourseSearchUrl += semester;
+        mCourseSearchUrl += "&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy" +
                            "&sel_levl=dummy&sel_sess=dummy&sel_instr=dummy&sel_ptrm=dummy&sel_attr=dummy&sel_subj=";
-        courseSearchUrl += subject;
-        courseSearchUrl += "&sel_crse=";
-        courseSearchUrl += courseNumber;
-        courseSearchUrl += "&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_levl=%25&sel_ptrm=%25" +
+        mCourseSearchUrl += subject;
+        mCourseSearchUrl += "&sel_crse=";
+        mCourseSearchUrl += courseNumber;
+        mCourseSearchUrl += "&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_levl=%25&sel_ptrm=%25" +
                            "&sel_instr=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a%20Response%20Headersview%20source";
 
         final Activity activity = RegistrationActivity.this;
-        String coursesString = Connection.getInstance().getUrl(activity, courseSearchUrl);
 
-        return coursesString;
+        TextView debug = (TextView) findViewById(R.id.registration_debug);
+//        debug.setText(mCourseSearchUrl);
+        Log.e("Minerva", mCourseSearchUrl);
+
+        new CoursesGetter().execute();
+
+    }
+
+    private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected void onPreExecute(){
+            //Show the user we are downloading new info
+            setProgressBarIndeterminateVisibility(true);
+        }
+
+        //Retrieve content from transcript page
+        @Override
+        protected Boolean doInBackground(Void... params){
+            final Activity activity = RegistrationActivity.this;
+
+            String coursesString = Connection.getInstance().getUrl(activity, mCourseSearchUrl);
+
+            if(coursesString == null){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                    activity.getResources().getString(R.string.error_other));
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        //Update or create transcript object and display data
+        @Override
+        protected void onPostExecute(Boolean loadInfo){
+            setProgressBarIndeterminateVisibility(false);
+        }
     }
 
 
