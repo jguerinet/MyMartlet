@@ -26,6 +26,7 @@ import ca.mcgill.mymcgill.util.DialogHelper;
 
 /**
  * Created by Ryan Singzon on 19/05/14.
+ * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
 
@@ -84,12 +85,14 @@ public class RegistrationActivity extends DrawerActivity{
             semester = "201501";
         }
 
+        //Obtain user input from text boxes
         EditText subjectBox = (EditText) findViewById(R.id.registration_subject);
         String subject = subjectBox.getText().toString().toUpperCase();
 
         EditText courseNumBox = (EditText) findViewById(R.id.registration_course_number);
         String courseNumber = courseNumBox.getText().toString();
 
+        //Insert user input into the appropriate location in the Minerva URL
         mCourseSearchUrl = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?term_in=";
         mCourseSearchUrl += semester;
         mCourseSearchUrl += "&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy" +
@@ -100,16 +103,11 @@ public class RegistrationActivity extends DrawerActivity{
         mCourseSearchUrl += "&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_levl=%25&sel_ptrm=%25" +
                            "&sel_instr=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a%20Response%20Headersview%20source";
 
-        final Activity activity = RegistrationActivity.this;
-
-        TextView debug = (TextView) findViewById(R.id.registration_debug);
-//        debug.setText(mCourseSearchUrl);
-        Log.e("Minerva", mCourseSearchUrl);
-
+        //Obtain courses
         new CoursesGetter().execute();
-
     }
 
+    //Connects to Minerva in a new thread
     private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPreExecute(){
@@ -117,7 +115,7 @@ public class RegistrationActivity extends DrawerActivity{
             setProgressBarIndeterminateVisibility(true);
         }
 
-        //Retrieve content from transcript page
+        //Retrieve courses obtained from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
             final Activity activity = RegistrationActivity.this;
