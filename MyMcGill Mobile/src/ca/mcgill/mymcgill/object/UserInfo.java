@@ -22,7 +22,7 @@ public class UserInfo implements Serializable{
         //Parse the user info
         Elements userInfo = ebillTable.getElementsByTag("caption");
         String id = userInfo.get(0).text().replace("Statements for ", "");
-        String[] userInfoItems = id.split("-");
+        String[] userInfoItems = id.split(" - ");
         this.mName = userInfoItems[1].trim();
         this.mId = userInfoItems[0].trim();
     }
