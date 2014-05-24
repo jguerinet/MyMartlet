@@ -60,6 +60,7 @@ public class Connection {
 	public final static String minervaHost = "horizon.mcgill.ca";
 	public final static String minervaOrigin = "https://horizon.mcgill.ca";
 	public final static String minervaSchedulePrefix = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
+    public final static String minervaRegistration = "https://horizon.mcgill.ca/pban1/bwckgens.p_proc_term_date?p_calling_proc=P_CrseSearch&search_mode_in=NON_NT&p_term=201405";
 	
 	public final static String myMcGillLoginPage = "https://mymcgill.mcgill.ca/portal/page/portal/myMcGill";
 	public final static String myMcGillLoginPortal = "https://mymcgill.mcgill.ca/portal/page/portal/Login";

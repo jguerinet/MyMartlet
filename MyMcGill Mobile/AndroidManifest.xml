@@ -96,7 +96,11 @@
         <activity
             android:name="ca.mcgill.mymcgill.activity.MapActivity"
             android:label="@string/title_map"/>
-        
+
+        <activity
+            android:name=".activity.RegistrationActivity"
+            android:label="@string/title_registration"/>
+
         <activity
             android:name="ca.mcgill.mymcgill.activity.ChangeSemesterActivity"
             android:theme="@style/DialogMyMcGill"

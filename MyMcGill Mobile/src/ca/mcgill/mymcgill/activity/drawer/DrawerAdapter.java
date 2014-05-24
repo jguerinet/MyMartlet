@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.RegistrationActivity;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.activity.MapActivity;
@@ -45,11 +46,12 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int TRANSCRIPT_POSITION = 1;
     public static final int EMAIL_POSITION = 2;
     public static final int MYCOURSES_POSITION = 3;
-    public static final int EBILL_POSITION = 4;
-    public static final int MAP_POSITION = 5;
-    public static final int DESKTOP_POSITION = 6;
-    public static final int SETTINGS_POSITION = 7;
-    public static final int LOGOUT_POSITION = 8;
+    public static final int BROWSE_COURSES_POSITION = 4;
+    public static final int EBILL_POSITION = 5;
+    public static final int MAP_POSITION = 6;
+    public static final int DESKTOP_POSITION = 7;
+    public static final int SETTINGS_POSITION = 8;
+    public static final int LOGOUT_POSITION = 9;
 
     public DrawerAdapter(Activity activity, DrawerLayout drawerLayout, int selectedPosition){
         this.mActivity = activity;
@@ -77,6 +79,10 @@ public class DrawerAdapter extends BaseAdapter {
         //MyCourses
         mDrawerItems.add(MYCOURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_mycourses),
                 mActivity.getResources().getString(R.string.icon_mycourses)));
+
+        //Browse Courses
+        mDrawerItems.add(BROWSE_COURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_registration),
+                mActivity.getResources().getString(R.string.icon_browse_courses)));
         
         //Ebill
         mDrawerItems.add(EBILL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_ebill),
@@ -160,6 +166,9 @@ public class DrawerAdapter extends BaseAdapter {
                         break;
                     case MYCOURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
+                        break;
+                    case BROWSE_COURSES_POSITION:
+                        mActivity.startActivity(new Intent(mActivity, RegistrationActivity.class));
                         break;
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));
