@@ -15,11 +15,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.DialogHelper;
@@ -121,6 +127,7 @@ public class RegistrationActivity extends DrawerActivity{
             final Activity activity = RegistrationActivity.this;
 
             String coursesString = Connection.getInstance().getUrl(activity, mCourseSearchUrl);
+            parseCourses(coursesString);
 
             if(coursesString == null){
                 activity.runOnUiThread(new Runnable() {
@@ -148,6 +155,98 @@ public class RegistrationActivity extends DrawerActivity{
         }
     }
 
+    //Parses the HTML retrieved from Minerva and returns a list of courses
+    private List<Course> parseCourses(String coursesString){
+        List<Course> courseList = new ArrayList<Course>();
+
+        Document document = Jsoup.parse(coursesString, "UTF-8");
+
+        //Find rows of HTML by class
+        Elements dataRows = document.getElementsByClass("dddefault");
+
+        int rowsPerCourse = 23;
+        int numCourses = dataRows.size()/rowsPerCourse;
+
+        try{
+            for(int courseCount = 0; courseCount < numCourses; courseCount++){
+
+                //Create a new course object
+                int credits = 99;
+                String courseCode = "ERROR";
+                String courseTitle = "ERROR";
+                String sectionType = "";
+                String days = "";
+                int crn = 00000;
+                String instructor = "";
+                String location = "";
+                String time = "";
+                String dates = "";
+
+                for(int rowNumber = 0; rowNumber < rowsPerCourse; rowNumber++){
+                    Element row = dataRows.get(rowNumber);
+
+                    switch(rowNumber){
+                        //Course code
+                        case 2:
+                            courseCode = row.text();
+                            break;
+                        case 3:
+                            courseCode += row.text();
+                            break;
+
+                        //Section type
+                        case 5:
+                            sectionType = row.text();
+                            break;
+
+                        //Number of credits
+                        case 6:
+                            credits = Integer.parseInt(row.text());
+                            break;
+
+                        //Course title
+                        case 7:
+                            courseTitle = row.text();
+                            break;
+
+                        //Days of the week
+                        case 8:
+                            days = row.text();
+                            break;
+
+                        //Time
+                        case 9:
+                            time = row.text();
+                            break;
+
+                        //Instructor
+                        case 16:
+                            instructor = row.text();
+                            break;
+
+                        //Start/end date
+                        case 17:
+                            dates = row.text();
+                            break;
+
+                        //Location
+                        case 18:
+                            location = row.text();
+                            break;
+                    }
+                }
+
+                //Create a new course object and add it to list
+                Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days, crn, instructor, location, time, dates);
+                courseList.add(newCourse);
+            }
+        }
+        catch(Exception e){
+
+        }
+
+        return courseList;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
