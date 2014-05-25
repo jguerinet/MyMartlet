@@ -15,6 +15,13 @@ public class Course implements Serializable{
     private String courseTitle;
     private String userGrade;
     private String averageGrade;
+    private String sectionType;
+    private String days;
+    private int crn;
+    private String instructor;
+    private String location;
+    private String time;
+    private String dates;
 
     //Constructor for the Course object
     public Course(String courseTitle, String courseCode, int credits,
@@ -24,6 +31,20 @@ public class Course implements Serializable{
         this.courseTitle = courseTitle;
         this.userGrade = userGrade;
         this.averageGrade = averageGrade;
+    }
+
+    //Constructor for course wishlist
+    public Course(int credits, String courseCode, String courseTitle, String sectionType, String days, int crn, String instructor, String location, String time, String dates) {
+        this.credits = credits;
+        this.courseCode = courseCode;
+        this.courseTitle = courseTitle;
+        this.sectionType = sectionType;
+        this.days = days;
+        this.crn = crn;
+        this.instructor = instructor;
+        this.location = location;
+        this.time = time;
+        this.dates = dates;
     }
 
     //Getter for credits
