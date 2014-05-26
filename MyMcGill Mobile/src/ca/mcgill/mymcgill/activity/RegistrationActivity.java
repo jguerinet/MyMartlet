@@ -1,10 +1,9 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,21 +12,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
-import ca.mcgill.mymcgill.object.Course;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
+import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
 
 /**
@@ -115,6 +108,8 @@ public class RegistrationActivity extends DrawerActivity{
 
     //Connects to Minerva in a new thread
     private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
+        private String mCoursesString;
+
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
@@ -124,20 +119,17 @@ public class RegistrationActivity extends DrawerActivity{
         //Retrieve courses obtained from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            final Activity activity = RegistrationActivity.this;
+            mCoursesString = Connection.getInstance().getUrl(RegistrationActivity.this, mCourseSearchUrl);
 
-            String coursesString = Connection.getInstance().getUrl(activity, mCourseSearchUrl);
-            parseCourses(coursesString);
-
-            if(coursesString == null){
-                activity.runOnUiThread(new Runnable() {
+            if(mCoursesString == null){
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Activity activity = RegistrationActivity.this;
                         try {
                             DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
                                     activity.getResources().getString(R.string.error_other));
                         } catch (Exception e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
@@ -152,100 +144,12 @@ public class RegistrationActivity extends DrawerActivity{
         @Override
         protected void onPostExecute(Boolean loadInfo){
             setProgressBarIndeterminateVisibility(false);
+
+            //Go to the CoursesListActivity with the parsed courses
+            Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
+            intent.putExtra(Constants.COURSES, mCoursesString);
+            startActivity(intent);
         }
-    }
-
-    //Parses the HTML retrieved from Minerva and returns a list of courses
-    private List<Course> parseCourses(String coursesString){
-        List<Course> courseList = new ArrayList<Course>();
-
-        Document document = Jsoup.parse(coursesString, "UTF-8");
-
-        //Find rows of HTML by class
-        Elements dataRows = document.getElementsByClass("dddefault");
-
-        int rowsPerCourse = 23;
-        int numCourses = dataRows.size()/rowsPerCourse;
-
-        try{
-            for(int courseCount = 0; courseCount < numCourses; courseCount++){
-
-                //Create a new course object
-                int credits = 99;
-                String courseCode = "ERROR";
-                String courseTitle = "ERROR";
-                String sectionType = "";
-                String days = "";
-                int crn = 00000;
-                String instructor = "";
-                String location = "";
-                String time = "";
-                String dates = "";
-
-                for(int rowNumber = 0; rowNumber < rowsPerCourse; rowNumber++){
-                    Element row = dataRows.get(rowNumber);
-
-                    switch(rowNumber){
-                        //Course code
-                        case 2:
-                            courseCode = row.text();
-                            break;
-                        case 3:
-                            courseCode += row.text();
-                            break;
-
-                        //Section type
-                        case 5:
-                            sectionType = row.text();
-                            break;
-
-                        //Number of credits
-                        case 6:
-                            credits = Integer.parseInt(row.text());
-                            break;
-
-                        //Course title
-                        case 7:
-                            courseTitle = row.text();
-                            break;
-
-                        //Days of the week
-                        case 8:
-                            days = row.text();
-                            break;
-
-                        //Time
-                        case 9:
-                            time = row.text();
-                            break;
-
-                        //Instructor
-                        case 16:
-                            instructor = row.text();
-                            break;
-
-                        //Start/end date
-                        case 17:
-                            dates = row.text();
-                            break;
-
-                        //Location
-                        case 18:
-                            location = row.text();
-                            break;
-                    }
-                }
-
-                //Create a new course object and add it to list
-                Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days, crn, instructor, location, time, dates);
-                courseList.add(newCourse);
-            }
-        }
-        catch(Exception e){
-
-        }
-
-        return courseList;
     }
 
     @Override
