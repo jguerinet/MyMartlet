@@ -27,11 +27,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.object.Semester;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
@@ -81,10 +81,10 @@ public class ChangeSemesterActivity extends BaseActivity {
         layout.setLayoutParams(params);
 
         //Get the current default semester
-        Semester defaultSemester = ApplicationClass.getDefaultSemester();
+        Semester defaultSemester = App.getDefaultSemester();
 
         // Extract all the seasons that the user has registered in
-        mSemesters = ApplicationClass.getTranscript().getSemesters();
+        mSemesters = App.getTranscript().getSemesters();
         mSeasonList = new ArrayList<Season>();
         for (Semester semester : mSemesters) {
             if(!mSeasonList.contains(semester.getSeason())){
@@ -250,7 +250,7 @@ public class ChangeSemesterActivity extends BaseActivity {
                 //Check if the default checkbox is checked
                 if(mDefaultCheckbox.isChecked()){
                     //Store this semester as the default semester if it is
-                    ApplicationClass.setDefaultSemester(mSemester);
+                    App.setDefaultSemester(mSemester);
                 }
 
                 Intent replyIntent = new Intent();

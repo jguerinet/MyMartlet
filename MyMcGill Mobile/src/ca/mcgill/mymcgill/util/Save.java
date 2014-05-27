@@ -12,7 +12,7 @@ import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
 import java.util.List;
 
-import ca.mcgill.mymcgill.object.Course;
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Inbox;
@@ -41,14 +41,14 @@ public class Save {
     public static void saveLanguage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
-                .putInt(Constants.LANGUAGE, ApplicationClass.getLanguage().ordinal())
+                .putInt(Constants.LANGUAGE, App.getLanguage().ordinal())
                 .commit();
     }
 
     public static void saveHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
-                .putInt(Constants.HOMEPAGE, ApplicationClass.getHomePage().ordinal())
+                .putInt(Constants.HOMEPAGE, App.getHomePage().ordinal())
                 .commit();
     }
 
@@ -75,7 +75,7 @@ public class Save {
     }
 
     public static void saveTranscript(Context context){
-        Transcript transcript = ApplicationClass.getTranscript();
+        Transcript transcript = App.getTranscript();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.TRANSCRIPT_FILE, Context.MODE_PRIVATE);
@@ -93,7 +93,7 @@ public class Save {
     }
 
     public static void saveSchedule(Context context){
-        List<CourseSched> courses = ApplicationClass.getSchedule();
+        List<CourseSched> courses = App.getSchedule();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.SCHEDULE_FILE, Context.MODE_PRIVATE);
@@ -111,7 +111,7 @@ public class Save {
     }
 
     public static void saveEbill(Context context){
-        List<EbillItem> ebill = ApplicationClass.getEbill();
+        List<EbillItem> ebill = App.getEbill();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.EBILL_FILE, Context.MODE_PRIVATE);
@@ -129,7 +129,7 @@ public class Save {
     }
 
     public static void saveUserInfo(Context context){
-        UserInfo userInfo = ApplicationClass.getUserInfo();
+        UserInfo userInfo = App.getUserInfo();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.USER_INFO_FILE, Context.MODE_PRIVATE);
@@ -147,7 +147,7 @@ public class Save {
     }
 
     public static void saveInbox(Context context){
-        Inbox inbox = ApplicationClass.getInbox();
+        Inbox inbox = App.getInbox();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.INBOX_FILE, Context.MODE_PRIVATE);
@@ -165,7 +165,7 @@ public class Save {
     }
     
     public static void saveDefaultSemester(Context context){
-        Semester defaultSemester = ApplicationClass.getDefaultSemester();
+        Semester defaultSemester = App.getDefaultSemester();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.DEFAULT_SEMESTER_FILE, Context.MODE_PRIVATE);

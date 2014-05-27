@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import java.util.Locale;
 
-import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.App;
 
 /**
  * Author: Julien
@@ -18,7 +18,7 @@ public class BaseActivity extends Activity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         //Update locale and config
-        Locale locale = new Locale(ApplicationClass.getLanguage().getLanguageString());
+        Locale locale = new Locale(App.getLanguage().getLanguageString());
         Locale.setDefault(locale);
         Configuration config = getBaseContext().getResources().getConfiguration();
         config.locale = locale;
@@ -29,7 +29,7 @@ public class BaseActivity extends Activity {
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
         //Update locale and config
-        Locale locale = new Locale(ApplicationClass.getLanguage().getLanguageString());
+        Locale locale = new Locale(App.getLanguage().getLanguageString());
         Locale.setDefault(locale);
         Configuration config = getBaseContext().getResources().getConfiguration();
         config.locale = locale;

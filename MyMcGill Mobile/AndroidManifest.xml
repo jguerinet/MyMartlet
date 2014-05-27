@@ -26,7 +26,7 @@
         android:required="true"/>
 
     <application
-        android:name="ca.mcgill.mymcgill.util.ApplicationClass"
+        android:name=".App"
         android:allowBackup="true"
         android:allowClearUserData="true"
         android:hardwareAccelerated="true"

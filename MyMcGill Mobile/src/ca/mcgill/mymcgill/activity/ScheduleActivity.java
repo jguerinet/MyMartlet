@@ -24,13 +24,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.object.Semester;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
@@ -56,10 +56,10 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         setContentView(R.layout.activity_schedule);
         super.onCreate(savedInstanceState);
 
-        mCurrentSemester = ApplicationClass.getDefaultSemester();
+        mCurrentSemester = App.getDefaultSemester();
 
         //Get the first list of courses from the ApplicationClass
-        mCourseList = ApplicationClass.getSchedule();
+        mCourseList = App.getSchedule();
 
         //ViewPager stuff
         mSupportFragmentManager = getSupportFragmentManager();
@@ -327,7 +327,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             mCourseList = CourseSched.parseCourseList(scheduleString);
 
             //Save it to the instance variable in Application class
-            ApplicationClass.setSchedule(mCourseList);
+            App.setSchedule(mCourseList);
 
             return true;
         }

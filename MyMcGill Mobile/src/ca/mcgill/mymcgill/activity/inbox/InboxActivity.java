@@ -12,10 +12,10 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Inbox;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Load;
 
@@ -39,7 +39,7 @@ public class InboxActivity extends DrawerActivity{
         mFirstLoad = true;
 
         //Get the stored inbox from the ApplicationClass
-        mInbox = ApplicationClass.getInbox();
+        mInbox = App.getInbox();
 
         //Get views
         mTotalNew = (TextView)findViewById(R.id.inbox_total_new);

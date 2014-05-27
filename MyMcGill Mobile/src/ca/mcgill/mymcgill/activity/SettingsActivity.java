@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Language;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 
 public class SettingsActivity extends DrawerActivity {
 
@@ -46,7 +46,7 @@ public class SettingsActivity extends DrawerActivity {
         //Apply the adapter to the spinner
         languages.setAdapter(languageAdapter);
         //Set the default selected to the user's chosen language
-        languages.setSelection(ApplicationClass.getLanguage().ordinal());
+        languages.setSelection(App.getLanguage().ordinal());
         languages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -54,8 +54,8 @@ public class SettingsActivity extends DrawerActivity {
                 Language chosenLanguage = Language.values()[position];
 
                 //If it's different than the previously selected language, update it and reload
-                if(ApplicationClass.getLanguage() != chosenLanguage){
-                    ApplicationClass.setLanguage(chosenLanguage);
+                if(App.getLanguage() != chosenLanguage){
+                    App.setLanguage(chosenLanguage);
                     startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
                     finish();
                 }
@@ -83,14 +83,14 @@ public class SettingsActivity extends DrawerActivity {
         homepageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
         homepages.setAdapter(homepageAdapter);
-        homepages.setSelection(ApplicationClass.getHomePage().ordinal());
+        homepages.setSelection(App.getHomePage().ordinal());
         homepages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 //Get the chosen language
                 HomePage chosenHomePage = HomePage.values()[position];
                 //Update it in the ApplicationClass
-                    ApplicationClass.setHomePage(chosenHomePage);
+                    App.setHomePage(chosenHomePage);
             }
 
             @Override

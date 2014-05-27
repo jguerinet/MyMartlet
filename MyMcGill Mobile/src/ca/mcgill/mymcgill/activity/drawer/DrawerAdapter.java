@@ -14,19 +14,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.RegistrationActivity;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.activity.MapActivity;
 import ca.mcgill.mymcgill.activity.MyCoursesActivity;
+import ca.mcgill.mymcgill.activity.RegistrationActivity;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
 import ca.mcgill.mymcgill.activity.SettingsActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
 import ca.mcgill.mymcgill.object.DrawerItem;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Clear;
 
 /**
@@ -58,7 +58,7 @@ public class DrawerAdapter extends BaseAdapter {
         this.mDrawerLayout = drawerLayout;
         this.mDrawerItems = new ArrayList<DrawerItem>();
         this.mSelectedPosition = selectedPosition;
-        this.mUnreadMessages = ApplicationClass.getUnreadEmails();
+        this.mUnreadMessages = App.getUnreadEmails();
         generateDrawerItems();
     }
 
@@ -135,7 +135,7 @@ public class DrawerAdapter extends BaseAdapter {
 
         //Set the info up
         TextView icon = (TextView)view.findViewById(R.id.drawerItem_icon);
-        icon.setTypeface(ApplicationClass.getIconFont());
+        icon.setTypeface(App.getIconFont());
         icon.setText(currentItem.getIcon());
 
         TextView title = (TextView)view.findViewById(R.id.drawerItem_title);
@@ -211,7 +211,7 @@ public class DrawerAdapter extends BaseAdapter {
     }
 
     public void updateUnreadMessages(){
-        mUnreadMessages = ApplicationClass.getUnreadEmails();
+        mUnreadMessages = App.getUnreadEmails();
 
         if(mUnreadMessagesView != null){
             if(mUnreadMessages == 0){

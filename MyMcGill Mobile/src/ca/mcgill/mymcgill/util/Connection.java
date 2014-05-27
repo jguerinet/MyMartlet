@@ -26,6 +26,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
@@ -100,7 +101,7 @@ public class Connection {
         //Download the transcript
         String transcriptString = connection.getUrl(activity, minervaTranscript);
         Transcript transcript = new Transcript(transcriptString);
-        ApplicationClass.setTranscript(transcript);
+        App.setTranscript(transcript);
 
         //Set the default Semester
         List<Semester> semesters = transcript.getSemesters();
@@ -119,16 +120,16 @@ public class Connection {
                 }
             }
         }
-        ApplicationClass.setDefaultSemester(defaultSemester);
+        App.setDefaultSemester(defaultSemester);
 
         //Download the schedule
         String scheduleString = connection.getUrl(activity, defaultSemester.getURL());
-        ApplicationClass.setSchedule(CourseSched.parseCourseList(scheduleString));
+        App.setSchedule(CourseSched.parseCourseList(scheduleString));
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);
-        ApplicationClass.setEbill(EbillItem.parseEbill(ebillString));
-        ApplicationClass.setUserInfo(new UserInfo(ebillString));
+        App.setEbill(EbillItem.parseEbill(ebillString));
+        App.setUserInfo(new UserInfo(ebillString));
     }
 
 	public ConnectionStatus connectToMinerva(Context context){

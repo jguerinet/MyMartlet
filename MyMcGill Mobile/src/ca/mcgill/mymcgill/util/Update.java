@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import ca.mcgill.mymcgill.App;
+
 /**
  * Author : Julien
  * Date :  2014-05-26 8:41 PM
@@ -29,7 +31,7 @@ public class Update {
         if(storedVersion < versionNumber){
             //New Install
             if(storedVersion == -1){
-                Constants.firstOpen = true;
+                App.firstOpen = true;
             }
 
             /* This will be where the version updates would go */

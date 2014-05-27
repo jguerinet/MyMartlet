@@ -10,10 +10,10 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Transcript;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.DialogHelper;
 
@@ -32,7 +32,7 @@ public class TranscriptActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
 
         //Get the stored transcript from the ApplicationClass
-        mTranscript = ApplicationClass.getTranscript();
+        mTranscript = App.getTranscript();
 
         //Get the views
         mCGPA = (TextView)findViewById(R.id.transcript_cgpa);
@@ -94,7 +94,7 @@ public class TranscriptActivity extends DrawerActivity {
             mTranscript = new Transcript(transcriptString);
 
             //Save it to the instance variable in the Application class
-            ApplicationClass.setTranscript(mTranscript);
+            App.setTranscript(mTranscript);
 
             return true;
         }
