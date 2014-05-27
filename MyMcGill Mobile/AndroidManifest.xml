@@ -105,6 +105,12 @@
             android:name="ca.mcgill.mymcgill.activity.ChangeSemesterActivity"
             android:theme="@style/DialogMyMcGill"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.WishlistActivity"
+            android:label="Course Wishlist" />
+        <activity
+            android:name=".activity.WishlistActivity"
+            android:label="Course Wishlist" />
 
         <meta-data
             android:name="com.google.android.gms.version"

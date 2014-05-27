@@ -1,6 +1,7 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -264,4 +265,11 @@ public class RegistrationActivity extends DrawerActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void wish(View v) {
+        Intent intent = new Intent(this, WishlistActivity.class);
+        //startActivityForResult(intent, CHANGE_SEMESTER_CODE);
+        startActivity(intent);
+    }
+
 }

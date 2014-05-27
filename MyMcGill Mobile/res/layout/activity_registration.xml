@@ -114,6 +114,15 @@
             android:textSize="@dimen/text_medium"
             android:paddingBottom="@dimen/padding_large"/>
 
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Make a Wish"
+            android:id="@+id/wishTest"
+            android:layout_gravity="center_horizontal"
+            android:onClick="wish" />
+
     </LinearLayout>
 
     <!-- The navigation drawer -->
