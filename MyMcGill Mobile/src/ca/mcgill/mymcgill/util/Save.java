@@ -26,17 +26,29 @@ import ca.mcgill.mymcgill.object.UserInfo;
  * Class that saves objects into internal storage or SharedPreferences
  */
 public class Save {
+    /**
+     * Save the version number to the Shared prefs
+     * @param context The app context
+     * @param versionNumber The version number to save
+     */
+    public static void saveVersionNumber(Context context, int versionNumber){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putInt(Constants.VERSION, versionNumber)
+                .commit();
+    }
+
     public static void saveLanguage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
-                .putInt(Constants.LANGUAGE_FILE_NAME, ApplicationClass.getLanguage().ordinal())
+                .putInt(Constants.LANGUAGE, ApplicationClass.getLanguage().ordinal())
                 .commit();
     }
 
     public static void saveHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
-                .putInt(Constants.HOMEPAGE_FILE_NAME, ApplicationClass.getHomePage().ordinal())
+                .putInt(Constants.HOMEPAGE, ApplicationClass.getHomePage().ordinal())
                 .commit();
     }
 
@@ -66,7 +78,7 @@ public class Save {
         Transcript transcript = ApplicationClass.getTranscript();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.TRANSCRIPT_FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.TRANSCRIPT_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(transcript);
         } catch (OptionalDataException e) {
@@ -84,7 +96,7 @@ public class Save {
         List<CourseSched> courses = ApplicationClass.getSchedule();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.SCHEDULE_FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.SCHEDULE_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(courses);
         } catch (OptionalDataException e) {
@@ -102,7 +114,7 @@ public class Save {
         List<EbillItem> ebill = ApplicationClass.getEbill();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.EBILL_FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.EBILL_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(ebill);
         } catch (OptionalDataException e) {
@@ -120,7 +132,7 @@ public class Save {
         UserInfo userInfo = ApplicationClass.getUserInfo();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.USERINFO_FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.USER_INFO_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(userInfo);
         } catch (OptionalDataException e) {
@@ -138,7 +150,7 @@ public class Save {
         Inbox inbox = ApplicationClass.getInbox();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.INBOX_FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.INBOX_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(inbox);
         } catch (OptionalDataException e) {
@@ -156,7 +168,7 @@ public class Save {
         Semester defaultSemester = ApplicationClass.getDefaultSemester();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.DEFAULT_SEMESTER_FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.DEFAULT_SEMESTER_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(defaultSemester);
         } catch (OptionalDataException e) {

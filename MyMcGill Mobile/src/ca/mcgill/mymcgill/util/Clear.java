@@ -42,25 +42,25 @@ public class Clear {
     }
 
     public static void clearTranscript(Context context){
-        context.deleteFile(Constants.TRANSCRIPT_FILE_NAME);
+        context.deleteFile(Constants.TRANSCRIPT_FILE);
         //Reset the static instance in Application Class
         ApplicationClass.setTranscript(null);
     }
 
     public static void clearSchedule(Context context){
-        context.deleteFile(Constants.SCHEDULE_FILE_NAME);
+        context.deleteFile(Constants.SCHEDULE_FILE);
         //Reset the static instance in Application Class
         ApplicationClass.setSchedule(new ArrayList<CourseSched>());
     }
 
     public static void clearEbill(Context context){
-        context.deleteFile(Constants.EBILL_FILE_NAME);
+        context.deleteFile(Constants.EBILL_FILE);
         //Reset the static instance in Application Class
         ApplicationClass.setEbill(new ArrayList<EbillItem>());
     }
 
     public static void clearUserInfo(Context context){
-        context.deleteFile(Constants.USERINFO_FILE_NAME);
+        context.deleteFile(Constants.USER_INFO_FILE);
         //Reset the static instance in Application Class
         ApplicationClass.setUserInfo(null);
     }
