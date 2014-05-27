@@ -15,6 +15,8 @@ import java.util.List;
  * 
  */
 public class CourseSched implements Serializable{
+    private static final long serialVersionUID = 1L;
+
 	private int crn;
 	private String courseCode, section;
 	private int startH, startM, endH, endM;

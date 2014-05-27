@@ -9,6 +9,7 @@ import java.io.Serializable;
  * have taken, such as the grade, credit, and class average
  */
 public class Course implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     private int credits;
     private String courseCode;
@@ -70,6 +71,10 @@ public class Course implements Serializable{
     //Getter for average grade
     public String getAverageGrade(){
         return averageGrade;
+    }
+
+    public int getCrn(){
+        return crn;
     }
 
 }

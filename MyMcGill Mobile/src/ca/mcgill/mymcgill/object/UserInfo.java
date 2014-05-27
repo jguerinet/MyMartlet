@@ -12,6 +12,8 @@ import java.io.Serializable;
  * Date: 16/02/14, 4:34 PM
  */
 public class UserInfo implements Serializable{
+    private static final long serialVersionUID = 1L;
+    
     private String mName, mId;
 
     public UserInfo(String ebillString){
