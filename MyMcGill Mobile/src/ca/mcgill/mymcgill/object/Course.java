@@ -72,4 +72,8 @@ public class Course implements Serializable{
         return averageGrade;
     }
 
+    public int getCrn(){
+        return crn;
+    }
+
 }

@@ -1,8 +1,6 @@
 package ca.mcgill.mymcgill.activity.courseslist;
 
-import android.app.ListActivity;
 import android.os.Bundle;
-import android.view.Window;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.base.BaseListActivity;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.util.Constants;
 
@@ -21,17 +20,17 @@ import ca.mcgill.mymcgill.util.Constants;
  * Date :  2014-05-26 7:09 PM
  * Shows a list of courses
  */
-public class CoursesListActivity extends ListActivity {
+public class CoursesListActivity extends BaseListActivity {
     public List<Course> mCourses;
 
     public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courseslist);
-        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//        overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
         //Show the user we are working.
-        setProgressBarIndeterminateVisibility(true);
+//        setProgressBarIndeterminateVisibility(true);
 
         //Get the list of courses from the intent
         String courseString = getIntent().getStringExtra(Constants.COURSES);
@@ -39,6 +38,7 @@ public class CoursesListActivity extends ListActivity {
         //If it's null, this is the wishlist
         if(courseString == null){
             //TODO Wishlist Code here
+            mCourses = new ArrayList<Course>();
         }
         //If not, parse it
         else{
@@ -55,7 +55,13 @@ public class CoursesListActivity extends ListActivity {
         setListAdapter(adapter);
 
         //Stop the spinner
-        setProgressBarIndeterminateVisibility(false);
+//        setProgressBarIndeterminateVisibility(false);
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 
     //Parses the HTML retrieved from Minerva and returns a list of courses
@@ -146,7 +152,7 @@ public class CoursesListActivity extends ListActivity {
             }
         }
         catch(Exception e){
-
+            e.printStackTrace();
         }
 
         return mCourses;

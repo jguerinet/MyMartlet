@@ -4,9 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
+import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Course;
 
 /**
@@ -42,11 +44,24 @@ public class CoursesAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         //Inflate the view if it is null
         if(view == null){
-
+            view = View.inflate(mContext, R.layout.activity_semester_course, viewGroup);
         }
 
         //Get the concerned course
         Course course = getItem(i);
+
+        //Set up the info for the course
+        TextView courseCode = (TextView)view.findViewById(R.id.course_code);
+        courseCode.setText(course.getCourseCode());
+
+        TextView courseGrade = (TextView)view.findViewById(R.id.course_grade);
+        courseGrade.setText(course.getCrn());
+
+        TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
+        courseTitle.setText(course.getCourseTitle());
+
+        TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
+        courseCredits.setText(mContext.getString(R.string.course_credits, course.getCredits()));
 
         return view;
     }
