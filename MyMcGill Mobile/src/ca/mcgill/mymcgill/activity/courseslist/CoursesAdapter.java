@@ -1,6 +1,7 @@
 package ca.mcgill.mymcgill.activity.courseslist;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -44,7 +45,7 @@ public class CoursesAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         //Inflate the view if it is null
         if(view == null){
-            view = View.inflate(mContext, R.layout.activity_semester_course, viewGroup);
+            view = LayoutInflater.from(mContext).inflate(R.layout.activity_semester_course, null);
         }
 
         //Get the concerned course
