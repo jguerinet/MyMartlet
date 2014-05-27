@@ -267,7 +267,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                                 (int) this.getResources().getDimension(R.dimen.cell_30min_height) * length);
                         scheduleCell.setLayoutParams(lp);
 
-                        //OnClick: CourseActivity (for a detailed description of the course)
+                        //OnClick: CourseActivity (for                                                                                                                                                                                                  b                                                                                                                                               a detailed description of the course)
                         scheduleCell.setClickable(false);
                     }
                     else{

@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 
 import java.util.List;
 
+import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.HomePage;
@@ -32,10 +33,12 @@ public class ApplicationClass extends Application {
     
     private static List<CourseSched> schedule;
     private static Semester defaultSemester;
-    
+
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
     private static Inbox inbox;
+
+    private static List<Course> courseWishlist;
 
     @Override
     public void onCreate(){
@@ -60,6 +63,8 @@ public class ApplicationClass extends Application {
         homePage = Load.loadHomePage(this);
         //Load the default semester for the schedule
         defaultSemester = Load.loadDefaultSemester(this);
+        //Load the course wishlist
+        courseWishlist = Load.loadCourseWishlist(this);
     }
 
     /* GETTER METHODS */
@@ -102,6 +107,8 @@ public class ApplicationClass extends Application {
     public static Semester getDefaultSemester(){
         return defaultSemester;
     }
+
+    public static List<Course> getCourseWishlist() { return courseWishlist; }
 
     public static int getUnreadEmails(){
         if(inbox != null){
@@ -165,6 +172,13 @@ public class ApplicationClass extends Application {
 
         //Save it to internal storage when this is set
         Save.saveDefaultSemester(context);
+    }
+
+    public static void setCourseWishlist(List<Course> list) {
+        ApplicationClass.courseWishlist = list;
+
+        //Save it to internal storage when this is set
+        Save.saveCourseWishlist(context);
     }
 
     /* HELPER METHODS */

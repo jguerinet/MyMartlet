@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.HomePage;
@@ -232,5 +233,37 @@ public class Load {
         }
 
         return defaultSemester;
+    }
+
+    public static List<Course> loadCourseWishlist(Context context){
+        List<Course> courseWishlist = new ArrayList<Course>();
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.COURSE_WISHLIST_FILE_NAME);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            courseWishlist = (List<Course>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load Course Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return courseWishlist;
+        } catch (OptionalDataException e) {
+            Log.e("Load Course Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return courseWishlist;
+        } catch (FileNotFoundException e) {
+            Log.e("Load Course Wishlist Failure", "File not found");
+            e.printStackTrace();
+            return courseWishlist;
+        } catch (StreamCorruptedException e) {
+            Log.e("Load Course Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return courseWishlist;
+        } catch (IOException e) {
+            Log.e("LoadCourse Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return courseWishlist;
+        }
+
+        return courseWishlist;
     }
 }

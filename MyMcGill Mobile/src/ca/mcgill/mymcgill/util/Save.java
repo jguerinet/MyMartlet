@@ -12,6 +12,7 @@ import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
 import java.util.List;
 
+import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Inbox;
@@ -158,6 +159,24 @@ public class Save {
             FileOutputStream fos = context.openFileOutput(Constants.DEFAULT_SEMESTER_FILE_NAME, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(defaultSemester);
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveCourseWishlist(Context context) {
+        List<Course> courseWishlist = ApplicationClass.getCourseWishlist();
+
+        try{
+            FileOutputStream fos = context.openFileOutput(Constants.COURSE_WISHLIST_FILE_NAME, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(courseWishlist);
         } catch (OptionalDataException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
