@@ -14,6 +14,7 @@ import ca.mcgill.mymcgill.util.Connection;
  * term credits, term GPA, and full time status
  */
 public class Semester implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     private Season mSeason;
     private int mYear;

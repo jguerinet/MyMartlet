@@ -31,6 +31,7 @@ import ca.mcgill.mymcgill.util.Constants;
  * Created by Ryan Singzon on 15/02/14.
  */
 public class Inbox implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     Properties mProperties = null;
     private String mUserName;

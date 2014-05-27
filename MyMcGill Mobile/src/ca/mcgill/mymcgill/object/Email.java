@@ -38,6 +38,7 @@ import ca.mcgill.mymcgill.util.Load;
  * Created by Ryan Singzon on 15/02/14.
  */
 public class Email implements Serializable{
+    private static final long serialVersionUID = 1L;
 	
     private String mSubject;
     private String mSender;
