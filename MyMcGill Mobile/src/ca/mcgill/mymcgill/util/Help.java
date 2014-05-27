@@ -1,6 +1,8 @@
 package ca.mcgill.mymcgill.util;
 
 import android.content.Context;
+import android.graphics.Point;
+import android.view.Display;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -42,6 +44,42 @@ public class Help {
             return context.getResources().getString(R.string.am_long, hours, minutes);
         }
         return context.getResources().getString(R.string.pm_long, hours, minutes);
+    }
+
+    /**
+     * Get the height of the display
+     * @param display The display to measure
+     * @return The height of the given display
+     */
+    public static int getDisplayHeight(Display display){
+        Point size = new Point();
+
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
+            size.set(display.getWidth(), display.getHeight());
+        }
+        else{
+            display.getSize(size);
+        }
+
+        return size.y;
+    }
+
+    /**
+     * Get the width of the display
+     * @param display The display to measure
+     * @return The width of the given display
+     */
+    public static int getDisplayWidth(Display display){
+        Point size = new Point();
+
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
+            size.set(display.getWidth(), display.getHeight());
+        }
+        else{
+            display.getSize(size);
+        }
+
+        return size.x;
     }
 
     public static String readFromFile(Context context, int fileResource) {

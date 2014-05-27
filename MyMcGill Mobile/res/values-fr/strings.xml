@@ -117,4 +117,8 @@
     <string name="change_semester_season">Saison: </string>
     <string name="change_semester_year">Année:</string>
     <string name="change_semester_default">Mettre par Défaut</string>
+
+    <!-- Register Page -->
+
+    <!-- Walkthrough -->
 </resources>

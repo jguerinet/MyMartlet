@@ -27,6 +27,10 @@
     <string name="error_other">An error has occurred. Please try again later.</string>
     <string name="english">English</string>
     <string name="french">French</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="start">Start</string>
+    <string name="skip">Skip</string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
@@ -140,5 +144,7 @@
     <!-- Register Page -->
     <string name="registration_semester">Semester</string>
     <string name="registration_subject">Subject</string>
-    <string name="registration_course_number">Course number (Optional)</string>
+    <string name="registration_course_number">Course Number (optional)</string>
+
+    <!-- Walkthrough -->
 </resources>
