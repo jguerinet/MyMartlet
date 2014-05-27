@@ -38,6 +38,8 @@ public class CoursesListActivity extends BaseListActivity {
         //If it's null, this is the wishlist
         if(courseString == null){
             //TODO Wishlist Code here
+
+
             mCourses = new ArrayList<Course>();
         }
         //If not, parse it
