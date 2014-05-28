@@ -1,6 +1,7 @@
 package ca.mcgill.mymcgill.activity.courseslist;
 
 import android.os.Bundle;
+import android.widget.ListView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +14,7 @@ import java.util.List;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseListActivity;
 import ca.mcgill.mymcgill.object.Course;
+import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -22,6 +24,7 @@ import ca.mcgill.mymcgill.util.Constants;
  */
 public class CoursesListActivity extends BaseListActivity {
     public List<Course> mCourses;
+    private ListView mListView;
 
     public void onCreate(Bundle savedInstanceState) {
 //        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -35,17 +38,26 @@ public class CoursesListActivity extends BaseListActivity {
         //Get the list of courses from the intent
         String courseString = getIntent().getStringExtra(Constants.COURSES);
 
+        // Views
+        mListView = (ListView)findViewById(android.R.id.list);
+
+
         //If it's null, this is the wishlist
         if(courseString == null){
             //TODO Wishlist Code here
-
-
-            mCourses = new ArrayList<Course>();
+            mCourses = ApplicationClass.getCourseWishlist();
+            //Load the stored info
+            loadInfo();
         }
         //If not, parse it
         else{
             parseCourses(courseString);
         }
+    }
+
+    private void loadInfo(){
+        CoursesAdapter adapter = new CoursesAdapter(this, mCourses);
+        mListView.setAdapter(adapter);
     }
 
     @Override
