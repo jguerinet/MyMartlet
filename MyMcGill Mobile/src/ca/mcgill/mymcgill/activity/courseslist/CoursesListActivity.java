@@ -88,87 +88,115 @@ public class CoursesListActivity extends BaseListActivity {
         //Find rows of HTML by class
         Elements dataRows = document.getElementsByClass("dddefault");
 
-        int rowsPerCourse = 23;
-        int numCourses = dataRows.size()/rowsPerCourse;
+        int rowNumber = 0;
+        boolean loop = true;
 
-        try{
-            for(int courseCount = 0; courseCount < numCourses; courseCount++){
+        while (loop) {
 
-                //Create a new course object
-                int credits = 99;
-                String courseCode = "ERROR";
-                String courseTitle = "ERROR";
-                String sectionType = "";
-                String days = "";
-                int crn = 00000;
-                String instructor = "";
-                String location = "";
-                String time = "";
-                String dates = "";
+            // Create a new course object
+            int credits = 99;
+            String courseCode = "ERROR";
+            String courseTitle = "ERROR";
+            String sectionType = "";
+            String days = "";
+            int crn = 00000;
+            String instructor = "";
+            String location = "";
+            String time = "";
+            String dates = "";
 
-                for(int rowNumber = 0; rowNumber < rowsPerCourse; rowNumber++){
+            int i = 0;
+            while (true) {
+
+                try {
+                    // Get the HTML row
                     Element row = dataRows.get(rowNumber);
+                    rowNumber++;
 
-                    switch(rowNumber){
-                        //Course code
+                    // End condition: Empty row encountered
+                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
+                        break;
+                    }
+
+                    switch (i) {
+                        // CRN
+                        case 1:
+                            crn = Integer.parseInt(row.text());
+                            break;
+
+                        // Course code
                         case 2:
                             courseCode = row.text();
                             break;
                         case 3:
-                            courseCode += row.text();
+                            courseCode += " " + row.text();
                             break;
 
-                        //Section type
+                        // Section type
                         case 5:
                             sectionType = row.text();
                             break;
 
-                        //Number of credits
+                        // Number of credits
                         case 6:
-                            credits = Integer.parseInt(row.text());
+                            credits = (int) Double.parseDouble(row.text());
                             break;
 
-                        //Course title
+                        // Course title
                         case 7:
                             courseTitle = row.text();
                             break;
 
-                        //Days of the week
+                        // Days of the week
                         case 8:
                             days = row.text();
+
+                            if (days.equals("TBA")) {
+                                time = "TBA";
+                                i = 10;
+                                rowNumber++;
+                            }
                             break;
 
-                        //Time
+                        // Time
                         case 9:
                             time = row.text();
                             break;
 
-                        //Instructor
+                        // Instructor
                         case 16:
                             instructor = row.text();
                             break;
 
-                        //Start/end date
+                        // Start/end date
                         case 17:
                             dates = row.text();
                             break;
 
-                        //Location
+                        // Location
                         case 18:
                             location = row.text();
                             break;
                     }
+
+                    i++;
                 }
+                catch (IndexOutOfBoundsException e){
+                    loop = false;
+                    break;
+                }
+                catch (Exception e) {
+
+                }
+            }
+
+            if( !courseCode.equals("ERROR")){
 
                 //Create a new course object and add it to list
                 Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days, crn, instructor, location, time, dates);
                 mCourses.add(newCourse);
             }
         }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-
         return mCourses;
     }
 }
