@@ -38,6 +38,17 @@ public class Save {
                 .commit();
     }
 
+    /**
+     * Save that the app has been used at least once
+     * @param context The app context
+     */
+    public static void saveFirstOpen(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putBoolean(Constants.FIRST_OPEN, true)
+                .commit();
+    }
+
     public static void saveLanguage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()

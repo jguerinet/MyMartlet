@@ -41,6 +41,16 @@ public class Load {
         return sharedPrefs.getInt(Constants.VERSION, -1);
     }
 
+    /**
+     * Checks to see if the app has been previously opened
+     * @param context The app context
+     * @return If the app has been previously opened
+     */
+    public static boolean isFirstOpen(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.FIRST_OPEN, true);
+    }
+
     public static Language loadLanguage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return Language.values()[(sharedPrefs.getInt(Constants.LANGUAGE, 0))];

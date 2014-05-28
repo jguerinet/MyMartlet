@@ -16,6 +16,7 @@ import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
 import ca.mcgill.mymcgill.util.Load;
 import ca.mcgill.mymcgill.util.Save;
+import ca.mcgill.mymcgill.util.Update;
 
 /**
  * Author: Julien
@@ -25,9 +26,6 @@ import ca.mcgill.mymcgill.util.Save;
  */
 public class App extends Application {
     private static Context context;
-
-    //First Open boolean
-    public static boolean firstOpen = false;
 
     private static Typeface iconFont;
 
@@ -48,6 +46,9 @@ public class App extends Application {
 
         //Set the static context
         context = this;
+
+        //Run the update code, if any
+        Update.update(this);
 
         //Load the transcript
         transcript = Load.loadTranscript(this);

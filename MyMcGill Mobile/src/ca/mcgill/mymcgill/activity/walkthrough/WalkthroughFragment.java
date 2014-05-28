@@ -41,36 +41,36 @@ public class WalkthroughFragment extends Fragment {
         switch(mPageNumber){
             //Welcome to the MyMcGill App
             case 0:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_0, container);
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_0, null);
                 break;
             //Access all of your MyMcGill essentials easily
             case 1:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_1, container);
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_1, null);
                 break;
 
             //Main Menu Explanation
             case 2:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_2, container);
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_2, null);
                break;
 
             //Offline Access
             case 3:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_3, container);
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_3, null);
                 break;
 
             //Security
             case 4:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_4, container);
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_4, null);
                 break;
 
             //Help/About Pages
             case 5:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, container);
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, null);
                break;
 
             //Default Homepage
             case 6:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_6, container);
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_6, null);
                break;
 
             default:
