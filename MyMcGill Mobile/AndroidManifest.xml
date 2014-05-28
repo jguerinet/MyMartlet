@@ -106,10 +106,6 @@
             android:theme="@style/DialogMyMcGill"
             android:screenOrientation="portrait"/>
 
-        <activity
-            android:name=".activity.WishlistActivity"
-            android:label="Course Wishlist" />
-
         <activity android:name=".activity.courseslist.CoursesListActivity" />
 
         <meta-data
