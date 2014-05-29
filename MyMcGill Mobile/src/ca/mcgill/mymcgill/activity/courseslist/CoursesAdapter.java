@@ -56,7 +56,7 @@ public class CoursesAdapter extends BaseAdapter {
         courseCode.setText(course.getCourseCode());
 
         TextView courseGrade = (TextView)view.findViewById(R.id.course_grade);
-        courseGrade.setText(course.getCrn());
+        courseGrade.setText(String.valueOf(course.getCrn()));
 
         TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
         courseTitle.setText(course.getCourseTitle());
