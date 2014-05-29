@@ -265,7 +265,7 @@ public class Load {
         List<Course> courseWishlist = new ArrayList<Course>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.COURSE_WISHLIST_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.COURSE_WISHLIST_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             courseWishlist = (List<Course>) in.readObject();
         } catch (ClassNotFoundException e) {

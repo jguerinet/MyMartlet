@@ -13,6 +13,7 @@ import java.io.StreamCorruptedException;
 import java.util.List;
 
 import ca.mcgill.mymcgill.App;
+import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Inbox;
@@ -201,10 +202,10 @@ public class Save {
     }
 
     public static void saveCourseWishlist(Context context) {
-        List<Course> courseWishlist = ApplicationClass.getCourseWishlist();
+        List<Course> courseWishlist = App.getCourseWishlist();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.COURSE_WISHLIST_FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.COURSE_WISHLIST_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(courseWishlist);
         } catch (OptionalDataException e) {
