@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:padding="@dimen/padding_medium">
+    android:padding="@dimen/padding_micro">
 
     <TextView
         android:layout_width="match_parent"
@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_large"
         android:textColor="@color/red"
-        android:text="ABOUT PICTURE HERE"
+        android:text="@string/icon_question"
+        android:id="@+id/help_icon"
         android:textStyle="bold"
         android:gravity="center"
         android:padding="@dimen/padding_small"/>

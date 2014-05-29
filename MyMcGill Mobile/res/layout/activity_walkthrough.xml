@@ -15,7 +15,9 @@
         android:textColor="@drawable/color_black_redpressed"
         android:textSize="@dimen/text_medium"
         android:gravity="left"
-        android:padding="@dimen/padding_small"/>
+        android:paddingLeft="@dimen/padding_micro"
+        android:paddingRight="@dimen/padding_micro"
+        android:paddingTop="@dimen/padding_micro"/>
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/walkthrough_pageindicator"
@@ -33,10 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingRight="@dimen/padding_large"
-        android:paddingLeft="@dimen/padding_large"
-        android:paddingTop="@dimen/padding_medium"
-        android:paddingBottom="@dimen/padding_medium">
+        android:padding="@dimen/padding_micro"
+        android:background="@color/red">
 
         <TextView
             android:id="@+id/walkthrough_back"
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:text="@string/back"
-            android:textColor="@drawable/color_black_redpressed"
+            android:textColor="@drawable/color_white_greypressed"
             android:textSize="@dimen/text_medium"
             android:clickable="true"
             android:gravity="left"/>
@@ -55,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:text="@string/next"
-            android:textColor="@drawable/color_black_redpressed"
+            android:textColor="@drawable/color_white_greypressed"
             android:textSize="@dimen/text_medium"
             android:clickable="true"
             android:gravity="right"/>

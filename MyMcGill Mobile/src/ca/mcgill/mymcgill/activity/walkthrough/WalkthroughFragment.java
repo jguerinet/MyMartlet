@@ -77,6 +77,8 @@ public class WalkthroughFragment extends Fragment {
                 //Set the typeface for the icon
                 TextView bugIcon = (TextView)pageView.findViewById(R.id.bug_icon);
                 bugIcon.setTypeface(App.getIconFont());
+                TextView helpIcon = (TextView)pageView.findViewById(R.id.help_icon);
+                helpIcon.setTypeface(App.getIconFont());
 
                 break;
 

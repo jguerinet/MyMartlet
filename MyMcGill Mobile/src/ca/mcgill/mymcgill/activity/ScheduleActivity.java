@@ -72,18 +72,13 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         //Start thread to get schedule
         new ScheduleGetter(mCurrentSemester.getURL()).execute();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
 
         //Check if this is the first time the user is using the app
         if(Load.isFirstOpen(this)){
-            //Show him the walkthrough if it is
-            startActivity(new Intent(this, WalkthroughActivity.class));
-            //Save the fact that the walkthrough has been seen at least once
-            Save.saveFirstOpen(this);
+        //Show him the walkthrough if it is
+        startActivity(new Intent(this, WalkthroughActivity.class));
+        //Save the fact that the walkthrough has been seen at least once
+        Save.saveFirstOpen(this);
         }
     }
 

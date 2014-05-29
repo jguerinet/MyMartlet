@@ -107,7 +107,9 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.courseslist.CoursesListActivity" />
-        <activity android:name=".activity.walkthrough.WalkthroughActivity" />
+        <activity android:name=".activity.walkthrough.WalkthroughActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/DialogMyMcGill"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

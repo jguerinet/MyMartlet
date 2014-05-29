@@ -14,7 +14,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_medium"
         android:text="@string/walkthrough_menu"
-        android:padding="@dimen/padding_medium"
+        android:padding="@dimen/padding_small"
         android:gravity="center"/>
 
     <ImageView

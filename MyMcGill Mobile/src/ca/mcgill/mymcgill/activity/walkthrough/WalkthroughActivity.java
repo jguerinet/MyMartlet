@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class WalkthroughActivity extends BaseFragmentActivity {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_walkthrough);
 
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
@@ -36,7 +38,7 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         //Set the height to be 2/3 of the screen
         LinearLayout layout = (LinearLayout)findViewById(R.id.walkthrough_container);
         ViewGroup.LayoutParams params = layout.getLayoutParams();
-        params.height = (2 * displayHeight) / 3;
+        params.height = (3 * displayHeight) / 4;
         layout.setLayoutParams(params);
 
         mViewPager = (ViewPager) findViewById(R.id.walkthrough_viewpager);

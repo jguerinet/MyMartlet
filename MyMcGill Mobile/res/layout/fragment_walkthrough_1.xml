@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,7 +28,8 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:layout_marginBottom="@dimen/padding_double"
-            android:src="@drawable/map"/>
+            android:src="@drawable/map"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -36,7 +38,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_single"
             android:layout_marginBottom="@dimen/padding_single"
-            android:src="@drawable/schedule"/>
+            android:src="@drawable/schedule"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -44,7 +47,8 @@
             android:adjustViewBounds="true"
             android:layout_gravity="right"
             android:layout_marginTop="@dimen/padding_double"
-            android:src="@drawable/transcript"/>
+            android:src="@drawable/transcript"
+            tools:ignore="ContentDescription" />
 
         </FrameLayout>
 
