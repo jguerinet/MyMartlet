@@ -18,6 +18,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Faculty;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Language;
@@ -59,6 +60,11 @@ public class Load {
     public static HomePage loadHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return HomePage.values()[sharedPrefs.getInt(Constants.HOMEPAGE, 0)];
+    }
+
+    public static Faculty loadFaculty(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return Faculty.values()[sharedPrefs.getInt(Constants.FACULTY, 0)];
     }
 
     public static String loadFullUsername(Context context){

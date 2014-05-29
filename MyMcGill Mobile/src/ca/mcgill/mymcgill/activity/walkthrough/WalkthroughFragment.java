@@ -5,8 +5,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.Faculty;
+import ca.mcgill.mymcgill.object.HomePage;
 
 /**
  * Author : Yulric
@@ -53,24 +60,71 @@ public class WalkthroughFragment extends Fragment {
                 pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_2, null);
                break;
 
-            //Offline Access
+            //Offline Access / Security
             case 3:
                 pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_3, null);
+
+                //Set the typeface for the icon
+                TextView securityIcon = (TextView)pageView.findViewById(R.id.security_icon);
+                securityIcon.setTypeface(App.getIconFont());
+
                 break;
 
-            //Security
+            //Help/About/Bugs
             case 4:
                 pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_4, null);
+
+                //Set the typeface for the icon
+                TextView bugIcon = (TextView)pageView.findViewById(R.id.bug_icon);
+                bugIcon.setTypeface(App.getIconFont());
+
                 break;
 
-            //Help/About Pages
+            //Default Homepage / Faculty
             case 5:
                 pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, null);
-               break;
 
-            //Default Homepage
-            case 6:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_6, null);
+                Spinner homepage = (Spinner)pageView.findViewById(R.id.homepage);
+                //Standard ArrayAdapter
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_spinner_item, HomePage.getHomePageStrings(getActivity()));
+                //Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                //Apply the adapter to the spinner
+                homepage.setAdapter(adapter);
+                homepage.setSelection(App.getHomePage().ordinal());
+                homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        //Get the chosen language
+                        HomePage chosenHomePage = HomePage.values()[position];
+                        //Update it in the ApplicationClass
+                        App.setHomePage(chosenHomePage);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {}
+                });
+
+                Spinner faculty = (Spinner)pageView.findViewById(R.id.faculty);
+                //Standard ArrayAdapter
+                adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+                        Faculty.getFacultyStrings(getActivity()));
+                //Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                //Apply the adapter to the spinner
+                faculty.setAdapter(adapter);
+                faculty.setSelection(0);
+                faculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        //Get the chosen language
+                        Faculty faculty = Faculty.values()[position];
+                        //Update it in the ApplicationClass
+                        App.setFaculty(faculty);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {}
+                });
                break;
 
             default:

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:text="@string/skip"
         android:textColor="@drawable/color_black_redpressed"
-        android:textSize="@dimen/text_large"
+        android:textSize="@dimen/text_medium"
         android:gravity="left"
         android:padding="@dimen/padding_small"/>
 
@@ -45,7 +45,7 @@
             android:layout_weight="0.5"
             android:text="@string/back"
             android:textColor="@drawable/color_black_redpressed"
-            android:textSize="@dimen/text_large"
+            android:textSize="@dimen/text_medium"
             android:clickable="true"
             android:gravity="left"/>
 
@@ -56,7 +56,7 @@
             android:layout_weight="0.5"
             android:text="@string/next"
             android:textColor="@drawable/color_black_redpressed"
-            android:textSize="@dimen/text_large"
+            android:textSize="@dimen/text_medium"
             android:clickable="true"
             android:gravity="right"/>
     </LinearLayout>

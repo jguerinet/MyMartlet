@@ -45,7 +45,7 @@ public class Save {
     public static void saveFirstOpen(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
-                .putBoolean(Constants.FIRST_OPEN, true)
+                .putBoolean(Constants.FIRST_OPEN, false)
                 .commit();
     }
 
@@ -60,6 +60,13 @@ public class Save {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putInt(Constants.HOMEPAGE, App.getHomePage().ordinal())
+                .commit();
+    }
+
+    public static void saveFaculty(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putInt(Constants.FACULTY, App.getFaculty().ordinal())
                 .commit();
     }
 

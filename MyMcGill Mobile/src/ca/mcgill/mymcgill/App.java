@@ -8,6 +8,7 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Faculty;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Language;
@@ -31,6 +32,7 @@ public class App extends Application {
 
     private static Language language;
     private static HomePage homePage;
+    private static Faculty faculty;
     private static Transcript transcript;
     
     private static List<CourseSched> schedule;
@@ -64,6 +66,8 @@ public class App extends Application {
         language = Load.loadLanguage(this);
         //Load the user's chosen homepage
         homePage = Load.loadHomePage(this);
+        //Load the user's faculty
+        faculty = Load.loadFaculty(this);
         //Load the default semester for the schedule
         defaultSemester = Load.loadDefaultSemester(this);
     }
@@ -103,6 +107,10 @@ public class App extends Application {
 
     public static HomePage getHomePage(){
         return homePage;
+    }
+
+    public static Faculty getFaculty(){
+        return faculty;
     }
 
     public static Semester getDefaultSemester(){
@@ -164,6 +172,12 @@ public class App extends Application {
 
         //Save it to internal storage when this is set
         Save.saveHomePage(context);
+    }
+
+    public static void setFaculty(Faculty faculty){
+        App.faculty = faculty;
+
+        Save.saveFaculty(context);
     }
 
     public static void setDefaultSemester(Semester semester){

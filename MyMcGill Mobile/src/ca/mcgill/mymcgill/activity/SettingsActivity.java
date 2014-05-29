@@ -28,9 +28,6 @@ public class SettingsActivity extends DrawerActivity {
         TextView languageTitle = (TextView)findViewById(R.id.settings_language_title);
         languageTitle.setText(getResources().getString(R.string.settings_language));
 
-        TextView homepageTitle = (TextView)findViewById(R.id.settings_homepage_title);
-        homepageTitle.setText(getResources().getString(R.string.settings_homepage));
-
         //Set up the info
         Spinner languages = (Spinner)findViewById(R.id.settings_language);
         //Set up the array of languages
@@ -66,19 +63,10 @@ public class SettingsActivity extends DrawerActivity {
         });
 
         Spinner homepages = (Spinner)findViewById(R.id.settings_homepage);
-        //Set up the array of languages
-        //NOTE : ORDER MATTERS HERE
-        final List<String> homepageStrings = new ArrayList<String>();
-        homepageStrings.add(getResources().getString(R.string.homepage_schedule));
-        homepageStrings.add(getResources().getString(R.string.homepage_transcript));
-        homepageStrings.add(getResources().getString(R.string.homepage_email));
-        homepageStrings.add(getResources().getString(R.string.homepage_mycourses));
-        homepageStrings.add(getResources().getString(R.string.homepage_ebill));
-        homepageStrings.add(getResources().getString(R.string.homepage_map));
-        homepageStrings.add(getResources().getString(R.string.homepage_desktop));
+
         //Standard ArrayAdapter
         ArrayAdapter<String> homepageAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, homepageStrings);
+                android.R.layout.simple_spinner_item, HomePage.getHomePageStrings(this));
         //Specify the layout to use when the list of choices appears
         homepageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the spinner
