@@ -1,6 +1,9 @@
 package ca.mcgill.mymcgill.activity.courseslist;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
@@ -11,8 +14,10 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.ChangeSemesterActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
+import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -129,4 +134,50 @@ public class CoursesListActivity extends DrawerActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
+
+    // JDAlfaro
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.refresh, menu);
+
+        // change semester menu item
+        menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE, R.string.schedule_change_semester);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Opens the context menu
+            case Constants.MENU_ITEM_CHANGE_SEMESTER:
+                Intent intent = new Intent(this, ChangeListActivity.class);
+                startActivity(intent);
+                //startActivityForResult(intent, CHANGE_SEMESTER_CODE);
+                return true;
+            case R.id.action_refresh:
+                //Start thread to retrieve schedule
+                //new ScheduleGetter(mCurrentSemester.getURL()).execute();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    /*
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CHANGE_SEMESTER_CODE){
+            if(resultCode == RESULT_OK){
+                //mCurrentSemester = ((Semester)data.getSerializableExtra(Constants.SEMESTER));
+
+                //Quick Check
+                //assert (mCurrentSemester != null);
+
+               // new ScheduleGetter(mCurrentSemester.getURL()).execute();
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }*/
 }

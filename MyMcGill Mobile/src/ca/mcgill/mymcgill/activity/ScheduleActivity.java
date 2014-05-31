@@ -370,15 +370,14 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             return 1000000;
         }
     }
-    
-    // JDAlfaro
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.refresh, menu);
 
     	// change semester menu item
-    	menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE,R.string.schedule_change_semester);
+    	menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE, R.string.schedule_change_semester);
     	return true;
     }
     
@@ -391,7 +390,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                 startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             	return true;
             case R.id.action_refresh:
-                //Start thread to retrieve inbox
+                //Start thread to retrieve schedule
                 new ScheduleGetter(mCurrentSemester.getURL()).execute();
                 return true;
         }

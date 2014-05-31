@@ -18,6 +18,7 @@
     <string name="title_change_semester">Change Semester</string>
     <string name="title_registration">Search for Courses</string>
     <string name="title_wishlist">My Course Wishlist</string>
+    <string name="title_about">About Us</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -26,6 +27,7 @@
     <string name="refresh">Refresh</string>
     <string name="error_no_internet">You are not connected to the internet. Please connect to the internet and try again. </string>
     <string name="error_other">An error has occurred. Please try again later.</string>
+    <string name="back_toaster_message">Please press BACK again to exit.</string>
     <string name="english">English</string>
     <string name="french">French</string>
     <string name="next">Next</string>
@@ -166,6 +168,8 @@
     <string name="registration_semester">Semester</string>
     <string name="registration_subject">Subject</string>
     <string name="registration_course_number">Course Number (optional)</string>
+    <string name="registration_error_too_many_courses">You must select fewer than 10 courses.</string>
+    <string name="registration_invalid_subject">Invalid subject: Please a four character subject code</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
@@ -186,4 +190,16 @@
     <string name="courses_register">Register</string>
     <string name="courses_add_wishlist">Add to Wishlist</string>
     <string name="courses_remove_wishlist">Remove from Wishlist</string>
+
+    <!-- About -->
+    <string name="about_team_name">Team name</string>
+    <string name="about_help">Help</string>
+    <string name="about_member">Name</string>
+    <string name="about_question">Question</string>
+    <string name="about_answer">This is an answer</string>
+    <string name="about_report"><u>Report a Problem</u></string>
+    <string name="about_FAQ">FAQ</string>
+    <string name="about_position">Position</string>
+    <string name="about_email">fake\@email.com</string>
+    <string name="about_blurb">This is a blurb</string>
 </resources>
