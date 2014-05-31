@@ -3,16 +3,20 @@ package ca.mcgill.mymcgill.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 import ca.mcgill.mymcgill.object.Email;
+import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.util.Constants;
 
 
@@ -23,6 +27,7 @@ import ca.mcgill.mymcgill.util.Constants;
 public class EmailActivity extends BaseActivity {
 
 	Email email;
+    private boolean mDoubleBackToExit;
 	 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,29 @@ public class EmailActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed(){
+        if(App.getHomePage() != HomePage.EMAIL){
+            startActivity(new Intent(EmailActivity.this, App.getHomePage().getHomePageClass()));
+            super.onBackPressed();
+        }
+        else{
+            if (mDoubleBackToExit) {
+                super.onBackPressed();
+                return;
+            }
+            this.mDoubleBackToExit = true;
+            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDoubleBackToExit=false;
+                }
+            }, 2000);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         	//Returns to parent activity when the top left button is clicked
@@ -97,12 +125,6 @@ public class EmailActivity extends BaseActivity {
     	// forward menu item
     	menu.add(Menu.NONE, Constants.MENU_ITEM_FORWARD, Menu.NONE,R.string.email_forward);
     	return super.onCreateOptionsMenu(menu);
-    }
-    
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
     
     

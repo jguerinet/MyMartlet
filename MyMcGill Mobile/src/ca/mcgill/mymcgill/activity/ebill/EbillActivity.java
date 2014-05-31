@@ -1,14 +1,17 @@
 package ca.mcgill.mymcgill.activity.ebill;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.UserInfo;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.DialogHelper;
@@ -24,7 +28,7 @@ import ca.mcgill.mymcgill.util.DialogHelper;
 public class EbillActivity extends DrawerActivity {
 	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
     private UserInfo mUserInfo;
-
+    private boolean mDoubleBackToExit;
     private TextView mUserName, mUserId;
     private ListView mListView;
 
@@ -49,6 +53,29 @@ public class EbillActivity extends DrawerActivity {
         //Start the thread to get the ebill
         new EbillGetter().execute();
 	}
+
+    @Override
+    public void onBackPressed(){
+        if(App.getHomePage() != HomePage.EBILL){
+            startActivity(new Intent(EbillActivity.this, App.getHomePage().getHomePageClass()));
+            super.onBackPressed();
+        }
+        else{
+            if (mDoubleBackToExit) {
+                super.onBackPressed();
+                return;
+            }
+            this.mDoubleBackToExit = true;
+            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDoubleBackToExit=false;
+                }
+            }, 2000);
+        }
+    }
 
     private void loadInfo(){
         if(mUserInfo != null){
