@@ -30,7 +30,7 @@ import ca.mcgill.mymcgill.util.DialogHelper;
 /**
  * Author : Julien
  * Date :  2014-05-26 7:09 PM
- * Shows a list of searchedCourses
+ * Shows a list of courses
  */
 public class CoursesListActivity extends DrawerActivity {
     public boolean wishlist;

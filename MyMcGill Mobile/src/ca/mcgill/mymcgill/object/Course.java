@@ -3,12 +3,13 @@ package ca.mcgill.mymcgill.object;
 import org.joda.time.LocalTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Ryan Singzon on 30/01/14.
  *
- * This class will contain information pertaining to individual McGill searchedCourses that students
+ * This class will contain information pertaining to individual McGill courses that students
  * have taken, such as the grade, credit, and class average
  */
 public class Course implements Serializable{
@@ -57,17 +58,34 @@ public class Course implements Serializable{
         this.mInstructor = instructor;
         this.mCredits = credits;
     }
-    public Course(String courseTitle, String courseCode, int credits,
+    public Course(Season season, int year, String courseTitle, String courseCode, int credits,
                     String userGrade, String averageGrade){
         this.mCredits = credits;
         this.mCourseCode = courseCode;
         this.mCourseTitle = courseTitle;
         this.mUserGrade = userGrade;
         this.mAverageGrade = averageGrade;
+
+        this.mSeason = season;
+        this.mYear = year;
+        this.mCRN = -1;
+        this.mCourseCode = courseCode;
+        this.mCourseTitle = courseTitle;
+        this.mSection = "";
+        this.mActualStartTime = null;
+        this.mStartTime = null;
+        this.mActualEndTime = null;
+        this.mEndTime = null;
+        this.mDays = new ArrayList<Day>();
+        this.mSectionType = "";
+        this.mLocation = "";
+        this.mInstructor = "";
+        this.mCredits = credits;
     }
 
     //Constructor for course wishlist
     public Course(int credits, String courseCode, String courseTitle, String sectionType, String days, int crn, String instructor, String location, String time, String dates) {
+
         this.mCredits = credits;
         this.mCourseCode = courseCode;
         this.mCourseTitle = courseTitle;

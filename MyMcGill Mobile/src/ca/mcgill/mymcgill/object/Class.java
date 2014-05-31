@@ -14,7 +14,7 @@ import java.util.List;
  * @author Quang
  * 
  */
-public class CourseSched implements Serializable{
+public class Class implements Serializable{
     private static final long serialVersionUID = 1L;
 
 	private int crn;
@@ -27,7 +27,7 @@ public class CourseSched implements Serializable{
 	private String credits;
 	private String scheduleType;
 
-	private CourseSched(int crn, String courseCode, String section, char day, int startHour, int startMinute, int endHour, int endMinute, String room, String professorName, String courseName, String credits, String scheduleType) {
+	private Class(int crn, String courseCode, String section, char day, int startHour, int startMinute, int endHour, int endMinute, String room, String professorName, String courseName, String credits, String scheduleType) {
 		this.crn = crn;
 		this.courseCode = courseCode;
 		this.section = section;
@@ -96,8 +96,8 @@ public class CourseSched implements Serializable{
 		return scheduleType;
 	}
 
-	public static List<CourseSched> parseCourseList(String scheduleString){
-		List<CourseSched> schedule = new ArrayList<CourseSched>();
+	public static List<Class> parseCourseList(String scheduleString){
+		List<Class> schedule = new ArrayList<Class>();
 
 		//Parsing code
 		Document doc = Jsoup.parse(scheduleString);
@@ -119,7 +119,7 @@ public class CourseSched implements Serializable{
 				i = i - 1;
 			}
 
-			List<CourseSched> courseToBeAdded = addCourseSched(name, crn, credits, data);
+			List<Class> courseToBeAdded = addCourseSched(name, crn, credits, data);
 			if (!courseToBeAdded.isEmpty()) {
 				schedule.addAll(courseToBeAdded);
 			}
@@ -153,7 +153,7 @@ public class CourseSched implements Serializable{
 	}
 
 
-	private static List<CourseSched> addCourseSched(String course, int crn, String credit, String data) {
+	private static List<Class> addCourseSched(String course, int crn, String credit, String data) {
 		int startHour = 0, startMinute = 0, endHour = 0, endMinute = 0;
 
 		String courseName = course.split(",")[0];
@@ -161,7 +161,7 @@ public class CourseSched implements Serializable{
 		String section = course.split(",")[2];
 
 
-		List<CourseSched> courseList = new ArrayList<CourseSched>();
+		List<Class> courseList = new ArrayList<Class>();
 
 		if (!data.equals("")) {
 			String[] dataItems = data.split(",");
@@ -188,7 +188,7 @@ public class CourseSched implements Serializable{
 					endHour += 12;
 				}
 			}
-			//Try/Catch for searchedCourses with no assigned times
+			//Try/Catch for courses with no assigned times
 			catch (NumberFormatException e) {
 				startHour = 0;
 				startMinute = 0;
@@ -196,7 +196,7 @@ public class CourseSched implements Serializable{
 				endMinute = 0;
 			}
 			for (char day : days) {
-				courseList.add(new CourseSched(crn, courseCode, section, day, startHour, startMinute, endHour, endMinute, room, profName, courseName, credit, scheduleType));
+				courseList.add(new Class(crn, courseCode, section, day, startHour, startMinute, endHour, endMinute, room, profName, courseName, credit, scheduleType));
 			}
 
 		}

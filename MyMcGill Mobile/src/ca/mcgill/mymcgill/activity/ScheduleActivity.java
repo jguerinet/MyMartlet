@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -30,7 +29,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 import ca.mcgill.mymcgill.activity.walkthrough.WalkthroughActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
-import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.Class;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Semester;
@@ -48,7 +47,7 @@ import ca.mcgill.mymcgill.util.Save;
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
 public class ScheduleActivity extends DrawerFragmentActivity {
-	private List<CourseSched> mCourseList;
+	private List<Class> mCourseList;
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
     private Semester mCurrentSemester;
@@ -64,7 +63,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         mCurrentSemester = App.getDefaultSemester();
 
-        //Get the first list of searchedCourses from the ApplicationClass
+        //Get the first list of courses from the ApplicationClass
         mCourseList = App.getSchedule();
 
         //ViewPager stuff
@@ -112,9 +111,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     //Method that returns a list of searchedCourses for a given day
     public List<CourseSched> getCoursesForDay(Day day){
         List<CourseSched> courses = new ArrayList<CourseSched>();
+    //Method that returns a list of courses for a given day
+    public List<Class> getCoursesForDay(Day day){
+        List<Class> courses = new ArrayList<Class>();
 
-        //Go through the list of searchedCourses, find which ones have the same day
-        for(CourseSched course : mCourseList){
+        //Go through the list of courses, find which ones have the same day
+        for(Class course : mCourseList){
             if(course.getDay() == day){
                 courses.add(course);
             }
@@ -231,7 +233,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         //This will be used of an end time of a course when it is added to the schedule container
         int currentCourseEndTime = 0;
 
-        List<CourseSched> mCourses = getCoursesForDay(currentDay);
+        List<Class> mCourses = getCoursesForDay(currentDay);
 
         //Day name
         View dayView = inflater.inflate(R.layout.activity_day_name, null);
@@ -245,7 +247,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             //Cycle through the half hours
             for(int min = 0; min < 31; min+= 30){
                 //Initialize the current course to null
-                CourseSched currentCourse = null;
+                Class currentCourse = null;
 
                 //Calculate time in minutes
                 int timeInMinutes = 60*hour + min;
@@ -257,7 +259,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                     currentCourseEndTime = 0;
 
                     //Check if there is a course at this time
-                    for(CourseSched course : mCourses){
+                    for(Class course : mCourses){
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
                         if(course.getStartTimeInMinutes() == timeInMinutes){
@@ -361,7 +363,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             mCourseList.clear();
 
             //Get the new schedule
-            mCourseList = CourseSched.parseCourseList(scheduleString);
+            mCourseList = Class.parseCourseList(scheduleString);
 
             //Save it to the instance variable in Application class
             App.setSchedule(mCourseList);

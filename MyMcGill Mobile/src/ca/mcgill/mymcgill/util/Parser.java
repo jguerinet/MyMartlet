@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.object.Season;
@@ -151,11 +152,11 @@ public class Parser {
                     //Regex looks for a string in the form "ABCD ###"
                     else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*")){
                         String courseCode = "";
-                        //One semester searchedCourses are in the form ABCD ###
+                        //One semester courses are in the form ABCD ###
                         if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
                             courseCode = dataRow.text();
                         }
-                        //Multi semester searchedCourses are in the form ABCD ###D#
+                        //Multi semester courses are in the form ABCD ###D#
                         else{
                             //Extract first seven characters from string
                             try{
@@ -168,7 +169,7 @@ public class Parser {
 
                         String courseTitle = rows.get(semesterIndex + 2).text();
 
-                        //Failed searchedCourses are missing the earned credits row
+                        //Failed courses are missing the earned credits row
                         int credits = 0;
 
                         //Check row to see if earned credit exists
@@ -205,7 +206,7 @@ public class Parser {
                         catch(IndexOutOfBoundsException e){
                             //String not found
                         }
-                        courses.add(new Course(courseTitle, courseCode, credits,
+                        courses.add(new Course(season, year, courseTitle, courseCode, credits,
                                 userGrade, averageGrade));
                     }
 
@@ -217,18 +218,19 @@ public class Parser {
                         String averageGrade = "";
                         int credits = 0;
 
-                        //Individual transferred searchedCourses not listed
+                        //Individual transferred courses not listed
                         if(!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")){
                             courseCode = rows.get(semesterIndex + 2).text();
 
                             //Extract the number of credits granted
                             credits = extractCredits(courseCode);
 
-                            Course course = new Course("", courseCode, credits, userGrade, averageGrade);
+                            Course course = new Course(season, year, "", courseCode, credits, userGrade,
+                                    averageGrade);
                             courses.add(course);
                         }
 
-                        //Individual transferred searchedCourses listed
+                        //Individual transferred courses listed
                         else{
                             //Try checking for the number of credits transferred per course
                             try{
@@ -236,7 +238,8 @@ public class Parser {
                                 courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
                                 credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
 
-                                Course course = new Course(courseTitle, courseCode, credits, userGrade, averageGrade);
+                                Course course = new Course(season, year, courseTitle, courseCode, credits,
+                                        userGrade, averageGrade);
                                 courses.add(course);
                             }
 
@@ -248,7 +251,7 @@ public class Parser {
 
                                     credits = extractCredits(courseCode);
 
-                                    //Add the course codes for transferred searchedCourses
+                                    //Add the course codes for transferred courses
                                     int addedIndex = 3;
                                     boolean first = true;
                                     while(rows.get(semesterIndex + addedIndex).text().matches("[A-Za-z]{4}.*")){
@@ -260,7 +263,8 @@ public class Parser {
                                         first = false;
                                     }
 
-                                    Course course = new Course(courseTitle, courseCode, credits, userGrade, averageGrade);
+                                    Course course = new Course(season, year, courseTitle, courseCode, credits,
+                                            userGrade, averageGrade);
                                     courses.add(course);
 
                                 }
@@ -332,7 +336,11 @@ public class Parser {
      * @return The list of courses
      */
     public static List<Course> parseCourseList(Season season, int year, String courseHTML){
-        List<Course> courses = new ArrayList<Course>();
+        //Get the list of courses already parsed for that year
+        List<Course> courses = App.getTranscript().getCourses(season, year);
+        if(courses == null){
+            courses = new ArrayList<Course>();
+        }
 
         Document doc = Jsoup.parse(courseHTML);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
@@ -390,7 +398,7 @@ public class Parser {
                         endHour += 12;
                     }
                 }
-                //Try/Catch for searchedCourses with no assigned times
+                //Try/Catch for courses with no assigned times
                 catch (NumberFormatException e) {
                     startHour = 0;
                     startMinute = 0;
@@ -404,6 +412,11 @@ public class Parser {
                     days.add(Day.getDay(dayCharacter));
                 }
 
+                //Find the concerned course
+                Course course = null;
+                for(Course downloadedCourse : courses){
+                    if()
+                }
                 courses.add(new Course(season, year, crn, courseCode, courseTitle, section, startHour,
                         startMinute, endHour, endMinute, days, sectionType, location, instructor, credits));
             }

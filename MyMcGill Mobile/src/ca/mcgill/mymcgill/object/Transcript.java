@@ -38,10 +38,23 @@ public class Transcript implements Serializable{
 
     //Getter for semesters
     public List<Semester> getSemesters(){
-
         //Return semesters in reverse chronological order
         ArrayList<Semester> reversedSemesters = new ArrayList<Semester>(mSemesters);
         Collections.reverse(reversedSemesters);
         return reversedSemesters;
     }
+
+    /**
+     * Get a list of courses for a given season and year
+     * @param season The season of these courses
+     * @param year The year of these courses
+     * @return A list of courses for the given season and year
+     */
+     public List<Course> getCourses(Season season, int year){
+        for(Semester semester : mSemesters){
+            if(semester.getSeason() == season && semester.getYear() == year){
+                return semester.getCourses();
+            }
+        }
+     }
 }

@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import java.util.ArrayList;
 
 import ca.mcgill.mymcgill.App;
-import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.Class;
 import ca.mcgill.mymcgill.object.EbillItem;
 
 /**
@@ -51,7 +51,7 @@ public class Clear {
     public static void clearSchedule(Context context){
         context.deleteFile(Constants.SCHEDULE_FILE);
         //Reset the static instance in Application Class
-        App.setSchedule(new ArrayList<CourseSched>());
+        App.setSchedule(new ArrayList<Class>());
     }
 
     public static void clearEbill(Context context){

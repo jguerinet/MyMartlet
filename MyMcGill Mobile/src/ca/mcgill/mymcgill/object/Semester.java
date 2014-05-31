@@ -86,7 +86,7 @@ public class Semester implements Serializable{
         return fullTime;
     }
 
-    //Getter for the semester's searchedCourses
+    //Getter for the semester's courses
     public List<Course> getCourses(){
         return courses;
     }
