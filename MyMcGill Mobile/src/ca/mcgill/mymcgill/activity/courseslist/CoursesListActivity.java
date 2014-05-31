@@ -32,7 +32,7 @@ public class CoursesListActivity extends BaseListActivity {
         setContentView(R.layout.activity_courseslist);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-        mWishlist = getIntent().getBooleanExtra(Constants.WISHLIST, false);
+        mWishlist = getIntent().getBooleanExtra(Constants.WISHLIST, true);
 
         // Views
         mListView = (ListView)findViewById(android.R.id.list);
@@ -58,29 +58,45 @@ public class CoursesListActivity extends BaseListActivity {
 
         //Add/Remove to/from Wishlist Button
         TextView wishlist = (TextView)findViewById(R.id.course_wishlist);
+        wishlist.setText(mWishlist ? getResources().getString(R.string.courses_remove_wishlist) :
+            getResources().getString(R.string.courses_add_wishlist));
         wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Get the checked list of courses from the adapter
                 List<Course> checkedCourses = mAdapter.getCheckedCourses();
 
+                String toastMessage;
+
                 //If there are none, display error message
                 if(checkedCourses.isEmpty()){
-                    Toast.makeText(CoursesListActivity.this, "You need to select at least one course", Toast.LENGTH_SHORT).show();
-                    return;
+                    toastMessage = getResources().getString(R.string.wishlist_error_empty);
                 }
-
                 //If we are in the wishlist, this button is to remove a course
-                if(mWishlist){
-                    //TODO Remove a course from wishlist here
+                else if(mWishlist){
+                    toastMessage = getResources().getString(R.string.wishlist_remove, checkedCourses.size());
+                    mCourses.removeAll(checkedCourses);
+
+                    //Save the courses to the App context
+                    App.setCourseWishlist(mCourses);
+
+                    //Reload the adapter
+                    loadInfo();
+
                 }
                 //If not, it's to add a course to the wishlist
                 else{
-                    //TODO Add a course to wishlist here
+                    //Get the wishlist courses
+                    List<Course> wishlist = App.getCourseWishlist();
+                    toastMessage = getResources().getString(R.string.wishlist_add, checkedCourses.size());
+                    wishlist.addAll(checkedCourses);
+
+                    //Save the courses to the App context
+                    App.setCourseWishlist(wishlist);
                 }
 
-                //Reload the adapter
-                loadInfo();
+                //Visual feedback of what was just done
+                Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }

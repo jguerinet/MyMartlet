@@ -23,6 +23,7 @@ import ca.mcgill.mymcgill.activity.MyCoursesActivity;
 import ca.mcgill.mymcgill.activity.RegistrationActivity;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
 import ca.mcgill.mymcgill.activity.SettingsActivity;
+import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
@@ -46,12 +47,13 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int TRANSCRIPT_POSITION = 1;
     public static final int EMAIL_POSITION = 2;
     public static final int MYCOURSES_POSITION = 3;
-    public static final int BROWSE_COURSES_POSITION = 4;
-    public static final int EBILL_POSITION = 5;
-    public static final int MAP_POSITION = 6;
-    public static final int DESKTOP_POSITION = 7;
-    public static final int SETTINGS_POSITION = 8;
-    public static final int LOGOUT_POSITION = 9;
+    public static final int SEARCH_COURSES_POSITION = 4;
+    public static final int WISHLIST_POSITION = 5;
+    public static final int EBILL_POSITION = 6;
+    public static final int MAP_POSITION = 7;
+    public static final int DESKTOP_POSITION = 8;
+    public static final int SETTINGS_POSITION = 9;
+    public static final int LOGOUT_POSITION = 10;
 
     public DrawerAdapter(Activity activity, DrawerLayout drawerLayout, int selectedPosition){
         this.mActivity = activity;
@@ -80,10 +82,13 @@ public class DrawerAdapter extends BaseAdapter {
         mDrawerItems.add(MYCOURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_mycourses),
                 mActivity.getResources().getString(R.string.icon_mycourses)));
 
-        //Browse Courses
-        mDrawerItems.add(BROWSE_COURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_registration),
+        //Search Courses
+        mDrawerItems.add(SEARCH_COURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_registration),
                 mActivity.getResources().getString(R.string.icon_browse_courses)));
-        
+
+        mDrawerItems.add(WISHLIST_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_wishlist),
+                mActivity.getResources().getString(R.string.icon_browse_courses)));
+
         //Ebill
         mDrawerItems.add(EBILL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_ebill),
                 mActivity.getResources().getString(R.string.icon_ebill)));
@@ -167,8 +172,11 @@ public class DrawerAdapter extends BaseAdapter {
                     case MYCOURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
                         break;
-                    case BROWSE_COURSES_POSITION:
+                    case SEARCH_COURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, RegistrationActivity.class));
+                        break;
+                    case WISHLIST_POSITION:
+                        mActivity.startActivity(new Intent(mActivity, CoursesListActivity.class));
                         break;
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));

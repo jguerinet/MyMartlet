@@ -16,7 +16,8 @@
     <string name="title_map">Campus Map</string>
     <string name="title_attach">Attachment</string>
     <string name="title_change_semester">Change Semester</string>
-    <string name="title_registration">My Course Wishlist</string>
+    <string name="title_registration">Search for Courses</string>
+    <string name="title_wishlist">My Course Wishlist</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -139,6 +140,8 @@
     <string name="homepage_transcript">Transcript</string>
     <string name="homepage_email">Email</string>
     <string name="homepage_mycourses">MyCourses</string>
+    <string name="homepage_search">Courses Search</string>
+    <string name="homepage_wishlist">Wishlist</string>
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Campus Map</string>
     <string name="homepage_desktop">Desktop Site</string>
@@ -174,4 +177,13 @@
     <string name="walkthrough_bugs">If you find any bugs, don\'t hesitate to report them by going to the "Report a Bug" section.</string>
     <string name="walkthrough_homepage">Before starting, please choose a homepage. This will be the first page you will see every time you open this app. You can change this at any time in the Settings.</string>
     <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
+
+    <!-- CoursesList / Course Wishlist -->
+    <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
+    <string name="wishlist_add">Added %s course(s) from the wishlist</string>
+    <string name="wishlist_error_empty">You need to select at least one course</string>
+    <string name="courses_empty">No Courses Available</string>
+    <string name="courses_register">Register</string>
+    <string name="courses_add_wishlist">Add to Wishlist</string>
+    <string name="courses_remove_wishlist">Remove from Wishlist</string>
 </resources>

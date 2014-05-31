@@ -9,7 +9,9 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.MapActivity;
 import ca.mcgill.mymcgill.activity.MyCoursesActivity;
+import ca.mcgill.mymcgill.activity.RegistrationActivity;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
+import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
@@ -19,6 +21,8 @@ public enum HomePage {
     TRANSCRIPT,
     EMAIL,
     MY_COURSES,
+    SEARCH_COURSES,
+    WISHLIST,
     EBILL,
     CAMPUS_MAP,
     DESKTOP;
@@ -33,6 +37,10 @@ public enum HomePage {
                 return InboxActivity.class;
             case MY_COURSES:
                 return MyCoursesActivity.class;
+            case SEARCH_COURSES:
+                return RegistrationActivity.class;
+            case WISHLIST:
+                return CoursesListActivity.class;
             case EBILL:
                 return EbillActivity.class;
             case CAMPUS_MAP:
@@ -56,6 +64,8 @@ public enum HomePage {
         strings.add(context.getResources().getString(R.string.homepage_transcript));
         strings.add(context.getResources().getString(R.string.homepage_email));
         strings.add(context.getResources().getString(R.string.homepage_mycourses));
+        strings.add(context.getResources().getString(R.string.homepage_search));
+        strings.add(context.getResources().getString(R.string.homepage_wishlist));
         strings.add(context.getResources().getString(R.string.homepage_ebill));
         strings.add(context.getResources().getString(R.string.homepage_map));
         strings.add(context.getResources().getString(R.string.homepage_desktop));
