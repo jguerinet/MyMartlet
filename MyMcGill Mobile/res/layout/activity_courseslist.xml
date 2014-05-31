@@ -34,7 +34,7 @@
             android:text="@string/courses_register"
             android:background="@drawable/drawable_red_darkredpressed"
             android:textColor="@drawable/color_white_greypressed"
-            android:padding="@dimen/padding_small"
+            android:padding="@dimen/padding_micro"
             android:textSize="@dimen/text_medium"
             android:gravity="center"
             android:id="@+id/course_register"/>
@@ -48,10 +48,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Wishlist"
+            android:text="@string/courses_add_wishlist"
             android:background="@drawable/drawable_red_darkredpressed"
             android:textColor="@drawable/color_white_greypressed"
-            android:padding="@dimen/padding_small"
+            android:padding="@dimen/padding_micro"
             android:textSize="@dimen/text_medium"
             android:gravity="center"
             android:id="@+id/course_wishlist"/>
