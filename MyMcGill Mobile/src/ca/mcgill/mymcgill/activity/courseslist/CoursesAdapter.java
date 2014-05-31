@@ -78,8 +78,10 @@ public class CoursesAdapter extends BaseAdapter {
 
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
+        //Remove any other listeners
+        checkBox.setOnCheckedChangeListener(null);
         //Initially unchecked
-        checkBox.setChecked(false);
+        checkBox.setChecked(mCheckedCourses.contains(course));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
