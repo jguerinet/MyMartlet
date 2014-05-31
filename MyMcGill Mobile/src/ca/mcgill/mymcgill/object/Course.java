@@ -77,4 +77,20 @@ public class Course implements Serializable{
         return crn;
     }
 
+    /**
+     * Get the days this course is on
+     * @return The course days
+     */
+    public String getDays(){
+        return days;
+    }
+
+    /**
+     * Get the time this course is at
+     * @return The course time
+     */
+    public String getTime(){
+        return time;
+    }
+
 }
