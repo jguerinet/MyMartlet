@@ -122,8 +122,12 @@
     <string name="change_semester_default">Mettre par Défaut</string>
 
     <!-- Register Page -->
+    <string name="registration_semester">Semestre</string>
+    <string name="registration_subject">Sujet</string>
 
     <!-- Walkthrough -->
 
     <!-- CoursesList / Course Wishlist -->
+
+    <!-- About -->
 </resources>

@@ -187,4 +187,6 @@
     <string name="courses_register">Register</string>
     <string name="courses_add_wishlist">Add to Wishlist</string>
     <string name="courses_remove_wishlist">Remove from Wishlist</string>
+
+    <!-- About -->
 </resources>
