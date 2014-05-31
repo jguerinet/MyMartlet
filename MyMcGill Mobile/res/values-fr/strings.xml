@@ -16,6 +16,8 @@
     <string name="title_map">Carte du Campus</string>
     <string name="title_attach">Pièce Jointe</string>
     <string name="title_change_semester">Changer de Semestre</string>
+    <string name="title_registration">Rechercher des Cours</string>
+    <string name="title_wishlist">Liste de Cours Envies</string>
 
     <!-- General Strings -->
     <string name="error">Erreur</string>
@@ -27,6 +29,10 @@
     <string name="back_toaster_message">Veuillez appuyer sur RETOUR à nouveau pour quitter l\'application</string>
     <string name="english">Anglais</string>
     <string name="french">Français</string>
+    <string name="next">Prochain</string>
+    <string name="back">Retour</string>
+    <string name="start">Début</string>
+    <string name="skip">Sauter</string>
 
     <!-- Icons -->
 
@@ -45,6 +51,19 @@
     <string name="summer">Eté</string>
 
     <!-- Faculty Names -->
+    <string name="faculty_enviro">Faculté des Sciences de l\'Agriculture et de l\'Environment</string>
+    <string name="faculty_arts">Faculté des Arts</string>
+    <string name="faculty_continuing_studies">École d\'Éducation Permanente</string>
+    <string name="faculty_dentistry">Faculté de Médecine Dentaire</string>
+    <string name="faculty_education">Faculté des Sciences de l\'Éducation</string>
+    <string name="faculty_engineering">Faculté de Génie</string>
+    <string name="faculty_graduate">Études Supérieures et Postdoctorales</string>
+    <string name="faculty_law">Faculté de Droit</string>
+    <string name="faculty_management">Faculté de Gestion Desautels</string>
+    <string name="faculty_medecine">Faculté de Médecine</string>
+    <string name="faculty_music">École de Musique Schulich</string>
+    <string name="faculty_religion">Faculté d\'Études Religieuses</string>
+    <string name="faculty_science">Faculté des Sciences</string>
     <string name="login_welcome">Bienvenue à McGill Mobile. Veuillez s\'il vous plaît entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
     <string name="login_username">Nom d\'Utilisateur:</string>
     <string name="login_password">Mot de Passe:</string>
@@ -101,6 +120,8 @@
     <string name="homepage_transcript">Bulletin</string>
     <string name="homepage_email">Email</string>
     <string name="homepage_mycourses">MyCourses</string>
+    <string name="homepage_search">Recherche des Cours</string>
+    <string name="homepage_wishlist">Liste d\'Envies</string>
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Carte du Campus</string>
     <string name="homepage_desktop">Site PC</string>
@@ -124,10 +145,22 @@
     <!-- Register Page -->
     <string name="registration_semester">Semestre</string>
     <string name="registration_subject">Sujet</string>
+    <string name="registration_course_number">Numéro de Cour (Optionnel)</string>
 
     <!-- Walkthrough -->
 
     <!-- CoursesList / Course Wishlist -->
+    <string name="wishlist_remove">%s cour(s) enlevés du liste d\'envies</string>
+    <string name="wishlist_add">%s cour(s) ajoutés du liste d\'envies</string>
+    <string name="wishlist_error_empty">Vous devez choissir un cour</string>
+    <string name="courses_empty">Aucun cour est disponible</string>
+    <string name="courses_register">Enregistrer</string>
+    <string name="courses_add_wishlist">Ajouter à la Liste d\'Envies</string>
+    <string name="courses_remove_wishlist">Ajouter à la Liste d\'Envies</string>
 
     <!-- About -->
+    <string name="about_help">Aide</string>
+    <string name="about_member">Nom</string>
+    <string name="about_question">Question</string>
+    <string name="about_answer">Je suis une réponse</string>
 </resources>

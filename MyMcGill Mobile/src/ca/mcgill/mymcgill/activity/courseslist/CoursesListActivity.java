@@ -10,6 +10,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import java.util.List;
 
 import ca.mcgill.mymcgill.App;
@@ -65,7 +69,11 @@ public class CoursesListActivity extends DrawerActivity {
                 List<Course> registerCoursesList = mAdapter.getCheckedCourses();
 
                 //Get term
-                if(registerCoursesList.size() > 0){
+                if (registerCoursesList.size() > 10){
+                    String toastMessage = getResources().getString(R.string.registration_error_too_many_courses);
+                    Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                }
+                else if(registerCoursesList.size() > 0){
                     //Set up registration url
                     mRegistrationUrl = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
 
@@ -169,9 +177,10 @@ public class CoursesListActivity extends DrawerActivity {
         //Retrieve page that contains registration status from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            String coursesString = Connection.getInstance().getUrl(CoursesListActivity.this, mRegistrationUrl);
+            String resultString = Connection.getInstance().getUrl(CoursesListActivity.this, mRegistrationUrl);
 
-            if(coursesString == null){
+            //If result string is null, there was an error
+            if(resultString == null){
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -186,7 +195,13 @@ public class CoursesListActivity extends DrawerActivity {
                 });
                 return false;
             }
+            //Otherwise, check for errors
             else{
+                //TODO: Parse result of registration and check for errors
+                Document document = Jsoup.parse(resultString, "UTF-8");
+
+                //Find rows of HTML by class
+                Elements dataRows = document.getElementsByClass("dddefault");
                 return true;
             }
         }

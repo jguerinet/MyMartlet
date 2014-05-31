@@ -16,7 +16,7 @@ import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 /**
  * Created by Adnan2
  */
-public class AboutActivity extends DrawerFragmentActivity implements ActionBar.TabListener {
+public class AboutActivity extends DrawerActivity implements ActionBar.TabListener {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_about);
         super.onCreate(savedInstanceState);

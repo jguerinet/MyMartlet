@@ -18,7 +18,7 @@
     <string name="title_change_semester">Change Semester</string>
     <string name="title_registration">Search for Courses</string>
     <string name="title_wishlist">My Course Wishlist</string>
-    <string name="title_about">About</string>
+    <string name="title_about">About Us</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -168,6 +168,8 @@
     <string name="registration_semester">Semester</string>
     <string name="registration_subject">Subject</string>
     <string name="registration_course_number">Course Number (optional)</string>
+    <string name="registration_error_too_many_courses">You must select fewer than 10 courses.</string>
+    <string name="registration_invalid_subject">Invalid subject: Please a four character subject code</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
@@ -180,22 +182,6 @@
     <string name="walkthrough_homepage">Before starting, please choose a homepage. This will be the first page you will see every time you open this app. You can change this at any time in the Settings.</string>
     <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
 
-    <!-- AboutActivity -->
-    <string name="about_team_name">(Team name)</string>
-    <string name="about_help">help</string>
-    <string name="about_member">(member name)</string>
-
-    <!--Help tab -->
-    <string name="about_question">Question</string>
-    <string name="about_answer">This is an answer</string>
-    <string name="about_report"><u>Report a Problem</u></string>
-    <string name="about_FAQ">FAQ</string>
-
-    <!-- member details-->
-    <string name="about_position">Position</string>
-    <string name="about_email">fake@email.com</string>
-    <string name="about_blurb">This is a blurb</string>
-
     <!-- CoursesList / Course Wishlist -->
     <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
     <string name="wishlist_add">Added %s course(s) from the wishlist</string>
@@ -206,4 +192,14 @@
     <string name="courses_remove_wishlist">Remove from Wishlist</string>
 
     <!-- About -->
+    <string name="about_team_name">Team name</string>
+    <string name="about_help">Help</string>
+    <string name="about_member">Name</string>
+    <string name="about_question">Question</string>
+    <string name="about_answer">This is an answer</string>
+    <string name="about_report"><u>Report a Problem</u></string>
+    <string name="about_FAQ">FAQ</string>
+    <string name="about_position">Position</string>
+    <string name="about_email">fake\@email.com</string>
+    <string name="about_blurb">This is a blurb</string>
 </resources>
