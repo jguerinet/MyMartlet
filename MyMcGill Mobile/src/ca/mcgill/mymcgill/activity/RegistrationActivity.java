@@ -25,6 +25,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
+import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
@@ -40,6 +41,7 @@ public class RegistrationActivity extends DrawerActivity{
 
     private List<String> mSemesterStrings;
     private String mSemester;
+    private Season mSeason;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -82,12 +84,15 @@ public class RegistrationActivity extends DrawerActivity{
 
         if(semester.equals("Summer 2014")){
             semester = "201405";
+            mSeason = Season.SUMMER;
         }
         else if(semester.equals("Fall 2014")){
             semester = "201409";
+            mSeason = Season.FALL;
         }
         else if(semester.equals("Winter 2015")){
             semester = "201501";
+            mSeason = Season.WINTER;
         }
 
         //Obtain user input from text boxes
@@ -196,6 +201,7 @@ public class RegistrationActivity extends DrawerActivity{
         Elements dataRows = document.getElementsByClass("dddefault");
 
         int rowNumber = 0;
+        int rowsSoFar = 0;
         boolean loop = true;
 
         while (loop) {
@@ -211,6 +217,12 @@ public class RegistrationActivity extends DrawerActivity{
             String location = "";
             String time = "";
             String dates = "";
+            int capacity = 000000;
+            int seatsAvailable = 00000;
+            int seatsRemaining = 00000;
+            int waitlistCapacity = 00000;
+            int waitlistAvailable = 00000;
+            int waitlistRemaining = 00000;
 
             int i = 0;
             while (true) {
@@ -221,7 +233,10 @@ public class RegistrationActivity extends DrawerActivity{
                     rowNumber++;
 
                     // End condition: Empty row encountered
-                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
+                    if (row.toString().contains("&nbsp;") && rowsSoFar > 10) {
+                        break;
+                    }
+                    else if(row.toString().contains("NOTES:")){
                         break;
                     }
 
@@ -270,6 +285,36 @@ public class RegistrationActivity extends DrawerActivity{
                             time = row.text();
                             break;
 
+                        // Capacity
+                        case 10:
+                            capacity = Integer.parseInt(row.text());
+                            break;
+
+                        // Seats available
+                        case 11:
+                            seatsAvailable = Integer.parseInt(row.text());
+                            break;
+
+                        // Seats remaining
+                        case 12:
+                            seatsRemaining = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist capacity
+                        case 13:
+                            waitlistCapacity = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist available
+                        case 14:
+                            waitlistAvailable = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist remaining
+                        case 15:
+                            waitlistRemaining = Integer.parseInt(row.text());
+                            break;
+
                         // Instructor
                         case 16:
                             instructor = row.text();
@@ -296,11 +341,15 @@ public class RegistrationActivity extends DrawerActivity{
 
                 }
             }
+            rowsSoFar = 0;
 
             if( !courseCode.equals("ERROR")){
 
                 //Create a new course object and add it to list
-                Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days, crn, instructor, location, time, dates);
+                Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days,
+                        crn, instructor, location, time, dates, capacity, seatsAvailable,
+                        seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining,
+                        mSeason);
                 courses.add(newCourse);
             }
         }

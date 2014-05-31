@@ -1,6 +1,7 @@
 package ca.mcgill.mymcgill.object;
 
 import java.io.Serializable;
+import ca.mcgill.mymcgill.object.Season;
 
 /**
  * Created by Ryan Singzon on 30/01/14.
@@ -23,6 +24,14 @@ public class Course implements Serializable{
     private String location;
     private String time;
     private String dates;
+    private String semester;
+    private int capacity;
+    private int seatsAvailable;
+    private int seatsRemaining;
+    private int waitlistCapacity;
+    private int waitlistAvailable;
+    private int waitlistRemaining;
+    private Season mSeason;
 
     //Constructor for the Course object
     public Course(String courseTitle, String courseCode, int credits,
@@ -35,7 +44,11 @@ public class Course implements Serializable{
     }
 
     //Constructor for course wishlist
-    public Course(int credits, String courseCode, String courseTitle, String sectionType, String days, int crn, String instructor, String location, String time, String dates) {
+    public Course(int credits, String courseCode, String courseTitle, String sectionType,
+                  String days, int crn, String instructor, String location, String time,
+                  String dates, int capacity, int seatsAvailable, int seatsRemaining,
+                  int waitlistCapacity, int waitlistAvailable, int waitlistRemaining,
+                  Season mSeason) {
         this.credits = credits;
         this.courseCode = courseCode;
         this.courseTitle = courseTitle;
