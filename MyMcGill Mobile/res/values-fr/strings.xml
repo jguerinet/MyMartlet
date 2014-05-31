@@ -24,6 +24,7 @@
     <string name="refresh">Rafraîchir</string>
     <string name="error_no_internet">Vous n\'êtes pas connecté à l\'internet. Veuillez vous connecter à l\'internet et réessayer.</string>
     <string name="error_other">Une erreur est survenue. Veuillez réessayer plus tard.</string>
+    <string name="back_toaster_message">Veuillez appuyer sur RETOUR à nouveau pour quitter l\'application</string>
     <string name="english">Anglais</string>
     <string name="french">Français</string>
 
@@ -121,8 +122,12 @@
     <string name="change_semester_default">Mettre par Défaut</string>
 
     <!-- Register Page -->
+    <string name="registration_semester">Semestre</string>
+    <string name="registration_subject">Sujet</string>
 
     <!-- Walkthrough -->
 
     <!-- CoursesList / Course Wishlist -->
+
+    <!-- About -->
 </resources>

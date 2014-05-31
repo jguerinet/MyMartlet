@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +32,7 @@ import ca.mcgill.mymcgill.activity.walkthrough.WalkthroughActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
+import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -49,6 +52,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
     private Semester mCurrentSemester;
+    private boolean mDoubleBackToExit;
 
     private static final int CHANGE_SEMESTER_CODE = 100;
 
@@ -79,6 +83,29 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         startActivity(new Intent(this, WalkthroughActivity.class));
         //Save the fact that the walkthrough has been seen at least once
         Save.saveFirstOpen(this);
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(App.getHomePage() != HomePage.SCHEDULE){
+            startActivity(new Intent(ScheduleActivity.this, App.getHomePage().getHomePageClass()));
+            super.onBackPressed();
+        }
+        else{
+            if (mDoubleBackToExit) {
+                super.onBackPressed();
+                return;
+            }
+            this.mDoubleBackToExit = true;
+            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDoubleBackToExit=false;
+                }
+            }, 2000);
         }
     }
 

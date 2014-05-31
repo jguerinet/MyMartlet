@@ -27,6 +27,7 @@
     <string name="refresh">Refresh</string>
     <string name="error_no_internet">You are not connected to the internet. Please connect to the internet and try again. </string>
     <string name="error_other">An error has occurred. Please try again later.</string>
+    <string name="back_toaster_message">Please press BACK again to exit.</string>
     <string name="english">English</string>
     <string name="french">French</string>
     <string name="next">Next</string>
@@ -203,4 +204,6 @@
     <string name="courses_register">Register</string>
     <string name="courses_add_wishlist">Add to Wishlist</string>
     <string name="courses_remove_wishlist">Remove from Wishlist</string>
+
+    <!-- About -->
 </resources>

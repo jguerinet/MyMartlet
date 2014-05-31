@@ -1,16 +1,22 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
+import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.object.CourseSched;
+import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Help;
 
@@ -75,6 +81,12 @@ public class CourseActivity extends BaseActivity {
 
         TextView courseCRN = (TextView)findViewById(R.id.course_crn);
         courseCRN.setText(String.valueOf(course.getCRN()));
+    }
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(CourseActivity.this, App.getHomePage().getHomePageClass()));
+        super.onBackPressed();
     }
 
     public void done(View v){
