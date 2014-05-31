@@ -24,7 +24,7 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.MimeMessage;
 
-import ca.mcgill.mymcgill.util.ApplicationClass;
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -145,7 +145,7 @@ public class Inbox implements Serializable{
         }
 
         //Resave the inbox to the ApplicationClass
-        ApplicationClass.setInbox(this);
+        App.setInbox(this);
     }
 
 

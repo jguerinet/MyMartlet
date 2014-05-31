@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Ryan Singzon on 30/01/14.
  *
- * This class will contain information pertaining to individual McGill courses that students
+ * This class will contain information pertaining to individual McGill searchedCourses that students
  * have taken, such as the grade, credit, and class average
  */
 public class Course implements Serializable{
@@ -75,6 +75,36 @@ public class Course implements Serializable{
 
     public int getCrn(){
         return crn;
+    }
+
+    /**
+     * Get the days this course is on
+     * @return The course days
+     */
+    public String getDays(){
+        return days;
+    }
+
+    /**
+     * Get the time this course is at
+     * @return The course time
+     */
+    public String getTime(){
+        return time;
+    }
+
+    /* HELPER METHODS */
+    /**
+     * Checks to see if two courses are equal
+     * @param course The course to check
+     * @return True if they are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object course){
+        if(!(course instanceof Course)){
+            return false;
+        }
+        return this.crn == ((Course)course).crn;
     }
 
 }

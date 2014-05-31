@@ -11,6 +11,10 @@
     <dimen name="padding_medium">18dp</dimen>
     <dimen name="padding_large">22dp</dimen>
 
+    <!-- Padding for Walkthrough -->
+    <dimen name="padding_single">18dp</dimen>
+    <dimen name="padding_double">36dp</dimen>
+
     <!-- Font Sizes -->
     <dimen name="text_micro">12sp</dimen>
     <dimen name="text_small">14sp</dimen>

@@ -18,6 +18,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Faculty;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Language;
@@ -31,14 +32,39 @@ import ca.mcgill.mymcgill.object.UserInfo;
  * Class that loads objects from internal storage or SharedPreferences
  */
 public class Load {
+    /**
+     * Loads the app version number from the shared preferences
+     * @param context The app context
+     * @return the version number stored, -1 if no version stored
+     */
+    public static int loadVersionNumber(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getInt(Constants.VERSION, -1);
+    }
+
+    /**
+     * Checks to see if the app has been previously opened
+     * @param context The app context
+     * @return If the app has been previously opened
+     */
+    public static boolean isFirstOpen(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.FIRST_OPEN, true);
+    }
+
     public static Language loadLanguage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return Language.values()[(sharedPrefs.getInt(Constants.LANGUAGE_FILE_NAME, 0))];
+        return Language.values()[(sharedPrefs.getInt(Constants.LANGUAGE, 0))];
     }
 
     public static HomePage loadHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return HomePage.values()[sharedPrefs.getInt(Constants.HOMEPAGE_FILE_NAME, 0)];
+        return HomePage.values()[sharedPrefs.getInt(Constants.HOMEPAGE, 0)];
+    }
+
+    public static Faculty loadFaculty(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return Faculty.values()[sharedPrefs.getInt(Constants.FACULTY, 0)];
     }
 
     public static String loadFullUsername(Context context){
@@ -68,7 +94,7 @@ public class Load {
         Transcript transcript = null;
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.TRANSCRIPT_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.TRANSCRIPT_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             transcript= (Transcript) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -94,7 +120,7 @@ public class Load {
         List<CourseSched> courses = new ArrayList<CourseSched>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.SCHEDULE_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.SCHEDULE_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             courses = (List<CourseSched>) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -126,7 +152,7 @@ public class Load {
         List<EbillItem> ebill = new ArrayList<EbillItem>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.EBILL_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.EBILL_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             ebill = (List<EbillItem>) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -158,7 +184,7 @@ public class Load {
         UserInfo userInfo = null;
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.USERINFO_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.USER_INFO_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             userInfo = (UserInfo) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -185,7 +211,7 @@ public class Load {
         Inbox inbox = null;
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.INBOX_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.INBOX_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             inbox = (Inbox) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -212,7 +238,7 @@ public class Load {
         Semester defaultSemester = null;
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.DEFAULT_SEMESTER_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.DEFAULT_SEMESTER_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             defaultSemester = (Semester) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -239,7 +265,7 @@ public class Load {
         List<Course> courseWishlist = new ArrayList<Course>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.COURSE_WISHLIST_FILE_NAME);
+            FileInputStream fis = context.openFileInput(Constants.COURSE_WISHLIST_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             courseWishlist = (List<Course>) in.readObject();
         } catch (ClassNotFoundException e) {

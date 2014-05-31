@@ -148,12 +148,12 @@ public class Transcript implements Serializable{
                         else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*")){
 
                             String courseCode = "";
-                            //One semester courses are in the form ABCD ###
+                            //One semester searchedCourses are in the form ABCD ###
                             if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
                                 courseCode = dataRow.text();
                             }
 
-                            //Multi semester courses are in the form ABCD ###D#
+                            //Multi semester searchedCourses are in the form ABCD ###D#
                             else{
 
                                 //Extract first seven characters from string
@@ -168,7 +168,7 @@ public class Transcript implements Serializable{
 
                             String courseTitle = rows.get(semesterIndex + 2).text();
 
-                            //Failed courses are missing the earned credits row
+                            //Failed searchedCourses are missing the earned credits row
                             int credits = 0;
 
                             //Check row to see if earned credit exists
@@ -220,7 +220,7 @@ public class Transcript implements Serializable{
                             String averageGrade = "";
                             int credits = 0;
 
-                            //Individual transferred courses not listed
+                            //Individual transferred searchedCourses not listed
                             if(!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")){
                                 courseCode = rows.get(semesterIndex + 2).text();
 
@@ -231,7 +231,7 @@ public class Transcript implements Serializable{
                                 courses.add(course);
                             }
 
-                            //Individual transferred courses listed
+                            //Individual transferred searchedCourses listed
                             else{
 
                                 //Try checking for the number of credits transferred per course
@@ -252,7 +252,7 @@ public class Transcript implements Serializable{
 
                                         credits = extractCredits(new String(courseCode));
 
-                                        //Add the course codes for transferred courses
+                                        //Add the course codes for transferred searchedCourses
                                         int addedIndex = 3;
                                         boolean first = true;
                                         while(rows.get(semesterIndex + addedIndex).text().matches("[A-Za-z]{4}.*")){

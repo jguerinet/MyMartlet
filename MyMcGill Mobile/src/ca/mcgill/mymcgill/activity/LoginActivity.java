@@ -12,10 +12,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
@@ -109,7 +109,7 @@ public class LoginActivity extends BaseActivity {
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
 
                             Connection.getInstance().downloadAll(LoginActivity.this);
-                            startActivity(new Intent(LoginActivity.this, ApplicationClass.getHomePage().getHomePageClass()));
+                            startActivity(new Intent(LoginActivity.this, App.getHomePage().getHomePageClass()));
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

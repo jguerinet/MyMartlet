@@ -4,12 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -27,14 +25,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.object.Semester;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
+import ca.mcgill.mymcgill.util.Help;
 
 
 /**
@@ -58,18 +57,8 @@ public class ChangeSemesterActivity extends BaseActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_change_semester);
     	
-        //Get the screen height
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            size.set(display.getWidth(), display.getHeight());
-        }
-        else{
-            display.getSize(size);
-        }
-
-        int displayWidth = size.x;
+        //Get the screen width
+        int displayWidth = Help.getDisplayWidth(getWindowManager().getDefaultDisplay());
 
         //Set the width to 2/3 of the screen
         LinearLayout layout = (LinearLayout) findViewById(R.id.activity_change_semester);
@@ -81,10 +70,10 @@ public class ChangeSemesterActivity extends BaseActivity {
         layout.setLayoutParams(params);
 
         //Get the current default semester
-        Semester defaultSemester = ApplicationClass.getDefaultSemester();
+        Semester defaultSemester = App.getDefaultSemester();
 
         // Extract all the seasons that the user has registered in
-        mSemesters = ApplicationClass.getTranscript().getSemesters();
+        mSemesters = App.getTranscript().getSemesters();
         mSeasonList = new ArrayList<Season>();
         for (Semester semester : mSemesters) {
             if(!mSeasonList.contains(semester.getSeason())){
@@ -250,7 +239,7 @@ public class ChangeSemesterActivity extends BaseActivity {
                 //Check if the default checkbox is checked
                 if(mDefaultCheckbox.isChecked()){
                     //Store this semester as the default semester if it is
-                    ApplicationClass.setDefaultSemester(mSemester);
+                    App.setDefaultSemester(mSemester);
                 }
 
                 Intent replyIntent = new Intent();

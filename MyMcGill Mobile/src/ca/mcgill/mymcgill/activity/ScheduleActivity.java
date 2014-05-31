@@ -1,6 +1,5 @@
 package ca.mcgill.mymcgill.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -24,17 +23,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
+import ca.mcgill.mymcgill.activity.walkthrough.WalkthroughActivity;
 import ca.mcgill.mymcgill.fragment.DayFragment;
 import ca.mcgill.mymcgill.object.CourseSched;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.object.Semester;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
 import ca.mcgill.mymcgill.util.Help;
+import ca.mcgill.mymcgill.util.Load;
+import ca.mcgill.mymcgill.util.Save;
 
 /**
  * @author Nhat-Quang Dao
@@ -50,16 +52,16 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
     private static final int CHANGE_SEMESTER_CODE = 100;
 
-    @SuppressLint("NewApi")
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_schedule);
         super.onCreate(savedInstanceState);
 
-        mCurrentSemester = ApplicationClass.getDefaultSemester();
+        mCurrentSemester = App.getDefaultSemester();
 
-        //Get the first list of courses from the ApplicationClass
-        mCourseList = ApplicationClass.getSchedule();
+        //Get the first list of searchedCourses from the ApplicationClass
+        mCourseList = App.getSchedule();
 
         //ViewPager stuff
         mSupportFragmentManager = getSupportFragmentManager();
@@ -70,13 +72,21 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         //Start thread to get schedule
         new ScheduleGetter(mCurrentSemester.getURL()).execute();
+
+        //Check if this is the first time the user is using the app
+        if(Load.isFirstOpen(this)){
+        //Show him the walkthrough if it is
+        startActivity(new Intent(this, WalkthroughActivity.class));
+        //Save the fact that the walkthrough has been seen at least once
+        Save.saveFirstOpen(this);
+        }
     }
 
-    //Method that returns a list of courses for a given day
+    //Method that returns a list of searchedCourses for a given day
     public List<CourseSched> getCoursesForDay(Day day){
         List<CourseSched> courses = new ArrayList<CourseSched>();
 
-        //Go through the list of courses, find which ones have the same day
+        //Go through the list of searchedCourses, find which ones have the same day
         for(CourseSched course : mCourseList){
             if(course.getDay() == day){
                 courses.add(course);
@@ -327,7 +337,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             mCourseList = CourseSched.parseCourseList(scheduleString);
 
             //Save it to the instance variable in Application class
-            ApplicationClass.setSchedule(mCourseList);
+            App.setSchedule(mCourseList);
 
             return true;
         }

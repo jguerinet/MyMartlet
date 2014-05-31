@@ -13,19 +13,25 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
 
 /**
  * Created by Ryan Singzon on 19/05/14.
- * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
+ * Takes user input from RegistrationActivity and obtains a list of searchedCourses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
 
@@ -69,7 +75,7 @@ public class RegistrationActivity extends DrawerActivity{
         });
     }
 
-    //Searches for the selected courses
+    //Searches for the selected searchedCourses
     public void searchCourses(View v){
         Spinner semesterSpinner = (Spinner) findViewById(R.id.registration_semester);
         String semester = semesterSpinner.getSelectedItem().toString();
@@ -102,13 +108,12 @@ public class RegistrationActivity extends DrawerActivity{
         mCourseSearchUrl += "&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_levl=%25&sel_ptrm=%25" +
                            "&sel_instr=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a%20Response%20Headersview%20source";
 
-        //Obtain courses
+        //Obtain searchedCourses
         new CoursesGetter().execute();
     }
 
     //Connects to Minerva in a new thread
     private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
-        private String mCoursesString;
 
         @Override
         protected void onPreExecute(){
@@ -116,12 +121,12 @@ public class RegistrationActivity extends DrawerActivity{
             setProgressBarIndeterminateVisibility(true);
         }
 
-        //Retrieve courses obtained from Minerva
+        //Retrieve searchedCourses obtained from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            mCoursesString = Connection.getInstance().getUrl(RegistrationActivity.this, mCourseSearchUrl);
+            String coursesString = Connection.getInstance().getUrl(RegistrationActivity.this, mCourseSearchUrl);
 
-            if(mCoursesString == null){
+            if(coursesString == null){
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -136,8 +141,11 @@ public class RegistrationActivity extends DrawerActivity{
                 });
                 return false;
             }
-
-            return true;
+            else{
+                //If not, parse it
+                Constants.searchedCourses = parseCourses(coursesString);
+                return true;
+            }
         }
 
         //Update or create transcript object and display data
@@ -145,10 +153,12 @@ public class RegistrationActivity extends DrawerActivity{
         protected void onPostExecute(Boolean loadInfo){
             setProgressBarIndeterminateVisibility(false);
 
-            //Go to the CoursesListActivity with the parsed courses
-            Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
-            intent.putExtra(Constants.COURSES, mCoursesString);
-            startActivity(intent);
+            if(loadInfo){
+                //Go to the CoursesListActivity with the parsed searchedCourses
+                Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
+                intent.putExtra(Constants.WISHLIST, false);
+                startActivity(intent);
+            }
         }
     }
 
@@ -167,5 +177,133 @@ public class RegistrationActivity extends DrawerActivity{
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /*public void wish(View v) {
+        Intent intent = new Intent(this, WishlistActivity.class);
+        //startActivityForResult(intent, CHANGE_SEMESTER_CODE);
+        startActivity(intent);
+    }*/
+
+    //Parses the HTML retrieved from Minerva and returns a list of searchedCourses
+    //Only used if this activity is a result of a search, and not for the course wishlist
+    private List<Course> parseCourses(String coursesString){
+        List<Course> courses = new ArrayList<Course>();
+
+        Document document = Jsoup.parse(coursesString, "UTF-8");
+
+        //Find rows of HTML by class
+        Elements dataRows = document.getElementsByClass("dddefault");
+
+        int rowNumber = 0;
+        boolean loop = true;
+
+        while (loop) {
+
+            // Create a new course object
+            int credits = 99;
+            String courseCode = "ERROR";
+            String courseTitle = "ERROR";
+            String sectionType = "";
+            String days = "";
+            int crn = 00000;
+            String instructor = "";
+            String location = "";
+            String time = "";
+            String dates = "";
+
+            int i = 0;
+            while (true) {
+
+                try {
+                    // Get the HTML row
+                    Element row = dataRows.get(rowNumber);
+                    rowNumber++;
+
+                    // End condition: Empty row encountered
+                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
+                        break;
+                    }
+
+                    switch (i) {
+                        // CRN
+                        case 1:
+                            crn = Integer.parseInt(row.text());
+                            break;
+
+                        // Course code
+                        case 2:
+                            courseCode = row.text();
+                            break;
+                        case 3:
+                            courseCode += " " + row.text();
+                            break;
+
+                        // Section type
+                        case 5:
+                            sectionType = row.text();
+                            break;
+
+                        // Number of credits
+                        case 6:
+                            credits = (int) Double.parseDouble(row.text());
+                            break;
+
+                        // Course title
+                        case 7:
+                            courseTitle = row.text();
+                            break;
+
+                        // Days of the week
+                        case 8:
+                            days = row.text();
+
+                            if (days.equals("TBA")) {
+                                time = "TBA";
+                                i = 10;
+                                rowNumber++;
+                            }
+                            break;
+
+                        // Time
+                        case 9:
+                            time = row.text();
+                            break;
+
+                        // Instructor
+                        case 16:
+                            instructor = row.text();
+                            break;
+
+                        // Start/end date
+                        case 17:
+                            dates = row.text();
+                            break;
+
+                        // Location
+                        case 18:
+                            location = row.text();
+                            break;
+                    }
+
+                    i++;
+                }
+                catch (IndexOutOfBoundsException e){
+                    loop = false;
+                    break;
+                }
+                catch (Exception e) {
+
+                }
+            }
+
+            if( !courseCode.equals("ERROR")){
+
+                //Create a new course object and add it to list
+                Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days, crn, instructor, location, time, dates);
+                courses.add(newCourse);
+            }
+        }
+        return courses;
     }
 }

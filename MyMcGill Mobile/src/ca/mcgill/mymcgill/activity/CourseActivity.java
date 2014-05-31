@@ -1,9 +1,7 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -35,19 +33,9 @@ public class CourseActivity extends BaseActivity {
 
         assert (course != null);
 
-        //Get the screen height
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            size.set(display.getWidth(), display.getHeight());
-        }
-        else{
-            display.getSize(size);
-        }
-
-        int displayWidth = size.x;
-        int displayHeight = size.y;
+        //Get the screen dimensions
+        int displayWidth = Help.getDisplayWidth(getWindowManager().getDefaultDisplay());
+        int displayHeight = Help.getDisplayHeight(getWindowManager().getDefaultDisplay());
 
         //Set the width and height to 2/3 of the screen
         LinearLayout layout = (LinearLayout) findViewById(R.id.activity_course_container);

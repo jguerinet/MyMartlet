@@ -53,7 +53,7 @@ android:layout_height="match_parent">
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:id="@+id/settings_homepage_title"
+                android:text="@string/settings_homepage"
                 android:textSize="@dimen/text_medium"/>
 
             <Spinner

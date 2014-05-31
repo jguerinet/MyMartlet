@@ -26,7 +26,7 @@
         android:required="true"/>
 
     <application
-        android:name="ca.mcgill.mymcgill.util.ApplicationClass"
+        android:name=".App"
         android:allowBackup="true"
         android:allowClearUserData="true"
         android:hardwareAccelerated="true"
@@ -106,11 +106,10 @@
             android:theme="@style/DialogMyMcGill"
             android:screenOrientation="portrait"/>
 
-        <activity
-            android:name=".activity.WishlistActivity"
-            android:label="Course Wishlist" />
-
         <activity android:name=".activity.courseslist.CoursesListActivity" />
+        <activity android:name=".activity.walkthrough.WalkthroughActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/DialogMyMcGill"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

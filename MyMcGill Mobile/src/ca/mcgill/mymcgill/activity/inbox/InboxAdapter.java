@@ -13,11 +13,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.EmailActivity;
 import ca.mcgill.mymcgill.object.Email;
 import ca.mcgill.mymcgill.object.Inbox;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -85,7 +85,7 @@ public class InboxAdapter extends BaseAdapter{
 
         //Place chevron
         TextView chevron = (TextView)view.findViewById(R.id.email_chevron);
-        chevron.setTypeface(ApplicationClass.getIconFont());
+        chevron.setTypeface(App.getIconFont());
 
         //Set up onClickListener for view
         view.setOnClickListener(new View.OnClickListener() {

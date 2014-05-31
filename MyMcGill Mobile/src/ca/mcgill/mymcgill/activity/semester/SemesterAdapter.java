@@ -14,7 +14,7 @@ import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.Semester;
 
 /**
- * List Adapter that will populate the courses list in SemesterActivity
+ * List Adapter that will populate the searchedCourses list in SemesterActivity
  * Author: Julien
  * Date: 01/02/14, 10:27 AM
  */

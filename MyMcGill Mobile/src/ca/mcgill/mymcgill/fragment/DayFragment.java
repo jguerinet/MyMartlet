@@ -47,7 +47,7 @@ public class DayFragment extends Fragment{
         setRetainInstance(true);
 
         mDay = (Day)getArguments().get(Constants.DAY);
-        //Get the courses from ScheduleActivity
+        //Get the searchedCourses from ScheduleActivity
         mCourses = ((ScheduleActivity)getActivity()).getCoursesForDay(mDay);
     }
 

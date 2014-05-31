@@ -3,10 +3,10 @@ package ca.mcgill.mymcgill.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Clear;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -46,7 +46,7 @@ public class SplashActivity extends BaseActivity {
                     //Successful connection: ScheduleActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK ||
                             connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
-                        startActivity(new Intent(SplashActivity.this, ApplicationClass.getHomePage().getHomePageClass()));
+                        startActivity(new Intent(SplashActivity.this, App.getHomePage().getHomePageClass()));
                         finish();
                     }
                     else{

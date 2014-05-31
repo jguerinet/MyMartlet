@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.semester.SemesterActivity;
 import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Transcript;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -68,7 +68,7 @@ public class TranscriptAdapter extends BaseAdapter {
 
         //Set up the chevron
         TextView chevron = (TextView)view.findViewById(R.id.semester_chevron);
-        chevron.setTypeface(ApplicationClass.getIconFont());
+        chevron.setTypeface(App.getIconFont());
 
         //Set up the onClicklistener for the view
         view.setOnClickListener(new View.OnClickListener() {

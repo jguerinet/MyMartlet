@@ -42,6 +42,8 @@
     <string name="fall">Automne</string>
     <string name="winter">Hiver</string>
     <string name="summer">Eté</string>
+
+    <!-- Faculty Names -->
     <string name="login_welcome">Bienvenue à McGill Mobile. Veuillez s\'il vous plaît entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
     <string name="login_username">Nom d\'Utilisateur:</string>
     <string name="login_password">Mot de Passe:</string>
@@ -117,4 +119,10 @@
     <string name="change_semester_season">Saison: </string>
     <string name="change_semester_year">Année:</string>
     <string name="change_semester_default">Mettre par Défaut</string>
+
+    <!-- Register Page -->
+
+    <!-- Walkthrough -->
+
+    <!-- CoursesList / Course Wishlist -->
 </resources>

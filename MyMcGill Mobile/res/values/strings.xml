@@ -16,7 +16,8 @@
     <string name="title_map">Campus Map</string>
     <string name="title_attach">Attachment</string>
     <string name="title_change_semester">Change Semester</string>
-    <string name="title_registration">My Course Wishlist</string>
+    <string name="title_registration">Search for Courses</string>
+    <string name="title_wishlist">My Course Wishlist</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -27,6 +28,10 @@
     <string name="error_other">An error has occurred. Please try again later.</string>
     <string name="english">English</string>
     <string name="french">French</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="start">Start</string>
+    <string name="skip">Skip</string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
@@ -40,6 +45,9 @@
     <string name="icon_transcript">&#xf15c;</string>
     <string name="icon_map">&#xf041;</string>
     <string name="icon_logout">&#xf0a9;</string>
+    <string name="icon_bug">&#xf188;</string>
+    <string name="icon_security">&#xf023;</string>
+    <string name="icon_question">&#xf128;</string>
 
     <!-- Day Names -->
     <string name="monday">Monday</string>
@@ -54,6 +62,21 @@
     <string name="fall">Fall</string>
     <string name="winter">Winter</string>
     <string name="summer">Summer</string>
+
+    <!-- Faculty Names -->
+    <string name="faculty_enviro">Faculty of Agricultural and Environmental Sciences</string>
+    <string name="faculty_arts">Faculty of Arts</string>
+    <string name="faculty_continuing_studies">School of Continuing Studies</string>
+    <string name="faculty_dentistry">Faculty of Dentistry</string>
+    <string name="faculty_education">Faculty of Education</string>
+    <string name="faculty_engineering">Faculty of Engineering</string>
+    <string name="faculty_graduate">Graduate and Postdoctoral Studies</string>
+    <string name="faculty_law">Faculty of Law</string>
+    <string name="faculty_management">Desautels Faculty of Management</string>
+    <string name="faculty_medecine">Faculty of Medicine</string>
+    <string name="faculty_music">Schulich School of Music</string>
+    <string name="faculty_religion">Faculty of Religious Studies</string>
+    <string name="faculty_science">Faculty of Science</string>
 
     <!-- Login Screen -->
     <string name="login_welcome">Welcome to McGill Mobile. Please input your McGill username and password below.</string>
@@ -117,6 +140,8 @@
     <string name="homepage_transcript">Transcript</string>
     <string name="homepage_email">Email</string>
     <string name="homepage_mycourses">MyCourses</string>
+    <string name="homepage_search">Courses Search</string>
+    <string name="homepage_wishlist">Wishlist</string>
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Campus Map</string>
     <string name="homepage_desktop">Desktop Site</string>
@@ -140,5 +165,25 @@
     <!-- Register Page -->
     <string name="registration_semester">Semester</string>
     <string name="registration_subject">Subject</string>
-    <string name="registration_course_number">Course number (Optional)</string>
+    <string name="registration_course_number">Course Number (optional)</string>
+
+    <!-- Walkthrough -->
+    <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
+    <string name="walkthrough_essentials">All of your most important McGill tools are now at the tips of your fingertips: schedule, transcript, a campus map&#8230; It\'s all there!</string>
+    <string name="walkthrough_menu">All of these features are directly accessible from the main menu. Simply tap on the top left icon, or swipe from the left edge of the screen to open it. </string>
+    <string name="walkthrough_offline">This app automatically keeps you connected at all times: no need to log in constantly ! And all of your data is stored locally on your phone, which means that you can access it offline !</string>
+    <string name="walkthrough_security">All of your data (password included) is only stored locally on your phone. As an extra security measure, your password is encrypted. We will be collecting anonymous usage statistics, but you can opt out at any time in the Settings.</string>
+    <string name="walkthrough_help">To see this walkthrough again, please consult our About Section. This also includes info about the team behind this app, and different ways to contact us.</string>
+    <string name="walkthrough_bugs">If you find any bugs, don\'t hesitate to report them by going to the "Report a Bug" section.</string>
+    <string name="walkthrough_homepage">Before starting, please choose a homepage. This will be the first page you will see every time you open this app. You can change this at any time in the Settings.</string>
+    <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
+
+    <!-- CoursesList / Course Wishlist -->
+    <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
+    <string name="wishlist_add">Added %s course(s) from the wishlist</string>
+    <string name="wishlist_error_empty">You need to select at least one course</string>
+    <string name="courses_empty">No Courses Available</string>
+    <string name="courses_register">Register</string>
+    <string name="courses_add_wishlist">Add to Wishlist</string>
+    <string name="courses_remove_wishlist">Remove from Wishlist</string>
 </resources>

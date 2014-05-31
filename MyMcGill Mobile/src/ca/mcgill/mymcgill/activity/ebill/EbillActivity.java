@@ -13,11 +13,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.UserInfo;
-import ca.mcgill.mymcgill.util.ApplicationClass;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.DialogHelper;
 
@@ -35,8 +35,8 @@ public class EbillActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
 
         //Get the initial info from the ApplicationClass
-        mEbillItems = ApplicationClass.getEbill();
-        mUserInfo = ApplicationClass.getUserInfo();
+        mEbillItems = App.getEbill();
+        mUserInfo = App.getUserInfo();
 
         //Get the views
         mUserName = (TextView)findViewById(R.id.ebill_user_name);
@@ -96,8 +96,8 @@ public class EbillActivity extends DrawerActivity {
             mUserInfo = new UserInfo(ebillString);
 
             //Save it to the instance variable in the Application class
-            ApplicationClass.setEbill(mEbillItems);
-            ApplicationClass.setUserInfo(mUserInfo);
+            App.setEbill(mEbillItems);
+            App.setUserInfo(mUserInfo);
 
             return true;
         }
