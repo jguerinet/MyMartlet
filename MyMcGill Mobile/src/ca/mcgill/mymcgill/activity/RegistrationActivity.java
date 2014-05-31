@@ -212,6 +212,12 @@ public class RegistrationActivity extends DrawerActivity{
             String location = "";
             String time = "";
             String dates = "";
+            int capacity = 000000;
+            int seatsAvailable = 00000;
+            int seatsRemaining = 00000;
+            int waitlistCapacity = 00000;
+            int waitlistAvailable = 00000;
+            int waitlistRemaining = 00000;
 
             int i = 0;
             while (true) {
@@ -274,6 +280,36 @@ public class RegistrationActivity extends DrawerActivity{
                             time = row.text();
                             break;
 
+                        // Capacity
+                        case 10:
+                            capacity = Integer.parseInt(row.text());
+                            break;
+
+                        // Seats available
+                        case 11:
+                            seatsAvailable = Integer.parseInt(row.text());
+                            break;
+
+                        // Seats remaining
+                        case 12:
+                            seatsRemaining = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist capacity
+                        case 13:
+                            waitlistCapacity = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist available
+                        case 14:
+                            waitlistAvailable = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist remaining
+                        case 15:
+                            waitlistRemaining = Integer.parseInt(row.text());
+                            break;
+
                         // Instructor
                         case 16:
                             instructor = row.text();
@@ -305,7 +341,9 @@ public class RegistrationActivity extends DrawerActivity{
             if( !courseCode.equals("ERROR")){
 
                 //Create a new course object and add it to list
-                Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days, crn, instructor, location, time, dates);
+                Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days,
+                        crn, instructor, location, time, dates, capacity, seatsAvailable,
+                        seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining);
                 courses.add(newCourse);
             }
         }

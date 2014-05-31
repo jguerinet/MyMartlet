@@ -23,6 +23,13 @@ public class Course implements Serializable{
     private String location;
     private String time;
     private String dates;
+    private String semester;
+    private int capacity;
+    private int seatsAvailable;
+    private int seatsRemaining;
+    private int waitlistCapacity;
+    private int waitlistAvailable;
+    private int waitlistRemaining;
 
     //Constructor for the Course object
     public Course(String courseTitle, String courseCode, int credits,
@@ -35,7 +42,10 @@ public class Course implements Serializable{
     }
 
     //Constructor for course wishlist
-    public Course(int credits, String courseCode, String courseTitle, String sectionType, String days, int crn, String instructor, String location, String time, String dates) {
+    public Course(int credits, String courseCode, String courseTitle, String sectionType,
+                  String days, int crn, String instructor, String location, String time,
+                  String dates, int capacity, int seatsAvailable, int seatsRemaining,
+                  int waitlistCapacity, int waitlistAvailable, int waitlistRemaining) {
         this.credits = credits;
         this.courseCode = courseCode;
         this.courseTitle = courseTitle;
