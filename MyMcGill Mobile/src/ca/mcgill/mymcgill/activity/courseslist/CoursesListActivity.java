@@ -204,6 +204,12 @@ public class CoursesListActivity extends DrawerActivity {
     }
 
     @Override
+    public void onBackPressed(){
+        startActivity(new Intent(CoursesListActivity.this, App.getHomePage().getHomePageClass()));
+        super.onBackPressed();
+    }
+
+    @Override
     public void onResume(){
         super.onResume();
         loadInfo();
@@ -214,9 +220,4 @@ public class CoursesListActivity extends DrawerActivity {
         mListView.setAdapter(mAdapter);
     }
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-    }
 }
