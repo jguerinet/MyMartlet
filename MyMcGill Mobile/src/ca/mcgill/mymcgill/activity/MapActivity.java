@@ -1,9 +1,12 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,8 +17,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
+import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.util.Constants;
 
 /**
@@ -23,7 +28,7 @@ import ca.mcgill.mymcgill.util.Constants;
  */
 public class MapActivity extends DrawerFragmentActivity {
 
-
+    private boolean mDoubleBackToExit;
     private GoogleMap mMap;
 
     @SuppressLint("NewApi")
@@ -65,6 +70,29 @@ public class MapActivity extends DrawerFragmentActivity {
                         .build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(myPosition));
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(App.getHomePage() != HomePage.CAMPUS_MAP){
+            startActivity(new Intent(MapActivity.this, App.getHomePage().getHomePageClass()));
+            super.onBackPressed();
+        }
+        else{
+            if (mDoubleBackToExit) {
+                super.onBackPressed();
+                return;
+            }
+            this.mDoubleBackToExit = true;
+            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDoubleBackToExit=false;
+                }
+            }, 2000);
         }
     }
 }

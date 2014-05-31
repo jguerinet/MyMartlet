@@ -1,6 +1,12 @@
 package ca.mcgill.mymcgill.activity.courseslist;
 
+<<<<<<< HEAD
 import android.content.Intent;
+=======
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
+>>>>>>> 2cca181f7d8fd490674bdf39329f7bb2790a6cb3
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +16,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import java.util.List;
 
 import ca.mcgill.mymcgill.App;
@@ -17,8 +27,13 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.ChangeSemesterActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
+<<<<<<< HEAD
 import ca.mcgill.mymcgill.object.Semester;
+=======
+import ca.mcgill.mymcgill.util.Connection;
+>>>>>>> 2cca181f7d8fd490674bdf39329f7bb2790a6cb3
 import ca.mcgill.mymcgill.util.Constants;
+import ca.mcgill.mymcgill.util.DialogHelper;
 
 /**
  * Author : Julien
@@ -31,6 +46,7 @@ public class CoursesListActivity extends DrawerActivity {
     private List<Course> mCourses;
     private ListView mListView;
     private CoursesAdapter mAdapter;
+    private String mRegistrationUrl;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -59,7 +75,50 @@ public class CoursesListActivity extends DrawerActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Registration code here
+
+                //Get checked courses from adapter
+                List<Course> registerCoursesList = mAdapter.getCheckedCourses();
+
+                //Get term
+                if (registerCoursesList.size() > 10){
+                    String toastMessage = getResources().getString(R.string.registration_error_too_many_courses);
+                    Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                }
+                else if(registerCoursesList.size() > 0){
+                    //Set up registration url
+                    mRegistrationUrl = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
+
+                    //Add term
+                    //TODO: Add term to registration url
+                    //mRegistrationUrl += <TERM>
+
+                    //Add weird random Minerva code
+                    mRegistrationUrl += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&RSTS_IN=RW";
+
+                    //Loop through the checked courses and add them to the string
+                    int courseCount = registerCoursesList.size();
+                    for (Course course : registerCoursesList){
+                        mRegistrationUrl += "&RSTS_IN=RW&CRN_IN=";
+                        mRegistrationUrl += course.getCrn();
+                        mRegistrationUrl += "&assoc_term_in=&start_date_in=&end_date_in=";
+                    }
+
+                    //Add dummy strings to the url until there are 10 registration strings in total
+                    //This might actually not be necessary
+                    for(int i = courseCount; i <= 10; i++){
+                        mRegistrationUrl += "&RSTS_IN=RW&CRN_IN=&assoc_term_in=&start_date_in=&end_date_in=";
+                    }
+
+                    mRegistrationUrl += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
+
+                    //Obtain searchedCourses
+                    new Registration().execute();
+
+                }
+                else{
+                    Toast.makeText(CoursesListActivity.this, "No courses selected", Toast.LENGTH_SHORT).show();
+                }
+
                 Toast.makeText(CoursesListActivity.this, "Feature not implemented yet", Toast.LENGTH_SHORT).show();
             }
         });
@@ -118,6 +177,64 @@ public class CoursesListActivity extends DrawerActivity {
         });
     }
 
+    //Connects to Minerva in a new thread to register for courses
+    private class Registration extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected void onPreExecute(){
+            //Show the user we are downloading new info
+            setProgressBarIndeterminateVisibility(true);
+        }
+
+        //Retrieve page that contains registration status from Minerva
+        @Override
+        protected Boolean doInBackground(Void... params){
+            String resultString = Connection.getInstance().getUrl(CoursesListActivity.this, mRegistrationUrl);
+
+            //If result string is null, there was an error
+            if(resultString == null){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Activity activity = CoursesListActivity.this;
+                        try {
+                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                    activity.getResources().getString(R.string.error_other));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                return false;
+            }
+            //Otherwise, check for errors
+            else{
+                //TODO: Parse result of registration and check for errors
+                Document document = Jsoup.parse(resultString, "UTF-8");
+
+                //Find rows of HTML by class
+                Elements dataRows = document.getElementsByClass("dddefault");
+                return true;
+            }
+        }
+
+        //Update or create transcript object and display data
+        @Override
+        protected void onPostExecute(Boolean loadInfo){
+            setProgressBarIndeterminateVisibility(false);
+
+            if(loadInfo){
+                //Display whether the user was successfully registered
+                //TODO: Add message for registration success or fail
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(CoursesListActivity.this, App.getHomePage().getHomePageClass()));
+        super.onBackPressed();
+    }
+
     @Override
     public void onResume(){
         super.onResume();
@@ -128,6 +245,7 @@ public class CoursesListActivity extends DrawerActivity {
         mAdapter = new CoursesAdapter(this, mCourses);
         mListView.setAdapter(mAdapter);
     }
+
 
     @Override
     public void onBackPressed(){
@@ -180,4 +298,5 @@ public class CoursesListActivity extends DrawerActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }*/
+
 }

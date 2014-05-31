@@ -90,6 +90,38 @@ public class Course implements Serializable{
         return crn;
     }
 
+    public String getSemester() {
+        return semester;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getSeatsAvailable() {
+        return seatsAvailable;
+    }
+
+    public int getSeatsRemaining() {
+        return seatsRemaining;
+    }
+
+    public int getWaitlistCapacity() {
+        return waitlistCapacity;
+    }
+
+    public int getWaitlistAvailable() {
+        return waitlistAvailable;
+    }
+
+    public int getWaitlistRemaining() {
+        return waitlistRemaining;
+    }
+
+    public Season getSeason() {
+        return mSeason;
+    }
+
     /**
      * Get the days this course is on
      * @return The course days

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.AboutActivity;
 import ca.mcgill.mymcgill.activity.DesktopActivity;
 import ca.mcgill.mymcgill.activity.MyCoursesActivity;
 import ca.mcgill.mymcgill.activity.RegistrationActivity;
@@ -71,6 +72,9 @@ public class DrawerActivity extends BaseActivity {
             else{
                 mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
             }
+        }
+        else if(this instanceof AboutActivity) {
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout,DrawerAdapter.ABOUT_POSITION);
         }
         else{
             Log.e("Drawer Adapter", "not well initialized");

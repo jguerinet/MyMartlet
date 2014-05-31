@@ -1,122 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- The main content view -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/padding_micro"
-        android:paddingBottom="@dimen/padding_micro"
-        android:paddingTop="@dimen/padding_small" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding_medium"
-        android:paddingBottom="@dimen/padding_micro"
-        android:paddingTop="@dimen/padding_small" >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/registration_semester"
-            android:textSize="@dimen/text_large" />
-
-        <Spinner
-            android:id="@+id/registration_semester"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="right|center_vertical" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding_medium"
-        android:paddingBottom="@dimen/padding_micro"
-        android:paddingTop="@dimen/padding_small" >
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="@string/registration_subject"
-            android:gravity="center"
-            android:textSize="@dimen/text_medium"
-            android:paddingBottom="@dimen/padding_large"/>
-
-        <EditText
-            android:id="@+id/registration_subject"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingTop="@dimen/padding_small"
-            android:singleLine="true"
-            android:textSize="@dimen/text_medium"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding_medium"
-        android:paddingBottom="@dimen/padding_micro"
-        android:paddingTop="@dimen/padding_small" >
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="@string/registration_course_number"
-            android:gravity="center"
-            android:textSize="@dimen/text_medium"
-            android:paddingBottom="@dimen/padding_large"/>
-
-        <EditText
-            android:id="@+id/registration_course_number"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingTop="@dimen/padding_small"
-            android:singleLine="true"
-            android:textSize="@dimen/text_medium"/>
-
-    </LinearLayout>
-
-        <Button
-            android:id="@+id/search_button"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:isScrollContainer="true"
+        android:overScrollMode="always"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical">
+        <!-- The main content view -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_large"
-            android:text="@android:string/ok"
-            android:textSize="@dimen/text_medium"
-            android:onClick="searchCourses" />
+            android:orientation="vertical"
+            android:padding="@dimen/padding_micro"
+            android:paddingBottom="@dimen/padding_micro"
+            android:paddingTop="@dimen/padding_small">
 
-        <TextView
-            android:id="@+id/registration_debug"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:text="Debug area"
-            android:gravity="center"
-            android:textSize="@dimen/text_medium"
-            android:paddingBottom="@dimen/padding_large"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_medium"
+                android:paddingBottom="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/registration_semester"
+                    android:textSize="@dimen/text_large" />
 
+                <Spinner
+                    android:id="@+id/registration_semester"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_medium"
+                android:paddingBottom="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/padding_large"
+                    android:text="@string/registration_subject"
+                    android:textSize="@dimen/text_medium" />
+
+                <EditText
+                    android:id="@+id/registration_subject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingTop="@dimen/padding_small"
+                    android:singleLine="true"
+                    android:textSize="@dimen/text_medium" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_medium"
+                android:paddingBottom="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/padding_large"
+                    android:text="@string/registration_course_number"
+                    android:textSize="@dimen/text_medium" />
+
+                <EditText
+                    android:id="@+id/registration_course_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingTop="@dimen/padding_small"
+                    android:singleLine="true"
+                    android:textSize="@dimen/text_medium" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_large"
+                android:onClick="searchCourses"
+                android:text="@android:string/ok"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/registration_debug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding_large"
+                android:text="Debug area"
+                android:textSize="@dimen/text_medium" />
+
+        </LinearLayout>
+    </ScrollView>
     <!-- The navigation drawer -->
-    <include layout="@layout/drawer"/>
+    <include layout="@layout/drawer" />
 
 </android.support.v4.widget.DrawerLayout>

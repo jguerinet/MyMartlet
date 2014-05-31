@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,10 +23,12 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
+import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -77,6 +81,12 @@ public class RegistrationActivity extends DrawerActivity{
         });
     }
 
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(RegistrationActivity.this, App.getHomePage().getHomePageClass()));
+        super.onBackPressed();
+    }
+
     //Searches for the selected searchedCourses
     public void searchCourses(View v){
         Spinner semesterSpinner = (Spinner) findViewById(R.id.registration_semester);
@@ -98,6 +108,11 @@ public class RegistrationActivity extends DrawerActivity{
         //Obtain user input from text boxes
         EditText subjectBox = (EditText) findViewById(R.id.registration_subject);
         String subject = subjectBox.getText().toString().toUpperCase();
+        if(!subject.matches("[A-Za-z]{4}")){
+            String toastMessage = getResources().getString(R.string.registration_invalid_subject);
+            Toast.makeText(RegistrationActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         EditText courseNumBox = (EditText) findViewById(R.id.registration_course_number);
         String courseNumber = courseNumBox.getText().toString();
