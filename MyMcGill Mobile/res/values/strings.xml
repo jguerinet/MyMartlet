@@ -168,6 +168,7 @@
     <string name="registration_semester">Semester</string>
     <string name="registration_subject">Subject</string>
     <string name="registration_course_number">Course Number (optional)</string>
+    <string name="registration_error_too_many_courses">You must select fewer than 10 courses.</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
@@ -206,4 +207,14 @@
     <string name="courses_remove_wishlist">Remove from Wishlist</string>
 
     <!-- About -->
+    <string name="about_team_name">Team name</string>
+    <string name="about_help">Help</string>
+    <string name="about_member">Name</string>
+    <string name="about_question">Question</string>
+    <string name="about_answer">This is an answer</string>
+    <string name="about_report"><u>Report a Problem</u></string>
+    <string name="about_FAQ">FAQ</string>
+    <string name="about_position">Position</string>
+    <string name="about_email">fake\@email.com</string>
+    <string name="about_blurb">This is a blurb</string>
 </resources>
