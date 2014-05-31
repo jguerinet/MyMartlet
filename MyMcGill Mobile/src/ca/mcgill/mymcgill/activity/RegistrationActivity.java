@@ -196,6 +196,7 @@ public class RegistrationActivity extends DrawerActivity{
         Elements dataRows = document.getElementsByClass("dddefault");
 
         int rowNumber = 0;
+        int rowsSoFar = 0;
         boolean loop = true;
 
         while (loop) {
@@ -221,7 +222,10 @@ public class RegistrationActivity extends DrawerActivity{
                     rowNumber++;
 
                     // End condition: Empty row encountered
-                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
+                    if (row.toString().contains("&nbsp;") && rowsSoFar > 10) {
+                        break;
+                    }
+                    else if(row.toString().contains("NOTES:")){
                         break;
                     }
 
@@ -296,6 +300,7 @@ public class RegistrationActivity extends DrawerActivity{
 
                 }
             }
+            rowsSoFar = 0;
 
             if( !courseCode.equals("ERROR")){
 
