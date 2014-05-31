@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.activity.AboutActivity;
 import ca.mcgill.mymcgill.activity.MapActivity;
 import ca.mcgill.mymcgill.activity.ScheduleActivity;
 import ca.mcgill.mymcgill.activity.base.BaseFragmentActivity;
