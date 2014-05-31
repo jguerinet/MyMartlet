@@ -1,7 +1,7 @@
 package ca.mcgill.mymcgill.object;
 
 import java.io.Serializable;
-import ca.mcgill.mymcgill.object.Season;
+import java.util.List;
 
 /**
  * Created by Ryan Singzon on 30/01/14.
@@ -12,123 +12,69 @@ import ca.mcgill.mymcgill.object.Season;
 public class Course implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private int credits;
-    private String courseCode;
-    private String courseTitle;
-    private String userGrade;
-    private String averageGrade;
-    private String sectionType;
-    private String days;
-    private int crn;
-    private String instructor;
-    private String location;
-    private String time;
-    private String dates;
-    private String semester;
-    private int capacity;
-    private int seatsAvailable;
-    private int seatsRemaining;
-    private int waitlistCapacity;
-    private int waitlistAvailable;
-    private int waitlistRemaining;
-    private Season mSeason;
+    private int mCRN;
+    private String mCourseCode;
+    private String mCourseTitle;
+    private int startH, startM, endH, endM;
+    private List<Day> mDays;
+    private String mSectionType;
+    private String mLocation;
+    private String mInstructor;
+    private int mCredits;
+    private String mDates;
+
+    private String mUserGrade;
+    private String mAverageGrade;
 
     //Constructor for the Course object
     public Course(String courseTitle, String courseCode, int credits,
                     String userGrade, String averageGrade){
-        this.credits = credits;
-        this.courseCode = courseCode;
-        this.courseTitle = courseTitle;
-        this.userGrade = userGrade;
-        this.averageGrade = averageGrade;
+        this.mCredits = credits;
+        this.mCourseCode = courseCode;
+        this.mCourseTitle = courseTitle;
+        this.mUserGrade = userGrade;
+        this.mAverageGrade = averageGrade;
     }
 
     //Constructor for course wishlist
-    public Course(int credits, String courseCode, String courseTitle, String sectionType,
-                  String days, int crn, String instructor, String location, String time,
-                  String dates, int capacity, int seatsAvailable, int seatsRemaining,
-                  int waitlistCapacity, int waitlistAvailable, int waitlistRemaining,
-                  Season mSeason) {
-        this.credits = credits;
-        this.courseCode = courseCode;
-        this.courseTitle = courseTitle;
-        this.sectionType = sectionType;
-        this.days = days;
-        this.crn = crn;
-        this.instructor = instructor;
-        this.location = location;
+    public Course(int credits, String courseCode, String courseTitle, String sectionType, String days, int crn, String instructor, String location, String time, String dates) {
+        this.mCredits = credits;
+        this.mCourseCode = courseCode;
+        this.mCourseTitle = courseTitle;
+        this.mSectionType = sectionType;
+        this.mDays = days;
+        this.mCRN = crn;
+        this.mInstructor = instructor;
+        this.mLocation = location;
         this.time = time;
-        this.dates = dates;
+        this.mDates = dates;
     }
 
-    //Getter for credits
-    public int getCredits(){
-        return credits;
-    }
-
-    //Getter for course code
-    public String getCourseCode(){
-        return courseCode;
-    }
-
-    //Getter for course title
-    public String getCourseTitle(){
-        return courseTitle;
-    }
-
-    //Getter for user grade
-    public String getUserGrade(){
-        return userGrade;
-    }
-
-    //Getter for average grade
-    public String getAverageGrade(){
-        return averageGrade;
-    }
-
-    public int getCrn(){
-        return crn;
-    }
-
-    public String getSemester() {
-        return semester;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public int getSeatsAvailable() {
-        return seatsAvailable;
-    }
-
-    public int getSeatsRemaining() {
-        return seatsRemaining;
-    }
-
-    public int getWaitlistCapacity() {
-        return waitlistCapacity;
-    }
-
-    public int getWaitlistAvailable() {
-        return waitlistAvailable;
-    }
-
-    public int getWaitlistRemaining() {
-        return waitlistRemaining;
-    }
-
-    public Season getSeason() {
-        return mSeason;
+    /* GETTERS */
+    /**
+     * Get the course CRN
+     * @return The course CRN
+     */
+    public int getCRN(){
+        return mCRN;
     }
 
     /**
-     * Get the days this course is on
-     * @return The course days
+     * Get the course code
+     * @return The course code
      */
-    public String getDays(){
-        return days;
+    public String getCourseCode(){
+        return mCourseCode;
     }
+
+    /**
+     * Get the course title
+     * @return The course title
+     */
+    public String getCourseTitle(){
+        return mCourseTitle;
+    }
+
 
     /**
      * Get the time this course is at
@@ -136,6 +82,88 @@ public class Course implements Serializable{
      */
     public String getTime(){
         return time;
+    }
+
+    /**
+     * Get the days this course is on
+     * @return The course days
+     */
+    public List<Day> getDays(){
+        return mDays;
+    }
+
+    /**
+     * Get the course section type
+     * @return The course section type
+     */
+    public String getSectionType(){
+        return mSectionType;
+    }
+
+    /**
+     * Get the course's location
+     * @return The course's location
+     */
+    public String getLocation(){
+        return mLocation;
+    }
+
+    /**
+     * Get the instructor for this course
+     * @return Return the course's instructor
+     */
+    public String getInstructor(){
+        return mInstructor;
+    }
+
+    /**
+     * Get the course credits
+     * @return The course credits
+     */
+    public int getCredits(){
+        return mCredits;
+    }
+
+    /**
+     * Get the dates this course is on
+     * @return The course dates
+     */
+    public String getDates(){
+        return mDates;
+    }
+
+    /**
+     * Get the grade the user got in this course
+     * @return The user's grade
+     */
+    public String getUserGrade(){
+        return mUserGrade;
+    }
+
+    /**
+     * Get the average grade for this course
+     * @return The average grade
+     */
+    public String getAverageGrade(){
+        return mAverageGrade;
+    }
+
+    /* SETTER METHODS */
+
+    /**
+     * Set the user grade for this course
+     * @param userGrade The user's grade
+     */
+    public void setUserGrade(String userGrade){
+        mUserGrade = userGrade;
+    }
+
+    /**
+     * Set the average grade for this course
+     * @param averageGrade The course's average grade
+     */
+    public void setAverageGrade(String averageGrade){
+        mAverageGrade = averageGrade;
     }
 
     /* HELPER METHODS */
@@ -149,7 +177,7 @@ public class Course implements Serializable{
         if(!(course instanceof Course)){
             return false;
         }
-        return this.crn == ((Course)course).crn;
+        return this.mCRN == ((Course)course).mCRN;
     }
 
 }
