@@ -14,9 +14,12 @@ import java.util.List;
 public class Course implements Serializable{
     private static final long serialVersionUID = 1L;
 
+    private Season mSeason;
+    private int mYear;
     private int mCRN;
     private String mCourseCode;
     private String mCourseTitle;
+    private String mSection;
     private LocalTime mStartTime, mEndTime, mActualStartTime, mActualEndTime;
     private List<Day> mDays;
     private String mSectionType;
@@ -28,7 +31,32 @@ public class Course implements Serializable{
     private String mUserGrade;
     private String mAverageGrade;
 
-    //Constructor for the Course object
+    public Course(Season season, int year, int crn, String courseCode, String courseTitle, String section,
+                  int startHour, int startMinute, int endHour, int endMinute, List<Day> days,
+                  String sectionType, String location, String instructor, int credits) {
+        this.mSeason = season;
+        this.mYear = year;
+        this.mCRN = crn;
+        this.mCourseCode = courseCode;
+        this.mCourseTitle = courseTitle;
+        this.mSection = section;
+        this.mActualStartTime = new LocalTime(startHour, startMinute);
+        //Remove 5 minutes to the start to get round numbers
+        this.mStartTime = new LocalTime(startHour, (startMinute - 5) % 60);
+        this.mActualEndTime = new LocalTime(endHour, endMinute);
+        //Add 5 minutes to the end to get round numbers, increment the hour if the minutes get set to 0s
+        int endM = (endMinute + 5) % 60;
+        int endH = endHour;
+        if(endM == 0){
+            endH ++;
+        }
+        this.mEndTime = new LocalTime(endH, endM);
+        this.mDays = days;
+        this.mSectionType = sectionType;
+        this.mLocation = location;
+        this.mInstructor = instructor;
+        this.mCredits = credits;
+    }
     public Course(String courseTitle, String courseCode, int credits,
                     String userGrade, String averageGrade){
         this.mCredits = credits;
@@ -77,6 +105,13 @@ public class Course implements Serializable{
         return mCourseTitle;
     }
 
+    /**
+     * Get the Section the user is in
+     * @return The course section
+     */
+    public String getSection(){
+        return mSection;
+    }
 
     /**
      * Get the start time of the course (rounded off to the nearest half hour)
@@ -195,15 +230,19 @@ public class Course implements Serializable{
     /* HELPER METHODS */
     /**
      * Checks to see if two courses are equal
-     * @param course The course to check
+     * @param object The course to check
      * @return True if they are equal, false otherwise
      */
     @Override
-    public boolean equals(Object course){
-        if(!(course instanceof Course)){
+    public boolean equals(Object object){
+        if(!(object instanceof Course)){
             return false;
         }
-        return this.mCRN == ((Course)course).mCRN;
+        Course course = (Course)object;
+
+        //Check if they have the same season, year, and CRN
+        return this.mCRN == course.mCRN && this.mYear == course.mYear &&
+                this.mSeason == course.mSeason;
     }
 
 }
