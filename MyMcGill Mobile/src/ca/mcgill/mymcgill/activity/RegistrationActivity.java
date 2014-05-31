@@ -25,6 +25,7 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
+import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
@@ -40,6 +41,7 @@ public class RegistrationActivity extends DrawerActivity{
 
     private List<String> mSemesterStrings;
     private String mSemester;
+    private Season mSeason;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -82,12 +84,15 @@ public class RegistrationActivity extends DrawerActivity{
 
         if(semester.equals("Summer 2014")){
             semester = "201405";
+            mSeason = Season.SUMMER;
         }
         else if(semester.equals("Fall 2014")){
             semester = "201409";
+            mSeason = Season.FALL;
         }
         else if(semester.equals("Winter 2015")){
             semester = "201501";
+            mSeason = Season.WINTER;
         }
 
         //Obtain user input from text boxes
@@ -343,7 +348,8 @@ public class RegistrationActivity extends DrawerActivity{
                 //Create a new course object and add it to list
                 Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days,
                         crn, instructor, location, time, dates, capacity, seatsAvailable,
-                        seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining);
+                        seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining,
+                        mSeason);
                 courses.add(newCourse);
             }
         }
