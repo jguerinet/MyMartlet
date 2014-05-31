@@ -168,11 +168,4 @@ public class RegistrationActivity extends DrawerActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public void wish(View v) {
-        Intent intent = new Intent(this, WishlistActivity.class);
-        //startActivityForResult(intent, CHANGE_SEMESTER_CODE);
-        startActivity(intent);
-    }
-
 }
