@@ -421,4 +421,117 @@ public class Parser {
 
         return classes;
     }
+
+    /**
+     * Parses the HTML retrieved from Minerva and returns a list of classes
+     * @param classHTML The HTML String to parse
+     * @return The list of resulting classes
+     */
+    public List<Course> parseClassResults(Season season, int year, String classHTML){
+        List<Course> courses = new ArrayList<Course>();
+
+        Document document = Jsoup.parse(classHTML, "UTF-8");
+        //Find rows of HTML by class
+        Elements dataRows = document.getElementsByClass("dddefault");
+
+        int rowNumber = 0;
+        boolean loop = true;
+
+        while (loop) {
+            // Create a new course object
+            int credits = 99;
+            String courseCode = "ERROR";
+            String courseTitle = "ERROR";
+            String sectionType = "";
+            List<Day> days = new ArrayList<Day>();
+            int crn = 00000;
+            String instructor = "";
+            String location = "";
+            String time = "";
+            String dates = "";
+
+            int i = 0;
+            while (true) {
+                try {
+                    // Get the HTML row
+                    Element row = dataRows.get(rowNumber);
+                    rowNumber++;
+
+                    // End condition: Empty row encountered
+                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
+                        break;
+                    }
+                    switch (i) {
+                        // CRN
+                        case 1:
+                            crn = Integer.parseInt(row.text());
+                            break;
+                        // Course code
+                        case 2:
+                            courseCode = row.text();
+                            break;
+                        case 3:
+                            courseCode += " " + row.text();
+                            break;
+                        // Section type
+                        case 5:
+                            sectionType = row.text();
+                            break;
+                        // Number of credits
+                        case 6:
+                            credits = (int) Double.parseDouble(row.text());
+                            break;
+                        // Course title
+                        case 7:
+                            courseTitle = row.text();
+                            break;
+                        // Days of the week
+                        case 8:
+                            String dayString = row.text();
+                            //TBA Stuff
+                            if(dayString.equals("TBA")){
+                                days.add(Day.TBA);
+                                i = 10;
+                            }
+                            else{
+                                char[] dayCharacters = dayString.toCharArray();
+                                for(char dayChar : dayCharacters){
+                                    days.add(Day.getDay(dayChar));
+                                }
+                            }
+                            break;
+                        // Time
+                        case 9:
+                            time = row.text();
+                            break;
+                        // Instructor
+                        case 16:
+                            instructor = row.text();
+                            break;
+                        // Start/end date
+                        case 17:
+                            dates = row.text();
+                            break;
+                        // Location
+                        case 18:
+                            location = row.text();
+                            break;
+                    }
+                    i++;
+                }
+                catch (IndexOutOfBoundsException e){
+                    loop = false;
+                    break;
+                }
+            }
+
+            if( !courseCode.equals("ERROR")){
+                //Create a new course object and add it to list
+                courses.add(new Class(season, year, courseCode, courseTitle, crn, "",  startHour,
+                        startMinute, endHour, endMinute, days, sectionType, location, instructor, credits,
+                        dates));
+            }
+        }
+        return courses;
+    }
 }
