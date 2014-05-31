@@ -1,99 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
 
-    <TabHost
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tabHost">
+    <!-- The main content view -->
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+        <TabHost
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tabHost">
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="382dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:clickable="true"></TabWidget>
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
+            <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/about_team"
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="382dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:clickable="true"></TabWidget>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_team_name"
+                    android:id="@+id/textView"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="30dp" />
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical">
+                    android:layout_height="fill_parent">
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/team_name"
-                        android:layout_gravity="top"
-                        android:text="(Team Name)"
-                        android:textAlignment="center"
-                        android:textSize="@dimen/text_large"
-                        android:gravity="top|center_horizontal"
-                        android:singleLine="true"
-                        android:paddingTop="@dimen/padding_small"
-                        android:paddingBottom="@dimen/padding_small" />
-
-                    <ImageView
-                        android:layout_width="300dp"
-                        android:layout_height="221dp"
-                        android:id="@+id/team_photo"
-                        android:layout_gravity="center_horizontal" />
-
-                    <TableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/about_memberlist"></TableLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/about_help"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/about_FAQ"
-                        android:id="@+id/faq"
-                        android:layout_weight="7.71"
-                        android:textSize="20dp"
-                        android:padding="20dp"
-                        android:textStyle="bold" />
-
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="375dp"
-                        android:id="@+id/listViewQA" />
-
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/tab_about_team"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/about_report"
-                        android:id="@+id/about_report"
-                        android:gravity="top|center"
-                        android:textColor="#2686ff" />
-                </LinearLayout>
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
 
-            </FrameLayout>
+                        <ImageView
+                            android:layout_width="300dp"
+                            android:layout_height="221dp"
+                            android:id="@+id/team_photo"
+                            android:layout_gravity="center_horizontal" />
 
-        </LinearLayout>
-    </TabHost>
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/about_memberlist"></TableLayout>
 
-</LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab_about_help"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </TabHost>
+
+    </LinearLayout>
+    <!-- The navigation drawer -->
+    <include layout="@layout/drawer"/>
+
+</android.support.v4.widget.DrawerLayout>

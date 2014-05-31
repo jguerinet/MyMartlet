@@ -111,11 +111,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/DialogMyMcGill"/>
 
+        <activity android:name=".activity.MemberActivity" />
         <activity
             android:name=".activity.AboutActivity"
-            android:label="@string/title_about"/>
-
-        <activity android:name=".activity.MemberActivity" />
+            android:label="@string/title_about" />
 
         <meta-data
             android:name="com.google.android.gms.version"
