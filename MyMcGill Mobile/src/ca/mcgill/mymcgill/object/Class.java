@@ -1,12 +1,8 @@
 package ca.mcgill.mymcgill.object;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.joda.time.LocalTime;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,190 +13,136 @@ import java.util.List;
 public class Class implements Serializable{
     private static final long serialVersionUID = 1L;
 
-	private int crn;
-	private String courseCode, section;
-	private int startH, startM, endH, endM;
-	private String room;
-	private Day day;
-	private String profName;
-	private String courseName;
-	private String credits;
-	private String scheduleType;
+    private Course mCourse;
+    private int mCRN;
+    private String mSection;
+    private LocalTime mStartTime, mEndTime, mActualStartTime, mActualEndTime;
+    private List<Day> mDays;
+    private String mSectionType;
+    private String mLocation;
+    private String mInstructor;
+    private int mCredits;
+    private String mDates;
 
-	private Class(int crn, String courseCode, String section, char day, int startHour, int startMinute, int endHour, int endMinute, String room, String professorName, String courseName, String credits, String scheduleType) {
-		this.crn = crn;
-		this.courseCode = courseCode;
-		this.section = section;
-		this.day = Day.getDay(day);
-		this.startH = startHour;
-		//Remove 5 minutes to the start to get round numbers
-		this.startM = (startMinute - 5) % 60;
-		this.endH = endHour;
-		//Add 5 minutes to the end to get round numbers
-		this.endM = (endMinute + 5) % 60;
-		//Make sure it didn't loop around. If so, we need to increment the hour
-		if(this.endM == 0){
-			this.endH ++;
-		}
-		this.room = room;
-		this.profName = professorName;
-		this.courseName = courseName;
-		this.credits = credits;
-		this.scheduleType = scheduleType;
-	}
+    public Class(Course course, int crn, String section, int startHour, int startMinute, int endHour,
+                 int endMinute, List<Day> days, String sectionType, String location, String instructor,
+                 int credits, String dates){
+        this.mCourse = course;
+        this.mCRN = crn;
+        this.mSection = section;
+        this.mActualStartTime = new LocalTime(startHour, startMinute);
+        //Remove 5 minutes to the start to get round numbers
+        this.mStartTime = new LocalTime(startHour, (startMinute - 5) % 60);
+        this.mActualEndTime = new LocalTime(endHour, endMinute);
+        //Add 5 minutes to the end to get round numbers, increment the hour if the minutes get set to 0s
+        int endM = (endMinute + 5) % 60;
+        int endH = endHour;
+        if(endM == 0){
+            endH ++;
+        }
+        this.mEndTime = new LocalTime(endH, endM);
+        this.mDays = days;
+        this.mSectionType = sectionType;
+        this.mLocation = location;
+        this.mInstructor = instructor;
+        this.mCredits = credits;
+        this.mDates = dates;
+    }
 
-	public int getCRN(){
-		return crn;
-	}
-	public String getCourseCode() {
-		return courseCode;
-	}
-	public String getSection(){
-		return this.section;
-	}
-	public Day getDay(){
-		return day;
-	}
-	public int getStartHour() {
-		return startH;
-	}
-	public int getStartMinute() {
-		return startM;
-	}
-	public int getEndHour() {
-		return endH;
-	}
-	public int getEndMinute() {
-		return endM;
-	}
-	public int getStartTimeInMinutes(){
-		return 60*startH + startM;
-	}
-	public int getEndTimeInMinutes(){
-		return 60*endH + endM;
-	}
-	public String getRoom()
-	{
-		return room;
-	}
-	public String getProfessorName() {
-		return profName;
-	}
-	public String getCredits() {
-		return credits;
-	}
-	public String getCourseName() {
-		return courseName;
-	}
-	public String getScheduleType() {
-		return scheduleType;
-	}
+	/* GETTERS */
+    /**
+     * Get the course CRN
+     * @return The course CRN
+     */
+    public int getCRN(){
+        return mCRN;
+    }
 
-	public static List<Class> parseCourseList(String scheduleString){
-		List<Class> schedule = new ArrayList<Class>();
+    /**
+     * Get the Section the user is in
+     * @return The course section
+     */
+    public String getSection(){
+        return mSection;
+    }
 
-		//Parsing code
-		Document doc = Jsoup.parse(scheduleString);
-		Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
+    /**
+     * Get the start time of the course (rounded off to the nearest half hour)
+     * @return The course start time
+     */
+    public LocalTime getStartTime(){
+        return mStartTime;
+    }
 
-		String name, data, credits;
-		int crn;
-		if (scheduleTable.isEmpty()) {
-			return schedule;
-		}
-		for (int i = 0; i < scheduleTable.size(); i+=2) {
-			name = getCourseCodeAndName(scheduleTable.get(i));
-			crn = getCRN(scheduleTable.get(i));
-			credits = getCredit(scheduleTable.get(i));
-			if (i+1 < scheduleTable.size() && scheduleTable.get(i+1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
-				data = getSchedule(scheduleTable.get(i+1));
-			} else {
-				data = "";
-				i = i - 1;
-			}
+    /**
+     * Get the end time of the course (rounded off the the nearest half hour)
+     * @return The course end time
+     */
+    public LocalTime getEndTime(){
+        return mEndTime;
+    }
 
-			List<Class> courseToBeAdded = addCourseSched(name, crn, credits, data);
-			if (!courseToBeAdded.isEmpty()) {
-				schedule.addAll(courseToBeAdded);
-			}
-		}
+    /**
+     * Get the actual start time of the course given by Minerva
+     * @return The actual course start time
+     */
+    public LocalTime getActualStartTime(){
+        return mActualStartTime;
+    }
 
-		return schedule;
-	}
+    /**
+     * Get the actual end time of the course given by Minerva
+     * @return The actual course end time
+     */
+    public LocalTime getActualEndTime(){
+        return mActualEndTime;
+    }
 
-	private static String getCourseCodeAndName(Element dataDisplayTable) {
-		Element caption = dataDisplayTable.getElementsByTag("caption").first();
-		String[] texts = caption.text().split(" - ");
-		return (texts[0].substring(0, texts[0].length() - 1) + "," + texts[1] + "," + texts[2]);
-	}
+    /**
+     * Get the days this course is on
+     * @return The course days
+     */
+    public List<Day> getDays(){
+        return mDays;
+    }
 
-	private static int getCRN(Element dataDisplayTable) {
-		Element row = dataDisplayTable.getElementsByTag("tr").get(1);
-		String crn = row.getElementsByTag("td").first().text();
-		return Integer.parseInt(crn);
-	}
-	private static String getCredit(Element dataDisplayTable) {
-		Element row = dataDisplayTable.getElementsByTag("tr").get(5);
-		String credit = row.getElementsByTag("td").first().text();
-		return credit;
-	}
+    /**
+     * Get the course section type
+     * @return The course section type
+     */
+    public String getSectionType(){
+        return mSectionType;
+    }
 
-	//return time, day, room, scheduleType, professor
-	private static String getSchedule(Element dataDisplayTable) {
-		Element row = dataDisplayTable.getElementsByTag("tr").get(1);
-		Elements cells = row.getElementsByTag("td");
-		return (cells.get(0).text() + "," + cells.get(1).text() + "," + cells.get(2).text() + "," + cells.get(4).text() + "," + cells.get(5).text());
-	}
+    /**
+     * Get the course's location
+     * @return The course's location
+     */
+    public String getLocation(){
+        return mLocation;
+    }
 
+    /**
+     * Get the instructor for this course
+     * @return Return the course's instructor
+     */
+    public String getInstructor(){
+        return mInstructor;
+    }
 
-	private static List<Class> addCourseSched(String course, int crn, String credit, String data) {
-		int startHour = 0, startMinute = 0, endHour = 0, endMinute = 0;
+    /**
+     * Get the course credits
+     * @return The course credits
+     */
+    public int getCredits(){
+        return mCredits;
+    }
 
-		String courseName = course.split(",")[0];
-		String courseCode = course.split(",")[1];
-		String section = course.split(",")[2];
-
-
-		List<Class> courseList = new ArrayList<Class>();
-
-		if (!data.equals("")) {
-			String[] dataItems = data.split(",");
-			String[] times = dataItems[0].split(" - ");
-			char[] days = dataItems[1].toCharArray();
-			String room = dataItems[2];
-			String profName = dataItems[4];
-			String scheduleType = dataItems[3];
-
-			try {
-				startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-				startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-				endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-				endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
-				String startPM = times[0].split(" ")[1];
-				String endPM = times[1].split(" ")[1];
-
-				//If it's PM, then add 12 hours to the hours for 24 hours format
-				//Make sure it isn't noon
-				if (startPM.equals("PM") && startHour != 12) {
-					startHour += 12;
-				}
-				if (endPM.equals("PM") && endHour != 12) {
-					endHour += 12;
-				}
-			}
-			//Try/Catch for courses with no assigned times
-			catch (NumberFormatException e) {
-				startHour = 0;
-				startMinute = 0;
-				endHour = 0;
-				endMinute = 0;
-			}
-			for (char day : days) {
-				courseList.add(new Class(crn, courseCode, section, day, startHour, startMinute, endHour, endMinute, room, profName, courseName, credit, scheduleType));
-			}
-
-		}
-
-		return courseList;
-	}
+    /**
+     * Get the dates this course is on
+     * @return The course dates
+     */
+    public String getDates(){
+        return mDates;
+    }
 }
