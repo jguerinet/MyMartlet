@@ -1,5 +1,7 @@
 package ca.mcgill.mymcgill.object;
 
+import org.joda.time.LocalTime;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class Course implements Serializable{
     private int mCRN;
     private String mCourseCode;
     private String mCourseTitle;
-    private int startH, startM, endH, endM;
+    private LocalTime mStartTime, mEndTime, mActualStartTime, mActualEndTime;
     private List<Day> mDays;
     private String mSectionType;
     private String mLocation;
@@ -77,11 +79,35 @@ public class Course implements Serializable{
 
 
     /**
-     * Get the time this course is at
-     * @return The course time
+     * Get the start time of the course (rounded off to the nearest half hour)
+     * @return The course start time
      */
-    public String getTime(){
-        return time;
+    public LocalTime getStartTime(){
+        return mStartTime;
+    }
+
+    /**
+     * Get the end time of the course (rounded off the the nearest half hour)
+     * @return The course end time
+     */
+    public LocalTime getEndTime(){
+        return mEndTime;
+    }
+
+    /**
+     * Get the actual start time of the course given by Minerva
+     * @return The actual course start time
+     */
+    public LocalTime getActualStartTime(){
+        return mActualStartTime;
+    }
+
+    /**
+     * Get the actual end time of the course given by Minerva
+     * @return The actual course end time
+     */
+    public LocalTime getActualEndTime(){
+        return mActualEndTime;
     }
 
     /**
