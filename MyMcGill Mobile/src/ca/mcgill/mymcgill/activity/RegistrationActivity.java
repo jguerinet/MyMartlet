@@ -108,6 +108,11 @@ public class RegistrationActivity extends DrawerActivity{
         //Obtain user input from text boxes
         EditText subjectBox = (EditText) findViewById(R.id.registration_subject);
         String subject = subjectBox.getText().toString().toUpperCase();
+        if(!subject.matches("[A-Za-z]{4}")){
+            String toastMessage = getResources().getString(R.string.registration_invalid_subject);
+            Toast.makeText(RegistrationActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         EditText courseNumBox = (EditText) findViewById(R.id.registration_course_number);
         String courseNumber = courseNumBox.getText().toString();

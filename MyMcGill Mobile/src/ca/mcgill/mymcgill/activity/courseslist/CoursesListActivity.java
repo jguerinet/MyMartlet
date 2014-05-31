@@ -10,6 +10,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import java.util.List;
 
 import ca.mcgill.mymcgill.App;
@@ -194,6 +198,10 @@ public class CoursesListActivity extends DrawerActivity {
             //Otherwise, check for errors
             else{
                 //TODO: Parse result of registration and check for errors
+                Document document = Jsoup.parse(resultString, "UTF-8");
+
+                //Find rows of HTML by class
+                Elements dataRows = document.getElementsByClass("dddefault");
                 return true;
             }
         }

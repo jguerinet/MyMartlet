@@ -74,7 +74,7 @@ public class DrawerActivity extends BaseActivity {
             }
         }
         else if(this instanceof AboutActivity) {
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout,DrawerAdapter.ABOUT);
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout,DrawerAdapter.ABOUT_POSITION);
         }
         else{
             Log.e("Drawer Adapter", "not well initialized");
