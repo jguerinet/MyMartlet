@@ -13,7 +13,10 @@ import java.util.List;
 public class Class implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private Course mCourse;
+    private Season mSeason;
+    private int mYear;
+    private String mCourseCode;
+    private String mCourseTitle;
     private int mCRN;
     private String mSection;
     private LocalTime mStartTime, mEndTime, mActualStartTime, mActualEndTime;
@@ -24,10 +27,14 @@ public class Class implements Serializable{
     private int mCredits;
     private String mDates;
 
-    public Class(Course course, int crn, String section, int startHour, int startMinute, int endHour,
-                 int endMinute, List<Day> days, String sectionType, String location, String instructor,
-                 int credits, String dates){
-        this.mCourse = course;
+    public Class(Season season, int year, String courseCode, String courseTitle, int crn,
+                 String section, int startHour, int startMinute, int endHour, int endMinute,
+                 List<Day> days, String sectionType, String location, String instructor, int credits,
+                 String dates){
+        this.mSeason = season;
+        this.mYear = year;
+        this.mCourseCode = courseCode;
+        this.mCourseTitle = courseTitle;
         this.mCRN = crn;
         this.mSection = section;
         this.mActualStartTime = new LocalTime(startHour, startMinute);
@@ -50,6 +57,22 @@ public class Class implements Serializable{
     }
 
 	/* GETTERS */
+    /**
+     * Get the course code
+     * @return The course code
+     */
+    public String getCourseCode(){
+        return mCourseCode;
+    }
+
+    /**
+     * Get the course title
+     * @return The course title
+     */
+    public String getCourseTitle() {
+        return mCourseTitle;
+    }
+
     /**
      * Get the course CRN
      * @return The course CRN
@@ -144,5 +167,24 @@ public class Class implements Serializable{
      */
     public String getDates(){
         return mDates;
+    }
+
+
+    /* HELPER METHODS */
+    /**
+     * Checks to see if two classes are equal
+     * @param object The course to check
+     * @return True if they are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object object){
+        if(!(object instanceof Class)){
+            return false;
+        }
+        Class aClass = (Class)object;
+
+        //Check if they have the same season, year, and CRN
+        return this.mCRN == aClass.mCRN && this.mYear == aClass.mYear &&
+                this.mSeason == aClass.mSeason;
     }
 }

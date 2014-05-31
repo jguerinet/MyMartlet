@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.mymcgill.App;
+import ca.mcgill.mymcgill.object.Class;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.object.Season;
@@ -335,17 +335,14 @@ public class Parser {
      * @param courseHTML The HTML String to parse
      * @return The list of courses
      */
-    public static List<Course> parseCourseList(Season season, int year, String courseHTML){
-        //Get the list of courses already parsed for that year
-        List<Course> courses = App.getTranscript().getCourses(season, year);
-        if(courses == null){
-            courses = new ArrayList<Course>();
-        }
+    public static List<Class> parseClassList(Season season, int year, String courseHTML){
+        //Get the list of classes already parsed for that year
+        List<Class> classes = new ArrayList<Class>();
 
         Document doc = Jsoup.parse(courseHTML);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
         if (scheduleTable.isEmpty()) {
-            return courses;
+            return classes;
         }
         for (int i = 0; i < scheduleTable.size(); i+=2) {
             Element row;
@@ -398,7 +395,7 @@ public class Parser {
                         endHour += 12;
                     }
                 }
-                //Try/Catch for courses with no assigned times
+                //Try/Catch for classes with no assigned times
                 catch (NumberFormatException e) {
                     startHour = 0;
                     startMinute = 0;
@@ -413,12 +410,8 @@ public class Parser {
                 }
 
                 //Find the concerned course
-                Course course = null;
-                for(Course downloadedCourse : courses){
-                    if()
-                }
-                courses.add(new Course(season, year, crn, courseCode, courseTitle, section, startHour,
-                        startMinute, endHour, endMinute, days, sectionType, location, instructor, credits));
+                classes.add(new Class(season, year, courseCode, courseTitle, crn, section, startHour,
+                        startMinute, endHour, endMinute, days, sectionType, location, instructor, credits, null));
             }
             //If there is no data to parse, reset i and continue
             else {
@@ -426,6 +419,6 @@ public class Parser {
             }
         }
 
-        return courses;
+        return classes;
     }
 }
