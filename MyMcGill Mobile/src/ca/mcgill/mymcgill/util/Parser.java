@@ -331,15 +331,15 @@ public class Parser {
     }
 
     /**
-     * Parses an HTML String to generate a list of courses
-     * @param courseHTML The HTML String to parse
+     * Parses an HTML String to generate a list of classes
+     * @param classHTML The HTML String to parse
      * @return The list of courses
      */
-    public static List<Class> parseClassList(Season season, int year, String courseHTML){
+    public static List<Class> parseClassList(Season season, int year, String classHTML){
         //Get the list of classes already parsed for that year
         List<Class> classes = new ArrayList<Class>();
 
-        Document doc = Jsoup.parse(courseHTML);
+        Document doc = Jsoup.parse(classHTML);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
         if (scheduleTable.isEmpty()) {
             return classes;
@@ -427,8 +427,8 @@ public class Parser {
      * @param classHTML The HTML String to parse
      * @return The list of resulting classes
      */
-    public List<Course> parseClassResults(Season season, int year, String classHTML){
-        List<Course> courses = new ArrayList<Course>();
+    public List<Class> parseClassResults(Season season, int year, String classHTML){
+        List<Class> classes = new ArrayList<Class>();
 
         Document document = Jsoup.parse(classHTML, "UTF-8");
         //Find rows of HTML by class
@@ -447,7 +447,10 @@ public class Parser {
             int crn = 00000;
             String instructor = "";
             String location = "";
-            String time = "";
+            int startHour = 0;
+            int startMinute = 0;
+            int endHour = 0;
+            int endMinute = 0;
             String dates = "";
 
             int i = 0;
@@ -502,7 +505,31 @@ public class Parser {
                             break;
                         // Time
                         case 9:
-                            time = row.text();
+                            String[] times = row.text().split(" - ");
+                            try {
+                                startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+                                startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+                                endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+                                endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+                                String startPM = times[0].split(" ")[1];
+                                String endPM = times[1].split(" ")[1];
+
+                                //If it's PM, then add 12 hours to the hours for 24 hours format
+                                //Make sure it isn't noon
+                                if (startPM.equals("PM") && startHour != 12) {
+                                    startHour += 12;
+                                }
+                                if (endPM.equals("PM") && endHour != 12) {
+                                    endHour += 12;
+                                }
+                            }
+                            //Try/Catch for classes with no assigned times
+                            catch (NumberFormatException e) {
+                                startHour = 0;
+                                startMinute = 0;
+                                endHour = 0;
+                                endMinute = 0;
+                            }
                             break;
                         // Instructor
                         case 16:
@@ -527,11 +554,11 @@ public class Parser {
 
             if( !courseCode.equals("ERROR")){
                 //Create a new course object and add it to list
-                courses.add(new Class(season, year, courseCode, courseTitle, crn, "",  startHour,
+                classes.add(new Class(season, year, courseCode, courseTitle, crn, "", startHour,
                         startMinute, endHour, endMinute, days, sectionType, location, instructor, credits,
                         dates));
             }
         }
-        return courses;
+        return classes;
     }
 }

@@ -30,20 +30,6 @@ public class Course implements Serializable{
         this.mAverageGrade = averageGrade;
     }
 
-    //Constructor for course wishlist
-    public Course(int credits, String courseCode, String courseTitle, String sectionType, String days, int crn, String instructor, String location, String time, String dates) {
-        this.mCredits = credits;
-        this.mCourseCode = courseCode;
-        this.mCourseTitle = courseTitle;
-        this.mSectionType = sectionType;
-        this.mDays = days;
-        this.mCRN = crn;
-        this.mInstructor = instructor;
-        this.mLocation = location;
-        this.time = time;
-        this.mDates = dates;
-    }
-
     /* GETTERS */
     /**
      * Get the course code
