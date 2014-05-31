@@ -31,7 +31,7 @@ import ca.mcgill.mymcgill.util.DialogHelper;
 
 /**
  * Created by Ryan Singzon on 19/05/14.
- * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
+ * Takes user input from RegistrationActivity and obtains a list of searchedCourses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
 
@@ -75,7 +75,7 @@ public class RegistrationActivity extends DrawerActivity{
         });
     }
 
-    //Searches for the selected courses
+    //Searches for the selected searchedCourses
     public void searchCourses(View v){
         Spinner semesterSpinner = (Spinner) findViewById(R.id.registration_semester);
         String semester = semesterSpinner.getSelectedItem().toString();
@@ -108,7 +108,7 @@ public class RegistrationActivity extends DrawerActivity{
         mCourseSearchUrl += "&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_levl=%25&sel_ptrm=%25" +
                            "&sel_instr=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a%20Response%20Headersview%20source";
 
-        //Obtain courses
+        //Obtain searchedCourses
         new CoursesGetter().execute();
     }
 
@@ -121,7 +121,7 @@ public class RegistrationActivity extends DrawerActivity{
             setProgressBarIndeterminateVisibility(true);
         }
 
-        //Retrieve courses obtained from Minerva
+        //Retrieve searchedCourses obtained from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
             String coursesString = Connection.getInstance().getUrl(RegistrationActivity.this, mCourseSearchUrl);
@@ -143,7 +143,7 @@ public class RegistrationActivity extends DrawerActivity{
             }
             else{
                 //If not, parse it
-                Constants.courses = parseCourses(coursesString);
+                Constants.searchedCourses = parseCourses(coursesString);
                 return true;
             }
         }
@@ -154,7 +154,7 @@ public class RegistrationActivity extends DrawerActivity{
             setProgressBarIndeterminateVisibility(false);
 
             if(loadInfo){
-                //Go to the CoursesListActivity with the parsed courses
+                //Go to the CoursesListActivity with the parsed searchedCourses
                 Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
                 intent.putExtra(Constants.WISHLIST, false);
                 startActivity(intent);
@@ -185,7 +185,7 @@ public class RegistrationActivity extends DrawerActivity{
         startActivity(intent);
     }*/
 
-    //Parses the HTML retrieved from Minerva and returns a list of courses
+    //Parses the HTML retrieved from Minerva and returns a list of searchedCourses
     //Only used if this activity is a result of a search, and not for the course wishlist
     private List<Course> parseCourses(String coursesString){
         List<Course> courses = new ArrayList<Course>();

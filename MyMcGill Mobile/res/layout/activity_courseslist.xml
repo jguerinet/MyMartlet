@@ -18,7 +18,44 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@android:id/list"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Register"
+            android:background="@drawable/drawable_red_darkredpressed"
+            android:textColor="@drawable/color_white_greypressed"
+            android:padding="@dimen/padding_small"
+            android:textSize="@dimen/text_medium"
+            android:gravity="center"
+            android:id="@+id/course_register"/>
+
+        <View
+            android:layout_width="@dimen/line"
+            android:layout_height="match_parent"
+            android:background="@color/white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add to Wishlist"
+            android:background="@drawable/drawable_red_darkredpressed"
+            android:textColor="@drawable/color_white_greypressed"
+            android:padding="@dimen/padding_small"
+            android:textSize="@dimen/text_medium"
+            android:gravity="center"
+            android:id="@+id/course_wishlist"/>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -188,7 +188,7 @@ public class CourseSched implements Serializable{
 					endHour += 12;
 				}
 			}
-			//Try/Catch for courses with no assigned times
+			//Try/Catch for searchedCourses with no assigned times
 			catch (NumberFormatException e) {
 				startHour = 0;
 				startMinute = 0;

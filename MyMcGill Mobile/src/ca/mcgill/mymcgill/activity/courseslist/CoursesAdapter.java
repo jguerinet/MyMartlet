@@ -95,8 +95,8 @@ public class CoursesAdapter extends BaseAdapter {
     }
 
     /**
-     * Get the list of checked courses
-     * @return The checked courses.
+     * Get the list of checked searchedCourses
+     * @return The checked searchedCourses.
      */
     public List<Course> getCheckedCourses(){
         return mCheckedCourses;

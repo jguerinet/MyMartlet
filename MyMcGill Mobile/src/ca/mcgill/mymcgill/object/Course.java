@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Ryan Singzon on 30/01/14.
  *
- * This class will contain information pertaining to individual McGill courses that students
+ * This class will contain information pertaining to individual McGill searchedCourses that students
  * have taken, such as the grade, credit, and class average
  */
 public class Course implements Serializable{

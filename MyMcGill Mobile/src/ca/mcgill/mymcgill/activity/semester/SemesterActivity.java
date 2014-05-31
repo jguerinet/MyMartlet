@@ -51,7 +51,7 @@ public class SemesterActivity extends BaseListActivity {
         semesterFullTime.setText(semester.isFullTime() ? getResources().getString(R.string.semester_fullTime) :
                 getResources().getString(R.string.semester_partTime));
 
-        //Set up the courses list
+        //Set up the searchedCourses list
         SemesterAdapter adapter = new SemesterAdapter(this, semester);
         setListAdapter(adapter);
     }

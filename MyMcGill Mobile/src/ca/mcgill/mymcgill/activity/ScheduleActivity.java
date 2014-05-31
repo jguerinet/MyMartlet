@@ -60,7 +60,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         mCurrentSemester = App.getDefaultSemester();
 
-        //Get the first list of courses from the ApplicationClass
+        //Get the first list of searchedCourses from the ApplicationClass
         mCourseList = App.getSchedule();
 
         //ViewPager stuff
@@ -82,11 +82,11 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         }
     }
 
-    //Method that returns a list of courses for a given day
+    //Method that returns a list of searchedCourses for a given day
     public List<CourseSched> getCoursesForDay(Day day){
         List<CourseSched> courses = new ArrayList<CourseSched>();
 
-        //Go through the list of courses, find which ones have the same day
+        //Go through the list of searchedCourses, find which ones have the same day
         for(CourseSched course : mCourseList){
             if(course.getDay() == day){
                 courses.add(course);
