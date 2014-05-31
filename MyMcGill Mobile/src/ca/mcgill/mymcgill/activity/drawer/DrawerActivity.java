@@ -14,6 +14,7 @@ import ca.mcgill.mymcgill.activity.MyCoursesActivity;
 import ca.mcgill.mymcgill.activity.RegistrationActivity;
 import ca.mcgill.mymcgill.activity.SettingsActivity;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
+import ca.mcgill.mymcgill.activity.courseslist.CoursesListActivity;
 import ca.mcgill.mymcgill.activity.ebill.EbillActivity;
 import ca.mcgill.mymcgill.activity.inbox.InboxActivity;
 import ca.mcgill.mymcgill.activity.transcript.TranscriptActivity;
@@ -60,6 +61,16 @@ public class DrawerActivity extends BaseActivity {
         }
         else if(this instanceof MyCoursesActivity){
             mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MYCOURSES_POSITION);
+        }
+        else if(this instanceof CoursesListActivity){
+            //Wishlist
+            if(((CoursesListActivity)this).wishlist){
+                mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.WISHLIST_POSITION);
+            }
+            //Course search
+            else{
+                mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
+            }
         }
         else{
             Log.e("Drawer Adapter", "not well initialized");

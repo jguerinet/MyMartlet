@@ -11,7 +11,7 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.base.BaseListActivity;
+import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.util.Constants;
 
@@ -20,25 +20,28 @@ import ca.mcgill.mymcgill.util.Constants;
  * Date :  2014-05-26 7:09 PM
  * Shows a list of searchedCourses
  */
-public class CoursesListActivity extends BaseListActivity {
-    public List<Course> mCourses;
+public class CoursesListActivity extends DrawerActivity {
+    public boolean wishlist;
+
+    private List<Course> mCourses;
     private ListView mListView;
     private CoursesAdapter mAdapter;
-    private boolean mWishlist;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courseslist);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-        mWishlist = getIntent().getBooleanExtra(Constants.WISHLIST, true);
+        wishlist = getIntent().getBooleanExtra(Constants.WISHLIST, true);
+
+        super.onCreate(savedInstanceState);
 
         // Views
-        mListView = (ListView)findViewById(android.R.id.list);
+        mListView = (ListView)findViewById(R.id.courses_list);
+        mListView.setEmptyView(findViewById(R.id.courses_empty));
 
         //Check if we need to load the wishlist
-        if(mWishlist){
+        if(wishlist){
             mCourses = App.getCourseWishlist();
         }
         //If not, get the searched courses
@@ -58,7 +61,7 @@ public class CoursesListActivity extends BaseListActivity {
 
         //Add/Remove to/from Wishlist Button
         TextView wishlist = (TextView)findViewById(R.id.course_wishlist);
-        wishlist.setText(mWishlist ? getResources().getString(R.string.courses_remove_wishlist) :
+        wishlist.setText(this.wishlist ? getResources().getString(R.string.courses_remove_wishlist) :
             getResources().getString(R.string.courses_add_wishlist));
         wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +76,7 @@ public class CoursesListActivity extends BaseListActivity {
                     toastMessage = getResources().getString(R.string.wishlist_error_empty);
                 }
                 //If we are in the wishlist, this button is to remove a course
-                else if(mWishlist){
+                else if(CoursesListActivity.this.wishlist){
                     toastMessage = getResources().getString(R.string.wishlist_remove, checkedCourses.size());
                     mCourses.removeAll(checkedCourses);
 
@@ -88,11 +91,20 @@ public class CoursesListActivity extends BaseListActivity {
                 else{
                     //Get the wishlist courses
                     List<Course> wishlist = App.getCourseWishlist();
-                    toastMessage = getResources().getString(R.string.wishlist_add, checkedCourses.size());
-                    wishlist.addAll(checkedCourses);
+
+                    //Only add it if it's not already part of the wishlist
+                    int coursesAdded = 0;
+                    for(Course course : checkedCourses){
+                        if(!wishlist.contains(course)){
+                            wishlist.add(course);
+                            coursesAdded ++;
+                        }
+                    }
 
                     //Save the courses to the App context
                     App.setCourseWishlist(wishlist);
+
+                    toastMessage = getResources().getString(R.string.wishlist_add, coursesAdded);
                 }
 
                 //Visual feedback of what was just done
