@@ -83,7 +83,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Adnan"
+                                            android:src="@drawable/adnan"
                                             android:clickable="false" />
 
                                         <TextView
@@ -111,7 +111,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Gabe" />
+                                            android:src="@drawable/gabe" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Hernan" />
+                                            android:src="@drawable/hernan" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -174,7 +174,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Josh" />
+                                            android:src="@drawable/josh" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -210,7 +210,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Julien" />
+                                            android:src="@drawable/julien" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -237,7 +237,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Omar" />
+                                            android:src="@drawable/omar" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -272,7 +272,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Quang" />
+                                            android:src="@drawable/quang" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -299,7 +299,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Ryan" />
+                                            android:src="@drawable/ryan" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -334,7 +334,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Shabbir" />
+                                            android:src="@drawable/shabbir" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -361,7 +361,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Xavier" />
+                                            android:src="@drawable/xavier" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -396,7 +396,7 @@
                                             android:layout_alignParentTop="true"
                                             android:layout_alignParentLeft="true"
                                             android:layout_alignParentStart="true"
-                                            android:src="@drawable/Yulric" />
+                                            android:src="@drawable/yulric" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
