@@ -427,7 +427,7 @@ public class Parser {
      * @param classHTML The HTML String to parse
      * @return The list of resulting classes
      */
-    public List<Class> parseClassResults(Season season, int year, String classHTML){
+    public static List<Class> parseClassResults(Season season, int year, String classHTML){
         List<Class> classes = new ArrayList<Class>();
 
         Document document = Jsoup.parse(classHTML, "UTF-8");

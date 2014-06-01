@@ -1,6 +1,6 @@
 package ca.mcgill.mymcgill.activity;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,11 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,19 +25,17 @@ import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Season;
+import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
+import ca.mcgill.mymcgill.util.Parser;
 
 /**
  * Created by Ryan Singzon on 19/05/14.
  * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
-
-    private String mCourseSearchUrl;
-    private String mMinervaUrl;
-
     private List<String> mSemesterStrings;
     private String mSemester;
 
@@ -114,7 +107,7 @@ public class RegistrationActivity extends DrawerActivity{
         String courseNumber = courseNumBox.getText().toString();
 
         //Insert user input into the appropriate location in the Minerva URL
-        mCourseSearchUrl = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?term_in=";
+        String mCourseSearchUrl = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?term_in=";
         mCourseSearchUrl += semester;
         mCourseSearchUrl += "&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy" +
                            "&sel_levl=dummy&sel_sess=dummy&sel_instr=dummy&sel_ptrm=dummy&sel_attr=dummy&sel_subj=";
@@ -130,196 +123,63 @@ public class RegistrationActivity extends DrawerActivity{
 
     //Connects to Minerva in a new thread
     private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
+        private Season mSeason;
+        private int mYear;
+        private String mClassSearchURL;
+
+        private ProgressDialog mDialog;
+
+        public CoursesGetter(Season season, int year, String classSearchURL){
+            this.mSeason = season;
+            this.mYear = year;
+            this.mClassSearchURL = classSearchURL;
+        }
 
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
-            setProgressBarIndeterminateVisibility(true);
+            mDialog = new ProgressDialog(RegistrationActivity.this);
+            mDialog.setMessage(getResources().getString(R.string.please_wait));
+            mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mDialog.show();
         }
 
         //Retrieve courses obtained from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            String coursesString = Connection.getInstance().getUrl(RegistrationActivity.this, mCourseSearchUrl);
+            String classesString = Connection.getInstance().getUrl(RegistrationActivity.this, mClassSearchURL);
 
-            if(coursesString == null){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Activity activity = RegistrationActivity.this;
-                        try {
-                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                    activity.getResources().getString(R.string.error_other));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+            //There was an error
+            if(classesString == null){
                 return false;
             }
+            //Parse
             else{
-                //If not, parse it
-                Constants.searchedCourses = parseCourses(coursesString);
+                Constants.searchedClasses = Parser.parseClassResults(mSeason, mYear, classesString);
                 return true;
             }
         }
 
         //Update or create transcript object and display data
         @Override
-        protected void onPostExecute(Boolean loadInfo){
-            setProgressBarIndeterminateVisibility(false);
+        protected void onPostExecute(Boolean infoLoaded){
+            mDialog.dismiss();
 
-            if(loadInfo){
-                //Go to the CoursesListActivity with the parsed courses
+            //There was an error
+            if(!infoLoaded){
+                try {
+                    DialogHelper.showNeutralAlertDialog(RegistrationActivity.this, getResources().getString(R.string.error),
+                            getResources().getString(R.string.error_other));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            //Go to the CoursesListActivity with the parsed courses
+            else{
                 Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
                 intent.putExtra(Constants.WISHLIST, false);
                 startActivity(intent);
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.refresh, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-
-                //Refresh code here if necessary?
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /*public void wish(View v) {
-        Intent intent = new Intent(this, WishlistActivity.class);
-        //startActivityForResult(intent, CHANGE_SEMESTER_CODE);
-        startActivity(intent);
-    }*/
-
-    //Parses the HTML retrieved from Minerva and returns a list of courses
-    //Only used if this activity is a result of a search, and not for the course wishlist
-    private List<Course> parseCourses(String coursesString){
-        List<Course> courses = new ArrayList<Course>();
-
-        Document document = Jsoup.parse(coursesString, "UTF-8");
-
-        //Find rows of HTML by class
-        Elements dataRows = document.getElementsByClass("dddefault");
-
-        int rowNumber = 0;
-        boolean loop = true;
-
-        while (loop) {
-
-            // Create a new course object
-            int credits = 99;
-            String courseCode = "ERROR";
-            String courseTitle = "ERROR";
-            String sectionType = "";
-            String days = "";
-            int crn = 00000;
-            String instructor = "";
-            String location = "";
-            String time = "";
-            String dates = "";
-
-            int i = 0;
-            while (true) {
-
-                try {
-                    // Get the HTML row
-                    Element row = dataRows.get(rowNumber);
-                    rowNumber++;
-
-                    // End condition: Empty row encountered
-                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
-                        break;
-                    }
-
-                    switch (i) {
-                        // CRN
-                        case 1:
-                            crn = Integer.parseInt(row.text());
-                            break;
-
-                        // Course code
-                        case 2:
-                            courseCode = row.text();
-                            break;
-                        case 3:
-                            courseCode += " " + row.text();
-                            break;
-
-                        // Section type
-                        case 5:
-                            sectionType = row.text();
-                            break;
-
-                        // Number of credits
-                        case 6:
-                            credits = (int) Double.parseDouble(row.text());
-                            break;
-
-                        // Course title
-                        case 7:
-                            courseTitle = row.text();
-                            break;
-
-                        // Days of the week
-                        case 8:
-                            days = row.text();
-
-                            if (days.equals("TBA")) {
-                                time = "TBA";
-                                i = 10;
-                                rowNumber++;
-                            }
-                            break;
-
-                        // Time
-                        case 9:
-                            time = row.text();
-                            break;
-
-                        // Instructor
-                        case 16:
-                            instructor = row.text();
-                            break;
-
-                        // Start/end date
-                        case 17:
-                            dates = row.text();
-                            break;
-
-                        // Location
-                        case 18:
-                            location = row.text();
-                            break;
-                    }
-
-                    i++;
-                }
-                catch (IndexOutOfBoundsException e){
-                    loop = false;
-                    break;
-                }
-                catch (Exception e) {
-
-                }
-            }
-
-            if( !courseCode.equals("ERROR")){
-
-                //Create a new course object and add it to list
-                Course newCourse = new Course(credits, courseCode, courseTitle, sectionType, days, crn, instructor, location, time, dates);
-                courses.add(newCourse);
-            }
-        }
-        return courses;
     }
 }
