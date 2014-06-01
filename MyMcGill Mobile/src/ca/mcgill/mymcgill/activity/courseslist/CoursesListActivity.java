@@ -23,11 +23,8 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.ChangeSemesterActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
-<<<<<<< HEAD
 import ca.mcgill.mymcgill.object.Semester;
-=======
 import ca.mcgill.mymcgill.util.Connection;
->>>>>>> 2cca181f7d8fd490674bdf39329f7bb2790a6cb3
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
 
@@ -225,11 +222,7 @@ public class CoursesListActivity extends DrawerActivity {
         }
     }
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(CoursesListActivity.this, App.getHomePage().getHomePageClass()));
-        super.onBackPressed();
-    }
+
 
     @Override
     public void onResume(){
@@ -242,6 +235,11 @@ public class CoursesListActivity extends DrawerActivity {
         mListView.setAdapter(mAdapter);
     }
 
+    /*@Override
+    public void onBackPressed(){
+        startActivity(new Intent(CoursesListActivity.this, App.getHomePage().getHomePageClass()));
+        super.onBackPressed();
+    }*/
 
     @Override
     public void onBackPressed(){
