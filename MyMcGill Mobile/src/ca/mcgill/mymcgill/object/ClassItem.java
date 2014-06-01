@@ -29,13 +29,20 @@ public class ClassItem implements Serializable{
     private String mSectionType;
     private String mLocation;
     private String mInstructor;
+    private int mCapacity;
+    private int mSeatsAvailable;
+    private int mSeatsRemaining;
+    private int mWaitlistCapacity;
+    private int mWaitlistAvailable;
+    private int mWaitlistRemaining;
     private int mCredits;
     private String mDates;
 
     public ClassItem(Season season, int year, String courseCode, String courseTitle, int crn,
                      String section, int startHour, int startMinute, int endHour, int endMinute,
-                     List<Day> days, String sectionType, String location, String instructor, int credits,
-                     String dates){
+                     List<Day> days, String sectionType, String location, String instructor, int capacity,
+                     int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
+                     int waitlistRemaining, int credits, String dates){
         this.mSeason = season;
         this.mYear = year;
         this.mCourseCode = courseCode;
@@ -57,6 +64,12 @@ public class ClassItem implements Serializable{
         this.mSectionType = sectionType;
         this.mLocation = location;
         this.mInstructor = instructor;
+        this.mCapacity = capacity;
+        this.mSeatsAvailable = seatsAvailable;
+        this.mSeatsRemaining = seatsRemaining;
+        this.mWaitlistCapacity = waitlistCapacity;
+        this.mWaitlistAvailable = waitlistAvailable;
+        this.mWaitlistRemaining = waitlistRemaining;
         this.mCredits = credits;
         this.mDates = dates;
     }

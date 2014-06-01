@@ -431,7 +431,8 @@ public class Parser {
                     if (!classExists) {
                         //Find the concerned course
                         classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, section, startHour,
-                                startMinute, endHour, endMinute, days, sectionType, location, instructor, credits, null));
+                                startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
+                                -1, -1, -1, -1, -1, credits, null));
                     }
                 }
                 //If there is no data to parse, reset i and continue
@@ -458,6 +459,7 @@ public class Parser {
         Elements dataRows = document.getElementsByClass("dddefault");
 
         int rowNumber = 0;
+        int rowsSoFar = 0;
         boolean loop = true;
 
         while (loop) {
@@ -477,6 +479,12 @@ public class Parser {
             //So that the time will be 0
             int endMinute = 55;
             String dates = "";
+            int capacity = 0;
+            int seatsAvailable = 0;
+            int seatsRemaining = 0;
+            int waitlistCapacity = 0;
+            int waitlistAvailable = 0;
+            int waitlistRemaining = 0;
 
             int i = 0;
             while (true) {
@@ -486,9 +494,13 @@ public class Parser {
                     rowNumber++;
 
                     // End condition: Empty row encountered
-                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
+                    if (row.toString().contains("&nbsp;") && rowsSoFar > 10) {
                         break;
                     }
+                    else if(row.toString().contains("NOTES:")){
+                        break;
+                    }
+
                     switch (i) {
                         // CRN
                         case 1:
@@ -521,6 +533,7 @@ public class Parser {
                             if(dayString.equals("TBA")){
                                 days.add(Day.TBA);
                                 i = 10;
+                                rowNumber++;
                             }
                             else{
                                 char[] dayCharacters = dayString.toCharArray();
@@ -559,6 +572,35 @@ public class Parser {
                                 endMinute = 55;
                             }
                             break;
+                        // Capacity
+                        case 10:
+                            capacity = Integer.parseInt(row.text());
+                            break;
+
+                        // Seats available
+                        case 11:
+                            seatsAvailable = Integer.parseInt(row.text());
+                            break;
+
+                        // Seats remaining
+                        case 12:
+                            seatsRemaining = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist capacity
+                        case 13:
+                            waitlistCapacity = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist available
+                        case 14:
+                            waitlistAvailable = Integer.parseInt(row.text());
+                            break;
+
+                        // Waitlist remaining
+                        case 15:
+                            waitlistRemaining = Integer.parseInt(row.text());
+                            break;
                         // Instructor
                         case 16:
                             instructor = row.text();
@@ -582,12 +624,13 @@ public class Parser {
                     e.printStackTrace();
                 }
             }
-
+            rowsSoFar = 0;
             if( !courseCode.equals("ERROR")){
                 //Create a new course object and add it to list
                 classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, "", startHour,
-                        startMinute, endHour, endMinute, days, sectionType, location, instructor, credits,
-                        dates));
+                        startMinute, endHour, endMinute, days, sectionType, location, instructor,
+                        capacity, seatsAvailable, seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining,
+                        credits, dates));
             }
         }
         return classItems;
