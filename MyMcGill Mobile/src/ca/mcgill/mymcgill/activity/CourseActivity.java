@@ -72,7 +72,7 @@ public class CourseActivity extends BaseActivity {
         courseSection.setText(classItem.getSection());
 
         TextView courseCredits = (TextView)findViewById(R.id.course_credits);
-        courseCredits.setText(classItem.getCredits());
+        courseCredits.setText(String.valueOf(classItem.getCredits()));
 
         TextView courseCRN = (TextView)findViewById(R.id.course_crn);
         courseCRN.setText(String.valueOf(classItem.getCRN()));

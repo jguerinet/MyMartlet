@@ -38,7 +38,7 @@ public class Help {
         String hours = (hour == 12) ? "12" : String.valueOf(hour % 12) ;
 
         //This is so minutes has 2 0's
-        String minutes = (minute == 0) ? "00" : String.valueOf(minute);
+        String minutes = String.format("%02d", minute);
 
         if(timeIsAM(hour)){
             return context.getResources().getString(R.string.am_long, hours, minutes);
