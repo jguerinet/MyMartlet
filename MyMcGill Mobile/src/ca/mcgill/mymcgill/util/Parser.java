@@ -336,7 +336,7 @@ public class Parser {
      * @param classHTML The HTML String to parse
      * @return The list of courses
      */
-    public static List<ClassItem> parseClassList(Season season, int year, String classHTML){
+    public static void parseClassList(Season season, int year, String classHTML){
         //Get the list of classes already parsed for that year
         List<ClassItem> classItems = App.getClasses();
 
@@ -346,100 +346,100 @@ public class Parser {
 
         Document doc = Jsoup.parse(classHTML);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
-        if (scheduleTable.isEmpty()) {
-            return classItems;
-        }
-        for (int i = 0; i < scheduleTable.size(); i+=2) {
-            Element row;
-            Element currentElement = scheduleTable.get(i);
+        if (!scheduleTable.isEmpty()) {
+            for (int i = 0; i < scheduleTable.size(); i += 2) {
+                Element row;
+                Element currentElement = scheduleTable.get(i);
 
-            //Course name, code, and section
-            row = currentElement.getElementsByTag("caption").first();
-            String[] texts = row.text().split(" - ");
-            String courseTitle = texts[0].substring(0, texts[0].length() - 1);
-            String courseCode = texts[1];
-            String section = texts[2];
+                //Course name, code, and section
+                row = currentElement.getElementsByTag("caption").first();
+                String[] texts = row.text().split(" - ");
+                String courseTitle = texts[0].substring(0, texts[0].length() - 1);
+                String courseCode = texts[1];
+                String section = texts[2];
 
-            //CRN
-            row = currentElement.getElementsByTag("tr").get(1);
-            String crnString = row.getElementsByTag("td").first().text();
-            int crn = Integer.parseInt(crnString);
-
-            //Credits
-            row = currentElement.getElementsByTag("tr").get(5);
-            String creditString = row.getElementsByTag("td").first().text();
-            int credits = (int)Double.parseDouble(creditString);
-
-            //Check if there is any data to parse
-            if (i+1 < scheduleTable.size() && scheduleTable.get(i+1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
-                //Time, Days, Location, Section Type, Instructor
+                //CRN
                 row = currentElement.getElementsByTag("tr").get(1);
-                Elements cells = row.getElementsByTag("td");
-                String[] times = cells.get(0).text().split(" - ");
-                char[] dayCharacters = cells.get(i).text().toCharArray();
-                String location = cells.get(2).text();
-                String sectionType = cells.get(4).text();
-                String instructor = cells.get(5).text();
+                String crnString = row.getElementsByTag("td").first().text();
+                int crn = Integer.parseInt(crnString);
 
-                //Time parsing
-                int startHour, startMinute, endHour, endMinute;
-                try {
-                    startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-                    startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-                    endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-                    endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
-                    String startPM = times[0].split(" ")[1];
-                    String endPM = times[1].split(" ")[1];
+                //Credits
+                row = currentElement.getElementsByTag("tr").get(5);
+                String creditString = row.getElementsByTag("td").first().text();
+                int credits = (int) Double.parseDouble(creditString);
 
-                    //If it's PM, then add 12 hours to the hours for 24 hours format
-                    //Make sure it isn't noon
-                    if (startPM.equals("PM") && startHour != 12) {
-                        startHour += 12;
+                //Check if there is any data to parse
+                if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
+                    //Time, Days, Location, Section Type, Instructor
+                    row = currentElement.getElementsByTag("tr").get(1);
+                    Elements cells = row.getElementsByTag("td");
+                    String[] times = cells.get(0).text().split(" - ");
+                    char[] dayCharacters = cells.get(i).text().toCharArray();
+                    String location = cells.get(2).text();
+                    String sectionType = cells.get(4).text();
+                    String instructor = cells.get(5).text();
+
+                    //Time parsing
+                    int startHour, startMinute, endHour, endMinute;
+                    try {
+                        startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+                        startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+                        endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+                        endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+                        String startPM = times[0].split(" ")[1];
+                        String endPM = times[1].split(" ")[1];
+
+                        //If it's PM, then add 12 hours to the hours for 24 hours format
+                        //Make sure it isn't noon
+                        if (startPM.equals("PM") && startHour != 12) {
+                            startHour += 12;
+                        }
+                        if (endPM.equals("PM") && endHour != 12) {
+                            endHour += 12;
+                        }
                     }
-                    if (endPM.equals("PM") && endHour != 12) {
-                        endHour += 12;
+                    //Try/Catch for classes with no assigned times
+                    catch (NumberFormatException e) {
+                        startHour = 0;
+                        startMinute = 0;
+                        endHour = 0;
+                        endMinute = 0;
+                    }
+
+                    //Day Parsing
+                    List<Day> days = new ArrayList<Day>();
+                    for (char dayCharacter : dayCharacters) {
+                        days.add(Day.getDay(dayCharacter));
+                    }
+
+                    //Check if the class already exists
+                    boolean classExists = false;
+                    for (ClassItem classItem : classItems) {
+                        if (classItem.getCRN() == crn && classItem.getSeason() == season && classItem.getYear() ==
+                                year) {
+                            classExists = true;
+                            //If you find an equivalent, just update it
+                            classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
+                                    days, sectionType, location, instructor, credits);
+                            break;
+                        }
+                    }
+                    //It not, add a new class item
+                    if (!classExists) {
+                        //Find the concerned course
+                        classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, section, startHour,
+                                startMinute, endHour, endMinute, days, sectionType, location, instructor, credits, null));
                     }
                 }
-                //Try/Catch for classes with no assigned times
-                catch (NumberFormatException e) {
-                    startHour = 0;
-                    startMinute = 0;
-                    endHour = 0;
-                    endMinute = 0;
+                //If there is no data to parse, reset i and continue
+                else {
+                    i = i - 1;
                 }
-
-                //Day Parsing
-                List<Day> days = new ArrayList<Day>();
-                for(char dayCharacter : dayCharacters){
-                    days.add(Day.getDay(dayCharacter));
-                }
-
-                //Check if the class already exists
-                boolean classExists = false;
-                for(ClassItem classItem : classItems){
-                    if(classItem.getCRN() == crn && classItem.getSeason() == season && classItem.getYear() ==
-                            year){
-                        classExists = true;
-                        //If you find an equivalent, just update it
-                        classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
-                                days, sectionType, location, instructor, credits);
-                        break;
-                    }
-                }
-                //It not, add a new class item
-                if(!classExists){
-                    //Find the concerned course
-                    classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, section, startHour,
-                            startMinute, endHour, endMinute, days, sectionType, location, instructor, credits, null));
-                }
-            }
-            //If there is no data to parse, reset i and continue
-            else {
-                i = i - 1;
             }
         }
 
-        return classItems;
+        //Save it to the instance variable in Application class
+        App.setClassList(classItems);
     }
 
     /**

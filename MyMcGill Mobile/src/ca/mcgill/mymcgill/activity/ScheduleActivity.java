@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.joda.time.LocalTime;
 import org.joda.time.Period;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
 import ca.mcgill.mymcgill.util.Help;
 import ca.mcgill.mymcgill.util.Load;
+import ca.mcgill.mymcgill.util.Parser;
 import ca.mcgill.mymcgill.util.Save;
 
 /**
@@ -49,7 +51,7 @@ import ca.mcgill.mymcgill.util.Save;
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
 public class ScheduleActivity extends DrawerFragmentActivity {
-	private List<ClassItem> mCourseList;
+	private List<ClassItem> mClassList;
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
     private Semester mCurrentSemester;
@@ -65,8 +67,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         mCurrentSemester = App.getDefaultSemester();
 
-        //Get the first list of courses from the ApplicationClass
-        mCourseList = App.getClasses();
+        mClassList = new ArrayList<ClassItem>();
 
         //ViewPager stuff
         mSupportFragmentManager = getSupportFragmentManager();
@@ -114,11 +115,11 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     public List<CourseSched> getCoursesForDay(Day day){
         List<CourseSched> courses = new ArrayList<CourseSched>();
     //Method that returns a list of courses for a given day
-    public List<ClassItem> getCoursesForDay(Day day){
+    public List<ClassItem> getClassesForDay(Day day){
         List<ClassItem> courses = new ArrayList<ClassItem>();
 
         //Go through the list of courses, find which ones have the same day
-        for(ClassItem course : mCourseList){
+        for(ClassItem course : mClassList){
             if(course.getDays().contains(day)){
                 courses.add(course);
             }
@@ -169,6 +170,14 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private void loadInfo(){
         //Title
         setTitle(mCurrentSemester.getSemesterName(this));
+
+        //Clear the current course list
+        mClassList.clear();
+        for(ClassItem classItem : App.getClasses()){
+            if(classItem.isForSemester(mCurrentSemester)){
+                mClassList.add(classItem);
+            }
+        }
 
         SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
         mPager.setAdapter(adapter);
@@ -233,9 +242,9 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private void fillSchedule(LayoutInflater inflater,
                               LinearLayout scheduleContainer, Day currentDay){
         //This will be used of an end time of a course when it is added to the schedule container
-        int currentCourseEndTime = 0;
+        LocalTime currentCourseEndTime = null;
 
-        List<ClassItem> mCourses = getCoursesForDay(currentDay);
+        List<ClassItem> classItems = getClassesForDay(currentDay);
 
         //Day name
         View dayView = inflater.inflate(R.layout.activity_day_name, null);
@@ -251,22 +260,22 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                 //Initialize the current course to null
                 ClassItem currentClass = null;
 
-                //Calculate time in minutes
-                int timeInMinutes = 60*hour + min;
+                //Get the current time
+                LocalTime currentTime = new LocalTime(hour, min);
 
-                //if currentCourseEndTime = 0 (no course is being added) or it is equal to
+                //if currentCourseEndTime = null (no course is being added) or it is equal to
                 //the current time in min (end of a course being added) we need to add a new view
-                if(currentCourseEndTime == 0 || currentCourseEndTime == timeInMinutes){
-                    //Reset currentCourseEndTime to 0
-                    currentCourseEndTime = 0;
+                if(currentCourseEndTime == null || currentCourseEndTime.equals(currentTime)){
+                    //Reset currentCourseEndTime
+                    currentCourseEndTime = null;
 
                     //Check if there is a course at this time
-                    for(ClassItem course : mCourses){
+                    for(ClassItem course : classItems){
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
-                        if(course.getStartTimeInMinutes() == timeInMinutes){
+                        if(course.getStartTime().equals(currentTime)){
                             currentClass = course;
-                            currentCourseEndTime = course.getEndTimeInMinutes();
+                            currentCourseEndTime = course.getEndTime();
                             break;
                         }
                     }
@@ -356,14 +365,9 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                 return false;
             }
 
-            //Clear the current course list
-            mCourseList.clear();
-
             //Get the new schedule
-            mCourseList = ClassItem.parseCourseList(scheduleString);
-
-            //Save it to the instance variable in Application class
-            App.setSchedule(mCourseList);
+            Parser.parseClassList(mCurrentSemester.getSeason(),
+                    mCurrentSemester.getYear(), scheduleString);
 
             return true;
         }

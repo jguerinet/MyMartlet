@@ -48,7 +48,7 @@ public class DayFragment extends Fragment{
 
         mDay = (Day)getArguments().get(Constants.DAY);
         //Get the courses from ScheduleActivity
-        mCourses = ((ScheduleActivity)getActivity()).getCoursesForDay(mDay);
+        mCourses = ((ScheduleActivity)getActivity()).getClassesForDay(mDay);
     }
 
     @Override

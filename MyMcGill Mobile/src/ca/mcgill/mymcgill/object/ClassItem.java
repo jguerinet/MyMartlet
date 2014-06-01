@@ -194,6 +194,30 @@ public class ClassItem implements Serializable{
 
     /* HELPER METHODS */
 
+    /**
+     * Check to see if this class is part of the given semester
+     * @param semester The semester
+     * @return True if this class is for this semester, false otherwise
+     */
+    public boolean isForSemester(Semester semester){
+        return  semester.getSeason() == mSeason && semester.getYear() == mYear;
+    }
+
+    /**
+     * Update the ClassItem
+     * @param courseCode The new course code
+     * @param courseTitle The new course title
+     * @param section The new course section
+     * @param startHour The new start hour
+     * @param startMinute The new start minute
+     * @param endHour The new end hour
+     * @param endMinute The new end minute
+     * @param days The new days
+     * @param sectionType The new section type
+     * @param location The new location
+     * @param instructor The new instructor
+     * @param credits The new credits
+     */
     public void update(String courseCode, String courseTitle, String section, int startHour, int startMinute,
                        int endHour, int endMinute, List<Day> days, String sectionType, String location, String instructor,
                        int credits){

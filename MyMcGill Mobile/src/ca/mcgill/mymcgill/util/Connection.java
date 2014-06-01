@@ -124,7 +124,7 @@ public class Connection {
 
         //Download the schedule
         String scheduleString = connection.getUrl(activity, defaultSemester.getURL());
-        App.setSchedule(ClassItem.parseCourseList(scheduleString));
+        App.setClassList(ClassItem.parseCourseList(scheduleString));
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);

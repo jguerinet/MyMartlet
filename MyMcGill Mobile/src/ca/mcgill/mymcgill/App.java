@@ -141,7 +141,7 @@ public class App extends Application {
         Save.saveTranscript(context);
     }
 
-    public static void setSchedule(List<ClassItem> schedule){
+    public static void setClassList(List<ClassItem> schedule){
         App.schedule = schedule;
 
         //Save it to internal storage when this is set
