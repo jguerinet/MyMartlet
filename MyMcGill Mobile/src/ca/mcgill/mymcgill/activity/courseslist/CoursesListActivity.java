@@ -1,12 +1,9 @@
 package ca.mcgill.mymcgill.activity.courseslist;
 
-<<<<<<< HEAD
-import android.content.Intent;
-=======
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
->>>>>>> 2cca181f7d8fd490674bdf39329f7bb2790a6cb3
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,14 +21,9 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.activity.ChangeSemesterActivity;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.Course;
-<<<<<<< HEAD
-import ca.mcgill.mymcgill.object.Semester;
-=======
 import ca.mcgill.mymcgill.util.Connection;
->>>>>>> 2cca181f7d8fd490674bdf39329f7bb2790a6cb3
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
 
@@ -247,11 +239,11 @@ public class CoursesListActivity extends DrawerActivity {
     }
 
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-    }
+//    @Override
+//    public void onBackPressed(){
+//        super.onBackPressed();
+//        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//    }
 
     // JDAlfaro
     @Override

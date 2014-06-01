@@ -1,17 +1,14 @@
 package ca.mcgill.mymcgill.activity;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
-import ca.mcgill.mymcgill.activity.drawer.DrawerFragmentActivity;
 
 /**
  * Created by Adnan2
@@ -43,13 +40,13 @@ public class AboutActivity extends DrawerActivity implements ActionBar.TabListen
         TextView teamName = new TextView(this);
         teamName.setText(getResources().getString(R.string.about_team_name));
         teamName.setTextColor(Color.BLACK);
-        teamName.setPadding(0,20,0,0);
+        teamName.setPadding(0,20,0,0); // need to make padding relative
 
         TextView help = new TextView(this);
         help.setText(getResources().getString(R.string.about_help));
         help.setTextColor(Color.BLACK);
         help.setGravity(Gravity.CENTER);
-        help.setPadding(0,20,0,0);
+        help.setPadding(0,20,0,0); // need to make padding relative
 
 
         ActionBar.Tab teamNameTab = actionBar.newTab().setCustomView(teamName).setTabListener(tabListener);
