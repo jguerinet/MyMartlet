@@ -1,12 +1,8 @@
 package ca.mcgill.mymcgill.activity.courseslist;
 
-<<<<<<< HEAD
-import android.content.Intent;
-=======
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
->>>>>>> 2cca181f7d8fd490674bdf39329f7bb2790a6cb3
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
