@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -105,15 +106,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mDoubleBackToExit=false;
+                    mDoubleBackToExit = false;
                 }
             }, 2000);
         }
     }
 
-    //Method that returns a list of searchedCourses for a given day
-    public List<CourseSched> getCoursesForDay(Day day){
-        List<CourseSched> courses = new ArrayList<CourseSched>();
     //Method that returns a list of courses for a given day
     public List<ClassItem> getClassesForDay(Day day){
         List<ClassItem> courses = new ArrayList<ClassItem>();

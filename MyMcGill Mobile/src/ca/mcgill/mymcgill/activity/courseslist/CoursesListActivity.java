@@ -23,7 +23,6 @@ import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
 import ca.mcgill.mymcgill.object.ClassItem;
-import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.DialogHelper;
@@ -38,7 +37,6 @@ public class CoursesListActivity extends DrawerActivity {
 
     private List<ClassItem> mClasses;
     private ListView mListView;
-    private CoursesAdapter mAdapter;
     private String mRegistrationUrl;
     private ClassAdapter mAdapter;
 
@@ -71,7 +69,7 @@ public class CoursesListActivity extends DrawerActivity {
             public void onClick(View view) {
 
                 //Get checked courses from adapter
-                List<Course> registerCoursesList = mAdapter.getCheckedCourses();
+                List<ClassItem> registerCoursesList = mAdapter.getCheckedClasses();
 
                 //Get term
                 if (registerCoursesList.size() > 10){
@@ -91,9 +89,9 @@ public class CoursesListActivity extends DrawerActivity {
 
                     //Loop through the checked courses and add them to the string
                     int courseCount = registerCoursesList.size();
-                    for (Course course : registerCoursesList){
+                    for (ClassItem course : registerCoursesList){
                         mRegistrationUrl += "&RSTS_IN=RW&CRN_IN=";
-                        mRegistrationUrl += course.getCrn();
+                        mRegistrationUrl += course.getCRN();
                         mRegistrationUrl += "&assoc_term_in=&start_date_in=&end_date_in=";
                     }
 
