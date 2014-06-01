@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -37,7 +36,6 @@ import ca.mcgill.mymcgill.util.Parser;
  */
 public class RegistrationActivity extends DrawerActivity{
     private List<String> mSemesterStrings;
-    private String mSemester;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -60,17 +58,6 @@ public class RegistrationActivity extends DrawerActivity{
 
         //Set default semester to Fall 2014
         semester.setSelection(2);
-        semester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                //Get the selected season
-                mSemester = mSemesterStrings.get(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
     }
 
     @Override
@@ -83,15 +70,21 @@ public class RegistrationActivity extends DrawerActivity{
     public void searchCourses(View v){
         Spinner semesterSpinner = (Spinner) findViewById(R.id.registration_semester);
         String semester = semesterSpinner.getSelectedItem().toString();
+        Season season = null;
+        int year = -1;
 
+        //TODO Find out how to make this dynamicc
         if(semester.equals("Summer 2014")){
-            semester = "201405";
+            season = Season.SUMMER;
+            year = 2014;
         }
         else if(semester.equals("Fall 2014")){
-            semester = "201409";
+            season = Season.FALL;
+            year = 2014;
         }
         else if(semester.equals("Winter 2015")){
-            semester = "201501";
+            season = Season.WINTER;
+            year = 2015;
         }
 
         //Obtain user input from text boxes
@@ -106,19 +99,10 @@ public class RegistrationActivity extends DrawerActivity{
         EditText courseNumBox = (EditText) findViewById(R.id.registration_course_number);
         String courseNumber = courseNumBox.getText().toString();
 
-        //Insert user input into the appropriate location in the Minerva URL
-        String mCourseSearchUrl = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?term_in=";
-        mCourseSearchUrl += semester;
-        mCourseSearchUrl += "&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy" +
-                           "&sel_levl=dummy&sel_sess=dummy&sel_instr=dummy&sel_ptrm=dummy&sel_attr=dummy&sel_subj=";
-        mCourseSearchUrl += subject;
-        mCourseSearchUrl += "&sel_crse=";
-        mCourseSearchUrl += courseNumber;
-        mCourseSearchUrl += "&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_levl=%25&sel_ptrm=%25" +
-                           "&sel_instr=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a%20Response%20Headersview%20source";
+        String courseSearchURL = Connection.getCourseURL(season, year, subject, courseNumber);
 
         //Obtain courses
-        new CoursesGetter().execute();
+        new CoursesGetter(season, year, courseSearchURL).execute();
     }
 
     //Connects to Minerva in a new thread

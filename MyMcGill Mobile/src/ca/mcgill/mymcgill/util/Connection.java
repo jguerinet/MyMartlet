@@ -32,6 +32,7 @@ import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.EbillItem;
+import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.UserInfo;
 
@@ -68,6 +69,8 @@ public class Connection {
 	public final static String myMcGillLoginSSOHost= "login.mcgill.ca";
 	public final static String myMcGillHost = "mymcgill.mcgill.ca";
 	public final static String myMcGillOrigin = "https://mymcgill.mcgill.ca";
+
+    private static final String COURSE_SEARCH_URL = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
 	
     private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 	
@@ -302,7 +305,7 @@ public class Connection {
 		BufferedReader in = 
 	             new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		String inputLine;
-		StringBuffer response = new StringBuffer();
+		StringBuilder response = new StringBuilder();
 	 
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
@@ -358,7 +361,7 @@ public class Connection {
 		}
 		
 		//check headers
-		if(areHeadersOK(conn.getHeaderFields())==false){
+		if(!areHeadersOK(conn.getHeaderFields())){
 			switch(status){
 			case CONNECTION_MINERVA_LOGOUT:
 				//reconnect
@@ -374,7 +377,7 @@ public class Connection {
 		BufferedReader in = 
 	            new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		String inputLine;
-		StringBuffer response = new StringBuffer();
+		StringBuilder response = new StringBuilder();
 	 
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
@@ -406,7 +409,7 @@ public class Connection {
 				
 				for (Element inputElement : inputElements) {
 					String key = inputElement.attr("name");
-					String value = inputElement.attr("value");
+					String value;
 			 
 					if (key.equals("sid")){
 						value = username;
@@ -430,14 +433,10 @@ public class Connection {
 			if (result.length() == 0) {
 				result.append(param);
 			} else {
-				result.append("&" + param);
+				result.append("&").append(param);
 			}
 		}
 		return result.toString();
-	  }
-	 
-	  public List<String> getCookies() {
-		return cookies;
 	  }
 	 
 	  public void setCookies(List<String> cookies) {
@@ -464,6 +463,46 @@ public class Connection {
 	    	}
     	}
     	return true;
+    }
+
+    /**
+     * Get the URL to look for courses for the given parameters
+     * @param season The course season
+     * @param year The course year
+     * @param subject The course subject
+     * @param courseNumber The course number
+     * @return The proper search URL
+     */
+    public static String getCourseURL(Season season, int year, String subject, String courseNumber){
+        return COURSE_SEARCH_URL
+                + "term_in=" + year + season.getSeasonNumber() +
+                "&sel_subj=dummy" +
+                "&sel_day=dummy" +
+                "&sel_schd=dummy" +
+                "&sel_insm=dummy" +
+                "&sel_camp=dummy" +
+                "&sel_levl=dummy" +
+                "&sel_sess=dummy" +
+                "&sel_instr=dummy" +
+                "&sel_ptrm=dummy" +
+                "&sel_attr=dummy" +
+                "&sel_subj=" + subject +
+                "&sel_crse=" + courseNumber +
+                "&sel_title=" +
+                "&sel_schd=%25" +
+                "&sel_from_cred=" +
+                "&sel_to_cred=" +
+                "&sel_levl=%25" +
+                "&sel_ptrm=%25" +
+                "&sel_instr=%25" +
+                "&sel_attr=%25" +
+                "&begin_hh=0" +
+                "&begin_mi=0" +
+                "&begin_ap=a" +
+                "&end_hh=0" +
+                "&end_mi=0" +
+                "&end_ap=a" +
+                "%20Response%20Headersview%20source";
     }
     
 }
