@@ -128,22 +128,6 @@ public class ClassItem implements Serializable{
     }
 
     /**
-     * Get the actual start time of the course given by Minerva
-     * @return The actual course start time
-     */
-    public LocalTime getActualStartTime(){
-        return mActualStartTime;
-    }
-
-    /**
-     * Get the actual end time of the course given by Minerva
-     * @return The actual course end time
-     */
-    public LocalTime getActualEndTime(){
-        return mActualEndTime;
-    }
-
-    /**
      * Get the days this course is on
      * @return The course days
      */

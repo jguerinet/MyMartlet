@@ -334,7 +334,6 @@ public class Parser {
     /**
      * Parses an HTML String to generate a list of classes
      * @param classHTML The HTML String to parse
-     * @return The list of courses
      */
     public static void parseClassList(Season season, int year, String classHTML){
         //Get the list of classes already parsed for that year
@@ -371,10 +370,10 @@ public class Parser {
                 //Check if there is any data to parse
                 if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
                     //Time, Days, Location, Section Type, Instructor
-                    row = currentElement.getElementsByTag("tr").get(1);
+                    row = scheduleTable.get(i+1).getElementsByTag("tr").get(1);
                     Elements cells = row.getElementsByTag("td");
                     String[] times = cells.get(0).text().split(" - ");
-                    char[] dayCharacters = cells.get(i).text().toCharArray();
+                    char[] dayCharacters = cells.get(1).text().toCharArray();
                     String location = cells.get(2).text();
                     String sectionType = cells.get(4).text();
                     String instructor = cells.get(5).text();
@@ -401,9 +400,11 @@ public class Parser {
                     //Try/Catch for classes with no assigned times
                     catch (NumberFormatException e) {
                         startHour = 0;
-                        startMinute = 0;
+                        //So that the the time will be 0
+                        startMinute = 5;
                         endHour = 0;
-                        endMinute = 0;
+                        //So that the time will be 0
+                        endMinute = 55;
                     }
 
                     //Day Parsing
@@ -546,9 +547,11 @@ public class Parser {
                             //Try/Catch for classes with no assigned times
                             catch (NumberFormatException e) {
                                 startHour = 0;
-                                startMinute = 0;
+                                //So that the time will be 0
+                                startMinute = 5;
                                 endHour = 0;
-                                endMinute = 0;
+                                //So that the time will be 0
+                                endMinute = 55;
                             }
                             break;
                         // Instructor
