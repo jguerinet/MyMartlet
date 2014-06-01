@@ -231,6 +231,10 @@ public class ClassItem implements Serializable{
      * @return The class time in String format
      */
     public String getTimeString(Context context){
+        //No time associated, therefore no time string
+        if(mStartTime.getHourOfDay() == 0 && mStartTime.getMinuteOfHour() == 0){
+            return "";
+        }
         return context.getResources().getString(R.string.course_time,
                 Help.getLongTimeString(context, mActualStartTime.getHourOfDay(), mActualStartTime.getMinuteOfHour()),
                 Help.getLongTimeString(context, mActualEndTime.getHourOfDay(), mActualEndTime.getMinuteOfHour()));

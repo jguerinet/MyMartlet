@@ -67,7 +67,7 @@ public class ClassAdapter extends BaseAdapter {
 
         //Credits
         TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
-        courseCredits.setText(mContext.getString(R.string.course_credits, String.valueOf(currentClassItem.getCredits())));
+        courseCredits.setText(mContext.getString(R.string.course_credits, currentClassItem.getCredits()));
 
         //Days
         TextView courseDays = (TextView)view.findViewById(R.id.course_days);

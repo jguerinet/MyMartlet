@@ -465,13 +465,15 @@ public class Parser {
             String courseTitle = "ERROR";
             String sectionType = "";
             List<Day> days = new ArrayList<Day>();
-            int crn = 00000;
+            int crn = 0;
             String instructor = "";
             String location = "";
             int startHour = 0;
-            int startMinute = 0;
+            //So that the time will be 0
+            int startMinute = 5;
             int endHour = 0;
-            int endMinute = 0;
+            //So that the time will be 0
+            int endMinute = 55;
             String dates = "";
 
             int i = 0;
@@ -507,7 +509,8 @@ public class Parser {
                             break;
                         // Course title
                         case 7:
-                            courseTitle = row.text();
+                            //Remove the extra period at the end of the course title
+                            courseTitle = row.text().substring(0, row.text().length() - 1);
                             break;
                         // Days of the week
                         case 8:
@@ -526,7 +529,7 @@ public class Parser {
                             break;
                         // Time
                         case 9:
-                            String[] times = row.text().split(" - ");
+                            String[] times = row.text().split("-");
                             try {
                                 startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
                                 startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
@@ -572,6 +575,9 @@ public class Parser {
                 catch (IndexOutOfBoundsException e){
                     loop = false;
                     break;
+                }
+                catch (Exception e){
+                    e.printStackTrace();
                 }
             }
 

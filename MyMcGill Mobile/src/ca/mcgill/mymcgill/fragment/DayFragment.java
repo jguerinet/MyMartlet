@@ -100,9 +100,6 @@ public class DayFragment extends Fragment{
 
                 LocalTime currentTime = new LocalTime(hour, min);
 
-                //Calculate time in minutes
-                int timeInMinutes = 60*hour + min;
-
                 //if currentCourseEndTime = null (no course is being added) or it is equal to
                 //the current time in min (end of a course being added) we need to add a new view
                 if(currentCourseEndTime == null || currentCourseEndTime.equals(currentTime)){
