@@ -10,11 +10,11 @@ import java.util.List;
 import ca.mcgill.mymcgill.util.Help;
 
 /**
- * CourseSched
+ * CourseClass
  * @author Quang
  * 
  */
-public class Class implements Serializable{
+public class ClassItem implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private Season mSeason;
@@ -31,10 +31,10 @@ public class Class implements Serializable{
     private int mCredits;
     private String mDates;
 
-    public Class(Season season, int year, String courseCode, String courseTitle, int crn,
-                 String section, int startHour, int startMinute, int endHour, int endMinute,
-                 List<Day> days, String sectionType, String location, String instructor, int credits,
-                 String dates){
+    public ClassItem(Season season, int year, String courseCode, String courseTitle, int crn,
+                     String section, int startHour, int startMinute, int endHour, int endMinute,
+                     List<Day> days, String sectionType, String location, String instructor, int credits,
+                     String dates){
         this.mSeason = season;
         this.mYear = year;
         this.mCourseCode = courseCode;
@@ -192,13 +192,13 @@ public class Class implements Serializable{
      */
     @Override
     public boolean equals(Object object){
-        if(!(object instanceof Class)){
+        if(!(object instanceof ClassItem)){
             return false;
         }
-        Class aClass = (Class)object;
+        ClassItem aClassItem = (ClassItem)object;
 
         //Check if they have the same season, year, and CRN
-        return this.mCRN == aClass.mCRN && this.mYear == aClass.mYear &&
-                this.mSeason == aClass.mSeason;
+        return this.mCRN == aClassItem.mCRN && this.mYear == aClassItem.mYear &&
+                this.mSeason == aClassItem.mSeason;
     }
 }

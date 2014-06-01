@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.object.Class;
+import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Faculty;
@@ -116,13 +116,13 @@ public class Load {
         return transcript;
     }
 
-    public static List<Class> loadSchedule(Context context){
-        List<Class> courses = new ArrayList<Class>();
+    public static List<ClassItem> loadSchedule(Context context){
+        List<ClassItem> courses = new ArrayList<ClassItem>();
 
         try{
             FileInputStream fis = context.openFileInput(Constants.SCHEDULE_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
-            courses = (List<Class>) in.readObject();
+            courses = (List<ClassItem>) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();

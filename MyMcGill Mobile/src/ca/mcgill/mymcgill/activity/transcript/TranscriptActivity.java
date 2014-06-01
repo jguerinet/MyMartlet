@@ -20,6 +20,7 @@ import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.DialogHelper;
+import ca.mcgill.mymcgill.util.Parser;
 
 /**
  * Author: Ryan Singzon
@@ -106,7 +107,6 @@ public class TranscriptActivity extends DrawerActivity {
 							DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
 							        activity.getResources().getString(R.string.error_other));
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
                     }
@@ -119,7 +119,7 @@ public class TranscriptActivity extends DrawerActivity {
             }
 
             //Parse the transcript
-            mTranscript = new Transcript(transcriptString);
+            mTranscript = Parser.parseTranscript(transcriptString);
 
             //Save it to the instance variable in the Application class
             App.setTranscript(mTranscript);
@@ -134,7 +134,6 @@ public class TranscriptActivity extends DrawerActivity {
                 //Reload the info in the views
                 loadInfo();
             }
-
             setProgressBarIndeterminateVisibility(false);
         }
     }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
-import ca.mcgill.mymcgill.object.Class;
+import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.Day;
 
 /**
@@ -23,23 +23,23 @@ import ca.mcgill.mymcgill.object.Day;
  */
 public class ClassAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Class> mClasses;
-    private List<Class> mCheckedClasses;
+    private List<ClassItem> mClassItems;
+    private List<ClassItem> mCheckedClassItems;
 
-    public ClassAdapter(Context context, List<Class> classes){
+    public ClassAdapter(Context context, List<ClassItem> classItems){
         this.mContext = context;
-        this.mClasses = classes;
-        this.mCheckedClasses = new ArrayList<Class>();
+        this.mClassItems = classItems;
+        this.mCheckedClassItems = new ArrayList<ClassItem>();
     }
 
     @Override
     public int getCount() {
-        return mClasses.size();
+        return mClassItems.size();
     }
 
     @Override
-    public Class getItem(int i) {
-        return mClasses.get(i);
+    public ClassItem getItem(int i) {
+        return mClassItems.get(i);
     }
 
     @Override
@@ -55,43 +55,43 @@ public class ClassAdapter extends BaseAdapter {
         }
 
         //Get the concerned course
-        final Class currentClass = getItem(i);
+        final ClassItem currentClassItem = getItem(i);
 
         //Code
         TextView courseCode = (TextView)view.findViewById(R.id.course_code);
-        courseCode.setText(currentClass.getCourseCode());
+        courseCode.setText(currentClassItem.getCourseCode());
 
         //Title
         TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
-        courseTitle.setText(currentClass.getCourseTitle());
+        courseTitle.setText(currentClassItem.getCourseTitle());
 
         //Credits
         TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
-        courseCredits.setText(mContext.getString(R.string.course_credits, String.valueOf(currentClass.getCredits())));
+        courseCredits.setText(mContext.getString(R.string.course_credits, String.valueOf(currentClassItem.getCredits())));
 
         //Days
         TextView courseDays = (TextView)view.findViewById(R.id.course_days);
-        courseDays.setText(Day.getDayStrings(currentClass.getDays()));
+        courseDays.setText(Day.getDayStrings(currentClassItem.getDays()));
 
         //Hours
         TextView courseHours = (TextView)view.findViewById(R.id.course_hours);
-        courseHours.setText(currentClass.getTimeString(mContext));
+        courseHours.setText(currentClassItem.getTimeString(mContext));
 
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
         //Remove any other listeners
         checkBox.setOnCheckedChangeListener(null);
         //Initially unchecked
-        checkBox.setChecked(mCheckedClasses.contains(currentClass));
+        checkBox.setChecked(mCheckedClassItems.contains(currentClassItem));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 //If it becomes checked, add it to the list. If not, remove it
                 if(b){
-                    mCheckedClasses.add(currentClass);
+                    mCheckedClassItems.add(currentClassItem);
                 }
                 else {
-                    mCheckedClasses.remove(currentClass);
+                    mCheckedClassItems.remove(currentClassItem);
                 }
             }
         });
@@ -103,7 +103,7 @@ public class ClassAdapter extends BaseAdapter {
      * Get the list of checked classes
      * @return The checked classes
      */
-    public List<Class> getCheckedClasses(){
-        return mCheckedClasses;
+    public List<ClassItem> getCheckedClasses(){
+        return mCheckedClassItems;
     }
 }

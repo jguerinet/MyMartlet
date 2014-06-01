@@ -30,7 +30,7 @@ import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
-import ca.mcgill.mymcgill.object.Class;
+import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Semester;
@@ -124,7 +124,7 @@ public class Connection {
 
         //Download the schedule
         String scheduleString = connection.getUrl(activity, defaultSemester.getURL());
-        App.setSchedule(Class.parseCourseList(scheduleString));
+        App.setSchedule(ClassItem.parseCourseList(scheduleString));
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);

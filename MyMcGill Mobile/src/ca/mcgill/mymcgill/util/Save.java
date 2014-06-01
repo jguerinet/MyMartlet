@@ -13,7 +13,7 @@ import java.io.StreamCorruptedException;
 import java.util.List;
 
 import ca.mcgill.mymcgill.App;
-import ca.mcgill.mymcgill.object.Class;
+import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Inbox;
@@ -112,7 +112,7 @@ public class Save {
     }
 
     public static void saveSchedule(Context context){
-        List<Class> courses = App.getSchedule();
+        List<ClassItem> courses = App.getSchedule();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.SCHEDULE_FILE, Context.MODE_PRIVATE);

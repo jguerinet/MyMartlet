@@ -6,7 +6,7 @@ import android.graphics.Typeface;
 
 import java.util.List;
 
-import ca.mcgill.mymcgill.object.Class;
+import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.Inbox;
@@ -30,7 +30,7 @@ public class ApplicationClass extends Application {
     private static HomePage homePage;
     private static Transcript transcript;
     
-    private static List<Class> schedule;
+    private static List<ClassItem> schedule;
     private static Semester defaultSemester;
     
     private static List<EbillItem> ebill;
@@ -75,7 +75,7 @@ public class ApplicationClass extends Application {
         return transcript;
     }
 
-    public static List<Class> getSchedule(){
+    public static List<ClassItem> getSchedule(){
         return schedule;
     }
 
@@ -118,7 +118,7 @@ public class ApplicationClass extends Application {
         Save.saveTranscript(context);
     }
 
-    public static void setSchedule(List<Class> schedule){
+    public static void setSchedule(List<ClassItem> schedule){
         ApplicationClass.schedule = schedule;
 
         //Save it to internal storage when this is set

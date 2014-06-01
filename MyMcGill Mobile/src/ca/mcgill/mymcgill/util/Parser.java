@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.mymcgill.object.Class;
+import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.Day;
 import ca.mcgill.mymcgill.object.Season;
@@ -27,7 +27,7 @@ public class Parser {
      * Parses the HTML String to form a transcript
      * @param stringHTML The String to parse
      */
-    private Transcript parseTranscript(String stringHTML){
+    public static Transcript parseTranscript(String stringHTML){
         Document transcriptDocument = Jsoup.parse(stringHTML);
         //Extract program, scholarships, total credits, and CGPA
         Elements rows = transcriptDocument.getElementsByClass("fieldmediumtext");
@@ -335,14 +335,14 @@ public class Parser {
      * @param classHTML The HTML String to parse
      * @return The list of courses
      */
-    public static List<Class> parseClassList(Season season, int year, String classHTML){
+    public static List<ClassItem> parseClassList(Season season, int year, String classHTML){
         //Get the list of classes already parsed for that year
-        List<Class> classes = new ArrayList<Class>();
+        List<ClassItem> classItems = new ArrayList<ClassItem>();
 
         Document doc = Jsoup.parse(classHTML);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
         if (scheduleTable.isEmpty()) {
-            return classes;
+            return classItems;
         }
         for (int i = 0; i < scheduleTable.size(); i+=2) {
             Element row;
@@ -410,7 +410,7 @@ public class Parser {
                 }
 
                 //Find the concerned course
-                classes.add(new Class(season, year, courseCode, courseTitle, crn, section, startHour,
+                classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, section, startHour,
                         startMinute, endHour, endMinute, days, sectionType, location, instructor, credits, null));
             }
             //If there is no data to parse, reset i and continue
@@ -419,7 +419,7 @@ public class Parser {
             }
         }
 
-        return classes;
+        return classItems;
     }
 
     /**
@@ -427,8 +427,8 @@ public class Parser {
      * @param classHTML The HTML String to parse
      * @return The list of resulting classes
      */
-    public static List<Class> parseClassResults(Season season, int year, String classHTML){
-        List<Class> classes = new ArrayList<Class>();
+    public static List<ClassItem> parseClassResults(Season season, int year, String classHTML){
+        List<ClassItem> classItems = new ArrayList<ClassItem>();
 
         Document document = Jsoup.parse(classHTML, "UTF-8");
         //Find rows of HTML by class
@@ -554,11 +554,11 @@ public class Parser {
 
             if( !courseCode.equals("ERROR")){
                 //Create a new course object and add it to list
-                classes.add(new Class(season, year, courseCode, courseTitle, crn, "", startHour,
+                classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, "", startHour,
                         startMinute, endHour, endMinute, days, sectionType, location, instructor, credits,
                         dates));
             }
         }
-        return classes;
+        return classItems;
     }
 }

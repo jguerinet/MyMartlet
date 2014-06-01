@@ -14,7 +14,7 @@ import android.widget.Toast;
 import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.base.BaseActivity;
-import ca.mcgill.mymcgill.object.Class;
+import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.util.Constants;
 import ca.mcgill.mymcgill.util.Help;
 
@@ -33,7 +33,7 @@ public class CourseActivity extends BaseActivity {
         setContentView(R.layout.activity_course);
 
         //Get the course from the intent
-        Class course = (Class)getIntent().getSerializableExtra(Constants.COURSE);
+        ClassItem course = (ClassItem)getIntent().getSerializableExtra(Constants.COURSE);
 
         assert (course != null);
 

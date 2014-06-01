@@ -60,7 +60,7 @@ public class CoursesListActivity extends DrawerActivity {
         }
         //If not, get the searched courses
         else{
-            mCourses = Constants.searchedClasses;
+            mCourses = Constants.searchedClassItems;
         }
 
         //Register button

@@ -155,7 +155,7 @@ public class RegistrationActivity extends DrawerActivity{
             }
             //Parse
             else{
-                Constants.searchedClasses = Parser.parseClassResults(mSeason, mYear, classesString);
+                Constants.searchedClassItems = Parser.parseClassResults(mSeason, mYear, classesString);
                 return true;
             }
         }
