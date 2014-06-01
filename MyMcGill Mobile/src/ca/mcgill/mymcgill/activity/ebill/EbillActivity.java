@@ -24,6 +24,7 @@ import ca.mcgill.mymcgill.object.HomePage;
 import ca.mcgill.mymcgill.object.UserInfo;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.DialogHelper;
+import ca.mcgill.mymcgill.util.Parser;
 
 public class EbillActivity extends DrawerActivity {
 	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
@@ -119,12 +120,12 @@ public class EbillActivity extends DrawerActivity {
             mEbillItems.clear();
 
             //Parse the ebill and the user info
-            mEbillItems = EbillItem.parseEbill(ebillString);
-            mUserInfo = new UserInfo(ebillString);
+            Parser.parseEbill(ebillString);
+            Parser.parseUserInfo(ebillString);
 
-            //Save it to the instance variable in the Application class
-            App.setEbill(mEbillItems);
-            App.setUserInfo(mUserInfo);
+            //Save it to the instance variable
+            mEbillItems = App.getEbill();
+            mUserInfo = App.getUserInfo();
 
             return true;
         }

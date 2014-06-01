@@ -31,10 +31,8 @@ import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
-import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.object.Semester;
-import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua
@@ -127,8 +125,8 @@ public class Connection {
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);
-        App.setEbill(EbillItem.parseEbill(ebillString));
-        App.setUserInfo(new UserInfo(ebillString));
+        Parser.parseEbill(ebillString);
+        Parser.parseUserInfo(ebillString);
     }
 
 	public ConnectionStatus connectToMinerva(Context context){

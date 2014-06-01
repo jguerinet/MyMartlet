@@ -12,10 +12,12 @@ import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.Day;
+import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Season;
 import ca.mcgill.mymcgill.object.Semester;
 import ca.mcgill.mymcgill.object.Token;
 import ca.mcgill.mymcgill.object.Transcript;
+import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
  * Author : Julien
@@ -589,5 +591,46 @@ public class Parser {
             }
         }
         return classItems;
+    }
+
+    /**
+     * Parses an HTML String into a list of eBill Items
+     * @param ebillHTML The HTML String
+     */
+    public static void parseEbill(String ebillHTML){
+        List<EbillItem> ebillItems = new ArrayList<EbillItem>();
+
+        //Parse the string to get the relevant info
+        Document doc = Jsoup.parse(ebillHTML);
+        Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
+        Elements rows = ebillTable.getElementsByTag("tr");
+
+        for (int i = 2; i < rows.size(); i+=2) {
+            Element row = rows.get(i);
+            Elements cells = row.getElementsByTag("td");
+            String statementDate = cells.get(0).text();
+            String dueDate = cells.get(3).text();
+            String amountDue = cells.get(5).text();
+            ebillItems.add(new EbillItem(statementDate, dueDate, amountDue));
+        }
+
+        App.setEbill(ebillItems);
+    }
+
+    /**
+     * Parsed an HTML String into the user info
+     * @param ebillHTML The HTML String
+     */
+    public static void parseUserInfo(String ebillHTML){
+        //Parse the string to get the relevant info
+        Document doc = Jsoup.parse(ebillHTML);
+        Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
+
+        //Parse the user info
+        Elements userInfo = ebillTable.getElementsByTag("caption");
+        String id = userInfo.get(0).text().replace("Statements for ", "");
+        String[] userInfoItems = id.split(" - ");
+
+        App.setUserInfo(new UserInfo(userInfoItems[1].trim(), userInfoItems[0].trim()));
     }
 }
