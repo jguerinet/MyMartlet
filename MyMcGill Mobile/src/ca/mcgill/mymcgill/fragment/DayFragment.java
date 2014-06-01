@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.joda.time.LocalTime;
-import org.joda.time.Period;
+import org.joda.time.Minutes;
 
 import java.util.List;
 
@@ -138,8 +138,7 @@ public class DayFragment extends Fragment{
                         courseLocation.setText(currentClass.getLocation());
 
                         //Find out how long this course is in terms of blocks of 30 min
-                        Period diff = Period.fieldDifference(currentClass.getStartTime(), currentClass.getEndTime());
-                        int length = diff.getMinutes() / 30;
+                        int length = Minutes.minutesBetween(currentClass.getStartTime(), currentClass.getEndTime()).getMinutes() / 30;
 
                         //Set the height of the view depending on this height
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
