@@ -28,7 +28,7 @@ public class Parser {
      * Parses the HTML String to form a transcript
      * @param stringHTML The String to parse
      */
-    public static Transcript parseTranscript(String stringHTML){
+    public static void parseTranscript(String stringHTML){
         Document transcriptDocument = Jsoup.parse(stringHTML);
         //Extract program, scholarships, total credits, and CGPA
         Elements rows = transcriptDocument.getElementsByClass("fieldmediumtext");
@@ -309,7 +309,7 @@ public class Parser {
             index++;
         }
 
-        return new Transcript(cgpa, totalCredits, semesters);
+        App.setTranscript(new Transcript(cgpa, totalCredits, semesters));
     }
 
     //Extracts the number of credits

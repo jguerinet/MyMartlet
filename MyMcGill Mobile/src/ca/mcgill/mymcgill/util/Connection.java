@@ -30,11 +30,9 @@ import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.LoginActivity;
 import ca.mcgill.mymcgill.exception.MinervaLoggedOutException;
-import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.ConnectionStatus;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Semester;
-import ca.mcgill.mymcgill.object.Transcript;
 import ca.mcgill.mymcgill.object.UserInfo;
 
 /**
@@ -99,20 +97,18 @@ public class Connection {
         Connection connection = getInstance();
 
         //Download the transcript
-        String transcriptString = connection.getUrl(activity, minervaTranscript);
-        Transcript transcript = new Transcript(transcriptString);
-        App.setTranscript(transcript);
+        Parser.parseTranscript(connection.getUrl(activity, minervaTranscript));
 
         //Set the default Semester
-        List<Semester> semesters = transcript.getSemesters();
+        List<Semester> semesters = App.getTranscript().getSemesters();
         //Find the latest semester
         Semester defaultSemester = semesters.get(0);
         for(Semester semester : semesters){
-            //If the year is higher than the current year, swtich
+            //If the year is higher than the current year, switch
             if(semester.getYear() > defaultSemester.getYear()){
                 defaultSemester = semester;
             }
-            //If same year and the month is higher than th edefault month, change it
+            //If same year and the month is higher than th default month, change it
             else if(semester.getYear() == defaultSemester.getYear()){
                 if(Integer.valueOf(semester.getSeason().getSeasonNumber()) >
                         Integer.valueOf(defaultSemester.getSeason().getSeasonNumber())){
@@ -124,7 +120,7 @@ public class Connection {
 
         //Download the schedule
         String scheduleString = connection.getUrl(activity, defaultSemester.getURL());
-        App.setClassList(ClassItem.parseCourseList(scheduleString));
+        Parser.parseClassList(defaultSemester.getSeason(), defaultSemester.getYear(), scheduleString);
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);

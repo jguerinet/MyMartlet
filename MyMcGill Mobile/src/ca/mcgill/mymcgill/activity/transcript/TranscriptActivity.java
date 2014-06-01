@@ -119,10 +119,10 @@ public class TranscriptActivity extends DrawerActivity {
             }
 
             //Parse the transcript
-            mTranscript = Parser.parseTranscript(transcriptString);
+            Parser.parseTranscript(transcriptString);
 
-            //Save it to the instance variable in the Application class
-            App.setTranscript(mTranscript);
+            //Get the transcript
+            mTranscript = App.getTranscript();
 
             return true;
         }
