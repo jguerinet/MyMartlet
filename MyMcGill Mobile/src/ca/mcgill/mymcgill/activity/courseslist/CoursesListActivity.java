@@ -39,6 +39,7 @@ public class CoursesListActivity extends DrawerActivity {
     private ListView mListView;
     private CoursesAdapter mAdapter;
     private String mRegistrationUrl;
+    private ClassAdapter mAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -123,7 +124,7 @@ public class CoursesListActivity extends DrawerActivity {
             @Override
             public void onClick(View view) {
                 //Get the checked list of courses from the adapter
-                List<Course> checkedCourses = mAdapter.getCheckedCourses();
+                List<Course> checkedCourses = mAdapter.getCheckedClasses();
 
                 String toastMessage;
 
@@ -230,7 +231,7 @@ public class CoursesListActivity extends DrawerActivity {
     }
 
     private void loadInfo(){
-        mAdapter = new CoursesAdapter(this, mCourses);
+        mAdapter = new ClassAdapter(this, mCourses);
         mListView.setAdapter(mAdapter);
     }
 

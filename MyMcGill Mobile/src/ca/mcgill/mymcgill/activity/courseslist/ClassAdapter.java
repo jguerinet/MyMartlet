@@ -1,0 +1,109 @@
+package ca.mcgill.mymcgill.activity.courseslist;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.mcgill.mymcgill.R;
+import ca.mcgill.mymcgill.object.Class;
+import ca.mcgill.mymcgill.object.Day;
+
+/**
+ * Author : Julien
+ * Date :  2014-05-26 7:14 PM
+ * Copyright (c) 2014 Julien Guerinet. All rights reserved.
+ */
+public class ClassAdapter extends BaseAdapter {
+    private Context mContext;
+    private List<Class> mClasses;
+    private List<Class> mCheckedClasses;
+
+    public ClassAdapter(Context context, List<Class> classes){
+        this.mContext = context;
+        this.mClasses = classes;
+        this.mCheckedClasses = new ArrayList<Class>();
+    }
+
+    @Override
+    public int getCount() {
+        return mClasses.size();
+    }
+
+    @Override
+    public Class getItem(int i) {
+        return mClasses.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        //Inflate the view if it is null
+        if(view == null){
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_course, null);
+        }
+
+        //Get the concerned course
+        final Class currentClass = getItem(i);
+
+        //Code
+        TextView courseCode = (TextView)view.findViewById(R.id.course_code);
+        courseCode.setText(currentClass.getCourseCode());
+
+        //Title
+        TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
+        courseTitle.setText(currentClass.getCourseTitle());
+
+        //Credits
+        TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
+        courseCredits.setText(mContext.getString(R.string.course_credits, String.valueOf(currentClass.getCredits())));
+
+        //Days
+        TextView courseDays = (TextView)view.findViewById(R.id.course_days);
+        courseDays.setText(Day.getDayStrings(currentClass.getDays()));
+
+        //Hours
+        TextView courseHours = (TextView)view.findViewById(R.id.course_hours);
+        courseHours.setText(currentClass.getTimeString(mContext));
+
+        //Set up the checkbox
+        CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
+        //Remove any other listeners
+        checkBox.setOnCheckedChangeListener(null);
+        //Initially unchecked
+        checkBox.setChecked(mCheckedClasses.contains(currentClass));
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                //If it becomes checked, add it to the list. If not, remove it
+                if(b){
+                    mCheckedClasses.add(currentClass);
+                }
+                else {
+                    mCheckedClasses.remove(currentClass);
+                }
+            }
+        });
+
+        return view;
+    }
+
+    /**
+     * Get the list of checked classes
+     * @return The checked classes
+     */
+    public List<Class> getCheckedClasses(){
+        return mCheckedClasses;
+    }
+}

@@ -1,9 +1,13 @@
 package ca.mcgill.mymcgill.object;
 
+import android.content.Context;
+
 import org.joda.time.LocalTime;
 
 import java.io.Serializable;
 import java.util.List;
+
+import ca.mcgill.mymcgill.util.Help;
 
 /**
  * CourseSched
@@ -171,6 +175,16 @@ public class Class implements Serializable{
 
 
     /* HELPER METHODS */
+
+    /**
+     * Get the String representing the class time
+     * @return The class time in String format
+     */
+    public String getTimeString(Context context){
+        return Help.getLongTimeString(context, mActualStartTime.getHourOfDay(), mActualStartTime.getMinuteOfHour()) +
+                " - " + Help.getLongTimeString(context, mActualEndTime.getHourOfDay(), mActualEndTime.getMinuteOfHour());
+    }
+
     /**
      * Checks to see if two classes are equal
      * @param object The course to check

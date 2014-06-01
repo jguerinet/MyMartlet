@@ -2,6 +2,8 @@ package ca.mcgill.mymcgill.object;
 
 import android.content.Context;
 
+import java.util.List;
+
 import ca.mcgill.mymcgill.R;
 
 /**
@@ -82,5 +84,45 @@ public enum Day {
             default:
                 return null;
         }
+    }
+
+    /**
+     * Get the character for a day
+     * @return The day character
+     */
+    public String getDayChar(){
+        switch (this) {
+            case MONDAY:
+                return "M";
+            case TUESDAY:
+                return "T";
+            case WEDNESDAY:
+                return "W";
+            case THURSDAY:
+                return "R";
+            case FRIDAY:
+                return "F";
+            case SATURDAY:
+                return "S";
+            case SUNDAY:
+                return "N";
+            default:
+                return "TBA";
+        }
+    }
+
+    /**
+     * Get the strings for all of the days
+     * @param days The days
+     * @return The String representing the days
+     */
+    public static String getDayStrings(List<Day>days){
+        String dayString = "";
+
+        for(Day day : days){
+            dayString += day.getDayChar();
+        }
+
+        return dayString;
     }
 }
