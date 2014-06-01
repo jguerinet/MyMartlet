@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.Day;
@@ -312,7 +313,7 @@ public class Parser {
     }
 
     //Extracts the number of credits
-    private int extractCredits(String creditString){
+    private static int extractCredits(String creditString){
         int numCredits;
 
         try{
@@ -337,7 +338,11 @@ public class Parser {
      */
     public static List<ClassItem> parseClassList(Season season, int year, String classHTML){
         //Get the list of classes already parsed for that year
-        List<ClassItem> classItems = new ArrayList<ClassItem>();
+        List<ClassItem> classItems = App.getClasses();
+
+        if(classItems == null){
+            classItems = new ArrayList<ClassItem>();
+        }
 
         Document doc = Jsoup.parse(classHTML);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
@@ -409,9 +414,24 @@ public class Parser {
                     days.add(Day.getDay(dayCharacter));
                 }
 
-                //Find the concerned course
-                classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, section, startHour,
-                        startMinute, endHour, endMinute, days, sectionType, location, instructor, credits, null));
+                //Check if the class already exists
+                boolean classExists = false;
+                for(ClassItem classItem : classItems){
+                    if(classItem.getCRN() == crn && classItem.getSeason() == season && classItem.getYear() ==
+                            year){
+                        classExists = true;
+                        //If you find an equivalent, just update it
+                        classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
+                                days, sectionType, location, instructor, credits);
+                        break;
+                    }
+                }
+                //It not, add a new class item
+                if(!classExists){
+                    //Find the concerned course
+                    classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, section, startHour,
+                            startMinute, endHour, endMinute, days, sectionType, location, instructor, credits, null));
+                }
             }
             //If there is no data to parse, reset i and continue
             else {

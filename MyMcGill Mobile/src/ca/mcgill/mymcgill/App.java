@@ -90,7 +90,7 @@ public class App extends Application {
         return transcript;
     }
 
-    public static List<ClassItem> getSchedule(){
+    public static List<ClassItem> getClasses(){
         return schedule;
     }
 

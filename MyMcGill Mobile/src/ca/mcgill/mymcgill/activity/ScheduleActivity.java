@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.joda.time.Period;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -64,7 +66,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         mCurrentSemester = App.getDefaultSemester();
 
         //Get the first list of courses from the ApplicationClass
-        mCourseList = App.getSchedule();
+        mCourseList = App.getClasses();
 
         //ViewPager stuff
         mSupportFragmentManager = getSupportFragmentManager();
@@ -117,7 +119,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         //Go through the list of courses, find which ones have the same day
         for(ClassItem course : mCourseList){
-            if(course.getDay() == day){
+            if(course.getDays().contains(day)){
                 courses.add(course);
             }
         }
@@ -247,7 +249,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             //Cycle through the half hours
             for(int min = 0; min < 31; min+= 30){
                 //Initialize the current course to null
-                ClassItem currentCourse = null;
+                ClassItem currentClass = null;
 
                 //Calculate time in minutes
                 int timeInMinutes = 60*hour + min;
@@ -263,7 +265,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
                         if(course.getStartTimeInMinutes() == timeInMinutes){
-                            currentCourse = course;
+                            currentClass = course;
                             currentCourseEndTime = course.getEndTimeInMinutes();
                             break;
                         }
@@ -272,7 +274,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                     View scheduleCell;
 
                     //There is a course at this time
-                    if(currentCourse != null){
+                    if(currentClass != null){
                         //Inflate the right view
                         scheduleCell = inflater.inflate(R.layout.fragment_day_cell, null);
 
@@ -281,25 +283,20 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
                         //Set up all of the info
                         TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
-                        courseName.setText(currentCourse.getCourseCode());
+                        courseName.setText(currentClass.getCourseCode());
 
                         TextView courseType = (TextView)scheduleCell.findViewById(R.id.course_type);
-                        courseType.setText(currentCourse.getScheduleType());
+                        courseType.setText(currentClass.getSectionType());
 
                         TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
-                        //Get the beginning time
-                        String beginningTime = Help.getLongTimeString(this, hour, min);
-                        //Get the end time
-                        String endTime = Help.getLongTimeString(this, currentCourse.getEndHour(), currentCourse.getEndMinute());
-
-                        courseTime.setText(getResources().getString(R.string.course_time, beginningTime, endTime));
+                        courseTime.setText(currentClass.getTimeString(this));
 
                         TextView courseLocation = (TextView)scheduleCell.findViewById(R.id.course_location);
-                        courseLocation.setText(currentCourse.getRoom());
+                        courseLocation.setText(currentClass.getLocation());
 
                         //Find out how long this course is in terms of blocks of 30 min
-                        int length = ((currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
-                                (currentCourse.getEndMinute() - currentCourse.getStartMinute())) / 30;
+                        Period diff = Period.fieldDifference(currentClass.getStartTime(), currentClass.getEndTime());
+                        int length = diff.getMinutes() / 30;
 
                         //Set the height of the view depending on this height
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,

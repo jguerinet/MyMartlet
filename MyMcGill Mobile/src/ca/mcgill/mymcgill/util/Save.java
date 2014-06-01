@@ -112,7 +112,7 @@ public class Save {
     }
 
     public static void saveSchedule(Context context){
-        List<ClassItem> courses = App.getSchedule();
+        List<ClassItem> courses = App.getClasses();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.SCHEDULE_FILE, Context.MODE_PRIVATE);

@@ -7,6 +7,7 @@ import org.joda.time.LocalTime;
 import java.io.Serializable;
 import java.util.List;
 
+import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.util.Help;
 
 /**
@@ -61,6 +62,23 @@ public class ClassItem implements Serializable{
     }
 
 	/* GETTERS */
+
+    /**
+     * Get the course season
+     * @return The course season
+     */
+    public Season getSeason(){
+        return mSeason;
+    }
+
+    /**
+     * Get the course year
+     * @return The course year
+     */
+    public int getYear(){
+        return mYear;
+    }
+
     /**
      * Get the course code
      * @return The course code
@@ -176,13 +194,38 @@ public class ClassItem implements Serializable{
 
     /* HELPER METHODS */
 
+    public void update(String courseCode, String courseTitle, String section, int startHour, int startMinute,
+                       int endHour, int endMinute, List<Day> days, String sectionType, String location, String instructor,
+                       int credits){
+        this.mCourseCode = courseCode;
+        this.mCourseTitle = courseTitle;
+        this.mSection = section;
+        this.mActualStartTime = new LocalTime(startHour, startMinute);
+        //Remove 5 minutes to the start to get round numbers
+        this.mStartTime = new LocalTime(startHour, (startMinute - 5) % 60);
+        this.mActualEndTime = new LocalTime(endHour, endMinute);
+        //Add 5 minutes to the end to get round numbers, increment the hour if the minutes get set to 0s
+        int endM = (endMinute + 5) % 60;
+        int endH = endHour;
+        if(endM == 0){
+            endH ++;
+        }
+        this.mEndTime = new LocalTime(endH, endM);
+        this.mDays = days;
+        this.mSectionType = sectionType;
+        this.mLocation = location;
+        this.mInstructor = instructor;
+        this.mCredits = credits;
+    }
+
     /**
      * Get the String representing the class time
      * @return The class time in String format
      */
     public String getTimeString(Context context){
-        return Help.getLongTimeString(context, mActualStartTime.getHourOfDay(), mActualStartTime.getMinuteOfHour()) +
-                " - " + Help.getLongTimeString(context, mActualEndTime.getHourOfDay(), mActualEndTime.getMinuteOfHour());
+        return context.getResources().getString(R.string.course_time,
+                Help.getLongTimeString(context, mActualStartTime.getHourOfDay(), mActualStartTime.getMinuteOfHour()),
+                Help.getLongTimeString(context, mActualEndTime.getHourOfDay(), mActualEndTime.getMinuteOfHour()));
     }
 
     /**
