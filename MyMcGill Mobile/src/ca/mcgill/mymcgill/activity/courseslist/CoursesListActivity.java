@@ -22,6 +22,7 @@ import java.util.List;
 import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.activity.drawer.DrawerActivity;
+import ca.mcgill.mymcgill.object.ClassItem;
 import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.util.Connection;
 import ca.mcgill.mymcgill.util.Constants;
@@ -35,7 +36,7 @@ import ca.mcgill.mymcgill.util.DialogHelper;
 public class CoursesListActivity extends DrawerActivity {
     public boolean wishlist;
 
-    private List<Course> mCourses;
+    private List<ClassItem> mClasses;
     private ListView mListView;
     private CoursesAdapter mAdapter;
     private String mRegistrationUrl;
@@ -56,11 +57,11 @@ public class CoursesListActivity extends DrawerActivity {
 
         //Check if we need to load the wishlist
         if(wishlist){
-            mCourses = App.getCourseWishlist();
+            mClasses = App.getClassWishlist();
         }
         //If not, get the searched courses
         else{
-            mCourses = Constants.searchedClassItems;
+            mClasses = Constants.searchedClassItems;
         }
 
         //Register button
@@ -124,21 +125,21 @@ public class CoursesListActivity extends DrawerActivity {
             @Override
             public void onClick(View view) {
                 //Get the checked list of courses from the adapter
-                List<Course> checkedCourses = mAdapter.getCheckedClasses();
+                List<ClassItem> checkedClasses = mAdapter.getCheckedClasses();
 
                 String toastMessage;
 
                 //If there are none, display error message
-                if(checkedCourses.isEmpty()){
+                if(checkedClasses.isEmpty()){
                     toastMessage = getResources().getString(R.string.wishlist_error_empty);
                 }
                 //If we are in the wishlist, this button is to remove a course
                 else if(CoursesListActivity.this.wishlist){
-                    toastMessage = getResources().getString(R.string.wishlist_remove, checkedCourses.size());
-                    mCourses.removeAll(checkedCourses);
+                    toastMessage = getResources().getString(R.string.wishlist_remove, checkedClasses.size());
+                    mClasses.removeAll(checkedClasses);
 
                     //Save the courses to the App context
-                    App.setCourseWishlist(mCourses);
+                    App.setClassWishlist(mClasses);
 
                     //Reload the adapter
                     loadInfo();
@@ -147,19 +148,19 @@ public class CoursesListActivity extends DrawerActivity {
                 //If not, it's to add a course to the wishlist
                 else{
                     //Get the wishlist courses
-                    List<Course> wishlist = App.getCourseWishlist();
+                    List<ClassItem> wishlist = App.getClassWishlist();
 
                     //Only add it if it's not already part of the wishlist
                     int coursesAdded = 0;
-                    for(Course course : checkedCourses){
-                        if(!wishlist.contains(course)){
-                            wishlist.add(course);
+                    for(ClassItem classItem : checkedClasses){
+                        if(!wishlist.contains(classItem)){
+                            wishlist.add(classItem);
                             coursesAdded ++;
                         }
                     }
 
                     //Save the courses to the App context
-                    App.setCourseWishlist(wishlist);
+                    App.setClassWishlist(wishlist);
 
                     toastMessage = getResources().getString(R.string.wishlist_add, coursesAdded);
                 }
@@ -231,7 +232,7 @@ public class CoursesListActivity extends DrawerActivity {
     }
 
     private void loadInfo(){
-        mAdapter = new ClassAdapter(this, mCourses);
+        mAdapter = new ClassAdapter(this, mClasses);
         mListView.setAdapter(mAdapter);
     }
 

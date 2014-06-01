@@ -14,7 +14,6 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.App;
 import ca.mcgill.mymcgill.object.ClassItem;
-import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Inbox;
 import ca.mcgill.mymcgill.object.Semester;
@@ -201,13 +200,13 @@ public class Save {
         }
     }
 
-    public static void saveCourseWishlist(Context context) {
-        List<Course> courseWishlist = App.getCourseWishlist();
+    public static void saveClassWishlist(Context context) {
+        List<ClassItem> classWishlist = App.getClassWishlist();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.COURSE_WISHLIST_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.CLASS_WISHLIST_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(courseWishlist);
+            out.writeObject(classWishlist);
         } catch (OptionalDataException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

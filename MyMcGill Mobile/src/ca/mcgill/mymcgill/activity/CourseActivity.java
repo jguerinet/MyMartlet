@@ -33,9 +33,7 @@ public class CourseActivity extends BaseActivity {
         setContentView(R.layout.activity_course);
 
         //Get the course from the intent
-        ClassItem course = (ClassItem)getIntent().getSerializableExtra(Constants.COURSE);
-
-        assert (course != null);
+        ClassItem classItem = (ClassItem)getIntent().getSerializableExtra(Constants.CLASS);
 
         //Get the screen dimensions
         int displayWidth = Help.getDisplayWidth(getWindowManager().getDefaultDisplay());
@@ -53,32 +51,31 @@ public class CourseActivity extends BaseActivity {
 
         //Set up the info
         TextView courseCode = (TextView)findViewById(R.id.course_code);
-        courseCode.setText(course.getCourseCode());
+        courseCode.setText(classItem.getCourseCode());
 
-        TextView courseName = (TextView)findViewById(R.id.course_name);
-        courseName.setText(course.getCourseName());
+        TextView courseTitle = (TextView)findViewById(R.id.course_title);
+        courseTitle.setText(classItem.getCourseTitle());
 
         TextView courseTime = (TextView)findViewById(R.id.course_time);
-        courseTime.setText(getResources().getString(R.string.course_time, Help.getLongTimeString(this, course.getStartHour(), course.getStartMinute()),
-                Help.getLongTimeString(this, course.getEndHour(), course.getEndMinute())));
+        courseTime.setText(classItem.getTimeString(this));
 
         TextView courseLocation = (TextView)findViewById(R.id.course_location);
-        courseLocation.setText(course.getRoom());
+        courseLocation.setText(classItem.getLocation());
 
         TextView scheduleType = (TextView)findViewById(R.id.schedule_type);
-        scheduleType.setText(course.getScheduleType());
+        scheduleType.setText(classItem.getSectionType());
 
         TextView courseProfessor = (TextView)findViewById(R.id.course_professor);
-        courseProfessor.setText(course.getProfessorName());
+        courseProfessor.setText(classItem.getInstructor());
 
         TextView courseSection = (TextView)findViewById(R.id.course_section);
-        courseSection.setText(course.getSection());
+        courseSection.setText(classItem.getSection());
 
         TextView courseCredits = (TextView)findViewById(R.id.course_credits);
-        courseCredits.setText(course.getCredits());
+        courseCredits.setText(classItem.getCredits());
 
         TextView courseCRN = (TextView)findViewById(R.id.course_crn);
-        courseCRN.setText(String.valueOf(course.getCRN()));
+        courseCRN.setText(String.valueOf(classItem.getCRN()));
     }
 
     @Override

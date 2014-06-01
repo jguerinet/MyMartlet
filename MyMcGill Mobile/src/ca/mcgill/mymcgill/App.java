@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import java.util.List;
 
 import ca.mcgill.mymcgill.object.ClassItem;
-import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Faculty;
 import ca.mcgill.mymcgill.object.HomePage;
@@ -43,7 +42,7 @@ public class App extends Application {
     private static UserInfo userInfo;
     private static Inbox inbox;
 
-    private static List<Course> courseWishlist;
+    private static List<ClassItem> wishlist;
 
     @Override
     public void onCreate(){
@@ -74,7 +73,7 @@ public class App extends Application {
         //Load the default semester for the schedule
         defaultSemester = Load.loadDefaultSemester(this);
         //Load the course wishlist
-        courseWishlist = Load.loadCourseWishlist(this);
+        wishlist = Load.loadClassWishlist(this);
     }
 
     /* GETTER METHODS */
@@ -122,8 +121,8 @@ public class App extends Application {
         return defaultSemester;
     }
 
-    public static List<Course> getCourseWishlist() {
-        return courseWishlist;
+    public static List<ClassItem> getClassWishlist() {
+        return wishlist;
     }
 
     public static int getUnreadEmails(){
@@ -196,10 +195,10 @@ public class App extends Application {
         Save.saveDefaultSemester(context);
     }
 
-    public static void setCourseWishlist(List<Course> list) {
-        App.courseWishlist = list;
+    public static void setClassWishlist(List<ClassItem> list) {
+        App.wishlist = list;
         //Save it to internal storage when this is set
-        Save.saveCourseWishlist(context);
+        Save.saveClassWishlist(context);
     }
 
     /* HELPER METHODS */

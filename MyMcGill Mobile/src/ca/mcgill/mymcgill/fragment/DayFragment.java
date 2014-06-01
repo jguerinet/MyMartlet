@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
+
 import java.util.List;
 
 import ca.mcgill.mymcgill.R;
@@ -26,7 +29,7 @@ import ca.mcgill.mymcgill.util.Help;
  */
 public class DayFragment extends Fragment{
     private Day mDay;
-    private List<ClassItem> mCourses;
+    private List<ClassItem> mClassItems;
 
     public static DayFragment newInstance(Day day){
         DayFragment fragment = new DayFragment();
@@ -48,7 +51,7 @@ public class DayFragment extends Fragment{
 
         mDay = (Day)getArguments().get(Constants.DAY);
         //Get the courses from ScheduleActivity
-        mCourses = ((ScheduleActivity)getActivity()).getClassesForDay(mDay);
+        mClassItems = ((ScheduleActivity)getActivity()).getClassesForDay(mDay);
     }
 
     @Override
@@ -73,7 +76,7 @@ public class DayFragment extends Fragment{
     private void fillSchedule(LayoutInflater inflater, LinearLayout timetableContainer,
                              LinearLayout scheduleContainer){
         //This will be used of an end time of a course when it is added to the schedule container
-        int currentCourseEndTime = 0;
+        LocalTime currentCourseEndTime = null;
 
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
@@ -93,24 +96,26 @@ public class DayFragment extends Fragment{
             //Cycle through the half hours
             for(int min = 0; min < 31; min+= 30){
                 //Initialize the current course to null
-                ClassItem currentCourse = null;
+                ClassItem currentClass = null;
+
+                LocalTime currentTime = new LocalTime(hour, min);
 
                 //Calculate time in minutes
                 int timeInMinutes = 60*hour + min;
 
-                //if currentCourseEndTime = 0 (no course is being added) or it is equal to
+                //if currentCourseEndTime = null (no course is being added) or it is equal to
                 //the current time in min (end of a course being added) we need to add a new view
-                if(currentCourseEndTime == 0 || currentCourseEndTime == timeInMinutes){
-                    //Reset currentCourseEndTime to 0
-                    currentCourseEndTime = 0;
+                if(currentCourseEndTime == null || currentCourseEndTime.equals(currentTime)){
+                    //Reset currentCourseEndTime to null
+                    currentCourseEndTime = null;
 
                     //Check if there is a course at this time
-                    for(ClassItem course : mCourses){
+                    for(ClassItem classItem : mClassItems){
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
-                        if(course.getStartTimeInMinutes() == timeInMinutes){
-                            currentCourse = course;
-                            currentCourseEndTime = course.getEndTimeInMinutes();
+                        if(classItem.getStartTime().equals(currentTime)){
+                            currentClass = classItem;
+                            currentCourseEndTime = classItem.getEndTime();
                             break;
                         }
                     }
@@ -118,34 +123,26 @@ public class DayFragment extends Fragment{
                     View scheduleCell;
 
                     //There is a course at this time
-                    if(currentCourse != null){
+                    if(currentClass != null){
                         //Inflate the right view
                         scheduleCell = inflater.inflate(R.layout.fragment_day_cell, null);
 
-                        //Quick check
-                        assert(scheduleCell != null);
-
                         //Set up all of the info
                         TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
-                        courseName.setText(currentCourse.getCourseCode());
+                        courseName.setText(currentClass.getCourseCode());
 
                         TextView courseType = (TextView)scheduleCell.findViewById(R.id.course_type);
-                        courseType.setText(currentCourse.getScheduleType());
+                        courseType.setText(currentClass.getSectionType());
 
                         TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
-                        //Get the beginning time
-                        String beginningTime = Help.getLongTimeString(getActivity(), hour, min);
-                        //Get the end time
-                        String endTime = Help.getLongTimeString(getActivity(), currentCourse.getEndHour(), currentCourse.getEndMinute());
-
-                        courseTime.setText(getResources().getString(R.string.course_time, beginningTime, endTime));
+                        courseTime.setText(currentClass.getTimeString(getActivity()));
 
                         TextView courseLocation = (TextView)scheduleCell.findViewById(R.id.course_location);
-                        courseLocation.setText(currentCourse.getRoom());
+                        courseLocation.setText(currentClass.getLocation());
 
                         //Find out how long this course is in terms of blocks of 30 min
-                        int length = ((currentCourse.getEndHour() - currentCourse.getStartHour()) * 60 +
-                                (currentCourse.getEndMinute() - currentCourse.getStartMinute())) / 30;
+                        Period diff = Period.fieldDifference(currentClass.getStartTime(), currentClass.getEndTime());
+                        int length = diff.getMinutes() / 30;
 
                         //Set the height of the view depending on this height
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -153,13 +150,13 @@ public class DayFragment extends Fragment{
                         scheduleCell.setLayoutParams(lp);
 
                         //We need a final variable for the onClick listener
-                        final ClassItem course = currentCourse;
+                        final ClassItem course = currentClass;
                         //OnClick: CourseActivity (for a detailed description of the course)
                         scheduleCell.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(getActivity(), CourseActivity.class);
-                                intent.putExtra(Constants.COURSE, course);
+                                intent.putExtra(Constants.CLASS, course);
                                 startActivity(intent);
                             }
                         });

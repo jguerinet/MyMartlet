@@ -16,7 +16,6 @@ import java.util.List;
 
 import ca.mcgill.mymcgill.R;
 import ca.mcgill.mymcgill.object.ClassItem;
-import ca.mcgill.mymcgill.object.Course;
 import ca.mcgill.mymcgill.object.EbillItem;
 import ca.mcgill.mymcgill.object.Faculty;
 import ca.mcgill.mymcgill.object.HomePage;
@@ -261,35 +260,35 @@ public class Load {
         return defaultSemester;
     }
 
-    public static List<Course> loadCourseWishlist(Context context){
-        List<Course> courseWishlist = new ArrayList<Course>();
+    public static List<ClassItem> loadClassWishlist(Context context){
+        List<ClassItem> classWishlist = new ArrayList<ClassItem>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.COURSE_WISHLIST_FILE);
+            FileInputStream fis = context.openFileInput(Constants.CLASS_WISHLIST_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
-            courseWishlist = (List<Course>) in.readObject();
+            classWishlist = (List<ClassItem>) in.readObject();
         } catch (ClassNotFoundException e) {
-            Log.e("Load Course Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
-            return courseWishlist;
+            return classWishlist;
         } catch (OptionalDataException e) {
-            Log.e("Load Course Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
-            return courseWishlist;
+            return classWishlist;
         } catch (FileNotFoundException e) {
-            Log.e("Load Course Wishlist Failure", "File not found");
+            Log.e("Load Class Wishlist Failure", "File not found");
             e.printStackTrace();
-            return courseWishlist;
+            return classWishlist;
         } catch (StreamCorruptedException e) {
-            Log.e("Load Course Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
-            return courseWishlist;
+            return classWishlist;
         } catch (IOException e) {
-            Log.e("LoadCourse Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
-            return courseWishlist;
+            return classWishlist;
         }
 
-        return courseWishlist;
+        return classWishlist;
     }
 }
