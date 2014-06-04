@@ -3,6 +3,7 @@
 
     <!-- Titles -->
     <string name="app_name">McGill Mobile</string>
+    <string name="team_name">Appvelopers</string>
     <string name="title_login">Login</string>
     <string name="title_desktop">Desktop Site</string>
     <string name="title_schedule">My Schedule</string>
@@ -50,6 +51,7 @@
     <string name="icon_bug">&#xf188;</string>
     <string name="icon_security">&#xf023;</string>
     <string name="icon_question">&#xf128;</string>
+    <string name="icon_linkedin">&#xf08c;</string>
 
     <!-- Day Names -->
     <string name="monday">Monday</string>
@@ -86,10 +88,10 @@
     <string name="login_email">\@mail.mcgill.ca</string>
     <string name="login_password">Password: </string>
     <string name="login_button">Login</string>
-    <string name="login_error_wrong_data">The inputted username or password is incorrect. Please try again.</string>
+    <string name="login_error_wrong_data">The username or password you have entered is incorrect. Please try again. </string>
     <string name="login_error_username_empty">You must input a username.</string>
     <string name="login_error_password_empty">You must input a password. </string>
-    <string name="login_remember_username">Remember my Username</string>
+    <string name="login_remember_username">Remember my username</string>
 
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">Term GPA: %s</string>
@@ -175,11 +177,11 @@
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
     <string name="walkthrough_essentials">All of your most important McGill tools are now at the tips of your fingertips: schedule, transcript, a campus map&#8230; It\'s all there!</string>
     <string name="walkthrough_menu">All of these features are directly accessible from the main menu. Simply tap on the top left icon, or swipe from the left edge of the screen to open it. </string>
-    <string name="walkthrough_offline">This app automatically keeps you connected at all times: no need to log in constantly ! And all of your data is stored locally on your phone, which means that you can access it offline !</string>
+    <string name="walkthrough_offline">This app keeps you connected at all times, so no need to log in constantly!  You can use the app offline too!</string>
     <string name="walkthrough_security">All of your data (password included) is only stored locally on your phone. As an extra security measure, your password is encrypted. We will be collecting anonymous usage statistics, but you can opt out at any time in the Settings.</string>
     <string name="walkthrough_help">To see this walkthrough again, please consult our About Section. This also includes info about the team behind this app, and different ways to contact us.</string>
     <string name="walkthrough_bugs">If you find any bugs, don\'t hesitate to report them by going to the "Report a Bug" section.</string>
-    <string name="walkthrough_homepage">Before starting, please choose a homepage. This will be the first page you will see every time you open this app. You can change this at any time in the Settings.</string>
+    <string name="walkthrough_homepage">Please choose a page you will see every time you open this app. You can change this at any time in the Settings.</string>
     <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
 
     <!-- CoursesList / Course Wishlist -->
@@ -192,14 +194,67 @@
     <string name="courses_remove_wishlist">Remove from Wishlist</string>
 
     <!-- About -->
-    <string name="about_team_name">Team name</string>
+    <string name="about_email_picker_title">Complete Action Using&#8230;</string>
+    <string name="about_adnan">Adnan Uddin</string>
+    <string name="about_adnan_role">Android Developer</string>
+    <string name="about_adnan_description">“I should make a legit blurb”</string>
+    <string name="about_adnan_linkedin">http://ca.linkedin.com/pub/adnan-uddin/58/7b9/b1</string>
+    <string name="about_adnan_email">Email Here</string>
+    <string name="about_gabriel">Gabriel Petrella</string>
+    <string name="about_gabriel_role">Head Tester</string>
+    <string name="about_gabriel_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_gabriel_linkedin">http://ca.linkedin.com/pub/gabriel-petrella/47/17/326</string>
+    <string name="about_gabriel_email">Email Here</string>
+    <string name="about_hernan">Hernan Gatta</string>
+    <string name="about_hernan_role">iOS Developer</string>
+    <string name="about_hernan_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_hernan_linkedin">Linkedin Here</string>
+    <string name="about_hernan_email">Email Here</string>
+    <string name="about_joshua">Joshua David Alfaro</string>
+    <string name="about_joshua_role">Android Developer</string>
+    <string name="about_joshua_description">Josh is awesome… Nuff Said.</string>
+    <string name="about_joshua_linkedin">http://ca.linkedin.com/pub/joshua-david-alfaro/24/988/5b7</string>
+    <string name="about_joshua_email">Email Here</string>
+    <string name="about_julien">Julien Guerinet</string>
+    <string name="about_julien_role">Project Manager, Android Developer</string>
+    <string name="about_julien_description">Julien is a fourth year Computer Engineer undergraduate, and head of the Android app.</string>
+    <string name="about_julien_linkedin">http://ca.linkedin.com/in/julienguerinet</string>
+    <string name="about_julien_email">julien.guerinet\@mail.mcgill.ca</string>
+    <string name="about_omar">Omar Delgado Gonzalez</string>
+    <string name="about_omar_role">Role Here</string>
+    <string name="about_omar_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_omar_linkedin">http://ca.linkedin.com/pub/omar-gonzalez/57/336/722</string>
+    <string name="about_omar_email">Email Here</string>
+    <string name="about_quang">Nhat-Quang Dao</string>
+    <string name="about_quang_role">Android Developer</string>
+    <string name="about_quang_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_quang_linkedin">Linkedin Here</string>
+    <string name="about_quang_email">Email Here</string>
+    <string name="about_ryan">Ryan Singzon</string>
+    <string name="about_ryan_role">Android Developer</string>
+    <string name="about_ryan_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_ryan_linkedin">http://ca.linkedin.com/in/ryansingzon</string>
+    <string name="about_ryan_email">Email Here</string>
+    <string name="about_shabbir">Shabbir Hussain</string>
+    <string name="about_shabbir_role">Scrum Master, Windows Phone Developer, Android Developer</string>
+    <string name="about_shabbir_description">Shabbir is an EE student who prefers software development. He enjoys pastries such as cannolis and timbits. Contact him if you are interested in playing rec volleyball.</string>
+    <string name="about_shabbir_linkedin">http://ca.linkedin.com/pub/shabbir-hussain/61/3a2/997</string>
+    <string name="about_shabbir_email">Email Here</string>
+    <string name="about_xavier">Xavier Sit</string>
+    <string name="about_xavier_role">Android Developer</string>
+    <string name="about_xavier_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_xavier_linkedin">http://ca.linkedin.com/pub/chi-wing-sit/66/363/519</string>
+    <string name="about_xavier_email">Email Here</string>
+    <string name="about_yulric">Yulric Sequeira</string>
+    <string name="about_yulric_role">Windows Phone Developer</string>
+    <string name="about_yulric_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_yulric_linkedin">http://www.linkedin.com/in/yulricsequeira</string>
+    <string name="about_yulric_email">yulric.sequeira\@mail.mcgill.ca</string>
+
+    <!-- Help -->
     <string name="about_help">Help</string>
-    <string name="about_member">Name</string>
     <string name="about_question">Question</string>
     <string name="about_answer">This is an answer</string>
     <string name="about_report"><u>Report a Problem</u></string>
     <string name="about_FAQ">FAQ</string>
-    <string name="about_position">Position</string>
-    <string name="about_email">fake\@email.com</string>
-    <string name="about_blurb">This is a blurb</string>
 </resources>

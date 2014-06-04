@@ -1,7 +1,10 @@
 package ca.mcgill.mymcgill.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.view.Display;
 
 import java.io.BufferedReader;
@@ -80,6 +83,21 @@ public class Help {
         }
 
         return size.x;
+    }
+
+    /**
+     * Method to open URLs
+     * @param activity The activity to open this URL from
+     * @param url The URL
+     */
+    public static void openURL(Activity activity, String url){
+        //Check that the URL starts with HTTP or HTTPS, add it if it is not the case.
+        if(!url.startsWith("http://") && !url.startsWith("https://")){
+            url = "http://" + url;
+        }
+        Intent urlIntent = new Intent(Intent.ACTION_VIEW)
+                .setData(Uri.parse(url));
+        activity.startActivity(urlIntent);
     }
 
     public static String readFromFile(Context context, int fileResource) {

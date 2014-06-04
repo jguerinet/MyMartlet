@@ -1,404 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@android:id/tabcontent"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/team_name"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/text_large"
+        android:padding="@dimen/padding_micro"
+        android:textColor="@color/red"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/scrollView">
 
         <LinearLayout
-            android:id="@+id/tab_about_team"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/about_team_name"
-                android:id="@+id/about_title_team_name"
-                android:layout_gravity="center_horizontal"
-                android:textSize="30dp" />
-
             <ImageView
-                android:layout_width="334dp"
-                android:layout_height="245dp"
-                android:id="@+id/team_photo"
-                android:layout_gravity="center"
-                android:src="@drawable/stock_photo" />
-
-            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/scrollView" >
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/stock_photo"
+                android:adjustViewBounds="true"
+                tools:ignore="ContentDescription" />
 
-                <TableLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+            <include layout="@layout/item_person"
+                android:id="@+id/adnan"/>
 
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:gravity="center">
+            <include layout="@layout/item_person"
+                android:id="@+id/gabriel"/>
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp">
+            <include layout="@layout/item_person"
+                android:id="@+id/hernan"/>
 
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView0"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/adnan"
-                                android:clickable="false" />
+            <include layout="@layout/item_person"
+                android:id="@+id/josh"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Adnan Uddin"
-                                android:id="@+id/textView0"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView0"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
+            <include layout="@layout/item_person"
+                android:id="@+id/julien"/>
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp">
+            <include layout="@layout/item_person"
+                android:id="@+id/omar"/>
 
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView1"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/gabe" />
+            <include layout="@layout/item_person"
+                android:id="@+id/quang"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Gabriel Petrella"
-                                android:id="@+id/textView1"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView1"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
+            <include layout="@layout/item_person"
+                android:id="@+id/ryan"/>
 
-                    </TableRow>
+            <include layout="@layout/item_person"
+                android:id="@+id/shabbir"/>
 
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:gravity="center"
-                        android:id="@+id/tableRow"
-                        android:paddingBottom="0dp">
+            <include layout="@layout/item_person"
+                android:id="@+id/xavier"/>
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp">
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView8"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/hernan" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Hernan Gatta"
-                                android:id="@+id/textView8"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView8"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp">
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView2"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/josh" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Joshua David \nAlfaro"
-                                android:id="@+id/textView2"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView2"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold"
-                                android:layout_alignBottom="@+id/imageView2" />
-                        </RelativeLayout>
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:gravity="center"
-                        android:id="@+id/tableRow2"
-                        android:paddingBottom="0dp" >
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp" >
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView3"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/julien" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Julien Gt"
-                                android:id="@+id/textView3"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView3"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp" >
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView4"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/omar" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Omar Gonzalez"
-                                android:id="@+id/textView4"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView4"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:gravity="center"
-                        android:id="@+id/tableRow3"
-                        android:paddingBottom="0dp" >
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp" >
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView5"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/quang" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Nhat-Quang \nDao"
-                                android:id="@+id/textView5"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView5"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp" >
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView6"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/ryan" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Ryan Singzon"
-                                android:id="@+id/textView6"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView6"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:gravity="center"
-                        android:id="@+id/tableRow5"
-                        android:paddingBottom="0dp" >
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp" >
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView9"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/shabbir" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Shabbir \nHussain"
-                                android:id="@+id/textView9"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView9"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp" >
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView10"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/xavier" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Xavier Sit"
-                                android:id="@+id/textView10"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView10"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:gravity="center"
-                        android:id="@+id/tableRow4"
-                        android:paddingBottom="0dp" >
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="69dp"
-                            android:paddingBottom="10dp" >
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:id="@+id/imageView7"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:src="@drawable/yulric" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:text="Yulric \nSequeira"
-                                android:id="@+id/textView7"
-                                android:layout_alignParentTop="true"
-                                android:layout_toRightOf="@+id/imageView7"
-                                android:paddingTop="5dp"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-
-                    </TableRow>
-                </TableLayout>
-            </ScrollView>
-
+            <include layout="@layout/item_person"
+                android:id="@+id/yulric"/>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/tab_about_help"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-        </LinearLayout>
-
-    </FrameLayout>
+    </ScrollView>
 
 </LinearLayout>

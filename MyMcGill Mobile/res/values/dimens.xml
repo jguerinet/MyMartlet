@@ -26,4 +26,7 @@
     <dimen name="cell_30min_height">45dp</dimen>
     <dimen name="cell_60min_height">90dp</dimen>
     <dimen name="cell_landscape_width">210dp</dimen>
+
+    <!-- About Images -->
+    <dimen name="about_image">80dp</dimen>
 </resources>

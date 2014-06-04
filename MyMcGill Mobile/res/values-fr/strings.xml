@@ -3,6 +3,7 @@
 
     <!-- Titles -->
     <string name="app_name">McGill Mobile</string>
+    <string name="team_name">Appvelopers</string>
     <string name="title_login">Connexion</string>
     <string name="title_desktop">Site PC</string>
     <string name="title_schedule">Mon Calendrier</string>
@@ -159,8 +160,9 @@
     <string name="courses_remove_wishlist">Ajouter à la Liste d\'Envies</string>
 
     <!-- About -->
+
+    <!-- Help -->
     <string name="about_help">Aide</string>
-    <string name="about_member">Nom</string>
     <string name="about_question">Question</string>
     <string name="about_answer">Je suis une réponse</string>
 </resources>
