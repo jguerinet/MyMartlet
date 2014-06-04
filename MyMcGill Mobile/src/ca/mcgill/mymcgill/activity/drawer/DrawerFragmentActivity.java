@@ -46,6 +46,9 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
             else if(this instanceof MapActivity){
                 drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MAP_POSITION);
             }
+            else if(this instanceof AboutActivity) {
+                drawerAdapter = new DrawerAdapter(this, drawerLayout,DrawerAdapter.ABOUT_POSITION);
+            }
             else{
                 drawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
                 Log.e("Drawer", "Drawer Adapter was null");
