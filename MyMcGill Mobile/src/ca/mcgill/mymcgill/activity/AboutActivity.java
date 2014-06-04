@@ -34,6 +34,7 @@ public class AboutActivity extends DrawerFragmentActivity {
             public void onPageScrolled(int i, float v, int i2) {}
             @Override
             public void onPageSelected(int i) {
+                //Change the selected tab
                 getActionBar().setSelectedNavigationItem(i);
             }
             @Override
@@ -43,6 +44,7 @@ public class AboutActivity extends DrawerFragmentActivity {
         //Set up the Tab Listener
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                //Set the right tab
                 mPager.setCurrentItem(tab.getPosition());
             }
             public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {}
@@ -51,10 +53,10 @@ public class AboutActivity extends DrawerFragmentActivity {
 
         //Add the tabs
         actionBar.addTab(actionBar.newTab()
-                .setText("About")
+                .setText(getString(R.string.title_about))
                 .setTabListener(tabListener));
         actionBar.addTab(actionBar.newTab()
-                .setText("Help")
+                .setText(getString(R.string.about_help))
                 .setTabListener(tabListener));
     }
 
