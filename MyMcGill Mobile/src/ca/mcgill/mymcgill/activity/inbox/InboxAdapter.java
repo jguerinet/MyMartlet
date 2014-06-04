@@ -63,7 +63,7 @@ public class InboxAdapter extends BaseAdapter{
         //Reuse previously used views
         if(view == null){
             LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.activity_inbox_email, null);
+            view = inflater.inflate(R.layout.item_email, null);
         }
 
         //Get the email to inflate

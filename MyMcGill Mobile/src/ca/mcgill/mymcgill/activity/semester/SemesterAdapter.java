@@ -52,7 +52,7 @@ public class SemesterAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         if(view == null){
             LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.activity_semester_course, null);
+            view = inflater.inflate(R.layout.item_course, null);
         }
 
         //Get the current course

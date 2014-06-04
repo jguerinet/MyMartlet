@@ -211,7 +211,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private void fillTimetable(LayoutInflater inflater, LinearLayout timetableContainer){
         //Empty view for the days
         //Day name
-        View dayView = inflater.inflate(R.layout.activity_day_name, null);
+        View dayView = inflater.inflate(R.layout.fragment_day_name, null);
 
         //Black line
         View dayViewLine = dayView.findViewById(R.id.day_line);
@@ -222,7 +222,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
             //Start inflating a timetable cell
-            View timetableCell = inflater.inflate(R.layout.fragment_day_timetable_cell, null);
+            View timetableCell = inflater.inflate(R.layout.item_day_timetable, null);
 
             //Quick check
             assert(timetableCell != null);
@@ -245,7 +245,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         List<ClassItem> classItems = getClassesForDay(currentDay);
 
         //Day name
-        View dayView = inflater.inflate(R.layout.activity_day_name, null);
+        View dayView = inflater.inflate(R.layout.fragment_day_name, null);
         TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
         dayViewTitle.setText(currentDay.getDayString(this));
 
@@ -283,7 +283,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                     //There is a course at this time
                     if(currentClass != null){
                         //Inflate the right view
-                        scheduleCell = inflater.inflate(R.layout.fragment_day_cell, null);
+                        scheduleCell = inflater.inflate(R.layout.item_day_class, null);
 
                         //Quick check
                         assert(scheduleCell != null);
@@ -314,7 +314,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                     }
                     else{
                         //Inflate the empty view
-                        scheduleCell = inflater.inflate(R.layout.fragment_day_cell_empty, null);
+                        scheduleCell = inflater.inflate(R.layout.item_day_empty, null);
 
                         //Quick check
                         assert(scheduleCell != null);

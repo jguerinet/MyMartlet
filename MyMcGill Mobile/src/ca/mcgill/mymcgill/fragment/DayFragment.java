@@ -81,7 +81,7 @@ public class DayFragment extends Fragment{
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
             //Start inflating a timetable cell
-            View timetableCell = inflater.inflate(R.layout.fragment_day_timetable_cell, null);
+            View timetableCell = inflater.inflate(R.layout.item_day_timetable, null);
 
             //Quick check
             assert(timetableCell != null);
@@ -122,7 +122,7 @@ public class DayFragment extends Fragment{
                     //There is a course at this time
                     if(currentClass != null){
                         //Inflate the right view
-                        scheduleCell = inflater.inflate(R.layout.fragment_day_cell, null);
+                        scheduleCell = inflater.inflate(R.layout.item_day_class, null);
 
                         //Set up all of the info
                         TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
@@ -159,7 +159,7 @@ public class DayFragment extends Fragment{
                     }
                     else{
                         //Inflate the empty view
-                        scheduleCell = inflater.inflate(R.layout.fragment_day_cell_empty, null);
+                        scheduleCell = inflater.inflate(R.layout.item_day_empty, null);
 
                         //Quick check
                         assert(scheduleCell != null);

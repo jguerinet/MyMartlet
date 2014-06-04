@@ -115,7 +115,6 @@
             android:theme="@style/DialogMyMcGill"
             android:label="Change Semester" />
 
-        <activity android:name=".activity.MemberActivity" />
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/title_about" />

@@ -50,7 +50,7 @@ public class EbillAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         if(view == null){
             LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.activity_ebill_item, null);
+            view = inflater.inflate(R.layout.item_ebill, null);
         }
 
         //Quick Check
