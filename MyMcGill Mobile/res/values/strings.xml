@@ -180,7 +180,7 @@
     <string name="walkthrough_offline">This app keeps you connected at all times, so no need to log in constantly!  You can use the app offline too!</string>
     <string name="walkthrough_security">All of your data (password included) is only stored locally on your phone. As an extra security measure, your password is encrypted. We will be collecting anonymous usage statistics, but you can opt out at any time in the Settings.</string>
     <string name="walkthrough_help">To see this walkthrough again, please consult our About Section. This also includes info about the team behind this app, and different ways to contact us.</string>
-    <string name="walkthrough_bugs">If you find any bugs, don\'t hesitate to report them by going to the "Report a Bug" section.</string>
+    <string name="walkthrough_bugs">If you find any bugs, don\'t hesitate to report them by going to the "About" section and clicking on the Help tab.</string>
     <string name="walkthrough_homepage">Please choose a page you will see every time you open this app. You can change this at any time in the Settings.</string>
     <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
 
@@ -255,6 +255,9 @@
     <string name="about_help">Help</string>
     <string name="about_question">Question</string>
     <string name="about_answer">This is an answer</string>
-    <string name="about_report"><u>Report a Problem</u></string>
     <string name="about_FAQ">FAQ</string>
+    <string name="help_report_bug">Report a Problem</string>
+    <string name="help_bug_title">%s Bug: </string>
+    <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
+    <string name="help_bug_prompt">Please give us a summary of the bug:</string>
 </resources>
