@@ -222,6 +222,12 @@ public class DrawerAdapter extends BaseAdapter {
             icon.setTextColor(mActivity.getResources().getColor(R.color.white));
             title.setTextColor(mActivity.getResources().getColor(R.color.white));
         }
+        //If not, set its background to white and the text to black
+        else{
+            view.setBackgroundColor(mActivity.getResources().getColor(R.color.white));
+            icon.setTextColor(mActivity.getResources().getColor(R.color.black));
+            title.setTextColor(mActivity.getResources().getColor(R.color.black));
+        }
 
         return view;
     }
