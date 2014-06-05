@@ -1,0 +1,221 @@
+package ca.appvelopers.mcgillmobile.object;
+
+import android.util.Log;
+
+import org.joda.time.DateTime;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Address;
+import javax.mail.BodyPart;
+import javax.mail.Flags.Flag;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Part;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.internet.MimeMessage;
+
+import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.util.Constants;
+
+/**
+ * Created by Ryan Singzon on 15/02/14.
+ */
+public class Inbox implements Serializable{
+    private static final long serialVersionUID = 1L;
+
+    Properties mProperties = null;
+    private String mUserName;
+    private String mPassword;
+
+    private List<Email> mEmails = new ArrayList<Email>();
+    private int mNumNewEmails;
+    private int numEmails;
+    private int emailsToRetrieve = 10;
+
+    public Inbox(String username, String password){
+        this.mUserName = username;
+        this.mPassword = password;
+        this.mNumNewEmails = 0;
+    }
+
+    //Fetches the user's emails from their McGill email account
+    public void retrieveEmail(){
+        //Set properties for McGill email server
+        mProperties = new Properties();
+        mProperties.setProperty("mail.host", Constants.MAIL_HOST);
+        mProperties.setProperty("mail.port", Constants.MAIL_PORT);
+        mProperties.setProperty("mail.transport.protocol", Constants.MAIL_PROTOCOL);
+        Session session = Session.getInstance(mProperties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(mUserName, mPassword);
+                    }
+                });
+
+        //Open a connection to the McGill server and fetch emails
+        try {
+            Store store = session.getStore(Constants.MAIL_PROTOCOL);
+            store.connect();
+            Folder inbox = store.getFolder("INBOX");
+            inbox.open(Folder.READ_ONLY);
+
+            //Get total number of emails
+            numEmails = inbox.getMessageCount();
+
+            //Retrieve the number of emails the user specifies (default 10)
+            Message messages[] = inbox.getMessages(numEmails - emailsToRetrieve, numEmails);
+
+            //Reset the number of new emails to 0
+            mNumNewEmails = 0;
+
+            //Add each message to the inbox object
+            for (int i = messages.length-1; i > 0; i--) {
+                Message message = messages[i];
+
+                //Get email senders
+                List<String> from = new ArrayList<String>();
+                for(Address address : message.getFrom()){
+                    from.add(address.toString());
+                }
+
+                String body = "";
+                String subject = message.getSubject();
+                if(subject == null){
+                    subject = "(No subject)";
+                }
+
+                try{
+                    body = getText(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Email currentEmail = null;
+
+                //Get the message ID
+                String messageID = ((MimeMessage) message).getMessageID();
+                //If there is none, just use the index of the message
+                //This should happen rarely
+                if(messageID == null){
+                    messageID = String.valueOf(numEmails - (emailsToRetrieve - i));
+                }
+                Log.e("Message ID:", messageID);
+
+                //Check to see if the email already exists in the inbox
+                //Check if the same message ID
+                for(Email email : mEmails){
+                    if(messageID.equals(email.getMessageID())){
+                        currentEmail = email;
+                        //Update the seen variable
+                        email.setRead(message.isSet(Flag.SEEN));
+
+                        break;
+                    }
+                }
+
+                //If the email does not exist, add it to the inbox
+                if(currentEmail == null){
+                    currentEmail = new Email(subject, from, new DateTime(message.getSentDate()),
+                            body, message.isSet(Flag.SEEN), messageID);
+                    mEmails.add(currentEmail);
+                }
+
+                //Increment the unread message count if unread
+                if(!currentEmail.isRead()){
+                    mNumNewEmails++;
+                }
+            }
+
+            inbox.close(true);
+            store.close();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        //Resave the inbox to the ApplicationClass
+        App.setInbox(this);
+    }
+
+
+    //Gets the message body from the Message object
+    public String getText(Part p) throws MessagingException, IOException {
+        if (p.isMimeType("text/*")) {
+            String s = (String)p.getContent();
+            return s;
+        }
+
+        if (p.isMimeType("multipart/alternative")) {
+            // prefer html text over plain text
+            Multipart mp = (Multipart)p.getContent();
+            String text = null;
+            for (int i = 0; i < mp.getCount(); i++) {
+                Part bp = mp.getBodyPart(i);
+                if (bp.isMimeType("text/plain")) {
+                    if (text == null)
+                        text = getText(bp);
+                    continue;
+                } else if (bp.isMimeType("text/html")) {
+                    String s = getText(bp);
+                    if (s != null)
+                        return s;
+                } else {
+                    return getText(bp);
+                }
+            }
+            return text;
+        } else if (p.isMimeType("multipart/*")) {
+            Multipart mp = (Multipart)p.getContent();
+            for (int i = 0; i < mp.getCount(); i++) {
+                String s = getText(mp.getBodyPart(i));
+                if (s != null)
+                    return s;
+            }
+        }
+
+        return null;
+    }
+
+    public String processMultiPart(Multipart content) {
+        String processedMultiPart = "";
+        try {
+            int multiPartCount = content.getCount();
+            for (int i = 0; i < multiPartCount; i++) {
+                BodyPart bodyPart = content.getBodyPart(i);
+                Object o;
+
+                o = bodyPart.getContent();
+                if (o instanceof String) {
+                    processedMultiPart += o;
+                } else if (o instanceof Multipart) {
+                    processMultiPart((Multipart) o);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        return processedMultiPart;
+    }
+
+    public List<Email> getEmails(){
+        return mEmails;
+    }
+
+    public int getNumNewEmails(){
+        return mNumNewEmails;
+    }
+}
