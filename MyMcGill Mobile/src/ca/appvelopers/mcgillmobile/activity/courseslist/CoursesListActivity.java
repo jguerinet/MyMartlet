@@ -26,6 +26,7 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
  * Author : Julien
@@ -48,6 +49,13 @@ public class CoursesListActivity extends DrawerActivity {
         wishlist = getIntent().getBooleanExtra(Constants.WISHLIST, true);
 
         super.onCreate(savedInstanceState);
+
+        if(wishlist){
+            GoogleAnalytics.sendScreen(this, "Wishlist");
+        }
+        else{
+            GoogleAnalytics.sendScreen(this, "Search Results");
+        }
 
         // Views
         mListView = (ListView)findViewById(R.id.courses_list);
@@ -139,6 +147,9 @@ public class CoursesListActivity extends DrawerActivity {
                     //Save the courses to the App context
                     App.setClassWishlist(mClasses);
 
+                    GoogleAnalytics.sendEvent(CoursesListActivity.this, "Wishlist", "Remove",
+                            "" + checkedClasses.size(), null);
+
                     //Reload the adapter
                     loadInfo();
 
@@ -159,6 +170,9 @@ public class CoursesListActivity extends DrawerActivity {
 
                     //Save the courses to the App context
                     App.setClassWishlist(wishlist);
+
+                    GoogleAnalytics.sendEvent(CoursesListActivity.this, "Search Results", "Add to Wishlist",
+                            "" + coursesAdded, null);
 
                     toastMessage = getResources().getString(R.string.wishlist_add, coursesAdded);
                 }
