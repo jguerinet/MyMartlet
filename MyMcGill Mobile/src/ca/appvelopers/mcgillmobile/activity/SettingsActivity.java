@@ -17,6 +17,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 public class SettingsActivity extends DrawerActivity {
 
@@ -24,6 +25,8 @@ public class SettingsActivity extends DrawerActivity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_settings);
         super.onCreate(savedInstanceState);
+
+        GoogleAnalytics.sendScreen(this, "Settings");
 
         TextView languageTitle = (TextView)findViewById(R.id.settings_language_title);
         languageTitle.setText(getResources().getString(R.string.settings_language));
@@ -49,6 +52,8 @@ public class SettingsActivity extends DrawerActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 //Get the chosen language
                 Language chosenLanguage = Language.values()[position];
+
+                GoogleAnalytics.sendEvent(SettingsActivity.this, "Settings", "Language", chosenLanguage.getLanguageString(), null);
 
                 //If it's different than the previously selected language, update it and reload
                 if(App.getLanguage() != chosenLanguage){
@@ -77,8 +82,11 @@ public class SettingsActivity extends DrawerActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 //Get the chosen language
                 HomePage chosenHomePage = HomePage.values()[position];
+
+                GoogleAnalytics.sendEvent(SettingsActivity.this, "Settings", "Homepage", chosenHomePage.toString(), null);
+
                 //Update it in the ApplicationClass
-                    App.setHomePage(chosenHomePage);
+                App.setHomePage(chosenHomePage);
             }
 
             @Override
