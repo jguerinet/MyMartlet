@@ -20,6 +20,7 @@ import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 
 /**
@@ -36,6 +37,8 @@ public class TranscriptActivity extends DrawerActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_transcript);
         super.onCreate(savedInstanceState);
+
+        GoogleAnalytics.sendScreen(this, "Transcript");
 
         //Get the stored transcript from the ApplicationClass
         mTranscript = App.getTranscript();
