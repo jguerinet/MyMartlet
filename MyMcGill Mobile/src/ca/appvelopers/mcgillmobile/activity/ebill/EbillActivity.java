@@ -24,6 +24,7 @@ import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 
 public class EbillActivity extends DrawerActivity {
@@ -38,6 +39,8 @@ public class EbillActivity extends DrawerActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_ebill);
         super.onCreate(savedInstanceState);
+
+        GoogleAnalytics.sendScreen(this, "Ebill");
 
         //Get the initial info from the ApplicationClass
         mEbillItems = App.getEbill();
