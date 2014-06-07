@@ -14,6 +14,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
  * Author : Yulric
@@ -100,6 +101,9 @@ public class WalkthroughFragment extends Fragment {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                         //Get the chosen language
                         HomePage chosenHomePage = HomePage.values()[position];
+
+                        GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Homepage", chosenHomePage.toString(), null);
+
                         //Update it in the ApplicationClass
                         App.setHomePage(chosenHomePage);
                     }
@@ -121,6 +125,9 @@ public class WalkthroughFragment extends Fragment {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                         //Get the chosen language
                         Faculty faculty = Faculty.values()[position];
+
+                        GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Faculty", faculty.toString(), null);
+
                         //Update it in the ApplicationClass
                         App.setFaculty(faculty);
                     }

@@ -13,6 +13,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
@@ -32,6 +33,8 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         setContentView(R.layout.activity_walkthrough);
 
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
+
+        GoogleAnalytics.sendScreen(this, "Walkthrough");
 
         //Get the screen height
         int displayHeight = Help.getDisplayHeight(getWindowManager().getDefaultDisplay());
@@ -66,6 +69,7 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GoogleAnalytics.sendEvent(WalkthroughActivity.this, "Walkthrough", "Skip", null, null);
                 finish();
                 overridePendingTransition(0, R.anim.out_to_top);
             }
