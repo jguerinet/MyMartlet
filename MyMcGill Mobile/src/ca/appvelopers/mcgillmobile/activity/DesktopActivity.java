@@ -16,6 +16,7 @@ import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 
 /**
@@ -29,6 +30,8 @@ public class DesktopActivity extends DrawerActivity{
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_desktop);
         super.onCreate(savedInstanceState);
+
+        GoogleAnalytics.sendScreen(this, "Desktop Site");
 
         if(!Connection.isNetworkAvailable(this)){
             DialogHelper.showNeutralAlertDialog(this, this.getResources().getString(R.string.error),
