@@ -10,6 +10,7 @@ import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 
 /**
@@ -31,6 +32,7 @@ public class SplashActivity extends BaseActivity {
             //If we need to go back to the login, make sure to
             //delete anything with the previous user's info
             //Clear.clearAllInfo(this);
+            GoogleAnalytics.sendEvent(this, "Splash", "Auto-Login", "false", null);
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
@@ -39,6 +41,7 @@ public class SplashActivity extends BaseActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    GoogleAnalytics.sendEvent(SplashActivity.this, "Splash", "Auto-Login", "true", null);
                     //Set the username and password
                     Connection.getInstance().setUsername(username + SplashActivity.this.getResources().getString(R.string.login_email));
                     Connection.getInstance().setPassword(password);
