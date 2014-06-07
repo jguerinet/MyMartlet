@@ -14,6 +14,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
@@ -29,6 +30,8 @@ public class CourseActivity extends BaseActivity {
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_course);
+
+        GoogleAnalytics.sendScreen(this, "Schedule - Course");
 
         //Get the course from the intent
         ClassItem classItem = (ClassItem)getIntent().getSerializableExtra(Constants.CLASS);

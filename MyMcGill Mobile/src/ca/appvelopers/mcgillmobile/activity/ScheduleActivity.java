@@ -40,6 +40,7 @@ import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Parser;
@@ -65,6 +66,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_schedule);
         super.onCreate(savedInstanceState);
+
+        GoogleAnalytics.sendScreen(this, "Schedule");
 
         mCurrentSemester = App.getDefaultSemester();
 

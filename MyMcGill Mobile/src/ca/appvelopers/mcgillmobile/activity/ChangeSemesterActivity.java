@@ -33,6 +33,7 @@ import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
 
@@ -56,6 +57,8 @@ public class ChangeSemesterActivity extends BaseActivity {
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_change_semester);
+
+        GoogleAnalytics.sendScreen(this, "Schedule - Change Semester");
     	
         //Get the screen width
         int displayWidth = Help.getDisplayWidth(getWindowManager().getDefaultDisplay());
