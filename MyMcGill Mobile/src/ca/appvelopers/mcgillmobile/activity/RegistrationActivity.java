@@ -22,6 +22,7 @@ import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 
 /**
@@ -35,6 +36,8 @@ public class RegistrationActivity extends DrawerActivity{
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_registration);
         super.onCreate(savedInstanceState);
+
+        GoogleAnalytics.sendScreen(this, "Registration");
 
         //Make a list with their strings
         mSemesterStrings = new ArrayList<String>();
