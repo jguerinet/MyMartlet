@@ -21,6 +21,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerFragmentActivity;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
  * Created by Ryan Singzon on 14/03/14.
@@ -37,6 +38,8 @@ public class MapActivity extends DrawerFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         loadDrawer();
+
+        GoogleAnalytics.sendScreen(this, "Map");
 
         final LatLng MCGILL = new LatLng(45.503835,-73.574787);
 
