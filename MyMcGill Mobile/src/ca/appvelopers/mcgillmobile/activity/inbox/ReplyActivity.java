@@ -23,6 +23,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.object.Email;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 
 public class ReplyActivity extends BaseActivity {
@@ -67,6 +68,13 @@ public class ReplyActivity extends BaseActivity {
 			
 		}
 		else isSending = false;
+
+        if(isSending){
+            GoogleAnalytics.sendScreen(this, "Email - Send");
+        }
+        else{
+            GoogleAnalytics.sendScreen(this, "Email - Reply");
+        }
 		
 		// TODO Modify for Forward Email
 		if (!isSending)

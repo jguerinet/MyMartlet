@@ -18,6 +18,7 @@ import ca.appvelopers.mcgillmobile.activity.inbox.ReplyActivity;
 import ca.appvelopers.mcgillmobile.object.Email;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 
 /**
@@ -32,10 +33,10 @@ public class EmailActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email);
-
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
-
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        GoogleAnalytics.sendScreen(this, "Email - Email");
 
         //Get email from intent
         email = (Email) getIntent().getSerializableExtra(Constants.EMAIL);

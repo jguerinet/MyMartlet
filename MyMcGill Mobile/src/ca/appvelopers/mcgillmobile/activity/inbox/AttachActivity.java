@@ -12,6 +12,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseListActivity;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 public class AttachActivity extends BaseListActivity {
 	
@@ -22,6 +23,8 @@ public class AttachActivity extends BaseListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.activity_attach);
+
+        GoogleAnalytics.sendScreen(this, "Email - Attach");
 		
 		currentDir =  new File(Environment.getExternalStorageDirectory().toString());
 		fill(currentDir);

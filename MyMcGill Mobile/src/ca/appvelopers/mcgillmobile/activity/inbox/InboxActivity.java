@@ -20,6 +20,7 @@ import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Inbox;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 
 /**
@@ -39,6 +40,8 @@ public class InboxActivity extends DrawerActivity{
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_inbox);
         super.onCreate(savedInstanceState);
+
+        GoogleAnalytics.sendScreen(this, "Email - Inbox");
 
         mFirstLoad = true;
 
