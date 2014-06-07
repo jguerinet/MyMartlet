@@ -29,4 +29,17 @@ public enum ConnectionStatus {
                 return context.getResources().getString(R.string.error_other);
         }
     }
+
+    public String getGAString(){
+        switch (this){
+            case CONNECTION_WRONG_INFO:
+                return "Wrong Info";
+            case CONNECTION_NO_INTERNET:
+                return "No Internet";
+            case CONNECTION_OTHER:
+                return "Unknown";
+            default:
+                return null;
+        }
+    }
 }

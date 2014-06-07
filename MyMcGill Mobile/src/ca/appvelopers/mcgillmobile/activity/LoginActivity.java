@@ -19,6 +19,7 @@ import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 
@@ -31,6 +32,8 @@ public class LoginActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        GoogleAnalytics.sendScreen(this, "Login");
 
         //Get the necessary views
         final Button login = (Button) findViewById(R.id.login_button);
@@ -107,6 +110,8 @@ public class LoginActivity extends BaseActivity {
 							Save.saveUsername(LoginActivity.this, username);
                             Save.savePassword(LoginActivity.this, password);
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
+                            GoogleAnalytics.sendEvent(LoginActivity.this, "Login", "Remember Username",
+                                    "" + rememberUsernameView.isChecked(), null);
 
                             Connection.getInstance().downloadAll(LoginActivity.this);
                             startActivity(new Intent(LoginActivity.this, App.getHomePage().getHomePageClass()));
@@ -123,6 +128,8 @@ public class LoginActivity extends BaseActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    GoogleAnalytics.sendEvent(LoginActivity.this, "Login", "Login Error",
+                                            connectionStatus.getGAString(), null);
                                     progressDialog.dismiss();
                                     DialogHelper.showNeutralAlertDialog(LoginActivity.this,
                                             LoginActivity.this.getResources().getString(R.string.error),
