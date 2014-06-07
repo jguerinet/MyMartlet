@@ -30,6 +30,7 @@ import ca.appvelopers.mcgillmobile.activity.inbox.InboxActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
  * Author: Shabbir
@@ -197,6 +198,7 @@ public class DrawerAdapter extends BaseAdapter {
                         mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
                         break;
                     case LOGOUT_POSITION:
+                        GoogleAnalytics.sendEvent(mActivity, "Logout", "Clicked", null, null);
                         Clear.clearAllInfo(mActivity);
                         //Go back to LoginActivity
                         mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
