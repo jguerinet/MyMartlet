@@ -12,6 +12,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerFragmentActivity;
 import ca.appvelopers.mcgillmobile.fragment.AboutFragment;
 import ca.appvelopers.mcgillmobile.fragment.HelpFragment;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
  * Created by Adnan2
@@ -24,6 +25,8 @@ public class AboutActivity extends DrawerFragmentActivity {
         super.onCreate(savedInstanceState);
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        GoogleAnalytics.sendScreen(this, "About");
 
         //Set up the ViewPager
         mPager = (ViewPager)findViewById(R.id.about_viewpager);
@@ -46,6 +49,16 @@ public class AboutActivity extends DrawerFragmentActivity {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
                 //Set the right tab
                 mPager.setCurrentItem(tab.getPosition());
+
+                //GA Strings
+                String gaString;
+                if(tab.getPosition() == 0){
+                    gaString = "Help";
+                }
+                else{
+                    gaString = "About";
+                }
+                GoogleAnalytics.sendEvent(AboutActivity.this, "About", gaString, null, null);
             }
             public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {}
             public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {}

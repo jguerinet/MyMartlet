@@ -17,6 +17,7 @@ import android.widget.EditText;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
  * Author : Julien
@@ -54,6 +55,9 @@ public class HelpFragment extends Fragment {
                         .setPositiveButton(getResources().getString(android.R.string.ok),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
+                                        GoogleAnalytics.sendEvent(getActivity(), "About", "Report a Bug",
+                                                null, null);
+
                                         //Get the user input
                                         final String summary = userInput.getText().toString();
                                         //Get the other necessary info

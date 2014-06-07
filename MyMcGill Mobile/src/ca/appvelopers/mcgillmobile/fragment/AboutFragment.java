@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
@@ -83,7 +84,7 @@ public class AboutFragment extends Fragment {
         return view;
     }
 
-    private void setUpInfo(View view, int pictureResource, String name, String role, String description,
+    private void setUpInfo(View view, int pictureResource, final String name, String role, String description,
                           final String linkedin, final String email){
         //Picture
         ImageView picture = (ImageView)view.findViewById(R.id.person_image);
@@ -107,6 +108,7 @@ public class AboutFragment extends Fragment {
         linkedinView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GoogleAnalytics.sendEvent(getActivity(), "About", "Linkedin", name, null);
                 Help.openURL(getActivity(), linkedin);
             }
         });
@@ -117,6 +119,8 @@ public class AboutFragment extends Fragment {
         emailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GoogleAnalytics.sendEvent(getActivity(), "About", "Email", name, null);
+
                 //Send an email :
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 //Recipient
