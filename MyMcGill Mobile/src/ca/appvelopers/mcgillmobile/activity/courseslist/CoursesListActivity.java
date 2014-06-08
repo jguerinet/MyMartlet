@@ -81,7 +81,7 @@ public class CoursesListActivity extends DrawerActivity {
 
                 //Get term
                 if (registerCoursesList.size() > 10){
-                    String toastMessage = getResources().getString(R.string.registration_error_too_many_courses);
+                    String toastMessage = getResources().getString(R.string.courses_too_many_courses);
                     Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
                 }
                 else if(registerCoursesList.size() > 0){
@@ -89,13 +89,8 @@ public class CoursesListActivity extends DrawerActivity {
                     mRegistrationUrl = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
 
                     //Add term
-                    try{
-                        mRegistrationUrl += mAdapter.getItem(0).getYear();
-                        mRegistrationUrl += mAdapter.getItem(0).getSeason().getSeasonNumber();
-                    } catch(Exception e){
-                        Toast.makeText(CoursesListActivity.this, "An error has occurred", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    mRegistrationUrl += mAdapter.getItem(0).getYear();
+                    mRegistrationUrl += mAdapter.getItem(0).getSeason().getSeasonNumber();
 
                     //Add weird random Minerva code
                     mRegistrationUrl += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&RSTS_IN=RW";
@@ -116,12 +111,13 @@ public class CoursesListActivity extends DrawerActivity {
 
                     mRegistrationUrl += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
 
-                    //Obtain searchedCourses
+                    //Execute registration of checked classes in a new thread
                     new Registration().execute();
 
                 }
                 else{
-                    Toast.makeText(CoursesListActivity.this, "No courses selected", Toast.LENGTH_SHORT).show();
+                    String toastMessage = getResources().getString(R.string.courses_none_selected);
+                    Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
                 }
             }
         });

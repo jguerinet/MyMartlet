@@ -170,7 +170,6 @@
     <string name="registration_semester">Semester</string>
     <string name="registration_subject">Subject</string>
     <string name="registration_course_number">Course Number (optional)</string>
-    <string name="registration_error_too_many_courses">You must select fewer than 10 courses.</string>
     <string name="registration_invalid_subject">Invalid subject: Please a four character subject code</string>
 
     <!-- Walkthrough -->
@@ -192,23 +191,25 @@
     <string name="courses_register">Register</string>
     <string name="courses_add_wishlist">Add to Wishlist</string>
     <string name="courses_remove_wishlist">Remove from Wishlist</string>
+    <string name="courses_too_many_courses">You must select fewer than 10 courses.</string>
+    <string name="courses_none_selected">You must select at least one course.</string>
 
     <!-- About -->
     <string name="about_email_picker_title">Complete Action Using&#8230;</string>
     <string name="about_adnan">Adnan Uddin</string>
     <string name="about_adnan_role">Android Developer</string>
-    <string name="about_adnan_description">“I should make a legit blurb”</string>
+    <string name="about_adnan_description">Better known as that guy that knows everyone on campus. When he is not coding away, Adnan is Committed to making sure that no student in ECSESS will ever have to suffer living without fried chicken.</string>
     <string name="about_adnan_linkedin">http://ca.linkedin.com/pub/adnan-uddin/58/7b9/b1</string>
     <string name="about_adnan_email">Email Here</string>
     <string name="about_gabriel">Gabriel Petrella</string>
     <string name="about_gabriel_role">Head Tester</string>
-    <string name="about_gabriel_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_gabriel_description">Gabriel is known as a fiend in the EUS scene. He has served many semesters with the PMO and OAP. Little known fact, he once committed to the role of brother to ECSESS President.</string>
     <string name="about_gabriel_linkedin">http://ca.linkedin.com/pub/gabriel-petrella/47/17/326</string>
     <string name="about_gabriel_email">Email Here</string>
     <string name="about_hernan">Hernan Gatta</string>
     <string name="about_hernan_role">iOS Developer</string>
     <string name="about_hernan_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
-    <string name="about_hernan_linkedin">Linkedin Here</string>
+    <string name="about_hernan_linkedin">ca.linkedin.com/in/hernangatta</string>
     <string name="about_hernan_email">Email Here</string>
     <string name="about_joshua">Joshua David Alfaro</string>
     <string name="about_joshua_role">Android Developer</string>
@@ -216,13 +217,13 @@
     <string name="about_joshua_linkedin">http://ca.linkedin.com/pub/joshua-david-alfaro/24/988/5b7</string>
     <string name="about_joshua_email">Email Here</string>
     <string name="about_julien">Julien Guerinet</string>
-    <string name="about_julien_role">Project Manager, Android Developer</string>
-    <string name="about_julien_description">Julien is a fourth year Computer Engineer undergraduate, and head of the Android app.</string>
+    <string name="about_julien_role">Scrum Master, Android Developer</string>
+    <string name="about_julien_description">Julien is a fourth year Computer Engineer undergraduate, and head of the Android version.</string>
     <string name="about_julien_linkedin">http://ca.linkedin.com/in/julienguerinet</string>
     <string name="about_julien_email">julien.guerinet\@mail.mcgill.ca</string>
     <string name="about_omar">Omar Delgado Gonzalez</string>
-    <string name="about_omar_role">Role Here</string>
-    <string name="about_omar_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_omar_role">Lead Cryptographer</string>
+    <string name="about_omar_description">Omar Boasts being </string>
     <string name="about_omar_linkedin">http://ca.linkedin.com/pub/omar-gonzalez/57/336/722</string>
     <string name="about_omar_email">Email Here</string>
     <string name="about_quang">Nhat-Quang Dao</string>
@@ -238,16 +239,16 @@
     <string name="about_shabbir">Shabbir Hussain</string>
     <string name="about_shabbir_role">Scrum Master, Windows Phone Developer, Android Developer</string>
     <string name="about_shabbir_description">Shabbir is an EE student who prefers software development. He enjoys pastries such as cannolis and timbits. Contact him if you are interested in playing rec volleyball.</string>
-    <string name="about_shabbir_linkedin">http://ca.linkedin.com/pub/shabbir-hussain/61/3a2/997</string>
-    <string name="about_shabbir_email">Email Here</string>
+    <string name="about_shabbir_linkedin">http://ca.linkedin.com/in/shabbirhusn</string>
+    <string name="about_shabbir_email">shabbir.husn\@outlook.com</string>
     <string name="about_xavier">Xavier Sit</string>
     <string name="about_xavier_role">Android Developer</string>
-    <string name="about_xavier_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_xavier_description">Xavier (Chi-Wing) is a undergraduate student in Computer Engineering with a minor in Computer Science.</string>
     <string name="about_xavier_linkedin">http://ca.linkedin.com/pub/chi-wing-sit/66/363/519</string>
-    <string name="about_xavier_email">Email Here</string>
+    <string name="about_xavier_email">chiwingsit\@gmail.com</string>
     <string name="about_yulric">Yulric Sequeira</string>
     <string name="about_yulric_role">Windows Phone Developer</string>
-    <string name="about_yulric_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_yulric_description">Yulric recently graduated from McGill University as Electrical Engineer and is part of Windows Phone development team.</string>
     <string name="about_yulric_linkedin">http://www.linkedin.com/in/yulricsequeira</string>
     <string name="about_yulric_email">yulric.sequeira\@mail.mcgill.ca</string>
 
