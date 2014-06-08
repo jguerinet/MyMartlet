@@ -45,7 +45,7 @@ public class InboxActivity extends DrawerActivity{
 
         mFirstLoad = true;
 
-        //Get the stored inbox from the ApplicationClass
+        //Get the stored inbox from the App
         mInbox = App.getInbox();
 
         //Get views

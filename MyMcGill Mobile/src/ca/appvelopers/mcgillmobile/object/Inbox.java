@@ -144,7 +144,7 @@ public class Inbox implements Serializable{
             e.printStackTrace();
         }
 
-        //Resave the inbox to the ApplicationClass
+        //Resave the inbox to the App
         App.setInbox(this);
     }
 

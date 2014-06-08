@@ -4,8 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 /**
- * Author : Yulric
- * Date :  17/11/13 10:33 AM
+ * Author : Julien
  */
 public class WalkthroughAdapter extends FragmentPagerAdapter {
     public WalkthroughAdapter(FragmentManager fm){

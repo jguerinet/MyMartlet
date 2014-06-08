@@ -42,7 +42,7 @@ public class EbillActivity extends DrawerActivity {
 
         GoogleAnalytics.sendScreen(this, "Ebill");
 
-        //Get the initial info from the ApplicationClass
+        //Get the initial info from the App
         mEbillItems = App.getEbill();
         mUserInfo = App.getUserInfo();
 

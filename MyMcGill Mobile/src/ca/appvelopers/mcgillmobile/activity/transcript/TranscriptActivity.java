@@ -40,7 +40,7 @@ public class TranscriptActivity extends DrawerActivity {
 
         GoogleAnalytics.sendScreen(this, "Transcript");
 
-        //Get the stored transcript from the ApplicationClass
+        //Get the stored transcript from the App
         mTranscript = App.getTranscript();
 
         //Get the views

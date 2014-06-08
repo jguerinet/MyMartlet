@@ -85,7 +85,7 @@ public class SettingsActivity extends DrawerActivity {
 
                 GoogleAnalytics.sendEvent(SettingsActivity.this, "Settings", "Homepage", chosenHomePage.toString(), null);
 
-                //Update it in the ApplicationClass
+                //Update it in App
                 App.setHomePage(chosenHomePage);
             }
 

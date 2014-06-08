@@ -17,8 +17,7 @@ import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
- * Author : Yulric
- * Date :  17/11/13 10:28 AM
+ * Author : Julien
  */
 public class WalkthroughFragment extends Fragment {
     private static final String PAGE_NUMBER = "page_number";
@@ -104,7 +103,7 @@ public class WalkthroughFragment extends Fragment {
 
                         GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Homepage", chosenHomePage.toString(), null);
 
-                        //Update it in the ApplicationClass
+                        //Update it in the App
                         App.setHomePage(chosenHomePage);
                     }
                     @Override
@@ -128,7 +127,7 @@ public class WalkthroughFragment extends Fragment {
 
                         GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Faculty", faculty.toString(), null);
 
-                        //Update it in the ApplicationClass
+                        //Update it in the App
                         App.setFaculty(faculty);
                     }
                     @Override
