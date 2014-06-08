@@ -11,6 +11,10 @@
     <dimen name="padding_medium">18dp</dimen>
     <dimen name="padding_large">22dp</dimen>
 
+    <!-- Padding for Walkthrough -->
+    <dimen name="padding_single">18dp</dimen>
+    <dimen name="padding_double">36dp</dimen>
+
     <!-- Font Sizes -->
     <dimen name="text_micro">12sp</dimen>
     <dimen name="text_small">14sp</dimen>
@@ -22,4 +26,7 @@
     <dimen name="cell_30min_height">45dp</dimen>
     <dimen name="cell_60min_height">90dp</dimen>
     <dimen name="cell_landscape_width">210dp</dimen>
+
+    <!-- About Images -->
+    <dimen name="about_image">80dp</dimen>
 </resources>
