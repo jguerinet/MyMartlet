@@ -70,4 +70,22 @@ public class Course implements Serializable{
     public String getAverageGrade(){
         return mAverageGrade;
     }
+
+    /**
+     * Get the season for this course
+     * @return The course season
+     */
+
+    public Season getSeason(){
+        return mSeason;
+    }
+
+    /**
+     * Get the year for this course
+     * @return The course year
+     */
+
+    public int getYear(){
+        return mYear;
+    }
 }
