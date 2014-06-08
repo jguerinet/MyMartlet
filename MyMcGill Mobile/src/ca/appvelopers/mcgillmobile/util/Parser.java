@@ -103,8 +103,14 @@ public class Parser {
                 dataRow = rows.get(semesterIndex);
 
                 while(true){
+
+                    //Student has graduated
+                    if(dataRow.text().contains(Token.GRANTED.getString())){
+                        break;
+                    }
+
                     //Semester Info
-                    if(dataRow.text().startsWith(Token.BACHELOR.getString()) ||
+                    else if(dataRow.text().startsWith(Token.BACHELOR.getString()) ||
                             dataRow.text().startsWith(Token.MASTER.getString()) ||
                             dataRow.text().startsWith(Token.DOCTOR.getString())){
 
@@ -634,6 +640,15 @@ public class Parser {
             }
         }
         return classItems;
+    }
+
+    /**
+     * Parses the Minerva Quick Add/Drop page after registering to check if any errors have occurred
+     * @param resultHTML The HTML string
+     */
+
+    public static void parseRegistrationErrors(String resultHTML){
+
     }
 
     /**
