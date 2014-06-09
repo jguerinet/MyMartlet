@@ -227,7 +227,7 @@ public class CoursesListActivity extends DrawerActivity {
                         //If so, determine what error is present
                         Elements links = document.select("a[href]");
                         for(Element link : links){
-                            if(link.toString().contains("http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm")){
+                            if(link.toString().contains(Connection.minervaRegistrationError)){
                                 mRegistrationError = link.text();
 
 
