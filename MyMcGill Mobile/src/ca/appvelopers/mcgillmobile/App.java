@@ -3,7 +3,12 @@ package ca.appvelopers.mcgillmobile;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.object.ClassItem;
@@ -16,6 +21,7 @@ import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Load;
+import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Update;
 
@@ -56,6 +62,20 @@ public class App extends Application {
 
         //Load the transcript
         transcript = Load.loadTranscript(this);
+
+        //Use the following code to use an HTML file for the transcript instead of
+        //retrieving it from Minerva
+
+        /*InputStream is = getResources().openRawResource(R.raw.transcriptys);
+        StringWriter writer = new StringWriter();
+        try{
+            IOUtils.copy(is, writer, "UTF-8");
+        } catch(Exception e){
+
+        }
+        String transcriptString = writer.toString();
+        Parser.parseTranscript(transcriptString);*/
+
         //Load the schedule
         schedule = Load.loadSchedule(this);
         //Load the ebill
