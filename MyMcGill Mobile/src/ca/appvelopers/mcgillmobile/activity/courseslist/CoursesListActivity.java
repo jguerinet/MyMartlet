@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class CoursesListActivity extends DrawerActivity {
     private List<ClassItem> mClasses;
     private ListView mListView;
     private String mRegistrationUrl;
+    private String mRegistrationError = "NULL";
     private ClassAdapter mAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,12 @@ public class CoursesListActivity extends DrawerActivity {
 
                     //Execute registration of checked classes in a new thread
                     new Registration().execute();
+
+                    //Display a message if a registration error has occurred
+                    if(!mRegistrationError.equals("NULL")){
+                        Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.registration_error, mRegistrationError), Toast.LENGTH_SHORT).show();
+                    }
+
 
                 }
                 else{
@@ -215,9 +223,23 @@ public class CoursesListActivity extends DrawerActivity {
             else{
                 //TODO: Parse result of registration and check for errors
                 Document document = Jsoup.parse(resultString, "UTF-8");
+                Elements dataRows = document.getElementsByClass("plaintable");
 
-                //Find rows of HTML by class
-                Elements dataRows = document.getElementsByClass("dddefault");
+                for(Element row : dataRows){
+
+                    //Check if an error exists
+                    if(row.toString().contains("errortext")){
+
+                        //If so, determine what error is present
+                        Elements links = document.select("a[href]");
+                        for(Element link : links){
+                            if(link.toString().contains("http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm")){
+                                mRegistrationError = link.text();
+                            }
+                        }
+                    }
+                }
+
                 return true;
             }
         }
