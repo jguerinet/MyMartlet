@@ -29,6 +29,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Parser;
 
 /**
  * Author : Julien
@@ -216,26 +217,7 @@ public class CoursesListActivity extends DrawerActivity {
             }
             //Otherwise, check for errors
             else{
-                Document document = Jsoup.parse(resultString, "UTF-8");
-                Elements dataRows = document.getElementsByClass("plaintable");
-
-                for(Element row : dataRows){
-
-                    //Check if an error exists
-                    if(row.toString().contains("errortext")){
-
-                        //If so, determine what error is present
-                        Elements links = document.select("a[href]");
-                        for(Element link : links){
-                            if(link.toString().contains(Connection.minervaRegistrationError)){
-                                mRegistrationError = link.text();
-
-
-                            }
-                        }
-                    }
-                }
-
+                mRegistrationError = Parser.parseRegistrationErrors(resultString);
                 return true;
             }
         }

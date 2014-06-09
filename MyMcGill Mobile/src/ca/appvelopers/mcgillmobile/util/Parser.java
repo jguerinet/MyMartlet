@@ -647,8 +647,27 @@ public class Parser {
      * @param resultHTML The HTML string
      */
 
-    public static void parseRegistrationErrors(String resultHTML){
+    public static String parseRegistrationErrors(String resultHTML){
+        String registrationError = "NULL";
 
+        Document document = Jsoup.parse(resultHTML, "UTF-8");
+        Elements dataRows = document.getElementsByClass("plaintable");
+
+        for(Element row : dataRows){
+
+            //Check if an error exists
+            if(row.toString().contains("errortext")){
+
+                //If so, determine what error is present
+                Elements links = document.select("a[href]");
+                for(Element link : links){
+                    if(link.toString().contains(Connection.minervaRegistrationError)){
+                        registrationError = link.text();
+                    }
+                }
+            }
+        }
+        return registrationError;
     }
 
     /**
