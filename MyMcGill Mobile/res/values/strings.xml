@@ -20,6 +20,7 @@
     <string name="title_registration">Search for Courses</string>
     <string name="title_wishlist">My Course Wishlist</string>
     <string name="title_about">About Us</string>
+    <string name="title_courses">My Classes</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -42,8 +43,7 @@
     <string name="icon_settings">&#xf013;</string>
     <string name="icon_desktop">&#xf108;</string>
     <string name="icon_email">&#xf0e0;</string>
-    <string name="icon_mycourses">&#xf02d;</string>
-    <string name="icon_browse_courses">&#xf02d;</string>
+    <string name="icon_mycourses">&#xf19c;</string>
     <string name="icon_ebill">&#xf155;</string>
     <string name="icon_transcript">&#xf15c;</string>
     <string name="icon_map">&#xf041;</string>
@@ -52,6 +52,9 @@
     <string name="icon_security">&#xf023;</string>
     <string name="icon_question">&#xf128;</string>
     <string name="icon_linkedin">&#xf08c;</string>
+    <string name="icon_search">&#xf002;</string>
+    <string name="icon_star">&#xf005;</string>
+    <string name="icon_courses">&#xf02d;</string>
 
     <!-- Day Names -->
     <string name="monday">Monday</string>
@@ -171,6 +174,8 @@
     <string name="registration_subject">Subject</string>
     <string name="registration_course_number">Course Number (optional)</string>
     <string name="registration_invalid_subject">Invalid subject: Please a four character subject code</string>
+    <string name="registration_error">Registration error: %s</string>
+    <string name="registration_success">Registration successful!</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
@@ -198,47 +203,47 @@
     <string name="about_email_picker_title">Complete Action Using&#8230;</string>
     <string name="about_adnan">Adnan Uddin</string>
     <string name="about_adnan_role">Android Developer</string>
-    <string name="about_adnan_description">Better known as that guy that knows everyone on campus. When he is not coding away, Adnan is Committed to making sure that no student in ECSESS will ever have to suffer living without fried chicken.</string>
+    <string name="about_adnan_description">Better known as that guy that knows everyone on campus. In 2014, Adnan famously held a fried chicken event which still holds the record for least number of salmonella cases at an Engineering Event.</string>
     <string name="about_adnan_linkedin">http://ca.linkedin.com/pub/adnan-uddin/58/7b9/b1</string>
-    <string name="about_adnan_email">Email Here</string>
+    <string name="about_adnan_email">RAFI, PUT YOUR EMAIL</string>
     <string name="about_gabriel">Gabriel Petrella</string>
     <string name="about_gabriel_role">Head Tester</string>
-    <string name="about_gabriel_description">Gabriel is known as a fiend in the EUS scene. He has served many semesters with the PMO and OAP. Little known fact, he once committed to the role of brother to ECSESS President.</string>
+    <string name="about_gabriel_description">Gabriel is known as a fiend in the EUS scene. He has served many semesters with the PMO and OAP. Little known fact, for one year he committed to the role of brother to ECSESS President.</string>
     <string name="about_gabriel_linkedin">http://ca.linkedin.com/pub/gabriel-petrella/47/17/326</string>
-    <string name="about_gabriel_email">Email Here</string>
+    <string name="about_gabriel_email">GABE, PUT YOUR EMAIL</string>
     <string name="about_hernan">Hernan Gatta</string>
     <string name="about_hernan_role">iOS Developer</string>
-    <string name="about_hernan_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_hernan_description">A blurb? I\'m AWESOME! (More so than Josh.)</string>
     <string name="about_hernan_linkedin">ca.linkedin.com/in/hernangatta</string>
-    <string name="about_hernan_email">Email Here</string>
+    <string name="about_hernan_email">gattahernan\@gmail.com</string>
     <string name="about_joshua">Joshua David Alfaro</string>
     <string name="about_joshua_role">Android Developer</string>
     <string name="about_joshua_description">Josh is awesome… Nuff Said.</string>
     <string name="about_joshua_linkedin">http://ca.linkedin.com/pub/joshua-david-alfaro/24/988/5b7</string>
-    <string name="about_joshua_email">Email Here</string>
+    <string name="about_joshua_email">JOSH, PUT YOUR EMAIL</string>
     <string name="about_julien">Julien Guerinet</string>
     <string name="about_julien_role">Scrum Master, Android Developer</string>
     <string name="about_julien_description">Julien is a fourth year Computer Engineer undergraduate, and head of the Android version.</string>
     <string name="about_julien_linkedin">http://ca.linkedin.com/in/julienguerinet</string>
     <string name="about_julien_email">julien.guerinet\@mail.mcgill.ca</string>
-    <string name="about_omar">Omar Delgado Gonzalez</string>
-    <string name="about_omar_role">Lead Cryptographer</string>
-    <string name="about_omar_description">Omar Boasts being </string>
+    <string name="about_omar">Omar Gonzalez</string>
+    <string name="about_omar_role">Generic Dev and Test</string>
+    <string name="about_omar_description">Omar is a Software Engineering student with a minor in Computer Science. This allows him to boast about being a traitor to both sides. While he is not busy eating sandwiches he aspires to create a programming language more obscure and frustrating than brainfuck, possibly an extension to JAVA. He also backstabbed Julien during this project. *I\'m not even mad*</string>
     <string name="about_omar_linkedin">http://ca.linkedin.com/pub/omar-gonzalez/57/336/722</string>
-    <string name="about_omar_email">Email Here</string>
+    <string name="about_omar_email">omargonzalez233\@gmail.com</string>
     <string name="about_quang">Nhat-Quang Dao</string>
     <string name="about_quang_role">Android Developer</string>
-    <string name="about_quang_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
-    <string name="about_quang_linkedin">Linkedin Here</string>
-    <string name="about_quang_email">Email Here</string>
+    <string name="about_quang_description">Very little is known about Quang. This man of mystery abides somewhere in Canada, perhaps, and also enjoys Oreos and similar sweets. </string>
+    <string name="about_quang_linkedin">QUANG, PUT YOUR LINKEDIN</string>
+    <string name="about_quang_email">QUANG, PUT YOUR EMAIL</string>
     <string name="about_ryan">Ryan Singzon</string>
     <string name="about_ryan_role">Android Developer</string>
-    <string name="about_ryan_description">If you are seeing this, it\'s because this person has not made a blurb yet and should definitely do so. </string>
+    <string name="about_ryan_description">Ryan Singzon aka. The man with the smile is best known for being the only contender to the ridiculously photogenic guy. </string>
     <string name="about_ryan_linkedin">http://ca.linkedin.com/in/ryansingzon</string>
-    <string name="about_ryan_email">Email Here</string>
+    <string name="about_ryan_email">RYAN, PUT YOUR EMAIL</string>
     <string name="about_shabbir">Shabbir Hussain</string>
-    <string name="about_shabbir_role">Scrum Master, Windows Phone Developer, Android Developer</string>
-    <string name="about_shabbir_description">Shabbir is an EE student who prefers software development. He enjoys pastries such as cannolis and timbits. Contact him if you are interested in playing rec volleyball.</string>
+    <string name="about_shabbir_role">Scrum Master, Assistant to the Scrum Master, Windows Phone Developer, Android Developer</string>
+    <string name="about_shabbir_description">Shabbir is an EE student who prefers software development. Although he did contribute to this project, the team knows him exclusively as Assistant to the Scrum Master. Contact him if you are interested in playing rec volleyball.</string>
     <string name="about_shabbir_linkedin">http://ca.linkedin.com/in/shabbirhusn</string>
     <string name="about_shabbir_email">shabbir.husn\@outlook.com</string>
     <string name="about_xavier">Xavier Sit</string>

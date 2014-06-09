@@ -19,6 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -115,12 +116,6 @@ public class CoursesListActivity extends DrawerActivity {
 
                     //Execute registration of checked classes in a new thread
                     new Registration().execute();
-
-                    //Display a message if a registration error has occurred
-                    if(!mRegistrationError.equals("NULL")){
-                        Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.registration_error, mRegistrationError), Toast.LENGTH_SHORT).show();
-                    }
-
 
                 }
                 else{
@@ -221,7 +216,6 @@ public class CoursesListActivity extends DrawerActivity {
             }
             //Otherwise, check for errors
             else{
-                //TODO: Parse result of registration and check for errors
                 Document document = Jsoup.parse(resultString, "UTF-8");
                 Elements dataRows = document.getElementsByClass("plaintable");
 
@@ -235,6 +229,8 @@ public class CoursesListActivity extends DrawerActivity {
                         for(Element link : links){
                             if(link.toString().contains("http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm")){
                                 mRegistrationError = link.text();
+
+
                             }
                         }
                     }
@@ -251,7 +247,15 @@ public class CoursesListActivity extends DrawerActivity {
 
             if(loadInfo){
                 //Display whether the user was successfully registered
-                //TODO: Add message for registration success or fail
+                if(mRegistrationError.equals("NULL")){
+                    Toast.makeText(CoursesListActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
+                }
+
+                //Display a message if a registration error has occurred
+                else{
+                    Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.registration_error,
+                            mRegistrationError), Toast.LENGTH_LONG).show();
+                }
             }
         }
     }

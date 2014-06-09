@@ -87,10 +87,10 @@ public class DrawerAdapter extends BaseAdapter {
 
         //Search Courses
         mDrawerItems.add(SEARCH_COURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_registration),
-                mActivity.getResources().getString(R.string.icon_browse_courses)));
+                mActivity.getResources().getString(R.string.icon_search)));
 
         mDrawerItems.add(WISHLIST_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_wishlist),
-                mActivity.getResources().getString(R.string.icon_browse_courses)));
+                mActivity.getResources().getString(R.string.icon_courses)));
 
         //Ebill
         mDrawerItems.add(EBILL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_ebill),
