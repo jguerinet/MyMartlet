@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,8 @@ import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Load;
+import ca.appvelopers.mcgillmobile.util.Save;
 
 public class SettingsActivity extends DrawerActivity {
 
@@ -27,9 +30,6 @@ public class SettingsActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
 
         GoogleAnalytics.sendScreen(this, "Settings");
-
-        TextView languageTitle = (TextView)findViewById(R.id.settings_language_title);
-        languageTitle.setText(getResources().getString(R.string.settings_language));
 
         //Set up the info
         Spinner languages = (Spinner)findViewById(R.id.settings_language);
@@ -91,6 +91,16 @@ public class SettingsActivity extends DrawerActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
+        //Statistics
+        CheckBox statistics = (CheckBox)findViewById(R.id.settings_statistics);
+        statistics.setChecked(Load.loadStatistics(this));
+        statistics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Save.saveStatistics(SettingsActivity.this, b);
+            }
         });
     }
 

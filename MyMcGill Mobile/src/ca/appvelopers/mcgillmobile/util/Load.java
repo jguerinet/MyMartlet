@@ -61,6 +61,11 @@ public class Load {
         return HomePage.values()[sharedPrefs.getInt(Constants.HOMEPAGE, 0)];
     }
 
+    public static boolean loadStatistics(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.STATISTICS, true);
+    }
+
     public static Faculty loadFaculty(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return Faculty.values()[sharedPrefs.getInt(Constants.FACULTY, 0)];

@@ -143,6 +143,7 @@
     <!-- Settings Screen -->
     <string name="settings_language">Language</string>
     <string name="settings_homepage">Homepage</string>
+    <string name="settings_statistics">Allow Usage Statistics </string>
     <string name="homepage_schedule">Schedule</string>
     <string name="homepage_transcript">Transcript</string>
     <string name="homepage_email">Email</string>

@@ -63,6 +63,13 @@ public class Save {
                 .commit();
     }
 
+    public static void saveStatistics(Context context, boolean statistics){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putBoolean(Constants.STATISTICS, statistics)
+                .commit();
+    }
+
     public static void saveFaculty(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
