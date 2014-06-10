@@ -75,7 +75,11 @@ public class ChangeSemesterActivity extends BaseActivity {
         //If we are also using the registration term
         if(mRegisterTerms){
             //Get the current terms that the user can register in
-            mTerms.addAll(App.getRegisterTerms());
+            for(Term term : App.getRegisterTerms()){
+                if(!mTerms.contains(term)){
+                    mTerms.add(term);
+                }
+            }
         }
 
         //Order them chronologically

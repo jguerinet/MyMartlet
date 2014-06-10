@@ -190,7 +190,7 @@ public class CoursesListActivity extends DrawerActivity {
 
         mCanUnregister = App.getRegisterTerms().contains(mTerm);
 
-        //Change the text if we are in the list of currently registered courses
+        //Change the text and the visibility if we are in the list of currently registered courses
         if(listType == CourseListType.VIEW_COURSES){
             View line = findViewById(R.id.course_line);
             if(mCanUnregister){
