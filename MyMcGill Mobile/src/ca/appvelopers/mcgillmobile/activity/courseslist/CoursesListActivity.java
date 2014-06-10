@@ -65,7 +65,12 @@ public class CoursesListActivity extends DrawerActivity {
         mListView = (ListView)findViewById(R.id.courses_list);
         mListView.setEmptyView(findViewById(R.id.courses_empty));
 
-        mTerm = App.getDefaultTerm();
+        //Get the term from the intent (From the course search
+        mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
+        //If it's null, just load the default term
+        if(mTerm == null){
+            mTerm = App.getDefaultTerm();
+        }
 
         //Check if we need to load the wishlist
         if(listType == CourseListType.WISHLIST){
@@ -178,6 +183,9 @@ public class CoursesListActivity extends DrawerActivity {
     }
 
     private void loadInfo(){
+        //Set the title
+        setTitle(mTerm.toString(this));
+
         mAdapter = new ClassAdapter(this, mTerm, mClasses);
         mListView.setAdapter(mAdapter);
     }
@@ -220,7 +228,7 @@ public class CoursesListActivity extends DrawerActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == CHANGE_SEMESTER_CODE){
             if(resultCode == RESULT_OK){
-                mTerm = ((Term)data.getSerializableExtra(Constants.TERM));
+                mTerm = (Term)data.getSerializableExtra(Constants.TERM);
                 loadInfo();
             }
         }

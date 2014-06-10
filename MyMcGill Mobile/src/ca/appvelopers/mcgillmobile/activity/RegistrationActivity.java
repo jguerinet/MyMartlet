@@ -138,11 +138,11 @@ public class RegistrationActivity extends DrawerActivity{
 
         //Update or create transcript object and display data
         @Override
-        protected void onPostExecute(Boolean infoLoaded){
+        protected void onPostExecute(Boolean coursesParsed){
             mDialog.dismiss();
 
             //There was an error
-            if(!infoLoaded){
+            if(!coursesParsed){
                 try {
                     DialogHelper.showNeutralAlertDialog(RegistrationActivity.this, getResources().getString(R.string.error),
                             getResources().getString(R.string.error_other));
@@ -154,6 +154,7 @@ public class RegistrationActivity extends DrawerActivity{
             else{
                 Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
                 intent.putExtra(Constants.LIST_TYPE, false);
+                intent.putExtra(Constants.TERM, mTerm);
                 startActivity(intent);
             }
         }
