@@ -17,6 +17,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
@@ -74,10 +75,9 @@ public class CoursesListActivity extends DrawerActivity {
         else if (listType == CourseListType.SEARCH_COURSES){
             mClasses = Constants.searchedClassItems;
         }
-        //If not, just load the default semester's courses
+        //If not, just load all of the courses
         else{
-            //TODO
-            mClasses = null;
+            mClasses = App.getClasses();
         }
 
         //Register button
@@ -207,8 +207,9 @@ public class CoursesListActivity extends DrawerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == Constants.MENU_ITEM_CHANGE_SEMESTER){
-            Intent intent = new Intent(this, ChangeListActivity.class);
-            intent.putExtra(Constants.REGISTER_TERMS, true);
+            Intent intent = new Intent(this, ChangeSemesterActivity.class);
+            boolean registerTerms = listType == CourseListType.WISHLIST;
+            intent.putExtra(Constants.REGISTER_TERMS, registerTerms);
             startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             return true;
         }
