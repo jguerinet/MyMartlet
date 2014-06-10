@@ -8,25 +8,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
+import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Author : Julien
@@ -34,24 +35,31 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
  * Shows a list of courses
  */
 public class CoursesListActivity extends DrawerActivity {
-    public boolean wishlist;
+    public static final int CHANGE_SEMESTER_CODE = 100;
+    public CourseListType listType;
+
+    private ListView mListView;
+    private TextView mRegisterButton;
+
+    private ClassAdapter mAdapter;
 
     private List<ClassItem> mClasses;
-    private ListView mListView;
-    private String mRegistrationUrl;
-    private ClassAdapter mAdapter;
+    private Term mTerm;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_courseslist);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-        wishlist = getIntent().getBooleanExtra(Constants.WISHLIST, true);
+        listType = (CourseListType)getIntent().getSerializableExtra(Constants.LIST_TYPE);
 
         super.onCreate(savedInstanceState);
 
-        if(wishlist){
+        if(listType == CourseListType.WISHLIST){
             GoogleAnalytics.sendScreen(this, "Wishlist");
+        }
+        else if(listType == CourseListType.VIEW_COURSES){
+            GoogleAnalytics.sendScreen(this, "View Courses");
         }
         else{
             GoogleAnalytics.sendScreen(this, "Search Results");
@@ -61,72 +69,61 @@ public class CoursesListActivity extends DrawerActivity {
         mListView = (ListView)findViewById(R.id.courses_list);
         mListView.setEmptyView(findViewById(R.id.courses_empty));
 
+        //Get the term from the intent (From the course search
+        mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
+        //If it's null, just load the default term
+        if(mTerm == null){
+            mTerm = App.getDefaultTerm();
+        }
+
         //Check if we need to load the wishlist
-        if(wishlist){
+        if(listType == CourseListType.WISHLIST){
             mClasses = App.getClassWishlist();
         }
-        //If not, get the searched courses
-        else{
+        //Check if we need to get the searched courses
+        else if (listType == CourseListType.SEARCH_COURSES){
             mClasses = Constants.searchedClassItems;
+        }
+        //If not, just load all of the courses
+        else{
+            mClasses = App.getClasses();
         }
 
         //Register button
-        TextView register = (TextView)findViewById(R.id.course_register);
-        register.setOnClickListener(new View.OnClickListener() {
+        mRegisterButton = (TextView)findViewById(R.id.course_register);
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //Get checked courses from adapter
                 List<ClassItem> registerCoursesList = mAdapter.getCheckedClasses();
 
-                //Get term
-                if (registerCoursesList.size() > 10){
-                    String toastMessage = getResources().getString(R.string.registration_error_too_many_courses);
-                    Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                //Too many courses
+                if (registerCoursesList.size() > 10) {
+                    Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.courses_too_many_courses),
+                            Toast.LENGTH_SHORT).show();
+                } else if (registerCoursesList.isEmpty()) {
+                    Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.courses_none_selected),
+                            Toast.LENGTH_SHORT).show();
+                } else if (registerCoursesList.size() > 0) {
+                    //Execute (un)registration of checked classes in a new thread
+                    boolean unregister = listType == CourseListType.VIEW_COURSES;
+                    new RegistrationThread(Connection.getRegistrationURL(mTerm, registerCoursesList, unregister)).execute();
                 }
-                else if(registerCoursesList.size() > 0){
-                    //Set up registration url
-                    mRegistrationUrl = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
-
-                    //Add term
-                    //TODO: Add term to registration url
-                    //mRegistrationUrl += <TERM>
-
-                    //Add weird random Minerva code
-                    mRegistrationUrl += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&RSTS_IN=RW";
-
-                    //Loop through the checked courses and add them to the string
-                    int courseCount = registerCoursesList.size();
-                    for (ClassItem course : registerCoursesList){
-                        mRegistrationUrl += "&RSTS_IN=RW&CRN_IN=";
-                        mRegistrationUrl += course.getCRN();
-                        mRegistrationUrl += "&assoc_term_in=&start_date_in=&end_date_in=";
-                    }
-
-                    //Add dummy strings to the url until there are 10 registration strings in total
-                    //This might actually not be necessary
-                    for(int i = courseCount; i <= 10; i++){
-                        mRegistrationUrl += "&RSTS_IN=RW&CRN_IN=&assoc_term_in=&start_date_in=&end_date_in=";
-                    }
-
-                    mRegistrationUrl += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
-
-                    //Obtain searchedCourses
-                    new Registration().execute();
-
-                }
-                else{
-                    Toast.makeText(CoursesListActivity.this, "No courses selected", Toast.LENGTH_SHORT).show();
-                }
-
-                Toast.makeText(CoursesListActivity.this, "Feature not implemented yet", Toast.LENGTH_SHORT).show();
             }
         });
 
         //Add/Remove to/from Wishlist Button
         TextView wishlist = (TextView)findViewById(R.id.course_wishlist);
-        wishlist.setText(this.wishlist ? getResources().getString(R.string.courses_remove_wishlist) :
-            getResources().getString(R.string.courses_add_wishlist));
+        if(listType == CourseListType.WISHLIST){
+            wishlist.setText(getResources().getString(R.string.courses_remove_wishlist));
+        }
+        else if(listType == CourseListType.SEARCH_COURSES){
+            wishlist.setText(getResources().getString(R.string.courses_add_wishlist));
+        }
+        //Remove this button if the person is just reviewing their classes
+        else{
+            wishlist.setVisibility(View.GONE);
+        }
         wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,13 +131,12 @@ public class CoursesListActivity extends DrawerActivity {
                 List<ClassItem> checkedClasses = mAdapter.getCheckedClasses();
 
                 String toastMessage;
-
                 //If there are none, display error message
                 if(checkedClasses.isEmpty()){
                     toastMessage = getResources().getString(R.string.wishlist_error_empty);
                 }
                 //If we are in the wishlist, this button is to remove a course
-                else if(CoursesListActivity.this.wishlist){
+                else if(listType == CourseListType.WISHLIST){
                     toastMessage = getResources().getString(R.string.wishlist_remove, checkedClasses.size());
                     mClasses.removeAll(checkedClasses);
 
@@ -152,7 +148,6 @@ public class CoursesListActivity extends DrawerActivity {
 
                     //Reload the adapter
                     loadInfo();
-
                 }
                 //If not, it's to add a course to the wishlist
                 else{
@@ -183,8 +178,102 @@ public class CoursesListActivity extends DrawerActivity {
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadInfo();
+    }
+
+    private void loadInfo(){
+        //Set the title
+        setTitle(mTerm.toString(this));
+
+        boolean canUnregister = App.getRegisterTerms().contains(mTerm);
+
+        //Change the text and the visibility if we are in the list of currently registered courses
+        if(listType == CourseListType.VIEW_COURSES){
+            View line = findViewById(R.id.course_line);
+            if(canUnregister){
+                line.setVisibility(View.VISIBLE);
+                mRegisterButton.setVisibility(View.VISIBLE);
+                mRegisterButton.setText(getString(R.string.courses_unregister));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                mRegisterButton.setLayoutParams(params);
+            }
+            else{
+                line.setVisibility(View.GONE);
+                mRegisterButton.setVisibility(View.GONE);
+            }
+        }
+
+        mAdapter = new ClassAdapter(this, mTerm, mClasses, listType, canUnregister);
+        mListView.setAdapter(mAdapter);
+    }
+
+    /*@Override
+    public void onBackPressed(){
+        startActivity(new Intent(CoursesListActivity.this, App.getHomePage().getHomePageClass()));
+        super.onBackPressed();
+    }*/
+
+//    @Override
+//    public void onBackPressed(){
+//        super.onBackPressed();
+//        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//    }
+
+    // JDAlfaro
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        //Change Semester Menu Item - Not for Search Results
+        if(listType != CourseListType.SEARCH_COURSES){
+            menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE, R.string.schedule_change_semester);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == Constants.MENU_ITEM_CHANGE_SEMESTER){
+            Intent intent = new Intent(this, ChangeSemesterActivity.class);
+            boolean registerTerms = listType == CourseListType.WISHLIST;
+            intent.putExtra(Constants.REGISTER_TERMS, registerTerms);
+            startActivityForResult(intent, CHANGE_SEMESTER_CODE);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CHANGE_SEMESTER_CODE){
+            if(resultCode == RESULT_OK){
+                mTerm = (Term)data.getSerializableExtra(Constants.TERM);
+                loadInfo();
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public enum CourseListType{
+        SEARCH_COURSES,
+        VIEW_COURSES,
+        WISHLIST
+    }
+
     //Connects to Minerva in a new thread to register for courses
-    private class Registration extends AsyncTask<Void, Void, Boolean> {
+    private class RegistrationThread extends AsyncTask<Void, Void, Boolean> {
+        private String mRegistrationURL;
+        private String mRegistrationError;
+
+        public RegistrationThread(String registrationURL){
+            this.mRegistrationURL = registrationURL;
+            this.mRegistrationError = null;
+        }
+
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
@@ -194,7 +283,7 @@ public class CoursesListActivity extends DrawerActivity {
         //Retrieve page that contains registration status from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            String resultString = Connection.getInstance().getUrl(CoursesListActivity.this, mRegistrationUrl);
+            String resultString = Connection.getInstance().getUrl(CoursesListActivity.this, mRegistrationURL);
 
             //If result string is null, there was an error
             if(resultString == null){
@@ -214,96 +303,28 @@ public class CoursesListActivity extends DrawerActivity {
             }
             //Otherwise, check for errors
             else{
-                //TODO: Parse result of registration and check for errors
-                Document document = Jsoup.parse(resultString, "UTF-8");
-
-                //Find rows of HTML by class
-                Elements dataRows = document.getElementsByClass("dddefault");
+                mRegistrationError = Parser.parseRegistrationErrors(resultString);
                 return true;
             }
         }
 
         //Update or create transcript object and display data
         @Override
-        protected void onPostExecute(Boolean loadInfo){
+        protected void onPostExecute(Boolean success){
             setProgressBarIndeterminateVisibility(false);
 
-            if(loadInfo){
+            if(success){
                 //Display whether the user was successfully registered
-                //TODO: Add message for registration success or fail
+                if(mRegistrationError == null){
+                    Toast.makeText(CoursesListActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
+                }
+
+                //Display a message if a registration error has occurred
+                else{
+                    Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.registration_error,
+                            mRegistrationError), Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
-
-
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        loadInfo();
-    }
-
-    private void loadInfo(){
-        mAdapter = new ClassAdapter(this, mClasses);
-        mListView.setAdapter(mAdapter);
-    }
-
-    /*@Override
-    public void onBackPressed(){
-        startActivity(new Intent(CoursesListActivity.this, App.getHomePage().getHomePageClass()));
-        super.onBackPressed();
-    }*/
-
-//    @Override
-//    public void onBackPressed(){
-//        super.onBackPressed();
-//        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-//    }
-
-    // JDAlfaro
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.refresh, menu);
-
-        // change semester menu item
-        menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE, R.string.schedule_change_semester);
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Opens the context menu
-            case Constants.MENU_ITEM_CHANGE_SEMESTER:
-                Intent intent = new Intent(this, ChangeListActivity.class);
-                startActivity(intent);
-                //startActivityForResult(intent, CHANGE_SEMESTER_CODE);
-                return true;
-            case R.id.action_refresh:
-                //Start thread to retrieve schedule
-                //new ScheduleGetter(mCurrentSemester.getURL()).execute();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    /*
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == CHANGE_SEMESTER_CODE){
-            if(resultCode == RESULT_OK){
-                //mCurrentSemester = ((Semester)data.getSerializableExtra(Constants.SEMESTER));
-
-                //Quick Check
-                //assert (mCurrentSemester != null);
-
-               // new ScheduleGetter(mCurrentSemester.getURL()).execute();
-            }
-        }
-        else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }*/
-
 }

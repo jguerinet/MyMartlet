@@ -19,11 +19,12 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.Season;
+import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Created by Ryan Singzon on 19/05/14.
@@ -67,21 +68,17 @@ public class RegistrationActivity extends DrawerActivity{
     public void searchCourses(View v){
         Spinner semesterSpinner = (Spinner) findViewById(R.id.registration_semester);
         String semester = semesterSpinner.getSelectedItem().toString();
-        Season season = null;
-        int year = -1;
+        Term term = null;
 
-        //TODO Find out how to make this dynamicc
+        //TODO Find out how to make this dynamic
         if(semester.equals("Summer 2014")){
-            season = Season.SUMMER;
-            year = 2014;
+            term = new Term(Season.SUMMER, 2014);
         }
         else if(semester.equals("Fall 2014")){
-            season = Season.FALL;
-            year = 2014;
+            term = new Term(Season.FALL, 2014);
         }
         else if(semester.equals("Winter 2015")){
-            season = Season.WINTER;
-            year = 2015;
+            term = new Term(Season.WINTER, 2015);
         }
 
         //Obtain user input from text boxes
@@ -96,23 +93,21 @@ public class RegistrationActivity extends DrawerActivity{
         EditText courseNumBox = (EditText) findViewById(R.id.registration_course_number);
         String courseNumber = courseNumBox.getText().toString();
 
-        String courseSearchURL = Connection.getCourseURL(season, year, subject, courseNumber);
+        String courseSearchURL = Connection.getCourseURL(term, subject, courseNumber);
 
         //Obtain courses
-        new CoursesGetter(season, year, courseSearchURL).execute();
+        new CoursesGetter(term, courseSearchURL).execute();
     }
 
     //Connects to Minerva in a new thread
     private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
-        private Season mSeason;
-        private int mYear;
+        private Term mTerm;
         private String mClassSearchURL;
 
         private ProgressDialog mDialog;
 
-        public CoursesGetter(Season season, int year, String classSearchURL){
-            this.mSeason = season;
-            this.mYear = year;
+        public CoursesGetter(Term term, String classSearchURL){
+            this.mTerm = term;
             this.mClassSearchURL = classSearchURL;
         }
 
@@ -136,18 +131,18 @@ public class RegistrationActivity extends DrawerActivity{
             }
             //Parse
             else{
-                Constants.searchedClassItems = Parser.parseClassResults(mSeason, mYear, classesString);
+                Constants.searchedClassItems = Parser.parseClassResults(mTerm, classesString);
                 return true;
             }
         }
 
         //Update or create transcript object and display data
         @Override
-        protected void onPostExecute(Boolean infoLoaded){
+        protected void onPostExecute(Boolean coursesParsed){
             mDialog.dismiss();
 
             //There was an error
-            if(!infoLoaded){
+            if(!coursesParsed){
                 try {
                     DialogHelper.showNeutralAlertDialog(RegistrationActivity.this, getResources().getString(R.string.error),
                             getResources().getString(R.string.error_other));
@@ -158,7 +153,8 @@ public class RegistrationActivity extends DrawerActivity{
             //Go to the CoursesListActivity with the parsed courses
             else{
                 Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
-                intent.putExtra(Constants.WISHLIST, false);
+                intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.SEARCH_COURSES);
+                intent.putExtra(Constants.TERM, mTerm);
                 startActivity(intent);
             }
         }

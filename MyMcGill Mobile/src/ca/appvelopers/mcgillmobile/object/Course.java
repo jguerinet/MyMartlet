@@ -11,18 +11,16 @@ import java.io.Serializable;
 public class Course implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private Season mSeason;
-    private int mYear;
+    private Term mTerm;
     private String mCourseCode;
     private String mCourseTitle;
     private int mCredits;
     private String mUserGrade;
     private String mAverageGrade;
 
-    public Course(Season season, int year, String courseTitle, String courseCode, int credits,
+    public Course(Term term, String courseTitle, String courseCode, int credits,
                     String userGrade, String averageGrade){
-        this.mSeason = season;
-        this.mYear = year;
+        this.mTerm = term;
         this.mCourseCode = courseCode;
         this.mCourseTitle = courseTitle;
         this.mCredits = credits;
@@ -69,5 +67,13 @@ public class Course implements Serializable{
      */
     public String getAverageGrade(){
         return mAverageGrade;
+    }
+
+    /**
+     * Get the term for this course
+     * @return The course term
+     */
+    public Term getTerm(){
+        return mTerm;
     }
 }

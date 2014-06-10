@@ -50,7 +50,8 @@
             <View
                 android:layout_width="@dimen/line"
                 android:layout_height="match_parent"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:id="@+id/course_line"/>
 
             <TextView
                 android:layout_width="0dp"

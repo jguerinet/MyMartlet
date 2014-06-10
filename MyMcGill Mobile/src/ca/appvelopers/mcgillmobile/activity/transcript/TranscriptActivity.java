@@ -19,9 +19,9 @@ import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Author: Ryan Singzon
@@ -100,7 +100,7 @@ public class TranscriptActivity extends DrawerActivity {
         protected Boolean doInBackground(Void... params){
             final Activity activity = TranscriptActivity.this;
 
-            String transcriptString = Connection.getInstance().getUrl(activity, Connection.minervaTranscript);
+            String transcriptString = Connection.getInstance().getUrl(activity, Connection.TRANSCRIPT);
 
             if(transcriptString == null){
                 activity.runOnUiThread(new Runnable() {

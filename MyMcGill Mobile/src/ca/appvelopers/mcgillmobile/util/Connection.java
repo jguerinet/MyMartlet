@@ -30,9 +30,11 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
-import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua
@@ -49,26 +51,17 @@ public class Connection {
 	private ConnectionStatus status = ConnectionStatus.CONNECTION_FIRSTACCESS;
 	
 	// Constants
-	public final static String minervaLoginPage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
-	public final static String minervaLoginPost = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
-	public final static String minervaSchedule = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=201401";
-    public final static String minervaEbill = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
-    public final static String minervaTranscript = "https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
-	public final static String minervaHomepage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
-	public final static String minervaHost = "horizon.mcgill.ca";
-	public final static String minervaOrigin = "https://horizon.mcgill.ca";
-	public final static String minervaSchedulePrefix = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
-    public final static String minervaRegistration = "https://horizon.mcgill.ca/pban1/bwckgens.p_proc_term_date?p_calling_proc=P_CrseSearch&search_mode_in=NON_NT&p_term=201405";
-	
-	public final static String myMcGillLoginPage = "https://mymcgill.mcgill.ca/portal/page/portal/myMcGill";
-	public final static String myMcGillLoginPortal = "https://mymcgill.mcgill.ca/portal/page/portal/Login";
-	public final static String myMcGillLoginSSO= "https://login.mcgill.ca/sso/auth";
-	
-	public final static String myMcGillLoginSSOHost= "login.mcgill.ca";
-	public final static String myMcGillHost = "mymcgill.mcgill.ca";
-	public final static String myMcGillOrigin = "https://mymcgill.mcgill.ca";
+    public static final String TRANSCRIPT = "https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
+    public static final String EBILL = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
+    public static final String REGISTRATION_ERROR = "http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm";
 
-    private static final String COURSE_SEARCH_URL = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
+    private static final String MINERVA_HOST = "horizon.mcgill.ca";
+    private static final String MINERVA_ORIGIN = "https://horizon.mcgill.ca";
+	private static final String LOGIN_PAGE = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
+	private static final String LOGIN_POST = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
+    private static final String SCHEDULE = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
+    private static final String COURSE_SEARCH = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
+    private static final String COURSE_REGISTRATION = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?";
 	
     private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 	
@@ -98,33 +91,27 @@ public class Connection {
         Connection connection = getInstance();
 
         //Download the transcript
-        Parser.parseTranscript(connection.getUrl(activity, minervaTranscript));
+        Parser.parseTranscript(connection.getUrl(activity, TRANSCRIPT));
 
         //Set the default Semester
         List<Semester> semesters = App.getTranscript().getSemesters();
         //Find the latest semester
-        Semester defaultSemester = semesters.get(0);
+        Term defaultTerm = semesters.get(0).getTerm();
         for(Semester semester : semesters){
-            //If the year is higher than the current year, switch
-            if(semester.getYear() > defaultSemester.getYear()){
-                defaultSemester = semester;
-            }
-            //If same year and the month is higher than th default month, change it
-            else if(semester.getYear() == defaultSemester.getYear()){
-                if(Integer.valueOf(semester.getSeason().getSeasonNumber()) >
-                        Integer.valueOf(defaultSemester.getSeason().getSeasonNumber())){
-                    defaultSemester = semester;
-                }
+            Term term = semester.getTerm();
+
+            //Download the schedule
+            Parser.parseClassList(term, connection.getUrl(activity, getScheduleURL(term)));
+
+            //Set the default term if it's later than the current default term
+            if(term.isAfter(defaultTerm)){
+                defaultTerm = term;
             }
         }
-        App.setDefaultSemester(defaultSemester);
-
-        //Download the schedule
-        String scheduleString = connection.getUrl(activity, defaultSemester.getURL());
-        Parser.parseClassList(defaultSemester.getSeason(), defaultSemester.getYear(), scheduleString);
+        App.setDefaultTerm(defaultTerm);
 
         //Download the ebill and user info
-        String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);
+        String ebillString = Connection.getInstance().getUrl(activity, EBILL);
         Parser.parseEbill(ebillString);
         Parser.parseUserInfo(ebillString);
     }
@@ -145,7 +132,7 @@ public class Connection {
 
 		try {
 			// 1. Send a "GET" request, so that you can extract the form's data.
-			String page = http.getPageContent(minervaLoginPage);
+			String page = http.getPageContent(LOGIN_PAGE);
 			postParams = http.getFormParams(page, username, password);
 			
 			// search for "Authorization Failure"
@@ -158,7 +145,7 @@ public class Connection {
 			
 			// 2. Construct above post's content and then send a POST request
 			// for authentication
-			String Post1Resp = http.sendPost(minervaLoginPost, minervaLoginPage,postParams, minervaHost, minervaOrigin);
+			String Post1Resp = http.sendPost(LOGIN_POST, LOGIN_PAGE,postParams, MINERVA_HOST, MINERVA_ORIGIN);
 
 			// Check is connection was actually made
 			if (!Post1Resp.contains("WELCOME"))
@@ -463,17 +450,22 @@ public class Connection {
     	return true;
     }
 
+    /* URL Builders */
+
+    public static String getScheduleURL(Term term){
+        return Connection.SCHEDULE + term.getYear() + term.getSeason().getSeasonNumber();
+    }
+
     /**
      * Get the URL to look for courses for the given parameters
-     * @param season The course season
-     * @param year The course year
+     * @param term The course term
      * @param subject The course subject
      * @param courseNumber The course number
      * @return The proper search URL
      */
-    public static String getCourseURL(Season season, int year, String subject, String courseNumber){
-        return COURSE_SEARCH_URL
-                + "term_in=" + year + season.getSeasonNumber() +
+    public static String getCourseURL(Term term, String subject, String courseNumber){
+        return COURSE_SEARCH
+                + "term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
                 "&sel_subj=dummy" +
                 "&sel_day=dummy" +
                 "&sel_schd=dummy" +
@@ -502,5 +494,55 @@ public class Connection {
                 "&end_ap=a" +
                 "%20Response%20Headersview%20source";
     }
-    
+
+    /**
+     * Get the URL to look for courses for the given parameters
+     * @param term The course term
+     * @param classes A list of classes to (un)register for
+     * @param dropCourse Changes URL if courses are being dropped
+     * @return The proper search URL
+     */
+    public static String getRegistrationURL(Term term, List<ClassItem> classes, boolean dropCourse){
+        String registrationURL;
+        registrationURL = COURSE_REGISTRATION + term.getYear() + term.getSeason().getSeasonNumber();
+
+        //Add random Minerva crap that is apparently necessary
+        registrationURL += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
+                "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY" +
+                "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY";
+
+        registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
+                "&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
+                "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+
+        //Lots of junk
+        for(int i = 0; i < 7; i++){
+            registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY";
+            registrationURL += "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY";
+            registrationURL += "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+        }
+
+        //More poop
+        registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
+                "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
+                "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY";
+
+        //Insert the CRNs into the URL
+        for(ClassItem classItem : classes){
+
+            //Use a different URL if courses are being dropped
+            if(dropCourse){
+                registrationURL += "&RSTS_IN=DW&CRN_IN=";
+            }
+            else{
+                registrationURL += "&RSTS_IN=RW&CRN_IN=";
+            }
+
+            registrationURL += classItem.getCRN();
+            registrationURL += "&assoc_term_in=&start_date_in=&end_date_in=";
+        }
+
+        registrationURL += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
+        return registrationURL;
+    }
 }

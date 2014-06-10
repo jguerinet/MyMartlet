@@ -19,6 +19,7 @@ public enum Token {
     YEAR,
     FULL_TIME,
     PROGRAM,
+    GRANTED,
 
     //End of semester items
     ADVANCED_STANDING,
@@ -51,6 +52,8 @@ public enum Token {
                 return "Year";
             case PROGRAM:
                 break;
+            case GRANTED:
+                return "Granted";
             case ADVANCED_STANDING:
                 return "Advanced Standing";
             case TERM_CREDITS:

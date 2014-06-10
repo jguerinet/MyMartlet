@@ -30,6 +30,7 @@ import ca.appvelopers.mcgillmobile.activity.inbox.InboxActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
@@ -46,17 +47,18 @@ public class DrawerAdapter extends BaseAdapter {
 
     //Easy way to keep track of the list order (for the OnClick)
     public static final int SCHEDULE_POSITION = 0;
-    public static final int TRANSCRIPT_POSITION = 1;
-    public static final int EMAIL_POSITION = 2;
-    public static final int MYCOURSES_POSITION = 3;
-    public static final int SEARCH_COURSES_POSITION = 4;
-    public static final int WISHLIST_POSITION = 5;
-    public static final int EBILL_POSITION = 6;
-    public static final int MAP_POSITION = 7;
-    public static final int DESKTOP_POSITION = 8;
-    public static final int SETTINGS_POSITION = 9;
-    public static final int LOGOUT_POSITION = 10;
-    public static final int ABOUT_POSITION = 11;
+    public static final int TRANSCRIPT_POSITION = SCHEDULE_POSITION + 1;
+    public static final int EMAIL_POSITION = TRANSCRIPT_POSITION + 1;
+    public static final int MYCOURSES_POSITION = EMAIL_POSITION + 1;
+    public static final int COURSES_POSITION = MYCOURSES_POSITION + 1;
+    public static final int WISHLIST_POSITION = COURSES_POSITION + 1;
+    public static final int SEARCH_COURSES_POSITION = WISHLIST_POSITION + 1;
+    public static final int EBILL_POSITION = SEARCH_COURSES_POSITION + 1;
+    public static final int MAP_POSITION = EBILL_POSITION + 1;
+    public static final int DESKTOP_POSITION = MAP_POSITION + 1;
+    public static final int SETTINGS_POSITION = DESKTOP_POSITION + 1;
+    public static final int LOGOUT_POSITION = SETTINGS_POSITION + 1;
+    public static final int ABOUT_POSITION = LOGOUT_POSITION + 1;
 
     public DrawerAdapter(Activity activity, DrawerLayout drawerLayout, int selectedPosition){
         this.mActivity = activity;
@@ -85,12 +87,17 @@ public class DrawerAdapter extends BaseAdapter {
         mDrawerItems.add(MYCOURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_mycourses),
                 mActivity.getResources().getString(R.string.icon_mycourses)));
 
+        //Courses
+        mDrawerItems.add(COURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_courses),
+                mActivity.getResources().getString(R.string.icon_courses)));
+
+        //Wishlist
+        mDrawerItems.add(WISHLIST_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_wishlist),
+                mActivity.getResources().getString(R.string.icon_star)));
+
         //Search Courses
         mDrawerItems.add(SEARCH_COURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_registration),
-                mActivity.getResources().getString(R.string.icon_browse_courses)));
-
-        mDrawerItems.add(WISHLIST_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_wishlist),
-                mActivity.getResources().getString(R.string.icon_browse_courses)));
+                mActivity.getResources().getString(R.string.icon_search)));
 
         //Ebill
         mDrawerItems.add(EBILL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_ebill),
@@ -113,7 +120,8 @@ public class DrawerAdapter extends BaseAdapter {
                 mActivity.getResources().getString(R.string.icon_logout)));
 
         // About
-        mDrawerItems.add(ABOUT_POSITION ,new DrawerItem(mActivity.getResources().getString(R.string.title_about),mActivity.getResources().getString(R.string.icon_question)));
+        mDrawerItems.add(ABOUT_POSITION ,new DrawerItem(mActivity.getResources().getString(R.string.title_about),
+                mActivity.getResources().getString(R.string.icon_question)));
 
     }
 
@@ -166,6 +174,7 @@ public class DrawerAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent;
                 switch(position){
                     case SCHEDULE_POSITION:
                         mActivity.startActivity(new Intent(mActivity, ScheduleActivity.class));
@@ -179,11 +188,18 @@ public class DrawerAdapter extends BaseAdapter {
                     case MYCOURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
                         break;
+                    case COURSES_POSITION:
+                        intent = new Intent(mActivity, CoursesListActivity.class);
+                        intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.VIEW_COURSES);
+                        mActivity.startActivity(intent);
+                        break;
                     case SEARCH_COURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, RegistrationActivity.class));
                         break;
                     case WISHLIST_POSITION:
-                        mActivity.startActivity(new Intent(mActivity, CoursesListActivity.class));
+                        intent = new Intent(mActivity, CoursesListActivity.class);
+                        intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.WISHLIST);
+                        mActivity.startActivity(intent);
                         break;
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));
@@ -226,9 +242,9 @@ public class DrawerAdapter extends BaseAdapter {
         }
         //If not, set its background to white and the text to black
         else{
-            view.setBackgroundColor(mActivity.getResources().getColor(R.color.white));
-            icon.setTextColor(mActivity.getResources().getColor(R.color.black));
-            title.setTextColor(mActivity.getResources().getColor(R.color.black));
+            view.setBackgroundResource(R.drawable.drawable_drawerblack_darkredpressed);
+            icon.setTextColor(mActivity.getResources().getColorStateList(R.drawable.color_black_whitepressed));
+            title.setTextColor(mActivity.getResources().getColorStateList(R.drawable.color_black_whitepressed));
         }
 
         return view;

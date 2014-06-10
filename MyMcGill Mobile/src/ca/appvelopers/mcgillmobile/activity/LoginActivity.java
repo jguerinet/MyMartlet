@@ -18,10 +18,10 @@ import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Author: Julien

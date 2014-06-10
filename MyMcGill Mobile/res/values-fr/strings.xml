@@ -17,7 +17,7 @@
     <string name="title_map">Carte du Campus</string>
     <string name="title_attach">Pièce Jointe</string>
     <string name="title_change_semester">Changer de Semestre</string>
-    <string name="title_registration">Rechercher des Cours</string>
+    <string name="title_registration">Chercher un cours</string>
     <string name="title_wishlist">Liste de Cours Envies</string>
 
     <!-- General Strings -->
@@ -72,7 +72,7 @@
     <string name="login_error_wrong_data">Le nom d\'utilisateur ou mot de passe est incorrect. Veuillez réessayer s\'il vous plaît.</string>
     <string name="login_error_username_empty">Vous devez entrer un nom d\'utilisateur.</string>
     <string name="login_error_password_empty">Vous devez entrer un mot de passe.</string>
-    <string name="login_remember_username">Se Rappeler de mon Nom d\'Utilisateur</string>
+    <string name="login_remember_username">Mémoriser le nom d\'utilisateur</string>
 
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">GPA du Semestre: %s</string>
@@ -160,6 +160,7 @@
     <string name="courses_remove_wishlist">Ajouter à la Liste d\'Envies</string>
 
     <!-- About -->
+    <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre du club robotiques d\'ECSESS qui a come but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette applicaiton mobile.</string>
 
     <!-- Help -->
     <string name="about_help">Aide</string>

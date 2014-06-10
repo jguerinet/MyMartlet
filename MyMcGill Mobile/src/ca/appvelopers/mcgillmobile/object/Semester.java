@@ -5,8 +5,6 @@ import android.content.Context;
 import java.io.Serializable;
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.util.Connection;
-
 /**
  * Created by Ryan Singzon on 30/01/14.
  *
@@ -16,8 +14,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 public class Semester implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private Season mSeason;
-    private int mYear;
+    private Term mTerm;
     private String mProgram;
     private String mBachelor;
     private int programYear;
@@ -28,10 +25,9 @@ public class Semester implements Serializable{
     private List<Course> courses;
 
 
-    public Semester(Season season, int year , String program, String bachelor, int programYear, int termCredits, double termGPA,
+    public Semester(Term term, String program, String bachelor, int programYear, int termCredits, double termGPA,
                         boolean fullTime, boolean satisfactory, List<Course> courses) {
-        this.mSeason = season;
-        this.mYear = year;
+        this.mTerm = term;
         this.mProgram = program;
         this.mBachelor = bachelor;
         this.termCredits = termCredits;
@@ -44,17 +40,7 @@ public class Semester implements Serializable{
 
     //Getter for the semester name
     public String getSemesterName(Context context){
-        return mSeason.toString(context) + " " + mYear;
-    }
-
-    //Getter for the Season
-    public Season getSeason(){
-        return mSeason;
-    }
-
-    //Getter for the year
-    public int getYear(){
-        return mYear;
+        return mTerm.toString(context);
     }
 
     //Getter for program
@@ -91,7 +77,11 @@ public class Semester implements Serializable{
         return courses;
     }
 
-    public String getURL(){
-        return Connection.minervaSchedulePrefix + mYear + mSeason.getSeasonNumber();
+    /**
+     * Get the semester term
+     * @return The semester term
+     */
+    public Term getTerm(){
+        return mTerm;
     }
 }

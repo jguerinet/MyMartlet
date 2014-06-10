@@ -64,12 +64,16 @@ public class DrawerActivity extends BaseActivity {
         }
         else if(this instanceof CoursesListActivity){
             //Wishlist
-            if(((CoursesListActivity)this).wishlist){
+            if(((CoursesListActivity)this).listType == CoursesListActivity.CourseListType.WISHLIST){
                 mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.WISHLIST_POSITION);
             }
             //Course search
-            else{
+            else if(((CoursesListActivity)this).listType == CoursesListActivity.CourseListType.SEARCH_COURSES){
                 mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
+            }
+            //Course list
+            else{
+                mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.COURSES_POSITION);
             }
         }
         else{
