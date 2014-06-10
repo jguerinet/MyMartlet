@@ -650,7 +650,7 @@ public class Parser {
      */
 
     public static String parseRegistrationErrors(String resultHTML){
-        String registrationError = "NULL";
+        String registrationError = null;
 
         Document document = Jsoup.parse(resultHTML, "UTF-8");
         Elements dataRows = document.getElementsByClass("plaintable");

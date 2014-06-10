@@ -38,13 +38,13 @@ public class CoursesListActivity extends DrawerActivity {
     public static final int CHANGE_SEMESTER_CODE = 100;
     public CourseListType listType;
 
-    private List<ClassItem> mClasses;
     private ListView mListView;
-    private String mRegistrationError = "NULL";
-    private ClassAdapter mAdapter;
-    private Term mTerm;
-    private boolean mCanUnregister;
     private TextView mRegisterButton;
+
+    private ClassAdapter mAdapter;
+
+    private List<ClassItem> mClasses;
+    private Term mTerm;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -188,12 +188,12 @@ public class CoursesListActivity extends DrawerActivity {
         //Set the title
         setTitle(mTerm.toString(this));
 
-        mCanUnregister = App.getRegisterTerms().contains(mTerm);
+        boolean canUnregister = App.getRegisterTerms().contains(mTerm);
 
         //Change the text and the visibility if we are in the list of currently registered courses
         if(listType == CourseListType.VIEW_COURSES){
             View line = findViewById(R.id.course_line);
-            if(mCanUnregister){
+            if(canUnregister){
                 line.setVisibility(View.VISIBLE);
                 mRegisterButton.setVisibility(View.VISIBLE);
                 mRegisterButton.setText(getString(R.string.courses_unregister));
@@ -207,7 +207,7 @@ public class CoursesListActivity extends DrawerActivity {
             }
         }
 
-        mAdapter = new ClassAdapter(this, mTerm, mClasses, listType, mCanUnregister);
+        mAdapter = new ClassAdapter(this, mTerm, mClasses, listType, canUnregister);
         mListView.setAdapter(mAdapter);
     }
 
@@ -267,9 +267,11 @@ public class CoursesListActivity extends DrawerActivity {
     //Connects to Minerva in a new thread to register for courses
     private class RegistrationThread extends AsyncTask<Void, Void, Boolean> {
         private String mRegistrationURL;
+        private String mRegistrationError;
 
         public RegistrationThread(String registrationURL){
             this.mRegistrationURL = registrationURL;
+            this.mRegistrationError = null;
         }
 
         @Override
@@ -313,7 +315,7 @@ public class CoursesListActivity extends DrawerActivity {
 
             if(success){
                 //Display whether the user was successfully registered
-                if(mRegistrationError.equals("NULL")){
+                if(mRegistrationError == null){
                     Toast.makeText(CoursesListActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
                 }
 
