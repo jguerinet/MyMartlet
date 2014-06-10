@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -70,6 +71,7 @@ public class Connection {
 	public final static String myMcGillOrigin = "https://mymcgill.mcgill.ca";
 
     private static final String COURSE_SEARCH_URL = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
+    private static final String REGISTRATION_URL = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
 	
     private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 	
@@ -503,5 +505,45 @@ public class Connection {
                 "&end_ap=a" +
                 "%20Response%20Headersview%20source";
     }
-    
+
+    /**
+     * Get the URL to look for courses for the given parameters
+     * @param season The course season
+     * @param year The course year
+     * @param crns A list of CRNs to to register for
+     * @return The proper search URL
+     */
+    public static String getRegistrationURL(Season season, int year, int[] crns){
+        String registrationURL;
+        registrationURL = REGISTRATION_URL + year + season.getSeasonNumber();
+
+        //Add random Minerva crap that is apparently necessary
+        registrationURL += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
+                "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY" +
+                "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY";
+
+        //Lots of junk
+        for(int i = 0; i < 7; i++){
+            registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY";
+            registrationURL += "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY";
+            registrationURL += "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+        }
+
+        //More poop
+        registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
+                "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
+                "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY";
+
+        //Insert the CRNs into the URL
+        for(int i = 0; i < Constants.MAX_CRNS; i++){
+            registrationURL += "&RSTS_IN=RW&CRN_IN=";
+            if(crns[i] != 0){
+                registrationURL += crns[i];
+            }
+            registrationURL += "&assoc_term_in=&start_date_in=&end_date_in=";
+        }
+
+        registrationURL += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
+        return registrationURL;
+    }
 }

@@ -18,6 +18,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +26,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
+import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
@@ -89,31 +91,20 @@ public class CoursesListActivity extends DrawerActivity {
                     Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
                 }
                 else if(registerCoursesList.size() > 0){
-                    //Set up registration url
-                    mRegistrationUrl = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
 
-                    //Add term
-                    mRegistrationUrl += mAdapter.getItem(0).getYear();
-                    mRegistrationUrl += mAdapter.getItem(0).getSeason().getSeasonNumber();
+                    //Get the registration URL
+                    Season season = mAdapter.getItem(0).getSeason();
+                    int year = mAdapter.getItem(0).getYear();
+                    int[] crns = new int[Constants.MAX_CRNS];
 
-                    //Add weird random Minerva code
-                    mRegistrationUrl += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&RSTS_IN=RW";
-
-                    //Loop through the checked courses and add them to the string
-                    int courseCount = registerCoursesList.size();
+                    int arrayIndex = 0;
                     for (ClassItem course : registerCoursesList){
-                        mRegistrationUrl += "&RSTS_IN=RW&CRN_IN=";
-                        mRegistrationUrl += course.getCRN();
-                        mRegistrationUrl += "&assoc_term_in=&start_date_in=&end_date_in=";
+
+                        crns[arrayIndex] = course.getCRN();
+                        arrayIndex++;
                     }
 
-                    //Add dummy strings to the url until there are 10 registration strings in total
-                    //This might actually not be necessary
-                    for(int i = courseCount; i <= 10; i++){
-                        mRegistrationUrl += "&RSTS_IN=RW&CRN_IN=&assoc_term_in=&start_date_in=&end_date_in=";
-                    }
-
-                    mRegistrationUrl += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
+                    mRegistrationUrl = Connection.getRegistrationURL(season, year, crns);
 
                     //Execute registration of checked classes in a new thread
                     new Registration().execute();
