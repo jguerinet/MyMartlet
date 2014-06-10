@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.appvelopers.mcgillmobile"
-    android:versionCode="1"
+    android:versionCode="2"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -82,8 +82,7 @@
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.EmailActivity"
-            android:parentActivityName=".activity.inbox.InboxActivity"/>
+            android:name=".activity.EmailActivity"/>
         <activity
             android:name=".activity.inbox.ReplyActivity"
             android:label="@string/title_reply"
@@ -110,11 +109,7 @@
         <activity
             android:name=".activity.walkthrough.WalkthroughActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/DialogMyMcGill"/>
-        <activity
-            android:name=".activity.courseslist.ChangeListActivity"
-            android:theme="@style/DialogMyMcGill"
-            android:label="Change Semester" />
+            android:theme="@style/DialogMyMcGill"/>=
 
         <activity
             android:name=".activity.AboutActivity"
