@@ -99,15 +99,16 @@ public class Connection {
         Term defaultTerm = semesters.get(0).getTerm();
         for(Semester semester : semesters){
             Term term = semester.getTerm();
+
+            //Download the schedule
+            Parser.parseClassList(term, connection.getUrl(activity, getScheduleURL(term)));
+
+            //Set the default term if it's later than the current default term
             if(term.isAfter(defaultTerm)){
                 defaultTerm = term;
             }
         }
         App.setDefaultTerm(defaultTerm);
-
-        //Download the schedule
-        String scheduleString = connection.getUrl(activity, getScheduleURL(defaultTerm));
-        Parser.parseClassList(defaultTerm, scheduleString);
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, EBILL);
