@@ -153,7 +153,7 @@ public class RegistrationActivity extends DrawerActivity{
             //Go to the CoursesListActivity with the parsed courses
             else{
                 Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
-                intent.putExtra(Constants.LIST_TYPE, false);
+                intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.SEARCH_COURSES);
                 intent.putExtra(Constants.TERM, mTerm);
                 startActivity(intent);
             }
