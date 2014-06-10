@@ -236,9 +236,9 @@ public class DrawerAdapter extends BaseAdapter {
         }
         //If not, set its background to white and the text to black
         else{
-            view.setBackgroundColor(mActivity.getResources().getColor(R.color.white));
-            icon.setTextColor(mActivity.getResources().getColor(R.color.black));
-            title.setTextColor(mActivity.getResources().getColor(R.color.black));
+            view.setBackgroundResource(R.drawable.drawable_drawerblack_darkredpressed);
+            icon.setTextColor(mActivity.getResources().getColorStateList(R.drawable.color_black_whitepressed));
+            title.setTextColor(mActivity.getResources().getColorStateList(R.drawable.color_black_whitepressed));
         }
 
         return view;
