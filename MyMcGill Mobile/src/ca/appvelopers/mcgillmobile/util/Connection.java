@@ -511,9 +511,10 @@ public class Connection {
      * @param season The course season
      * @param year The course year
      * @param crns A list of CRNs to to register for
+     * @param dropCourse Changes URL if courses are being dropped
      * @return The proper search URL
      */
-    public static String getRegistrationURL(Season season, int year, int[] crns){
+    public static String getRegistrationURL(Season season, int year, int[] crns, boolean dropCourse){
         String registrationURL;
         registrationURL = REGISTRATION_URL + year + season.getSeasonNumber();
 
@@ -540,7 +541,15 @@ public class Connection {
 
         //Insert the CRNs into the URL
         for(int i = 0; i < Constants.MAX_CRNS; i++){
-            registrationURL += "&RSTS_IN=RW&CRN_IN=";
+
+            //Use a different URL if courses are being dropped
+            if(dropCourse){
+                registrationURL += "&RSTS_IN=DW&CRN_IN=";
+            }
+            else{
+                registrationURL += "&RSTS_IN=RW&CRN_IN=";
+            }
+
             if(crns[i] != 0){
                 registrationURL += crns[i];
             }

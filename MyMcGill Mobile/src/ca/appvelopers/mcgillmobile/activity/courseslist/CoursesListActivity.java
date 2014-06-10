@@ -104,7 +104,7 @@ public class CoursesListActivity extends DrawerActivity {
                         arrayIndex++;
                     }
 
-                    mRegistrationUrl = Connection.getRegistrationURL(season, year, crns);
+                    mRegistrationUrl = Connection.getRegistrationURL(season, year, crns, false);
 
                     //Execute registration of checked classes in a new thread
                     new Registration().execute();
