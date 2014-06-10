@@ -5,6 +5,7 @@ import android.content.Context;
 import java.io.Serializable;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.util.Connection;
 
 /**
@@ -16,8 +17,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 public class Semester implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private Season mSeason;
-    private int mYear;
+    private Term mTerm;
     private String mProgram;
     private String mBachelor;
     private int programYear;
@@ -28,10 +28,9 @@ public class Semester implements Serializable{
     private List<Course> courses;
 
 
-    public Semester(Season season, int year , String program, String bachelor, int programYear, int termCredits, double termGPA,
+    public Semester(Term term, String program, String bachelor, int programYear, int termCredits, double termGPA,
                         boolean fullTime, boolean satisfactory, List<Course> courses) {
-        this.mSeason = season;
-        this.mYear = year;
+        this.mTerm = term;
         this.mProgram = program;
         this.mBachelor = bachelor;
         this.termCredits = termCredits;
@@ -44,17 +43,7 @@ public class Semester implements Serializable{
 
     //Getter for the semester name
     public String getSemesterName(Context context){
-        return mSeason.toString(context) + " " + mYear;
-    }
-
-    //Getter for the Season
-    public Season getSeason(){
-        return mSeason;
-    }
-
-    //Getter for the year
-    public int getYear(){
-        return mYear;
+        return mTerm.toString(context);
     }
 
     //Getter for program
@@ -92,6 +81,32 @@ public class Semester implements Serializable{
     }
 
     public String getURL(){
-        return Connection.minervaSchedulePrefix + mYear + mSeason.getSeasonNumber();
+        return Connection.minervaSchedulePrefix + mTerm.getYear() + mTerm.getSeason().getSeasonNumber();
+    }
+
+    /**
+     * Get the semester term
+     * @return The semester term
+     */
+    public Term getTerm(){
+        return mTerm;
+    }
+
+    /**
+     * Check if the current semester is after the given semester
+     * @param semester The semester to compare
+     * @return True if the current semester is after, false, otherwise
+     */
+    public boolean isAfter(Semester semester){
+        return mTerm.isAfter(semester.getTerm());
+    }
+
+    public static Semester getSemester(Term term){
+        for(Semester semester : App.getTranscript().getSemesters()){
+            if(semester.getTerm().equals(term)){
+                return semester;
+            }
+        }
+        return null;
     }
 }

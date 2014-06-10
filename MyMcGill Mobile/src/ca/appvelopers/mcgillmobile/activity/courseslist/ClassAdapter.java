@@ -15,6 +15,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
+import ca.appvelopers.mcgillmobile.object.Term;
 
 /**
  * Author : Julien
@@ -26,10 +27,17 @@ public class ClassAdapter extends BaseAdapter {
     private List<ClassItem> mClassItems;
     private List<ClassItem> mCheckedClassItems;
 
-    public ClassAdapter(Context context, List<ClassItem> classItems){
+    public ClassAdapter(Context context, Term term, List<ClassItem> classItems){
         this.mContext = context;
-        this.mClassItems = classItems;
+        this.mClassItems = new ArrayList<ClassItem>();
         this.mCheckedClassItems = new ArrayList<ClassItem>();
+
+        //Add only the courses for this term
+        for(ClassItem classItem : classItems){
+            if(classItem.getTerm().equals(term)){
+                mClassItems.add(classItem);
+            }
+        }
     }
 
     @Override

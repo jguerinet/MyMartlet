@@ -15,6 +15,7 @@ import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Token;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
@@ -215,7 +216,7 @@ public class Parser {
                         catch(IndexOutOfBoundsException e){
                             //String not found
                         }
-                        courses.add(new Course(season, year, courseTitle, courseCode, credits,
+                        courses.add(new Course(new Term(season, year), courseTitle, courseCode, credits,
                                 userGrade, averageGrade));
                     }
 
@@ -234,7 +235,7 @@ public class Parser {
                             //Extract the number of credits granted
                             credits = extractCredits(courseCode);
 
-                            Course course = new Course(season, year, "", courseCode, credits, userGrade,
+                            Course course = new Course(new Term(season, year), "", courseCode, credits, userGrade,
                                     averageGrade);
                             courses.add(course);
                         }
@@ -247,7 +248,7 @@ public class Parser {
                                 courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
                                 credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
 
-                                Course course = new Course(season, year, courseTitle, courseCode, credits,
+                                Course course = new Course(new Term(season, year), courseTitle, courseCode, credits,
                                         userGrade, averageGrade);
                                 courses.add(course);
                             }
@@ -272,7 +273,7 @@ public class Parser {
                                         first = false;
                                     }
 
-                                    Course course = new Course(season, year, courseTitle, courseCode, credits,
+                                    Course course = new Course(new Term(season, year), courseTitle, courseCode, credits,
                                             userGrade, averageGrade);
                                     courses.add(course);
 
@@ -309,7 +310,7 @@ public class Parser {
                     }
                 }
 
-                Semester semester = new Semester(season, year, program, bachelor, programYear,
+                Semester semester = new Semester(new Term(season, year), program, bachelor, programYear,
                         termCredits, termGPA, fullTime, satisfactory, courses);
 
                 semesters.add(semester);
@@ -341,9 +342,10 @@ public class Parser {
 
     /**
      * Parses an HTML String to generate a list of classes
+     * @param term The term for these classes
      * @param classHTML The HTML String to parse
      */
-    public static void parseClassList(Season season, int year, String classHTML){
+    public static void parseClassList(Term term, String classHTML){
         //Get the list of classes already parsed for that year
         List<ClassItem> classItems = App.getClasses();
 
@@ -424,8 +426,7 @@ public class Parser {
                     //Check if the class already exists
                     boolean classExists = false;
                     for (ClassItem classItem : classItems) {
-                        if (classItem.getCRN() == crn && classItem.getSeason() == season && classItem.getYear() ==
-                                year) {
+                        if (classItem.getCRN() == crn && classItem.getTerm().equals(term)) {
                             classExists = true;
                             //If you find an equivalent, just update it
                             classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
@@ -436,7 +437,7 @@ public class Parser {
                     //It not, add a new class item
                     if (!classExists) {
                         //Find the concerned course
-                        classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, section, startHour,
+                        classItems.add(new ClassItem(term, courseCode, courseTitle, crn, section, startHour,
                                 startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                 -1, -1, -1, -1, -1, credits, null));
                     }
@@ -454,10 +455,11 @@ public class Parser {
 
     /**
      * Parses the HTML retrieved from Minerva and returns a list of classes
+     * @param term The term for these classes
      * @param classHTML The HTML String to parse
      * @return The list of resulting classes
      */
-    public static List<ClassItem> parseClassResults(Season season, int year, String classHTML){
+    public static List<ClassItem> parseClassResults(Term term, String classHTML){
         List<ClassItem> classItems = new ArrayList<ClassItem>();
 
         Document document = Jsoup.parse(classHTML, "UTF-8");
@@ -633,7 +635,7 @@ public class Parser {
             rowsSoFar = 0;
             if( !courseCode.equals("ERROR")){
                 //Create a new course object and add it to list
-                classItems.add(new ClassItem(season, year, courseCode, courseTitle, crn, "", startHour,
+                classItems.add(new ClassItem(term, courseCode, courseTitle, crn, "", startHour,
                         startMinute, endHour, endMinute, days, sectionType, location, instructor,
                         capacity, seatsAvailable, seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining,
                         credits, dates));

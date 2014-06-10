@@ -37,6 +37,7 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DialogHelper;
@@ -56,7 +57,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 	private List<ClassItem> mClassList;
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
-    private Semester mCurrentSemester;
+    private Semester mSemester;
     private boolean mDoubleBackToExit;
 
     private static final int CHANGE_SEMESTER_CODE = 100;
@@ -69,7 +70,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         GoogleAnalytics.sendScreen(this, "Schedule");
 
-        mCurrentSemester = App.getDefaultSemester();
+        //Get the semester
+        mSemester = Semester.getSemester(App.getDefaultTerm());
 
         mClassList = new ArrayList<ClassItem>();
 
@@ -81,14 +83,14 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         loadInfo();
 
         //Start thread to get schedule
-        new ScheduleGetter(mCurrentSemester.getURL()).execute();
+        new ScheduleGetter(mSemester.getURL()).execute();
 
         //Check if this is the first time the user is using the app
         if(Load.isFirstOpen(this)){
-        //Show him the walkthrough if it is
-        startActivity(new Intent(this, WalkthroughActivity.class));
-        //Save the fact that the walkthrough has been seen at least once
-        Save.saveFirstOpen(this);
+            //Show him the walkthrough if it is
+            startActivity(new Intent(this, WalkthroughActivity.class));
+            //Save the fact that the walkthrough has been seen at least once
+            Save.saveFirstOpen(this);
         }
     }
 
@@ -170,12 +172,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
     private void loadInfo(){
         //Title
-        setTitle(mCurrentSemester.getSemesterName(this));
+        setTitle(mSemester.getSemesterName(this));
 
         //Clear the current course list
         mClassList.clear();
         for(ClassItem classItem : App.getClasses()){
-            if(classItem.isForSemester(mCurrentSemester)){
+            if(classItem.isForSemester(mSemester)){
                 mClassList.add(classItem);
             }
         }
@@ -366,8 +368,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             }
 
             //Get the new schedule
-            Parser.parseClassList(mCurrentSemester.getSeason(),
-                    mCurrentSemester.getYear(), scheduleString);
+            Parser.parseClassList(mSemester.getTerm(), scheduleString);
 
             return true;
         }
@@ -402,8 +403,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.refresh, menu);
 
     	// change semester menu item
@@ -417,11 +417,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             // Opens the context menu    
             case Constants.MENU_ITEM_CHANGE_SEMESTER:
             	Intent intent = new Intent(this, ChangeSemesterActivity.class);
+                intent.putExtra(Constants.REGISTER_TERMS, false);
                 startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             	return true;
             case R.id.action_refresh:
                 //Start thread to retrieve schedule
-                new ScheduleGetter(mCurrentSemester.getURL()).execute();
+                new ScheduleGetter(mSemester.getURL()).execute();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -431,12 +432,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == CHANGE_SEMESTER_CODE){
             if(resultCode == RESULT_OK){
-                mCurrentSemester = ((Semester)data.getSerializableExtra(Constants.SEMESTER));
+                //Get the chosen term
+                Term term = (Term)data.getSerializableExtra(Constants.TERM);
+                //Find the corresponding semester
+                mSemester = Semester.getSemester(term);
 
-                //Quick Check
-                assert (mCurrentSemester != null);
-
-                new ScheduleGetter(mCurrentSemester.getURL()).execute();
+                new ScheduleGetter(mSemester.getURL()).execute();
             }
         }
         else{

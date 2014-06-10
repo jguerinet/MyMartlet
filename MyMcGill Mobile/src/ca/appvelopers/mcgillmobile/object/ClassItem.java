@@ -18,8 +18,7 @@ import ca.appvelopers.mcgillmobile.util.Help;
 public class ClassItem implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private Season mSeason;
-    private int mYear;
+    private Term mTerm;
     private String mCourseCode;
     private String mCourseTitle;
     private int mCRN;
@@ -38,13 +37,12 @@ public class ClassItem implements Serializable{
     private int mCredits;
     private String mDates;
 
-    public ClassItem(Season season, int year, String courseCode, String courseTitle, int crn,
+    public ClassItem(Term term, String courseCode, String courseTitle, int crn,
                      String section, int startHour, int startMinute, int endHour, int endMinute,
                      List<Day> days, String sectionType, String location, String instructor, int capacity,
                      int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
                      int waitlistRemaining, int credits, String dates){
-        this.mSeason = season;
-        this.mYear = year;
+        this.mTerm = term;
         this.mCourseCode = courseCode;
         this.mCourseTitle = courseTitle;
         this.mCRN = crn;
@@ -77,19 +75,11 @@ public class ClassItem implements Serializable{
 	/* GETTERS */
 
     /**
-     * Get the course season
-     * @return The course season
+     * Get the course term
+     * @return The course term
      */
-    public Season getSeason(){
-        return mSeason;
-    }
-
-    /**
-     * Get the course year
-     * @return The course year
-     */
-    public int getYear(){
-        return mYear;
+    public Term getTerm(){
+        return mTerm;
     }
 
     /**
@@ -197,7 +187,7 @@ public class ClassItem implements Serializable{
      * @return True if this class is for this semester, false otherwise
      */
     public boolean isForSemester(Semester semester){
-        return  semester.getSeason() == mSeason && semester.getYear() == mYear;
+        return  semester.getTerm().equals(mTerm);
     }
 
     /**
@@ -263,10 +253,9 @@ public class ClassItem implements Serializable{
         if(!(object instanceof ClassItem)){
             return false;
         }
-        ClassItem aClassItem = (ClassItem)object;
+        ClassItem classItem = (ClassItem)object;
 
         //Check if they have the same season, year, and CRN
-        return this.mCRN == aClassItem.mCRN && this.mYear == aClassItem.mYear &&
-                this.mSeason == aClassItem.mSeason;
+        return this.mCRN == classItem.mCRN && this.mTerm.equals(classItem.getTerm());
     }
 }

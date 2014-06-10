@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,9 +30,10 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
-import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.object.Term;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua
@@ -52,7 +52,6 @@ public class Connection {
 	// Constants
 	public final static String minervaLoginPage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
 	public final static String minervaLoginPost = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
-	public final static String minervaSchedule = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=201401";
     public final static String minervaEbill = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
     public final static String minervaTranscript = "https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
 	public final static String minervaHomepage = "https://horizon.mcgill.ca/pban1/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
@@ -71,7 +70,7 @@ public class Connection {
 	public final static String myMcGillOrigin = "https://mymcgill.mcgill.ca";
 
     private static final String COURSE_SEARCH_URL = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
-    private static final String REGISTRATION_URL = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
+    private static final String COURSE_REGISTRATION_URL = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?";
 	
     private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
 	
@@ -108,23 +107,15 @@ public class Connection {
         //Find the latest semester
         Semester defaultSemester = semesters.get(0);
         for(Semester semester : semesters){
-            //If the year is higher than the current year, switch
-            if(semester.getYear() > defaultSemester.getYear()){
+            if(semester.isAfter(defaultSemester)){
                 defaultSemester = semester;
             }
-            //If same year and the month is higher than th default month, change it
-            else if(semester.getYear() == defaultSemester.getYear()){
-                if(Integer.valueOf(semester.getSeason().getSeasonNumber()) >
-                        Integer.valueOf(defaultSemester.getSeason().getSeasonNumber())){
-                    defaultSemester = semester;
-                }
-            }
         }
-        App.setDefaultSemester(defaultSemester);
+        App.setDefaultTerm(defaultSemester.getTerm());
 
         //Download the schedule
         String scheduleString = connection.getUrl(activity, defaultSemester.getURL());
-        Parser.parseClassList(defaultSemester.getSeason(), defaultSemester.getYear(), scheduleString);
+        Parser.parseClassList(defaultSemester.getTerm(), scheduleString);
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, minervaEbill);
@@ -468,15 +459,14 @@ public class Connection {
 
     /**
      * Get the URL to look for courses for the given parameters
-     * @param season The course season
-     * @param year The course year
+     * @param term The course term
      * @param subject The course subject
      * @param courseNumber The course number
      * @return The proper search URL
      */
-    public static String getCourseURL(Season season, int year, String subject, String courseNumber){
+    public static String getCourseURL(Term term, String subject, String courseNumber){
         return COURSE_SEARCH_URL
-                + "term_in=" + year + season.getSeasonNumber() +
+                + "term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
                 "&sel_subj=dummy" +
                 "&sel_day=dummy" +
                 "&sel_schd=dummy" +
@@ -508,22 +498,21 @@ public class Connection {
 
     /**
      * Get the URL to look for courses for the given parameters
-     * @param season The course season
-     * @param year The course year
-     * @param crns A list of CRNs to to register for
+     * @param term The course term
+     * @param classes A list of classes to (un)register for
      * @param dropCourse Changes URL if courses are being dropped
      * @return The proper search URL
      */
-    public static String getRegistrationURL(Season season, int year, int[] crns, boolean dropCourse){
+    public static String getRegistrationURL(Term term, List<ClassItem> classes, boolean dropCourse){
         String registrationURL;
-        registrationURL = REGISTRATION_URL + year + season.getSeasonNumber();
+        registrationURL = COURSE_REGISTRATION_URL + term.getYear() + term.getSeason().getSeasonNumber();
 
         //Add random Minerva crap that is apparently necessary
         registrationURL += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
                 "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY" +
                 "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY";
 
-        registrationURL += "&RSTS_IN=&assoc_term_in=" +year + season.getSeasonNumber() +
+        registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
                 "&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
                 "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
 
@@ -540,7 +529,7 @@ public class Connection {
                 "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY";
 
         //Insert the CRNs into the URL
-        for(int i = 0; i < Constants.MAX_CRNS; i++){
+        for(ClassItem classItem : classes){
 
             //Use a different URL if courses are being dropped
             if(dropCourse){
@@ -550,9 +539,7 @@ public class Connection {
                 registrationURL += "&RSTS_IN=RW&CRN_IN=";
             }
 
-            if(crns[i] != 0){
-                registrationURL += crns[i];
-            }
+            registrationURL += classItem.getCRN();
             registrationURL += "&assoc_term_in=&start_date_in=&end_date_in=";
         }
 

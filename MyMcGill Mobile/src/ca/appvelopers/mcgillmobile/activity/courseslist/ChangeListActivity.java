@@ -44,7 +44,7 @@ public class ChangeListActivity extends BaseActivity {
         layout.setLayoutParams(params);
 
         //Get the current year
-        //Semester defaultSemester = App.getDefaultSemester();
+        //Semester defaultSemester = App.getDefaultTerm();
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -67,7 +67,7 @@ public class ChangeListActivity extends BaseActivity {
         //Set up the semester spinner
         Spinner semester = (Spinner) findViewById(R.id.change_semester);
         semester.setAdapter(semesterAdapter);
-        //season.setSelection(mSeasonList.indexOf(defaultSemester.getSeason()));
+        //season.setSelection(mSeasonList.indexOf(defaultSemester.getTerm()));
         semester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

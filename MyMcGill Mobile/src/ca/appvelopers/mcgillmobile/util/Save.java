@@ -16,7 +16,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Inbox;
-import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 
@@ -182,13 +182,13 @@ public class Save {
         }
     }
     
-    public static void saveDefaultSemester(Context context){
-        Semester defaultSemester = App.getDefaultSemester();
+    public static void saveDefaultTerm(Context context){
+        Term defaultTerm = App.getDefaultTerm();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.DEFAULT_SEMESTER_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.DEFAULT_TERM_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(defaultSemester);
+            out.writeObject(defaultTerm);
         } catch (OptionalDataException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

@@ -21,7 +21,7 @@ import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Inbox;
 import ca.appvelopers.mcgillmobile.object.Language;
-import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 
@@ -86,7 +86,7 @@ public class Load {
 
     public static boolean loadRememberUsername(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.REMEMBER_USERNAME, false);
+        return sharedPrefs.getBoolean(Constants.REMEMBER_USERNAME, true);
     }
 
     public static Transcript loadTranscript(Context context){
@@ -233,31 +233,31 @@ public class Load {
         return inbox;
     }
 
-    public static Semester loadDefaultSemester(Context context){
-        Semester defaultSemester = null;
+    public static Term loadDefaultTerm(Context context){
+        Term defaultTerm = null;
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.DEFAULT_SEMESTER_FILE);
+            FileInputStream fis = context.openFileInput(Constants.DEFAULT_TERM_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
-            defaultSemester = (Semester) in.readObject();
+            defaultTerm = (Term) in.readObject();
         } catch (ClassNotFoundException e) {
-            Log.e("Load Default Semester Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Default Term Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (OptionalDataException e) {
-            Log.e("Load Default Semester Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Default Term Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (FileNotFoundException e) {
-            Log.e("Load Default Semester Failure", "File not found");
+            Log.e("Load Default Term Failure", "File not found");
             e.printStackTrace();
         } catch (StreamCorruptedException e) {
-            Log.e("Load Default Semester Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Default Term Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            Log.e("Load Default Semester Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Default Term Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
         }
 
-        return defaultSemester;
+        return defaultTerm;
     }
 
     public static List<ClassItem> loadClassWishlist(Context context){

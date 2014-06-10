@@ -3,12 +3,8 @@ package ca.appvelopers.mcgillmobile;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.object.ClassItem;
@@ -17,11 +13,11 @@ import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Inbox;
 import ca.appvelopers.mcgillmobile.object.Language;
-import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.object.Season;
+import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Load;
-import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Update;
 
@@ -40,15 +36,16 @@ public class App extends Application {
     private static HomePage homePage;
     private static Faculty faculty;
     private static Transcript transcript;
-    
     private static List<ClassItem> schedule;
-    private static Semester defaultSemester;
-    
+    private static Term defaultTerm;
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
     private static Inbox inbox;
-
     private static List<ClassItem> wishlist;
+
+    //List of semesters you can currently register in
+    //TODO Find a way to make this dynamic
+    private static List<Term> registerTerms;
 
     @Override
     public void onCreate(){
@@ -90,10 +87,16 @@ public class App extends Application {
         homePage = Load.loadHomePage(this);
         //Load the user's faculty
         faculty = Load.loadFaculty(this);
-        //Load the default semester for the schedule
-        defaultSemester = Load.loadDefaultSemester(this);
+        //Load the default term for the schedule
+        defaultTerm = Load.loadDefaultTerm(this);
         //Load the course wishlist
         wishlist = Load.loadClassWishlist(this);
+
+        //Set up the register terms
+        registerTerms = new ArrayList<Term>();
+        registerTerms.add(new Term(Season.SUMMER, 2014));
+        registerTerms.add(new Term(Season.FALL, 2014));
+        registerTerms.add(new Term(Season.WINTER, 2015));
     }
 
     /* GETTER METHODS */
@@ -137,8 +140,8 @@ public class App extends Application {
         return faculty;
     }
 
-    public static Semester getDefaultSemester(){
-        return defaultSemester;
+    public static Term getDefaultTerm(){
+        return defaultTerm;
     }
 
     public static List<ClassItem> getClassWishlist() {
@@ -150,6 +153,10 @@ public class App extends Application {
             return inbox.getNumNewEmails();
         }
         return 0;
+    }
+
+    public static List<Term> getRegisterTerms(){
+        return registerTerms;
     }
 
     /* SETTERS */
@@ -208,11 +215,11 @@ public class App extends Application {
         Save.saveFaculty(context);
     }
 
-    public static void setDefaultSemester(Semester semester){
-        App.defaultSemester = semester;
+    public static void setDefaultTerm(Term term){
+        App.defaultTerm = term;
 
         //Save it to internal storage when this is set
-        Save.saveDefaultSemester(context);
+        Save.saveDefaultTerm(context);
     }
 
     public static void setClassWishlist(List<ClassItem> list) {
