@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.util;
+package ca.appvelopers.mcgillmobile.view;
 
 import android.app.AlertDialog;
 import android.content.Context;

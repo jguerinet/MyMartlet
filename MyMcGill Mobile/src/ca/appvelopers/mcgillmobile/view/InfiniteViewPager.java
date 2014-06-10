@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.util;
+package ca.appvelopers.mcgillmobile.view;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

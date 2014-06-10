@@ -34,6 +34,7 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Author: Julien, Shabbir, Rafi, Joshua
