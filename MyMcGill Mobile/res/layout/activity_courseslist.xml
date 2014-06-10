@@ -6,10 +6,9 @@
     android:layout_height="match_parent">
 
     <!-- The main content view -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="match_parent"
@@ -24,15 +23,17 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/courses_list"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/courses_list"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/courses_button_container" />
 
         <LinearLayout
             android:id="@+id/courses_button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
 
             <TextView
                 android:layout_width="0dp"
@@ -49,7 +50,8 @@
             <View
                 android:layout_width="@dimen/line"
                 android:layout_height="match_parent"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:id="@+id/course_line"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -65,7 +67,7 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <!-- The navigation drawer -->
 <include layout="@layout/drawer"/>

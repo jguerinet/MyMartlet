@@ -43,6 +43,8 @@ public class CoursesListActivity extends DrawerActivity {
     private String mRegistrationError = "NULL";
     private ClassAdapter mAdapter;
     private Term mTerm;
+    private boolean mCanUnregister;
+    private TextView mRegisterButton;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -88,30 +90,21 @@ public class CoursesListActivity extends DrawerActivity {
         }
 
         //Register button
-        TextView register = (TextView)findViewById(R.id.course_register);
-        //Change the text if we are in the list of currently registered courses
-        if(listType == CourseListType.VIEW_COURSES){
-            register.setText(getString(R.string.courses_unregister));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            register.setLayoutParams(params);
-        }
-        register.setOnClickListener(new View.OnClickListener() {
+        mRegisterButton = (TextView)findViewById(R.id.course_register);
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Get checked courses from adapter
                 List<ClassItem> registerCoursesList = mAdapter.getCheckedClasses();
 
                 //Too many courses
-                if (registerCoursesList.size() > 10){
+                if (registerCoursesList.size() > 10) {
                     Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.courses_too_many_courses),
                             Toast.LENGTH_SHORT).show();
-                }
-                else if(registerCoursesList.isEmpty()){
+                } else if (registerCoursesList.isEmpty()) {
                     Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.courses_none_selected),
                             Toast.LENGTH_SHORT).show();
-                }
-                else if(registerCoursesList.size() > 0) {
+                } else if (registerCoursesList.size() > 0) {
                     //Execute (un)registration of checked classes in a new thread
                     boolean unregister = listType == CourseListType.VIEW_COURSES;
                     new RegistrationThread(Connection.getRegistrationURL(mTerm, registerCoursesList, unregister)).execute();
@@ -131,7 +124,6 @@ public class CoursesListActivity extends DrawerActivity {
         else{
             wishlist.setVisibility(View.GONE);
         }
-
         wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,7 +188,26 @@ public class CoursesListActivity extends DrawerActivity {
         //Set the title
         setTitle(mTerm.toString(this));
 
-        mAdapter = new ClassAdapter(this, mTerm, mClasses, listType == CourseListType.VIEW_COURSES);
+        mCanUnregister = App.getRegisterTerms().contains(mTerm);
+
+        //Change the text if we are in the list of currently registered courses
+        if(listType == CourseListType.VIEW_COURSES){
+            View line = findViewById(R.id.course_line);
+            if(mCanUnregister){
+                line.setVisibility(View.VISIBLE);
+                mRegisterButton.setVisibility(View.VISIBLE);
+                mRegisterButton.setText(getString(R.string.courses_unregister));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                mRegisterButton.setLayoutParams(params);
+            }
+            else{
+                line.setVisibility(View.GONE);
+                mRegisterButton.setVisibility(View.GONE);
+            }
+        }
+
+        mAdapter = new ClassAdapter(this, mTerm, mClasses, listType, mCanUnregister);
         mListView.setAdapter(mAdapter);
     }
 

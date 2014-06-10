@@ -26,13 +26,16 @@ public class ClassAdapter extends BaseAdapter {
     private Context mContext;
     private List<ClassItem> mClassItems;
     private List<ClassItem> mCheckedClassItems;
-    private boolean mViewCourses;
+    private CoursesListActivity.CourseListType mType;
+    private boolean mCanUnregister;
 
-    public ClassAdapter(Context context, Term term, List<ClassItem> classItems, boolean viewCourses){
+    public ClassAdapter(Context context, Term term, List<ClassItem> classItems, CoursesListActivity.CourseListType type,
+                        boolean canUnregister){
         this.mContext = context;
         this.mClassItems = new ArrayList<ClassItem>();
         this.mCheckedClassItems = new ArrayList<ClassItem>();
-        this.mViewCourses = viewCourses;
+        this.mType = type;
+        this.mCanUnregister = canUnregister;
 
         //Add only the courses for this term
         for(ClassItem classItem : classItems){
@@ -90,10 +93,11 @@ public class ClassAdapter extends BaseAdapter {
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
         //Don't show it if we are only viewing the courses
-        if(mViewCourses){
+        if(mType == CoursesListActivity.CourseListType.VIEW_COURSES && !mCanUnregister){
             checkBox.setVisibility(View.GONE);
         }
         else{
+            checkBox.setVisibility(View.VISIBLE);
             //Remove any other listeners
             checkBox.setOnCheckedChangeListener(null);
             //Initially unchecked
