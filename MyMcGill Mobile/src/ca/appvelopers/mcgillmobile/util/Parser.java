@@ -663,7 +663,7 @@ public class Parser {
                 //If so, determine what error is present
                 Elements links = document.select("a[href]");
                 for(Element link : links){
-                    if(link.toString().contains(Connection.minervaRegistrationError)){
+                    if(link.toString().contains(Connection.REGISTRATION_ERROR)){
                         registrationError = link.text();
                     }
                 }

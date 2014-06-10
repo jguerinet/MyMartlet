@@ -100,7 +100,7 @@ public class TranscriptActivity extends DrawerActivity {
         protected Boolean doInBackground(Void... params){
             final Activity activity = TranscriptActivity.this;
 
-            String transcriptString = Connection.getInstance().getUrl(activity, Connection.minervaTranscript);
+            String transcriptString = Connection.getInstance().getUrl(activity, Connection.TRANSCRIPT);
 
             if(transcriptString == null){
                 activity.runOnUiThread(new Runnable() {

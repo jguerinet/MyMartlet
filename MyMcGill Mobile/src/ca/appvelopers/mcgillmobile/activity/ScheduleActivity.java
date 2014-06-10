@@ -36,7 +36,6 @@ import ca.appvelopers.mcgillmobile.fragment.DayFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.HomePage;
-import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -57,7 +56,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 	private List<ClassItem> mClassList;
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
-    private Semester mSemester;
+    private Term mTerm;
     private boolean mDoubleBackToExit;
 
     private static final int CHANGE_SEMESTER_CODE = 100;
@@ -71,7 +70,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         GoogleAnalytics.sendScreen(this, "Schedule");
 
         //Get the semester
-        mSemester = Semester.getSemester(App.getDefaultTerm());
+        mTerm = App.getDefaultTerm();
 
         mClassList = new ArrayList<ClassItem>();
 
@@ -83,7 +82,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         loadInfo();
 
         //Start thread to get schedule
-        new ScheduleGetter(mSemester.getURL()).execute();
+        new ScheduleGetter(mTerm);
 
         //Check if this is the first time the user is using the app
         if(Load.isFirstOpen(this)){
@@ -172,12 +171,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
     private void loadInfo(){
         //Title
-        setTitle(mSemester.getSemesterName(this));
+        setTitle(mTerm.toString(this));
 
         //Clear the current course list
         mClassList.clear();
         for(ClassItem classItem : App.getClasses()){
-            if(classItem.isForSemester(mSemester)){
+            if(classItem.getTerm().equals(mTerm)){
                 mClassList.add(classItem);
             }
         }
@@ -333,10 +332,10 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     }
 
     private class ScheduleGetter extends AsyncTask<Void, Void, Boolean> {
-        private String scheduleURL;
+        private Term mTerm;
 
-        public ScheduleGetter(String url){
-            scheduleURL = url;
+        public ScheduleGetter(Term term){
+            mTerm = term;
         }
 
         @Override
@@ -350,7 +349,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             String scheduleString;
             final Activity activity = ScheduleActivity.this;
 
-  			scheduleString = Connection.getInstance().getUrl(ScheduleActivity.this, scheduleURL);
+  			scheduleString = Connection.getInstance().getUrl(ScheduleActivity.this, Connection.getScheduleURL(mTerm));
 
             if(scheduleString == null){
                 activity.runOnUiThread(new Runnable() {
@@ -368,7 +367,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             }
 
             //Get the new schedule
-            Parser.parseClassList(mSemester.getTerm(), scheduleString);
+            Parser.parseClassList(mTerm, scheduleString);
 
             return true;
         }
@@ -422,7 +421,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             	return true;
             case R.id.action_refresh:
                 //Start thread to retrieve schedule
-                new ScheduleGetter(mSemester.getURL()).execute();
+                new ScheduleGetter(mTerm).execute();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -433,11 +432,9 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         if(requestCode == CHANGE_SEMESTER_CODE){
             if(resultCode == RESULT_OK){
                 //Get the chosen term
-                Term term = (Term)data.getSerializableExtra(Constants.TERM);
-                //Find the corresponding semester
-                mSemester = Semester.getSemester(term);
+                mTerm = (Term)data.getSerializableExtra(Constants.TERM);
 
-                new ScheduleGetter(mSemester.getURL()).execute();
+                new ScheduleGetter(mTerm).execute();
             }
         }
         else{

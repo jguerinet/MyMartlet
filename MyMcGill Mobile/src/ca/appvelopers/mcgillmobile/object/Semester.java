@@ -5,9 +5,6 @@ import android.content.Context;
 import java.io.Serializable;
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.util.Connection;
-
 /**
  * Created by Ryan Singzon on 30/01/14.
  *
@@ -80,33 +77,11 @@ public class Semester implements Serializable{
         return courses;
     }
 
-    public String getURL(){
-        return Connection.minervaSchedulePrefix + mTerm.getYear() + mTerm.getSeason().getSeasonNumber();
-    }
-
     /**
      * Get the semester term
      * @return The semester term
      */
     public Term getTerm(){
         return mTerm;
-    }
-
-    /**
-     * Check if the current semester is after the given semester
-     * @param semester The semester to compare
-     * @return True if the current semester is after, false, otherwise
-     */
-    public boolean isAfter(Semester semester){
-        return mTerm.isAfter(semester.getTerm());
-    }
-
-    public static Semester getSemester(Term term){
-        for(Semester semester : App.getTranscript().getSemesters()){
-            if(semester.getTerm().equals(term)){
-                return semester;
-            }
-        }
-        return null;
     }
 }

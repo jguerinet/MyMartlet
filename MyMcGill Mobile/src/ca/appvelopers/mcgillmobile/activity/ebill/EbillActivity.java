@@ -103,7 +103,7 @@ public class EbillActivity extends DrawerActivity {
         protected Boolean doInBackground(Void... params){
             final Activity activity = EbillActivity.this;
 
-            String ebillString = Connection.getInstance().getUrl(activity, Connection.minervaEbill);
+            String ebillString = Connection.getInstance().getUrl(activity, Connection.EBILL);
 
             if(ebillString == null){
                 activity.runOnUiThread(new Runnable() {
