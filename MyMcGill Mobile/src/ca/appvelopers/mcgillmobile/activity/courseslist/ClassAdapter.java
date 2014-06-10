@@ -26,11 +26,13 @@ public class ClassAdapter extends BaseAdapter {
     private Context mContext;
     private List<ClassItem> mClassItems;
     private List<ClassItem> mCheckedClassItems;
+    private boolean mViewCourses;
 
-    public ClassAdapter(Context context, Term term, List<ClassItem> classItems){
+    public ClassAdapter(Context context, Term term, List<ClassItem> classItems, boolean viewCourses){
         this.mContext = context;
         this.mClassItems = new ArrayList<ClassItem>();
         this.mCheckedClassItems = new ArrayList<ClassItem>();
+        this.mViewCourses = viewCourses;
 
         //Add only the courses for this term
         for(ClassItem classItem : classItems){
@@ -87,22 +89,28 @@ public class ClassAdapter extends BaseAdapter {
 
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
-        //Remove any other listeners
-        checkBox.setOnCheckedChangeListener(null);
-        //Initially unchecked
-        checkBox.setChecked(mCheckedClassItems.contains(currentClassItem));
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //If it becomes checked, add it to the list. If not, remove it
-                if(b){
-                    mCheckedClassItems.add(currentClassItem);
+        //Don't show it if we are only viewing the courses
+        if(mViewCourses){
+            checkBox.setVisibility(View.GONE);
+        }
+        else{
+            //Remove any other listeners
+            checkBox.setOnCheckedChangeListener(null);
+            //Initially unchecked
+            checkBox.setChecked(mCheckedClassItems.contains(currentClassItem));
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    //If it becomes checked, add it to the list. If not, remove it
+                    if(b){
+                        mCheckedClassItems.add(currentClassItem);
+                    }
+                    else {
+                        mCheckedClassItems.remove(currentClassItem);
+                    }
                 }
-                else {
-                    mCheckedClassItems.remove(currentClassItem);
-                }
-            }
-        });
+            });
+        }
 
         return view;
     }

@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +89,13 @@ public class CoursesListActivity extends DrawerActivity {
 
         //Register button
         TextView register = (TextView)findViewById(R.id.course_register);
+        //Change the text if we are in the list of currently registered courses
+        if(listType == CourseListType.VIEW_COURSES){
+            register.setText(getString(R.string.courses_unregister));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            register.setLayoutParams(params);
+        }
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,8 +112,9 @@ public class CoursesListActivity extends DrawerActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else if(registerCoursesList.size() > 0) {
-                    //Execute registration of checked classes in a new thread
-                    new RegistrationThread(Connection.getRegistrationURL(mTerm, registerCoursesList, false)).execute();
+                    //Execute (un)registration of checked classes in a new thread
+                    boolean unregister = listType == CourseListType.VIEW_COURSES;
+                    new RegistrationThread(Connection.getRegistrationURL(mTerm, registerCoursesList, unregister)).execute();
                 }
             }
         });
@@ -117,8 +127,9 @@ public class CoursesListActivity extends DrawerActivity {
         else if(listType == CourseListType.SEARCH_COURSES){
             wishlist.setText(getResources().getString(R.string.courses_add_wishlist));
         }
+        //Remove this button if the person is just reviewing their classes
         else{
-            //TODO
+            wishlist.setVisibility(View.GONE);
         }
 
         wishlist.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +139,6 @@ public class CoursesListActivity extends DrawerActivity {
                 List<ClassItem> checkedClasses = mAdapter.getCheckedClasses();
 
                 String toastMessage;
-
                 //If there are none, display error message
                 if(checkedClasses.isEmpty()){
                     toastMessage = getResources().getString(R.string.wishlist_error_empty);
@@ -186,7 +196,7 @@ public class CoursesListActivity extends DrawerActivity {
         //Set the title
         setTitle(mTerm.toString(this));
 
-        mAdapter = new ClassAdapter(this, mTerm, mClasses);
+        mAdapter = new ClassAdapter(this, mTerm, mClasses, listType == CourseListType.VIEW_COURSES);
         mListView.setAdapter(mAdapter);
     }
 

@@ -190,10 +190,11 @@
 
     <!-- CoursesList / Course Wishlist -->
     <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
-    <string name="wishlist_add">Added %s course(s) from the wishlist</string>
+    <string name="wishlist_add">Added %s course(s) to the wishlist</string>
     <string name="wishlist_error_empty">You need to select at least one course</string>
     <string name="courses_empty">No Courses Available</string>
     <string name="courses_register">Register</string>
+    <string name="courses_unregister">Unregister</string>
     <string name="courses_add_wishlist">Add to Wishlist</string>
     <string name="courses_remove_wishlist">Remove from Wishlist</string>
     <string name="courses_too_many_courses">You must select fewer than 10 courses.</string>
@@ -218,9 +219,9 @@
     <string name="about_hernan_email">gattahernan\@gmail.com</string>
     <string name="about_joshua">Joshua David Alfaro</string>
     <string name="about_joshua_role">Android Developer</string>
-    <string name="about_joshua_description">Josh is awesome… Nuff Said.</string>
+    <string name="about_joshua_description">Josh is an Electrical Engineering student at McGill University. Josh is also a member of the ECSESS Robotics Club which helps students learn and prepare for design competitions. While taking his minor in Software Engineering, Josh supported the development of this mobile application. </string>
     <string name="about_joshua_linkedin">http://ca.linkedin.com/pub/joshua-david-alfaro/24/988/5b7</string>
-    <string name="about_joshua_email">JOSH, PUT YOUR EMAIL</string>
+    <string name="about_joshua_email">JoshuaDavidAlfaro\@gmail.com</string>
     <string name="about_julien">Julien Guerinet</string>
     <string name="about_julien_role">Scrum Master, Android Developer</string>
     <string name="about_julien_description">Julien is a fourth year Computer Engineer undergraduate, and head of the Android version.</string>
@@ -233,14 +234,14 @@
     <string name="about_omar_email">omargonzalez233\@gmail.com</string>
     <string name="about_quang">Nhat-Quang Dao</string>
     <string name="about_quang_role">Android Developer</string>
-    <string name="about_quang_description">Very little is known about Quang. This man of mystery abides somewhere in Canada, perhaps, and also enjoys Oreos and similar sweets. </string>
-    <string name="about_quang_linkedin">QUANG, PUT YOUR LINKEDIN</string>
-    <string name="about_quang_email">QUANG, PUT YOUR EMAIL</string>
+    <string name="about_quang_description">Quang is an Software Engineering student with a great sense of taste. The hackathon where he served as the scrum master was one of the most memorable times for everyone.</string>
+    <string name="about_quang_linkedin">https://www.linkedin.com/pub/quang-dao/59/672/715</string>
+    <string name="about_quang_email">nhat.quang.d\@gmail.com</string>
     <string name="about_ryan">Ryan Singzon</string>
     <string name="about_ryan_role">Android Developer</string>
     <string name="about_ryan_description">Ryan Singzon aka. The man with the smile is best known for being the only contender to the ridiculously photogenic guy. </string>
     <string name="about_ryan_linkedin">http://ca.linkedin.com/in/ryansingzon</string>
-    <string name="about_ryan_email">RYAN, PUT YOUR EMAIL</string>
+    <string name="about_ryan_email">ryan.singzon\@mail.mcgill.ca</string>
     <string name="about_shabbir">Shabbir Hussain</string>
     <string name="about_shabbir_role">Scrum Master, Assistant to the Scrum Master, Windows Phone Developer, Android Developer</string>
     <string name="about_shabbir_description">Shabbir is an EE student who prefers software development. Although he did contribute to this project, the team knows him exclusively as Assistant to the Scrum Master. Contact him if you are interested in playing rec volleyball.</string>
