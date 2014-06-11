@@ -171,12 +171,19 @@
     <string name="change_semester_default">Set as Default</string>
 
     <!-- Register Page -->
-    <string name="registration_semester">Semester</string>
-    <string name="registration_subject">Subject</string>
-    <string name="registration_course_number">Course Number (optional)</string>
+    <string name="registration_semester">Semester:</string>
+    <string name="registration_subject">Subject (ex: MATH):</string>
+    <string name="registration_course_number">Course Number:</string>
     <string name="registration_invalid_subject">Invalid subject: Please a four character subject code</string>
     <string name="registration_error">Registration error: %s</string>
     <string name="registration_success">Registration successful!</string>
+    <string name="registration_faculty">Faculty:</string>
+    <string name="registration_title">Title:</string>
+    <string name="registration_start_time">Start Time:</string>
+    <string name="registration_end_time">End Time:</string>
+    <string name="registration_days">Days:</string>
+    <string name="registration_credits">Credit Range:</string>
+    <string name="registration_credits_hours">hours</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>

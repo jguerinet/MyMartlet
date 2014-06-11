@@ -2,9 +2,6 @@ package ca.appvelopers.mcgillmobile.object;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ca.appvelopers.mcgillmobile.R;
 
 /**
@@ -27,28 +24,36 @@ public enum Faculty {
     RELIGIOUS_STUDIES,
     SCIENCE;
 
-    /**
-     * Get the names of all of the faculties
-     * @param context The app context
-     * @return The list of faculty Strings
-     */
-    public static List<String> getFacultyStrings(Context context){
-        //Order matters here
-        List<String> strings = new ArrayList<String>();
-        strings.add(context.getResources().getString(R.string.faculty_enviro));
-        strings.add(context.getResources().getString(R.string.faculty_arts));
-        strings.add(context.getResources().getString(R.string.faculty_continuing_studies));
-        strings.add(context.getResources().getString(R.string.faculty_dentistry));
-        strings.add(context.getResources().getString(R.string.faculty_education));
-        strings.add(context.getResources().getString(R.string.faculty_engineering));
-        strings.add(context.getResources().getString(R.string.faculty_graduate));
-        strings.add(context.getResources().getString(R.string.faculty_law));
-        strings.add(context.getResources().getString(R.string.faculty_management));
-        strings.add(context.getResources().getString(R.string.faculty_medecine));
-        strings.add(context.getResources().getString(R.string.faculty_music));
-        strings.add(context.getResources().getString(R.string.faculty_religion));
-        strings.add(context.getResources().getString(R.string.faculty_science));
-
-        return strings;
+    public String toString(Context context) {
+        switch (this) {
+            case ENVIRONMENTAL_SCIENCES:
+                return context.getResources().getString(R.string.faculty_enviro);
+            case ARTS:
+                return context.getResources().getString(R.string.faculty_arts);
+            case CONTINUING_STUDIES:
+                return context.getResources().getString(R.string.faculty_continuing_studies);
+            case DENTISTRY:
+                return context.getResources().getString(R.string.faculty_dentistry);
+            case EDUCATION:
+                return context.getResources().getString(R.string.faculty_education);
+            case ENGINEERING:
+                return context.getResources().getString(R.string.faculty_engineering);
+            case GRADUATE:
+                return context.getResources().getString(R.string.faculty_graduate);
+            case LAW:
+                return context.getResources().getString(R.string.faculty_law);
+            case MANAGEMENT:
+                return context.getResources().getString(R.string.faculty_management);
+            case MEDICINE:
+                return context.getResources().getString(R.string.faculty_medecine);
+            case MUSIC:
+                return context.getResources().getString(R.string.faculty_music);
+            case RELIGIOUS_STUDIES:
+                return context.getResources().getString(R.string.faculty_religion);
+            case SCIENCE:
+                return context.getResources().getString(R.string.faculty_science);
+            default:
+                return "";
+        }
     }
 }

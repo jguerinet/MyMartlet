@@ -32,6 +32,8 @@ import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
+import ca.appvelopers.mcgillmobile.object.Day;
+import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
@@ -463,7 +465,9 @@ public class Connection {
      * @param courseNumber The course number
      * @return The proper search URL
      */
-    public static String getCourseURL(Term term, String subject, String courseNumber){
+    public static String getCourseURL(Term term, String subject, Faculty faculty, String courseNumber,
+                                      String title, int minCredit, int maxCredit, int startHour,
+                                      int startMinute, int endHour, int endMinute, List<Day> days){
         return COURSE_SEARCH
                 + "term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
                 "&sel_subj=dummy" +

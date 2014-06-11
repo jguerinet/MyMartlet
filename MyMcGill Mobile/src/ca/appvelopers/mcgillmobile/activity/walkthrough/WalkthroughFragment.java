@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -15,6 +14,8 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.view.FacultyAdapter;
+import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
 
 /**
  * Author : Julien
@@ -87,19 +88,13 @@ public class WalkthroughFragment extends Fragment {
                 pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, null);
 
                 Spinner homepage = (Spinner)pageView.findViewById(R.id.homepage);
-                //Standard ArrayAdapter
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_spinner_item, HomePage.getHomePageStrings(getActivity()));
-                //Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                //Apply the adapter to the spinner
-                homepage.setAdapter(adapter);
+                final HomePageAdapter homePageAdapter = new HomePageAdapter(getActivity());
+                homepage.setAdapter(homePageAdapter);
                 homepage.setSelection(App.getHomePage().ordinal());
                 homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                        //Get the chosen language
-                        HomePage chosenHomePage = HomePage.values()[position];
+                        HomePage chosenHomePage = homePageAdapter.getItem(position);
 
                         GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Homepage", chosenHomePage.toString(), null);
 
@@ -112,18 +107,14 @@ public class WalkthroughFragment extends Fragment {
 
                 Spinner faculty = (Spinner)pageView.findViewById(R.id.faculty);
                 //Standard ArrayAdapter
-                adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
-                        Faculty.getFacultyStrings(getActivity()));
-                //Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                //Apply the adapter to the spinner
-                faculty.setAdapter(adapter);
+                final FacultyAdapter facultyAdapter = new FacultyAdapter(getActivity(), false);
+                faculty.setAdapter(facultyAdapter);
                 faculty.setSelection(0);
                 faculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                         //Get the chosen language
-                        Faculty faculty = Faculty.values()[position];
+                        Faculty faculty = facultyAdapter.getItem(position);
 
                         GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Faculty", faculty.toString(), null);
 

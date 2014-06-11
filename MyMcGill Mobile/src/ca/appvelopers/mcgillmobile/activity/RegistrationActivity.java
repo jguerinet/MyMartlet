@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,20 +20,26 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
-import ca.appvelopers.mcgillmobile.object.Season;
+import ca.appvelopers.mcgillmobile.object.Day;
+import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
+import ca.appvelopers.mcgillmobile.view.FacultyAdapter;
+import ca.appvelopers.mcgillmobile.view.TermAdapter;
 
 /**
  * Created by Ryan Singzon on 19/05/14.
  * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
-    private List<String> mSemesterStrings;
+    private Spinner mTermSpinner, mFacultySpinner, mMinCreditsSpinner, mMaxCreditsSpinner;
+    private TermAdapter mTermAdapter;
+    private FacultyAdapter mFacultyAdapter;
+    private TimePicker mStartTime, mEndTime;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -40,22 +48,36 @@ public class RegistrationActivity extends DrawerActivity{
 
         GoogleAnalytics.sendScreen(this, "Registration");
 
-        //Make a list with their strings
-        mSemesterStrings = new ArrayList<String>();
-        mSemesterStrings.add("Summer 2014");
-        mSemesterStrings.add("Fall 2014");
-        mSemesterStrings.add("Winter 2015");
+        //Set up the term spinner
+        mTermSpinner = (Spinner) findViewById(R.id.registration_semester);
+        mTermAdapter = new TermAdapter(this, App.getRegisterTerms());
+        mTermSpinner.setAdapter(mTermAdapter);
 
-        //Set up the semester adapter and declare "Winter is Coming"
-        ArrayAdapter<String> semesterAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mSemesterStrings);
-        semesterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Set up the faculty spinner
+        mFacultySpinner = (Spinner)findViewById(R.id.registration_faculty);
+        mFacultyAdapter = new FacultyAdapter(this, true);
+        mFacultySpinner.setAdapter(mFacultyAdapter);
 
-        //Set up the season spinner
-        Spinner semester = (Spinner) findViewById(R.id.registration_semester);
-        semester.setAdapter(semesterAdapter);
+        //Set up the min and maxes
+        mMinCreditsSpinner = (Spinner)findViewById(R.id.registration_credits_min);
+        mMaxCreditsSpinner = (Spinner)findViewById(R.id.registration_credits_max);
 
-        //Set default semester to Fall 2014
-        semester.setSelection(2);
+        //Set up the credits adapter
+        List<Integer> hours = new ArrayList<Integer>();
+        for(int i = 0; i < 24; i ++){
+            hours.add(i);
+        }
+        ArrayAdapter<Integer> hoursAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_dropdown, hours);
+        mMinCreditsSpinner.setAdapter(hoursAdapter);
+        mMaxCreditsSpinner.setAdapter(hoursAdapter);
+
+        mStartTime = (TimePicker)findViewById(R.id.registration_start_time);
+        mStartTime.setCurrentHour(0);
+        mStartTime.setCurrentMinute(0);
+
+        mEndTime = (TimePicker)findViewById(R.id.registration_end_time);
+        mEndTime.setCurrentHour(0);
+        mEndTime.setCurrentMinute(0);
     }
 
     @Override
@@ -66,37 +88,81 @@ public class RegistrationActivity extends DrawerActivity{
 
     //Searches for the selected courses
     public void searchCourses(View v){
-        Spinner semesterSpinner = (Spinner) findViewById(R.id.registration_semester);
-        String semester = semesterSpinner.getSelectedItem().toString();
-        Term term = null;
+        //Get the selected term
+        Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
 
-        //TODO Find out how to make this dynamic
-        if(semester.equals("Summer 2014")){
-            term = new Term(Season.SUMMER, 2014);
-        }
-        else if(semester.equals("Fall 2014")){
-            term = new Term(Season.FALL, 2014);
-        }
-        else if(semester.equals("Winter 2015")){
-            term = new Term(Season.WINTER, 2015);
-        }
+        //Get the selected faculty
+        Faculty faculty = mFacultyAdapter.getItem(mFacultySpinner.getSelectedItemPosition());
 
-        //Obtain user input from text boxes
-        EditText subjectBox = (EditText) findViewById(R.id.registration_subject);
-        String subject = subjectBox.getText().toString().toUpperCase();
-        if(!subject.matches("[A-Za-z]{4}")){
+        //Subject Input
+        EditText courseSubjectView = (EditText) findViewById(R.id.registration_subject);
+        String courseSubject = courseSubjectView.getText().toString().toUpperCase();
+        if(!courseSubject.matches("[A-Za-z]{4}")){
             String toastMessage = getResources().getString(R.string.registration_invalid_subject);
             Toast.makeText(RegistrationActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        EditText courseNumBox = (EditText) findViewById(R.id.registration_course_number);
-        String courseNumber = courseNumBox.getText().toString();
+        //TODO Check if there is either a faculty or a subject inputted
 
-        String courseSearchURL = Connection.getCourseURL(term, subject, courseNumber);
+        //Course Number
+        EditText courseNumberView = (EditText) findViewById(R.id.registration_course_number);
+        String courseNumber = courseNumberView.getText().toString();
+
+        //Course Title
+        EditText courseTitleView = (EditText)findViewById(R.id.registration_course_title);
+        String courseTitle = courseTitleView.getText().toString();
+
+        //Credits
+        int minCredits = mMinCreditsSpinner.getSelectedItemPosition();
+        int maxCredits = mMaxCreditsSpinner.getSelectedItemPosition();
+
+        if(maxCredits < minCredits){
+            //TODO Credits are not good
+        }
+
+        //Start time
+        int startHour = mStartTime.getCurrentHour();
+        int startMinute = mStartTime.getCurrentMinute();
+
+        //End Time
+        int endHour = mEndTime.getCurrentHour();
+        int endMinute = mEndTime.getCurrentMinute();
+
+        //Days
+        List<Day> days = new ArrayList<Day>();
+        CheckBox checkbox = (CheckBox)findViewById(R.id.registration_monday);
+        if(checkbox.isChecked()){
+            days.add(Day.MONDAY);
+        }
+        checkbox = (CheckBox)findViewById(R.id.registration_tuesday);
+        if(checkbox.isChecked()){
+            days.add(Day.TUESDAY);
+        }
+        checkbox = (CheckBox)findViewById(R.id.registration_wednesday);
+        if(checkbox.isChecked()){
+            days.add(Day.WEDNESDAY);
+        }
+        checkbox = (CheckBox)findViewById(R.id.registration_thursday);
+        if(checkbox.isChecked()){
+            days.add(Day.THURSDAY);
+        }
+        checkbox = (CheckBox)findViewById(R.id.registration_friday);
+        if(checkbox.isChecked()){
+            days.add(Day.FRIDAY);
+        }
+        checkbox = (CheckBox)findViewById(R.id.registration_saturday);
+        if(checkbox.isChecked()){
+            days.add(Day.SATURDAY);
+        }
+        checkbox = (CheckBox)findViewById(R.id.registration_sunday);
+        if(checkbox.isChecked()){
+            days.add(Day.SUNDAY);
+        }
 
         //Obtain courses
-        new CoursesGetter(term, courseSearchURL).execute();
+        new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, faculty, courseNumber,
+                courseTitle, minCredits, maxCredits, startHour, startMinute, endHour, endMinute, days)).execute();
     }
 
     //Connects to Minerva in a new thread

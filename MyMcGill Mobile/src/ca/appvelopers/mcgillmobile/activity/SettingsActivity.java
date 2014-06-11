@@ -21,6 +21,7 @@ import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
 
 public class SettingsActivity extends DrawerActivity {
 
@@ -40,9 +41,7 @@ public class SettingsActivity extends DrawerActivity {
         Collections.sort(languageStrings);
         //Standard ArrayAdapter
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, languageStrings);
-        //Specify the layout to use when the list of choices appears
-        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.spinner_dropdown, languageStrings);
         //Apply the adapter to the spinner
         languages.setAdapter(languageAdapter);
         //Set the default selected to the user's chosen language
@@ -68,20 +67,14 @@ public class SettingsActivity extends DrawerActivity {
         });
 
         Spinner homepages = (Spinner)findViewById(R.id.settings_homepage);
-
-        //Standard ArrayAdapter
-        ArrayAdapter<String> homepageAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, HomePage.getHomePageStrings(this));
-        //Specify the layout to use when the list of choices appears
-        homepageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Apply the adapter to the spinner
-        homepages.setAdapter(homepageAdapter);
+        final HomePageAdapter homePageAdapter = new HomePageAdapter(this);
+        homepages.setAdapter(homePageAdapter);
         homepages.setSelection(App.getHomePage().ordinal());
         homepages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                //Get the chosen language
-                HomePage chosenHomePage = HomePage.values()[position];
+                //Get the chosen homepage
+                HomePage chosenHomePage = homePageAdapter.getItem(position);
 
                 GoogleAnalytics.sendEvent(SettingsActivity.this, "Settings", "Homepage", chosenHomePage.toString(), null);
 
