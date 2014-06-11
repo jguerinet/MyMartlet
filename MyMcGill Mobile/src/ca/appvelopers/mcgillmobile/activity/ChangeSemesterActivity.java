@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -24,6 +23,7 @@ import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.view.TermAdapter;
 
 
 /**
@@ -90,25 +90,16 @@ public class ChangeSemesterActivity extends BaseActivity {
             }
         });
 
-        //Make a list with their strings
-        List<String> termStrings = new ArrayList<String>();
-        for(Term term : mTerms){
-            termStrings.add(term.toString(this));
-        }
-
-        //Set up the adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, termStrings);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         //Set up the spinner
         Spinner spinner = (Spinner)findViewById(R.id.change_semester_term);
+        final TermAdapter adapter = new TermAdapter(this, mTerms);
         spinner.setAdapter(adapter);
         spinner.setSelection(mTerms.indexOf(mTerm));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 //Get the selected term
-                mTerm = mTerms.get(position);
+                mTerm = adapter.getItem(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}

@@ -2,9 +2,6 @@ package ca.appvelopers.mcgillmobile.object;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
 import ca.appvelopers.mcgillmobile.activity.MapActivity;
@@ -52,24 +49,28 @@ public enum HomePage {
         }
     }
 
-    /**
-     * Get the titles of all of the homepages
-     * @param context The app context
-     * @return A list of the homepage strings
-     */
-    public static List<String> getHomePageStrings(Context context){
-        //NOTE : ORDER MATTERS HERE
-        List<String> strings = new ArrayList<String>();
-        strings.add(context.getResources().getString(R.string.homepage_schedule));
-        strings.add(context.getResources().getString(R.string.homepage_transcript));
-        strings.add(context.getResources().getString(R.string.homepage_email));
-        strings.add(context.getResources().getString(R.string.homepage_mycourses));
-        strings.add(context.getResources().getString(R.string.homepage_search));
-        strings.add(context.getResources().getString(R.string.homepage_wishlist));
-        strings.add(context.getResources().getString(R.string.homepage_ebill));
-        strings.add(context.getResources().getString(R.string.homepage_map));
-        strings.add(context.getResources().getString(R.string.homepage_desktop));
-
-        return strings;
+    public String toString(Context context){
+        switch(this){
+            case SCHEDULE:
+                return context.getResources().getString(R.string.homepage_schedule);
+            case TRANSCRIPT:
+                return context.getResources().getString(R.string.homepage_transcript);
+            case EMAIL:
+                return context.getResources().getString(R.string.homepage_email);
+            case MY_COURSES:
+                return context.getResources().getString(R.string.homepage_mycourses);
+            case SEARCH_COURSES:
+                return context.getResources().getString(R.string.homepage_search);
+            case WISHLIST:
+                return context.getResources().getString(R.string.homepage_wishlist);
+            case EBILL:
+                return context.getResources().getString(R.string.homepage_ebill);
+            case CAMPUS_MAP:
+                return context.getResources().getString(R.string.homepage_map);
+            case DESKTOP:
+                return context.getResources().getString(R.string.homepage_desktop);
+            default:
+                return context.getResources().getString(R.string.homepage_schedule);
+        }
     }
 }
