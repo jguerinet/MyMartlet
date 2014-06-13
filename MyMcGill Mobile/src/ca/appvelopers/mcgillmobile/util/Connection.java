@@ -516,9 +516,19 @@ public class Connection {
                 "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY" +
                 "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY";
 
-        registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
-                "&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
-                "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+        if(dropCourse){
+            for(ClassItem classItem : classes){
+                registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
+                        "&CRN_IN=" + classItem.getCRN() +
+                        "DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
+                        "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+            }
+        }
+        else{
+            registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
+                    "&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
+                    "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+        }
 
         //Lots of junk
         for(int i = 0; i < 7; i++){
@@ -536,18 +546,18 @@ public class Connection {
         for(ClassItem classItem : classes){
 
             //Use a different URL if courses are being dropped
-            if(dropCourse){
-                registrationURL += "&RSTS_IN=DW&CRN_IN=";
+            if(!dropCourse){
+                registrationURL += "&RSTS_IN=RW&CRN_IN=";
+                registrationURL += classItem.getCRN();
             }
             else{
-                registrationURL += "&RSTS_IN=RW&CRN_IN=";
+                registrationURL += "&RSTS_IN=&CRN_IN=";
             }
-
-            registrationURL += classItem.getCRN();
             registrationURL += "&assoc_term_in=&start_date_in=&end_date_in=";
         }
 
         registrationURL += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
+        Log.e("POOP", registrationURL);
         return registrationURL;
     }
 }
