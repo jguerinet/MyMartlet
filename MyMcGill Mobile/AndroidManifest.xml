@@ -114,6 +114,7 @@
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/title_about" />
+        <activity android:name=".mycourseslist.MyCoursesListActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"

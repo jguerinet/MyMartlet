@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.courseslist;
+package ca.appvelopers.mcgillmobile.mycourseslist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
@@ -22,18 +23,20 @@ import ca.appvelopers.mcgillmobile.object.Term;
  * Date :  2014-05-26 7:14 PM
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
-public class ClassAdapter extends BaseAdapter {
+public class MyCoursesAdapter extends BaseAdapter {
     private Context mContext;
     private List<ClassItem> mClassItems;
     private List<ClassItem> mCheckedClassItems;
+    private boolean mCanUnregister;
 
-    public ClassAdapter(Context context, Term term, List<ClassItem> classItems){
+    public MyCoursesAdapter(Context context, Term term, boolean canUnregister){
         this.mContext = context;
         this.mClassItems = new ArrayList<ClassItem>();
         this.mCheckedClassItems = new ArrayList<ClassItem>();
+        this.mCanUnregister = canUnregister;
 
         //Add only the courses for this term
-        for(ClassItem classItem : classItems){
+        for(ClassItem classItem : App.getClasses()){
             if(classItem.getTerm().equals(term)){
                 mClassItems.add(classItem);
             }
@@ -87,23 +90,29 @@ public class ClassAdapter extends BaseAdapter {
 
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
-        checkBox.setVisibility(View.VISIBLE);
-        //Remove any other listeners
-        checkBox.setOnCheckedChangeListener(null);
-        //Initially unchecked
-        checkBox.setChecked(mCheckedClassItems.contains(currentClassItem));
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //If it becomes checked, add it to the list. If not, remove it
-                if(b){
-                    mCheckedClassItems.add(currentClassItem);
+        //Don't show it if we are only viewing the courses
+        if(!mCanUnregister){
+            checkBox.setVisibility(View.GONE);
+        }
+        else{
+            checkBox.setVisibility(View.VISIBLE);
+            //Remove any other listeners
+            checkBox.setOnCheckedChangeListener(null);
+            //Initially unchecked
+            checkBox.setChecked(mCheckedClassItems.contains(currentClassItem));
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    //If it becomes checked, add it to the list. If not, remove it
+                    if(b){
+                        mCheckedClassItems.add(currentClassItem);
+                    }
+                    else {
+                        mCheckedClassItems.remove(currentClassItem);
+                    }
                 }
-                else {
-                    mCheckedClassItems.remove(currentClassItem);
-                }
-            }
-        });
+            });
+        }
 
         return view;
     }

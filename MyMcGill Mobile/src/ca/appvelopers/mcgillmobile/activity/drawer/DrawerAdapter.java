@@ -28,9 +28,9 @@ import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.activity.inbox.InboxActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
+import ca.appvelopers.mcgillmobile.mycourseslist.MyCoursesListActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
@@ -174,7 +174,6 @@ public class DrawerAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent;
                 switch(position){
                     case SCHEDULE_POSITION:
                         mActivity.startActivity(new Intent(mActivity, ScheduleActivity.class));
@@ -189,17 +188,13 @@ public class DrawerAdapter extends BaseAdapter {
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
                         break;
                     case COURSES_POSITION:
-                        intent = new Intent(mActivity, CoursesListActivity.class);
-                        intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.VIEW_COURSES);
-                        mActivity.startActivity(intent);
+                        mActivity.startActivity(new Intent(mActivity, MyCoursesListActivity.class));
                         break;
                     case SEARCH_COURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, RegistrationActivity.class));
                         break;
                     case WISHLIST_POSITION:
-                        intent = new Intent(mActivity, CoursesListActivity.class);
-                        intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.WISHLIST);
-                        mActivity.startActivity(intent);
+                        mActivity.startActivity(new Intent(mActivity, CoursesListActivity.class));
                         break;
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));

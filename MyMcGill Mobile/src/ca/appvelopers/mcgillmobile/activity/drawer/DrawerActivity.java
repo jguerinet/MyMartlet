@@ -18,6 +18,7 @@ import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.activity.inbox.InboxActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
+import ca.appvelopers.mcgillmobile.mycourseslist.MyCoursesListActivity;
 
 public class DrawerActivity extends BaseActivity {
 
@@ -64,17 +65,16 @@ public class DrawerActivity extends BaseActivity {
         }
         else if(this instanceof CoursesListActivity){
             //Wishlist
-            if(((CoursesListActivity)this).listType == CoursesListActivity.CourseListType.WISHLIST){
+            if(((CoursesListActivity)this).wishlist){
                 mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.WISHLIST_POSITION);
             }
             //Course search
-            else if(((CoursesListActivity)this).listType == CoursesListActivity.CourseListType.SEARCH_COURSES){
+            else{
                 mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
             }
-            //Course list
-            else{
-                mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.COURSES_POSITION);
-            }
+        }
+        else if(this instanceof MyCoursesListActivity){
+            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.COURSES_POSITION);
         }
         else{
             Log.e("Drawer Adapter", "not well initialized");
