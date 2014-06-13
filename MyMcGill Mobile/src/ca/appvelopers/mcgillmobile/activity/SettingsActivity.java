@@ -1,6 +1,7 @@
 package ca.appvelopers.mcgillmobile.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -57,6 +59,14 @@ public class SettingsActivity extends DrawerActivity {
                 //If it's different than the previously selected language, update it and reload
                 if(App.getLanguage() != chosenLanguage){
                     App.setLanguage(chosenLanguage);
+
+                    //Update locale and config
+                    Locale locale = new Locale(chosenLanguage.getLanguageString());
+                    Locale.setDefault(locale);
+                    Configuration config = getBaseContext().getResources().getConfiguration();
+                    config.locale = locale;
+                    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
                     startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
                     finish();
                 }
