@@ -26,6 +26,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
@@ -40,7 +41,6 @@ public class MyCoursesListActivity extends DrawerActivity {
     private TextView mUnregisterButton;
 
     private MyCoursesAdapter mAdapter;
-
     private Term mTerm;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +81,8 @@ public class MyCoursesListActivity extends DrawerActivity {
         //Remove this button
         TextView wishlist = (TextView)findViewById(R.id.course_wishlist);
         wishlist.setVisibility(View.GONE);
+
+        executeClassDownloader();
     }
 
     @Override
@@ -129,8 +131,9 @@ public class MyCoursesListActivity extends DrawerActivity {
             startActivityForResult(new Intent(this, ChangeSemesterActivity.class), CHANGE_SEMESTER_CODE);
             return true;
         }
-        else if(item.getItemId() == Constants.MENU_ITEM_REFRESH){
-            //TODO
+        else if(item.getItemId() == R.id.action_refresh){
+            //Execute the class downloader
+            executeClassDownloader();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -141,12 +144,30 @@ public class MyCoursesListActivity extends DrawerActivity {
         if(requestCode == CHANGE_SEMESTER_CODE){
             if(resultCode == RESULT_OK){
                 mTerm = (Term)data.getSerializableExtra(Constants.TERM);
-                loadInfo();
+                executeClassDownloader();
             }
         }
         else{
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public void executeClassDownloader(){
+        new ClassDownloader(this, mTerm) {
+            @Override
+            protected void onPreExecute() {
+                setProgressBarIndeterminateVisibility(true);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean loadInfo) {
+                if(loadInfo){
+                    loadInfo();
+                }
+
+                setProgressBarIndeterminateVisibility(false);
+            }
+        }.execute();
     }
 
     //Connects to Minerva in a new thread to register for courses

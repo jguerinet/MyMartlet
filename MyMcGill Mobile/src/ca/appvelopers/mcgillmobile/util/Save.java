@@ -117,11 +117,11 @@ public class Save {
         }
     }
 
-    public static void saveSchedule(Context context){
+    public static void saveClasses(Context context){
         List<ClassItem> courses = App.getClasses();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.SCHEDULE_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.CLASSES_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(courses);
         } catch (OptionalDataException e) {

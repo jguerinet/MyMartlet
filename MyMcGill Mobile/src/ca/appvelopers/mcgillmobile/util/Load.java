@@ -120,31 +120,31 @@ public class Load {
         return transcript;
     }
 
-    public static List<ClassItem> loadSchedule(Context context){
+    public static List<ClassItem> loadClasses(Context context){
         List<ClassItem> courses = new ArrayList<ClassItem>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.SCHEDULE_FILE);
+            FileInputStream fis = context.openFileInput(Constants.CLASSES_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             courses = (List<ClassItem>) in.readObject();
         } catch (ClassNotFoundException e) {
-            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
             return courses;
         } catch (OptionalDataException e) {
-            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
             return courses;
         } catch (FileNotFoundException e) {
-            Log.e("Load Schedule Failure", "File not found");
+            Log.e("Load Classes Failure", "File not found");
             e.printStackTrace();
             return courses;
         } catch (StreamCorruptedException e) {
-            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
             return courses;
         } catch (IOException e) {
-            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
             return courses;
         }

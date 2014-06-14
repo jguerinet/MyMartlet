@@ -49,9 +49,9 @@ public class Clear {
     }
 
     public static void clearSchedule(Context context){
-        context.deleteFile(Constants.SCHEDULE_FILE);
+        context.deleteFile(Constants.CLASSES_FILE);
         //Reset the static instance in Application Class
-        App.setClassList(new ArrayList<ClassItem>());
+        App.setClasses(new ArrayList<ClassItem>());
     }
 
     public static void clearEbill(Context context){

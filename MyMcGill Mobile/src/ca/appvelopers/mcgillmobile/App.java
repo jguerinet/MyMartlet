@@ -36,7 +36,7 @@ public class App extends Application {
     private static HomePage homePage;
     private static Faculty faculty;
     private static Transcript transcript;
-    private static List<ClassItem> schedule;
+    private static List<ClassItem> classes;
     private static Term defaultTerm;
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
@@ -74,7 +74,7 @@ public class App extends Application {
         Parser.parseTranscript(transcriptString);*/
 
         //Load the schedule
-        schedule = Load.loadSchedule(this);
+        classes = Load.loadClasses(this);
         //Load the ebill
         ebill = Load.loadEbill(this);
         //Load the user info
@@ -113,7 +113,7 @@ public class App extends Application {
     }
 
     public static List<ClassItem> getClasses(){
-        return schedule;
+        return classes;
     }
 
     public static List<EbillItem> getEbill(){
@@ -167,11 +167,11 @@ public class App extends Application {
         Save.saveTranscript(context);
     }
 
-    public static void setClassList(List<ClassItem> schedule){
-        App.schedule = schedule;
+    public static void setClasses(List<ClassItem> classes){
+        App.classes = classes;
 
         //Save it to internal storage when this is set
-        Save.saveSchedule(context);
+        Save.saveClasses(context);
     }
 
     public static void setEbill(List<EbillItem> ebill){

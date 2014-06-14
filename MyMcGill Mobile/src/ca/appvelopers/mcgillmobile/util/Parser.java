@@ -450,7 +450,7 @@ public class Parser {
         }
 
         //Save it to the instance variable in Application class
-        App.setClassList(classItems);
+        App.setClasses(classItems);
     }
 
     /**
