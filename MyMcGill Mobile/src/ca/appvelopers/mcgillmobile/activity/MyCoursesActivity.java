@@ -1,26 +1,19 @@
 package ca.appvelopers.mcgillmobile.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 public class MyCoursesActivity extends DrawerActivity{
-    private boolean mDoubleBackToExit;
-	
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -53,28 +46,5 @@ public class MyCoursesActivity extends DrawerActivity{
                 view.setVisibility(View.VISIBLE);
             }
         });
-    }
-
-    @Override
-    public void onBackPressed(){
-        if(App.getHomePage() != HomePage.MY_COURSES){
-            startActivity(new Intent(MyCoursesActivity.this, App.getHomePage().getHomePageClass()));
-            super.onBackPressed();
-        }
-        else{
-            if (mDoubleBackToExit) {
-                super.onBackPressed();
-                return;
-            }
-            this.mDoubleBackToExit = true;
-            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mDoubleBackToExit=false;
-                }
-            }, 2000);
-        }
     }
 }

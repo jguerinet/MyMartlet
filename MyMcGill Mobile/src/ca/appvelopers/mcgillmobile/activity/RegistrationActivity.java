@@ -80,12 +80,6 @@ public class RegistrationActivity extends DrawerActivity{
         mEndTime.setCurrentMinute(0);
     }
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(RegistrationActivity.this, App.getHomePage().getHomePageClass()));
-        super.onBackPressed();
-    }
-
     //Searches for the selected courses
     public void searchCourses(View v){
         //Get the selected term

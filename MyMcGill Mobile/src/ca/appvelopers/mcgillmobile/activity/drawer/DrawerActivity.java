@@ -1,13 +1,17 @@
 package ca.appvelopers.mcgillmobile.activity.drawer;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
 import ca.appvelopers.mcgillmobile.activity.MyCoursesActivity;
@@ -26,6 +30,7 @@ public class DrawerActivity extends BaseActivity {
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerAdapter mDrawerAdapter;
+    private boolean mExit = false;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -88,6 +93,30 @@ public class DrawerActivity extends BaseActivity {
     public void updateUnreadMessages(){
         if(mDrawerAdapter != null){
             mDrawerAdapter.updateUnreadMessages();
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        //If it's not the Homepage, bring him to the homepage
+        if(!this.getClass().equals(App.getHomePage().getHomePageClass())){
+            startActivity(new Intent(this, App.getHomePage().getHomePageClass()));
+            super.onBackPressed();
+        }
+        else{
+            if(mExit) {
+                super.onBackPressed();
+                return;
+            }
+            mExit = true;
+            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mExit = false;
+                }
+            }, 2000);
         }
     }
 

@@ -3,7 +3,6 @@ package ca.appvelopers.mcgillmobile.activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
@@ -32,7 +30,6 @@ import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.fragment.DayFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
@@ -54,7 +51,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
     private Term mTerm;
-    private boolean mDoubleBackToExit;
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,29 +81,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             startActivity(new Intent(this, WalkthroughActivity.class));
             //Save the fact that the walkthrough has been seen at least once
             Save.saveFirstOpen(this);
-        }
-    }
-
-    @Override
-    public void onBackPressed(){
-        if(App.getHomePage() != HomePage.SCHEDULE){
-            startActivity(new Intent(ScheduleActivity.this, App.getHomePage().getHomePageClass()));
-            super.onBackPressed();
-        }
-        else{
-            if (mDoubleBackToExit) {
-                super.onBackPressed();
-                return;
-            }
-            this.mDoubleBackToExit = true;
-            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mDoubleBackToExit = false;
-                }
-            }, 2000);
         }
     }
 

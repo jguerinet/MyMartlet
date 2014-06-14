@@ -106,11 +106,4 @@ public class SettingsActivity extends DrawerActivity {
             }
         });
     }
-
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(SettingsActivity.this, App.getHomePage().getHomePageClass()));
-        super.onBackPressed();
-    }
-
 }

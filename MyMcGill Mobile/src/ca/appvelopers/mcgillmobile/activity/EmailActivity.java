@@ -3,20 +3,16 @@ package ca.appvelopers.mcgillmobile.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.inbox.ReplyActivity;
 import ca.appvelopers.mcgillmobile.object.Email;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
@@ -28,7 +24,6 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 public class EmailActivity extends BaseActivity {
 
 	Email email;
-    private boolean mDoubleBackToExit;
 	 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,29 +64,6 @@ public class EmailActivity extends BaseActivity {
 			};
 
 		}).start();
-    }
-
-    @Override
-    public void onBackPressed(){
-        if(App.getHomePage() != HomePage.EMAIL){
-            startActivity(new Intent(EmailActivity.this, App.getHomePage().getHomePageClass()));
-            super.onBackPressed();
-        }
-        else{
-            if (mDoubleBackToExit) {
-                super.onBackPressed();
-                return;
-            }
-            this.mDoubleBackToExit = true;
-            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mDoubleBackToExit=false;
-                }
-            }, 2000);
-        }
     }
 
     @Override

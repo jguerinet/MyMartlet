@@ -1,22 +1,18 @@
 package ca.appvelopers.mcgillmobile.activity.transcript;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
@@ -31,7 +27,6 @@ public class TranscriptActivity extends DrawerActivity {
     private Transcript mTranscript;
     private TextView mCGPA, mTotalCredits;
     private ListView mListView;
-    private boolean mDoubleBackToExit;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -53,29 +48,6 @@ public class TranscriptActivity extends DrawerActivity {
 
         //Start thread to retrieve transcript
         new TranscriptGetter().execute();
-    }
-
-    @Override
-    public void onBackPressed(){
-        if(App.getHomePage() != HomePage.TRANSCRIPT){
-            startActivity(new Intent(TranscriptActivity.this, App.getHomePage().getHomePageClass()));
-            super.onBackPressed();
-        }
-        else{
-            if (mDoubleBackToExit) {
-                super.onBackPressed();
-                return;
-            }
-            this.mDoubleBackToExit = true;
-            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mDoubleBackToExit=false;
-                }
-            }, 2000);
-        }
     }
 
     private void loadInfo(){
