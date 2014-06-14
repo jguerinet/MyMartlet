@@ -167,6 +167,16 @@ public class CoursesListActivity extends DrawerActivity {
         loadInfo();
     }
 
+    @Override
+    public void onBackPressed(){
+        if(!wishlist){
+            finish();
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
     private void loadInfo(){
         //Set the title
         setTitle(mTerm.toString(this));
