@@ -63,31 +63,41 @@ public class ClassAdapter extends BaseAdapter {
         }
 
         //Get the concerned course
-        final ClassItem currentClassItem = getItem(i);
+        final ClassItem classItem = getItem(i);
 
         //Code
         TextView courseCode = (TextView)view.findViewById(R.id.course_code);
-        courseCode.setText(currentClassItem.getCourseCode());
-
-        //Title
-        TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
-        courseTitle.setText(currentClassItem.getCourseTitle());
-
-        //Type
-        TextView courseType = (TextView)view.findViewById(R.id.course_type);
-        courseType.setText(currentClassItem.getSectionType());
+        courseCode.setText(classItem.getCourseCode());
 
         //Credits
         TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
-        courseCredits.setText(mContext.getString(R.string.course_credits, currentClassItem.getCredits()));
+        courseCredits.setText(mContext.getString(R.string.course_credits, classItem.getCredits()));
+
+        //Title
+        TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
+        courseTitle.setText(classItem.getCourseTitle());
+
+        //Spots Remaining
+        TextView spots = (TextView)view.findViewById(R.id.course_spots);
+        spots.setVisibility(View.VISIBLE);
+        spots.setText(classItem.getSeatsRemaining() + "Seat(s) Remaining");
+
+        //Type
+        TextView courseType = (TextView)view.findViewById(R.id.course_type);
+        courseType.setText(classItem.getSectionType());
+
+        //Waitlist Remaining
+        TextView waitlistRemaining = (TextView)view.findViewById(R.id.course_waitlist);
+        waitlistRemaining.setVisibility(View.VISIBLE);
+        waitlistRemaining.setText("Waitlist Spots : " + classItem.getWaitlistRemaining());
 
         //Days
         TextView courseDays = (TextView)view.findViewById(R.id.course_days);
-        courseDays.setText(Day.getDayStrings(currentClassItem.getDays()));
+        courseDays.setText(Day.getDayStrings(classItem.getDays()));
 
         //Hours
         TextView courseHours = (TextView)view.findViewById(R.id.course_hours);
-        courseHours.setText(currentClassItem.getTimeString(mContext));
+        courseHours.setText(classItem.getTimeString(mContext));
 
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
@@ -95,16 +105,16 @@ public class ClassAdapter extends BaseAdapter {
         //Remove any other listeners
         checkBox.setOnCheckedChangeListener(null);
         //Initially unchecked
-        checkBox.setChecked(mCheckedClassItems.contains(currentClassItem));
+        checkBox.setChecked(mCheckedClassItems.contains(classItem));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 //If it becomes checked, add it to the list. If not, remove it
                 if(b){
-                    mCheckedClassItems.add(currentClassItem);
+                    mCheckedClassItems.add(classItem);
                 }
                 else {
-                    mCheckedClassItems.remove(currentClassItem);
+                    mCheckedClassItems.remove(classItem);
                 }
             }
         });

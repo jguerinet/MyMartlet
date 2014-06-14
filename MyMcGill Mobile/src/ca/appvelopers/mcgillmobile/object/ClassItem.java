@@ -178,18 +178,24 @@ public class ClassItem implements Serializable{
         return mDates;
     }
 
-
-    /* HELPER METHODS */
-
     /**
-     * Check to see if this class is part of the given semester
-     * @param semester The semester
-     * @return True if this class is for this semester, false otherwise
+     * Get the number of spots remaining
+     * @return The number of spots remaining
      */
-    public boolean isForSemester(Semester semester){
-        return  semester.getTerm().equals(mTerm);
+    public int getSeatsRemaining(){
+        return mSeatsRemaining;
     }
 
+    /**
+     * Get the number of waitlist spots remaining
+     * @return The number of waitlist spots remaining
+     */
+    public int getWaitlistRemaining(){
+        return mWaitlistRemaining;
+    }
+
+
+    /* HELPER METHODS */
     /**
      * Update the ClassItem
      * @param courseCode The new course code

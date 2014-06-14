@@ -49,24 +49,63 @@
 
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/course_title"
-            android:textSize="@dimen/text_small"
-            android:text="Course Title"
-            android:textColor="@color/black"
-            android:textStyle="italic"/>
+            android:orientation="horizontal">
 
-        <TextView
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/course_title"
+                android:textSize="@dimen/text_small"
+                android:text="Course Title"
+                android:textColor="@color/black"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/course_spots"
+                android:textSize="@dimen/text_small"
+                android:paddingLeft="@dimen/padding_micro"
+                android:paddingRight="@dimen/padding_micro"
+                android:text="%s Spot(s) Left"
+                android:visibility="gone"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/course_type"
-            android:textSize="@dimen/text_small"
-            android:text="Lecture"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:paddingBottom="@dimen/padding_micro"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/course_type"
+                android:textSize="@dimen/text_small"
+                android:text="Lecture"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:paddingBottom="@dimen/padding_micro"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/course_waitlist"
+                android:textSize="@dimen/text_small"
+                android:paddingLeft="@dimen/padding_micro"
+                android:paddingRight="@dimen/padding_micro"
+                android:gravity="center"
+                android:text="Waitlist Spots : %s"
+                android:visibility="gone"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
