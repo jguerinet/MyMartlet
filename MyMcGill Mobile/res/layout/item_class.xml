@@ -25,33 +25,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/padding_micro">
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/course_code"
-                    android:text="Course Code"
-                    android:textSize="@dimen/text_medium"
-                    android:textColor="@color/black"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/course_title"
-                    android:textSize="@dimen/text_small"
-                    android:text="Course Title"
-                    android:textColor="@color/black"
-                    android:textStyle="italic"/>
-
-            </LinearLayout>
+                android:id="@+id/course_code"
+                android:text="Course Code"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,6 +48,25 @@
                 android:textColor="@color/black"/>
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_title"
+            android:textSize="@dimen/text_small"
+            android:text="Course Title"
+            android:textColor="@color/black"
+            android:textStyle="italic"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_type"
+            android:textSize="@dimen/text_small"
+            android:text="Lecture"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:paddingBottom="@dimen/padding_micro"/>
 
         <LinearLayout
             android:layout_width="match_parent"

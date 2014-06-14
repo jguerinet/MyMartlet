@@ -76,7 +76,11 @@ public class MyCoursesAdapter extends BaseAdapter {
         TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
         courseTitle.setText(currentClassItem.getCourseTitle());
 
-        //Credits
+        //Type
+        TextView courseType = (TextView)view.findViewById(R.id.course_type);
+        courseType.setText(currentClassItem.getSectionType());
+
+        //Credits - Don't show this
         TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
         courseCredits.setText(mContext.getString(R.string.course_credits, currentClassItem.getCredits()));
 
