@@ -380,6 +380,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             case Constants.MENU_ITEM_CHANGE_SEMESTER:
             	Intent intent = new Intent(this, ChangeSemesterActivity.class);
                 intent.putExtra(Constants.REGISTER_TERMS, false);
+                intent.putExtra(Constants.TERM, mTerm);
                 startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             	return true;
             case R.id.action_refresh:

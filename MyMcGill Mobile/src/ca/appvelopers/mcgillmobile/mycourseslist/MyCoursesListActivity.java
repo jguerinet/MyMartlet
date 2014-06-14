@@ -128,7 +128,9 @@ public class MyCoursesListActivity extends DrawerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == Constants.MENU_ITEM_CHANGE_SEMESTER){
-            startActivityForResult(new Intent(this, ChangeSemesterActivity.class), CHANGE_SEMESTER_CODE);
+            Intent intent = new Intent(this, ChangeSemesterActivity.class);
+            intent.putExtra(Constants.TERM, mTerm);
+            startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             return true;
         }
         else if(item.getItemId() == R.id.action_refresh){
