@@ -80,7 +80,7 @@ public class ClassAdapter extends BaseAdapter {
         //Spots Remaining
         TextView spots = (TextView)view.findViewById(R.id.course_spots);
         spots.setVisibility(View.VISIBLE);
-        spots.setText(classItem.getSeatsRemaining() + "Seat(s) Remaining");
+        spots.setText(mContext.getString(R.string.registration_spots, classItem.getSeatsRemaining()));
 
         //Type
         TextView courseType = (TextView)view.findViewById(R.id.course_type);
@@ -89,7 +89,7 @@ public class ClassAdapter extends BaseAdapter {
         //Waitlist Remaining
         TextView waitlistRemaining = (TextView)view.findViewById(R.id.course_waitlist);
         waitlistRemaining.setVisibility(View.VISIBLE);
-        waitlistRemaining.setText("Waitlist Spots : " + classItem.getWaitlistRemaining());
+        waitlistRemaining.setText(mContext.getString(R.string.registration_waitlist, classItem.getWaitlistRemaining()));
 
         //Days
         TextView courseDays = (TextView)view.findViewById(R.id.course_days);
@@ -98,6 +98,10 @@ public class ClassAdapter extends BaseAdapter {
         //Hours
         TextView courseHours = (TextView)view.findViewById(R.id.course_hours);
         courseHours.setText(classItem.getTimeString(mContext));
+
+        //Dates
+        TextView courseDates = (TextView)view.findViewById(R.id.course_dates);
+        courseDates.setText(classItem.getDates());
 
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);

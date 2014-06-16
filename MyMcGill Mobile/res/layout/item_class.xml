@@ -42,7 +42,6 @@
                 android:id="@+id/course_credits"
                 android:textSize="@dimen/text_medium"
                 android:paddingLeft="@dimen/padding_micro"
-                android:paddingRight="@dimen/padding_micro"
                 android:gravity="center"
                 android:text="3 Credits"
                 android:textColor="@color/black"/>
@@ -57,55 +56,32 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/course_title"
-                android:textSize="@dimen/text_small"
-                android:text="Course Title"
-                android:textColor="@color/black"
-                android:textStyle="italic"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/course_spots"
-                android:textSize="@dimen/text_small"
-                android:paddingLeft="@dimen/padding_micro"
-                android:paddingRight="@dimen/padding_micro"
-                android:text="%s Spot(s) Left"
-                android:visibility="gone"
-                android:textColor="@color/black"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:id="@+id/course_type"
                 android:textSize="@dimen/text_small"
                 android:text="Lecture"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:paddingBottom="@dimen/padding_micro"/>
+                android:textStyle="bold"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/course_waitlist"
-                android:textSize="@dimen/text_small"
-                android:paddingLeft="@dimen/padding_micro"
-                android:paddingRight="@dimen/padding_micro"
-                android:gravity="center"
-                android:text="Waitlist Spots : %s"
-                android:visibility="gone"
-                android:textColor="@color/black"/>
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="right"
+                android:id="@+id/course_dates"
+                android:textSize="@dimen/text_small"/>
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_title"
+            android:textSize="@dimen/text_small"
+            android:text="Course Title"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:paddingBottom="@dimen/padding_micro"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -131,6 +107,35 @@
                 android:text="Hours"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:id="@+id/course_spots"
+                android:textSize="@dimen/text_small"
+                android:paddingRight="@dimen/padding_micro"
+                android:text="%s Spot(s) Left"
+                android:visibility="gone"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:id="@+id/course_waitlist"
+                android:textSize="@dimen/text_small"
+                android:gravity="right"
+                android:text="Waitlist Spots : %s"
+                android:visibility="gone"
+                android:textColor="@color/black"/>
+
+            </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

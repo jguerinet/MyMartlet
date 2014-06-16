@@ -184,6 +184,8 @@
     <string name="registration_days">Days:</string>
     <string name="registration_credits">Credit Range:</string>
     <string name="registration_credits_hours">hours</string>
+    <string name="registration_spots">%s spot(s) left</string>
+    <string name="registration_waitlist">Waitlist Spots: %s</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
@@ -214,7 +216,7 @@
     <string name="about_adnan_role">Android Developer</string>
     <string name="about_adnan_description">Better known as that guy that knows everyone on campus. In 2014, Adnan famously held a fried chicken event which still holds the record for least number of salmonella cases at an Engineering Event.</string>
     <string name="about_adnan_linkedin">http://ca.linkedin.com/pub/adnan-uddin/58/7b9/b1</string>
-    <string name="about_adnan_email">RAFI, PUT YOUR EMAIL</string>
+    <string name="about_adnan_email">adnan.uddin6\@gmail.com</string>
     <string name="about_gabriel">Gabriel Petrella</string>
     <string name="about_gabriel_role">Head Tester</string>
     <string name="about_gabriel_description">Gabriel is known as a fiend in the EUS scene. He has served many semesters with the PMO and OAP. Little known fact, for one year he committed to the role of brother to ECSESS President.</string>
