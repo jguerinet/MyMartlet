@@ -17,8 +17,10 @@
     <string name="title_map">Carte du Campus</string>
     <string name="title_attach">Pièce Jointe</string>
     <string name="title_change_semester">Changer de Semestre</string>
-    <string name="title_registration">Chercher un cours</string>
-    <string name="title_wishlist">Liste de Cours Envies</string>
+    <string name="title_registration">Chercher un Cours</string>
+    <string name="title_wishlist">Ma Liste d\'Envies de Cours</string>
+    <string name="title_about">A Propos</string>
+    <string name="title_courses">Mes Classes</string>
 
     <!-- General Strings -->
     <string name="error">Erreur</string>
@@ -30,9 +32,9 @@
     <string name="back_toaster_message">Veuillez appuyer sur RETOUR à nouveau pour quitter l\'application</string>
     <string name="english">Anglais</string>
     <string name="french">Français</string>
-    <string name="next">Prochain</string>
+    <string name="next">Suivant</string>
     <string name="back">Retour</string>
-    <string name="start">Début</string>
+    <string name="start">Commencer</string>
     <string name="skip">Sauter</string>
 
     <!-- Icons -->
@@ -117,11 +119,12 @@
     <!-- Settings Screen -->
     <string name="settings_language">Langue</string>
     <string name="settings_homepage">Page d\'Accueil</string>
+    <string name="settings_statistics">Autoriser les Statistiques Anonymes d\'Utilisation</string>
     <string name="homepage_schedule">Calendrier</string>
     <string name="homepage_transcript">Bulletin</string>
     <string name="homepage_email">Email</string>
     <string name="homepage_mycourses">MyCourses</string>
-    <string name="homepage_search">Recherche des Cours</string>
+    <string name="homepage_search">Recherche de Cours</string>
     <string name="homepage_wishlist">Liste d\'Envies</string>
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Carte du Campus</string>
@@ -144,28 +147,73 @@
     <string name="change_semester_default">Mettre par Défaut</string>
 
     <!-- Register Page -->
-    <string name="registration_semester">Semestre</string>
-    <string name="registration_subject">Sujet</string>
-    <string name="registration_course_number">Numéro de Cour (Optionnel)</string>
+    <string name="registration_semester">Semestre:</string>
+    <string name="registration_subject">Sujet (ex: MATH):</string>
+    <string name="registration_course_number">Numéro de Cours:</string>
+    <string name="registration_invalid_subject">Sujet Invalide: Veullez entrer un sujet de 4 caractères</string>
+    <string name="registration_error">Erreur d\'Inscription: %s</string>
+    <string name="registration_success">Inscription Réussie!</string>
+    <string name="registration_faculty">Faculté:</string>
+    <string name="registration_title">Titre:</string>
+    <string name="registration_start_time">Heure de Début:</string>
+    <string name="registration_end_time">Heure de Fin:</string>
+    <string name="registration_days">Jours:</string>
+    <string name="registration_credits">Gamme de Crédits:</string>
+    <string name="registration_credits_hours">heures</string>
+    <string name="registration_spots">%s place(s) restantes</string>
+    <string name="registration_waitlist">Places sur Liste d\'Attente: %s</string>
 
     <!-- Walkthrough -->
+    <string name="walkthrough_welcome">Bienvenue a McGill Mobile, l\'application non officielle pour les étudiants de l\'Université McGill!</string>
+    <string name="walkthrough_essentials">Tous vos outils McGill les plus importants sont maintenant au bouts de vos doights: calendrier, bulletin, une carte du campus&#8230; Tout est là!</string>
+    <string name="walkthrough_menu">Toutes ces fonctionnalités sont directement accessibles de menu principal. Il faut simplement cliquer sur l\'icône en haut à gauche, ou glissez votre doigt du coté gauche de l\'écran pour l\'ouvrir.</string>
+    <string name="walkthrough_offline">Cette application vous garde connecté(e) a tout moment, donc pas besoin de se connecter constamment! Vous pouvez utiliser l\'applcation hors ligne aussi!</string>
+    <string name="walkthrough_security">Toutes vos données (mot de passe inclus) sont seulement sauvegardées localement sur votre téléphone. Pour renforcer la sécurité, votre mot de passe est crypté. Nous allons récolter des statistiques anonymes d\'utilisation, masi vous pouvez désactiver ceci dans les Réglages.</string>
+    <string name="walkthrough_help">Pour revoir ce guide, veuillez consulter notre section "A Propos." Cette section a aussi des informations sur l\'équipe derrière cette application, et différentes façons de nous contacter</string>
+    <string name="walkthrough_bugs">Si vous trouvez des bugs, n\'hésitez pas à nous le signaler en allant dans la section "A Propos", puis dans la partie "Aide."</string>
+    <string name="walkthrough_homepage">Veuillez choisir une page que vous allez voir en premier en ouvrant cette application. Cette page peut être changée a n\'importe quel moment dans les Réglages.</string>
+    <string name="walkthrough_faculty">Pour nous donner une meilleure idée de qui utilise cette application, nous aimerons savoir de quel faculté vous faites parti(e):</string>
 
     <!-- CoursesList / Course Wishlist -->
-    <string name="wishlist_remove">%s cour(s) enlevés du liste d\'envies</string>
-    <string name="wishlist_add">%s cour(s) ajoutés du liste d\'envies</string>
-    <string name="wishlist_error_empty">Vous devez choissir un cour</string>
-    <string name="courses_empty">Aucun cour est disponible</string>
-    <string name="courses_register">Enregistrer</string>
+    <string name="wishlist_remove">%s cour(s) enlevés de la liste d\'envies</string>
+    <string name="wishlist_add">%s cour(s) ajoutés à la liste d\'envies</string>
+    <string name="courses_empty">Aucun Cours Disponibles</string>
+    <string name="courses_register">S\'inscrire</string>
+    <string name="courses_unregister">Se Désinscrire</string>
     <string name="courses_add_wishlist">Ajouter à la Liste d\'Envies</string>
-    <string name="courses_remove_wishlist">Ajouter à la Liste d\'Envies</string>
+    <string name="courses_remove_wishlist">Enlever de la Liste d\'Envies</string>
+    <string name="courses_too_many_courses">Vous devez choisir moins de 10 cours. </string>
+    <string name="courses_none_selected">Vous devez choisir au moins un cours.</string>
 
     <!-- About -->
-    <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre du club robotiques d\'ECSESS qui a come but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette applicaiton mobile.</string>
+    <string name="about_email_picker_title">Compléter cette action avec&#8230;</string>
+    <string name="about_adnan_role">Développeur Android</string>
+    <string name="about_adnan_description">Plus connu comme le mec qui connaît tout le monde sur le campus. En 2014, Adnan a fameusement organisé un évènement de poulet frit qui tient toujours le record du plus petit nombre de cas de salmonelles à un évènement d\'ingénieur.</string>
+    <string name="about_gabriel_role">Testeur Principal</string>
+    <string name="about_gabriel_description">Gabriel est connu comme un ami de EUS. Pendant plusieurs semestres il faisait partie du PMO et OAP. Fait peu connu, pendant un an il s\'est engagé à être le frère de la présidente de ECSESS.</string>
+    <string name="about_hernan_role">Développeur iOS</string>
+    <string name="about_hernan_description">Une citation ? Je suis COOL! (Plus que Josh.)</string>
+    <string name="about_joshua_role">Développeur Android</string>
+    <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre du club robotiques d\'ECSESS qui a comme but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette application mobile.</string>
+    <string name="about_julien_role">Maître Scrum, Développeur Android Principal</string>
+    <string name="about_julien_description">Julien est un étudiant en quatrième année de génie informatique, et gère l\'équipe Android.</string>
+    <string name="about_omar_role">Développeur Générique et Testeur</string>
+    <string name="about_quang_role">Développeur Android</string>
+    <string name="about_quang_description">Quang est un étudiant en Génie Logiciel avec un bon sens de goût. Le hackathon pendant lequel il a été Maître Scrum était un des moments les plus mémorables pour tous.</string>
+    <string name="about_ryan_role">Développeur Android</string>
+    <string name="about_ryan_description">Ryan Singzon, ou l\'homme au sourire est connu en étant le seul rival du gars ridiculement photogénique.</string>
+    <string name="about_shabbir_role">Maître Scrum, Assistant au Maître Scrum, Développeur Windows Mobile, Développeur Android</string>
+    <string name="about_xavier_role">Développeur Android</string>
+    <string name="about_xavier_description">Xavier (Chi-Wing) est un étudiant en Génie Informatique avec un mineur en Sciences de l\'Informatique</string>
+    <string name="about_yulric_role">Développeur Windows Mobile</string>
+    <string name="about_yulric_description">Yulric a récemment terminé ses études d\'ingénieur électrique à l\'Université McGill et fait partie de l\'équipe Windows Mobile.</string>
 
     <!-- Help -->
     <string name="about_help">Aide</string>
     <string name="about_question">Question</string>
     <string name="about_answer">Je suis une réponse</string>
+    <string name="about_FAQ">Question Fréquentes</string>
+    <string name="help_report_bug">Signaler un Problème</string>
     <string name="help_bug_title">Bug %s</string>
     <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>

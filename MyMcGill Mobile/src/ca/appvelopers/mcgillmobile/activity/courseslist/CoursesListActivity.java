@@ -116,7 +116,7 @@ public class CoursesListActivity extends DrawerActivity {
                 String toastMessage;
                 //If there are none, display error message
                 if (checkedClasses.isEmpty()) {
-                    toastMessage = getResources().getString(R.string.wishlist_error_empty);
+                    toastMessage = getResources().getString(R.string.courses_none_selected);
                 }
                 //If we are in the wishlist, this button is to remove a course
                 else if (wishlist) {
