@@ -8,7 +8,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +35,39 @@ public class SettingsActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
 
         GoogleAnalytics.sendScreen(this, "Settings");
+
+        //Help
+        TextView helpIcon = (TextView)findViewById(R.id.help_icon);
+        helpIcon.setTypeface(App.getIconFont());
+        LinearLayout helpContainer = (LinearLayout)findViewById(R.id.settings_help);
+        helpContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+            }
+        });
+
+        //About
+        TextView aboutIcon = (TextView)findViewById(R.id.about_icon);
+        aboutIcon.setTypeface(App.getIconFont());
+        LinearLayout aboutContainer = (LinearLayout)findViewById(R.id.settings_about);
+        aboutContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+            }
+        });
+
+        //Report a Bug
+        TextView bugIcon = (TextView)findViewById(R.id.bug_icon);
+        bugIcon.setTypeface(App.getIconFont());
+        LinearLayout bugContainer = (LinearLayout)findViewById(R.id.settings_bug);
+        bugContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+            }
+        });
 
         //Set up the info
         Spinner languages = (Spinner)findViewById(R.id.settings_language);

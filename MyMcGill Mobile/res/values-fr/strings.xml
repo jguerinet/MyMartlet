@@ -21,6 +21,8 @@
     <string name="title_wishlist">Ma Liste d\'Envies de Cours</string>
     <string name="title_about">A Propos</string>
     <string name="title_courses">Mes Classes</string>
+    <string name="title_help">Aide</string>
+    <string name="title_report_bug">Signaler un Problème</string>
 
     <!-- General Strings -->
     <string name="error">Erreur</string>
@@ -216,11 +218,9 @@
     <string name="about_yulric_description">Yulric a récemment terminé ses études d\'ingénieur électrique à l\'Université McGill et fait partie de l\'équipe Windows Mobile.</string>
 
     <!-- Help -->
-    <string name="about_help">Aide</string>
     <string name="about_question">Question</string>
     <string name="about_answer">Je suis une réponse</string>
     <string name="about_FAQ">Question Fréquentes</string>
-    <string name="help_report_bug">Signaler un Problème</string>
     <string name="help_bug_title">Bug %s</string>
     <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>

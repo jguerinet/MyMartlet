@@ -69,7 +69,7 @@ public class AboutActivity extends DrawerFragmentActivity {
                 .setText(getString(R.string.title_about))
                 .setTabListener(tabListener));
         actionBar.addTab(actionBar.newTab()
-                .setText(getString(R.string.about_help))
+                .setText(getString(R.string.title_help))
                 .setTabListener(tabListener));
     }
 

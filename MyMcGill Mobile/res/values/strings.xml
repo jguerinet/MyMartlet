@@ -21,6 +21,8 @@
     <string name="title_wishlist">My Course Wishlist</string>
     <string name="title_about">About Us</string>
     <string name="title_courses">My Classes</string>
+    <string name="title_help">Help</string>
+    <string name="title_report_bug">Report a Problem</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -55,6 +57,7 @@
     <string name="icon_search">&#xf002;</string>
     <string name="icon_star">&#xf005;</string>
     <string name="icon_courses">&#xf02d;</string>
+    <string name="icon_info">&#xf05a;</string>
 
     <!-- Day Names -->
     <string name="monday">Monday</string>
@@ -273,11 +276,9 @@
     <string name="about_yulric_email">yulric.sequeira\@mail.mcgill.ca</string>
 
     <!-- Help -->
-    <string name="about_help">Help</string>
     <string name="about_question">Question</string>
     <string name="about_answer">This is an answer</string>
     <string name="about_FAQ">FAQ</string>
-    <string name="help_report_bug">Report a Problem</string>
     <string name="help_bug_title">%s Bug: </string>
     <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>
