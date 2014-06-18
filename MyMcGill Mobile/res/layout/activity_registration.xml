@@ -183,6 +183,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:text="@string/registration_credits_hours"
+                            android:singleLine="true"
                             android:textSize="@dimen/text_medium" />
                     </LinearLayout>
 

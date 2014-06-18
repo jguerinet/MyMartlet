@@ -129,7 +129,9 @@ public class RegistrationActivity extends DrawerActivity{
         int maxCredits = Integer.valueOf(maxCreditsView.getText().toString());
 
         if(maxCredits < minCredits){
-            //TODO Credits are not good
+            //TODO Hardcoded String
+            Toast.makeText(this, "The maximum hours must be bigger than the minimum hours", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         //Start time
