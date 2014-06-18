@@ -15,7 +15,7 @@ import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.view.FacultyAdapter;
-import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
+import ca.appvelopers.mcgillmobile.view.HomepageAdapter;
 
 /**
  * Author : Julien
@@ -88,7 +88,7 @@ public class WalkthroughFragment extends Fragment {
                 pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, null);
 
                 Spinner homepage = (Spinner)pageView.findViewById(R.id.homepage);
-                final HomePageAdapter homePageAdapter = new HomePageAdapter(getActivity());
+                final HomepageAdapter homePageAdapter = new HomepageAdapter(getActivity());
                 homepage.setAdapter(homePageAdapter);
                 homepage.setSelection(App.getHomePage().ordinal());
                 homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
