@@ -131,6 +131,7 @@
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Carte du Campus</string>
     <string name="homepage_desktop">Site PC</string>
+    <string name="settings_version">Version %s</string>
 
     <!-- Send Email Screen -->
     <string name="send_message_success">Votre message a été envoyé avec succès.</string>

@@ -227,5 +227,16 @@ public class SettingsActivity extends DrawerActivity {
                 Save.saveStatistics(SettingsActivity.this, b);
             }
         });
+
+        //Version Number
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String appVersionName = packageInfo.versionName;
+
+            TextView versionNumber = (TextView)findViewById(R.id.settings_version);
+            versionNumber.setText(getResources().getString(R.string.settings_version, appVersionName));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

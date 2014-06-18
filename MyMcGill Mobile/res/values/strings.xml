@@ -156,6 +156,7 @@
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Campus Map</string>
     <string name="homepage_desktop">Desktop Site</string>
+    <string name="settings_version">Version %s</string>
 
     <!-- Send Email Screen -->
     <string name="send_message_success">Your message has been sent. </string>
