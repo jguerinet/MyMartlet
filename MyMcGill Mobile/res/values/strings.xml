@@ -186,6 +186,11 @@
     <string name="registration_credits_hours">hours</string>
     <string name="registration_spots">%s spot(s) left</string>
     <string name="registration_waitlist">Waitlist Spots: %s</string>
+    <string name="registration_reset">RESET</string>
+    <string name="registration_error_no_faculty">You must either select a faculty or input a course subject.</string>
+    <string name="registration_error_credits">The maximum hours must be bigger than the minimum hours</string>
+    <string name="registration_show_options">Show More Options</string>
+    <string name="registration_hide_options">Show Less Options</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>

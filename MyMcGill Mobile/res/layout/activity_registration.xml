@@ -297,7 +297,7 @@
                     android:textSize="@dimen/text_small"
                     android:id="@+id/more_options"
                     android:textColor="@drawable/color_black_redpressed"
-                    android:text="Click for More Options"
+                    android:text="@string/registration_show_options"
                     android:padding="@dimen/padding_small"
                     android:gravity="center"/>
             </LinearLayout>

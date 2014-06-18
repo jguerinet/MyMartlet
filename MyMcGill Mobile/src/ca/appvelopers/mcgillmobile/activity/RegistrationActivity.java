@@ -89,7 +89,6 @@ public class RegistrationActivity extends DrawerActivity{
 
         //Set up the more options button
         final LinearLayout moreOptionsContainer = (LinearLayout)findViewById(R.id.more_options_container);
-        //TODO Hardocded String
         final TextView moreOptions = (TextView)findViewById(R.id.more_options);
         moreOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,14 +99,12 @@ public class RegistrationActivity extends DrawerActivity{
                 //If it is false, hide the options and set the show options text
                 if(!mMoreOptions){
                     moreOptionsContainer.setVisibility(View.GONE);
-                    //TODO Hardcoded
-                    moreOptions.setText("Show More Options");
+                    moreOptions.setText(getString(R.string.registration_show_options));
                 }
                 //Do the inverse if true
                 else{
                     moreOptionsContainer.setVisibility(View.VISIBLE);
-                    //TODO Hardcoded
-                    moreOptions.setText("Hide More Options");
+                    moreOptions.setText(getString(R.string.registration_hide_options));
                 }
             }
         });
@@ -125,8 +122,7 @@ public class RegistrationActivity extends DrawerActivity{
         String courseSubject = mCourseSubject.getText().toString().toUpperCase().trim();
 
         if(faculty == null && courseSubject.isEmpty()){
-            //TODO Hardcoded String
-            Toast.makeText(this, "You must either select a faculty or input a course subject.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.registration_error_no_faculty), Toast.LENGTH_SHORT).show();
             return;
         }
         else if(!courseSubject.isEmpty() && !courseSubject.matches("[A-Za-z]{4}")){
@@ -154,8 +150,7 @@ public class RegistrationActivity extends DrawerActivity{
         }
 
         if(maxCredits < minCredits){
-            //TODO Hardcoded String
-            Toast.makeText(this, "The maximum hours must be bigger than the minimum hours", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.registration_error_credits), Toast.LENGTH_SHORT).show();
             return;
         }
 
