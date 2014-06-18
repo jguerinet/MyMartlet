@@ -202,8 +202,8 @@
     <string name="walkthrough_menu">All of these features are directly accessible from the main menu. Simply tap on the top left icon, or swipe from the left edge of the screen to open it. </string>
     <string name="walkthrough_offline">This app keeps you connected at all times, so no need to log in constantly!  You can use the app offline too!</string>
     <string name="walkthrough_security">All of your data (password included) is only stored locally on your phone. As an extra security measure, your password is encrypted. We will be collecting anonymous usage statistics, but you can opt out at any time in the Settings.</string>
-    <string name="walkthrough_help">To see this walkthrough again, please consult our About Section. This also includes info about the team behind this app, and different ways to contact us.</string>
-    <string name="walkthrough_bugs">If you find any bugs, don\'t hesitate to report them by going to the "About" section and clicking on the Help tab.</string>
+    <string name="walkthrough_help">To see this walkthrough again, please consult our Help Section in the settings. There, you will also find the About Section which includes info about the team behind this app, and different ways to contact us.</string>
+    <string name="walkthrough_bugs">If you find any bugs, don\'t hesitate to report them via the Settings Section</string>
     <string name="walkthrough_homepage">Please choose a page you will see first when opening this app. You can change this at any time in the Settings.</string>
     <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
 
