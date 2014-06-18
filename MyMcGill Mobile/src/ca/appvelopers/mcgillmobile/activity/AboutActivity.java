@@ -1,94 +1,129 @@
 package ca.appvelopers.mcgillmobile.activity;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.drawer.DrawerFragmentActivity;
-import ca.appvelopers.mcgillmobile.fragment.AboutFragment;
-import ca.appvelopers.mcgillmobile.fragment.HelpFragment;
+import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
  * Created by Adnan2
  */
-public class AboutActivity extends DrawerFragmentActivity {
-    private ViewPager mPager;
-
+public class AboutActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_about);
         super.onCreate(savedInstanceState);
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
         GoogleAnalytics.sendScreen(this, "About");
 
-        //Set up the ViewPager
-        mPager = (ViewPager)findViewById(R.id.about_viewpager);
-        AboutPagerAdapter adapter = new AboutPagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(adapter);
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {}
-            @Override
-            public void onPageSelected(int i) {
-                //Change the selected tab
-                getActionBar().setSelectedNavigationItem(i);
-            }
-            @Override
-            public void onPageScrollStateChanged(int i) {}
-        });
+        //Set up the info for all of the different people
 
-        //Set up the Tab Listener
-        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                //Set the right tab
-                mPager.setCurrentItem(tab.getPosition());
+        //Adnan
+        setUpInfo(findViewById(R.id.adnan), R.drawable.adnan, getResources().getString(R.string.about_adnan),
+                getResources().getString(R.string.about_adnan_role), getResources().getString(R.string.about_adnan_description),
+                getResources().getString(R.string.about_adnan_linkedin), getResources().getString(R.string.about_adnan_email));
 
-                //GA Strings
-                String gaString;
-                if(tab.getPosition() == 0){
-                    gaString = "Help";
-                }
-                else{
-                    gaString = "About";
-                }
-                GoogleAnalytics.sendEvent(AboutActivity.this, "About", gaString, null, null);
-            }
-            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {}
-            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {}
-        };
+        //Gabriel
+        setUpInfo(findViewById(R.id.gabriel), R.drawable.gabe, getResources().getString(R.string.about_gabriel),
+                getResources().getString(R.string.about_gabriel_role), getResources().getString(R.string.about_gabriel_description),
+                getResources().getString(R.string.about_gabriel_linkedin), getResources().getString(R.string.about_gabriel_email));
 
-        //Add the tabs
-        actionBar.addTab(actionBar.newTab()
-                .setText(getString(R.string.title_about))
-                .setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab()
-                .setText(getString(R.string.title_help))
-                .setTabListener(tabListener));
+        //Hernan
+        setUpInfo(findViewById(R.id.hernan), R.drawable.hernan, getResources().getString(R.string.about_hernan),
+                getResources().getString(R.string.about_hernan_role), getResources().getString(R.string.about_hernan_description),
+                getResources().getString(R.string.about_hernan_linkedin), getResources().getString(R.string.about_hernan_email));
+
+        //Josh
+        setUpInfo(findViewById(R.id.josh), R.drawable.josh, getResources().getString(R.string.about_joshua),
+                getResources().getString(R.string.about_joshua_role), getResources().getString(R.string.about_joshua_description),
+                getResources().getString(R.string.about_joshua_linkedin), getResources().getString(R.string.about_joshua_email));
+
+        //Julien
+        setUpInfo(findViewById(R.id.julien), R.drawable.julien, getResources().getString(R.string.about_julien),
+                getResources().getString(R.string.about_julien_role), getResources().getString(R.string.about_julien_description),
+                getResources().getString(R.string.about_julien_linkedin), getResources().getString(R.string.about_julien_email));
+
+        //Omar
+        setUpInfo(findViewById(R.id.omar), R.drawable.omar, getResources().getString(R.string.about_omar),
+                getResources().getString(R.string.about_omar_role), getResources().getString(R.string.about_omar_description),
+                getResources().getString(R.string.about_omar_linkedin), getResources().getString(R.string.about_omar_email));
+
+        //Quang
+        setUpInfo(findViewById(R.id.quang), R.drawable.quang, getResources().getString(R.string.about_quang),
+                getResources().getString(R.string.about_quang_role), getResources().getString(R.string.about_quang_description),
+                getResources().getString(R.string.about_quang_linkedin), getResources().getString(R.string.about_quang_email));
+
+        //Ryan
+        setUpInfo(findViewById(R.id.ryan), R.drawable.ryan, getResources().getString(R.string.about_ryan),
+                getResources().getString(R.string.about_ryan_role), getResources().getString(R.string.about_ryan_description),
+                getResources().getString(R.string.about_ryan_linkedin), getResources().getString(R.string.about_ryan_email));
+
+        //Shabbir
+        setUpInfo(findViewById(R.id.shabbir), R.drawable.shabbir, getResources().getString(R.string.about_shabbir),
+                getResources().getString(R.string.about_shabbir_role), getResources().getString(R.string.about_shabbir_description),
+                getResources().getString(R.string.about_shabbir_linkedin), getResources().getString(R.string.about_shabbir_email));
+
+        //Xavier
+        setUpInfo(findViewById(R.id.xavier), R.drawable.xavier, getResources().getString(R.string.about_xavier),
+                getResources().getString(R.string.about_xavier_role), getResources().getString(R.string.about_xavier_description),
+                getResources().getString(R.string.about_xavier_linkedin), getResources().getString(R.string.about_xavier_email));
+
+        //Yulric
+        setUpInfo(findViewById(R.id.yulric), R.drawable.yulric, getResources().getString(R.string.about_yulric),
+                getResources().getString(R.string.about_yulric_role), getResources().getString(R.string.about_yulric_description),
+                getResources().getString(R.string.about_yulric_linkedin), getResources().getString(R.string.about_yulric_email));
     }
 
-    class AboutPagerAdapter extends FragmentStatePagerAdapter{
-        public AboutPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+    private void setUpInfo(View view, int pictureResource, final String name, String role, String description,
+                           final String linkedin, final String email){
+        //Picture
+        ImageView picture = (ImageView)view.findViewById(R.id.person_image);
+        picture.setImageResource(pictureResource);
 
-        @Override
-        public Fragment getItem(int i) {
-            if(i == 0){
-                return new AboutFragment();
+        //Name
+        TextView nameView = (TextView)view.findViewById(R.id.person_name);
+        nameView.setText(name);
+
+        //Role
+        TextView roleView = (TextView)view.findViewById(R.id.person_role);
+        roleView.setText(role);
+
+        //Description
+        TextView descriptionView = (TextView)view.findViewById(R.id.person_description);
+        descriptionView.setText(description);
+
+        //Linkedin
+        TextView linkedinView = (TextView)view.findViewById(R.id.person_linkedin);
+        linkedinView.setTypeface(App.getIconFont());
+        linkedinView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoogleAnalytics.sendEvent(AboutActivity.this, "About", "Linkedin", name, null);
+                Help.openURL(AboutActivity.this, linkedin);
             }
-            return new HelpFragment();
-        }
+        });
 
-        @Override
-        public int getCount() {
-            return 2;
-        }
+        //Email
+        TextView emailView = (TextView)view.findViewById(R.id.person_email);
+        emailView.setTypeface(App.getIconFont());
+        emailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoogleAnalytics.sendEvent(AboutActivity.this, "About", "Email", name, null);
+
+                //Send an email :
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                //Recipient
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+                //Type (Email)
+                emailIntent.setType("message/rfc822");
+                startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.about_email_picker_title)));
+            }
+        });
     }
 }

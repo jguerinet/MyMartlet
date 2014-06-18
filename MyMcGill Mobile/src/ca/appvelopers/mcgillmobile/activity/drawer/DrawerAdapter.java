@@ -16,7 +16,6 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.AboutActivity;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
 import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.activity.MapActivity;
@@ -58,7 +57,6 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int DESKTOP_POSITION = MAP_POSITION + 1;
     public static final int SETTINGS_POSITION = DESKTOP_POSITION + 1;
     public static final int LOGOUT_POSITION = SETTINGS_POSITION + 1;
-    public static final int ABOUT_POSITION = LOGOUT_POSITION + 1;
 
     public DrawerAdapter(Activity activity, DrawerLayout drawerLayout, int selectedPosition){
         this.mActivity = activity;
@@ -118,11 +116,6 @@ public class DrawerAdapter extends BaseAdapter {
         //Logout
         mDrawerItems.add(LOGOUT_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_logout),
                 mActivity.getResources().getString(R.string.icon_logout)));
-
-        // About
-        mDrawerItems.add(ABOUT_POSITION ,new DrawerItem(mActivity.getResources().getString(R.string.title_about),
-                mActivity.getResources().getString(R.string.icon_question)));
-
     }
 
     @Override
@@ -213,9 +206,6 @@ public class DrawerAdapter extends BaseAdapter {
                         Clear.clearAllInfo(mActivity);
                         //Go back to LoginActivity
                         mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
-                        break;
-                    case ABOUT_POSITION:
-                        mActivity.startActivity(new Intent(mActivity, AboutActivity.class));
                         break;
                 }
                 mActivity.finish();

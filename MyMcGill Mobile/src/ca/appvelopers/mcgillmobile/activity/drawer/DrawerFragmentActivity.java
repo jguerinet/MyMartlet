@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.AboutActivity;
 import ca.appvelopers.mcgillmobile.activity.MapActivity;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
@@ -50,9 +49,6 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
             }
             else if(this instanceof MapActivity){
                 drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MAP_POSITION);
-            }
-            else if(this instanceof AboutActivity) {
-                drawerAdapter = new DrawerAdapter(this, drawerLayout,DrawerAdapter.ABOUT_POSITION);
             }
             else{
                 drawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
