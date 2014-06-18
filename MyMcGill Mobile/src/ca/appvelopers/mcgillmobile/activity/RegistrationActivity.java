@@ -105,14 +105,17 @@ public class RegistrationActivity extends DrawerActivity{
 
         //Subject Input
         EditText courseSubjectView = (EditText) findViewById(R.id.registration_subject);
-        String courseSubject = courseSubjectView.getText().toString().toUpperCase();
-        if(!courseSubject.matches("[A-Za-z]{4}")){
-            String toastMessage = getResources().getString(R.string.registration_invalid_subject);
-            Toast.makeText(RegistrationActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+        String courseSubject = courseSubjectView.getText().toString().toUpperCase().trim();
+
+        if(faculty == null && courseSubject.isEmpty()){
+            //TODO Hardcoded String
+            Toast.makeText(this, "You must either select a faculty or input a course subject.", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        //TODO Check if there is either a faculty or a subject inputted
+        else if(!courseSubject.isEmpty() && !courseSubject.matches("[A-Za-z]{4}")){
+            Toast.makeText(this, getString(R.string.registration_invalid_subject), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         //Course Number
         EditText courseNumberView = (EditText) findViewById(R.id.registration_course_number);
@@ -124,9 +127,18 @@ public class RegistrationActivity extends DrawerActivity{
 
         //Credits
         EditText minCreditsView = (EditText)findViewById(R.id.registration_credits_min);
-        int minCredits = Integer.valueOf(minCreditsView.getText().toString());
+        int minCredits, maxCredits ;
+        try {
+            minCredits = Integer.valueOf(minCreditsView.getText().toString());
+        } catch (NumberFormatException e){
+            minCredits = 0;
+        }
         EditText maxCreditsView = (EditText)findViewById(R.id.registration_credits_max);
-        int maxCredits = Integer.valueOf(maxCreditsView.getText().toString());
+        try {
+            maxCredits = Integer.valueOf(maxCreditsView.getText().toString());
+        } catch (NumberFormatException e){
+            maxCredits = 0;
+        }
 
         if(maxCredits < minCredits){
             //TODO Hardcoded String
