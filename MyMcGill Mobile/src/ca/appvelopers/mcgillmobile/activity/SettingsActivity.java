@@ -23,7 +23,7 @@ import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
-import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
+import ca.appvelopers.mcgillmobile.view.HomepageAdapter;
 
 public class SettingsActivity extends DrawerActivity {
 
@@ -78,9 +78,9 @@ public class SettingsActivity extends DrawerActivity {
         });
 
         Spinner homepages = (Spinner)findViewById(R.id.settings_homepage);
-        final HomePageAdapter homePageAdapter = new HomePageAdapter(this);
+        final HomepageAdapter homePageAdapter = new HomepageAdapter(this);
         homepages.setAdapter(homePageAdapter);
-        homepages.setSelection(App.getHomePage().ordinal());
+        homepages.setSelection(homePageAdapter.getPosition(App.getHomePage()));
         homepages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
