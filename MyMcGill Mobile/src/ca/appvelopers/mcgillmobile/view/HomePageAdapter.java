@@ -20,11 +20,11 @@ import ca.appvelopers.mcgillmobile.object.HomePage;
  * Date :  2014-06-10 8:17 PM
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
-public class HomepageAdapter extends BaseAdapter {
+public class HomePageAdapter extends BaseAdapter {
     private Context mContext;
     private List<HomePage> mHomePages;
 
-    public HomepageAdapter(Context context){
+    public HomePageAdapter(Context context){
         this.mContext = context;
         this.mHomePages = Arrays.asList(HomePage.values());
 
