@@ -6,10 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -36,10 +37,12 @@ import ca.appvelopers.mcgillmobile.view.TermAdapter;
  * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
-    private Spinner mTermSpinner, mFacultySpinner, mMinCreditsSpinner, mMaxCreditsSpinner;
+    private Spinner mTermSpinner, mFacultySpinner;
     private TermAdapter mTermAdapter;
     private FacultyAdapter mFacultyAdapter;
     private TimePicker mStartTime, mEndTime;
+
+    private boolean mMoreOptions = false;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -58,19 +61,6 @@ public class RegistrationActivity extends DrawerActivity{
         mFacultyAdapter = new FacultyAdapter(this, true);
         mFacultySpinner.setAdapter(mFacultyAdapter);
 
-        //Set up the min and maxes
-        mMinCreditsSpinner = (Spinner)findViewById(R.id.registration_credits_min);
-        mMaxCreditsSpinner = (Spinner)findViewById(R.id.registration_credits_max);
-
-        //Set up the credits adapter
-        List<Integer> hours = new ArrayList<Integer>();
-        for(int i = 0; i < 24; i ++){
-            hours.add(i);
-        }
-        ArrayAdapter<Integer> hoursAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_dropdown, hours);
-        mMinCreditsSpinner.setAdapter(hoursAdapter);
-        mMaxCreditsSpinner.setAdapter(hoursAdapter);
-
         mStartTime = (TimePicker)findViewById(R.id.registration_start_time);
         mStartTime.setCurrentHour(0);
         mStartTime.setCurrentMinute(0);
@@ -78,6 +68,31 @@ public class RegistrationActivity extends DrawerActivity{
         mEndTime = (TimePicker)findViewById(R.id.registration_end_time);
         mEndTime.setCurrentHour(0);
         mEndTime.setCurrentMinute(0);
+
+        //Set up the more options button
+        final LinearLayout moreOptionsContainer = (LinearLayout)findViewById(R.id.more_options_container);
+        //TODO Hardocded String
+        final TextView moreOptions = (TextView)findViewById(R.id.more_options);
+        moreOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Inverse the more options boolean
+                mMoreOptions = !mMoreOptions;
+
+                //If it is false, hide the options and set the show options text
+                if(!mMoreOptions){
+                    moreOptionsContainer.setVisibility(View.GONE);
+                    //TODO Hardcoded
+                    moreOptions.setText("Show More Options");
+                }
+                //Do the inverse if true
+                else{
+                    moreOptionsContainer.setVisibility(View.VISIBLE);
+                    //TODO Hardcoded
+                    moreOptions.setText("Hide More Options");
+                }
+            }
+        });
     }
 
     //Searches for the selected courses
@@ -108,8 +123,10 @@ public class RegistrationActivity extends DrawerActivity{
         String courseTitle = courseTitleView.getText().toString();
 
         //Credits
-        int minCredits = mMinCreditsSpinner.getSelectedItemPosition();
-        int maxCredits = mMaxCreditsSpinner.getSelectedItemPosition();
+        EditText minCreditsView = (EditText)findViewById(R.id.registration_credits_min);
+        int minCredits = Integer.valueOf(minCreditsView.getText().toString());
+        EditText maxCreditsView = (EditText)findViewById(R.id.registration_credits_max);
+        int maxCredits = Integer.valueOf(maxCreditsView.getText().toString());
 
         if(maxCredits < minCredits){
             //TODO Credits are not good

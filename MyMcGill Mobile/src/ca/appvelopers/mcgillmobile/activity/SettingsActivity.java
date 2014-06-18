@@ -43,7 +43,8 @@ public class SettingsActivity extends DrawerActivity {
         Collections.sort(languageStrings);
         //Standard ArrayAdapter
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(this,
-                R.layout.spinner_dropdown, languageStrings);
+                R.layout.spinner_item, languageStrings);
+        languageAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         //Apply the adapter to the spinner
         languages.setAdapter(languageAdapter);
         //Set the default selected to the user's chosen language
