@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
@@ -41,6 +43,8 @@ public class RegistrationActivity extends DrawerActivity{
     private TermAdapter mTermAdapter;
     private FacultyAdapter mFacultyAdapter;
     private TimePicker mStartTime, mEndTime;
+    private EditText mCourseSubject, mCourseNumber, mCourseTitle, mMinCredits, mMaxCredits;
+    private CheckBox mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday;
 
     private boolean mMoreOptions = false;
 
@@ -68,6 +72,20 @@ public class RegistrationActivity extends DrawerActivity{
         mEndTime = (TimePicker)findViewById(R.id.registration_end_time);
         mEndTime.setCurrentHour(0);
         mEndTime.setCurrentMinute(0);
+
+        //Get the other views
+        mCourseSubject = (EditText) findViewById(R.id.registration_subject);
+        mCourseNumber = (EditText) findViewById(R.id.registration_course_number);
+        mCourseTitle = (EditText)findViewById(R.id.registration_course_title);
+        mMinCredits = (EditText)findViewById(R.id.registration_credits_min);
+        mMaxCredits = (EditText)findViewById(R.id.registration_credits_max);
+        mMonday = (CheckBox)findViewById(R.id.registration_monday);
+        mTuesday = (CheckBox)findViewById(R.id.registration_tuesday);
+        mWednesday = (CheckBox)findViewById(R.id.registration_wednesday);
+        mThursday = (CheckBox)findViewById(R.id.registration_thursday);
+        mFriday = (CheckBox)findViewById(R.id.registration_friday);
+        mSaturday = (CheckBox)findViewById(R.id.registration_saturday);
+        mSunday = (CheckBox)findViewById(R.id.registration_sunday);
 
         //Set up the more options button
         final LinearLayout moreOptionsContainer = (LinearLayout)findViewById(R.id.more_options_container);
@@ -104,8 +122,7 @@ public class RegistrationActivity extends DrawerActivity{
         Faculty faculty = mFacultyAdapter.getItem(mFacultySpinner.getSelectedItemPosition());
 
         //Subject Input
-        EditText courseSubjectView = (EditText) findViewById(R.id.registration_subject);
-        String courseSubject = courseSubjectView.getText().toString().toUpperCase().trim();
+        String courseSubject = mCourseSubject.getText().toString().toUpperCase().trim();
 
         if(faculty == null && courseSubject.isEmpty()){
             //TODO Hardcoded String
@@ -118,24 +135,20 @@ public class RegistrationActivity extends DrawerActivity{
         }
 
         //Course Number
-        EditText courseNumberView = (EditText) findViewById(R.id.registration_course_number);
-        String courseNumber = courseNumberView.getText().toString();
+        String courseNumber = mCourseNumber.getText().toString();
 
         //Course Title
-        EditText courseTitleView = (EditText)findViewById(R.id.registration_course_title);
-        String courseTitle = courseTitleView.getText().toString();
+        String courseTitle = mCourseTitle.getText().toString();
 
         //Credits
-        EditText minCreditsView = (EditText)findViewById(R.id.registration_credits_min);
         int minCredits, maxCredits ;
         try {
-            minCredits = Integer.valueOf(minCreditsView.getText().toString());
+            minCredits = Integer.valueOf(mMinCredits.getText().toString());
         } catch (NumberFormatException e){
             minCredits = 0;
         }
-        EditText maxCreditsView = (EditText)findViewById(R.id.registration_credits_max);
         try {
-            maxCredits = Integer.valueOf(maxCreditsView.getText().toString());
+            maxCredits = Integer.valueOf(mMaxCredits.getText().toString());
         } catch (NumberFormatException e){
             maxCredits = 0;
         }
@@ -156,38 +169,62 @@ public class RegistrationActivity extends DrawerActivity{
 
         //Days
         List<Day> days = new ArrayList<Day>();
-        CheckBox checkbox = (CheckBox)findViewById(R.id.registration_monday);
-        if(checkbox.isChecked()){
+        if(mMonday.isChecked()){
             days.add(Day.MONDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_tuesday);
-        if(checkbox.isChecked()){
+        if(mTuesday.isChecked()){
             days.add(Day.TUESDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_wednesday);
-        if(checkbox.isChecked()){
+        if(mWednesday.isChecked()){
             days.add(Day.WEDNESDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_thursday);
-        if(checkbox.isChecked()){
+        if(mThursday.isChecked()){
             days.add(Day.THURSDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_friday);
-        if(checkbox.isChecked()){
+        if(mFriday.isChecked()){
             days.add(Day.FRIDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_saturday);
-        if(checkbox.isChecked()){
+        if(mSaturday.isChecked()){
             days.add(Day.SATURDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_sunday);
-        if(checkbox.isChecked()){
+        if(mSunday.isChecked()){
             days.add(Day.SUNDAY);
         }
 
         //Obtain courses
         new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, faculty, courseNumber,
                 courseTitle, minCredits, maxCredits, startHour, startMinute, endHour, endMinute, days)).execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.reset, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_reset){
+            //Reset all of the views
+            mFacultySpinner.setSelection(0);
+            mStartTime.setCurrentHour(0);
+            mStartTime.setCurrentMinute(0);
+            mEndTime.setCurrentHour(0);
+            mEndTime.setCurrentMinute(0);
+            mCourseSubject.setText("");
+            mCourseNumber.setText("");
+            mCourseTitle.setText("");
+            mMinCredits.setText("");
+            mMaxCredits.setText("");
+            mMonday.setChecked(false);
+            mTuesday.setChecked(false);
+            mWednesday.setChecked(false);
+            mThursday.setChecked(false);
+            mFriday.setChecked(false);
+            mSaturday.setChecked(false);
+            mSunday.setChecked(false);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //Connects to Minerva in a new thread
