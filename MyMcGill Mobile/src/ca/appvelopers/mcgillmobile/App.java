@@ -17,6 +17,7 @@ import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Update;
@@ -109,7 +110,9 @@ public class App extends Application {
     }
 
     public static Transcript getTranscript(){
-        return transcript;
+        synchronized(Constants.TRANSCRIPT_LOCK){
+            return transcript;
+        }
     }
 
     public static List<ClassItem> getClasses(){
@@ -161,10 +164,12 @@ public class App extends Application {
 
     /* SETTERS */
     public static void setTranscript(Transcript transcript){
-        App.transcript = transcript;
+        synchronized (Constants.TRANSCRIPT_LOCK){
+            App.transcript = transcript;
 
-        //Save it to internal storage when this is set
-        Save.saveTranscript(context);
+            //Save it to internal storage when this is set
+            Save.saveTranscript(context);
+        }
     }
 
     public static void setClasses(List<ClassItem> classes){

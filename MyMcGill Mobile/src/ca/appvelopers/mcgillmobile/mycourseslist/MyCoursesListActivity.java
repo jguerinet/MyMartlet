@@ -27,6 +27,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
+import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
@@ -83,6 +84,14 @@ public class MyCoursesListActivity extends DrawerActivity {
         wishlist.setVisibility(View.GONE);
 
         executeClassDownloader();
+
+        //Download the Transcript (if ever the user has new semesters on his transcript
+        new TranscriptDownloader(this) {
+            @Override
+            protected void onPreExecute() {}
+            @Override
+            protected void onPostExecute(Boolean loadInfo) {}
+        }.execute();
     }
 
     @Override

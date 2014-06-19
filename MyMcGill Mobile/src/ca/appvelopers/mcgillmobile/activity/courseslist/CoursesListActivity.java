@@ -94,7 +94,7 @@ public class CoursesListActivity extends DrawerActivity {
                             Toast.LENGTH_SHORT).show();
                 } else if (registerCoursesList.size() > 0) {
                     //Execute registration of checked classes in a new thread
-                    new RegistrationThread(Connection.getRegistrationURL(mTerm, registerCoursesList, false)).execute();
+                    new RegistrationThread(registerCoursesList).execute();
                 }
             }
         });
@@ -224,10 +224,12 @@ public class CoursesListActivity extends DrawerActivity {
     //Connects to Minerva in a new thread to register for courses
     private class RegistrationThread extends AsyncTask<Void, Void, Boolean> {
         private String mRegistrationURL;
+        private List<ClassItem> mRegistrationCourses;
         private String mRegistrationError;
 
-        public RegistrationThread(String registrationURL){
-            this.mRegistrationURL = registrationURL;
+        public RegistrationThread(List<ClassItem> courses){
+            this.mRegistrationCourses = courses;
+            this.mRegistrationURL = Connection.getRegistrationURL(mTerm, mRegistrationCourses, false);
             this.mRegistrationError = null;
         }
 
@@ -274,12 +276,19 @@ public class CoursesListActivity extends DrawerActivity {
                 //Display whether the user was successfully registered
                 if(mRegistrationError == null){
                     Toast.makeText(CoursesListActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
+                    //Remove the courses from the wishlist if they were there
+                    mClasses.removeAll(mRegistrationCourses);
+                    //Set the new wishlist
+                    App.setClassWishlist(mClasses);
+                    //Reload the adapter
+                    loadInfo();
                 }
 
                 //Display a message if a registration error has occurred
                 else{
                     Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.registration_error,
                             mRegistrationError), Toast.LENGTH_LONG).show();
+                    //TODO Remove the classes that were successfully registered
                 }
             }
         }

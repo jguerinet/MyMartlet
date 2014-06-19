@@ -1,9 +1,6 @@
 package ca.appvelopers.mcgillmobile.activity.transcript;
 
-import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -14,10 +11,8 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.Transcript;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
-import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
 /**
  * Author: Ryan Singzon
@@ -47,7 +42,7 @@ public class TranscriptActivity extends DrawerActivity {
         loadInfo();
 
         //Start thread to retrieve transcript
-        new TranscriptGetter().execute();
+        executeTranscriptDownloader();
     }
 
     private void loadInfo(){
@@ -58,59 +53,6 @@ public class TranscriptActivity extends DrawerActivity {
         //Reload the adapter
         TranscriptAdapter adapter = new TranscriptAdapter(TranscriptActivity.this, mTranscript);
         mListView.setAdapter(adapter);
-    }
-
-    private class TranscriptGetter extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected void onPreExecute(){
-            //Show the user we are downloading new info
-            setProgressBarIndeterminateVisibility(true);
-        }
-
-        //Retrieve content from transcript page
-        @Override
-        protected Boolean doInBackground(Void... params){
-            final Activity activity = TranscriptActivity.this;
-
-            String transcriptString = Connection.getInstance().getUrl(activity, Connection.TRANSCRIPT);
-
-            if(transcriptString == null){
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-							DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-							        activity.getResources().getString(R.string.error_other));
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-                    }
-                });
-                return false;
-            }
-            //Empty String: no need for an alert dialog but no need to reload
-            else if(TextUtils.isEmpty(transcriptString)){
-                return false;
-            }
-
-            //Parse the transcript
-            Parser.parseTranscript(transcriptString);
-
-            //Get the transcript
-            mTranscript = App.getTranscript();
-
-            return true;
-        }
-
-        //Update or create transcript object and display data
-        @Override
-        protected void onPostExecute(Boolean loadInfo){
-            if(loadInfo){
-                //Reload the info in the views
-                loadInfo();
-            }
-            setProgressBarIndeterminateVisibility(false);
-        }
     }
 
     @Override
@@ -124,9 +66,30 @@ public class TranscriptActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 //Start thread to retrieve inbox
-                new TranscriptGetter().execute();
+                executeTranscriptDownloader();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void executeTranscriptDownloader(){
+        new TranscriptDownloader(this) {
+            @Override
+            protected void onPreExecute() {
+                //Show the user we are downloading new info
+                setProgressBarIndeterminateVisibility(true);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean loadInfo) {
+                mTranscript = App.getTranscript();
+
+                if(loadInfo){
+                    //Reload the info in the views
+                    loadInfo();
+                }
+                setProgressBarIndeterminateVisibility(false);
+            }
+        }.execute();
     }
 }

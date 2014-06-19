@@ -37,6 +37,7 @@ import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
+import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
 /**
  * @author Nhat-Quang Dao
@@ -82,6 +83,14 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             //Save the fact that the walkthrough has been seen at least once
             Save.saveFirstOpen(this);
         }
+
+        //Download the Transcript (if ever the user has new semesters on his transcript
+        new TranscriptDownloader(this) {
+            @Override
+            protected void onPreExecute() {}
+            @Override
+            protected void onPostExecute(Boolean loadInfo) {}
+        }.execute();
     }
 
     //Method that returns a list of courses for a given day
