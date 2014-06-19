@@ -233,15 +233,17 @@ public class MyCoursesListActivity extends DrawerActivity {
             if(success){
                 //Display whether the user was successfully registered
                 if(mRegistrationError == null){
-                    Toast.makeText(MyCoursesListActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MyCoursesListActivity.this, R.string.unregistration_success, Toast.LENGTH_LONG).show();
                 }
 
                 //Display a message if a registration error has occurred
                 else{
-                    Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.registration_error,
+                    Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.unregistration_error,
                             mRegistrationError), Toast.LENGTH_LONG).show();
                 }
             }
+
+            executeClassDownloader();
         }
     }
 }

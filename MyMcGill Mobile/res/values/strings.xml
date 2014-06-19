@@ -195,6 +195,8 @@
     <string name="registration_error_credits">The maximum hours must be bigger than the minimum hours</string>
     <string name="registration_show_options">Show More Options</string>
     <string name="registration_hide_options">Show Less Options</string>
+    <string name="unregistration_success">Unregistration Successful!</string>
+    <string name="unregistration_error">Unregistration Error: %s</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>

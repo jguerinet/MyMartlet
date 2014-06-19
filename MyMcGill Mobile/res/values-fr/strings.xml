@@ -170,6 +170,8 @@
     <string name="registration_error_credits">Le nombre d\'heures maximum doit être plus grand que le nombre minimum d\'heures. </string>
     <string name="registration_show_options">Montrer Plus d\'Options</string>
     <string name="registration_hide_options">Montrer Moins d\'Options</string>
+    <string name="unregistration_success">Erreur de désinscription: %s</string>
+    <string name="unregistration_error">Désinscription Réussie!</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Bienvenue a McGill Mobile, l\'application non officielle pour les étudiants de l\'Université McGill!</string>
