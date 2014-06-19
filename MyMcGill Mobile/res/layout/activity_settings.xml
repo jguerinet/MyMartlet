@@ -12,8 +12,88 @@ android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:text="@string/settings_language"
+                    android:textSize="@dimen/text_medium"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical"
+                    android:id="@+id/settings_language"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/settings_homepage"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical"
+                    android:id="@+id/settings_homepage"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/settings_statistics"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/settings_statistics"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/line"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -112,86 +192,6 @@ android:layout_height="match_parent">
                     android:textColor="@drawable/color_black_whitepressed"
                     android:textSize="@dimen/text_medium"
                     android:duplicateParentState="true"/>
-
-            </LinearLayout>
-
-            <include layout="@layout/line"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_micro"
-                android:paddingTop="@dimen/padding_small"
-                android:paddingBottom="@dimen/padding_small">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:text="@string/settings_language"
-                    android:textSize="@dimen/text_medium"/>
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
-                    android:id="@+id/settings_language"/>
-
-            </LinearLayout>
-
-            <include layout="@layout/line"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_micro"
-                android:paddingTop="@dimen/padding_small"
-                android:paddingBottom="@dimen/padding_small">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/settings_homepage"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_medium"/>
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
-                    android:id="@+id/settings_homepage"/>
-
-            </LinearLayout>
-
-            <include layout="@layout/line"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_micro"
-                android:paddingTop="@dimen/padding_small"
-                android:paddingBottom="@dimen/padding_small">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/settings_statistics"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_medium"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/settings_statistics"/>
 
             </LinearLayout>
 
