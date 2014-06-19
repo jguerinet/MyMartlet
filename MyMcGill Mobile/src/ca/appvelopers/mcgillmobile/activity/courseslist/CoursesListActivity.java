@@ -159,6 +159,9 @@ public class CoursesListActivity extends DrawerActivity {
                 Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Update the wishlist
+        new WishlistThread().execute();
     }
 
     @Override
@@ -211,7 +214,7 @@ public class CoursesListActivity extends DrawerActivity {
             return true;
         }
         else if(item.getItemId() == R.menu.refresh){
-            //TODO Refresh the wishlist here
+            new WishlistThread().execute();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -298,6 +301,39 @@ public class CoursesListActivity extends DrawerActivity {
                             mRegistrationError), Toast.LENGTH_LONG).show();
                     //TODO Remove the classes that were successfully registered
                 }
+            }
+        }
+    }
+
+    //Update the wishlist
+    private class WishlistThread extends AsyncTask<Void, Void, Boolean> {
+
+        public WishlistThread(){}
+
+        @Override
+        protected void onPreExecute(){
+            //Show the user we are downloading new info
+            setProgressBarIndeterminateVisibility(true);
+        }
+
+        //Retrieve page that contains registration status from Minerva
+        @Override
+        protected Boolean doInBackground(Void... params){
+            //TODO Ryan, wishlsit updating code here
+
+            return false;
+        }
+
+        //Update or create transcript object and display data
+        @Override
+        protected void onPostExecute(Boolean success){
+            setProgressBarIndeterminateVisibility(false);
+
+            if(success){
+                //Set the new wishlist
+                App.setClassWishlist(mClasses);
+                //Reload the adapter
+                loadInfo();
             }
         }
     }
