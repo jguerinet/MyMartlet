@@ -189,6 +189,11 @@ public class CoursesListActivity extends DrawerActivity {
     // JDAlfaro
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+        //Inflate the refresh button only if we are in the wishlist
+        if(wishlist){
+            getMenuInflater().inflate(R.menu.refresh, menu);
+        }
+
         //Change Semester Menu Item - Not for Search Results
         if(wishlist){
             menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE, R.string.schedule_change_semester);
@@ -204,6 +209,9 @@ public class CoursesListActivity extends DrawerActivity {
             intent.putExtra(Constants.TERM, mTerm);
             startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             return true;
+        }
+        else if(item.getItemId() == R.menu.refresh){
+            //TODO Refresh the wishlist here
         }
         return super.onOptionsItemSelected(item);
     }
