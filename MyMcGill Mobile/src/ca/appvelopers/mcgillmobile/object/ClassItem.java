@@ -21,7 +21,7 @@ public class ClassItem implements Serializable{
     private Term mTerm;
     private String mCourseCode;
     private String mCourseSubject;
-    private int mCourseNumber;
+    private String mCourseNumber;
     private String mCourseTitle;
     private int mCRN;
     private String mSection;
@@ -39,7 +39,7 @@ public class ClassItem implements Serializable{
     private int mCredits;
     private String mDates;
 
-    public ClassItem(Term term, String courseCode, String courseSubject, int courseNumber, String courseTitle, int crn,
+    public ClassItem(Term term, String courseCode, String courseSubject, String courseNumber, String courseTitle, int crn,
                      String section, int startHour, int startMinute, int endHour, int endMinute,
                      List<Day> days, String sectionType, String location, String instructor, int capacity,
                      int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
@@ -106,7 +106,7 @@ public class ClassItem implements Serializable{
      * Get the course number
      * @return The course number
      */
-    public int getCourseNumber(){
+    public String getCourseNumber(){
         return mCourseNumber;
     }
 

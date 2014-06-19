@@ -131,7 +131,7 @@ public class RegistrationActivity extends DrawerActivity{
         }
 
         //Course Number
-        int courseNumber = Integer.parseInt(mCourseNumber.getText().toString());
+        String courseNumber = mCourseNumber.getText().toString();
 
         //Course Title
         String courseTitle = mCourseTitle.getText().toString();

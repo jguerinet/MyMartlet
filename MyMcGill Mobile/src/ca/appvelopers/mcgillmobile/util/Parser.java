@@ -438,7 +438,7 @@ public class Parser {
                     if (!classExists) {
                         //Find the concerned course
                         //TODO: Properly parse course subject and number
-                        classItems.add(new ClassItem(term, courseCode, "BLAMERYAN", -1, courseTitle, crn, section, startHour,
+                        classItems.add(new ClassItem(term, courseCode, "BLAMERYAN", "1", courseTitle, crn, section, startHour,
                                 startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                 -1, -1, -1, -1, -1, credits, null));
                     }
@@ -476,7 +476,7 @@ public class Parser {
             int credits = 99;
             String courseCode = "ERROR";
             String courseSubject = "ERROR";
-            int courseNumber = 999;
+            String courseNumber = "999";
             String courseTitle = "ERROR";
             String sectionType = "";
             List<Day> days = new ArrayList<Day>();
@@ -524,7 +524,7 @@ public class Parser {
                             break;
                         case 3:
                             courseCode += " " + row.text();
-                            courseNumber = Integer.parseInt(row.text());
+                            courseNumber = row.text();
                             break;
                         // Section type
                         case 5:

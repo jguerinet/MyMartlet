@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
+import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -320,6 +322,24 @@ public class CoursesListActivity extends DrawerActivity {
         @Override
         protected Boolean doInBackground(Void... params){
             //TODO Ryan, wishlsit updating code here
+
+            //Get list of courses in wishlist
+
+            //For each course, obtain its Minerva registration page
+            for(ClassItem wishlistClass : mClasses){
+
+                //Get the course registration URL
+                String registrationUrl = Connection.getCourseURL(wishlistClass.getTerm(),
+                        wishlistClass.getCourseSubject(), null, wishlistClass.getCourseNumber(),
+                        "", 0, 0, 0, 0, 0, 0, null);
+
+                Log.e("POOP", registrationUrl);
+                //Parse the course matching the CRN to avoid parsing extra course sections, etc
+
+
+                //Update the course object with an updated class size
+            }
+
 
             return false;
         }
