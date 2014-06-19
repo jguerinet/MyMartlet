@@ -466,7 +466,7 @@ public class Connection {
      * @param courseNumber The course number
      * @return The proper search URL
      */
-    public static String getCourseURL(Term term, String subject, Faculty faculty, String courseNumber,
+    public static String getCourseURL(Term term, String subject, Faculty faculty, int courseNumber,
                                       String title, int minCredit, int maxCredit, int startHour,
                                       int startMinute, int endHour, int endMinute, List<Day> days){
         return COURSE_SEARCH
@@ -557,7 +557,6 @@ public class Connection {
         }
 
         registrationURL += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
-        Log.e("POOP", registrationURL);
         return registrationURL;
     }
 }

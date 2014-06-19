@@ -20,6 +20,8 @@ public class ClassItem implements Serializable{
 
     private Term mTerm;
     private String mCourseCode;
+    private String mCourseSubject;
+    private int mCourseNumber;
     private String mCourseTitle;
     private int mCRN;
     private String mSection;
@@ -37,13 +39,15 @@ public class ClassItem implements Serializable{
     private int mCredits;
     private String mDates;
 
-    public ClassItem(Term term, String courseCode, String courseTitle, int crn,
+    public ClassItem(Term term, String courseCode, String courseSubject, int courseNumber, String courseTitle, int crn,
                      String section, int startHour, int startMinute, int endHour, int endMinute,
                      List<Day> days, String sectionType, String location, String instructor, int capacity,
                      int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
                      int waitlistRemaining, int credits, String dates){
         this.mTerm = term;
         this.mCourseCode = courseCode;
+        this.mCourseSubject = courseSubject;
+        this.mCourseNumber = courseNumber;
         this.mCourseTitle = courseTitle;
         this.mCRN = crn;
         this.mSection = section;
@@ -88,6 +92,22 @@ public class ClassItem implements Serializable{
      */
     public String getCourseCode(){
         return mCourseCode;
+    }
+
+    /**
+     * Get the course subject
+     * @return The course subject
+     */
+    public String getCourseSubject(){
+        return mCourseSubject;
+    }
+
+    /**
+     * Get the course number
+     * @return The course number
+     */
+    public int getCourseNumber(){
+        return mCourseNumber;
     }
 
     /**

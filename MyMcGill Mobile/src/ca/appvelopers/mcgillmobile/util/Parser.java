@@ -437,7 +437,8 @@ public class Parser {
                     //It not, add a new class item
                     if (!classExists) {
                         //Find the concerned course
-                        classItems.add(new ClassItem(term, courseCode, courseTitle, crn, section, startHour,
+                        //TODO: Properly parse course subject and number
+                        classItems.add(new ClassItem(term, courseCode, "BLAMERYAN", -1, courseTitle, crn, section, startHour,
                                 startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                 -1, -1, -1, -1, -1, credits, null));
                     }
@@ -474,6 +475,8 @@ public class Parser {
             // Create a new course object
             int credits = 99;
             String courseCode = "ERROR";
+            String courseSubject = "ERROR";
+            int courseNumber = 999;
             String courseTitle = "ERROR";
             String sectionType = "";
             List<Day> days = new ArrayList<Day>();
@@ -517,9 +520,11 @@ public class Parser {
                         // Course code
                         case 2:
                             courseCode = row.text();
+                            courseSubject = row.text();
                             break;
                         case 3:
                             courseCode += " " + row.text();
+                            courseNumber = Integer.parseInt(row.text());
                             break;
                         // Section type
                         case 5:
@@ -635,7 +640,7 @@ public class Parser {
             rowsSoFar = 0;
             if( !courseCode.equals("ERROR")){
                 //Create a new course object and add it to list
-                classItems.add(new ClassItem(term, courseCode, courseTitle, crn, "", startHour,
+                classItems.add(new ClassItem(term, courseCode, courseSubject, courseNumber, courseTitle, crn, "", startHour,
                         startMinute, endHour, endMinute, days, sectionType, location, instructor,
                         capacity, seatsAvailable, seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining,
                         credits, dates));
