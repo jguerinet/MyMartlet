@@ -217,20 +217,19 @@ public class ClassItem implements Serializable{
     /**
      * Set the start time of the course (rounded off to the nearest half hour)
      */
-    public void getStartTime(LocalTime time){
+    public void setStartTime(LocalTime time){
         this.mStartTime = time;
     }
 
     /**
      * Set the end time of the course (rounded off the the nearest half hour)
      */
-    public void getEndTime(LocalTime time){
+    public void setEndTime(LocalTime time){
         this.mEndTime = time;
     }
 
     /**
-     * Get the days this course is on
-     * @return The course days
+     * Set the days this course is on
      */
     public void setDays(List<Day> days){
         this.mDays = days;
@@ -239,21 +238,21 @@ public class ClassItem implements Serializable{
     /**
      * Set the course's location
      */
-    public void getLocation(String location){
+    public void setLocation(String location){
         this.mLocation = location;
     }
 
     /**
      * Set the instructor for this course
      */
-    public void getInstructor(String instructor){
+    public void setInstructor(String instructor){
         this.mInstructor = instructor;
     }
 
     /**
      * Set the dates this course is on
      */
-    public void getDates(String dates){
+    public void setDates(String dates){
         this.mDates = dates;
     }
 
