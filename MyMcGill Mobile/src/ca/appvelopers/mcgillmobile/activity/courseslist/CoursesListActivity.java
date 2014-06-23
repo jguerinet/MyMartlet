@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -321,27 +322,85 @@ public class CoursesListActivity extends DrawerActivity {
         //Retrieve page that contains registration status from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            //TODO Ryan, wishlsit updating code here
-
             //Get list of courses in wishlist
 
-            //For each course, obtain its Minerva registration page
+            //Sort ClassItems into Courses
+            List<Course> coursesList = new ArrayList<Course>();
             for(ClassItem wishlistClass : mClasses){
 
+                boolean courseExists = false;
+
+                //Add course if list is empty
+                if(coursesList.isEmpty()){
+                    coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getCourseTitle(),
+                            wishlistClass.getCourseCode(), 99, "N/A", "N/A"));
+                }
+                else{
+                    //Check if course exists in list
+                    for(Course addedCourse : coursesList){
+                        if(addedCourse.getCourseCode().equals(wishlistClass.getCourseCode())){
+                            courseExists = true;
+                        }
+                    }
+                    //Add course if it has not already been added
+                    if(!courseExists){
+                        coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getCourseTitle(),
+                                wishlistClass.getCourseCode(), 99, "N/A", "N/A"));
+                    }
+                }
+            }
+
+            //For each course, obtain its Minerva registration page
+            for(Course course : coursesList){
+
                 //Get the course registration URL
-                String registrationUrl = Connection.getCourseURL(wishlistClass.getTerm(),
-                        wishlistClass.getCourseSubject(), null, wishlistClass.getCourseNumber(),
+                String courseCode[] = course.getCourseCode().split(" ");
+                String courseSubject = "";
+                String courseNumber = "";
+
+                //Check that the course code has been split successfully
+                if(courseCode.length > 1){
+                    courseSubject = courseCode[0];
+                    courseNumber = courseCode[1];
+                } else{
+                    //TODO: Return indication of failure
+                    return false;
+                }
+
+                String registrationUrl = Connection.getCourseURL(course.getTerm(),
+                        courseSubject, null, courseNumber,
                         "", 0, 0, 0, 0, 0, 0, null);
 
                 Log.e("POOP", registrationUrl);
-                //Parse the course matching the CRN to avoid parsing extra course sections, etc
 
+                String classesString = Connection.getInstance().getUrl(CoursesListActivity.this, registrationUrl);
 
+                //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
+                //This parses all ClassItems for a given course
+                List<ClassItem> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
+                Log.e("ClassList Size: ", ""+updatedClassList.size());
                 //Update the course object with an updated class size
+                for(ClassItem updatedClass : updatedClassList){
+
+                    Log.e("Results", "CRN: " +updatedClass.getCRN() + " Seats Remaining: "+updatedClass.getSeatsRemaining());
+                    for(ClassItem wishlistClass : mClasses){
+
+                        if(wishlistClass.getCRN() == updatedClass.getCRN()){
+                            wishlistClass.setDays(updatedClass.getDays());
+                            wishlistClass.setStartTime(updatedClass.getStartTime());
+                            wishlistClass.setEndTime(updatedClass.getEndTime());
+                            wishlistClass.setDates(updatedClass.getDates());
+                            wishlistClass.setInstructor(updatedClass.getInstructor());
+                            wishlistClass.setLocation(updatedClass.getLocation());
+                            wishlistClass.setSeatsRemaining(updatedClass.getSeatsRemaining());
+                            wishlistClass.setWaitlistRemaining(updatedClass.getWaitlistRemaining());
+                            Log.e("Match!", ""+wishlistClass.getCRN() + " Seats remaining: "+wishlistClass.getSeatsRemaining());
+                        }
+                    }
+                }
             }
 
-
-            return false;
+            return true;
         }
 
         //Update or create transcript object and display data
