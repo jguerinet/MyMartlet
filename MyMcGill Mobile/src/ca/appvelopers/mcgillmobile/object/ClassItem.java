@@ -214,6 +214,62 @@ public class ClassItem implements Serializable{
         return mWaitlistRemaining;
     }
 
+    /**
+     * Set the start time of the course (rounded off to the nearest half hour)
+     */
+    public void getStartTime(LocalTime time){
+        this.mStartTime = time;
+    }
+
+    /**
+     * Set the end time of the course (rounded off the the nearest half hour)
+     */
+    public void getEndTime(LocalTime time){
+        this.mEndTime = time;
+    }
+
+    /**
+     * Get the days this course is on
+     * @return The course days
+     */
+    public void setDays(List<Day> days){
+        this.mDays = days;
+    }
+
+    /**
+     * Set the course's location
+     */
+    public void getLocation(String location){
+        this.mLocation = location;
+    }
+
+    /**
+     * Set the instructor for this course
+     */
+    public void getInstructor(String instructor){
+        this.mInstructor = instructor;
+    }
+
+    /**
+     * Set the dates this course is on
+     */
+    public void getDates(String dates){
+        this.mDates = dates;
+    }
+
+    /**
+     * Set the number of spots remaining
+     */
+    public void setSeatsRemaining(int seatsRemaining){
+        this.mSeatsRemaining = seatsRemaining;
+    }
+
+    /**
+     * Set the number of waitlist spots remaining
+     */
+    public void setWaitlistRemaining(int waitlistRemaining){
+        this.mWaitlistRemaining = waitlistRemaining;
+    }
 
     /* HELPER METHODS */
     /**
