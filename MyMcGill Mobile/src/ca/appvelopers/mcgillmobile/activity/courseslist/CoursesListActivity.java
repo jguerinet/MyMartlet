@@ -216,7 +216,7 @@ public class CoursesListActivity extends DrawerActivity {
             startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             return true;
         }
-        else if(item.getItemId() == R.menu.refresh){
+        else if(item.getItemId() == R.id.action_refresh){
             new WishlistThread().execute();
         }
         return super.onOptionsItemSelected(item);
