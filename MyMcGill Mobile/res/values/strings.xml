@@ -10,12 +10,9 @@
     <string name="title_transcript">My Transcript</string>
     <string name="title_mycourses">MyCourses</string>
     <string name="title_ebill">My eBill</string>
-    <string name="title_inbox">My Email</string>
     <string name="title_settings">Settings</string>
     <string name="title_logout">Logout</string>
-    <string name="title_reply">Reply Email</string>
     <string name="title_map">Campus Map</string>
-    <string name="title_attach">Attachment</string>
     <string name="title_change_semester">Change Semester</string>
     <string name="title_registration">Search for Courses</string>
     <string name="title_wishlist">My Course Wishlist</string>
@@ -136,13 +133,6 @@
     <string name="ebill_due_date">Due Date:</string>
     <string name="ebill_amount">Amount Due: </string>
 
-    <!-- Email Screen -->
-    <string name="email_error">We are unable to load your email inbox. Please try again later. </string>
-    <string name="email_newMessages">New Messages: %d</string>
-    <string name="email_noNew">You have no new emails. </string>
-    <string name="email_forward">Forward Email</string>
-    <string name="email_reply">Reply to Email</string>
-
     <!-- Settings Screen -->
     <string name="settings_language">Language</string>
     <string name="settings_homepage">Homepage</string>
@@ -157,17 +147,6 @@
     <string name="homepage_map">Campus Map</string>
     <string name="homepage_desktop">Desktop Site</string>
     <string name="settings_version">Version %s</string>
-
-    <!-- Send Email Screen -->
-    <string name="send_message_success">Your message has been sent. </string>
-    <string name="send_message_error">There was an error sending your message. Please try again later. </string>
-    <string name="send_to">To:</string>
-    <string name="send_carbon_copy">CC:</string>
-    <string name="send_subject">Subject:</string>
-    <string name="send_add_attachment">Add Attachment</string>
-    <string name="send_email">Send Email</string>
-    <string name="send_no_attachments">No files attached</string>
-    <string name="send_attachments">Files Attached: </string>
 
     <!-- Change Semester Page -->
     <string name="change_semester_season">Season: </string>
@@ -231,7 +210,7 @@
     <string name="about_gabriel_role">Head Tester</string>
     <string name="about_gabriel_description">Gabriel is known as a friend in the EUS scene. He has served many semesters with the PMO and OAP. Little known fact, for one year he committed to the role of brother to ECSESS President.</string>
     <string name="about_gabriel_linkedin">http://ca.linkedin.com/pub/gabriel-petrella/47/17/326</string>
-    <string name="about_gabriel_email">GABE, PUT YOUR EMAIL</string>
+    <string name="about_gabriel_email">gabriel.petrella\@mail.mcgill.ca</string>
     <string name="about_hernan">Hernan Gatta</string>
     <string name="about_hernan_role">iOS Developer</string>
     <string name="about_hernan_description">A blurb? I\'m AWESOME! (More so than Josh.)</string>

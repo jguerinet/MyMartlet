@@ -10,12 +10,9 @@
     <string name="title_transcript">Mon Bulletin</string>
     <string name="title_mycourses">MyCourses</string>
     <string name="title_ebill">Mon eBill</string>
-    <string name="title_inbox">Mon Email</string>
     <string name="title_settings">Réglages</string>
     <string name="title_logout">Déconnexion</string>
-    <string name="title_reply">Répondre Email</string>
     <string name="title_map">Carte du Campus</string>
-    <string name="title_attach">Pièce Jointe</string>
     <string name="title_change_semester">Changer de Semestre</string>
     <string name="title_registration">Chercher un Cours</string>
     <string name="title_wishlist">Ma Liste d\'Envies de Cours</string>
@@ -112,11 +109,6 @@
     <string name="ebill_statement_date">Date de Déclaration:</string>
     <string name="ebill_due_date">Date d\'Echéance:</string>
     <string name="ebill_amount">Montant Dû:</string>
-    <string name="email_error">Nous n\'arrivons pas à charger votre boîte de récéption. Veuillez réessayer plus tard.</string>
-    <string name="email_newMessages">Nouveaux Messages: %d</string>
-    <string name="email_noNew">Vous n\'avez pas de nouveaux emails.</string>
-    <string name="email_forward">Faire Suivre l\'Email</string>
-    <string name="email_reply">Répondre à un Email</string>
 
     <!-- Settings Screen -->
     <string name="settings_language">Langue</string>
@@ -132,17 +124,6 @@
     <string name="homepage_map">Carte du Campus</string>
     <string name="homepage_desktop">Site PC</string>
     <string name="settings_version">Version %s</string>
-
-    <!-- Send Email Screen -->
-    <string name="send_message_success">Votre message a été envoyé avec succès.</string>
-    <string name="send_message_error">Une erreur est survenue en envoyant votre message. Veuillez réessayer plus tard.</string>
-    <string name="send_to">A:</string>
-    <string name="send_carbon_copy">CC:</string>
-    <string name="send_subject">Sujet:</string>
-    <string name="send_add_attachment">Ajouter une Pièce Jointe</string>
-    <string name="send_email">Envoyer Email</string>
-    <string name="send_no_attachments">Pas de pièces jointes</string>
-    <string name="send_attachments">Pièces Jointes:</string>
 
     <!-- Change Semester Page -->
     <string name="change_semester_season">Saison: </string>
