@@ -329,24 +329,16 @@ public class CoursesListActivity extends DrawerActivity {
             for(ClassItem wishlistClass : mClasses){
 
                 boolean courseExists = false;
-
-                //Add course if list is empty
-                if(coursesList.isEmpty()){
+                //Check if course exists in list
+                for(Course addedCourse : coursesList){
+                    if(addedCourse.getCourseCode().equals(wishlistClass.getCourseCode())){
+                        courseExists = true;
+                    }
+                }
+                //Add course if it has not already been added
+                if(!courseExists){
                     coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getCourseTitle(),
                             wishlistClass.getCourseCode(), 99, "N/A", "N/A"));
-                }
-                else{
-                    //Check if course exists in list
-                    for(Course addedCourse : coursesList){
-                        if(addedCourse.getCourseCode().equals(wishlistClass.getCourseCode())){
-                            courseExists = true;
-                        }
-                    }
-                    //Add course if it has not already been added
-                    if(!courseExists){
-                        coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getCourseTitle(),
-                                wishlistClass.getCourseCode(), 99, "N/A", "N/A"));
-                    }
                 }
             }
 
