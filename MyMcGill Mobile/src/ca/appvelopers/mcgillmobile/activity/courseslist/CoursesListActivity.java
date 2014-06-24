@@ -1,11 +1,9 @@
 package ca.appvelopers.mcgillmobile.activity.courseslist;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -164,8 +162,10 @@ public class CoursesListActivity extends DrawerActivity {
             }
         });
 
-        //Update the wishlist
-        new WishlistThread().execute();
+        if(wishlist){
+            //Update the wishlist
+            new WishlistThread().execute();
+        }
     }
 
     @Override
@@ -264,10 +264,9 @@ public class CoursesListActivity extends DrawerActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Activity activity = CoursesListActivity.this;
                         try {
-                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                    activity.getResources().getString(R.string.error_other));
+                            DialogHelper.showNeutralAlertDialog(CoursesListActivity.this, getString(R.string.error),
+                                    getString(R.string.error_other));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -289,22 +288,57 @@ public class CoursesListActivity extends DrawerActivity {
 
             if(success){
                 //Display whether the user was successfully registered
-                if(mRegistrationErrors == null || mRegistrationErrors.isEmpty()){
+                if(mRegistrationErrors.isEmpty()){
                     Toast.makeText(CoursesListActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
-                    //Remove the courses from the wishlist if they were there
-                    mClasses.removeAll(mRegistrationCourses);
-                    //Set the new wishlist
-                    App.setClassWishlist(mClasses);
-                    //Reload the adapter
-                    loadInfo();
                 }
 
                 //Display a message if a registration error has occurred
                 else{
-                    Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.registration_error,
-                            mRegistrationErrors), Toast.LENGTH_LONG).show();
-                    //TODO Remove the classes that were successfully registered
+                    List<ClassItem> unregisteredCourses = new ArrayList<ClassItem>();
+                    String errorMessage = "";
+
+                    //Go through the list of errors
+                    for(String crn : mRegistrationErrors.keySet()){
+                        //Find the right class
+                        for(ClassItem classItem : mRegistrationCourses){
+                            if(classItem.getCRN() == Integer.valueOf(crn)){
+                                //Add it to the list of registered courses
+                                unregisteredCourses.add(classItem);
+
+                                //Add this class to the error message
+                                errorMessage += classItem.getCourseCode() +  " ("
+                                        + classItem.getSectionType() + ") - " + mRegistrationErrors.get(crn) + "\n";
+
+                                break;
+                            }
+                        }
+                    }
+
+                    //Remove all of the unregistered courses from the list of registered courses
+                    mRegistrationCourses.removeAll(unregisteredCourses);
+
+                    //Show success messages for the correctly registered courses
+                    for(ClassItem classItem : mRegistrationCourses){
+                        errorMessage += classItem.getCourseCode() + " (" +
+                                classItem.getSectionType() + ") - " + getString(R.string.registration_success) + "\n";
+                    }
+
+                    //Show an alert dialog with the errors
+                    DialogHelper.showNeutralAlertDialog(CoursesListActivity.this, getString(R.string.registration_error),
+                            errorMessage);
                 }
+
+                //Get the list of wishlist classes
+                List<ClassItem> wishlistClasses = wishlist ? mClasses : App.getClassWishlist();
+
+                //Remove the courses from the wishlist if they were there
+                wishlistClasses.removeAll(mRegistrationCourses);
+
+                //Set the new wishlist
+                App.setClassWishlist(wishlistClasses);
+
+                //Reload the adapter
+                loadInfo();
             }
         }
     }
