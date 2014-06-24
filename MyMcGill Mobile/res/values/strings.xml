@@ -179,7 +179,7 @@
     <string name="registration_subject">Subject (ex: MATH):</string>
     <string name="registration_course_number">Course Number:</string>
     <string name="registration_invalid_subject">Invalid subject: Please a enter four character subject.</string>
-    <string name="registration_error">Registration Error: %s</string>
+    <string name="registration_error">Registration Error</string>
     <string name="registration_success">Registration Successful!</string>
     <string name="registration_faculty">Faculty:</string>
     <string name="registration_title">Title:</string>

@@ -154,7 +154,7 @@
     <string name="registration_subject">Sujet (ex: MATH):</string>
     <string name="registration_course_number">Numéro de Cours:</string>
     <string name="registration_invalid_subject">Sujet Invalide: Veullez entrer un sujet de 4 caractères</string>
-    <string name="registration_error">Erreur d\'Inscription: %s</string>
+    <string name="registration_error">Erreur d\'Inscription</string>
     <string name="registration_success">Inscription Réussie!</string>
     <string name="registration_faculty">Faculté:</string>
     <string name="registration_title">Titre:</string>
