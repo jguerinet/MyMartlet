@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -184,7 +185,7 @@ public class MyCoursesListActivity extends DrawerActivity {
     //Connects to Minerva in a new thread to register for courses
     private class UnregistrationThread extends AsyncTask<Void, Void, Boolean> {
         private String mRegistrationURL;
-        private String mRegistrationError;
+        private Map<String, String> mRegistrationError;
 
         public UnregistrationThread(String registrationURL){
             this.mRegistrationURL = registrationURL;

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -239,12 +240,12 @@ public class CoursesListActivity extends DrawerActivity {
     private class RegistrationThread extends AsyncTask<Void, Void, Boolean> {
         private String mRegistrationURL;
         private List<ClassItem> mRegistrationCourses;
-        private String mRegistrationError;
+        private Map<String, String> mRegistrationErrors = null;
 
         public RegistrationThread(List<ClassItem> courses){
             this.mRegistrationCourses = courses;
             this.mRegistrationURL = Connection.getRegistrationURL(mTerm, mRegistrationCourses, false);
-            this.mRegistrationError = null;
+            this.mRegistrationErrors = null;
         }
 
         @Override
@@ -276,7 +277,7 @@ public class CoursesListActivity extends DrawerActivity {
             }
             //Otherwise, check for errors
             else{
-                mRegistrationError = Parser.parseRegistrationErrors(resultString);
+                mRegistrationErrors = Parser.parseRegistrationErrors(resultString);
                 return true;
             }
         }
@@ -288,7 +289,7 @@ public class CoursesListActivity extends DrawerActivity {
 
             if(success){
                 //Display whether the user was successfully registered
-                if(mRegistrationError == null){
+                if(mRegistrationErrors == null || mRegistrationErrors.isEmpty()){
                     Toast.makeText(CoursesListActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
                     //Remove the courses from the wishlist if they were there
                     mClasses.removeAll(mRegistrationCourses);
@@ -301,7 +302,7 @@ public class CoursesListActivity extends DrawerActivity {
                 //Display a message if a registration error has occurred
                 else{
                     Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.registration_error,
-                            mRegistrationError), Toast.LENGTH_LONG).show();
+                            mRegistrationErrors), Toast.LENGTH_LONG).show();
                     //TODO Remove the classes that were successfully registered
                 }
             }
@@ -363,18 +364,15 @@ public class CoursesListActivity extends DrawerActivity {
                         courseSubject, null, courseNumber,
                         "", 0, 0, 0, 0, 0, 0, null);
 
-                Log.e("POOP", registrationUrl);
-
                 String classesString = Connection.getInstance().getUrl(CoursesListActivity.this, registrationUrl);
 
                 //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
                 //This parses all ClassItems for a given course
                 List<ClassItem> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
-                Log.e("ClassList Size: ", ""+updatedClassList.size());
+
                 //Update the course object with an updated class size
                 for(ClassItem updatedClass : updatedClassList){
 
-                    Log.e("Results", "CRN: " +updatedClass.getCRN() + " Seats Remaining: "+updatedClass.getSeatsRemaining());
                     for(ClassItem wishlistClass : mClasses){
 
                         if(wishlistClass.getCRN() == updatedClass.getCRN()){
@@ -386,7 +384,6 @@ public class CoursesListActivity extends DrawerActivity {
                             wishlistClass.setLocation(updatedClass.getLocation());
                             wishlistClass.setSeatsRemaining(updatedClass.getSeatsRemaining());
                             wishlistClass.setWaitlistRemaining(updatedClass.getWaitlistRemaining());
-                            Log.e("Match!", ""+wishlistClass.getCRN() + " Seats remaining: "+wishlistClass.getSeatsRemaining());
                         }
                     }
                 }

@@ -1,12 +1,16 @@
 package ca.appvelopers.mcgillmobile.util;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
@@ -652,10 +656,11 @@ public class Parser {
     /**
      * Parses the Minerva Quick Add/Drop page after registering to check if any errors have occurred
      * @param resultHTML The HTML string
+     * @return CRNs with registration errors and the associated error
      */
 
-    public static String parseRegistrationErrors(String resultHTML){
-        String registrationError = null;
+    public static Map<String, String> parseRegistrationErrors(String resultHTML){
+        Map<String, String> registrationErrors = new HashMap<String, String>();
 
         Document document = Jsoup.parse(resultHTML, "UTF-8");
         Elements dataRows = document.getElementsByClass("plaintable");
@@ -667,14 +672,19 @@ public class Parser {
 
                 //If so, determine what error is present
                 Elements links = document.select("a[href]");
+
+                //Insert list of CRNs and errors into a map
                 for(Element link : links){
+
                     if(link.toString().contains(Connection.REGISTRATION_ERROR)){
-                        registrationError = link.text();
+                        String CRN = link.parent().parent().child(1).text();
+                        String error = link.text();
+                        registrationErrors.put(CRN, error);
                     }
                 }
             }
         }
-        return registrationError;
+        return registrationErrors;
     }
 
     /**
