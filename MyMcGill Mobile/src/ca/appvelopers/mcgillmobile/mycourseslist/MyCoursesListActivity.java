@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -185,11 +186,11 @@ public class MyCoursesListActivity extends DrawerActivity {
     //Connects to Minerva in a new thread to register for courses
     private class UnregistrationThread extends AsyncTask<Void, Void, Boolean> {
         private String mRegistrationURL;
-        private Map<String, String> mRegistrationError;
+        private Map<String, String> mRegistrationErrors;
 
         public UnregistrationThread(String registrationURL){
             this.mRegistrationURL = registrationURL;
-            this.mRegistrationError = null;
+            this.mRegistrationErrors = null;
         }
 
         @Override
@@ -221,7 +222,7 @@ public class MyCoursesListActivity extends DrawerActivity {
             }
             //Otherwise, check for errors
             else{
-                mRegistrationError = Parser.parseRegistrationErrors(resultString);
+                mRegistrationErrors = Parser.parseRegistrationErrors(resultString);
                 return true;
             }
         }
@@ -233,14 +234,20 @@ public class MyCoursesListActivity extends DrawerActivity {
 
             if(success){
                 //Display whether the user was successfully registered
-                if(mRegistrationError == null){
+                for(String CRN : mRegistrationErrors.keySet()){
+                    Log.e("REGERR", CRN);
+                }
+                for(String error : mRegistrationErrors.values()){
+                    Log.e("REGERR", error);
+                }
+
+                if(mRegistrationErrors == null || mRegistrationErrors.isEmpty()){
                     Toast.makeText(MyCoursesListActivity.this, R.string.unregistration_success, Toast.LENGTH_LONG).show();
                 }
 
                 //Display a message if a registration error has occurred
                 else{
-                    Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.unregistration_error,
-                            mRegistrationError), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.unregistration_error, mRegistrationErrors), Toast.LENGTH_LONG).show();
                 }
             }
 
