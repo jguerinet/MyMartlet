@@ -1,6 +1,5 @@
 package ca.appvelopers.mcgillmobile.mycourseslist;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -65,18 +64,18 @@ public class MyCoursesListActivity extends DrawerActivity {
             @Override
             public void onClick(View view) {
                 //Get checked courses from adapter
-                List<ClassItem> registerCoursesList = mAdapter.getCheckedClasses();
+                List<ClassItem> unregisterCoursesList = mAdapter.getCheckedClasses();
 
                 //Too many courses
-                if (registerCoursesList.size() > 10) {
+                if (unregisterCoursesList.size() > 10) {
                     Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.courses_too_many_courses),
                             Toast.LENGTH_SHORT).show();
-                } else if (registerCoursesList.isEmpty()) {
+                } else if (unregisterCoursesList.isEmpty()) {
                     Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.courses_none_selected),
                             Toast.LENGTH_SHORT).show();
-                } else if (registerCoursesList.size() > 0) {
+                } else if (unregisterCoursesList.size() > 0) {
                     //Execute unregistration of checked classes in a new thread
-                    new UnregistrationThread(Connection.getRegistrationURL(mTerm, registerCoursesList, true)).execute();
+                    new UnregistrationThread(unregisterCoursesList).execute();
                 }
             }
         });
@@ -185,12 +184,11 @@ public class MyCoursesListActivity extends DrawerActivity {
 
     //Connects to Minerva in a new thread to register for courses
     private class UnregistrationThread extends AsyncTask<Void, Void, Boolean> {
-        private String mRegistrationURL;
         private Map<String, String> mRegistrationErrors;
+        private List<ClassItem> mClasses;
 
-        public UnregistrationThread(String registrationURL){
-            this.mRegistrationURL = registrationURL;
-            this.mRegistrationErrors = null;
+        public UnregistrationThread(List<ClassItem> classItems){
+            this.mClasses = classItems;
         }
 
         @Override
@@ -202,17 +200,17 @@ public class MyCoursesListActivity extends DrawerActivity {
         //Retrieve page that contains registration status from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            String resultString = Connection.getInstance().getUrl(MyCoursesListActivity.this, mRegistrationURL);
+            String resultString = Connection.getInstance().getUrl(MyCoursesListActivity.this,
+                    Connection.getRegistrationURL(mTerm, mClasses, true));
 
             //If result string is null, there was an error
             if(resultString == null){
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Activity activity = MyCoursesListActivity.this;
                         try {
-                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                    activity.getResources().getString(R.string.error_other));
+                            DialogHelper.showNeutralAlertDialog(MyCoursesListActivity.this, getString(R.string.error),
+                                    getString(R.string.error_other));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -247,7 +245,23 @@ public class MyCoursesListActivity extends DrawerActivity {
 
                 //Display a message if a registration error has occurred
                 else{
-                    Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.unregistration_error, mRegistrationErrors), Toast.LENGTH_LONG).show();
+                    String errorMessage = "";
+                    for(String crn : mRegistrationErrors.keySet()){
+                        //Find the corresponding course
+                        for(ClassItem classItem : mClasses){
+                            if(classItem.getCRN() == Integer.valueOf(crn)){
+                                //Add this class to the error message
+                                errorMessage += classItem.getCourseCode() +  " ("
+                                        + classItem.getSectionType() + ") - " + mRegistrationErrors.get(crn) + "\n";
+
+                                break;
+                            }
+                        }
+                    }
+
+                    //Show an alert dialog with the errors
+                    DialogHelper.showNeutralAlertDialog(MyCoursesListActivity.this, getString(R.string.unregistration_error),
+                            errorMessage);
                 }
             }
 

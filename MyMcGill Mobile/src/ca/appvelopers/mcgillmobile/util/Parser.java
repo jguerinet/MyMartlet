@@ -1,7 +1,5 @@
 package ca.appvelopers.mcgillmobile.util;
 
-import android.util.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -353,6 +351,15 @@ public class Parser {
         //Get the list of classes already parsed for that year
         List<ClassItem> classItems = App.getClasses();
 
+        //This will be the list of classes to remove at the end (the user has unregistered)
+        List<ClassItem> classesToRemove = new ArrayList<ClassItem>();
+        //It starts out with all of the classes for this term
+        for(ClassItem classItem : classItems){
+            if(classItem.getTerm().equals(term)){
+                classesToRemove.add(classItem);
+            }
+        }
+
         if(classItems == null){
             classItems = new ArrayList<ClassItem>();
         }
@@ -435,6 +442,9 @@ public class Parser {
                             //If you find an equivalent, just update it
                             classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
                                     days, sectionType, location, instructor, credits);
+
+                            //Remove it from the list of class items to remove
+                            classesToRemove.remove(classItem);
                             break;
                         }
                     }
@@ -453,6 +463,9 @@ public class Parser {
                 }
             }
         }
+
+        //Remove the classes to remove
+        classItems.removeAll(classesToRemove);
 
         //Save it to the instance variable in Application class
         App.setClasses(classItems);
