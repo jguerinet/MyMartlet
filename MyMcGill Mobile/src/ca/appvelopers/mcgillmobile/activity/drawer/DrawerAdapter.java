@@ -25,7 +25,6 @@ import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
-import ca.appvelopers.mcgillmobile.activity.inbox.InboxActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.mycourseslist.MyCoursesListActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
@@ -40,15 +39,12 @@ public class DrawerAdapter extends BaseAdapter {
     private Activity mActivity;
     private List<DrawerItem> mDrawerItems;
     private int mSelectedPosition;
-    private int mUnreadMessages;
-    private TextView mUnreadMessagesView;
     private DrawerLayout mDrawerLayout;
 
     //Easy way to keep track of the list order (for the OnClick)
     public static final int SCHEDULE_POSITION = 0;
     public static final int TRANSCRIPT_POSITION = SCHEDULE_POSITION + 1;
-    public static final int EMAIL_POSITION = TRANSCRIPT_POSITION + 1;
-    public static final int MYCOURSES_POSITION = EMAIL_POSITION + 1;
+    public static final int MYCOURSES_POSITION = TRANSCRIPT_POSITION + 1;
     public static final int COURSES_POSITION = MYCOURSES_POSITION + 1;
     public static final int WISHLIST_POSITION = COURSES_POSITION + 1;
     public static final int SEARCH_COURSES_POSITION = WISHLIST_POSITION + 1;
@@ -63,7 +59,6 @@ public class DrawerAdapter extends BaseAdapter {
         this.mDrawerLayout = drawerLayout;
         this.mDrawerItems = new ArrayList<DrawerItem>();
         this.mSelectedPosition = selectedPosition;
-        this.mUnreadMessages = App.getUnreadEmails();
         generateDrawerItems();
     }
 
@@ -76,10 +71,6 @@ public class DrawerAdapter extends BaseAdapter {
         //Transcript
         mDrawerItems.add(TRANSCRIPT_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_transcript),
                 mActivity.getResources().getString(R.string.icon_transcript)));
-
-        //Email
-        mDrawerItems.add(EMAIL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_inbox),
-                mActivity.getResources().getString(R.string.icon_email)));
 
         //MyCourses
         mDrawerItems.add(MYCOURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_mycourses),
@@ -154,15 +145,6 @@ public class DrawerAdapter extends BaseAdapter {
         TextView title = (TextView)view.findViewById(R.id.drawerItem_title);
         title.setText(currentItem.getTitle());
         
-        TextView badge = (TextView)view.findViewById(R.id.drawer_email_count);
-        if(position == EMAIL_POSITION){
-            mUnreadMessagesView = badge;
-            updateUnreadMessages();
-        }
-        else{
-        	badge.setVisibility(View.INVISIBLE);
-        }
-        
         //OnClick
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,9 +155,6 @@ public class DrawerAdapter extends BaseAdapter {
                         break;
                     case TRANSCRIPT_POSITION:
                         mActivity.startActivity(new Intent(mActivity, TranscriptActivity.class));
-                        break;
-                    case EMAIL_POSITION:
-                        mActivity.startActivity(new Intent(mActivity, InboxActivity.class));
                         break;
                     case MYCOURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
@@ -233,20 +212,5 @@ public class DrawerAdapter extends BaseAdapter {
         }
 
         return view;
-    }
-
-    public void updateUnreadMessages(){
-        mUnreadMessages = App.getUnreadEmails();
-
-        if(mUnreadMessagesView != null){
-            if(mUnreadMessages == 0){
-                mUnreadMessagesView.setVisibility(View.INVISIBLE);
-            }
-            else{
-                mUnreadMessagesView.setVisibility(View.VISIBLE);
-                mUnreadMessagesView.setText(String.valueOf(mUnreadMessages));
-            }
-            notifyDataSetChanged();
-        }
     }
 }

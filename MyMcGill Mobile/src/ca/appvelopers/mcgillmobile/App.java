@@ -11,7 +11,6 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
-import ca.appvelopers.mcgillmobile.object.Inbox;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Term;
@@ -41,7 +40,6 @@ public class App extends Application {
     private static Term defaultTerm;
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
-    private static Inbox inbox;
     private static List<ClassItem> wishlist;
 
     //List of semesters you can currently register in
@@ -80,8 +78,6 @@ public class App extends Application {
         ebill = Load.loadEbill(this);
         //Load the user info
         userInfo = Load.loadUserInfo(this);
-        //Load the user's emails
-        inbox = Load.loadInbox(this);
         //Load the user's chosen language and update the locale
         language = Load.loadLanguage(this);
         //Load the user's chosen homepage
@@ -127,10 +123,6 @@ public class App extends Application {
         return userInfo;
     }
 
-    public static Inbox getInbox() {
-        return inbox;
-    }
-
     public static Language getLanguage(){
         return language;
     }
@@ -149,13 +141,6 @@ public class App extends Application {
 
     public static List<ClassItem> getClassWishlist() {
         return wishlist;
-    }
-
-    public static int getUnreadEmails(){
-        if(inbox != null){
-            return inbox.getNumNewEmails();
-        }
-        return 0;
     }
 
     public static List<Term> getRegisterTerms(){
@@ -191,13 +176,6 @@ public class App extends Application {
 
         //Save it to internal storage when this is set
         Save.saveUserInfo(context);
-    }
-
-    public static void setInbox(Inbox inbox){
-        App.inbox = inbox;
-
-        //Save it to internal storage when this is set
-        Save.saveInbox(context);
     }
 
     public static void setLanguage(Language language){

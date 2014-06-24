@@ -10,13 +10,11 @@ import ca.appvelopers.mcgillmobile.activity.RegistrationActivity;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
-import ca.appvelopers.mcgillmobile.activity.inbox.InboxActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 
 public enum HomePage {
     SCHEDULE,
     TRANSCRIPT,
-    EMAIL,
     MY_COURSES,
     SEARCH_COURSES,
     WISHLIST,
@@ -30,8 +28,6 @@ public enum HomePage {
                 return ScheduleActivity.class;
             case TRANSCRIPT:
                 return TranscriptActivity.class;
-            case EMAIL:
-                return InboxActivity.class;
             case MY_COURSES:
                 return MyCoursesActivity.class;
             case SEARCH_COURSES:
@@ -55,8 +51,6 @@ public enum HomePage {
                 return context.getResources().getString(R.string.homepage_schedule);
             case TRANSCRIPT:
                 return context.getResources().getString(R.string.homepage_transcript);
-            case EMAIL:
-                return context.getResources().getString(R.string.homepage_email);
             case MY_COURSES:
                 return context.getResources().getString(R.string.homepage_mycourses);
             case SEARCH_COURSES:

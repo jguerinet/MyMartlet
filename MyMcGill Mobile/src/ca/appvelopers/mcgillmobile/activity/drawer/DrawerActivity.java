@@ -20,7 +20,6 @@ import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
-import ca.appvelopers.mcgillmobile.activity.inbox.InboxActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.mycourseslist.MyCoursesListActivity;
 
@@ -29,7 +28,6 @@ public class DrawerActivity extends BaseActivity {
     public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
-    private DrawerAdapter mDrawerAdapter;
     private boolean mExit = false;
 
     public void onCreate(Bundle savedInstanceState){
@@ -47,53 +45,45 @@ public class DrawerActivity extends BaseActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Set up the adapter
+        DrawerAdapter drawerAdapter;
         if(this instanceof TranscriptActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.TRANSCRIPT_POSITION);
-        }
-        else if(this instanceof InboxActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EMAIL_POSITION);
+            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.TRANSCRIPT_POSITION);
         }
         else if(this instanceof RegistrationActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
+            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
         }
         else if(this instanceof EbillActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EBILL_POSITION);
+            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EBILL_POSITION);
         }
         else if(this instanceof DesktopActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.DESKTOP_POSITION);
+            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.DESKTOP_POSITION);
         }
         else if(this instanceof SettingsActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SETTINGS_POSITION);
+            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SETTINGS_POSITION);
         }
         else if(this instanceof MyCoursesActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MYCOURSES_POSITION);
+            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MYCOURSES_POSITION);
         }
         else if(this instanceof CoursesListActivity){
             //Wishlist
             if(((CoursesListActivity)this).wishlist){
-                mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.WISHLIST_POSITION);
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.WISHLIST_POSITION);
             }
             //Course search
             else{
-                mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
             }
         }
         else if(this instanceof MyCoursesListActivity){
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.COURSES_POSITION);
+            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.COURSES_POSITION);
         }
         else{
             Log.e("Drawer Adapter", "not well initialized");
-            mDrawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
+            drawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
         }
 
         drawerList = (ListView) findViewById(R.id.left_drawer);
-        drawerList.setAdapter(mDrawerAdapter);
-    }
-
-    public void updateUnreadMessages(){
-        if(mDrawerAdapter != null){
-            mDrawerAdapter.updateUnreadMessages();
-        }
+        drawerList.setAdapter(drawerAdapter);
     }
 
     @Override
