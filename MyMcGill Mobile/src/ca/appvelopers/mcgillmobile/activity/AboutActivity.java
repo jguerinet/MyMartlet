@@ -24,57 +24,57 @@ public class AboutActivity extends BaseActivity {
         //Set up the info for all of the different people
 
         //Adnan
-        setUpInfo(findViewById(R.id.adnan), R.drawable.adnan, getResources().getString(R.string.about_adnan),
+        setUpInfo(findViewById(R.id.adnan), R.drawable.mymcgill_about_adnan, getResources().getString(R.string.about_adnan),
                 getResources().getString(R.string.about_adnan_role), getResources().getString(R.string.about_adnan_description),
                 getResources().getString(R.string.about_adnan_linkedin), getResources().getString(R.string.about_adnan_email));
 
         //Gabriel
-        setUpInfo(findViewById(R.id.gabriel), R.drawable.gabe, getResources().getString(R.string.about_gabriel),
+        setUpInfo(findViewById(R.id.gabriel), R.drawable.mymcgill_about_gabe, getResources().getString(R.string.about_gabriel),
                 getResources().getString(R.string.about_gabriel_role), getResources().getString(R.string.about_gabriel_description),
                 getResources().getString(R.string.about_gabriel_linkedin), getResources().getString(R.string.about_gabriel_email));
 
         //Hernan
-        setUpInfo(findViewById(R.id.hernan), R.drawable.hernan, getResources().getString(R.string.about_hernan),
+        setUpInfo(findViewById(R.id.hernan), R.drawable.mymcgill_about_hernan, getResources().getString(R.string.about_hernan),
                 getResources().getString(R.string.about_hernan_role), getResources().getString(R.string.about_hernan_description),
                 getResources().getString(R.string.about_hernan_linkedin), getResources().getString(R.string.about_hernan_email));
 
         //Josh
-        setUpInfo(findViewById(R.id.josh), R.drawable.josh, getResources().getString(R.string.about_joshua),
+        setUpInfo(findViewById(R.id.josh), R.drawable.mymcgill_about_josh, getResources().getString(R.string.about_joshua),
                 getResources().getString(R.string.about_joshua_role), getResources().getString(R.string.about_joshua_description),
                 getResources().getString(R.string.about_joshua_linkedin), getResources().getString(R.string.about_joshua_email));
 
         //Julien
-        setUpInfo(findViewById(R.id.julien), R.drawable.julien, getResources().getString(R.string.about_julien),
+        setUpInfo(findViewById(R.id.julien), R.drawable.mymcgill_about_julien, getResources().getString(R.string.about_julien),
                 getResources().getString(R.string.about_julien_role), getResources().getString(R.string.about_julien_description),
                 getResources().getString(R.string.about_julien_linkedin), getResources().getString(R.string.about_julien_email));
 
         //Omar
-        setUpInfo(findViewById(R.id.omar), R.drawable.omar, getResources().getString(R.string.about_omar),
+        setUpInfo(findViewById(R.id.omar), R.drawable.mymcgill_about_omar, getResources().getString(R.string.about_omar),
                 getResources().getString(R.string.about_omar_role), getResources().getString(R.string.about_omar_description),
                 getResources().getString(R.string.about_omar_linkedin), getResources().getString(R.string.about_omar_email));
 
         //Quang
-        setUpInfo(findViewById(R.id.quang), R.drawable.quang, getResources().getString(R.string.about_quang),
+        setUpInfo(findViewById(R.id.quang), R.drawable.mymcgill_about_quang, getResources().getString(R.string.about_quang),
                 getResources().getString(R.string.about_quang_role), getResources().getString(R.string.about_quang_description),
                 getResources().getString(R.string.about_quang_linkedin), getResources().getString(R.string.about_quang_email));
 
         //Ryan
-        setUpInfo(findViewById(R.id.ryan), R.drawable.ryan, getResources().getString(R.string.about_ryan),
+        setUpInfo(findViewById(R.id.ryan), R.drawable.mymcgill_about_ryan, getResources().getString(R.string.about_ryan),
                 getResources().getString(R.string.about_ryan_role), getResources().getString(R.string.about_ryan_description),
                 getResources().getString(R.string.about_ryan_linkedin), getResources().getString(R.string.about_ryan_email));
 
         //Shabbir
-        setUpInfo(findViewById(R.id.shabbir), R.drawable.shabbir, getResources().getString(R.string.about_shabbir),
+        setUpInfo(findViewById(R.id.shabbir), R.drawable.mymcgill_about_shabbir, getResources().getString(R.string.about_shabbir),
                 getResources().getString(R.string.about_shabbir_role), getResources().getString(R.string.about_shabbir_description),
                 getResources().getString(R.string.about_shabbir_linkedin), getResources().getString(R.string.about_shabbir_email));
 
         //Xavier
-        setUpInfo(findViewById(R.id.xavier), R.drawable.xavier, getResources().getString(R.string.about_xavier),
+        setUpInfo(findViewById(R.id.xavier), R.drawable.mymcgill_about_xavier, getResources().getString(R.string.about_xavier),
                 getResources().getString(R.string.about_xavier_role), getResources().getString(R.string.about_xavier_description),
                 getResources().getString(R.string.about_xavier_linkedin), getResources().getString(R.string.about_xavier_email));
 
         //Yulric
-        setUpInfo(findViewById(R.id.yulric), R.drawable.yulric, getResources().getString(R.string.about_yulric),
+        setUpInfo(findViewById(R.id.yulric), R.drawable.mymcgill_about_yulric, getResources().getString(R.string.about_yulric),
                 getResources().getString(R.string.about_yulric_role), getResources().getString(R.string.about_yulric_description),
                 getResources().getString(R.string.about_yulric_linkedin), getResources().getString(R.string.about_yulric_email));
     }
