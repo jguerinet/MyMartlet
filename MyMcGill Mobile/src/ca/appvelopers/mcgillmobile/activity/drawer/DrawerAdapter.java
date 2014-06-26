@@ -1,7 +1,9 @@
 package ca.appvelopers.mcgillmobile.activity.drawer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -181,13 +183,26 @@ public class DrawerAdapter extends BaseAdapter {
                         mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
                         break;
                     case LOGOUT_POSITION:
-                        GoogleAnalytics.sendEvent(mActivity, "Logout", "Clicked", null, null);
-                        Clear.clearAllInfo(mActivity);
-                        //Go back to LoginActivity
-                        mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
+                        new AlertDialog.Builder(mActivity)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle(mActivity.getResources().getString(R.string.logout_dialog_title))
+                                .setMessage(mActivity.getResources().getString(R.string.logout_dialog_message))
+                                .setPositiveButton(mActivity.getResources().getString(R.string.logout_dialog_positive), new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        GoogleAnalytics.sendEvent(mActivity, "Logout", "Clicked", null, null);
+                                        Clear.clearAllInfo(mActivity);
+                                        //Go back to LoginActivity
+                                        mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
+                                    }
+
+                                })
+                                .setNegativeButton(mActivity.getResources().getString(R.string.logout_dialog_negative), null)
+                                .create()
+                                .show();
                         break;
                 }
-                mActivity.finish();
             }
         });
 

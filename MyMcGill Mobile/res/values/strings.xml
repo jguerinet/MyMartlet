@@ -96,6 +96,12 @@
     <string name="login_error_password_empty">You must input a password. </string>
     <string name="login_remember_username">Remember my username</string>
 
+    <!-- Logout Dialog -->
+    <string name="logout_dialog_title">Logout</string>
+    <string name="logout_dialog_message">Are you sure you want to logout?</string>
+    <string name="logout_dialog_positive">Yes</string>
+    <string name="logout_dialog_negative">Cancel</string>
+
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">Term GPA: %s</string>
     <string name="transcript_CGPA">CGPA: %s</string>
@@ -247,7 +253,7 @@
     <string name="about_shabbir_email">shabbir.husn\@outlook.com</string>
     <string name="about_xavier">Xavier Sit</string>
     <string name="about_xavier_role">Android Developer</string>
-    <string name="about_xavier_description">Xavier (Chi-Wing) is a undergraduate student in Computer Engineering with a minor in Computer Science.</string>
+    <string name="about_xavier_description">Xavier is a great and enigmatic man, flowing gently through life like a mysterious flower.</string>
     <string name="about_xavier_linkedin">http://ca.linkedin.com/pub/chi-wing-sit/66/363/519</string>
     <string name="about_xavier_email">chiwingsit\@gmail.com</string>
     <string name="about_yulric">Yulric Sequeira</string>
