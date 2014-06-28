@@ -51,7 +51,7 @@ public class Parser {
 
         List<Semester> semesters = new ArrayList<Semester>();
         double cgpa = 0;
-        int totalCredits = 0;
+        double totalCredits = 0;
 
         int index = 0;
         for (Element row : rows){
@@ -73,7 +73,7 @@ public class Parser {
             if(row.text().startsWith(Token.TOTAL_CREDITS.getString())){
                 dataRow = rows.get(index+1);
                 try{
-                    totalCredits = (int)Double.parseDouble(dataRow.text());
+                    totalCredits = Double.parseDouble(dataRow.text());
                 }
                 catch (NumberFormatException e){
                     totalCredits = -1;
@@ -110,7 +110,7 @@ public class Parser {
                 String program = "";
                 String bachelor = "";
                 int programYear = 99;
-                int termCredits = 0;
+                double termCredits = 0;
                 double termGPA = 0.0;
                 boolean fullTime = false;
                 boolean satisfactory = false;
@@ -175,7 +175,7 @@ public class Parser {
                     }
                     //Term Credits
                     else if(dataRow.text().startsWith(Token.TERM_CREDITS.getString())){
-                        termCredits = (int)Double.parseDouble(rows.get(semesterIndex + 2).text());
+                        termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                     }
 
                     //Extract course information if row contains a course code
@@ -200,11 +200,11 @@ public class Parser {
                         String courseTitle = rows.get(semesterIndex + 2).text();
 
                         //Failed courses are missing the earned credits row
-                        int credits = 0;
+                        double credits = 0;
 
                         //Check row to see if earned credit exists
                         try{
-                            credits = Integer.parseInt(rows.get(semesterIndex + 6).text());
+                            credits = Double.parseDouble(rows.get(semesterIndex + 6).text());
                         }
                         catch(NumberFormatException e){
                             //Course failed -> Earned credit = 0
@@ -246,7 +246,7 @@ public class Parser {
                         String courseCode;
                         String userGrade = "N/A";
                         String averageGrade = "";
-                        int credits = 0;
+                        double credits = 0;
 
                         //Individual transferred courses not listed
                         if(!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")){
@@ -266,7 +266,7 @@ public class Parser {
                             try{
                                 courseCode = rows.get(semesterIndex + 2).text();
                                 courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
-                                credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
+                                credits = Double.parseDouble(rows.get(semesterIndex + 5).text());
 
                                 Course course = new Course(new Term(season, year), courseTitle, courseCode, credits,
                                         userGrade, averageGrade);
@@ -351,14 +351,14 @@ public class Parser {
     }
 
     //Extracts the number of credits
-    private static int extractCredits(String creditString){
-        int numCredits;
+    private static double extractCredits(String creditString){
+        double numCredits;
 
         try{
             creditString = creditString.replaceAll("\\s", "");
             String[] creditArray = creditString.split("-");
             creditArray = creditArray[1].split("credits");
-            numCredits = Integer.parseInt(creditArray[0]);
+            numCredits = Double.parseDouble(creditArray[0]);
             return numCredits;
         }
         catch (NumberFormatException e){
@@ -413,7 +413,7 @@ public class Parser {
                 //Credits
                 row = currentElement.getElementsByTag("tr").get(5);
                 String creditString = row.getElementsByTag("td").first().text();
-                int credits = (int) Double.parseDouble(creditString);
+                double credits = Double.parseDouble(creditString);
 
                 //Check if there is any data to parse
                 if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
@@ -517,7 +517,7 @@ public class Parser {
 
         while (loop) {
             // Create a new course object
-            int credits = 99;
+            double credits = 99;
             String courseCode = "ERROR";
             String courseSubject = "ERROR";
             String courseNumber = "999";
@@ -576,7 +576,7 @@ public class Parser {
                             break;
                         // Number of credits
                         case 6:
-                            credits = (int) Double.parseDouble(row.text());
+                            credits = Double.parseDouble(row.text());
                             break;
                         // Course title
                         case 7:

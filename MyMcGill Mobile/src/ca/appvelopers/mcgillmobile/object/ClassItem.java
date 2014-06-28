@@ -36,14 +36,14 @@ public class ClassItem implements Serializable{
     private int mWaitlistCapacity;
     private int mWaitlistAvailable;
     private int mWaitlistRemaining;
-    private int mCredits;
+    private double mCredits;
     private String mDates;
 
     public ClassItem(Term term, String courseCode, String courseSubject, String courseNumber, String courseTitle, int crn,
                      String section, int startHour, int startMinute, int endHour, int endMinute,
                      List<Day> days, String sectionType, String location, String instructor, int capacity,
                      int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
-                     int waitlistRemaining, int credits, String dates){
+                     int waitlistRemaining, double credits, String dates){
         this.mTerm = term;
         this.mCourseCode = courseCode;
         this.mCourseSubject = courseSubject;
@@ -186,7 +186,7 @@ public class ClassItem implements Serializable{
      * Get the course credits
      * @return The course credits
      */
-    public int getCredits(){
+    public double getCredits(){
         return mCredits;
     }
 
@@ -288,7 +288,7 @@ public class ClassItem implements Serializable{
      */
     public void update(String courseCode, String courseTitle, String section, int startHour, int startMinute,
                        int endHour, int endMinute, List<Day> days, String sectionType, String location, String instructor,
-                       int credits){
+                       double credits){
         this.mCourseCode = courseCode;
         this.mCourseTitle = courseTitle;
         this.mSection = section;

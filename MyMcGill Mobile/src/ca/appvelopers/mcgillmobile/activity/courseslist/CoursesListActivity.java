@@ -373,7 +373,7 @@ public class CoursesListActivity extends DrawerActivity {
                 //Add course if it has not already been added
                 if(!courseExists){
                     coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getCourseTitle(),
-                            wishlistClass.getCourseCode(), 99, "N/A", "N/A"));
+                            wishlistClass.getCourseCode(), wishlistClass.getCredits(), "N/A", "N/A"));
                 }
             }
 

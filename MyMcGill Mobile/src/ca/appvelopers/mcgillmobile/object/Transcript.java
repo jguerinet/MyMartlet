@@ -16,11 +16,11 @@ public class Transcript implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private double mCGPA;
-    private int mTotalCredits;
+    private double mTotalCredits;
     private List<Semester> mSemesters;
 
     //Constructor for the Transcript object
-    public Transcript(double cgpa, int totalCredits, List<Semester> semesters){
+    public Transcript(double cgpa, double totalCredits, List<Semester> semesters){
         this.mCGPA = cgpa;
         this.mTotalCredits = totalCredits;
         this.mSemesters = semesters;
@@ -32,7 +32,7 @@ public class Transcript implements Serializable{
     }
 
     //Getter for totalCredits
-    public int getTotalCredits(){
+    public double getTotalCredits(){
         return mTotalCredits;
     }
 

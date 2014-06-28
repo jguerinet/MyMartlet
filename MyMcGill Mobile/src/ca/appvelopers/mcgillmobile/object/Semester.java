@@ -18,14 +18,14 @@ public class Semester implements Serializable{
     private String mProgram;
     private String mBachelor;
     private int programYear;
-    private int termCredits;
+    private double termCredits;
     private double termGPA;
     private boolean fullTime;
     private boolean mSatisfactory;
     private List<Course> courses;
 
 
-    public Semester(Term term, String program, String bachelor, int programYear, int termCredits, double termGPA,
+    public Semester(Term term, String program, String bachelor, int programYear, double termCredits, double termGPA,
                         boolean fullTime, boolean satisfactory, List<Course> courses) {
         this.mTerm = term;
         this.mProgram = program;
@@ -54,7 +54,7 @@ public class Semester implements Serializable{
     }
 
     //Getter for term credits
-    public int getTermCredits() {
+    public double getTermCredits() {
         return termCredits;
     }
 
