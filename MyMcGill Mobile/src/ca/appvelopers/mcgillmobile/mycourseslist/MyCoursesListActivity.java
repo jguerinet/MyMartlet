@@ -86,7 +86,7 @@ public class MyCoursesListActivity extends DrawerActivity {
 
         executeClassDownloader();
 
-        //Download the Transcript (if ever the user has new semesters on his transcript
+        //Download the Transcript (if ever the user has new semesters on their transcript)
         new TranscriptDownloader(this) {
             @Override
             protected void onPreExecute() {}

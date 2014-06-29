@@ -84,12 +84,15 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             Save.saveFirstOpen(this);
         }
 
-        //Download the Transcript (if ever the user has new semesters on his transcript
+        //Download the Transcript (if ever the user has new semesters on their transcript)
         new TranscriptDownloader(this) {
             @Override
-            protected void onPreExecute() {}
+            protected void onPreExecute() {
+            }
+
             @Override
-            protected void onPostExecute(Boolean loadInfo) {}
+            protected void onPostExecute(Boolean loadInfo) {
+            }
         }.execute();
     }
 

@@ -94,7 +94,9 @@ public class Connection {
         Connection connection = getInstance();
 
         //Download the transcript
-        Parser.parseTranscript(connection.getUrl(activity, TRANSCRIPT));
+        if(!Constants.disableMinervaTranscript){
+            Parser.parseTranscript(connection.getUrl(activity, TRANSCRIPT));
+        }
 
         //Set the default Semester
         List<Semester> semesters = App.getTranscript().getSemesters();
