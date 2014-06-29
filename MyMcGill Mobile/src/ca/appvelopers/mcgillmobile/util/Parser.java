@@ -82,14 +82,30 @@ public class Parser {
             //Semester Information
             if(row.text().startsWith(Token.FALL.getString()) ||
                     row.text().startsWith(Token.WINTER.getString()) ||
-                    row.text().startsWith(Token.SUMMER.getString())){
+                    row.text().startsWith(Token.SUMMER.getString()) ||
+                    row.text().startsWith(Token.READMITTED_FALL.getString()) ||
+                    row.text().startsWith(Token.READMITTED_WINTER.getString()) ||
+                    row.text().startsWith(Token.READMITTED_SUMMER.getString()) ){
 
                 //Initialize variables
                 String scheduleSemester = row.text().trim();
                 String[] scheduleSemesterItems = scheduleSemester.split("\\s+");
-                //Find the right season and year
-                Season season = Season.findSeason(scheduleSemesterItems[0]);
-                int year = Integer.valueOf(scheduleSemesterItems[1]);
+
+                //Find the right season and year, making sure to get the right array index
+                Season season = null;
+                int year = 99;
+
+                if(row.text().startsWith(Token.FALL.getString()) ||
+                        row.text().startsWith(Token.WINTER.getString()) ||
+                        row.text().startsWith(Token.SUMMER.getString()) ){
+
+                    season = Season.findSeason(scheduleSemesterItems[0]);
+                    year = Integer.valueOf(scheduleSemesterItems[1]);
+                }
+                else{
+                    season = Season.findSeason(scheduleSemesterItems[1]);
+                    year = Integer.valueOf(scheduleSemesterItems[2]);
+                }
 
                 String program = "";
                 String bachelor = "";
@@ -299,7 +315,11 @@ public class Parser {
                      */
                     if(dataRow.text().startsWith(Token.FALL.getString()) ||
                             dataRow.text().startsWith(Token.WINTER.getString()) ||
-                            dataRow.text().startsWith(Token.SUMMER.getString())){
+                            dataRow.text().startsWith(Token.SUMMER.getString()) ||
+                            dataRow.text().startsWith(Token.READMITTED_FALL.getString()) ||
+                            dataRow.text().startsWith(Token.READMITTED_WINTER.getString()) ||
+                            dataRow.text().startsWith(Token.READMITTED_SUMMER.getString()) ){
+
                         break;
                     }
 
