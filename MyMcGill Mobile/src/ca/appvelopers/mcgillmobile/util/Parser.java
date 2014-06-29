@@ -1,5 +1,7 @@
 package ca.appvelopers.mcgillmobile.util;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -312,14 +314,19 @@ public class Parser {
                     }
                 }
 
-                Semester semester = new Semester(new Term(season, year), program, bachelor, programYear,
-                        termCredits, termGPA, fullTime, satisfactory, courses);
+                //Check if there are any courses associated with the semester
+                //If not, don't add the semester to the list of semesters
+                if(!courses.isEmpty()){
+                    Semester semester = new Semester(new Term(season, year), program, bachelor, programYear,
+                            termCredits, termGPA, fullTime, satisfactory, courses);
 
-                semesters.add(semester);
+                    semesters.add(semester);
+                }
+
             }
             index++;
         }
-
+        Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
         App.setTranscript(new Transcript(cgpa, totalCredits, semesters));
     }
 
