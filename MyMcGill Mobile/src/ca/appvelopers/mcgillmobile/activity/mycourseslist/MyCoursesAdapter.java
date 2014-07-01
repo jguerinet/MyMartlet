@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.mycourseslist;
+package ca.appvelopers.mcgillmobile.activity.mycourseslist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
