@@ -1,7 +1,6 @@
 package ca.appvelopers.mcgillmobile.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
@@ -77,12 +75,6 @@ public class CourseActivity extends BaseActivity {
 
         TextView courseCRN = (TextView)findViewById(R.id.course_crn);
         courseCRN.setText(String.valueOf(classItem.getCRN()));
-    }
-
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(CourseActivity.this, App.getHomePage().getHomePageClass()));
-        super.onBackPressed();
     }
 
     public void done(View v){

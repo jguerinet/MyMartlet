@@ -1,16 +1,12 @@
 package ca.appvelopers.mcgillmobile.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
@@ -35,16 +30,14 @@ import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.fragment.DayFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Term;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
-import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
+import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
 /**
  * @author Nhat-Quang Dao
@@ -53,13 +46,12 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
 public class ScheduleActivity extends DrawerFragmentActivity {
-	private List<ClassItem> mClassList;
+    private static final int CHANGE_SEMESTER_CODE = 100;
+
+    private List<ClassItem> mClassList;
     private ViewPager mPager;
     private FragmentManager mSupportFragmentManager;
     private Term mTerm;
-    private boolean mDoubleBackToExit;
-
-    private static final int CHANGE_SEMESTER_CODE = 100;
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,8 +73,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         //Load the stored info
         loadInfo();
 
-        //Start thread to get schedule
-        new ScheduleGetter(mTerm);
+        //Set up the class downloader
+        executeClassDownloader();
 
         //Check if this is the first time the user is using the app
         if(Load.isFirstOpen(this)){
@@ -91,29 +83,17 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             //Save the fact that the walkthrough has been seen at least once
             Save.saveFirstOpen(this);
         }
-    }
 
-    @Override
-    public void onBackPressed(){
-        if(App.getHomePage() != HomePage.SCHEDULE){
-            startActivity(new Intent(ScheduleActivity.this, App.getHomePage().getHomePageClass()));
-            super.onBackPressed();
-        }
-        else{
-            if (mDoubleBackToExit) {
-                super.onBackPressed();
-                return;
+        //Download the Transcript (if ever the user has new semesters on their transcript)
+        new TranscriptDownloader(this) {
+            @Override
+            protected void onPreExecute() {
             }
-            this.mDoubleBackToExit = true;
-            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mDoubleBackToExit = false;
-                }
-            }, 2000);
-        }
+            @Override
+            protected void onPostExecute(Boolean loadInfo) {
+            }
+        }.execute();
     }
 
     //Method that returns a list of courses for a given day
@@ -331,57 +311,25 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         }
     }
 
-    private class ScheduleGetter extends AsyncTask<Void, Void, Boolean> {
-        private Term mTerm;
-
-        public ScheduleGetter(Term term){
-            mTerm = term;
-        }
-
-        @Override
-        protected void onPreExecute(){
-            //Show the user we are refreshing
-            setProgressBarIndeterminateVisibility(true);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            String scheduleString;
-            final Activity activity = ScheduleActivity.this;
-
-  			scheduleString = Connection.getInstance().getUrl(ScheduleActivity.this, Connection.getScheduleURL(mTerm));
-
-            if(scheduleString == null){
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                activity.getResources().getString(R.string.error_other));
-                    }
-                });
-                return false;
-            }
-            //Empty String: no need for an alert dialog but no need to reload
-            else if(TextUtils.isEmpty(scheduleString)){
-                return false;
+    public void executeClassDownloader(){
+        new ClassDownloader(this, mTerm){
+            @Override
+            protected void onPreExecute(){
+                //Show the user we are refreshing
+                setProgressBarIndeterminateVisibility(true);
             }
 
-            //Get the new schedule
-            Parser.parseClassList(mTerm, scheduleString);
+            // onPostExecute displays the results of the AsyncTask.
+            @Override
+            protected void onPostExecute(Boolean loadInfo) {
+                if(loadInfo){
+                    //Reload the adapter
+                    loadInfo();
+                }
 
-            return true;
-        }
-
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(Boolean loadInfo) {
-            if(loadInfo){
-                //Reload the adapter
-                loadInfo();
+                setProgressBarIndeterminateVisibility(false);
             }
-
-            setProgressBarIndeterminateVisibility(false);
-        }
+        }.execute();
     }
 
     private class SchedulePagerAdapter extends FragmentStatePagerAdapter{
@@ -417,11 +365,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             case Constants.MENU_ITEM_CHANGE_SEMESTER:
             	Intent intent = new Intent(this, ChangeSemesterActivity.class);
                 intent.putExtra(Constants.REGISTER_TERMS, false);
+                intent.putExtra(Constants.TERM, mTerm);
                 startActivityForResult(intent, CHANGE_SEMESTER_CODE);
             	return true;
             case R.id.action_refresh:
                 //Start thread to retrieve schedule
-                new ScheduleGetter(mTerm).execute();
+                executeClassDownloader();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -433,8 +382,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             if(resultCode == RESULT_OK){
                 //Get the chosen term
                 mTerm = (Term)data.getSerializableExtra(Constants.TERM);
-
-                new ScheduleGetter(mTerm).execute();
+                executeClassDownloader();
             }
         }
         else{

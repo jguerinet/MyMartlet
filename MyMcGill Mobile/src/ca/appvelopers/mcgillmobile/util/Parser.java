@@ -1,12 +1,16 @@
 package ca.appvelopers.mcgillmobile.util;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
@@ -47,7 +51,7 @@ public class Parser {
 
         List<Semester> semesters = new ArrayList<Semester>();
         double cgpa = 0;
-        int totalCredits = 0;
+        double totalCredits = 0;
 
         int index = 0;
         for (Element row : rows){
@@ -69,7 +73,7 @@ public class Parser {
             if(row.text().startsWith(Token.TOTAL_CREDITS.getString())){
                 dataRow = rows.get(index+1);
                 try{
-                    totalCredits = (int)Double.parseDouble(dataRow.text());
+                    totalCredits = Double.parseDouble(dataRow.text());
                 }
                 catch (NumberFormatException e){
                     totalCredits = -1;
@@ -78,19 +82,35 @@ public class Parser {
             //Semester Information
             if(row.text().startsWith(Token.FALL.getString()) ||
                     row.text().startsWith(Token.WINTER.getString()) ||
-                    row.text().startsWith(Token.SUMMER.getString())){
+                    row.text().startsWith(Token.SUMMER.getString()) ||
+                    row.text().startsWith(Token.READMITTED_FALL.getString()) ||
+                    row.text().startsWith(Token.READMITTED_WINTER.getString()) ||
+                    row.text().startsWith(Token.READMITTED_SUMMER.getString()) ){
 
                 //Initialize variables
                 String scheduleSemester = row.text().trim();
                 String[] scheduleSemesterItems = scheduleSemester.split("\\s+");
-                //Find the right season and year
-                Season season = Season.findSeason(scheduleSemesterItems[0]);
-                int year = Integer.valueOf(scheduleSemesterItems[1]);
+
+                //Find the right season and year, making sure to get the right array index
+                Season season = null;
+                int year = 99;
+
+                if(row.text().startsWith(Token.FALL.getString()) ||
+                        row.text().startsWith(Token.WINTER.getString()) ||
+                        row.text().startsWith(Token.SUMMER.getString()) ){
+
+                    season = Season.findSeason(scheduleSemesterItems[0]);
+                    year = Integer.valueOf(scheduleSemesterItems[1]);
+                }
+                else{
+                    season = Season.findSeason(scheduleSemesterItems[1]);
+                    year = Integer.valueOf(scheduleSemesterItems[2]);
+                }
 
                 String program = "";
                 String bachelor = "";
                 int programYear = 99;
-                int termCredits = 0;
+                double termCredits = 0;
                 double termGPA = 0.0;
                 boolean fullTime = false;
                 boolean satisfactory = false;
@@ -155,7 +175,7 @@ public class Parser {
                     }
                     //Term Credits
                     else if(dataRow.text().startsWith(Token.TERM_CREDITS.getString())){
-                        termCredits = (int)Double.parseDouble(rows.get(semesterIndex + 2).text());
+                        termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                     }
 
                     //Extract course information if row contains a course code
@@ -180,11 +200,11 @@ public class Parser {
                         String courseTitle = rows.get(semesterIndex + 2).text();
 
                         //Failed courses are missing the earned credits row
-                        int credits = 0;
+                        double credits = 0;
 
                         //Check row to see if earned credit exists
                         try{
-                            credits = Integer.parseInt(rows.get(semesterIndex + 6).text());
+                            credits = Double.parseDouble(rows.get(semesterIndex + 6).text());
                         }
                         catch(NumberFormatException e){
                             //Course failed -> Earned credit = 0
@@ -226,7 +246,7 @@ public class Parser {
                         String courseCode;
                         String userGrade = "N/A";
                         String averageGrade = "";
-                        int credits = 0;
+                        double credits = 0;
 
                         //Individual transferred courses not listed
                         if(!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")){
@@ -246,7 +266,7 @@ public class Parser {
                             try{
                                 courseCode = rows.get(semesterIndex + 2).text();
                                 courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
-                                credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
+                                credits = Double.parseDouble(rows.get(semesterIndex + 5).text());
 
                                 Course course = new Course(new Term(season, year), courseTitle, courseCode, credits,
                                         userGrade, averageGrade);
@@ -295,7 +315,11 @@ public class Parser {
                      */
                     if(dataRow.text().startsWith(Token.FALL.getString()) ||
                             dataRow.text().startsWith(Token.WINTER.getString()) ||
-                            dataRow.text().startsWith(Token.SUMMER.getString())){
+                            dataRow.text().startsWith(Token.SUMMER.getString()) ||
+                            dataRow.text().startsWith(Token.READMITTED_FALL.getString()) ||
+                            dataRow.text().startsWith(Token.READMITTED_WINTER.getString()) ||
+                            dataRow.text().startsWith(Token.READMITTED_SUMMER.getString()) ){
+
                         break;
                     }
 
@@ -310,26 +334,31 @@ public class Parser {
                     }
                 }
 
-                Semester semester = new Semester(new Term(season, year), program, bachelor, programYear,
-                        termCredits, termGPA, fullTime, satisfactory, courses);
+                //Check if there are any courses associated with the semester
+                //If not, don't add the semester to the list of semesters
+                if(!courses.isEmpty()){
+                    Semester semester = new Semester(new Term(season, year), program, bachelor, programYear,
+                            termCredits, termGPA, fullTime, satisfactory, courses);
 
-                semesters.add(semester);
+                    semesters.add(semester);
+                }
+
             }
             index++;
         }
-
+        Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
         App.setTranscript(new Transcript(cgpa, totalCredits, semesters));
     }
 
     //Extracts the number of credits
-    private static int extractCredits(String creditString){
-        int numCredits;
+    private static double extractCredits(String creditString){
+        double numCredits;
 
         try{
             creditString = creditString.replaceAll("\\s", "");
             String[] creditArray = creditString.split("-");
             creditArray = creditArray[1].split("credits");
-            numCredits = Integer.parseInt(creditArray[0]);
+            numCredits = Double.parseDouble(creditArray[0]);
             return numCredits;
         }
         catch (NumberFormatException e){
@@ -348,6 +377,15 @@ public class Parser {
     public static void parseClassList(Term term, String classHTML){
         //Get the list of classes already parsed for that year
         List<ClassItem> classItems = App.getClasses();
+
+        //This will be the list of classes to remove at the end (the user has unregistered)
+        List<ClassItem> classesToRemove = new ArrayList<ClassItem>();
+        //It starts out with all of the classes for this term
+        for(ClassItem classItem : classItems){
+            if(classItem.getTerm().equals(term)){
+                classesToRemove.add(classItem);
+            }
+        }
 
         if(classItems == null){
             classItems = new ArrayList<ClassItem>();
@@ -375,7 +413,7 @@ public class Parser {
                 //Credits
                 row = currentElement.getElementsByTag("tr").get(5);
                 String creditString = row.getElementsByTag("td").first().text();
-                int credits = (int) Double.parseDouble(creditString);
+                double credits = Double.parseDouble(creditString);
 
                 //Check if there is any data to parse
                 if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
@@ -431,13 +469,17 @@ public class Parser {
                             //If you find an equivalent, just update it
                             classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
                                     days, sectionType, location, instructor, credits);
+
+                            //Remove it from the list of class items to remove
+                            classesToRemove.remove(classItem);
                             break;
                         }
                     }
                     //It not, add a new class item
                     if (!classExists) {
                         //Find the concerned course
-                        classItems.add(new ClassItem(term, courseCode, courseTitle, crn, section, startHour,
+                        //TODO: Properly parse course subject and number
+                        classItems.add(new ClassItem(term, courseCode, "BLAMERYAN", "1", courseTitle, crn, section, startHour,
                                 startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                 -1, -1, -1, -1, -1, credits, null));
                     }
@@ -449,8 +491,11 @@ public class Parser {
             }
         }
 
+        //Remove the classes to remove
+        classItems.removeAll(classesToRemove);
+
         //Save it to the instance variable in Application class
-        App.setClassList(classItems);
+        App.setClasses(classItems);
     }
 
     /**
@@ -472,8 +517,10 @@ public class Parser {
 
         while (loop) {
             // Create a new course object
-            int credits = 99;
+            double credits = 99;
             String courseCode = "ERROR";
+            String courseSubject = "ERROR";
+            String courseNumber = "999";
             String courseTitle = "ERROR";
             String sectionType = "";
             List<Day> days = new ArrayList<Day>();
@@ -517,9 +564,11 @@ public class Parser {
                         // Course code
                         case 2:
                             courseCode = row.text();
+                            courseSubject = row.text();
                             break;
                         case 3:
                             courseCode += " " + row.text();
+                            courseNumber = row.text();
                             break;
                         // Section type
                         case 5:
@@ -527,7 +576,7 @@ public class Parser {
                             break;
                         // Number of credits
                         case 6:
-                            credits = (int) Double.parseDouble(row.text());
+                            credits = Double.parseDouble(row.text());
                             break;
                         // Course title
                         case 7:
@@ -635,7 +684,7 @@ public class Parser {
             rowsSoFar = 0;
             if( !courseCode.equals("ERROR")){
                 //Create a new course object and add it to list
-                classItems.add(new ClassItem(term, courseCode, courseTitle, crn, "", startHour,
+                classItems.add(new ClassItem(term, courseCode, courseSubject, courseNumber, courseTitle, crn, "", startHour,
                         startMinute, endHour, endMinute, days, sectionType, location, instructor,
                         capacity, seatsAvailable, seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining,
                         credits, dates));
@@ -647,10 +696,11 @@ public class Parser {
     /**
      * Parses the Minerva Quick Add/Drop page after registering to check if any errors have occurred
      * @param resultHTML The HTML string
+     * @return CRNs with registration errors and the associated error
      */
 
-    public static String parseRegistrationErrors(String resultHTML){
-        String registrationError = null;
+    public static Map<String, String> parseRegistrationErrors(String resultHTML){
+        Map<String, String> registrationErrors = new HashMap<String, String>();
 
         Document document = Jsoup.parse(resultHTML, "UTF-8");
         Elements dataRows = document.getElementsByClass("plaintable");
@@ -662,14 +712,19 @@ public class Parser {
 
                 //If so, determine what error is present
                 Elements links = document.select("a[href]");
+
+                //Insert list of CRNs and errors into a map
                 for(Element link : links){
+
                     if(link.toString().contains(Connection.REGISTRATION_ERROR)){
-                        registrationError = link.text();
+                        String CRN = link.parent().parent().child(1).text();
+                        String error = link.text();
+                        registrationErrors.put(CRN, error);
                     }
                 }
             }
         }
-        return registrationError;
+        return registrationErrors;
     }
 
     /**

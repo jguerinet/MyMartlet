@@ -32,8 +32,6 @@ import ca.appvelopers.mcgillmobile.view.TermAdapter;
  */
 public class ChangeSemesterActivity extends BaseActivity {
 
-    private boolean mRegisterTerms;
-    private List<Term> mTerms;
     private Term mTerm;
     private CheckBox mDefaultCheckbox;
 
@@ -57,33 +55,38 @@ public class ChangeSemesterActivity extends BaseActivity {
         layout.setLayoutParams(params);
 
         //Check if this is the user list of terms or the registration list of terms
-        mRegisterTerms = getIntent().getBooleanExtra(Constants.REGISTER_TERMS, false);
+        boolean registerTerms = getIntent().getBooleanExtra(Constants.REGISTER_TERMS, false);
 
         //Set up the default checkbox
         mDefaultCheckbox = (CheckBox)findViewById(R.id.change_semester_default);
 
-        mTerms = new ArrayList<Term>();
+        List<Term> terms = new ArrayList<Term>();
 
-        //Get the current default term
-        mTerm = App.getDefaultTerm();
+        //Check if there was a term sent
+        mTerm = (Term) getIntent().getSerializableExtra(Constants.TERM);
+
+        //If not, get the current default term
+        if(mTerm == null){
+            mTerm = App.getDefaultTerm();
+        }
 
         //Extract all the terms that the user has registered in
         for (Semester semester : App.getTranscript().getSemesters()) {
-            mTerms.add(semester.getTerm());
+            terms.add(semester.getTerm());
         }
 
         //If we are also using the registration term
-        if(mRegisterTerms){
+        if(registerTerms){
             //Get the current terms that the user can register in
             for(Term term : App.getRegisterTerms()){
-                if(!mTerms.contains(term)){
-                    mTerms.add(term);
+                if(!terms.contains(term)){
+                    terms.add(term);
                 }
             }
         }
 
         //Order them chronologically
-        Collections.sort(mTerms, new Comparator<Term>() {
+        Collections.sort(terms, new Comparator<Term>() {
             @Override
             public int compare(Term term, Term term2) {
                 return term.isAfter(term2) ? -1 : 1;
@@ -92,9 +95,9 @@ public class ChangeSemesterActivity extends BaseActivity {
 
         //Set up the spinner
         Spinner spinner = (Spinner)findViewById(R.id.change_semester_term);
-        final TermAdapter adapter = new TermAdapter(this, mTerms);
+        final TermAdapter adapter = new TermAdapter(this, terms);
         spinner.setAdapter(adapter);
-        spinner.setSelection(mTerms.indexOf(mTerm));
+        spinner.setSelection(terms.indexOf(mTerm));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

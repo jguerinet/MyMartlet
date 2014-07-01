@@ -1,23 +1,34 @@
 package ca.appvelopers.mcgillmobile.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
@@ -32,6 +43,118 @@ public class SettingsActivity extends DrawerActivity {
 
         GoogleAnalytics.sendScreen(this, "Settings");
 
+        //Help
+        TextView helpIcon = (TextView)findViewById(R.id.help_icon);
+        helpIcon.setTypeface(App.getIconFont());
+        LinearLayout helpContainer = (LinearLayout)findViewById(R.id.settings_help);
+        helpContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SettingsActivity.this, HelpActivity.class));
+            }
+        });
+
+        //About
+        TextView aboutIcon = (TextView)findViewById(R.id.about_icon);
+        aboutIcon.setTypeface(App.getIconFont());
+        LinearLayout aboutContainer = (LinearLayout)findViewById(R.id.settings_about);
+        aboutContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SettingsActivity.this, AboutActivity.class));
+            }
+        });
+
+        //Report a Bug
+        TextView bugIcon = (TextView)findViewById(R.id.bug_icon);
+        bugIcon.setTypeface(App.getIconFont());
+        LinearLayout bugContainer = (LinearLayout)findViewById(R.id.settings_bug);
+        bugContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Inflate the view
+                View dialogView = View.inflate(SettingsActivity.this, R.layout.dialog_edittext, null);
+
+                //Create the Builder
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SettingsActivity.this);
+                //Set up the view
+                alertDialogBuilder.setView(dialogView);
+                //EditText
+                final EditText userInput = (EditText) dialogView.findViewById(R.id.dialog_input);
+
+                //Set up the dialog
+                alertDialogBuilder.setCancelable(false)
+                        .setNegativeButton(getResources().getString(android.R.string.cancel),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setPositiveButton(getResources().getString(android.R.string.ok),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        GoogleAnalytics.sendEvent(SettingsActivity.this, "About", "Report a Bug",
+                                                null, null);
+
+                                        //Get the user input
+                                        final String summary = userInput.getText().toString();
+                                        //Get the other necessary info
+                                        //App Version Name & Number
+                                        PackageInfo packageInfo = null;
+                                        try {
+                                            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                        } catch (PackageManager.NameNotFoundException e) {
+                                            e.printStackTrace();
+                                        }
+                                        String appVersionName = "";
+                                        int appVersionNumber = 0;
+                                        if (packageInfo != null) {
+                                            appVersionName = packageInfo.versionName;
+                                            appVersionNumber = packageInfo.versionCode;
+                                        }
+
+                                        //OS Version
+                                        String osVersion = Build.VERSION.RELEASE;
+                                        //SDK Version Number
+                                        int sdkVersionNumber = Build.VERSION.SDK_INT;
+
+                                        //Manufacturer
+                                        String manufacturer = Build.MANUFACTURER;
+                                        //Model
+                                        String model = Build.MODEL;
+
+                                        String phoneModel;
+                                        if (!model.startsWith(manufacturer)) {
+                                            phoneModel = manufacturer + " " + model;
+                                        } else {
+                                            phoneModel = model;
+                                        }
+
+                                        //Prepare the email
+                                        Intent bugEmail = new Intent(Intent.ACTION_SEND);
+                                        //Recipient
+                                        bugEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.REPORT_A_BUG_EMAIL});
+                                        //Title
+                                        bugEmail.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.help_bug_title,
+                                                "Android") + " " + summary);
+                                        //Message
+                                        bugEmail.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.help_bug_summary,
+                                                "Android",
+                                                App.getLanguage().getLanguageString(),
+                                                appVersionName,
+                                                appVersionNumber,
+                                                osVersion,
+                                                sdkVersionNumber,
+                                                phoneModel));
+                                        //Type(Email)
+                                        bugEmail.setType("message/rfc822");
+                                        startActivity(Intent.createChooser(bugEmail, getResources().getString(R.string.about_email_picker_title)));
+                                    }
+                                })
+                        .create().show();
+            }
+        });
+
         //Set up the info
         Spinner languages = (Spinner)findViewById(R.id.settings_language);
         //Set up the array of languages
@@ -41,7 +164,8 @@ public class SettingsActivity extends DrawerActivity {
         Collections.sort(languageStrings);
         //Standard ArrayAdapter
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(this,
-                R.layout.spinner_dropdown, languageStrings);
+                R.layout.spinner_item, languageStrings);
+        languageAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         //Apply the adapter to the spinner
         languages.setAdapter(languageAdapter);
         //Set the default selected to the user's chosen language
@@ -57,6 +181,14 @@ public class SettingsActivity extends DrawerActivity {
                 //If it's different than the previously selected language, update it and reload
                 if(App.getLanguage() != chosenLanguage){
                     App.setLanguage(chosenLanguage);
+
+                    //Update locale and config
+                    Locale locale = new Locale(chosenLanguage.getLanguageString());
+                    Locale.setDefault(locale);
+                    Configuration config = getBaseContext().getResources().getConfiguration();
+                    config.locale = locale;
+                    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
                     startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
                     finish();
                 }
@@ -69,7 +201,7 @@ public class SettingsActivity extends DrawerActivity {
         Spinner homepages = (Spinner)findViewById(R.id.settings_homepage);
         final HomePageAdapter homePageAdapter = new HomePageAdapter(this);
         homepages.setAdapter(homePageAdapter);
-        homepages.setSelection(App.getHomePage().ordinal());
+        homepages.setSelection(homePageAdapter.getPosition(App.getHomePage()));
         homepages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -95,12 +227,16 @@ public class SettingsActivity extends DrawerActivity {
                 Save.saveStatistics(SettingsActivity.this, b);
             }
         });
-    }
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(SettingsActivity.this, App.getHomePage().getHomePageClass()));
-        super.onBackPressed();
-    }
+        //Version Number
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String appVersionName = packageInfo.versionName;
 
+            TextView versionNumber = (TextView)findViewById(R.id.settings_version);
+            versionNumber.setText(getResources().getString(R.string.settings_version, appVersionName));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

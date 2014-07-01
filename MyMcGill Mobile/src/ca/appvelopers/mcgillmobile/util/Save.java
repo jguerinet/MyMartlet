@@ -15,7 +15,6 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
-import ca.appvelopers.mcgillmobile.object.Inbox;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
@@ -117,11 +116,11 @@ public class Save {
         }
     }
 
-    public static void saveSchedule(Context context){
+    public static void saveClasses(Context context){
         List<ClassItem> courses = App.getClasses();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.SCHEDULE_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.CLASSES_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(courses);
         } catch (OptionalDataException e) {
@@ -160,24 +159,6 @@ public class Save {
             FileOutputStream fos = context.openFileOutput(Constants.USER_INFO_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(userInfo);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveInbox(Context context){
-        Inbox inbox = App.getInbox();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.INBOX_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(inbox);
         } catch (OptionalDataException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

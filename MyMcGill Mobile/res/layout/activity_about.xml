@@ -1,24 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/team_name"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/text_large"
+        android:padding="@dimen/padding_micro"
+        android:textColor="@color/red"/>
 
-    <!-- The main content view -->
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/scrollView">
 
-        <android.support.v4.view.ViewPager
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/about_viewpager"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </LinearLayout>
-    <!-- The navigation drawer -->
-    <include layout="@layout/drawer"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/stock_photo"
+                android:adjustViewBounds="true"
+                tools:ignore="ContentDescription" />
 
-</android.support.v4.widget.DrawerLayout>
+            <include layout="@layout/item_person"
+                android:id="@+id/adnan"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/gabriel"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/hernan"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/josh"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/julien"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/omar"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/quang"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/ryan"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/shabbir"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/xavier"/>
+
+            <include layout="@layout/item_person"
+                android:id="@+id/yulric"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

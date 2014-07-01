@@ -6,98 +6,210 @@ android:layout_width="match_parent"
 android:layout_height="match_parent">
 
 <!-- The main content view -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding_micro"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small">
+            android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="@string/settings_language"
-                android:textSize="@dimen/text_medium"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small">
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
-                android:id="@+id/settings_language"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:text="@string/settings_language"
+                    android:textSize="@dimen/text_medium"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical"
+                    android:id="@+id/settings_language"/>
 
             </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
-            android:background="@color/black"/>
+            <include layout="@layout/line"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding_micro"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="@string/settings_homepage"
-                android:textSize="@dimen/text_medium"/>
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
-                android:id="@+id/settings_homepage"/>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
-            android:background="@color/black"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding_micro"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="@string/settings_statistics"
-                android:textSize="@dimen/text_medium"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/settings_statistics"/>
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/settings_homepage"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical"
+                    android:id="@+id/settings_homepage"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/settings_statistics"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_medium"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/settings_statistics"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/settings_help"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
+                android:background="@drawable/drawable_transparent_redpressed"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/help_icon"
+                    android:gravity="center"
+                    android:textColor="@drawable/color_black_whitepressed"
+                    android:text="@string/icon_question"
+                    android:textSize="@dimen/text_medium"
+                    android:duplicateParentState="true"
+                    android:paddingRight="@dimen/padding_micro"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_help"
+                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textSize="@dimen/text_medium"
+                    android:duplicateParentState="true"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/settings_about"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
+                android:background="@drawable/drawable_transparent_redpressed"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/about_icon"
+                    android:gravity="center"
+                    android:textColor="@drawable/color_black_whitepressed"
+                    android:text="@string/icon_info"
+                    android:textSize="@dimen/text_medium"
+                    android:duplicateParentState="true"
+                    android:paddingRight="@dimen/padding_micro"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_about"
+                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textSize="@dimen/text_medium"
+                    android:duplicateParentState="true"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/settings_bug"
+                android:padding="@dimen/padding_micro"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
+                android:background="@drawable/drawable_transparent_redpressed"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bug_icon"
+                    android:gravity="center"
+                    android:textColor="@drawable/color_black_whitepressed"
+                    android:text="@string/icon_bug"
+                    android:textSize="@dimen/text_medium"
+                    android:duplicateParentState="true"
+                    android:paddingRight="@dimen/padding_micro"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_report_bug"
+                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textSize="@dimen/text_medium"
+                    android:duplicateParentState="true"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/line"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/settings_version"
+                android:background="@color/transparent"
+                android:textSize="@dimen/text_large"
+                android:textColor="@color/grey"
+                android:gravity="center"
+                android:textStyle="italic"
+                android:padding="@dimen/padding_medium"/>
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
-            android:background="@color/black"/>
-
-    </LinearLayout>
+    </ScrollView>
 
 <!-- The navigation drawer -->
 <include layout="@layout/drawer"/>

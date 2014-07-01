@@ -1,7 +1,9 @@
 package ca.appvelopers.mcgillmobile.activity.drawer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -16,7 +18,6 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.AboutActivity;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
 import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.activity.MapActivity;
@@ -26,11 +27,10 @@ import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
-import ca.appvelopers.mcgillmobile.activity.inbox.InboxActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
+import ca.appvelopers.mcgillmobile.mycourseslist.MyCoursesListActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 /**
@@ -41,15 +41,12 @@ public class DrawerAdapter extends BaseAdapter {
     private Activity mActivity;
     private List<DrawerItem> mDrawerItems;
     private int mSelectedPosition;
-    private int mUnreadMessages;
-    private TextView mUnreadMessagesView;
     private DrawerLayout mDrawerLayout;
 
     //Easy way to keep track of the list order (for the OnClick)
     public static final int SCHEDULE_POSITION = 0;
     public static final int TRANSCRIPT_POSITION = SCHEDULE_POSITION + 1;
-    public static final int EMAIL_POSITION = TRANSCRIPT_POSITION + 1;
-    public static final int MYCOURSES_POSITION = EMAIL_POSITION + 1;
+    public static final int MYCOURSES_POSITION = TRANSCRIPT_POSITION + 1;
     public static final int COURSES_POSITION = MYCOURSES_POSITION + 1;
     public static final int WISHLIST_POSITION = COURSES_POSITION + 1;
     public static final int SEARCH_COURSES_POSITION = WISHLIST_POSITION + 1;
@@ -58,14 +55,12 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int DESKTOP_POSITION = MAP_POSITION + 1;
     public static final int SETTINGS_POSITION = DESKTOP_POSITION + 1;
     public static final int LOGOUT_POSITION = SETTINGS_POSITION + 1;
-    public static final int ABOUT_POSITION = LOGOUT_POSITION + 1;
 
     public DrawerAdapter(Activity activity, DrawerLayout drawerLayout, int selectedPosition){
         this.mActivity = activity;
         this.mDrawerLayout = drawerLayout;
         this.mDrawerItems = new ArrayList<DrawerItem>();
         this.mSelectedPosition = selectedPosition;
-        this.mUnreadMessages = App.getUnreadEmails();
         generateDrawerItems();
     }
 
@@ -78,10 +73,6 @@ public class DrawerAdapter extends BaseAdapter {
         //Transcript
         mDrawerItems.add(TRANSCRIPT_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_transcript),
                 mActivity.getResources().getString(R.string.icon_transcript)));
-
-        //Email
-        mDrawerItems.add(EMAIL_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_inbox),
-                mActivity.getResources().getString(R.string.icon_email)));
 
         //MyCourses
         mDrawerItems.add(MYCOURSES_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_mycourses),
@@ -118,11 +109,6 @@ public class DrawerAdapter extends BaseAdapter {
         //Logout
         mDrawerItems.add(LOGOUT_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_logout),
                 mActivity.getResources().getString(R.string.icon_logout)));
-
-        // About
-        mDrawerItems.add(ABOUT_POSITION ,new DrawerItem(mActivity.getResources().getString(R.string.title_about),
-                mActivity.getResources().getString(R.string.icon_question)));
-
     }
 
     @Override
@@ -161,20 +147,10 @@ public class DrawerAdapter extends BaseAdapter {
         TextView title = (TextView)view.findViewById(R.id.drawerItem_title);
         title.setText(currentItem.getTitle());
         
-        TextView badge = (TextView)view.findViewById(R.id.drawer_email_count);
-        if(position == EMAIL_POSITION){
-            mUnreadMessagesView = badge;
-            updateUnreadMessages();
-        }
-        else{
-        	badge.setVisibility(View.INVISIBLE);
-        }
-        
         //OnClick
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent;
                 switch(position){
                     case SCHEDULE_POSITION:
                         mActivity.startActivity(new Intent(mActivity, ScheduleActivity.class));
@@ -182,24 +158,17 @@ public class DrawerAdapter extends BaseAdapter {
                     case TRANSCRIPT_POSITION:
                         mActivity.startActivity(new Intent(mActivity, TranscriptActivity.class));
                         break;
-                    case EMAIL_POSITION:
-                        mActivity.startActivity(new Intent(mActivity, InboxActivity.class));
-                        break;
                     case MYCOURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
                         break;
                     case COURSES_POSITION:
-                        intent = new Intent(mActivity, CoursesListActivity.class);
-                        intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.VIEW_COURSES);
-                        mActivity.startActivity(intent);
+                        mActivity.startActivity(new Intent(mActivity, MyCoursesListActivity.class));
                         break;
                     case SEARCH_COURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, RegistrationActivity.class));
                         break;
                     case WISHLIST_POSITION:
-                        intent = new Intent(mActivity, CoursesListActivity.class);
-                        intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.WISHLIST);
-                        mActivity.startActivity(intent);
+                        mActivity.startActivity(new Intent(mActivity, CoursesListActivity.class));
                         break;
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));
@@ -214,16 +183,26 @@ public class DrawerAdapter extends BaseAdapter {
                         mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
                         break;
                     case LOGOUT_POSITION:
-                        GoogleAnalytics.sendEvent(mActivity, "Logout", "Clicked", null, null);
-                        Clear.clearAllInfo(mActivity);
-                        //Go back to LoginActivity
-                        mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
-                        break;
-                    case ABOUT_POSITION:
-                        mActivity.startActivity(new Intent(mActivity, AboutActivity.class));
+                        new AlertDialog.Builder(mActivity)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle(mActivity.getResources().getString(R.string.logout_dialog_title))
+                                .setMessage(mActivity.getResources().getString(R.string.logout_dialog_message))
+                                .setPositiveButton(mActivity.getResources().getString(R.string.logout_dialog_positive), new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        GoogleAnalytics.sendEvent(mActivity, "Logout", "Clicked", null, null);
+                                        Clear.clearAllInfo(mActivity);
+                                        //Go back to LoginActivity
+                                        mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
+                                    }
+
+                                })
+                                .setNegativeButton(mActivity.getResources().getString(R.string.logout_dialog_negative), null)
+                                .create()
+                                .show();
                         break;
                 }
-                mActivity.finish();
             }
         });
 
@@ -248,20 +227,5 @@ public class DrawerAdapter extends BaseAdapter {
         }
 
         return view;
-    }
-
-    public void updateUnreadMessages(){
-        mUnreadMessages = App.getUnreadEmails();
-
-        if(mUnreadMessagesView != null){
-            if(mUnreadMessages == 0){
-                mUnreadMessagesView.setVisibility(View.INVISIBLE);
-            }
-            else{
-                mUnreadMessagesView.setVisibility(View.VISIBLE);
-                mUnreadMessagesView.setText(String.valueOf(mUnreadMessages));
-            }
-            notifyDataSetChanged();
-        }
     }
 }

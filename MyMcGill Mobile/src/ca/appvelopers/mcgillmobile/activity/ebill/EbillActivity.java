@@ -1,17 +1,14 @@
 package ca.appvelopers.mcgillmobile.activity.ebill;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +17,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
@@ -30,7 +26,6 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 public class EbillActivity extends DrawerActivity {
 	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
     private UserInfo mUserInfo;
-    private boolean mDoubleBackToExit;
     private TextView mUserName, mUserId;
     private ListView mListView;
 
@@ -57,29 +52,6 @@ public class EbillActivity extends DrawerActivity {
         //Start the thread to get the ebill
         new EbillGetter().execute();
 	}
-
-    @Override
-    public void onBackPressed(){
-        if(App.getHomePage() != HomePage.EBILL){
-            startActivity(new Intent(EbillActivity.this, App.getHomePage().getHomePageClass()));
-            super.onBackPressed();
-        }
-        else{
-            if (mDoubleBackToExit) {
-                super.onBackPressed();
-                return;
-            }
-            this.mDoubleBackToExit = true;
-            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mDoubleBackToExit=false;
-                }
-            }, 2000);
-        }
-    }
 
     private void loadInfo(){
         if(mUserInfo != null){

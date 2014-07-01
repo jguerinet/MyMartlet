@@ -20,6 +20,8 @@ public class ClassItem implements Serializable{
 
     private Term mTerm;
     private String mCourseCode;
+    private String mCourseSubject;
+    private String mCourseNumber;
     private String mCourseTitle;
     private int mCRN;
     private String mSection;
@@ -34,16 +36,18 @@ public class ClassItem implements Serializable{
     private int mWaitlistCapacity;
     private int mWaitlistAvailable;
     private int mWaitlistRemaining;
-    private int mCredits;
+    private double mCredits;
     private String mDates;
 
-    public ClassItem(Term term, String courseCode, String courseTitle, int crn,
+    public ClassItem(Term term, String courseCode, String courseSubject, String courseNumber, String courseTitle, int crn,
                      String section, int startHour, int startMinute, int endHour, int endMinute,
                      List<Day> days, String sectionType, String location, String instructor, int capacity,
                      int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
-                     int waitlistRemaining, int credits, String dates){
+                     int waitlistRemaining, double credits, String dates){
         this.mTerm = term;
         this.mCourseCode = courseCode;
+        this.mCourseSubject = courseSubject;
+        this.mCourseNumber = courseNumber;
         this.mCourseTitle = courseTitle;
         this.mCRN = crn;
         this.mSection = section;
@@ -88,6 +92,22 @@ public class ClassItem implements Serializable{
      */
     public String getCourseCode(){
         return mCourseCode;
+    }
+
+    /**
+     * Get the course subject
+     * @return The course subject
+     */
+    public String getCourseSubject(){
+        return mCourseSubject;
+    }
+
+    /**
+     * Get the course number
+     * @return The course number
+     */
+    public String getCourseNumber(){
+        return mCourseNumber;
     }
 
     /**
@@ -166,7 +186,7 @@ public class ClassItem implements Serializable{
      * Get the course credits
      * @return The course credits
      */
-    public int getCredits(){
+    public double getCredits(){
         return mCredits;
     }
 
@@ -178,18 +198,79 @@ public class ClassItem implements Serializable{
         return mDates;
     }
 
-
-    /* HELPER METHODS */
-
     /**
-     * Check to see if this class is part of the given semester
-     * @param semester The semester
-     * @return True if this class is for this semester, false otherwise
+     * Get the number of spots remaining
+     * @return The number of spots remaining
      */
-    public boolean isForSemester(Semester semester){
-        return  semester.getTerm().equals(mTerm);
+    public int getSeatsRemaining(){
+        return mSeatsRemaining;
     }
 
+    /**
+     * Get the number of waitlist spots remaining
+     * @return The number of waitlist spots remaining
+     */
+    public int getWaitlistRemaining(){
+        return mWaitlistRemaining;
+    }
+
+    /**
+     * Set the start time of the course (rounded off to the nearest half hour)
+     */
+    public void setStartTime(LocalTime time){
+        this.mStartTime = time;
+    }
+
+    /**
+     * Set the end time of the course (rounded off the the nearest half hour)
+     */
+    public void setEndTime(LocalTime time){
+        this.mEndTime = time;
+    }
+
+    /**
+     * Set the days this course is on
+     */
+    public void setDays(List<Day> days){
+        this.mDays = days;
+    }
+
+    /**
+     * Set the course's location
+     */
+    public void setLocation(String location){
+        this.mLocation = location;
+    }
+
+    /**
+     * Set the instructor for this course
+     */
+    public void setInstructor(String instructor){
+        this.mInstructor = instructor;
+    }
+
+    /**
+     * Set the dates this course is on
+     */
+    public void setDates(String dates){
+        this.mDates = dates;
+    }
+
+    /**
+     * Set the number of spots remaining
+     */
+    public void setSeatsRemaining(int seatsRemaining){
+        this.mSeatsRemaining = seatsRemaining;
+    }
+
+    /**
+     * Set the number of waitlist spots remaining
+     */
+    public void setWaitlistRemaining(int waitlistRemaining){
+        this.mWaitlistRemaining = waitlistRemaining;
+    }
+
+    /* HELPER METHODS */
     /**
      * Update the ClassItem
      * @param courseCode The new course code
@@ -207,7 +288,7 @@ public class ClassItem implements Serializable{
      */
     public void update(String courseCode, String courseTitle, String section, int startHour, int startMinute,
                        int endHour, int endMinute, List<Day> days, String sectionType, String location, String instructor,
-                       int credits){
+                       double credits){
         this.mCourseCode = courseCode;
         this.mCourseTitle = courseTitle;
         this.mSection = section;

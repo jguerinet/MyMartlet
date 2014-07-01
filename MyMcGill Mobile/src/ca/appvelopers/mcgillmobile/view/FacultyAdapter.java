@@ -60,12 +60,29 @@ public class FacultyAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int position, View view, ViewGroup viewGroup) {
+        if(view == null){
+            view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, null);
+        }
+
+        Faculty faculty = getItem(position);
+        if(faculty != null){
+            ((TextView)view).setText(faculty.toString(mContext));
+        }
+        else{
+            ((TextView)view).setText(" ");
+        }
+
+        return view;
+    }
+
+    @Override
+    public View getDropDownView(int position, View view, ViewGroup viewGroup){
         if(view == null){
             view = LayoutInflater.from(mContext).inflate(R.layout.spinner_dropdown, null);
         }
 
-        Faculty faculty = getItem(i);
+        Faculty faculty = getItem(position);
         if(faculty != null){
             ((TextView)view).setText(faculty.toString(mContext));
         }

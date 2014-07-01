@@ -4,12 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -36,10 +39,14 @@ import ca.appvelopers.mcgillmobile.view.TermAdapter;
  * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
-    private Spinner mTermSpinner, mFacultySpinner, mMinCreditsSpinner, mMaxCreditsSpinner;
+    private Spinner mTermSpinner, mFacultySpinner;
     private TermAdapter mTermAdapter;
     private FacultyAdapter mFacultyAdapter;
     private TimePicker mStartTime, mEndTime;
+    private EditText mCourseSubject, mCourseNumber, mCourseTitle, mMinCredits, mMaxCredits;
+    private CheckBox mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday;
+
+    private boolean mMoreOptions = false;
 
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -58,19 +65,6 @@ public class RegistrationActivity extends DrawerActivity{
         mFacultyAdapter = new FacultyAdapter(this, true);
         mFacultySpinner.setAdapter(mFacultyAdapter);
 
-        //Set up the min and maxes
-        mMinCreditsSpinner = (Spinner)findViewById(R.id.registration_credits_min);
-        mMaxCreditsSpinner = (Spinner)findViewById(R.id.registration_credits_max);
-
-        //Set up the credits adapter
-        List<Integer> hours = new ArrayList<Integer>();
-        for(int i = 0; i < 24; i ++){
-            hours.add(i);
-        }
-        ArrayAdapter<Integer> hoursAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_dropdown, hours);
-        mMinCreditsSpinner.setAdapter(hoursAdapter);
-        mMaxCreditsSpinner.setAdapter(hoursAdapter);
-
         mStartTime = (TimePicker)findViewById(R.id.registration_start_time);
         mStartTime.setCurrentHour(0);
         mStartTime.setCurrentMinute(0);
@@ -78,12 +72,42 @@ public class RegistrationActivity extends DrawerActivity{
         mEndTime = (TimePicker)findViewById(R.id.registration_end_time);
         mEndTime.setCurrentHour(0);
         mEndTime.setCurrentMinute(0);
-    }
 
-    @Override
-    public void onBackPressed(){
-        startActivity(new Intent(RegistrationActivity.this, App.getHomePage().getHomePageClass()));
-        super.onBackPressed();
+        //Get the other views
+        mCourseSubject = (EditText) findViewById(R.id.registration_subject);
+        mCourseNumber = (EditText) findViewById(R.id.registration_course_number);
+        mCourseTitle = (EditText)findViewById(R.id.registration_course_title);
+        mMinCredits = (EditText)findViewById(R.id.registration_credits_min);
+        mMaxCredits = (EditText)findViewById(R.id.registration_credits_max);
+        mMonday = (CheckBox)findViewById(R.id.registration_monday);
+        mTuesday = (CheckBox)findViewById(R.id.registration_tuesday);
+        mWednesday = (CheckBox)findViewById(R.id.registration_wednesday);
+        mThursday = (CheckBox)findViewById(R.id.registration_thursday);
+        mFriday = (CheckBox)findViewById(R.id.registration_friday);
+        mSaturday = (CheckBox)findViewById(R.id.registration_saturday);
+        mSunday = (CheckBox)findViewById(R.id.registration_sunday);
+
+        //Set up the more options button
+        final LinearLayout moreOptionsContainer = (LinearLayout)findViewById(R.id.more_options_container);
+        final TextView moreOptions = (TextView)findViewById(R.id.more_options);
+        moreOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Inverse the more options boolean
+                mMoreOptions = !mMoreOptions;
+
+                //If it is false, hide the options and set the show options text
+                if(!mMoreOptions){
+                    moreOptionsContainer.setVisibility(View.GONE);
+                    moreOptions.setText(getString(R.string.registration_show_options));
+                }
+                //Do the inverse if true
+                else{
+                    moreOptionsContainer.setVisibility(View.VISIBLE);
+                    moreOptions.setText(getString(R.string.registration_hide_options));
+                }
+            }
+        });
     }
 
     //Searches for the selected courses
@@ -95,30 +119,39 @@ public class RegistrationActivity extends DrawerActivity{
         Faculty faculty = mFacultyAdapter.getItem(mFacultySpinner.getSelectedItemPosition());
 
         //Subject Input
-        EditText courseSubjectView = (EditText) findViewById(R.id.registration_subject);
-        String courseSubject = courseSubjectView.getText().toString().toUpperCase();
-        if(!courseSubject.matches("[A-Za-z]{4}")){
-            String toastMessage = getResources().getString(R.string.registration_invalid_subject);
-            Toast.makeText(RegistrationActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+        String courseSubject = mCourseSubject.getText().toString().toUpperCase().trim();
+
+        if(faculty == null && courseSubject.isEmpty()){
+            Toast.makeText(this, getString(R.string.registration_error_no_faculty), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if(!courseSubject.isEmpty() && !courseSubject.matches("[A-Za-z]{4}")){
+            Toast.makeText(this, getString(R.string.registration_invalid_subject), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        //TODO Check if there is either a faculty or a subject inputted
-
         //Course Number
-        EditText courseNumberView = (EditText) findViewById(R.id.registration_course_number);
-        String courseNumber = courseNumberView.getText().toString();
+        String courseNumber = mCourseNumber.getText().toString();
 
         //Course Title
-        EditText courseTitleView = (EditText)findViewById(R.id.registration_course_title);
-        String courseTitle = courseTitleView.getText().toString();
+        String courseTitle = mCourseTitle.getText().toString();
 
         //Credits
-        int minCredits = mMinCreditsSpinner.getSelectedItemPosition();
-        int maxCredits = mMaxCreditsSpinner.getSelectedItemPosition();
+        int minCredits, maxCredits ;
+        try {
+            minCredits = Integer.valueOf(mMinCredits.getText().toString());
+        } catch (NumberFormatException e){
+            minCredits = 0;
+        }
+        try {
+            maxCredits = Integer.valueOf(mMaxCredits.getText().toString());
+        } catch (NumberFormatException e){
+            maxCredits = 0;
+        }
 
         if(maxCredits < minCredits){
-            //TODO Credits are not good
+            Toast.makeText(this, getString(R.string.registration_error_credits), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         //Start time
@@ -131,38 +164,62 @@ public class RegistrationActivity extends DrawerActivity{
 
         //Days
         List<Day> days = new ArrayList<Day>();
-        CheckBox checkbox = (CheckBox)findViewById(R.id.registration_monday);
-        if(checkbox.isChecked()){
+        if(mMonday.isChecked()){
             days.add(Day.MONDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_tuesday);
-        if(checkbox.isChecked()){
+        if(mTuesday.isChecked()){
             days.add(Day.TUESDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_wednesday);
-        if(checkbox.isChecked()){
+        if(mWednesday.isChecked()){
             days.add(Day.WEDNESDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_thursday);
-        if(checkbox.isChecked()){
+        if(mThursday.isChecked()){
             days.add(Day.THURSDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_friday);
-        if(checkbox.isChecked()){
+        if(mFriday.isChecked()){
             days.add(Day.FRIDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_saturday);
-        if(checkbox.isChecked()){
+        if(mSaturday.isChecked()){
             days.add(Day.SATURDAY);
         }
-        checkbox = (CheckBox)findViewById(R.id.registration_sunday);
-        if(checkbox.isChecked()){
+        if(mSunday.isChecked()){
             days.add(Day.SUNDAY);
         }
 
         //Obtain courses
         new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, faculty, courseNumber,
                 courseTitle, minCredits, maxCredits, startHour, startMinute, endHour, endMinute, days)).execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.reset, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_reset){
+            //Reset all of the views
+            mFacultySpinner.setSelection(0);
+            mStartTime.setCurrentHour(0);
+            mStartTime.setCurrentMinute(0);
+            mEndTime.setCurrentHour(0);
+            mEndTime.setCurrentMinute(0);
+            mCourseSubject.setText("");
+            mCourseNumber.setText("");
+            mCourseTitle.setText("");
+            mMinCredits.setText("");
+            mMaxCredits.setText("");
+            mMonday.setChecked(false);
+            mTuesday.setChecked(false);
+            mWednesday.setChecked(false);
+            mThursday.setChecked(false);
+            mFriday.setChecked(false);
+            mSaturday.setChecked(false);
+            mSunday.setChecked(false);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //Connects to Minerva in a new thread
@@ -219,7 +276,7 @@ public class RegistrationActivity extends DrawerActivity{
             //Go to the CoursesListActivity with the parsed courses
             else{
                 Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
-                intent.putExtra(Constants.LIST_TYPE, CoursesListActivity.CourseListType.SEARCH_COURSES);
+                intent.putExtra(Constants.WISHLIST, false);
                 intent.putExtra(Constants.TERM, mTerm);
                 startActivity(intent);
             }

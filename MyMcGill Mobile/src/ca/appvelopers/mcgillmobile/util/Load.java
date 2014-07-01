@@ -19,7 +19,6 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
-import ca.appvelopers.mcgillmobile.object.Inbox;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
@@ -120,31 +119,31 @@ public class Load {
         return transcript;
     }
 
-    public static List<ClassItem> loadSchedule(Context context){
+    public static List<ClassItem> loadClasses(Context context){
         List<ClassItem> courses = new ArrayList<ClassItem>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.SCHEDULE_FILE);
+            FileInputStream fis = context.openFileInput(Constants.CLASSES_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             courses = (List<ClassItem>) in.readObject();
         } catch (ClassNotFoundException e) {
-            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
             return courses;
         } catch (OptionalDataException e) {
-            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
             return courses;
         } catch (FileNotFoundException e) {
-            Log.e("Load Schedule Failure", "File not found");
+            Log.e("Load Classes Failure", "File not found");
             e.printStackTrace();
             return courses;
         } catch (StreamCorruptedException e) {
-            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
             return courses;
         } catch (IOException e) {
-            Log.e("Load Schedule Failure", e.getMessage() == null ? "" : e.getMessage());
+            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
             return courses;
         }
@@ -209,33 +208,6 @@ public class Load {
         }
 
         return userInfo;
-    }
-
-    public static Inbox loadInbox(Context context){
-        Inbox inbox = null;
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.INBOX_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            inbox = (Inbox) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Inbox Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (OptionalDataException e) {
-            Log.e("Load Inbox Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            Log.e("Load Inbox Failure", "File not found");
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Inbox Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.e("Load Inbox Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        }
-
-        return inbox;
     }
 
     public static Term loadDefaultTerm(Context context){

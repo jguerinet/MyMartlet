@@ -53,14 +53,30 @@ public class HomePageAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int position, View view, ViewGroup viewGroup) {
+        if(view == null){
+            view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, null);
+        }
+
+        HomePage homePage = getItem(position);
+        ((TextView)view).setText(homePage.toString(mContext));
+
+        return view;
+    }
+
+    @Override
+    public View getDropDownView(int position, View view, ViewGroup viewGroup){
         if(view == null){
             view = LayoutInflater.from(mContext).inflate(R.layout.spinner_dropdown, null);
         }
 
-        HomePage homePage = getItem(i);
+        HomePage homePage = getItem(position);
         ((TextView)view).setText(homePage.toString(mContext));
 
         return view;
+    }
+
+    public int getPosition(HomePage homePage){
+        return mHomePages.indexOf(homePage);
     }
 }

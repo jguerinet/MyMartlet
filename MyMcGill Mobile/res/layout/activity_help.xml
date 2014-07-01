@@ -8,17 +8,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/about_help"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/about_FAQ"
+        android:id="@+id/FAQ"
         android:layout_gravity="center_horizontal"
-        android:textSize="@dimen/text_large"
-        android:padding="@dimen/padding_micro"
-        android:textColor="@color/red"/>
+        android:textSize="@dimen/text_large" />
 
-    <Button
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/help_report_bug"
-        android:id="@+id/report_bug"/>
-
-
+        android:id="@+id/helpListView" />
 </LinearLayout>

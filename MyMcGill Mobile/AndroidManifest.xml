@@ -75,22 +75,8 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.inbox.InboxActivity"
-            android:label="@string/title_inbox"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".activity.EmailActivity"/>
-        <activity
-            android:name=".activity.inbox.ReplyActivity"
-            android:label="@string/title_reply"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity
-            android:name=".activity.inbox.AttachActivity"
-            android:label="@string/title_attach">
-        </activity>
         <activity
             android:name=".activity.MapActivity"
             android:label="@string/title_map"/>
@@ -114,6 +100,9 @@
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/title_about" />
+        <activity android:name=".mycourseslist.MyCoursesListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.HelpActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"

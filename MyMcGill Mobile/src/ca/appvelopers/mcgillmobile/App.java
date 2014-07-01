@@ -3,7 +3,12 @@ package ca.appvelopers.mcgillmobile;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +16,14 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
-import ca.appvelopers.mcgillmobile.object.Inbox;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
+import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Update;
 
@@ -36,11 +42,10 @@ public class App extends Application {
     private static HomePage homePage;
     private static Faculty faculty;
     private static Transcript transcript;
-    private static List<ClassItem> schedule;
+    private static List<ClassItem> classes;
     private static Term defaultTerm;
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
-    private static Inbox inbox;
     private static List<ClassItem> wishlist;
 
     //List of semesters you can currently register in
@@ -60,27 +65,30 @@ public class App extends Application {
         //Load the transcript
         transcript = Load.loadTranscript(this);
 
-        //Use the following code to use an HTML file for the transcript instead of
-        //retrieving it from Minerva
+        /**
+         * Set Constants.disableMinervaTranscript to true in order to test transcripts from HTML files
+         */
 
-        /*InputStream is = getResources().openRawResource(R.raw.transcriptys);
-        StringWriter writer = new StringWriter();
-        try{
-            IOUtils.copy(is, writer, "UTF-8");
-        } catch(Exception e){
+        //Constants.disableMinervaTranscript = true;
+        if(Constants.disableMinervaTranscript){
+            InputStream is = getResources().openRawResource(R.raw.test_transcript);
+            StringWriter writer = new StringWriter();
+            try{
+                IOUtils.copy(is, writer, "UTF-8");
+            } catch(Exception e){
+                Log.e("SDFSDF", "Transcript parsing error");
 
+            }
+            String transcriptString = writer.toString();
+            Parser.parseTranscript(transcriptString);
         }
-        String transcriptString = writer.toString();
-        Parser.parseTranscript(transcriptString);*/
 
         //Load the schedule
-        schedule = Load.loadSchedule(this);
+        classes = Load.loadClasses(this);
         //Load the ebill
         ebill = Load.loadEbill(this);
         //Load the user info
         userInfo = Load.loadUserInfo(this);
-        //Load the user's emails
-        inbox = Load.loadInbox(this);
         //Load the user's chosen language and update the locale
         language = Load.loadLanguage(this);
         //Load the user's chosen homepage
@@ -109,11 +117,13 @@ public class App extends Application {
     }
 
     public static Transcript getTranscript(){
-        return transcript;
+        synchronized(Constants.TRANSCRIPT_LOCK){
+            return transcript;
+        }
     }
 
     public static List<ClassItem> getClasses(){
-        return schedule;
+        return classes;
     }
 
     public static List<EbillItem> getEbill(){
@@ -122,10 +132,6 @@ public class App extends Application {
 
     public static UserInfo getUserInfo(){
         return userInfo;
-    }
-
-    public static Inbox getInbox() {
-        return inbox;
     }
 
     public static Language getLanguage(){
@@ -148,30 +154,25 @@ public class App extends Application {
         return wishlist;
     }
 
-    public static int getUnreadEmails(){
-        if(inbox != null){
-            return inbox.getNumNewEmails();
-        }
-        return 0;
-    }
-
     public static List<Term> getRegisterTerms(){
         return registerTerms;
     }
 
     /* SETTERS */
     public static void setTranscript(Transcript transcript){
-        App.transcript = transcript;
+        synchronized (Constants.TRANSCRIPT_LOCK){
+            App.transcript = transcript;
 
-        //Save it to internal storage when this is set
-        Save.saveTranscript(context);
+            //Save it to internal storage when this is set
+            Save.saveTranscript(context);
+        }
     }
 
-    public static void setClassList(List<ClassItem> schedule){
-        App.schedule = schedule;
+    public static void setClasses(List<ClassItem> classes){
+        App.classes = classes;
 
         //Save it to internal storage when this is set
-        Save.saveSchedule(context);
+        Save.saveClasses(context);
     }
 
     public static void setEbill(List<EbillItem> ebill){
@@ -186,13 +187,6 @@ public class App extends Application {
 
         //Save it to internal storage when this is set
         Save.saveUserInfo(context);
-    }
-
-    public static void setInbox(Inbox inbox){
-        App.inbox = inbox;
-
-        //Save it to internal storage when this is set
-        Save.saveInbox(context);
     }
 
     public static void setLanguage(Language language){

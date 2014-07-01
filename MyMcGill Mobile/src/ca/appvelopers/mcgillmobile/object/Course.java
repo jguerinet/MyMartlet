@@ -14,11 +14,11 @@ public class Course implements Serializable{
     private Term mTerm;
     private String mCourseCode;
     private String mCourseTitle;
-    private int mCredits;
+    private double mCredits;
     private String mUserGrade;
     private String mAverageGrade;
 
-    public Course(Term term, String courseTitle, String courseCode, int credits,
+    public Course(Term term, String courseTitle, String courseCode, double credits,
                     String userGrade, String averageGrade){
         this.mTerm = term;
         this.mCourseCode = courseCode;
@@ -49,7 +49,7 @@ public class Course implements Serializable{
      * Get the course credits
      * @return The course credits
      */
-    public int getCredits(){
+    public double getCredits(){
         return mCredits;
     }
 

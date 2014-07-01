@@ -27,17 +27,4 @@
         android:duplicateParentState="true"
         android:gravity="center_vertical"
         android:textColor="@drawable/color_black_whitepressed"/>
-    
-    <TextView
-        android:id="@+id/drawer_email_count"
-        android:layout_width="wrap_content"
-  		android:layout_height="match_parent"
-  		android:textColor="@color/white"
-  		android:textSize="@dimen/text_small"
-  		android:textStyle="bold"
-        android:gravity="center"
-        android:paddingLeft="@dimen/padding_micro"
-        android:paddingRight="@dimen/padding_micro"
- 		android:background="@drawable/badge_circle"/>
-
 </LinearLayout>
