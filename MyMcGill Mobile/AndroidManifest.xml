@@ -100,7 +100,7 @@
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/title_about" />
-        <activity android:name=".mycourseslist.MyCoursesListActivity"
+        <activity android:name=".activity.mycourseslist.MyCoursesListActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.HelpActivity" />
 

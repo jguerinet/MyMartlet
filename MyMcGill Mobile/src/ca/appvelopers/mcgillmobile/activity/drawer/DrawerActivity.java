@@ -20,8 +20,8 @@ import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
+import ca.appvelopers.mcgillmobile.activity.mycourseslist.MyCoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
-import ca.appvelopers.mcgillmobile.mycourseslist.MyCoursesListActivity;
 
 public class DrawerActivity extends BaseActivity {
 
