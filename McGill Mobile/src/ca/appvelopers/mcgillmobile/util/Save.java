@@ -34,7 +34,7 @@ public class Save {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putInt(Constants.VERSION, versionNumber)
-                .commit();
+                .apply();
     }
 
     /**
@@ -45,42 +45,42 @@ public class Save {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putBoolean(Constants.FIRST_OPEN, false)
-                .commit();
+                .apply();
     }
 
     public static void saveLanguage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putInt(Constants.LANGUAGE, App.getLanguage().ordinal())
-                .commit();
+                .apply();
     }
 
     public static void saveHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putInt(Constants.HOMEPAGE, App.getHomePage().ordinal())
-                .commit();
+                .apply();
     }
 
     public static void saveStatistics(Context context, boolean statistics){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putBoolean(Constants.STATISTICS, statistics)
-                .commit();
+                .apply();
     }
 
     public static void saveFaculty(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putInt(Constants.FACULTY, App.getFaculty().ordinal())
-                .commit();
+                .apply();
     }
 
     public static void saveUsername(Context context, String username){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putString(Constants.USERNAME, username)
-                .commit();
+                .apply();
     }
 
     public static void savePassword(Context context, String password){
@@ -88,14 +88,14 @@ public class Save {
         String encryptedPassword = Encryption.encode(password);
         sharedPrefs.edit()
                 .putString(Constants.PASSWORD, encryptedPassword)
-                .commit();
+                .apply();
     }
 
     public static void saveRememberUsername(Context context, boolean rememberUsername){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putBoolean(Constants.REMEMBER_USERNAME, rememberUsername)
-                .commit();
+                .apply();
     }
 
     public static void saveTranscript(Context context){
