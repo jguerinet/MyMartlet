@@ -93,7 +93,7 @@ public class Connection {
         Connection connection = getInstance();
 
         //Download the transcript
-        if(!Constants.disableMinervaTranscript){
+        if(!Test.LOCAL_TRANSCRIPT){
             Parser.parseTranscript(connection.getUrl(activity, TRANSCRIPT));
         }
 

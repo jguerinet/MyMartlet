@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Display;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import org.apache.commons.io.IOUtils;
+
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.StringWriter;
 
 import ca.appvelopers.mcgillmobile.R;
 
@@ -100,40 +100,21 @@ public class Help {
         activity.startActivity(urlIntent);
     }
 
+    /**
+     * Method to read a String from a local file
+     * @param context The app context
+     * @param fileResource The resource of the file to read
+     * @return The file in String format
+     */
     public static String readFromFile(Context context, int fileResource) {
-        //create return string
-        String ret = "";
-
-        try {
-            InputStream inputStream =  context.getResources().openRawResource(fileResource);
-
-
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                ret = stringBuilder.toString();
-            }
+        InputStream is = context.getResources().openRawResource(fileResource);
+        StringWriter writer = new StringWriter();
+        try{
+            IOUtils.copy(is, writer, "UTF-8");
+        } catch(Exception e){
+            Log.e("Error Reading from Local File", e.getMessage());
+            e.printStackTrace();
         }
-        catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.toString());
-        } catch (IOException e) {
-            System.out.println("Can not read file: " + e.toString());
-        }
-        catch(Exception e){
-            System.out.println("Exception: " + e.toString());
-        }
-        finally{
-
-            //always return something
-            return ret;
-        }
+        return writer.toString();
     }
 }
