@@ -8,4 +8,8 @@ package ca.appvelopers.mcgillmobile.object;
  */
 
 public enum PlaceCategory {
+    BUILDING,
+    FOOD,
+    SOCIAL,
+    ADMINISTRATION
 }
