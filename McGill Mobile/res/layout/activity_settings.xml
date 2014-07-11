@@ -103,7 +103,7 @@ android:layout_height="match_parent">
                 android:padding="@dimen/padding_micro"
                 android:paddingTop="@dimen/padding_small"
                 android:paddingBottom="@dimen/padding_small"
-                android:background="@drawable/drawable_transparent_redpressed"
+                android:background="@drawable/transparent_redpressed"
                 android:gravity="center">
 
                 <TextView
@@ -111,7 +111,7 @@ android:layout_height="match_parent">
                     android:layout_height="wrap_content"
                     android:id="@+id/help_icon"
                     android:gravity="center"
-                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textColor="@color/black_whitepressed"
                     android:text="@string/icon_question"
                     android:textSize="@dimen/text_medium"
                     android:duplicateParentState="true"
@@ -121,7 +121,7 @@ android:layout_height="match_parent">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_help"
-                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textColor="@color/black_whitepressed"
                     android:textSize="@dimen/text_medium"
                     android:duplicateParentState="true"/>
 
@@ -137,7 +137,7 @@ android:layout_height="match_parent">
                 android:padding="@dimen/padding_micro"
                 android:paddingTop="@dimen/padding_small"
                 android:paddingBottom="@dimen/padding_small"
-                android:background="@drawable/drawable_transparent_redpressed"
+                android:background="@drawable/transparent_redpressed"
                 android:gravity="center">
 
                 <TextView
@@ -145,7 +145,7 @@ android:layout_height="match_parent">
                     android:layout_height="wrap_content"
                     android:id="@+id/about_icon"
                     android:gravity="center"
-                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textColor="@color/black_whitepressed"
                     android:text="@string/icon_info"
                     android:textSize="@dimen/text_medium"
                     android:duplicateParentState="true"
@@ -155,7 +155,7 @@ android:layout_height="match_parent">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_about"
-                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textColor="@color/black_whitepressed"
                     android:textSize="@dimen/text_medium"
                     android:duplicateParentState="true"/>
 
@@ -171,7 +171,7 @@ android:layout_height="match_parent">
                 android:padding="@dimen/padding_micro"
                 android:paddingTop="@dimen/padding_small"
                 android:paddingBottom="@dimen/padding_small"
-                android:background="@drawable/drawable_transparent_redpressed"
+                android:background="@drawable/transparent_redpressed"
                 android:gravity="center">
 
                 <TextView
@@ -179,7 +179,7 @@ android:layout_height="match_parent">
                     android:layout_height="wrap_content"
                     android:id="@+id/bug_icon"
                     android:gravity="center"
-                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textColor="@color/black_whitepressed"
                     android:text="@string/icon_bug"
                     android:textSize="@dimen/text_medium"
                     android:duplicateParentState="true"
@@ -189,7 +189,7 @@ android:layout_height="match_parent">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_report_bug"
-                    android:textColor="@drawable/color_black_whitepressed"
+                    android:textColor="@color/black_whitepressed"
                     android:textSize="@dimen/text_medium"
                     android:duplicateParentState="true"/>
 

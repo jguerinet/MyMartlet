@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="@string/skip"
-        android:textColor="@drawable/color_black_redpressed"
+        android:textColor="@color/black_redpressed"
         android:textSize="@dimen/text_medium"
         android:gravity="left"
         android:paddingLeft="@dimen/padding_micro"
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:text="@string/back"
-            android:textColor="@drawable/color_white_greypressed"
+            android:textColor="@color/white_greypressed"
             android:textSize="@dimen/text_medium"
             android:clickable="true"
             android:gravity="left"/>
@@ -55,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:text="@string/next"
-            android:textColor="@drawable/color_white_greypressed"
+            android:textColor="@color/white_greypressed"
             android:textSize="@dimen/text_medium"
             android:clickable="true"
             android:gravity="right"/>
