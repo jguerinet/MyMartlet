@@ -166,8 +166,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/drawable_red_darkredpressed"
-        android:textColor="@drawable/color_white_greypressed"
+        android:background="@drawable/red_darkredpressed"
+        android:textColor="@color/white_greypressed"
         android:padding="@dimen/padding_micro"
         android:textSize="@dimen/text_medium"
         android:text="@string/done"
