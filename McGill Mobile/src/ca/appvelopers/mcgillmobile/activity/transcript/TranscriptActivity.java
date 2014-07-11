@@ -11,7 +11,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.Transcript;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
@@ -74,26 +73,23 @@ public class TranscriptActivity extends DrawerActivity {
     }
 
     private void executeTranscriptDownloader(){
-        if(!Constants.disableMinervaTranscript){
-            new TranscriptDownloader(this) {
-                @Override
-                protected void onPreExecute() {
-                    //Show the user we are downloading new info
-                    setProgressBarIndeterminateVisibility(true);
+        new TranscriptDownloader(this) {
+            @Override
+            protected void onPreExecute() {
+                //Show the user we are downloading new info
+                setProgressBarIndeterminateVisibility(true);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean loadInfo) {
+                mTranscript = App.getTranscript();
+
+                if(loadInfo){
+                    //Reload the info in the views
+                    loadInfo();
                 }
-
-                @Override
-                protected void onPostExecute(Boolean loadInfo) {
-                    mTranscript = App.getTranscript();
-
-                    if(loadInfo){
-                        //Reload the info in the views
-                        loadInfo();
-                    }
-                    setProgressBarIndeterminateVisibility(false);
-                }
-            }.execute();
-        }
-
+                setProgressBarIndeterminateVisibility(false);
+            }
+        }.execute();
     }
 }

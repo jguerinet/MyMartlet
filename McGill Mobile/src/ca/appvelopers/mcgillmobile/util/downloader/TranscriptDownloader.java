@@ -6,8 +6,8 @@ import android.text.TextUtils;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
@@ -26,7 +26,7 @@ public abstract class TranscriptDownloader extends AsyncTask<Void, Void, Boolean
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        if(!Constants.disableMinervaTranscript){
+        if(!Test.LOCAL_TRANSCRIPT){
             String transcriptString = Connection.getInstance().getUrl(mActivity, Connection.TRANSCRIPT);
 
             if(transcriptString == null){

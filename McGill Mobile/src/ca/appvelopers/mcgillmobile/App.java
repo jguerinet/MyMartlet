@@ -3,12 +3,7 @@ package ca.appvelopers.mcgillmobile;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +18,8 @@ import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
-import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.Update;
 
 /**
@@ -64,25 +59,6 @@ public class App extends Application {
 
         //Load the transcript
         transcript = Load.loadTranscript(this);
-
-        /**
-         * Set Constants.disableMinervaTranscript to true in order to test transcripts from HTML files
-         */
-
-        //Constants.disableMinervaTranscript = true;
-        if(Constants.disableMinervaTranscript){
-            InputStream is = getResources().openRawResource(R.raw.test_transcript);
-            StringWriter writer = new StringWriter();
-            try{
-                IOUtils.copy(is, writer, "UTF-8");
-            } catch(Exception e){
-                Log.e("SDFSDF", "Transcript parsing error");
-
-            }
-            String transcriptString = writer.toString();
-            Parser.parseTranscript(transcriptString);
-        }
-
         //Load the schedule
         classes = Load.loadClasses(this);
         //Load the ebill
@@ -105,6 +81,11 @@ public class App extends Application {
         registerTerms.add(new Term(Season.SUMMER, 2014));
         registerTerms.add(new Term(Season.FALL, 2014));
         registerTerms.add(new Term(Season.WINTER, 2015));
+
+        /* TESTING CODE */
+        if(Test.LOCAL_TRANSCRIPT){
+            Test.testTranscript(this);
+        }
     }
 
     /* GETTER METHODS */
