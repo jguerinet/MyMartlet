@@ -129,15 +129,13 @@ public class MyCoursesListActivity extends DrawerActivity {
     // JDAlfaro
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.refresh, menu);
-        //Change Semester Menu Item
-        menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE, R.string.schedule_change_semester);
+        getMenuInflater().inflate(R.menu.refresh_change_semester, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == Constants.MENU_ITEM_CHANGE_SEMESTER){
+        if(item.getItemId() == R.id.action_change_semester){
             Intent intent = new Intent(this, ChangeSemesterActivity.class);
             intent.putExtra(Constants.TERM, mTerm);
             startActivityForResult(intent, CHANGE_SEMESTER_CODE);

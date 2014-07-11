@@ -351,10 +351,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.refresh, menu);
-
-    	// change semester menu item
-    	menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE, R.string.schedule_change_semester);
+        getMenuInflater().inflate(R.menu.refresh_change_semester, menu);
     	return true;
     }
     
@@ -362,7 +359,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Opens the context menu    
-            case Constants.MENU_ITEM_CHANGE_SEMESTER:
+            case R.id.action_change_semester:
             	Intent intent = new Intent(this, ChangeSemesterActivity.class);
                 intent.putExtra(Constants.REGISTER_TERMS, false);
                 intent.putExtra(Constants.TERM, mTerm);

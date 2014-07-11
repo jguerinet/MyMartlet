@@ -198,19 +198,14 @@ public class CoursesListActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         //Inflate the refresh button only if we are in the wishlist
         if(wishlist){
-            getMenuInflater().inflate(R.menu.refresh, menu);
-        }
-
-        //Change Semester Menu Item - Not for Search Results
-        if(wishlist){
-            menu.add(Menu.NONE, Constants.MENU_ITEM_CHANGE_SEMESTER, Menu.NONE, R.string.schedule_change_semester);
+            getMenuInflater().inflate(R.menu.refresh_change_semester, menu);
         }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == Constants.MENU_ITEM_CHANGE_SEMESTER){
+        if(item.getItemId() == R.id.action_change_semester){
             Intent intent = new Intent(this, ChangeSemesterActivity.class);
             intent.putExtra(Constants.REGISTER_TERMS, true);
             intent.putExtra(Constants.TERM, mTerm);
