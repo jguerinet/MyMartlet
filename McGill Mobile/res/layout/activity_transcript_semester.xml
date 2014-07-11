@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/drawable_transparent_redpressed"
+    android:background="@drawable/transparent_redpressed"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -23,7 +23,7 @@
             android:id="@+id/semester_name"
             android:duplicateParentState="true"
             android:textSize="@dimen/text_medium"
-            android:textColor="@drawable/color_black_whitepressed"/>
+            android:textColor="@color/black_whitepressed"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             android:duplicateParentState="true"
             android:textSize="@dimen/text_small"
             android:paddingLeft="@dimen/padding_micro"
-            android:textColor="@drawable/color_black_whitepressed"/>
+            android:textColor="@color/black_whitepressed"/>
 
     </LinearLayout>
 
@@ -42,7 +42,7 @@
         android:id="@+id/semester_chevron"
         android:gravity="center"
         android:textSize="@dimen/text_large"
-        android:textColor="@drawable/color_grey_whitepressed"
+        android:textColor="@color/grey_whitepressed"
         android:duplicateParentState="true"
         android:text="@string/icon_chevronRight"/>
 

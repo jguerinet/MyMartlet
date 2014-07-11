@@ -43,7 +43,7 @@
             android:text="@string/icon_linkedin"
             android:id="@+id/person_linkedin"
             android:textSize="@dimen/text_large"
-            android:textColor="@drawable/color_red_darkredpressed"/>
+            android:textColor="@color/red_darkredpressed"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             android:id="@+id/person_email"
             android:paddingLeft="@dimen/padding_small"
             android:textSize="@dimen/text_large"
-            android:textColor="@drawable/color_red_darkredpressed" />
+            android:textColor="@color/red_darkredpressed" />
 
     </LinearLayout>
 

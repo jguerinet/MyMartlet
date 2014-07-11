@@ -5,5 +5,5 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="right"
-    android:textColor="@drawable/color_black_whitepressed"
+    android:textColor="@color/black_whitepressed"
     android:textSize="@dimen/text_medium"/>

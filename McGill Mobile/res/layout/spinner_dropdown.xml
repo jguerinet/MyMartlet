@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:padding="@dimen/padding_micro"
-    android:background="@drawable/drawable_transparent_redpressed"
-    android:textColor="@drawable/color_black_whitepressed"
+    android:background="@drawable/transparent_redpressed"
+    android:textColor="@color/black_whitepressed"
     android:textSize="@dimen/text_medium"/>
