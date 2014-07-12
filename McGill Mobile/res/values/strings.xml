@@ -277,6 +277,8 @@
     <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMcGill Mobile.</string>
 
     <!-- Maps -->
+    <string name="map_filter">Filter: </string>
+    <string name="map_all">All</string>
     <string name="map_building">Building</string>
     <string name="map_food">Food Services</string>
     <string name="map_social">Social Events</string>
