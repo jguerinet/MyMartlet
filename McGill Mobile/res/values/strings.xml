@@ -264,16 +264,28 @@
 
     <!-- Help -->
     <string name="about_question">Question</string>
-    <string name="help_question1">What is MyMcGill Mobile?</string>
-    <string name="help_question2">Is this app officially made by McGill?</string>
-    <string name="help_question3">On which platforms can we find this app?</string>
-
     <string name="about_answer">This is an answer</string>
-    <string name="help_answer1">MyMcGill Mobile is an app that allows McGill University students to quickly and conveniently access their MyMcGill portal on their mobile device.</string>
-    <string name="help_answer2">This app was made by McGill University students</string>
-    <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMcGill Mobile.</string>
     <string name="about_FAQ">FAQ</string>
     <string name="help_bug_title">%s Bug: </string>
     <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>
+    <string name="help_question1">What is MyMcGill Mobile?</string>
+    <string name="help_question2">Is this app officially made by McGill?</string>
+    <string name="help_question3">On which platforms can we find this app?</string>
+    <string name="help_answer1">MyMcGill Mobile is an app that allows McGill University students to quickly and conveniently access their MyMcGill portal on their mobile device.</string>
+    <string name="help_answer2">This app was made by McGill University students</string>
+    <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMcGill Mobile.</string>
+
+    <!-- Maps -->
+    <string name="map_building">Building</string>
+    <string name="map_food">Food Services</string>
+    <string name="map_social">Social Events</string>
+    <string name="map_administration">Administration</string>
+    <string name="map_athletics">Athletics</string>
+    <string name="map_library">Libraries</string>
+    <string name="map_museum">Museums</string>
+    <string name="map_residence">Residences</string>
+    <string name="map_security">Security </string>
+    <string name="map_student_associations">Student Associations</string>
+    <string name="map_faculty_offices">Faculty Offices</string>
 </resources>
