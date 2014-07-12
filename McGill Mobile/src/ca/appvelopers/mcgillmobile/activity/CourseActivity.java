@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
@@ -32,7 +33,7 @@ public class CourseActivity extends BaseActivity {
         GoogleAnalytics.sendScreen(this, "Schedule - Course");
 
         //Get the course from the intent
-        ClassItem classItem = (ClassItem)getIntent().getSerializableExtra(Constants.CLASS);
+        final ClassItem classItem = (ClassItem)getIntent().getSerializableExtra(Constants.CLASS);
 
         //Get the screen dimensions
         int displayWidth = Help.getDisplayWidth(getWindowManager().getDefaultDisplay());
@@ -75,6 +76,23 @@ public class CourseActivity extends BaseActivity {
 
         TextView courseCRN = (TextView)findViewById(R.id.course_crn);
         courseCRN.setText(String.valueOf(classItem.getCRN()));
+
+        TextView courseDocuum = (TextView)findViewById(R.id.course_docuum);
+        courseDocuum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Help.openURL(CourseActivity.this, Help.getDocuumLink(classItem.getCourseSubject(), classItem.getCourseNumber()));
+            }
+        });
+
+        TextView courseMap = (TextView)findViewById(R.id.course_map);
+        courseMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                //TODO
+                Toast.makeText(CourseActivity.this, "Not Implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void done(View v){

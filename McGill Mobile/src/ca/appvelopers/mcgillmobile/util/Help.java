@@ -127,4 +127,14 @@ public class Help {
     public static String getIfModifiedSinceString(DateTime date){
         return date.dayOfWeek().getAsShortText() + ", " + date.getDayOfMonth() + " " + date.monthOfYear().getAsShortText() + " " + date.getYear() + " " + date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" + date.getSecondOfMinute() + " GMT";
     }
+
+    /**
+     * Get the Docuum link for a course
+     * @param courseName The 4-letter name of the code
+     * @param courseCode The course code number
+     * @return The Docuum URL
+     */
+    public static String getDocuumLink(String courseName, String courseCode){
+        return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
+    }
 }
