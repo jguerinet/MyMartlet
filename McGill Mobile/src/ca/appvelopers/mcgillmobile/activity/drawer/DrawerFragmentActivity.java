@@ -13,9 +13,9 @@ import android.widget.Toast;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.MapActivity;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
+import ca.appvelopers.mcgillmobile.activity.map.MapActivity;
 
 public class DrawerFragmentActivity extends BaseFragmentActivity {
 

@@ -4,12 +4,12 @@ import android.content.Context;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
-import ca.appvelopers.mcgillmobile.activity.MapActivity;
 import ca.appvelopers.mcgillmobile.activity.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.activity.RegistrationActivity;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
+import ca.appvelopers.mcgillmobile.activity.map.MapActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 
 public enum HomePage {
