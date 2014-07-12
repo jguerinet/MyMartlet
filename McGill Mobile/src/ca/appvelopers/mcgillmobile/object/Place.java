@@ -1,5 +1,7 @@
 package ca.appvelopers.mcgillmobile.object;
 
+import java.util.List;
+
 /**
  * Author: Julien Guerinet
  * Date: 2014-07-11 11:24 PM
@@ -9,15 +11,20 @@ package ca.appvelopers.mcgillmobile.object;
 
 public class Place {
     private String mName;
-    private PlaceCategory mCategory;
+    private List<PlaceCategory> mCategories;
+    private String mAddress;
     private double mLongitude;
     private double mLatitude;
+    private String mDetails;
 
-    public Place(String name, PlaceCategory category, double longitude, double latitude){
+    public Place(String name, List<PlaceCategory> categories, String address, double longitude,
+                 double latitude, String details){
         this.mName = name;
-        this.mCategory = category;
+        this.mCategories = categories;
+        this.mAddress = address;
         this.mLongitude = longitude;
         this.mLatitude = latitude;
+        this.mDetails = details;
     }
 
     /* GETTERS */
@@ -25,8 +32,12 @@ public class Place {
         return mName;
     }
 
-    public PlaceCategory getCategory(){
-        return mCategory;
+    public List<PlaceCategory> getCategories(){
+        return mCategories;
+    }
+
+    public String getAddress(){
+        return mAddress;
     }
 
     public double getLongitude(){
@@ -35,5 +46,9 @@ public class Place {
 
     public double getLatitude(){
         return mLatitude;
+    }
+
+    public String getDetails(){
+        return mDetails;
     }
 }
