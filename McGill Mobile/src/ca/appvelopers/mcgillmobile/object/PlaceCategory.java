@@ -3,6 +3,7 @@ package ca.appvelopers.mcgillmobile.object;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
@@ -93,6 +94,23 @@ public enum PlaceCategory{
                 categories.add(FACULTY_OFFICE);
             }
         }
+
+        return categories;
+    }
+
+    public static List<String> getCategories(Context context){
+        List<String> categories = new ArrayList<String>();
+
+        //Get the Strings of each of the categories
+        for(PlaceCategory placeCategory : PlaceCategory.values()){
+            categories.add(placeCategory.toString(context));
+        }
+
+        //Sort them alphabetically
+        Collections.sort(categories);
+
+        //Add "All" at the top
+        categories.add(0, context.getString(R.string.map_all));
 
         return categories;
     }
