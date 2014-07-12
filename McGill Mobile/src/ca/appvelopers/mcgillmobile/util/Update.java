@@ -37,6 +37,8 @@ public class Update {
             }
 
             /* This will be where the version updates would go */
+
+            storedVersion ++;
         }
 
         //Store the new version in the SharedPrefs
