@@ -1,5 +1,6 @@
 package ca.appvelopers.mcgillmobile.object;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,9 @@ import java.util.List;
  * Represents a place on the map
  */
 
-public class Place {
+public class Place implements Serializable{
+    private static final long serialVersionUID = 1L;
+
     private String mName;
     private List<PlaceCategory> mCategories;
     private String mAddress;
