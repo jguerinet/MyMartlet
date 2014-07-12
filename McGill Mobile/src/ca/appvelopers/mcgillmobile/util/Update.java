@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import ca.appvelopers.mcgillmobile.App;
+
 /**
  * Author : Julien
  * Date :  2014-05-26 8:41 PM
@@ -26,11 +28,26 @@ public class Update {
         int storedVersion = Load.loadVersionNumber(context);
 
         //Stored version is smaller than version number
-        if(storedVersion < versionNumber){
-            /* This will be where the version updates would go */
+        while(storedVersion < versionNumber){
+            //First time opening the app
+            if(storedVersion == -1){
+                init();
+                //Break out of the loop
+                break;
+            }
 
-            //Store the new version in the SharedPrefs
-            Save.saveVersionNumber(context, versionNumber);
+            /* This will be where the version updates would go */
         }
+
+        //Store the new version in the SharedPrefs
+        Save.saveVersionNumber(context, versionNumber);
+    }
+
+    /**
+     * Run anything that needs to be run the first time the app is opened
+     */
+    private static void init(){
+        //Force the config downloader
+        App.forceReload = true;
     }
 }
