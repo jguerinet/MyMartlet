@@ -11,7 +11,7 @@ import ca.appvelopers.mcgillmobile.R;
  * Represents the category of a place
  */
 
-public enum PlaceCategory {
+public enum PlaceCategory{
     BUILDING,
     FOOD,
     SOCIAL,

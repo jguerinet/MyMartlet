@@ -20,6 +20,7 @@ import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
+import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
@@ -267,5 +268,43 @@ public class Load {
         }
 
         return classWishlist;
+    }
+
+    public static List<Place> loadPlaces(Context context){
+        List<Place> places = new ArrayList<Place>();
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.PLACES_FILE);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            places = (List<Place>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (OptionalDataException e) {
+            Log.e("Load Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (FileNotFoundException e) {
+            Log.e("Load Places Failure", "File not found");
+            e.printStackTrace();
+            return places;
+        } catch (StreamCorruptedException e) {
+            Log.e("Load Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (IOException e) {
+            Log.e("Load Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        }
+
+        return places;
+    }
+
+    //Last date the webservice was queried
+    public static String loadIfModifiedSinceDate(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getString(Constants.IF_MODIFIED_SINCE, null);
     }
 }

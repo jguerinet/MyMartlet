@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Display;
 
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -116,5 +117,14 @@ public class Help {
             e.printStackTrace();
         }
         return writer.toString();
+    }
+
+    /**
+     * Get the String for the "If Modified Since" part of the URL
+     * @param date The date to use
+     * @return The date in the correct String format
+     */
+    public static String getIfModifiedSinceString(DateTime date){
+        return date.dayOfWeek().getAsShortText() + ", " + date.getDayOfMonth() + " " + date.monthOfYear().getAsShortText() + " " + date.getYear() + " " + date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" + date.getSecondOfMinute() + " GMT";
     }
 }
