@@ -32,7 +32,7 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 public class MapActivity extends DrawerFragmentActivity {
     private List<MapPlace> mPlaces;
 
-    private static final LatLng MCGILL = new LatLng(45.503835,-73.574787);
+    private static final LatLng MCGILL = new LatLng(45.504435,-73.576006);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
