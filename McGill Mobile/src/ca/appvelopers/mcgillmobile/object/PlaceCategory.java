@@ -2,6 +2,9 @@ package ca.appvelopers.mcgillmobile.object;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.appvelopers.mcgillmobile.R;
 
 /**
@@ -51,5 +54,46 @@ public enum PlaceCategory{
             default:
                 return null;
         }
+    }
+
+    public static List<PlaceCategory> getCategories(String[] categoryStrings){
+        List<PlaceCategory> categories = new ArrayList<PlaceCategory>();
+        for(String category : categoryStrings){
+            if(category.equals("Building")){
+                categories.add(BUILDING);
+            }
+            else if(category.equals("Food")){
+                categories.add(FOOD);
+            }
+            else if(category.equals("Social")){
+                categories.add(SOCIAL);
+            }
+            else if(category.equals("Administration")){
+                categories.add(ADMINISTRATION);
+            }
+            else if(category.equals("Athletics")){
+                categories.add(ATHLETICS);
+            }
+            else if(category.equals("Library")){
+                categories.add(LIBRARY);
+            }
+            else if(category.equals("Museum")){
+                categories.add(MUSEUM);
+            }
+            else if(category.equals("Residence")){
+                categories.add(RESIDENCE);
+            }
+            else if(category.equals("Security")){
+                categories.add(SECURITY);
+            }
+            else if(category.equals("Student")){
+                categories.add(STUDENT_ASSOCIATION);
+            }
+            else if(category.equals("Faculty")){
+                categories.add(FACULTY_OFFICE);
+            }
+        }
+
+        return categories;
     }
 }

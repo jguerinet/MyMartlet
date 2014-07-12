@@ -1,5 +1,8 @@
 package ca.appvelopers.mcgillmobile.object;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,6 +13,7 @@ import java.util.List;
  * Represents a place on the map
  */
 
+@JsonIgnoreProperties(ignoreUnknown =  true)
 public class Place implements Serializable{
     private static final long serialVersionUID = 1L;
 
@@ -20,10 +24,14 @@ public class Place implements Serializable{
     private double mLatitude;
     private String mDetails;
 
-    public Place(String name, List<PlaceCategory> categories, String address, double longitude,
-                 double latitude, String details){
+    public Place(@JsonProperty("Name") String name,
+                 @JsonProperty("Categories") String[] categories,
+                 @JsonProperty("Address") String address,
+                 @JsonProperty("Longitude") double longitude,
+                 @JsonProperty("Latitude") double latitude,
+                 @JsonProperty("Details") String details){
         this.mName = name;
-        this.mCategories = categories;
+        this.mCategories = PlaceCategory.getCategories(categories);
         this.mAddress = address;
         this.mLongitude = longitude;
         this.mLatitude = latitude;
