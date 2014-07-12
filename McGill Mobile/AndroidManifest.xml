@@ -79,6 +79,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.map.MapActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_map"/>
 
         <activity
