@@ -43,8 +43,8 @@ public class Place implements Serializable{
         return mName;
     }
 
-    public List<PlaceCategory> getCategories(){
-        return mCategories;
+    public boolean hasCategory(PlaceCategory category){
+        return mCategories.contains(category);
     }
 
     public String getAddress(){

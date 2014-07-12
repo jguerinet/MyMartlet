@@ -78,7 +78,7 @@
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.MapActivity"
+            android:name=".activity.map.MapActivity"
             android:label="@string/title_map"/>
 
         <activity

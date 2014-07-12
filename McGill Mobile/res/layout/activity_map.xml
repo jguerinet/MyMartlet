@@ -14,17 +14,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_medium">
+            android:padding="@dimen/padding_small">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/map_filter"
+                android:gravity="center_vertical"
                 android:textSize="@dimen/text_medium"/>
 
             <Spinner
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/map_filter"
                 android:paddingLeft="@dimen/padding_micro"/>
@@ -34,7 +35,8 @@
         <fragment
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             class="com.google.android.gms.maps.MapFragment" />
 
     </LinearLayout>
