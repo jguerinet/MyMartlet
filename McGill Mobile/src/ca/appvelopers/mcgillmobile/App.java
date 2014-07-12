@@ -22,6 +22,7 @@ import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.Update;
+import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
 
 /**
  * Author: Julien
@@ -30,6 +31,8 @@ import ca.appvelopers.mcgillmobile.util.Update;
  * Will contain relevant objects that were loaded from the storage, and will be updated upon sign-in.
  */
 public class App extends Application {
+    public static boolean forceReload = false;
+
     private static Context context;
 
     private static Typeface iconFont;
@@ -85,6 +88,9 @@ public class App extends Application {
         registerTerms.add(new Term(Season.SUMMER, 2014));
         registerTerms.add(new Term(Season.FALL, 2014));
         registerTerms.add(new Term(Season.WINTER, 2015));
+
+        //Download the new config
+        new ConfigDownloader(this, forceReload).start();
 
         /* TESTING CODE */
         if(Test.LOCAL_TRANSCRIPT){
