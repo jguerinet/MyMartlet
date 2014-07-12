@@ -219,6 +219,8 @@
     <string name="help_answer3">Présentement, on develope une version iOS et Windows Phone de MyMcGill Mobile</string>
 
     <!-- Maps -->
+    <string name="map_filter">Filtrer: </string>
+    <string name="map_all">Tous</string>
     <string name="map_building">Bâtiments</string>
     <string name="map_food">Services Alimentaires</string>
     <string name="map_social">Evènements Sociaux</string>
