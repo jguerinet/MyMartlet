@@ -22,20 +22,17 @@ public class Place implements Serializable{
     private String mAddress;
     private double mLatitude;
     private double mLongitude;
-    private String mDetails;
 
     public Place(@JsonProperty("Name") String name,
                  @JsonProperty("Categories") String[] categories,
                  @JsonProperty("Address") String address,
                  @JsonProperty("Latitude") double latitude,
-                 @JsonProperty("Longitude") double longitude,
-                 @JsonProperty("Details") String details){
+                 @JsonProperty("Longitude") double longitude){
         this.mName = name;
         this.mCategories = PlaceCategory.getCategories(categories);
         this.mAddress = address;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
-        this.mDetails = details;
     }
 
     /* GETTERS */
@@ -57,9 +54,5 @@ public class Place implements Serializable{
 
     public double getLongitude(){
         return mLongitude;
-    }
-
-    public String getDetails(){
-        return mDetails;
     }
 }
