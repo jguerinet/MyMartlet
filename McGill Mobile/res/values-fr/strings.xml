@@ -82,14 +82,14 @@
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">GPA du Semestre: %s</string>
     <string name="transcript_CGPA">CGPA: %s</string>
-    <string name="transcript_credits">Total des Crédits: %d</string>
+    <string name="transcript_credits">Total des Crédits: %s</string>
     <string name="transcript_semesters">Semestres:</string>
     <string name="transcript_error">Nous n\'arrivons pas a charger votre bulletin. Veuillez réessayer plus tard.</string>
-    <string name="semester_termCredits">Crédits: %d</string>
+    <string name="semester_termCredits">Crédits: %s</string>
     <string name="semester_fullTime">Plein Temps</string>
     <string name="semester_partTime">A Temps Partiel</string>
     <string name="semester_courses">Cours:</string>
-    <string name="course_credits">Crédits: %d</string>
+    <string name="course_credits">Crédits: %s</string>
     <string name="course_average">Moyenne de Classe: %s</string>
 
     <!-- Schedule Screen -->
