@@ -105,16 +105,16 @@
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">Term GPA: %s</string>
     <string name="transcript_CGPA">CGPA: %s</string>
-    <string name="transcript_credits">Total Credits: %d</string>
+    <string name="transcript_credits">Total Credits: %s</string>
     <string name="transcript_semesters">Semesters: </string>
     <string name="transcript_error">We are unable to load your transcript. Please try again later.</string>
 
     <!-- Semester Screen -->
-    <string name="semester_termCredits">Term Credits: %d</string>
+    <string name="semester_termCredits">Term Credits: %s</string>
     <string name="semester_fullTime">Full Time</string>
     <string name="semester_partTime">Part Time</string>
     <string name="semester_courses">Courses: </string>
-    <string name="course_credits">Credits: %d</string>
+    <string name="course_credits">Credits: %s</string>
     <string name="course_average">Class Average: %s</string>
 
     <!-- Schedule Screen -->
