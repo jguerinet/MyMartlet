@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Titles -->
-    <string name="app_name">McGill Mobile</string>
+    <string name="app_name">MyMartlet</string>
     <string name="team_name">Appvelopers</string>
     <string name="title_login">Login</string>
     <string name="title_desktop">Desktop Site</string>
@@ -24,7 +24,7 @@
     <!-- General Strings -->
     <string name="error">Error</string>
     <string name="please_wait">Please Wait&#8230;</string>
-    <string name="done">done</string>
+    <string name="done">Done</string>
     <string name="refresh">Refresh</string>
     <string name="error_no_internet">You are not connected to the internet. Please connect to the internet and try again. </string>
     <string name="error_other">An error has occurred. Please try again later.</string>
@@ -86,7 +86,7 @@
     <string name="faculty_science">Faculty of Science</string>
 
     <!-- Login Screen -->
-    <string name="login_welcome">Welcome to McGill Mobile. Please input your McGill username and password below.</string>
+    <string name="login_welcome">Welcome to MyMartlet. Please input your McGill username and password below.</string>
     <string name="login_username">Username: </string>
     <string name="login_email">\@mail.mcgill.ca</string>
     <string name="login_password">Password: </string>
@@ -105,16 +105,16 @@
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">Term GPA: %s</string>
     <string name="transcript_CGPA">CGPA: %s</string>
-    <string name="transcript_credits">Total Credits: %d</string>
+    <string name="transcript_credits">Total Credits: %s</string>
     <string name="transcript_semesters">Semesters: </string>
     <string name="transcript_error">We are unable to load your transcript. Please try again later.</string>
 
     <!-- Semester Screen -->
-    <string name="semester_termCredits">Term Credits: %d</string>
+    <string name="semester_termCredits">Term Credits: %s</string>
     <string name="semester_fullTime">Full Time</string>
     <string name="semester_partTime">Part Time</string>
     <string name="semester_courses">Courses: </string>
-    <string name="course_credits">Credits: %d</string>
+    <string name="course_credits">Credits: %s</string>
     <string name="course_average">Class Average: %s</string>
 
     <!-- Schedule Screen -->
@@ -133,6 +133,8 @@
     <string name="course_section">Section: </string>
     <string name="course_credits_title">Credits: </string>
     <string name="course_crn">CRN: </string>
+    <string name="course_docuum">View Course on Docuum</string>
+    <string name="course_map">Show on Map</string>
 
     <!-- eBill Screen -->
     <string name="ebill_statement_date">Statement Date:</string>
@@ -183,7 +185,7 @@
     <string name="unregistration_error">Unregistration Error</string>
 
     <!-- Walkthrough -->
-    <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
+    <string name="walkthrough_welcome">Welcome to MyMartlet, the unofficial app for McGill University students! </string>
     <string name="walkthrough_essentials">All of your most important McGill tools are now at the tips of your fingertips: schedule, transcript, a campus map&#8230; It\'s all there!</string>
     <string name="walkthrough_menu">All of these features are directly accessible from the main menu. Simply tap on the top left icon, or swipe from the left edge of the screen to open it. </string>
     <string name="walkthrough_offline">This app keeps you connected at all times, so no need to log in constantly!  You can use the app offline too!</string>
@@ -264,16 +266,41 @@
 
     <!-- Help -->
     <string name="about_question">Question</string>
-    <string name="help_question1">What is MyMcGill Mobile?</string>
-    <string name="help_question2">Is this app officially made by McGill?</string>
-    <string name="help_question3">On which platforms can we find this app?</string>
-
     <string name="about_answer">This is an answer</string>
-    <string name="help_answer1">MyMcGill Mobile is an app that allows McGill University students to quickly and conveniently access their MyMcGill portal on their mobile device.</string>
-    <string name="help_answer2">This app was made by McGill University students</string>
-    <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMcGill Mobile.</string>
     <string name="about_FAQ">FAQ</string>
     <string name="help_bug_title">%s Bug: </string>
     <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>
+    <string name="help_question1">What is MyMartlet?</string>
+    <string name="help_question2">Is this app officially made by McGill?</string>
+    <string name="help_question3">On which platforms can we find this app?</string>
+    <string name="help_answer1">MyMartlet is an app that allows McGill University students to quickly and conveniently access their MyMcGill portal on their mobile device.</string>
+    <string name="help_answer2">This app was made by McGill University students</string>
+    <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMartlet.</string>
+
+    <!-- Maps -->
+    <string name="map_filter">Filter: </string>
+    <string name="map_all">All</string>
+    <string name="map_building">Building</string>
+    <string name="map_food">Food Services</string>
+    <string name="map_social">Social Events</string>
+    <string name="map_administration">Administration</string>
+    <string name="map_athletics">Athletics</string>
+    <string name="map_library">Libraries</string>
+    <string name="map_museum">Museums</string>
+    <string name="map_residence">Residences</string>
+    <string name="map_security">Security </string>
+    <string name="map_student_associations">Student Associations</string>
+    <string name="map_faculty_offices">Faculty Offices</string>
+
+    <!-- Email Walkthrough -->
+    <string name="ewalk_intruction1">Sign into your McGill email and enter the email client </string>
+    <string name="ewalk_intruction2">Click on \'Options\' on the top right corner</string>
+    <string name="ewalk_intruction3">Click on \'Create an Inbox Rule\'</string>
+    <string name="ewalk_intruction4">Click on \'New\'</string>
+    <string name="ewalk_intruction5">Click on \'More Options\'</string>
+    <string name="ewalk_intruction6">On the first feild select \'[Apply to all messages]\'</string>
+    <string name="ewalk_intruction7">On the second feild select \'Forward the message to&#8230;\'</string>
+    <string name="ewalk_intruction8">Enter your email address at the bottom field</string>
+    <string name="ewalk_intruction9">Click Save</string>
 </resources>

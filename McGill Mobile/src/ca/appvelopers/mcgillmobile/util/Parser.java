@@ -478,8 +478,8 @@ public class Parser {
                     //It not, add a new class item
                     if (!classExists) {
                         //Find the concerned course
-                        //TODO: Properly parse course subject and number
-                        classItems.add(new ClassItem(term, courseCode, "BLAMERYAN", "1", courseTitle, crn, section, startHour,
+                        classItems.add(new ClassItem(term, courseCode, courseCode.substring(0, 4),
+                                courseCode.substring(5, 8), courseTitle, crn, section, startHour,
                                 startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                 -1, -1, -1, -1, -1, credits, null));
                     }

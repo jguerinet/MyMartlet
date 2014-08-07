@@ -12,6 +12,7 @@ import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
+import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
@@ -21,6 +22,7 @@ import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.Update;
+import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
 
 /**
  * Author: Julien
@@ -29,6 +31,8 @@ import ca.appvelopers.mcgillmobile.util.Update;
  * Will contain relevant objects that were loaded from the storage, and will be updated upon sign-in.
  */
 public class App extends Application {
+    public static boolean forceReload = false;
+
     private static Context context;
 
     private static Typeface iconFont;
@@ -42,6 +46,7 @@ public class App extends Application {
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
     private static List<ClassItem> wishlist;
+    private static List<Place> places;
 
     //List of semesters you can currently register in
     //TODO Find a way to make this dynamic
@@ -75,12 +80,17 @@ public class App extends Application {
         defaultTerm = Load.loadDefaultTerm(this);
         //Load the course wishlist
         wishlist = Load.loadClassWishlist(this);
+        //Load the places
+        places = Load.loadPlaces(this);
 
         //Set up the register terms
         registerTerms = new ArrayList<Term>();
         registerTerms.add(new Term(Season.SUMMER, 2014));
         registerTerms.add(new Term(Season.FALL, 2014));
         registerTerms.add(new Term(Season.WINTER, 2015));
+
+        //Download the new config
+        new ConfigDownloader(this, forceReload).start();
 
         /* TESTING CODE */
         if(Test.LOCAL_TRANSCRIPT){
@@ -133,6 +143,10 @@ public class App extends Application {
 
     public static List<ClassItem> getClassWishlist() {
         return wishlist;
+    }
+
+    public static List<Place> getPlaces(){
+        return places;
     }
 
     public static List<Term> getRegisterTerms(){
@@ -201,6 +215,12 @@ public class App extends Application {
         App.wishlist = list;
         //Save it to internal storage when this is set
         Save.saveClassWishlist(context);
+    }
+
+    public static void setPlaces(List<Place> places){
+        App.places = places;
+        //Save it to internal storage
+        Save.savePlaces(context);
     }
 
     /* HELPER METHODS */

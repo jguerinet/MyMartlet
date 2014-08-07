@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.appvelopers.mcgillmobile"
-    android:versionCode="3"
+    android:versionCode="4"
     android:versionName="0.5" >
 
     <uses-sdk
@@ -78,7 +78,8 @@
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.MapActivity"
+            android:name=".activity.map.MapActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_map"/>
 
         <activity

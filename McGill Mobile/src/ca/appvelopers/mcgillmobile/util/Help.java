@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Display;
 
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -116,5 +117,24 @@ public class Help {
             e.printStackTrace();
         }
         return writer.toString();
+    }
+
+    /**
+     * Get the String for the "If Modified Since" part of the URL
+     * @param date The date to use
+     * @return The date in the correct String format
+     */
+    public static String getIfModifiedSinceString(DateTime date){
+        return date.dayOfWeek().getAsShortText() + ", " + date.getDayOfMonth() + " " + date.monthOfYear().getAsShortText() + " " + date.getYear() + " " + date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" + date.getSecondOfMinute() + " GMT";
+    }
+
+    /**
+     * Get the Docuum link for a course
+     * @param courseName The 4-letter name of the code
+     * @param courseCode The course code number
+     * @return The Docuum URL
+     */
+    public static String getDocuumLink(String courseName, String courseCode){
+        return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
     }
 }

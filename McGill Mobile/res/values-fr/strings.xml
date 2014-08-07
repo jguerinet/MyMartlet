@@ -2,10 +2,10 @@
 <resources>
 
     <!-- Titles -->
-    <string name="app_name">McGill Mobile</string>
+    <string name="app_name">MyMartlet</string>
     <string name="team_name">Appvelopers</string>
     <string name="title_login">Connexion</string>
-    <string name="title_desktop">Site PC</string>
+    <string name="title_desktop">Version Bureau</string>
     <string name="title_schedule">Mon Calendrier</string>
     <string name="title_transcript">Mon Bulletin</string>
     <string name="title_mycourses">MyCourses</string>
@@ -66,7 +66,7 @@
     <string name="faculty_music">École de Musique Schulich</string>
     <string name="faculty_religion">Faculté d\'Études Religieuses</string>
     <string name="faculty_science">Faculté des Sciences</string>
-    <string name="login_welcome">Bienvenue à McGill Mobile. Veuillez s\'il vous plaît entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
+    <string name="login_welcome">Bienvenue à MyMartlet. Veuillez s\'il vous plaît entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
     <string name="login_username">Nom d\'Utilisateur:</string>
     <string name="login_password">Mot de Passe:</string>
     <string name="login_button">Connexion</string>
@@ -82,14 +82,14 @@
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">GPA du Semestre: %s</string>
     <string name="transcript_CGPA">CGPA: %s</string>
-    <string name="transcript_credits">Total des Crédits: %d</string>
+    <string name="transcript_credits">Total des Crédits: %s</string>
     <string name="transcript_semesters">Semestres:</string>
     <string name="transcript_error">Nous n\'arrivons pas a charger votre bulletin. Veuillez réessayer plus tard.</string>
-    <string name="semester_termCredits">Crédits: %d</string>
+    <string name="semester_termCredits">Crédits: %s</string>
     <string name="semester_fullTime">Plein Temps</string>
     <string name="semester_partTime">A Temps Partiel</string>
     <string name="semester_courses">Cours:</string>
-    <string name="course_credits">Crédits: %d</string>
+    <string name="course_credits">Crédits: %s</string>
     <string name="course_average">Moyenne de Classe: %s</string>
 
     <!-- Schedule Screen -->
@@ -108,6 +108,8 @@
     <string name="course_section">Section: </string>
     <string name="course_credits_title">Crédits: </string>
     <string name="course_crn">CRN: </string>
+    <string name="course_docuum">Voir Cours sur Docuum</string>
+    <string name="course_map">Voir sur la Carte</string>
 
     <!-- eBill Screen -->
     <string name="ebill_statement_date">Date de Déclaration:</string>
@@ -125,7 +127,7 @@
     <string name="homepage_wishlist">Liste d\'Envies</string>
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Carte du Campus</string>
-    <string name="homepage_desktop">Site PC</string>
+    <string name="homepage_desktop">Version Bureau</string>
     <string name="settings_version">Version %s</string>
 
     <!-- Change Semester Page -->
@@ -150,7 +152,7 @@
     <string name="registration_spots">%s place(s) restantes</string>
     <string name="registration_waitlist">Places sur Liste d\'Attente: %s</string>
     <string name="registration_reset">REMETTRE</string>
-    <string name="registration_error_no_faculty">Vous devez au moins choisir une faculté ou entrer un sujet de cours.</string>
+    <string name="registration_error_no_faculty">Vous devez sélectionner une faculté ou entrer un sujet de cours.</string>
     <string name="registration_error_credits">Le nombre d\'heures maximum doit être plus grand que le nombre minimum d\'heures. </string>
     <string name="registration_show_options">Montrer Plus d\'Options</string>
     <string name="registration_hide_options">Montrer Moins d\'Options</string>
@@ -158,7 +160,7 @@
     <string name="unregistration_error">Erreur de Désinscription</string>
 
     <!-- Walkthrough -->
-    <string name="walkthrough_welcome">Bienvenue a McGill Mobile, l\'application non officielle pour les étudiants de l\'Université McGill!</string>
+    <string name="walkthrough_welcome">Bienvenue a MyMartlet, l\'application non officielle pour les étudiants de l\'Université McGill!</string>
     <string name="walkthrough_essentials">Tous vos outils McGill les plus importants sont maintenant au bouts de vos doights: calendrier, bulletin, une carte du campus&#8230; Tout est là!</string>
     <string name="walkthrough_menu">Toutes ces fonctionnalités sont directement accessibles de menu principal. Il faut simplement cliquer sur l\'icône en haut à gauche, ou glissez votre doigt du coté gauche de l\'écran pour l\'ouvrir.</string>
     <string name="walkthrough_offline">Cette application vous garde connecté(e) a tout moment, donc pas besoin de se connecter constamment! Vous pouvez utiliser l\'applcation hors ligne aussi!</string>
@@ -211,4 +213,27 @@
     <string name="help_bug_title">Bug %s</string>
     <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>
+    <string name="help_question1">Qu\'est ce que MyMartlet?</string>
+    <string name="help_question2">Est ce que cet app est officiellement fait par McGill?</string>
+    <string name="help_question3">Dans quel platforme pouvons nous trouver cet app?</string>
+    <string name="help_answer1">MyMartlet est un app qui rend l\'acces du portail des élèves de l\'Université McGill très rapide et pratique sur leurs portables  </string>
+    <string name="help_answer2">Cet app a été crée par les élèves de l\'University McGill</string>
+    <string name="help_answer3">Présentement, on develope une version iOS et Windows Phone de MyMartlet.</string>
+
+    <!-- Maps -->
+    <string name="map_filter">Filtrer: </string>
+    <string name="map_all">Tous</string>
+    <string name="map_building">Bâtiments</string>
+    <string name="map_food">Services Alimentaires</string>
+    <string name="map_social">Evènements Sociaux</string>
+    <string name="map_administration">Administration</string>
+    <string name="map_athletics">Services de Sports</string>
+    <string name="map_library">Bibliothèques</string>
+    <string name="map_museum">Musées</string>
+    <string name="map_residence">Résidences</string>
+    <string name="map_security">Sécurité</string>
+    <string name="map_student_associations">Associations Etudiantes</string>
+    <string name="map_faculty_offices">Facultés</string>
+
+    <!-- Email Walkthrough -->
 </resources>
