@@ -23,6 +23,7 @@ import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
+import ca.appvelopers.mcgillmobile.background.*;
 
 /**
  * Author: Julien
@@ -52,6 +53,9 @@ public class App extends Application {
     //TODO Find a way to make this dynamic
     private static List<Term> registerTerms;
 
+    //object to catch event starting background activity
+    private AlarmReceiver webFetcherReceiver = new AlarmReceiver();
+    
     @Override
     public void onCreate(){
         super.onCreate();
@@ -59,6 +63,8 @@ public class App extends Application {
         //Set the static context
         context = this;
 
+        webFetcherReceiver.setAlarm(context);
+        
         //Run the update code, if any
         Update.update(this);
 
