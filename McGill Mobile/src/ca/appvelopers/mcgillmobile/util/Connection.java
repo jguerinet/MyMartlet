@@ -469,8 +469,9 @@ public class Connection {
      */
     public static String getCourseURL(Term term, String subject, Faculty faculty, String courseNumber,
                                       String title, int minCredit, int maxCredit, int startHour,
-                                      int startMinute, int endHour, int endMinute, List<Day> days){
-        return COURSE_SEARCH
+                                      int startMinute, int endHour, int endMinute, List<String> days){
+
+        String courseSearchURL = COURSE_SEARCH
                 + "term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
                 "&sel_subj=dummy" +
                 "&sel_day=dummy" +
@@ -484,21 +485,28 @@ public class Connection {
                 "&sel_attr=dummy" +
                 "&sel_subj=" + subject +
                 "&sel_crse=" + courseNumber +
-                "&sel_title=" +
+                "&sel_title=" + title +
                 "&sel_schd=%25" +
-                "&sel_from_cred=" +
-                "&sel_to_cred=" +
+                "&sel_from_cred=" + minCredit +
+                "&sel_to_cred=" + maxCredit +
                 "&sel_levl=%25" +
                 "&sel_ptrm=%25" +
                 "&sel_instr=%25" +
                 "&sel_attr=%25" +
-                "&begin_hh=0" +
-                "&begin_mi=0" +
+                "&begin_hh=" + startHour +
+                "&begin_mi=" + startMinute +
                 "&begin_ap=a" +
-                "&end_hh=0" +
-                "&end_mi=0" +
-                "&end_ap=a" +
-                "%20Response%20Headersview%20source";
+                "&end_hh=" + endHour +
+                "&end_mi=" + endMinute +
+                "&end_ap=a";
+
+        for(String day : days){
+            courseSearchURL += "&sel_day=" + day;
+        }
+
+        courseSearchURL += "%20Response%20Headersview%20source";
+
+        return courseSearchURL;
     }
 
     /**

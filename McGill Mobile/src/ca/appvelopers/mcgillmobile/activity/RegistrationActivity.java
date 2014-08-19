@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -163,30 +164,31 @@ public class RegistrationActivity extends DrawerActivity{
         int endMinute = mEndTime.getCurrentMinute();
 
         //Days
-        List<Day> days = new ArrayList<Day>();
+        List<String> days = new ArrayList<String>();
         if(mMonday.isChecked()){
-            days.add(Day.MONDAY);
+            days.add("m");
         }
         if(mTuesday.isChecked()){
-            days.add(Day.TUESDAY);
+            days.add("t");
         }
         if(mWednesday.isChecked()){
-            days.add(Day.WEDNESDAY);
+            days.add("w");
         }
         if(mThursday.isChecked()){
-            days.add(Day.THURSDAY);
+            days.add("r");
         }
         if(mFriday.isChecked()){
-            days.add(Day.FRIDAY);
+            days.add("f");
         }
         if(mSaturday.isChecked()){
-            days.add(Day.SATURDAY);
+            days.add("s");
         }
         if(mSunday.isChecked()){
-            days.add(Day.SUNDAY);
+            days.add("u");
         }
 
         //Obtain courses
+        Log.e("Registration options", startHour + ":" + startMinute + " " + endHour + ":" + endMinute + " " + days );
         new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, faculty, courseNumber,
                 courseTitle, minCredits, maxCredits, startHour, startMinute, endHour, endMinute, days)).execute();
     }
@@ -246,6 +248,7 @@ public class RegistrationActivity extends DrawerActivity{
         //Retrieve courses obtained from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
+            Log.e("Class search URL",  mClassSearchURL);
             String classesString = Connection.getInstance().getUrl(RegistrationActivity.this, mClassSearchURL);
 
             //There was an error
