@@ -107,6 +107,16 @@
         <activity android:name=".activity.mycourseslist.MyCoursesListActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.HelpActivity" />
+        
+        <receiver android:name=".background.AlarmReceiver"></receiver>
+        
+        <receiver android:name=".background.BootReceiver"
+                android:enabled="false">
+            <intent-filter>
+            	<action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+        <service android:name=".background.WebFetcherService" />
 
         <meta-data
             android:name="com.google.android.gms.version"
