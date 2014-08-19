@@ -9,7 +9,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.viewpagerindicator.CirclePageIndicator;
+//import com.viewpagerindicator.CirclePageIndicator;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
@@ -85,7 +85,7 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         });
 
         //Indicator
-        CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.walkthrough_pageindicator);
+        /*CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.walkthrough_pageindicator);
         indicator.setViewPager(mViewPager);
         indicator.setStrokeColor(Color.WHITE);
         indicator.setPageColor(Color.GRAY);
@@ -102,6 +102,6 @@ public class WalkthroughActivity extends BaseFragmentActivity {
             }
             @Override
             public void onPageScrollStateChanged(int i){}
-        });
+        });*/
     }
 }
