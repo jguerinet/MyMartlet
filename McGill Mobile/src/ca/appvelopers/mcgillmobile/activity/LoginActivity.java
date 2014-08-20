@@ -112,7 +112,10 @@ public class LoginActivity extends BaseActivity {
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
                             GoogleAnalytics.sendEvent(LoginActivity.this, "Login", "Remember Username",
                                     "" + rememberUsernameView.isChecked(), null);
-
+                            
+                            //set the background reciever after successful login
+                            App.SetAlarm(LoginActivity.this);
+                            
                             Connection.getInstance().downloadAll(LoginActivity.this);
                             startActivity(new Intent(LoginActivity.this, App.getHomePage().getHomePageClass()));
                             runOnUiThread(new Runnable() {

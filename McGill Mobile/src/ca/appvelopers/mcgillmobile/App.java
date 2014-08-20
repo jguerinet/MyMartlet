@@ -228,8 +228,10 @@ public class App extends Application {
     }
 
     /* HELPER METHODS */
+    
+    //to be set after successful login
     public static void SetAlarm(Context context){
-
+    	
         webFetcherReceiver.setAlarm(context);
     }
     public static void UnsetAlarm(Context context){
