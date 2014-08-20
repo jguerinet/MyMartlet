@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.background.WebFetcherService;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Test;
@@ -21,7 +22,11 @@ public abstract class TranscriptDownloader extends AsyncTask<Void, Void, Boolean
         mActivity = activity;
     }
 
-    @Override
+    public TranscriptDownloader(WebFetcherService webFetcherService) {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
     protected abstract void onPreExecute();
 
     @Override
