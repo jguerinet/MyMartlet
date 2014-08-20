@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.util.*;
+import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
 /**
  * Author: Shabbir
@@ -46,8 +48,18 @@ public class WebFetcherService extends IntentService {
 	 * This method queries the transcript to check for new or changed grades
 	 */
 	protected void CheckGrade(){
-		
-		
+		new TranscriptDownloader(this) {
+            @Override
+            protected void onPreExecute() {
+                //get previous grades
+            	Transcript oldTranscript = App.getTranscript();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean loadInfo) {
+                //compare old vs new for grade changes
+            }
+        }.execute();
 	}
 	
 	/**

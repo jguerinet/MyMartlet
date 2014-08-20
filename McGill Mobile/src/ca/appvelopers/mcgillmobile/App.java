@@ -54,7 +54,7 @@ public class App extends Application {
     private static List<Term> registerTerms;
 
     //object to catch event starting background activity
-    private AlarmReceiver webFetcherReceiver = new AlarmReceiver();
+    private static AlarmReceiver webFetcherReceiver = new AlarmReceiver();
     
     @Override
     public void onCreate(){
@@ -62,8 +62,6 @@ public class App extends Application {
 
         //Set the static context
         context = this;
-
-        webFetcherReceiver.setAlarm(context);
         
         //Run the update code, if any
         Update.update(this);
@@ -230,4 +228,12 @@ public class App extends Application {
     }
 
     /* HELPER METHODS */
+    public static void SetAlarm(Context context){
+
+        webFetcherReceiver.setAlarm(context);
+    }
+    public static void UnsetAlarm(Context context){
+
+        webFetcherReceiver.cancelAlarm(context);
+    }
 }
