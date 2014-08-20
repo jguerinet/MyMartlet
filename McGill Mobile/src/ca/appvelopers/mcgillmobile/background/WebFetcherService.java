@@ -7,15 +7,17 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import ca.appvelopers.mcgillmobile.util.*;
 
-
+/**
+ * Author: Shabbir
+ * Date: 20/08/14, 5:42 PM
+ * This class defines the tasks that will run in the background
+ */
 
 public class WebFetcherService extends IntentService {
 
-    // An ID used to post the notification.
-    public static final int NOTIFICATION_ID = 1;
-	private NotificationManager mNotificationManager;
-    NotificationCompat.Builder builder;
 	
 	public WebFetcherService() {
 		super("SchedulingService");
@@ -28,28 +30,32 @@ public class WebFetcherService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		
-		sendNotification("Background Task started");
+		Log.v("Background: ","service started");
+		
+		//check seats int the background
+		CheckSeats();
+		
+		//compare grades in transcript
+		CheckGrade();
 		
 		//release the wake lock of the phone
 		AlarmReceiver.completeWakefulIntent(intent);
 	}
 	
-    // Post a notification indicating the service was started.
-    private void sendNotification(String msg) {
-        mNotificationManager = (NotificationManager)
-               this.getSystemService(Context.NOTIFICATION_SERVICE);
-    
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-            new Intent(this, App.class), 0);
+	/**
+	 * This method queries the transcript to check for new or changed grades
+	 */
+	protected void CheckGrade(){
+		
+		
+	}
+	
+	/**
+	 * This method queries minerva to check for new seat openings
+	 */
+	protected void CheckSeats(){
+		
+	}
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-        .setStyle(new NotificationCompat.BigTextStyle()
-        .bigText(msg))
-        .setContentText(msg);
-
-        mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-    }
 
 }
