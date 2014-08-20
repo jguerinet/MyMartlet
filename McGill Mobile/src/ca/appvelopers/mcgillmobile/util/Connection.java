@@ -89,7 +89,7 @@ public class Connection {
     }
 
     //Download all of the info (upon login)
-    public void downloadAll(Activity activity){
+    public void downloadAll(Context activity){
         Connection connection = getInstance();
 
         //Download the transcript
@@ -178,16 +178,19 @@ public class Connection {
 	 *  The method getURL with retrieve a webpage as text
 	 * 
 	  */
-	public String getUrl(final Activity activity, String url){
+	public String getUrl(final Context context, String url){
         //Initial internet check
-        if(!isNetworkAvailable(activity)){
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                            activity.getResources().getString(R.string.error_no_internet));
-                }
-            });
+        if(!isNetworkAvailable(context)){
+        	if(context instanceof Activity){
+        		final Activity activity = (Activity) context;
+	            activity.runOnUiThread(new Runnable() {
+	                @Override
+	                public void run() {
+	                    DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+	                            activity.getResources().getString(R.string.error_no_internet));
+	                }
+	            });
+        	}
 
             //Return empty String
             return "";
@@ -198,7 +201,7 @@ public class Connection {
             result = http.getPageContent(url);
         } catch (MinervaLoggedOutException e) {
             //User has been logged out, so we need to log him back in
-            final ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(activity);
+            final ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context);
 
             //Successfully logged him back in, try retrieving the stuff again
             if(connectionResult == ConnectionStatus.CONNECTION_OK){
@@ -210,33 +213,41 @@ public class Connection {
             }
             //Wrong credentials: back to login screen
             else if(connectionResult == ConnectionStatus.CONNECTION_WRONG_INFO){
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Clear.clearAllInfo(activity);
+            	if(context instanceof Activity){
+            		final Activity activity = (Activity) context;
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Clear.clearAllInfo(activity);
 
-                        //Go back to LoginActivity
-                        Intent intent = new Intent(activity, LoginActivity.class);
-                        intent.putExtra(Constants.CONNECTION_STATUS, connectionResult);
-                        activity.startActivity(intent);
+                            //Go back to LoginContext
+                            Intent intent = new Intent(activity, LoginActivity.class);
+                            intent.putExtra(Constants.CONNECTION_STATUS, connectionResult);
+                            activity.startActivity(intent);
 
-                        //Finish this activity
-                        activity.finish();
-                    }
-                });
+                            //Finish this activity
+                            activity.finish();
+                        }
+                    });
+            	}
+
 
                 //Return empty String
                 result = "";
             }
             //No internet: show no internet dialog
             else if(connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                activity.getResources().getString(R.string.error_no_internet));
-                    }
-                });
+            	if(context instanceof Activity){
+            		final Activity activity = (Activity) context;
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                    activity.getResources().getString(R.string.error_no_internet));
+                        }
+                    });
+
+            	}
 
                 //Return empty String
                 result = "";

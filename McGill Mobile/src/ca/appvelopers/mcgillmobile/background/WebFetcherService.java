@@ -48,7 +48,7 @@ public class WebFetcherService extends IntentService {
 	 * This method queries the transcript to check for new or changed grades
 	 */
 	protected void CheckGrade(){
-		new TranscriptDownloader(this) {
+		/*new TranscriptDownloader(this) {
             @Override
             protected void onPreExecute() {
                 //get previous grades
@@ -59,7 +59,7 @@ public class WebFetcherService extends IntentService {
             protected void onPostExecute(Boolean loadInfo) {
                 //compare old vs new for grade changes
             }
-        }.execute();
+        }.execute();*/
 	}
 	
 	/**
