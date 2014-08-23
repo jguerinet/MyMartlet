@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
+import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.util.*;
@@ -25,8 +26,8 @@ import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 public class WebFetcherService extends IntentService {
 
 	protected NotificationManager mNotificationManager;
-	protected int NOTIFICATION_ID = 1720;
-	
+	protected int NOTIFICATION_ID_GRADES = 1720;
+	protected int NOTIFICATION_ID_CLASSES= 1722;
 	public WebFetcherService() {
 		super("SchedulingService");
 		
@@ -68,7 +69,6 @@ public class WebFetcherService extends IntentService {
             	if(loadInfo){
             		Transcript newTranscript = App.getTranscript();
             		CompareTranscripts(oldTranscript,newTranscript);
-            		
             	}
             }
         }.execute();
@@ -88,7 +88,7 @@ public class WebFetcherService extends IntentService {
 		
 		//check if cgpa is changed
 		if(Math.abs(oldTrans.getCgpa() - newTrans.getCgpa()) >= 0.01){
-			LocalToast("Your new CGPA is "+newTrans.getCgpa(), TranscriptActivity.class);
+			LocalToast("Your new CGPA is "+newTrans.getCgpa(), TranscriptActivity.class,NOTIFICATION_ID_GRADES);
 			return;
 		}
 		
@@ -98,20 +98,61 @@ public class WebFetcherService extends IntentService {
 		
 		int oldIndex = 0;
 		int newIndex = 0;
-		//start first first
+		int oldSize = oldTrans.getSemesters().size();
+		int newSize = newTrans.getSemesters().size();
+		
+		//start first semester
 		Semester oldSem = oldTrans.getSemesters().get(oldIndex);
 		Semester newSem = newTrans.getSemesters().get(newIndex);
 		
-		
-		//TODO: compare each semesters grade
-		if(oldSem == null || newSem==null ||!oldSem.getTerm().equals(newSem.getTerm())){
-			//don't compare different semesters
-			return;
+		while(oldIndex < oldSize && newIndex < newSize){
+			
+			if(oldSem == null || newSem==null ||!oldSem.getTerm().equals(newSem.getTerm()) || oldSem.getCourses().size() != newSem.getCourses().size()){
+				//don't compare different semesters OR just after add / drop
+				return;
+			}
+			
+			int oldCourseIndex=0;
+			int newCourseIndex=0;
+			int oldCourseSize= oldSem.getCourses().size();
+			int newCourseSize= newSem.getCourses().size();
+			Course oldCourse = oldSem.getCourses().get(oldCourseIndex);
+			Course newCourse = newSem.getCourses().get(newCourseIndex);
+			
+			while(oldCourseIndex<oldCourseSize && newCourseIndex  < newCourseSize){
+				if(oldCourse == null || newCourse==null){
+					return; //a parsing error occured
+				}
+				
+				//check if grades have changed
+				if(!oldCourse.getUserGrade().equals(newCourse.getUserGrade())){
+					LocalToast("Your Grades are updated", TranscriptActivity.class,NOTIFICATION_ID_GRADES+1);
+					return; //we only need one notification so return after this
+				}
+				
+				++oldCourseIndex;
+				++newCourseIndex;
+				oldCourse = oldSem.getCourses().get(oldCourseIndex);
+				newCourse = newSem.getCourses().get(newCourseIndex);				
+			}
+			
+			
+			++oldIndex;
+			++newIndex;
+			oldSem = oldTrans.getSemesters().get(oldIndex);
+			newSem = newTrans.getSemesters().get(newIndex);
 		}
+
+
 		
 	}
 	
-	protected void LocalToast(String message,Class<?> cls){
+	/**
+	 * This method generates a local toast which will open up to an activity determined by cls
+	 * @param message
+	 * @param cls
+	 */
+	protected void LocalToast(String message,Class<?> cls, int ID){
 		NotificationManager mNotificationManager = (NotificationManager)
 	               this.getSystemService(Context.NOTIFICATION_SERVICE);
 	    
@@ -127,7 +168,7 @@ public class WebFetcherService extends IntentService {
 	        .setContentText(message);
 
 	        mBuilder.setContentIntent(contentIntent);
-	        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+	        mNotificationManager.notify(ID, mBuilder.build());
 	}
 	
 	/**
