@@ -1,6 +1,9 @@
 package ca.appvelopers.mcgillmobile.background;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import android.app.IntentService;
@@ -10,7 +13,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
+import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Transcript;
@@ -40,12 +45,12 @@ public class WebFetcherService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		
 		Log.v("Background: ","service started");
-		
-		//check seats int the background
-		CheckSeats();
-		
 		//compare grades in transcript
 		CheckGrade();
+		
+		//check seats int the background
+		//TODO: FIX check seats method
+		//CheckSeats();
 		
 		//release the wake lock of the phone
 		AlarmReceiver.completeWakefulIntent(intent);
@@ -146,6 +151,94 @@ public class WebFetcherService extends IntentService {
 		
 	}
 	
+
+	
+	/**
+	 * This method queries minerva to check for new seat openings
+	 */
+	protected void CheckSeats(){
+		List<ClassItem> wishlistClasses = App.getClassWishlist();
+		
+		//refresh wishlist
+		//Sort ClassItems into Courses
+        List<Course> coursesList = new ArrayList<Course>();
+        for(ClassItem wishlistClass : wishlistClasses){
+
+            boolean courseExists = false;
+            //Check if course exists in list
+            for(Course addedCourse : coursesList){
+                if(addedCourse.getCourseCode().equals(wishlistClass.getCourseCode())){
+                    courseExists = true;
+                }
+            }
+            //Add course if it has not already been added
+            if(!courseExists){
+                coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getCourseTitle(),
+                        wishlistClass.getCourseCode(), wishlistClass.getCredits(), "N/A", "N/A"));
+            }
+        }
+
+        //For each course, obtain its Minerva registration page
+        for(Course course : coursesList){
+
+            //Get the course registration URL
+            String courseCode[] = course.getCourseCode().split(" ");
+            String courseSubject = "";
+            String courseNumber = "";
+
+            //Check that the course code has been split successfully
+            if(courseCode.length > 1){
+                courseSubject = courseCode[0];
+                courseNumber = courseCode[1];
+            } else{
+                //TODO: Return indication of failure
+                return;
+            }
+
+            String registrationUrl = Connection.getCourseURL(course.getTerm(),
+                    courseSubject, null, courseNumber,
+                    "", 0, 0, 0, 0, 0, 0, null);
+
+            //error check the url
+            if(registrationUrl==null){
+            	continue;
+            }
+            
+            String classesString = Connection.getInstance().getUrl(this, registrationUrl);
+
+            //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
+            //This parses all ClassItems for a given course
+            List<ClassItem> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
+
+            //Update the course object with an updated class size
+            for(ClassItem updatedClass : updatedClassList){
+
+                for(ClassItem wishlistClass : wishlistClasses){
+
+                    if(wishlistClass.getCRN() == updatedClass.getCRN()){
+                        wishlistClass.setDays(updatedClass.getDays());
+                        wishlistClass.setStartTime(updatedClass.getStartTime());
+                        wishlistClass.setEndTime(updatedClass.getEndTime());
+                        wishlistClass.setDates(updatedClass.getDates());
+                        wishlistClass.setInstructor(updatedClass.getInstructor());
+                        wishlistClass.setLocation(updatedClass.getLocation());
+                        wishlistClass.setSeatsRemaining(updatedClass.getSeatsRemaining());
+                        wishlistClass.setWaitlistRemaining(updatedClass.getWaitlistRemaining());
+                    }
+                }
+            }
+        }
+		
+		//check if any classes have open spots
+		for(ClassItem wantedClass : wishlistClasses){
+			if(wantedClass.getSeatsRemaining()>0){
+				//show notification
+				LocalToast("A spot has opened up for the class: "+wantedClass.getCourseTitle(), CoursesListActivity.class,NOTIFICATION_ID_CLASSES);
+				return;
+			}
+		}
+	}
+
 	/**
 	 * This method generates a local toast which will open up to an activity determined by cls
 	 * @param message
@@ -169,13 +262,4 @@ public class WebFetcherService extends IntentService {
 	        mBuilder.setContentIntent(contentIntent);
 	        mNotificationManager.notify(ID, mBuilder.build());
 	}
-	
-	/**
-	 * This method queries minerva to check for new seat openings
-	 */
-	protected void CheckSeats(){
-		
-	}
-
-
 }
