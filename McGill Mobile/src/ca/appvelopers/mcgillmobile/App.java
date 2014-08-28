@@ -121,6 +121,9 @@ public class App extends Application {
         return classes;
     }
 
+    public static boolean isAlarmActive(){
+    	return webFetcherReceiver.isActive();
+    }
     public static List<EbillItem> getEbill(){
         return ebill;
     }

@@ -15,6 +15,9 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
     // The pending intent that is triggered when the alarm fires.
     private PendingIntent alarmIntent;
     
+    private boolean Active = false;
+    
+    
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		//create itent to do on Receiving the alarm
@@ -29,6 +32,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 	 * @param context
 	 */
     public void setAlarm(Context context) {
+    	Active = true;
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
@@ -71,8 +75,8 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         // If the alarm has been set, cancel it.
         if (alarmMgr!= null) {
             alarmMgr.cancel(alarmIntent);
+            Active = false;
         }
-        
         // Disable {@code SampleBootReceiver} so that it doesn't automatically restart the 
         // alarm when the device is rebooted.
         ComponentName receiver = new ComponentName(context, BootReceiver.class);
@@ -83,5 +87,8 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
                 PackageManager.DONT_KILL_APP);
     }
     // END_INCLUDE(cancel_alarm)
-
+    
+    public boolean isActive(){
+    	return Active;
+    }
 }

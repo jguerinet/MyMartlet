@@ -46,6 +46,13 @@ public class SplashActivity extends BaseActivity {
                     Connection.getInstance().setUsername(username + SplashActivity.this.getResources().getString(R.string.login_email));
                     Connection.getInstance().setPassword(password);
                     ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(SplashActivity.this);
+                    
+                    if(connectionResult == ConnectionStatus.CONNECTION_OK){
+                    	//set the background reciever after successful login
+                        if(!App.isAlarmActive()){
+                        	App.SetAlarm(SplashActivity.this);
+                        }
+                    }
                     //Successful connection: ScheduleActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK ||
                             connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
