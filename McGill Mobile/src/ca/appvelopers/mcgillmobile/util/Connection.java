@@ -510,11 +510,12 @@ public class Connection {
                 "&end_hh=" + endHour +
                 "&end_mi=" + endMinute +
                 "&end_ap=a";
-
-        for(String day : days){
-            courseSearchURL += "&sel_day=" + day;
+        
+        if(days!=null){
+	        for(String day : days){
+	            courseSearchURL += "&sel_day=" + day;
+	        }
         }
-
         courseSearchURL += "%20Response%20Headersview%20source";
 
         return courseSearchURL;
