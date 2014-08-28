@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ca.mcgill.mymcgill"
-    android:versionCode="2"
-    android:versionName="1.0.1" >
+    package="ca.appvelopers.mcgillmobile"
+    android:versionCode="3"
+    android:versionName="0.5" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
 
     <permission
         android:name="com.example.googlemaps.permission.MAPS_RECEIVE"
@@ -26,7 +25,7 @@
         android:required="true"/>
 
     <application
-        android:name="ca.mcgill.mymcgill.util.ApplicationClass"
+        android:name=".App"
         android:allowBackup="true"
         android:allowClearUserData="true"
         android:hardwareAccelerated="true"
@@ -36,71 +35,74 @@
         android:theme="@style/MyMcGill"
         android:vmSafeMode="true" >
         <activity
-            android:name="ca.mcgill.mymcgill.activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/title_login"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="ca.mcgill.mymcgill.activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="ca.mcgill.mymcgill.activity.DesktopActivity"
+            android:name=".activity.DesktopActivity"
             android:label="@string/title_desktop"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="ca.mcgill.mymcgill.activity.ScheduleActivity"
+            android:name=".activity.ScheduleActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_schedule" />
         <activity
-            android:name="ca.mcgill.mymcgill.activity.transcript.TranscriptActivity"
+            android:name=".activity.transcript.TranscriptActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_transcript" />
-        <activity android:name="ca.mcgill.mymcgill.activity.semester.SemesterActivity"/>
         <activity
-            android:name="ca.mcgill.mymcgill.activity.CourseActivity"
+            android:name=".activity.semester.SemesterActivity"/>
+        <activity
+            android:name=".activity.CourseActivity"
             android:theme="@style/DialogMyMcGill"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="ca.mcgill.mymcgill.activity.MyCoursesActivity"
+            android:name=".activity.MyCoursesActivity"
             android:label="@string/title_mycourses"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="ca.mcgill.mymcgill.activity.ebill.EbillActivity"
+            android:name=".activity.ebill.EbillActivity"
             android:label="@string/title_ebill"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="ca.mcgill.mymcgill.activity.inbox.InboxActivity"
-            android:label="@string/title_inbox"
+            android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="ca.mcgill.mymcgill.activity.SettingsActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="ca.mcgill.mymcgill.activity.EmailActivity"
-            android:parentActivityName=".activity.inbox.InboxActivity"/>
-        <activity
-            android:name="ca.mcgill.mymcgill.activity.inbox.ReplyActivity"
-            android:label="@string/title_reply"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity
-            android:name="ca.mcgill.mymcgill.activity.inbox.AttachActivity"
-            android:label="@string/title_attach">
-        </activity>
-        <activity
-            android:name="ca.mcgill.mymcgill.activity.MapActivity"
+            android:name=".activity.MapActivity"
             android:label="@string/title_map"/>
-        
+
         <activity
-            android:name="ca.mcgill.mymcgill.activity.ChangeSemesterActivity"
+            android:name=".activity.RegistrationActivity"
+            android:label="@string/title_registration"/>
+
+        <activity
+            android:name=".activity.ChangeSemesterActivity"
             android:theme="@style/DialogMyMcGill"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".activity.courseslist.CoursesListActivity" />
+        <activity
+            android:name=".activity.walkthrough.WalkthroughActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/DialogMyMcGill"/>=
+
+        <activity
+            android:name=".activity.AboutActivity"
+            android:label="@string/title_about" />
+        <activity android:name=".activity.mycourseslist.MyCoursesListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.HelpActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"

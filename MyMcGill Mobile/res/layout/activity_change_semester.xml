@@ -30,33 +30,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="@string/change_semester_season"
+            android:text="@string/registration_semester"
             android:textSize="@dimen/text_medium" />
 
         <Spinner
-            android:id="@+id/change_semester_season"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="right|center_vertical" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding_micro"
-        android:paddingTop="@dimen/padding_small" >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/change_semester_year"
-            android:textSize="@dimen/text_medium" />
-
-        <Spinner
-            android:id="@+id/change_semester_year"
+            android:id="@+id/change_semester_term"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="right|center_vertical" />

@@ -1,77 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:overScrollMode="always"
+    android:isScrollContainer="true"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarStyle="outsideInset"
+    android:scrollbars="vertical">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="@dimen/activity_horizontal_margin">
-
-    <TextView
-        android:layout_height="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:text="@string/login_welcome"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:textSize="@dimen/text_medium"
-        android:paddingBottom="@dimen/padding_large"/>
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="@string/login_username"
-        android:textSize="@dimen/text_medium"/>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/login_username"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingTop="@dimen/padding_small"
-            android:singleLine="true"
-            android:textSize="@dimen/text_medium"/>
+        android:padding="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/login_welcome"
+            android:gravity="center"
+            android:textSize="@dimen/text_medium"
+            android:paddingBottom="@dimen/padding_large"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/login_username"
+            android:textSize="@dimen/text_medium"/>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/login_username"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/padding_small"
+                android:singleLine="true"
+                android:textSize="@dimen/text_medium"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:text="@string/login_email"/>
+
+            </LinearLayout>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_remember_username"
+            android:text="@string/login_remember_username"
             android:textSize="@dimen/text_small"
-            android:text="@string/login_email"/>
+            android:layout_marginBottom="@dimen/padding_medium"/>
 
-        </LinearLayout>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/login_password"
+            android:textSize="@dimen/text_medium"/>
 
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/login_remember_username"
-        android:text="@string/login_remember_username"
-        android:textSize="@dimen/text_small"
-        android:layout_marginBottom="@dimen/padding_medium"/>
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/text_medium"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:imeOptions="actionGo"/>
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="@string/login_password"
-        android:textSize="@dimen/text_medium"/>
+        <Button
+            android:id="@+id/login_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/padding_large"
+            android:text="@string/login_button"
+            android:textSize="@dimen/text_medium"/>
 
-    <EditText
-        android:id="@+id/login_password"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textSize="@dimen/text_medium"
-        android:inputType="textPassword"
-        android:singleLine="true"
-        android:imeOptions="actionGo"/>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/padding_large"
-        android:text="@string/login_button"
-        android:textSize="@dimen/text_medium"/>
-
-</LinearLayout>
+</ScrollView>

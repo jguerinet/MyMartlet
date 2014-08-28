@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingTop="@dimen/padding_medium"
+    android:paddingLeft="@dimen/padding_small"
+    android:paddingRight="@dimen/padding_small">
+
+    <ImageView
+        android:layout_width="@dimen/about_image"
+        android:layout_height="@dimen/about_image"
+        android:id="@+id/person_image"
+        android:clickable="false"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/person_name"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/person_role"
+        android:textSize="@dimen/text_medium"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_linkedin"
+            android:id="@+id/person_linkedin"
+            android:textSize="@dimen/text_large"
+            android:textColor="@drawable/color_red_darkredpressed"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_email"
+            android:id="@+id/person_email"
+            android:paddingLeft="@dimen/padding_small"
+            android:textSize="@dimen/text_large"
+            android:textColor="@drawable/color_red_darkredpressed" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/person_description"
+        android:textSize="@dimen/text_small"
+        android:textStyle="italic"
+        android:gravity="center"/>
+</LinearLayout>

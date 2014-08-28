@@ -3,19 +3,23 @@
 
     <!-- Titles -->
     <string name="app_name">McGill Mobile</string>
+    <string name="team_name">Appvelopers</string>
     <string name="title_login">Login</string>
     <string name="title_desktop">Desktop Site</string>
     <string name="title_schedule">My Schedule</string>
     <string name="title_transcript">My Transcript</string>
     <string name="title_mycourses">MyCourses</string>
     <string name="title_ebill">My eBill</string>
-    <string name="title_inbox">My Email</string>
     <string name="title_settings">Settings</string>
     <string name="title_logout">Logout</string>
-    <string name="title_reply">Reply Email</string>
     <string name="title_map">Campus Map</string>
-    <string name="title_attach">Attachment</string>
     <string name="title_change_semester">Change Semester</string>
+    <string name="title_registration">Search for Courses</string>
+    <string name="title_wishlist">My Course Wishlist</string>
+    <string name="title_about">About Us</string>
+    <string name="title_courses">My Classes</string>
+    <string name="title_help">Help</string>
+    <string name="title_report_bug">Report a Problem</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -24,8 +28,13 @@
     <string name="refresh">Refresh</string>
     <string name="error_no_internet">You are not connected to the internet. Please connect to the internet and try again. </string>
     <string name="error_other">An error has occurred. Please try again later.</string>
+    <string name="back_toaster_message">Please press BACK again to exit.</string>
     <string name="english">English</string>
     <string name="french">French</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="start">Start</string>
+    <string name="skip">Skip</string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
@@ -33,11 +42,19 @@
     <string name="icon_settings">&#xf013;</string>
     <string name="icon_desktop">&#xf108;</string>
     <string name="icon_email">&#xf0e0;</string>
-    <string name="icon_mycourses">&#xf02d;</string>
+    <string name="icon_mycourses">&#xf19c;</string>
     <string name="icon_ebill">&#xf155;</string>
     <string name="icon_transcript">&#xf15c;</string>
     <string name="icon_map">&#xf041;</string>
     <string name="icon_logout">&#xf0a9;</string>
+    <string name="icon_bug">&#xf188;</string>
+    <string name="icon_security">&#xf023;</string>
+    <string name="icon_question">&#xf128;</string>
+    <string name="icon_linkedin">&#xf08c;</string>
+    <string name="icon_search">&#xf002;</string>
+    <string name="icon_star">&#xf005;</string>
+    <string name="icon_courses">&#xf02d;</string>
+    <string name="icon_info">&#xf05a;</string>
 
     <!-- Day Names -->
     <string name="monday">Monday</string>
@@ -53,16 +70,37 @@
     <string name="winter">Winter</string>
     <string name="summer">Summer</string>
 
+    <!-- Faculty Names -->
+    <string name="faculty_enviro">Faculty of Agricultural and Environmental Sciences</string>
+    <string name="faculty_arts">Faculty of Arts</string>
+    <string name="faculty_continuing_studies">School of Continuing Studies</string>
+    <string name="faculty_dentistry">Faculty of Dentistry</string>
+    <string name="faculty_education">Faculty of Education</string>
+    <string name="faculty_engineering">Faculty of Engineering</string>
+    <string name="faculty_graduate">Graduate and Postdoctoral Studies</string>
+    <string name="faculty_law">Faculty of Law</string>
+    <string name="faculty_management">Desautels Faculty of Management</string>
+    <string name="faculty_medecine">Faculty of Medicine</string>
+    <string name="faculty_music">Schulich School of Music</string>
+    <string name="faculty_religion">Faculty of Religious Studies</string>
+    <string name="faculty_science">Faculty of Science</string>
+
     <!-- Login Screen -->
     <string name="login_welcome">Welcome to McGill Mobile. Please input your McGill username and password below.</string>
     <string name="login_username">Username: </string>
     <string name="login_email">\@mail.mcgill.ca</string>
     <string name="login_password">Password: </string>
     <string name="login_button">Login</string>
-    <string name="login_error_wrong_data">The inputted username or password is incorrect. Please try again.</string>
+    <string name="login_error_wrong_data">The username or password you have entered is incorrect. Please try again. </string>
     <string name="login_error_username_empty">You must input a username.</string>
     <string name="login_error_password_empty">You must input a password. </string>
-    <string name="login_remember_username">Remember my Username</string>
+    <string name="login_remember_username">Remember my username</string>
+
+    <!-- Logout Dialog -->
+    <string name="logout_dialog_title">Logout</string>
+    <string name="logout_dialog_message">Are you sure you want to logout?</string>
+    <string name="logout_dialog_positive">Yes</string>
+    <string name="logout_dialog_negative">Cancel</string>
 
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">Term GPA: %s</string>
@@ -101,37 +139,141 @@
     <string name="ebill_due_date">Due Date:</string>
     <string name="ebill_amount">Amount Due: </string>
 
-    <!-- Email Screen -->
-    <string name="email_error">We are unable to load your email inbox. Please try again later. </string>
-    <string name="email_newMessages">New Messages: %d</string>
-    <string name="email_noNew">You have no new emails. </string>
-    <string name="email_forward">Forward Email</string>
-    <string name="email_reply">Reply to Email</string>
-
     <!-- Settings Screen -->
     <string name="settings_language">Language</string>
     <string name="settings_homepage">Homepage</string>
+    <string name="settings_statistics">Allow Anonymous Usage Statistics </string>
     <string name="homepage_schedule">Schedule</string>
     <string name="homepage_transcript">Transcript</string>
-    <string name="homepage_email">Email</string>
     <string name="homepage_mycourses">MyCourses</string>
+    <string name="homepage_search">Courses Search</string>
+    <string name="homepage_wishlist">Wishlist</string>
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Campus Map</string>
     <string name="homepage_desktop">Desktop Site</string>
-
-    <!-- Send Email Screen -->
-    <string name="send_message_success">Your message has been sent. </string>
-    <string name="send_message_error">There was an error sending your message. Please try again later. </string>
-    <string name="send_to">To:</string>
-    <string name="send_carbon_copy">CC:</string>
-    <string name="send_subject">Subject:</string>
-    <string name="send_add_attachment">Add Attachment</string>
-    <string name="send_email">Send Email</string>
-    <string name="send_no_attachments">No files attached</string>
-    <string name="send_attachments">Files Attached: </string>
+    <string name="settings_version">Version %s</string>
 
     <!-- Change Semester Page -->
     <string name="change_semester_season">Season: </string>
     <string name="change_semester_year">Year:</string>
     <string name="change_semester_default">Set as Default</string>
+
+    <!-- Register Page -->
+    <string name="registration_semester">Semester:</string>
+    <string name="registration_subject">Subject (ex: MATH):</string>
+    <string name="registration_course_number">Course Number:</string>
+    <string name="registration_invalid_subject">Invalid subject: Please a enter four character subject.</string>
+    <string name="registration_error">Registration Error</string>
+    <string name="registration_success">Registration Successful!</string>
+    <string name="registration_faculty">Faculty:</string>
+    <string name="registration_title">Title:</string>
+    <string name="registration_start_time">Start Time:</string>
+    <string name="registration_end_time">End Time:</string>
+    <string name="registration_days">Days:</string>
+    <string name="registration_credits">Credit Range:</string>
+    <string name="registration_credits_hours">hours</string>
+    <string name="registration_spots">%s spot(s) left</string>
+    <string name="registration_waitlist">Waitlist Spots: %s</string>
+    <string name="registration_reset">RESET</string>
+    <string name="registration_error_no_faculty">You must either select a faculty or input a course subject.</string>
+    <string name="registration_error_credits">The maximum hours must be bigger than the minimum hours</string>
+    <string name="registration_show_options">Show More Options</string>
+    <string name="registration_hide_options">Show Less Options</string>
+    <string name="unregistration_success">Unregistration Successful!</string>
+    <string name="unregistration_error">Unregistration Error</string>
+
+    <!-- Walkthrough -->
+    <string name="walkthrough_welcome">Welcome to McGill Mobile, the unofficial app for McGill University students! </string>
+    <string name="walkthrough_essentials">All of your most important McGill tools are now at the tips of your fingertips: schedule, transcript, a campus map&#8230; It\'s all there!</string>
+    <string name="walkthrough_menu">All of these features are directly accessible from the main menu. Simply tap on the top left icon, or swipe from the left edge of the screen to open it. </string>
+    <string name="walkthrough_offline">This app keeps you connected at all times, so no need to log in constantly!  You can use the app offline too!</string>
+    <string name="walkthrough_security">All of your data (password included) is only stored locally on your phone. As an extra security measure, your password is encrypted. We will be collecting anonymous usage statistics, but you can opt out at any time in the Settings.</string>
+    <string name="walkthrough_help">To see this walkthrough again, please consult our Help Section in the settings. There, you will also find the About Section which includes info about the team behind this app, and different ways to contact us.</string>
+    <string name="walkthrough_bugs">If you find any bugs, don\'t hesitate to report them via the Settings Section</string>
+    <string name="walkthrough_homepage">Please choose a page you will see first when opening this app. You can change this at any time in the Settings.</string>
+    <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
+
+    <!-- CoursesList / Course Wishlist -->
+    <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
+    <string name="wishlist_add">Added %s course(s) to the wishlist</string>
+    <string name="courses_empty">No Courses Available</string>
+    <string name="courses_register">Register</string>
+    <string name="courses_unregister">Unregister</string>
+    <string name="courses_add_wishlist">Add to Wishlist</string>
+    <string name="courses_remove_wishlist">Remove from Wishlist</string>
+    <string name="courses_too_many_courses">You must select fewer than 10 courses.</string>
+    <string name="courses_none_selected">You must select at least one course.</string>
+
+    <!-- About -->
+    <string name="about_email_picker_title">Complete Action Using&#8230;</string>
+    <string name="about_adnan">Adnan Uddin</string>
+    <string name="about_adnan_role">Android Developer</string>
+    <string name="about_adnan_description">Better known as that guy that knows everyone on campus. In 2014, Adnan famously held a fried chicken event which still holds the record for least number of salmonella cases at an Engineering Event.</string>
+    <string name="about_adnan_linkedin">http://ca.linkedin.com/pub/adnan-uddin/58/7b9/b1</string>
+    <string name="about_adnan_email">adnan.uddin6\@gmail.com</string>
+    <string name="about_gabriel">Gabriel Petrella</string>
+    <string name="about_gabriel_role">Head Tester</string>
+    <string name="about_gabriel_description">Gabriel is known as a friend in the EUS scene. He has served many semesters with the PMO and OAP. Little known fact, for one year he committed to the role of brother to ECSESS President.</string>
+    <string name="about_gabriel_linkedin">http://ca.linkedin.com/pub/gabriel-petrella/47/17/326</string>
+    <string name="about_gabriel_email">gabriel.petrella\@mail.mcgill.ca</string>
+    <string name="about_hernan">Hernan Gatta</string>
+    <string name="about_hernan_role">iOS Developer</string>
+    <string name="about_hernan_description">A blurb? I\'m AWESOME! (More so than Josh.)</string>
+    <string name="about_hernan_linkedin">ca.linkedin.com/in/hernangatta</string>
+    <string name="about_hernan_email">gattahernan\@gmail.com</string>
+    <string name="about_joshua">Joshua David Alfaro</string>
+    <string name="about_joshua_role">Android Developer</string>
+    <string name="about_joshua_description">Josh is an Electrical Engineering student at McGill University. Josh is also a member of the ECSESS Robotics Club which helps students learn and prepare for design competitions. While taking his minor in Software Engineering, Josh supported the development of this mobile application. </string>
+    <string name="about_joshua_linkedin">http://ca.linkedin.com/pub/joshua-david-alfaro/24/988/5b7</string>
+    <string name="about_joshua_email">JoshuaDavidAlfaro\@gmail.com</string>
+    <string name="about_julien">Julien Guerinet</string>
+    <string name="about_julien_role">Scrum Master, Head Android Developer</string>
+    <string name="about_julien_description">Julien is a fourth year Computer Engineer undergraduate, and head of the Android version.</string>
+    <string name="about_julien_linkedin">http://ca.linkedin.com/in/julienguerinet</string>
+    <string name="about_julien_email">julien.guerinet\@mail.mcgill.ca</string>
+    <string name="about_omar">Omar Gonzalez</string>
+    <string name="about_omar_role">Generic Developper and Tester</string>
+    <string name="about_omar_description">Omar is a Software Engineering student with a minor in Computer Science. This allows him to boast about being a traitor to both sides. While he is not busy eating sandwiches he aspires to create a programming language more obscure and frustrating than brainfuck, possibly an extension to JAVA. He also backstabbed Julien during this project.</string>
+    <string name="about_omar_linkedin">http://ca.linkedin.com/pub/omar-gonzalez/57/336/722</string>
+    <string name="about_omar_email">omargonzalez233\@gmail.com</string>
+    <string name="about_quang">Nhat-Quang Dao</string>
+    <string name="about_quang_role">Android Developer</string>
+    <string name="about_quang_description">Quang is an Software Engineering student with a great sense of taste. The hackathon where he served as the scrum master was one of the most memorable times for everyone.</string>
+    <string name="about_quang_linkedin">https://www.linkedin.com/pub/quang-dao/59/672/715</string>
+    <string name="about_quang_email">nhat.quang.d\@gmail.com</string>
+    <string name="about_ryan">Ryan Singzon</string>
+    <string name="about_ryan_role">Android Developer</string>
+    <string name="about_ryan_description">Ryan Singzon aka. The man with the smile is best known for being the only contender to the ridiculously photogenic guy. </string>
+    <string name="about_ryan_linkedin">http://ca.linkedin.com/in/ryansingzon</string>
+    <string name="about_ryan_email">ryan.singzon\@mail.mcgill.ca</string>
+    <string name="about_shabbir">Shabbir Hussain</string>
+    <string name="about_shabbir_role">Scrum Master, Assistant to the Scrum Master, Windows Phone Developer, Android Developer</string>
+    <string name="about_shabbir_description">Shabbir is an EE student who prefers software development. Although he did contribute to this project, the team knows him exclusively as Assistant to the Scrum Master. Contact him if you are interested in playing rec volleyball.</string>
+    <string name="about_shabbir_linkedin">http://ca.linkedin.com/in/shabbirhusn</string>
+    <string name="about_shabbir_email">shabbir.husn\@outlook.com</string>
+    <string name="about_xavier">Xavier Sit</string>
+    <string name="about_xavier_role">Android Developer</string>
+    <string name="about_xavier_description">Xavier is a great and enigmatic man, flowing gently through life like a mysterious flower.</string>
+    <string name="about_xavier_linkedin">http://ca.linkedin.com/pub/chi-wing-sit/66/363/519</string>
+    <string name="about_xavier_email">chiwingsit\@gmail.com</string>
+    <string name="about_yulric">Yulric Sequeira</string>
+    <string name="about_yulric_role">Windows Phone Developer</string>
+    <string name="about_yulric_description">Yulric recently graduated from McGill University as Electrical Engineer and is part of Windows Phone development team.</string>
+    <string name="about_yulric_linkedin">http://www.linkedin.com/in/yulricsequeira</string>
+    <string name="about_yulric_email">yulric.sequeira\@mail.mcgill.ca</string>
+
+    <!-- Help -->
+    <string name="about_question">Question</string>
+    <string name="help_question1">What is MyMcGill Mobile?</string>
+    <string name="help_question2">Is this app officially made by McGill?</string>
+    <string name="help_question3">On which platforms can we find this app?</string>
+
+    <string name="about_answer">This is an answer</string>
+    <string name="help_answer1">MyMcGill Mobile is an app that allows McGill University students to quickly and conveniently access their MyMcGill portal on their mobile device.</string>
+    <string name="help_answer2">This app was made by McGill University students</string>
+    <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMcGill Mobile.</string>
+    <string name="about_FAQ">FAQ</string>
+    <string name="help_bug_title">%s Bug: </string>
+    <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
+    <string name="help_bug_prompt">Please give us a summary of the bug:</string>
 </resources>
