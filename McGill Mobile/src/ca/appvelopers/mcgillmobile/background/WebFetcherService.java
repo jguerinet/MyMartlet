@@ -106,7 +106,8 @@ public class WebFetcherService extends IntentService {
 		Semester newSem = newTrans.getSemesters().get(newIndex);
 		
 		while(oldIndex < oldSize && newIndex < newSize){
-			
+			oldSem = oldTrans.getSemesters().get(oldIndex);
+			newSem = newTrans.getSemesters().get(newIndex);
 			if(oldSem == null || newSem==null ||!oldSem.getTerm().equals(newSem.getTerm()) || oldSem.getCourses().size() != newSem.getCourses().size()){
 				//don't compare different semesters OR just after add / drop
 				return;
@@ -120,6 +121,8 @@ public class WebFetcherService extends IntentService {
 			Course newCourse = newSem.getCourses().get(newCourseIndex);
 			
 			while(oldCourseIndex<oldCourseSize && newCourseIndex  < newCourseSize){
+				oldCourse = oldSem.getCourses().get(oldCourseIndex);
+				newCourse = newSem.getCourses().get(newCourseIndex);
 				if(oldCourse == null || newCourse==null){
 					return; //a parsing error occured
 				}
@@ -131,16 +134,12 @@ public class WebFetcherService extends IntentService {
 				}
 				
 				++oldCourseIndex;
-				++newCourseIndex;
-				oldCourse = oldSem.getCourses().get(oldCourseIndex);
-				newCourse = newSem.getCourses().get(newCourseIndex);				
+				++newCourseIndex;					
 			}
 			
 			
 			++oldIndex;
 			++newIndex;
-			oldSem = oldTrans.getSemesters().get(oldIndex);
-			newSem = newTrans.getSemesters().get(newIndex);
 		}
 
 
