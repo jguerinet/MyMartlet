@@ -161,19 +161,27 @@ public class RegistrationActivity extends DrawerActivity{
         int startHour = mStartTime.getCurrentHour();
         int startMinute = mStartTime.getCurrentMinute();
         char startAMPM = 'a';
-        if(startHour > 12){
+        if(startHour == 12){
+            startAMPM = 'p';
+        }
+        else if(startHour > 12){
             startAMPM = 'p';
             startHour = startHour - 12;
         }
+
 
         //End Time
         int endHour = mEndTime.getCurrentHour();
         int endMinute = mEndTime.getCurrentMinute();
         char endAMPM = 'a';
-        if(endHour > 12){
+        if(endHour == 12){
+            endAMPM = 'p';
+        }
+        else if(endHour > 12){
             endAMPM = 'p';
             endHour = endHour - 12;
         }
+
 
         //Days
         List<String> days = new ArrayList<String>();

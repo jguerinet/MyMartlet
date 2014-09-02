@@ -507,10 +507,10 @@ public class Connection {
                 "&sel_attr=%25" +
                 "&begin_hh=" + startHour +
                 "&begin_mi=" + startMinute +
-                "&begin_ap=a" +
+                "&begin_ap=" + startAMPM +
                 "&end_hh=" + endHour +
                 "&end_mi=" + endMinute +
-                "&end_ap=a";
+                "&end_ap=" + endAMPM;
         
         if(days!=null){
 	        for(String day : days){
