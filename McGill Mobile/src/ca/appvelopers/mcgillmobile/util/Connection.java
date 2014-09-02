@@ -480,7 +480,8 @@ public class Connection {
      */
     public static String getCourseURL(Term term, String subject, Faculty faculty, String courseNumber,
                                       String title, int minCredit, int maxCredit, int startHour,
-                                      int startMinute, int endHour, int endMinute, List<String> days){
+                                      int startMinute, char startAMPM, int endHour, int endMinute,
+                                      char endAMPM, List<String> days){
 
         String courseSearchURL = COURSE_SEARCH
                 + "term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
@@ -516,7 +517,6 @@ public class Connection {
 	            courseSearchURL += "&sel_day=" + day;
 	        }
         }
-        courseSearchURL += "%20Response%20Headersview%20source";
 
         return courseSearchURL;
     }

@@ -67,10 +67,12 @@ public class RegistrationActivity extends DrawerActivity{
         mFacultySpinner.setAdapter(mFacultyAdapter);
 
         mStartTime = (TimePicker)findViewById(R.id.registration_start_time);
+        mStartTime.setIs24HourView(false);
         mStartTime.setCurrentHour(0);
         mStartTime.setCurrentMinute(0);
 
         mEndTime = (TimePicker)findViewById(R.id.registration_end_time);
+        mEndTime.setIs24HourView(false);
         mEndTime.setCurrentHour(0);
         mEndTime.setCurrentMinute(0);
 
@@ -158,10 +160,20 @@ public class RegistrationActivity extends DrawerActivity{
         //Start time
         int startHour = mStartTime.getCurrentHour();
         int startMinute = mStartTime.getCurrentMinute();
+        char startAMPM = 'a';
+        if(startHour > 12){
+            startAMPM = 'p';
+            startHour = startHour - 12;
+        }
 
         //End Time
         int endHour = mEndTime.getCurrentHour();
         int endMinute = mEndTime.getCurrentMinute();
+        char endAMPM = 'a';
+        if(endHour > 12){
+            endAMPM = 'p';
+            endHour = endHour - 12;
+        }
 
         //Days
         List<String> days = new ArrayList<String>();
@@ -190,7 +202,8 @@ public class RegistrationActivity extends DrawerActivity{
         //Obtain courses
         Log.e("Registration options", startHour + ":" + startMinute + " " + endHour + ":" + endMinute + " " + days );
         new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, faculty, courseNumber,
-                courseTitle, minCredits, maxCredits, startHour, startMinute, endHour, endMinute, days)).execute();
+                courseTitle, minCredits, maxCredits, startHour, startMinute, startAMPM, endHour,
+                endMinute, endAMPM, days)).execute();
     }
 
     @Override
