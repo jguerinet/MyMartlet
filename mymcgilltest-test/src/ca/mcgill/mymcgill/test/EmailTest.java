@@ -5,7 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 import android.widget.Button;
 import android.widget.EditText;
-import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
+//import ca.mcgill.mymcgill.activity.inbox.ReplyActivity;
 
 public class EmailTest extends ActivityInstrumentationTestCase2<ReplyActivity> {
 	public Activity testActivity;
