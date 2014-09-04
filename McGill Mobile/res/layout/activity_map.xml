@@ -86,7 +86,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:id="@+id/map_add_favorite"
+                    android:id="@+id/map_favorite"
                     android:padding="@dimen/padding_small"
                     android:gravity="center"
                     android:text="@string/map_favorites_add"

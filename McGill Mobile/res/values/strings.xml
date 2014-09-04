@@ -295,6 +295,8 @@
     <string name="map_directions">Directions</string>
     <string name="map_favorites_add">Add to Favorites</string>
     <string name="map_favorites_remove">Remove from Favorites</string>
+    <string name="map_favorites_added">Added %s to Favorites</string>
+    <string name="map_favorites_removed">Removed %s to Favorites</string>
 
     <!-- Email Walkthrough -->
     <string name="ewalk_intruction1">Sign into your McGill email and enter the email client </string>

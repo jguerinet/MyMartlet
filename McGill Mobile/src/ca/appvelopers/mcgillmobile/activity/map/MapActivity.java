@@ -36,11 +36,13 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 
 public class MapActivity extends DrawerFragmentActivity {
     private List<MapPlace> mPlaces;
+    private List<Place> mFavoritePlaces;
 
     private static final LatLng MCGILL = new LatLng(45.504435,-73.576006);
 
     private TextView mTitle;
     private TextView mAddress;
+    private TextView mFavorite;
     private MapPlace mPlaceMarker;
 
     @Override
@@ -54,8 +56,10 @@ public class MapActivity extends DrawerFragmentActivity {
         //Bind the TextViews
         mTitle = (TextView)findViewById(R.id.place_title);
         mAddress = (TextView)findViewById(R.id.place_address);
+        mFavorite = (TextView)findViewById(R.id.map_favorite);
 
         mPlaces = new ArrayList<MapPlace>();
+        mFavoritePlaces = App.getFavoritePlaces();
 
         final GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         if (map !=null){
@@ -101,6 +105,13 @@ public class MapActivity extends DrawerFragmentActivity {
                     mTitle.setText(mPlaceMarker.mPlace.getName());
                     mAddress.setText(mPlaceMarker.mPlace.getAddress());
 
+                    if(mFavoritePlaces.contains(mPlaceMarker.mPlace)){
+                        mFavorite.setText(getString(R.string.map_favorites_remove));
+                    }
+                    else{
+                        mFavorite.setText(getString(R.string.map_favorites_add));
+                    }
+
                     return false;
                 }
             });
@@ -120,12 +131,20 @@ public class MapActivity extends DrawerFragmentActivity {
                 }
             });
 
-            TextView favorites = (TextView) findViewById(R.id.map_add_favorite);
-            favorites.setOnClickListener(new View.OnClickListener() {
+            mFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mPlaceMarker != null) {
-                        Toast.makeText(MapActivity.this, mPlaceMarker.mPlace.getName() + " added to Favorites", Toast.LENGTH_SHORT).show();
+                        //Check if it was in the favorites
+                        if(mFavoritePlaces.contains(mPlaceMarker.mPlace)){
+                            mFavoritePlaces.remove(mPlaceMarker.mPlace);
+                            Toast.makeText(MapActivity.this, getString(R.string.map_favorites_added, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            mFavoritePlaces.add(mPlaceMarker.mPlace);
+                            Toast.makeText(MapActivity.this, getString(R.string.map_favorites_removed, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                        }
+                        App.setPlaces(mFavoritePlaces);
                     }
                 }
             });
