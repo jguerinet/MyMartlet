@@ -1,5 +1,7 @@
 package ca.appvelopers.mcgillmobile.activity.map;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -109,7 +111,11 @@ public class MapActivity extends DrawerFragmentActivity {
                 @Override
                 public void onClick(View v) {
                     if (mPlaceMarker != null) {
-                        Toast.makeText(MapActivity.this, "Directions to " + mPlaceMarker.mPlace.getName(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                Uri.parse("http://maps.google.com/maps?f=d &daddr=" +
+                                        mPlaceMarker.mMarker.getPosition().latitude + "," +
+                                        mPlaceMarker.mMarker.getPosition().longitude));
+                        startActivity(intent);
                     }
                 }
             });
