@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
@@ -23,7 +24,6 @@ import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
-import ca.appvelopers.mcgillmobile.background.*;
 
 /**
  * Author: Julien
@@ -48,6 +48,7 @@ public class App extends Application {
     private static UserInfo userInfo;
     private static List<ClassItem> wishlist;
     private static List<Place> places;
+    private static List<Place> favoritePlaces;
 
     //List of semesters you can currently register in
     //TODO Find a way to make this dynamic
@@ -86,6 +87,8 @@ public class App extends Application {
         wishlist = Load.loadClassWishlist(this);
         //Load the places
         places = Load.loadPlaces(this);
+        //Load the favorite palces
+        favoritePlaces = Load.loadFavoritePlaces(this);
 
         //Set up the register terms
         registerTerms = new ArrayList<Term>();
@@ -154,6 +157,10 @@ public class App extends Application {
 
     public static List<Place> getPlaces(){
         return places;
+    }
+
+    public static List<Place> getFavoritePlaces(){
+        return favoritePlaces;
     }
 
     public static List<Term> getRegisterTerms(){
@@ -228,6 +235,12 @@ public class App extends Application {
         App.places = places;
         //Save it to internal storage
         Save.savePlaces(context);
+    }
+
+    public static void setFavoritePlaces(List<Place> places){
+        App.favoritePlaces = places;
+        //Save it to internal storage
+        Save.saveFavoritePlaces(context);
     }
 
     /* HELPER METHODS */

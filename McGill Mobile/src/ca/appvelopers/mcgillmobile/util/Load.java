@@ -302,6 +302,38 @@ public class Load {
         return places;
     }
 
+    public static List<Place> loadFavoritePlaces(Context context){
+        List<Place> places = new ArrayList<Place>();
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.FAVORITE_PLACES_FILE);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            places = (List<Place>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (OptionalDataException e) {
+            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (FileNotFoundException e) {
+            Log.e("Load Favorite Places Failure", "File not found");
+            e.printStackTrace();
+            return places;
+        } catch (StreamCorruptedException e) {
+            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (IOException e) {
+            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        }
+
+        return places;
+    }
+
     //Last date the webservice was queried
     public static String loadIfModifiedSinceDate(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
