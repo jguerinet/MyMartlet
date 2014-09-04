@@ -238,4 +238,6 @@
     <!-- Email Walkthrough -->
     <string name="unregister_dialog_positive">Continuer</string>
     <string name="unregister_dialog_negative">Annuler</string>
+
+    <!-- Drawer -->
 </resources>

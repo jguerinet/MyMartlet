@@ -1,17 +1,15 @@
 package ca.appvelopers.mcgillmobile.activity.drawer;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
 import ca.appvelopers.mcgillmobile.activity.MyCoursesActivity;
@@ -28,7 +26,6 @@ public class DrawerActivity extends BaseActivity {
     public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
-    private boolean mExit = false;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -37,6 +34,7 @@ public class DrawerActivity extends BaseActivity {
 
         // R.id.drawer_layout should be in every activity with exactly the same id.
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.setFocusableInTouchMode(false);
 
         //Set up the drawer toggle
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
@@ -88,25 +86,27 @@ public class DrawerActivity extends BaseActivity {
 
     @Override
     public void onBackPressed(){
-        //If it's not the Homepage, bring him to the homepage
-        if(!this.getClass().equals(App.getHomePage().getHomePageClass())){
-            startActivity(new Intent(this, App.getHomePage().getHomePageClass()));
-            super.onBackPressed();
+        //Open the menu if it is not open
+        if(!drawerLayout.isDrawerOpen(drawerList)){
+            drawerLayout.openDrawer(drawerList);
         }
+        //If it is open, ask the user if he wants to exit
         else{
-            if(mExit) {
-                super.onBackPressed();
-                return;
-            }
-            mExit = true;
-            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mExit = false;
-                }
-            }, 2000);
+            new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.drawer_exit))
+                    .setPositiveButton(getString(android.R.string.yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DrawerActivity.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton(getString(android.R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
         }
     }
 

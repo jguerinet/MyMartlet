@@ -309,4 +309,7 @@
     <string name="unregister_dialog_message">Are you sure you want to drop the selected classes?</string>
     <string name="unregister_dialog_positive">Yes</string>
     <string name="unregister_dialog_negative">Cancel</string>
+
+    <!-- Drawer -->
+    <string name="drawer_exit">Are you sure you want to exit?</string>
 </resources>
