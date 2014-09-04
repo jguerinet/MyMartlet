@@ -292,6 +292,9 @@
     <string name="map_security">Security </string>
     <string name="map_student_associations">Student Associations</string>
     <string name="map_faculty_offices">Faculty Offices</string>
+    <string name="map_directions">Directions</string>
+    <string name="map_favorites_add">Add to Favorites</string>
+    <string name="map_favorites_remove">Remove from Favorites</string>
 
     <!-- Email Walkthrough -->
     <string name="ewalk_intruction1">Sign into your McGill email and enter the email client </string>

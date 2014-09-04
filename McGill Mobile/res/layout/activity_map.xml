@@ -72,7 +72,7 @@
                     android:layout_weight="0.5"
                     android:id="@+id/map_directions"
                     android:padding="@dimen/padding_small"
-                    android:text="Directions"
+                    android:text="@string/map_directions"
                     android:gravity="center"
                     android:background="@drawable/red_darkredpressed"
                     android:textColor="@color/white_greypressed"/>
@@ -89,7 +89,7 @@
                     android:id="@+id/map_add_favorite"
                     android:padding="@dimen/padding_small"
                     android:gravity="center"
-                    android:text="Add to Favorites"
+                    android:text="@string/map_favorites_add"
                     android:background="@drawable/red_darkredpressed"
                     android:textColor="@color/white_greypressed"/>
 
