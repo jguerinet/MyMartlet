@@ -3,6 +3,7 @@ package ca.appvelopers.mcgillmobile.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -30,7 +31,8 @@ public class HelpActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        
         // get ListView
         ListView helpListView = (ListView) findViewById(R.id.helpListView);
 
@@ -39,6 +41,16 @@ public class HelpActivity extends BaseActivity {
         HelpAdapter adapter = new HelpAdapter(this,HelpItemList);
         helpListView.setAdapter(adapter);
 
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void populateList()
