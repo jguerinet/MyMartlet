@@ -478,7 +478,7 @@ public class Connection {
      * @param courseNumber The course number
      * @return The proper search URL
      */
-    public static String getCourseURL(Term term, String subject, Faculty faculty, String courseNumber,
+    public static String getCourseURL(Term term, String subject, String courseNumber,
                                       String title, int minCredit, int maxCredit, int startHour,
                                       int startMinute, char startAMPM, int endHour, int endMinute,
                                       char endAMPM, List<String> days){

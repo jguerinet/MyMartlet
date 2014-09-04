@@ -61,11 +61,6 @@ public class RegistrationActivity extends DrawerActivity{
         mTermAdapter = new TermAdapter(this, App.getRegisterTerms());
         mTermSpinner.setAdapter(mTermAdapter);
 
-        //Set up the faculty spinner
-        mFacultySpinner = (Spinner)findViewById(R.id.registration_faculty);
-        mFacultyAdapter = new FacultyAdapter(this, true);
-        mFacultySpinner.setAdapter(mFacultyAdapter);
-
         mStartTime = (TimePicker)findViewById(R.id.registration_start_time);
         mStartTime.setIs24HourView(false);
         mStartTime.setCurrentHour(0);
@@ -118,13 +113,10 @@ public class RegistrationActivity extends DrawerActivity{
         //Get the selected term
         Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
 
-        //Get the selected faculty
-        Faculty faculty = mFacultyAdapter.getItem(mFacultySpinner.getSelectedItemPosition());
-
         //Subject Input
         String courseSubject = mCourseSubject.getText().toString().toUpperCase().trim();
 
-        if(faculty == null && courseSubject.isEmpty()){
+        if(courseSubject.isEmpty()){
             Toast.makeText(this, getString(R.string.registration_error_no_faculty), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -209,7 +201,7 @@ public class RegistrationActivity extends DrawerActivity{
 
         //Obtain courses
         Log.e("Registration options", startHour + ":" + startMinute + " " + endHour + ":" + endMinute + " " + days );
-        new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, faculty, courseNumber,
+        new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, courseNumber,
                 courseTitle, minCredits, maxCredits, startHour, startMinute, startAMPM, endHour,
                 endMinute, endAMPM, days)).execute();
     }
