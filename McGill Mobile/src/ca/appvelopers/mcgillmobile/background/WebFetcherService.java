@@ -197,7 +197,7 @@ public class WebFetcherService extends IntentService {
 
             String registrationUrl = Connection.getCourseURL(course.getTerm(),
                     courseSubject, null, courseNumber,
-                    "", 0, 0, 0, 0, '0', 0, 0, '0', null);
+                    0, 0, 0, 0, '0', 0, 0, '0', null);
 
             //error check the url
             if(registrationUrl==null){
