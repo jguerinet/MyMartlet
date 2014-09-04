@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -34,6 +37,10 @@ public class MapActivity extends DrawerFragmentActivity {
 
     private static final LatLng MCGILL = new LatLng(45.504435,-73.576006);
 
+    private TextView mTitle;
+    private TextView mAddress;
+    private MapPlace mPlaceMarker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +49,13 @@ public class MapActivity extends DrawerFragmentActivity {
 
         GoogleAnalytics.sendScreen(this, "Map");
 
+        //Bind the TextViews
+        mTitle = (TextView)findViewById(R.id.place_title);
+        mAddress = (TextView)findViewById(R.id.place_address);
+
         mPlaces = new ArrayList<MapPlace>();
 
-        GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        final GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         if (map !=null){
             //Set the camera's center position
             CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -63,14 +74,55 @@ public class MapActivity extends DrawerFragmentActivity {
                 //Create a MapPlace for this
                 Marker marker = map.addMarker(new MarkerOptions()
                     .position(new LatLng(place.getLatitude(), place.getLongitude()))
-                    .title(place.getName())
                     .draggable(false)
-                    .snippet(place.getAddress())
                     .visible(true));
 
                 //Add it to the list
                 mPlaces.add(new MapPlace(place, marker));
             }
+
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    //If there was a marker that was selected before set it back to red
+                    if(mPlaceMarker != null){
+                        mPlaceMarker.mMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    }
+
+                    //Find the concerned place
+                    mPlaceMarker = findPlace(marker);
+
+                    //Set it to blue
+                    mPlaceMarker.mMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+                    //Set up the info
+                    mTitle.setText(mPlaceMarker.mPlace.getName());
+                    mAddress.setText(mPlaceMarker.mPlace.getAddress());
+
+                    return false;
+                }
+            });
+
+            //Set up the two buttons
+            TextView directions = (TextView) findViewById(R.id.map_directions);
+            directions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mPlaceMarker != null) {
+                        Toast.makeText(MapActivity.this, "Directions to " + mPlaceMarker.mPlace.getName(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            TextView favorites = (TextView) findViewById(R.id.map_add_favorite);
+            favorites.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mPlaceMarker != null) {
+                        Toast.makeText(MapActivity.this, mPlaceMarker.mPlace.getName() + " added to Favorites", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
 
         //Set up the spinner
@@ -110,5 +162,15 @@ public class MapActivity extends DrawerFragmentActivity {
             this.mPlace = place;
             this.mMarker = marker;
         }
+    }
+
+    private MapPlace findPlace(Marker marker){
+        for(MapPlace mapPlace : mPlaces){
+            if(mapPlace.mMarker.equals(marker)){
+                return mapPlace;
+            }
+        }
+
+        return null;
     }
 }

@@ -39,6 +39,64 @@
             android:layout_weight="1"
             class="com.google.android.gms.maps.MapFragment" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/place_title"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold"
+                android:paddingLeft="@dimen/padding_micro"
+                android:paddingRight="@dimen/padding_micro"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/place_address"
+                android:textSize="@dimen/text_small"
+                android:paddingLeft="@dimen/padding_micro"
+                android:paddingRight="@dimen/padding_micro"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:id="@+id/map_directions"
+                    android:padding="@dimen/padding_small"
+                    android:text="Directions"
+                    android:gravity="center"
+                    android:background="@drawable/red_darkredpressed"
+                    android:textColor="@color/white_greypressed"/>
+
+                <View
+                    android:layout_width="@dimen/line"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:id="@+id/map_add_favorite"
+                    android:padding="@dimen/padding_small"
+                    android:gravity="center"
+                    android:text="Add to Favorites"
+                    android:background="@drawable/red_darkredpressed"
+                    android:textColor="@color/white_greypressed"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
     </LinearLayout>
 
     <!-- The navigation drawer -->
