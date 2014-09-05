@@ -1,5 +1,7 @@
 package ca.appvelopers.mcgillmobile.activity.mycourseslist;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,9 +22,11 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
+import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
@@ -64,7 +68,7 @@ public class MyCoursesListActivity extends DrawerActivity {
             @Override
             public void onClick(View view) {
                 //Get checked courses from adapter
-                List<ClassItem> unregisterCoursesList = mAdapter.getCheckedClasses();
+                final List<ClassItem> unregisterCoursesList = mAdapter.getCheckedClasses();
 
                 //Too many courses
                 if (unregisterCoursesList.size() > 10) {
@@ -74,8 +78,25 @@ public class MyCoursesListActivity extends DrawerActivity {
                     Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.courses_none_selected),
                             Toast.LENGTH_SHORT).show();
                 } else if (unregisterCoursesList.size() > 0) {
-                    //Execute unregistration of checked classes in a new thread
-                    new UnregistrationThread(unregisterCoursesList).execute();
+
+                    //Ask for confirmation before unregistering
+                    new AlertDialog.Builder(MyCoursesListActivity.this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle(MyCoursesListActivity.this.getResources().getString(R.string.unregister_dialog_title))
+                            .setMessage(MyCoursesListActivity.this.getResources().getString(R.string.unregister_dialog_message))
+                            .setPositiveButton(MyCoursesListActivity.this.getResources().getString(R.string.unregister_dialog_positive), new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Execute unregistration of checked classes in a new thread
+                                    new UnregistrationThread(unregisterCoursesList).execute();
+                                }
+                            })
+                            .setNegativeButton(MyCoursesListActivity.this.getResources().getString(R.string.logout_dialog_negative), null)
+                            .create()
+                            .show();
+
+
                 }
             }
         });

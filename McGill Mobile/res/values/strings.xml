@@ -180,7 +180,7 @@
     <string name="registration_error_no_faculty">You must either select a faculty or input a course subject.</string>
     <string name="registration_error_credits">The maximum hours must be bigger than the minimum hours</string>
     <string name="registration_show_options">Show More Options</string>
-    <string name="registration_hide_options">Show Less Options</string>
+    <string name="registration_hide_options">Show Fewer Options</string>
     <string name="unregistration_success">Unregistration Successful!</string>
     <string name="unregistration_error">Unregistration Error</string>
 
@@ -225,7 +225,7 @@
     <string name="about_hernan_email">gattahernan\@gmail.com</string>
     <string name="about_joshua">Joshua David Alfaro</string>
     <string name="about_joshua_role">Android Developer</string>
-    <string name="about_joshua_description">Josh is an Electrical Engineering student at McGill University. Josh is also a member of the ECSESS Robotics Club which helps students learn and prepare for design competitions. While taking his minor in Software Engineering, Josh supported the development of this mobile application. </string>
+    <string name="about_joshua_description">Josh is an Electrical Engineering student at McGill University. Josh is also a member of ECSESS RoboElectronics which helps students learn and prepare for design competitions. While taking his minor in Software Engineering, Josh supported the development of this mobile application. </string>
     <string name="about_joshua_linkedin">http://ca.linkedin.com/pub/joshua-david-alfaro/24/988/5b7</string>
     <string name="about_joshua_email">JoshuaDavidAlfaro\@gmail.com</string>
     <string name="about_julien">Julien Guerinet</string>
@@ -234,7 +234,7 @@
     <string name="about_julien_linkedin">http://ca.linkedin.com/in/julienguerinet</string>
     <string name="about_julien_email">julien.guerinet\@mail.mcgill.ca</string>
     <string name="about_omar">Omar Gonzalez</string>
-    <string name="about_omar_role">Generic Developper and Tester</string>
+    <string name="about_omar_role">Generic Developer and Tester</string>
     <string name="about_omar_description">Omar is a Software Engineering student with a minor in Computer Science. This allows him to boast about being a traitor to both sides. While he is not busy eating sandwiches he aspires to create a programming language more obscure and frustrating than brainfuck, possibly an extension to JAVA. He also backstabbed Julien during this project.</string>
     <string name="about_omar_linkedin">http://ca.linkedin.com/pub/omar-gonzalez/57/336/722</string>
     <string name="about_omar_email">omargonzalez233\@gmail.com</string>
@@ -303,4 +303,10 @@
     <string name="ewalk_intruction7">On the second feild select \'Forward the message to&#8230;\'</string>
     <string name="ewalk_intruction8">Enter your email address at the bottom field</string>
     <string name="ewalk_intruction9">Click Save</string>
+
+    <!-- Unregister Dialog -->
+    <string name="unregister_dialog_title">Drop classes</string>
+    <string name="unregister_dialog_message">Are you sure you want to drop the selected classes?</string>
+    <string name="unregister_dialog_positive">Yes</string>
+    <string name="unregister_dialog_negative">Cancel</string>
 </resources>

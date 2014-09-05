@@ -190,7 +190,7 @@
     <string name="about_hernan_role">Développeur iOS</string>
     <string name="about_hernan_description">Une citation ? Je suis COOL! (Plus que Josh.)</string>
     <string name="about_joshua_role">Développeur Android</string>
-    <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre du club robotiques d\'ECSESS qui a comme but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette application mobile.</string>
+    <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre de l\'ECSESS RoboElectronics qui a comme but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette application mobile.</string>
     <string name="about_julien_role">Maître Scrum, Développeur Android Principal</string>
     <string name="about_julien_description">Julien est un étudiant en quatrième année de génie informatique, et gère l\'équipe Android.</string>
     <string name="about_omar_role">Développeur Générique et Testeur</string>
@@ -236,4 +236,6 @@
     <string name="map_faculty_offices">Facultés</string>
 
     <!-- Email Walkthrough -->
+    <string name="unregister_dialog_positive">Continuer</string>
+    <string name="unregister_dialog_negative">Annuler</string>
 </resources>
