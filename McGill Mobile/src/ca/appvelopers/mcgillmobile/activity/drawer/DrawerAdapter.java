@@ -54,7 +54,9 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int MAP_POSITION = EBILL_POSITION + 1;
     public static final int DESKTOP_POSITION = MAP_POSITION + 1;
     public static final int SETTINGS_POSITION = DESKTOP_POSITION + 1;
-    public static final int LOGOUT_POSITION = SETTINGS_POSITION + 1;
+    public static final int FACEBOOK_POSITION = SETTINGS_POSITION + 1;
+    public static final int TWITTER_POSITION = FACEBOOK_POSITION+ 1;
+    public static final int LOGOUT_POSITION = TWITTER_POSITION + 1;
 
     public DrawerAdapter(Activity activity, DrawerLayout drawerLayout, int selectedPosition){
         this.mActivity = activity;
@@ -105,6 +107,14 @@ public class DrawerAdapter extends BaseAdapter {
         //Settings
         mDrawerItems.add(SETTINGS_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_settings),
                 mActivity.getResources().getString(R.string.icon_settings)));
+
+        //Facebook
+        mDrawerItems.add(FACEBOOK_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_facebook),
+                mActivity.getResources().getString(R.string.icon_facebook)));
+
+        //Twitter
+        mDrawerItems.add(TWITTER_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_twitter),
+                mActivity.getResources().getString(R.string.icon_twitter)));
 
         //Logout
         mDrawerItems.add(LOGOUT_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_logout),
@@ -181,6 +191,12 @@ public class DrawerAdapter extends BaseAdapter {
                         break;
                     case SETTINGS_POSITION:
                         mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
+                        break;
+                    case FACEBOOK_POSITION:
+                        //TODO
+                        break;
+                    case TWITTER_POSITION:
+                        //TODO;
                         break;
                     case LOGOUT_POSITION:
                         new AlertDialog.Builder(mActivity)

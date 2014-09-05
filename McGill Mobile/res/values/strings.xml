@@ -20,6 +20,8 @@
     <string name="title_courses">My Classes</string>
     <string name="title_help">Help</string>
     <string name="title_report_bug">Report a Problem</string>
+    <string name="title_facebook">Share</string>
+    <string name="title_twitter">Tweet</string>
 
     <!-- General Strings -->
     <string name="error">Error</string>
@@ -55,6 +57,8 @@
     <string name="icon_star">&#xf005;</string>
     <string name="icon_courses">&#xf02d;</string>
     <string name="icon_info">&#xf05a;</string>
+    <string name="icon_facebook">&#xf082;</string>
+    <string name="icon_twitter">&#xf081;</string>
 
     <!-- Day Names -->
     <string name="monday">Monday</string>
