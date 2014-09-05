@@ -196,7 +196,7 @@ public class DrawerAdapter extends BaseAdapter {
                         //TODO
                         break;
                     case TWITTER_POSITION:
-                        //TODO;
+                        DrawerActivity.loginTwitter(mActivity);
                         break;
                     case LOGOUT_POSITION:
                         new AlertDialog.Builder(mActivity)

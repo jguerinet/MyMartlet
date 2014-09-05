@@ -317,4 +317,15 @@
 
     <!-- Drawer -->
     <string name="drawer_exit">Are you sure you want to exit?</string>
+
+    <!-- Social Networks -->
+    <string name="social_facebook_title">MyMartlet for %s</string>
+    <string name="social_facebook_caption">All the essential McGill services at your fingertips.</string>
+    <string name="social_facebook_description_android">MyMartlet allows any McGill student to have easy access to the McGill essentials such as their calendar, transcript, course list, and more!</string>
+    <string name="social_facebook_image">http://i.imgur.com/BDKrJrK.png</string>
+    <string name="social_link_android">https://play.google.com/store/apps/details?id=ca.ohri.immunizeapp</string>
+    <string name="social_twitter_message_android">Download MyMartlet for %s!</string>
+    <string name="social_post_success">Post Successful!</string>
+    <string name="social_post_failure">An error occurred. Please try again.</string>
+    <string name="twitter_post_failure_time">An error occurred. Please try again. Are the date and time on your device correctly set?</string>
 </resources>
