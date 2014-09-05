@@ -32,6 +32,7 @@ import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
  * Author: Shabbir
@@ -193,7 +194,7 @@ public class DrawerAdapter extends BaseAdapter {
                         mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
                         break;
                     case FACEBOOK_POSITION:
-                        //TODO
+                        Help.postOnFacebook(mActivity);
                         break;
                     case TWITTER_POSITION:
                         DrawerActivity.loginTwitter(mActivity);

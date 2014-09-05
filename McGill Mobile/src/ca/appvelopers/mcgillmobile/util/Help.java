@@ -5,8 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.widget.Toast;
+
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
@@ -136,5 +146,78 @@ public class Help {
      */
     public static String getDocuumLink(String courseName, String courseCode){
         return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
+    }
+
+    /**
+     * Post on Facebook
+     * @param activity The calling activity
+     */
+    public static void postOnFacebook(final Activity activity){
+        GoogleAnalytics.sendEvent(activity, "facebook", "attempt_post", null, null);
+
+        //Start Facebook Login
+        Session.openActiveSession(activity, true, new Session.StatusCallback() {
+            @Override
+            public void call(final Session session, SessionState state, Exception exception) {
+                if (session.isOpened()) {
+                    //Make request to the /me API (Access to user's profile)
+                    Request.newMeRequest(session, new Request.GraphUserCallback() {
+                        @Override
+                        public void onCompleted(GraphUser user, Response response) {
+
+                            //The bundle with the post params
+                            Bundle postParams = new Bundle();
+                            //All of the params are in the strings
+                            String title = activity.getResources().getString(R.string.social_facebook_title, "Android");
+                            String link = activity.getResources().getString(R.string.social_link_android);
+                            String description = activity.getResources().getString(R.string.social_facebook_description_android);
+                            postParams.putString("name", title);
+                            postParams.putString("caption", activity.getResources().getString(R.string.social_facebook_caption));
+                            postParams.putString("description", description);
+                            postParams.putString("link", link);
+                            postParams.putString("picture", activity.getResources().getString(R.string.social_facebook_image));
+
+                            //Create a new FeedDialogBuilder so the user can configure the post on his wall
+                            com.facebook.widget.WebDialog.FeedDialogBuilder feedDialogBuilder = new com.facebook.widget.WebDialog.FeedDialogBuilder(activity, Session.getActiveSession(), postParams);
+                            feedDialogBuilder.setOnCompleteListener(new com.facebook.widget.WebDialog.OnCompleteListener() {
+
+                                @Override
+                                public void onComplete(Bundle values, FacebookException error) {
+                                    if (error == null) {
+                                        final String postId = values.getString("post_id");
+                                        //Success
+                                        if (postId != null) {
+                                            //Let the user know he posted successfully
+                                            Toast.makeText(activity, activity.getResources().getString(R.string.social_post_success), Toast.LENGTH_SHORT).show();
+                                            GoogleAnalytics.sendEvent(activity, "facebook", "successful_post", null, null);
+                                        }
+                                        //Cancelled
+                                        else {
+                                            // User clicked the Cancel button
+                                            Log.e("Facebook Post", "Cancelled");
+                                        }
+                                    } else if (error instanceof FacebookOperationCanceledException) {
+                                        // User clicked the "x" button
+                                        Log.e("Facebook Post", "Cancelled");
+                                    }
+                                    //Tell the user an error occurred
+                                    else {
+                                        Toast.makeText(activity, activity.getResources().getString(R.string.social_post_failure), Toast.LENGTH_SHORT).show();
+                                        error.printStackTrace();
+                                        GoogleAnalytics.sendEvent(activity, "facebook", "failed_post", null, null);
+                                    }
+                                }
+                            });
+                            com.facebook.widget.WebDialog feedDialog = feedDialogBuilder.build();
+                            feedDialog.show();
+                        }
+                    }).executeAsync();
+                } else if (exception != null) {
+                    Toast.makeText(activity, activity.getResources().getString(R.string.social_post_failure), Toast.LENGTH_SHORT).show();
+                    GoogleAnalytics.sendEvent(activity, "facebook", "failed_post", null, null);
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 }
