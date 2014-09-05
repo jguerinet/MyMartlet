@@ -24,6 +24,7 @@
     <string name="title_twitter">Tweet</string>
 
     <!-- General Strings -->
+    <string name="facebook_id">828093890556007</string>
     <string name="error">Error</string>
     <string name="please_wait">Please Wait&#8230;</string>
     <string name="done">Done</string>

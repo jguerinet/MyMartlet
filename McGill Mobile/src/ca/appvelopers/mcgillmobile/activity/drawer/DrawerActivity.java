@@ -18,6 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Session;
+
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
 import ca.appvelopers.mcgillmobile.activity.MyCoursesActivity;
@@ -300,5 +302,12 @@ public class DrawerActivity extends BaseActivity {
                             }
                         })
                 .create().show();
+    }
+
+    //For Facebook Sharing
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
     }
 }

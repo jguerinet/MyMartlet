@@ -2,6 +2,7 @@ package ca.appvelopers.mcgillmobile.activity.drawer;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -9,6 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import com.facebook.Session;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
@@ -108,5 +111,12 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    //For Facebook Sharing
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
     }
 }
