@@ -56,6 +56,11 @@ public class SplashActivity extends BaseActivity {
                     //Successful connection: ScheduleActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK ||
                             connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
+                        //If anything is null, reload everything
+                        if(App.getTranscript() == null || App.getClasses() == null || App.getEbill() == null
+                                || App.getUserInfo() == null) {
+                            Connection.getInstance().downloadAll(SplashActivity.this);
+                        }
                         startActivity(new Intent(SplashActivity.this, App.getHomePage().getHomePageClass()));
                         finish();
                     }

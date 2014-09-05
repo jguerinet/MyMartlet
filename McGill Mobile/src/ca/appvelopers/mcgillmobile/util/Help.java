@@ -1,13 +1,19 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookException;
@@ -25,6 +31,10 @@ import java.io.InputStream;
 import java.io.StringWriter;
 
 import ca.appvelopers.mcgillmobile.R;
+import twitter4j.StatusUpdate;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  * Class that contains various useful static help methods
@@ -219,5 +229,135 @@ public class Help {
                 }
             }
         });
+    }
+
+    /**
+     * Method to log into Twitter
+     * @param activity The calling activity
+     */
+    public static void loginTwitter(final Activity activity){
+        GoogleAnalytics.sendEvent(activity, "twitter", "attempt_post", null, null);
+
+        //Login using AsyncTask, using the keys stored in Constants.
+        new AsyncTask<Void,Void,Void>(){
+
+            protected Void doInBackground(Void... args){
+                ConfigurationBuilder builder = new ConfigurationBuilder();
+                builder.setOAuthConsumerKey(Constants.TWITTER_CONSUMER_KEY);
+                builder.setOAuthConsumerSecret(Constants.TWITTER_CONSUMER_SECRET);
+                twitter4j.conf.Configuration config = builder.build();
+
+                //Prepare the Twitter Object
+                TwitterFactory twitterFactory = new TwitterFactory(config);
+                Constants.twitter = twitterFactory.getInstance();
+
+                try{
+                    Constants.requestToken = Constants.twitter.getOAuthRequestToken(Constants.TWITTER_CALLBACK_URL);
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.requestToken.getAuthenticationURL())));
+                } catch (TwitterException e) {
+                    final String detailMessage;
+
+                    //Choose the correct error message
+                    if(e.getMessage().contains("Received authentication challenge is null")){
+                        //If this is the case, it's because the time of the device might be wrong
+                        detailMessage = activity.getString(R.string.twitter_post_failure_time);
+                    }
+                    else{
+                        detailMessage = activity.getString(R.string.social_post_failure);
+                    }
+
+                    //Display error message
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, detailMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    GoogleAnalytics.sendEvent(activity, "twitter", "failed_post", null, null);
+
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+    }
+
+    /**
+     * Method to post on Twitter
+     * @param activity The calling activity
+     */
+    public static void postOnTwitter(final Activity activity){
+        //Show dialog where user can edit his message (pre-defined message given)
+        //Inflate the view
+        View dialogView = View.inflate(activity, R.layout.dialog_edittext, null);
+
+        //Set the title
+        ((TextView)dialogView.findViewById(R.id.dialog_title)).setText(activity.getString(R.string.title_twitter));
+
+        //Create the Builder
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+        //Set up the view
+        alertDialogBuilder.setView(dialogView);
+        //EditText
+        final EditText userInput = (EditText) dialogView.findViewById(R.id.dialog_input);
+        userInput.setText(activity.getString(R.string.social_twitter_message_android, "Android"));
+
+        //Set up the dialog
+        alertDialogBuilder.setCancelable(false)
+                .setNegativeButton(activity.getString(android.R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton(activity.getString(android.R.string.ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Get the user input
+                                String statusMessage = userInput.getText().toString();
+                                //If statusMessage = null, user cancelled so do nothing
+                                if (statusMessage != null) {
+                                    //Add the link at the end of his message
+                                    statusMessage += " " + activity.getString(R.string.social_link_android);
+
+                                    //Post using an AsyncTask
+                                    new AsyncTask<String, Void, Void>() {
+                                        protected Void doInBackground(String... args) {
+                                            try {
+                                                //Retrieve the message
+                                                String message = args[0];
+
+                                                //Prepare StatusUpdate object
+                                                StatusUpdate status = new StatusUpdate(message);
+                                                Constants.twitter.updateStatus(status);
+
+                                                activity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        GoogleAnalytics.sendEvent(activity, "twitter", "successful_post", null, null);
+                                                        Toast.makeText(activity, activity.getString(R.string.social_post_success), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                                activity.finish();
+                                            } catch (TwitterException e) {
+                                                GoogleAnalytics.sendEvent(activity, "twitter", "failed_post", null, null);
+                                                Log.e("Twitter Status", "Error:" + e.getMessage());
+                                                activity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(activity, activity.getString(R.string.social_post_failure), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                                activity.finish();
+                                                e.printStackTrace();
+                                            }
+
+                                            return null;
+                                        }
+                                    }.execute(statusMessage);
+                                }
+                            }
+                        })
+                .create().show();
     }
 }
