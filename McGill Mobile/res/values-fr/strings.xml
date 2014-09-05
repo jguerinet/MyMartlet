@@ -226,14 +226,9 @@
     <string name="map_building">Bâtiments</string>
     <string name="map_food">Services Alimentaires</string>
     <string name="map_social">Evènements Sociaux</string>
-    <string name="map_administration">Administration</string>
     <string name="map_athletics">Services de Sports</string>
     <string name="map_library">Bibliothèques</string>
-    <string name="map_museum">Musées</string>
     <string name="map_residence">Résidences</string>
-    <string name="map_security">Sécurité</string>
-    <string name="map_student_associations">Associations Etudiantes</string>
-    <string name="map_faculty_offices">Facultés</string>
 
     <!-- Email Walkthrough -->
     <string name="unregister_dialog_positive">Continuer</string>

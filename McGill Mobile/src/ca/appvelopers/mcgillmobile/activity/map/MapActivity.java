@@ -138,13 +138,15 @@ public class MapActivity extends DrawerFragmentActivity {
                         //Check if it was in the favorites
                         if(mFavoritePlaces.contains(mPlaceMarker.mPlace)){
                             mFavoritePlaces.remove(mPlaceMarker.mPlace);
-                            Toast.makeText(MapActivity.this, getString(R.string.map_favorites_added, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MapActivity.this, getString(R.string.map_favorites_removed, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                            mFavorite.setText(getString(R.string.map_favorites_add));
                         }
                         else{
                             mFavoritePlaces.add(mPlaceMarker.mPlace);
-                            Toast.makeText(MapActivity.this, getString(R.string.map_favorites_removed, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MapActivity.this, getString(R.string.map_favorites_added, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                            mFavorite.setText(getString(R.string.map_favorites_remove));
                         }
-                        App.setPlaces(mFavoritePlaces);
+                        App.setFavoritePlaces(mFavoritePlaces);
                     }
                 }
             });
@@ -164,6 +166,12 @@ public class MapActivity extends DrawerFragmentActivity {
                 if(category == null){
                     for(MapPlace place : mPlaces){
                         place.mMarker.setVisible(true);
+                    }
+                }
+                //Check if the favorites was selected
+                else if(category == PlaceCategory.FAVORITES){
+                    for(MapPlace place : mPlaces){
+                        place.mMarker.setVisible(mFavoritePlaces.contains(place.mPlace));
                     }
                 }
                 //If not, only show the ones pertaining to the current category

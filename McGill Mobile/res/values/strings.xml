@@ -281,17 +281,13 @@
     <!-- Maps -->
     <string name="map_filter">Filter: </string>
     <string name="map_all">All</string>
+    <string name="map_favorites">Favorites</string>
     <string name="map_building">Building</string>
     <string name="map_food">Food Services</string>
     <string name="map_social">Social Events</string>
-    <string name="map_administration">Administration</string>
     <string name="map_athletics">Athletics</string>
     <string name="map_library">Libraries</string>
-    <string name="map_museum">Museums</string>
     <string name="map_residence">Residences</string>
-    <string name="map_security">Security </string>
-    <string name="map_student_associations">Student Associations</string>
-    <string name="map_faculty_offices">Faculty Offices</string>
     <string name="map_directions">Directions</string>
     <string name="map_favorites_add">Add to Favorites</string>
     <string name="map_favorites_remove">Remove from Favorites</string>
