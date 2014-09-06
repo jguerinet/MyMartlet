@@ -97,6 +97,8 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(ConnectionStatus connectionStatus) {
+            //Hide the text
+            mProgressTextView.setVisibility(View.INVISIBLE);
             //Hide the progress bar
             mProgressBar.setVisibility(View.INVISIBLE);
 
