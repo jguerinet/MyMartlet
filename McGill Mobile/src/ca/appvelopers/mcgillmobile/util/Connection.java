@@ -21,6 +21,7 @@ import java.net.CookieManager;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -100,19 +101,20 @@ public class Connection {
         //Set the default Semester
         List<Semester> semesters = App.getTranscript().getSemesters();
         //Find the latest semester
-        Term defaultTerm = semesters.get(0).getTerm();
-        for(Semester semester : semesters){
-            Term term = semester.getTerm();
-
-            //Download the schedule
-            Parser.parseClassList(term, connection.getUrl(activity, getScheduleURL(term)));
-
-            //Set the default term if it's later than the current default term
-            if(term.isAfter(defaultTerm)){
-                defaultTerm = term;
-            }
-        }
-        App.setDefaultTerm(defaultTerm);
+//        Term defaultTerm = semesters.get(0).getTerm();
+//        for(Semester semester : semesters){
+//            Term term = semester.getTerm();
+//
+//            //Download the schedule
+//            Parser.parseClassList(term, connection.getUrl(activity, getScheduleURL(term)));
+//
+//            //Set the default term if it's later than the current default term
+//            if(term.isAfter(defaultTerm)){
+//                defaultTerm = term;
+//            }
+//        }
+//        App.setDefaultTerm(defaultTerm);
+        App.setDefaultTerm(Term.dateConverter(Calendar.getInstance().getTime()));
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, EBILL);

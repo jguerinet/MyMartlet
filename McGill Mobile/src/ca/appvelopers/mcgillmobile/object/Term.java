@@ -2,6 +2,9 @@ package ca.appvelopers.mcgillmobile.object;
 
 import android.content.Context;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import java.io.Serializable;
 
 /**
@@ -74,5 +77,23 @@ public class Term implements Serializable {
 
     public String toString(Context context){
         return mSeason.toString(context) + " " + mYear;
+    }
+
+
+    public static Term dateConverter(Date date) {
+        SimpleDateFormat dateConverter = new SimpleDateFormat("dd-MM-yyyy");
+        String[] convertedDate = dateConverter.format(date).split("-");
+        int month = Integer.parseInt(convertedDate[1]);
+        int year = Integer.parseInt(convertedDate[2]);
+        if (month >= 9 && month <= 12) {
+            Term term = new Term(Season.FALL, year);
+            return term;
+        } else if (month >= 1 && month <= 4) {
+            Term term = new Term(Season.WINTER, year);
+            return term;
+        } else {
+            Term term = new Term(Season.SUMMER, year);
+            return term;
+        }
     }
 }
