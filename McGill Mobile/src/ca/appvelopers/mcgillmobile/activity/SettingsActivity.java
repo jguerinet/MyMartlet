@@ -42,6 +42,8 @@ public class SettingsActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
 
         GoogleAnalytics.sendScreen(this, "Settings");
+        // Walkthrough
+
 
         //Help
         TextView helpIcon = (TextView)findViewById(R.id.help_icon);

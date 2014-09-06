@@ -158,7 +158,6 @@ android:layout_height="match_parent">
                     android:textColor="@color/black_whitepressed"
                     android:textSize="@dimen/text_medium"
                     android:duplicateParentState="true"/>
-
             </LinearLayout>
 
             <include layout="@layout/line"/>
