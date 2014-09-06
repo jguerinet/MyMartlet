@@ -7,17 +7,20 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Author : Julien
  */
 public class WalkthroughAdapter extends FragmentPagerAdapter {
-    public WalkthroughAdapter(FragmentManager fm){
+    private boolean mEmail;
+
+    public WalkthroughAdapter(FragmentManager fm, boolean email){
         super(fm);
+        mEmail = email;
     }
 
     @Override
     public Fragment getItem(int position){
-        return WalkthroughFragment.createInstance(position);
+        return WalkthroughFragment.createInstance(position, mEmail);
     }
 
     @Override
     public int getCount(){
-        return 7;
+        return mEmail ? 6 : 7;
     }
 }

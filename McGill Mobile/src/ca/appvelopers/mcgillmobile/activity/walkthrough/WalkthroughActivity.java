@@ -13,10 +13,9 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
-
-//import com.viewpagerindicator.CirclePageIndicator;
 
 /**
  * Author : Julien
@@ -26,6 +25,7 @@ import ca.appvelopers.mcgillmobile.util.Help;
 public class WalkthroughActivity extends BaseFragmentActivity {
     private ViewPager mViewPager;
     private WalkthroughAdapter mWalkthroughAdapter;
+    private boolean mEmail;
 
     static int position;
 
@@ -36,7 +36,10 @@ public class WalkthroughActivity extends BaseFragmentActivity {
 
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
 
-        GoogleAnalytics.sendScreen(this, "Walkthrough");
+        //Check if this is the normal walkthrough or the email one
+        mEmail = getIntent().getBooleanExtra(Constants.EMAIL, false);
+
+        GoogleAnalytics.sendScreen(this, mEmail ? "Email Walkthrough" : "Walkthrough");
 
         //Get the screen height
         int displayHeight = Help.getDisplayHeight(getWindowManager().getDefaultDisplay());
@@ -47,7 +50,7 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         layout.setLayoutParams(params);
 
         mViewPager = (ViewPager) findViewById(R.id.walkthrough_viewpager);
-        mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager());
+        mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), mEmail);
         mViewPager.setAdapter(mWalkthroughAdapter);
 
         //Next
