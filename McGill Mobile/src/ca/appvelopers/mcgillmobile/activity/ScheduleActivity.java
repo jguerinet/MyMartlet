@@ -113,6 +113,10 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
+
+        //Reload the menu
+        invalidateOptionsMenu();
+
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
             setContentView(R.layout.activity_schedule_land);
             LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -385,5 +389,10 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         else{
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        return getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE;
     }
 }
