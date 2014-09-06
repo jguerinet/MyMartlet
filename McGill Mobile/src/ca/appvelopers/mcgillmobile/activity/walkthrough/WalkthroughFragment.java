@@ -99,7 +99,7 @@ public class WalkthroughFragment extends Fragment {
                 Spinner homepage = (Spinner)pageView.findViewById(R.id.homepage);
                 final HomePageAdapter homePageAdapter = new HomePageAdapter(getActivity());
                 homepage.setAdapter(homePageAdapter);
-                homepage.setSelection(App.getHomePage().ordinal());
+                homepage.setSelection(homePageAdapter.getPosition(App.getHomePage()));
                 homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

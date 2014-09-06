@@ -58,7 +58,12 @@ public class Load {
 
     public static HomePage loadHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return HomePage.values()[sharedPrefs.getInt(Constants.HOMEPAGE, 0)];
+        int homePage = sharedPrefs.getInt(Constants.HOMEPAGE, -1);
+        //Return schedule by default
+        if(homePage == -1){
+            return HomePage.SCHEDULE;
+        }
+        return HomePage.values()[homePage];
     }
 
     public static boolean loadStatistics(Context context){
