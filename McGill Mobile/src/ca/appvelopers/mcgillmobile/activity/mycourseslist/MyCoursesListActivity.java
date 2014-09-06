@@ -22,11 +22,9 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
-import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
-import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
@@ -104,16 +102,6 @@ public class MyCoursesListActivity extends DrawerActivity {
         //Remove this button
         TextView wishlist = (TextView)findViewById(R.id.course_wishlist);
         wishlist.setVisibility(View.GONE);
-
-        executeClassDownloader();
-
-        //Download the Transcript (if ever the user has new semesters on their transcript)
-        new TranscriptDownloader(this) {
-            @Override
-            protected void onPreExecute() {}
-            @Override
-            protected void onPostExecute(Boolean loadInfo) {}
-        }.execute();
     }
 
     @Override
@@ -165,6 +153,14 @@ public class MyCoursesListActivity extends DrawerActivity {
         else if(item.getItemId() == R.id.action_refresh){
             //Execute the class downloader
             executeClassDownloader();
+
+            //Download the Transcript (if ever the user has new semesters on their transcript)
+            new TranscriptDownloader(this) {
+                @Override
+                protected void onPreExecute() {}
+                @Override
+                protected void onPostExecute(Boolean loadInfo) {}
+            }.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);

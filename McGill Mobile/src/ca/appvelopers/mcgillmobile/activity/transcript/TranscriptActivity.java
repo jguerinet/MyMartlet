@@ -40,9 +40,6 @@ public class TranscriptActivity extends DrawerActivity {
 
         //Load the info stored on the device
         loadInfo();
-
-        //Start thread to retrieve transcript
-        executeTranscriptDownloader();
     }
 
     private void loadInfo(){
