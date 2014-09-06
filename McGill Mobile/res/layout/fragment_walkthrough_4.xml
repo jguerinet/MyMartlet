@@ -6,44 +6,63 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:padding="@dimen/padding_micro">
+    android:padding="@dimen/padding_small">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_medium"
-        android:text="@string/walkthrough_help"/>
+        android:textSize="@dimen/text_small"
+        android:text="@string/walkthrough_offline"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_large"
         android:textColor="@color/red"
-        android:text="@string/icon_question"
-        android:id="@+id/help_icon"
+        android:text="@string/icon_security"
+        android:id="@+id/security_icon"
         android:textStyle="bold"
         android:gravity="center"
-        android:padding="@dimen/padding_small"/>
+        android:padding="@dimen/padding_micro"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_medium"
-        android:text="@string/walkthrough_bugs"/>
+        android:textSize="@dimen/text_small"
+        android:text="@string/walkthrough_security"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_large"
         android:textColor="@color/red"
-        android:text="@string/icon_bug"
-        android:id="@+id/bug_icon"
+        android:text="@string/icon_settings"
+        android:id="@+id/settings_icon"
         android:textStyle="bold"
         android:gravity="center"
-        android:padding="@dimen/padding_small"/>
+        android:padding="@dimen/padding_micro"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_small"
+        android:text="@string/walkthrough_email"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/red"
+        android:text="@string/icon_email"
+        android:id="@+id/email_icon"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="@dimen/padding_micro"/>
 
 </LinearLayout>

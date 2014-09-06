@@ -59,21 +59,30 @@ public class WalkthroughFragment extends Fragment {
             //Main Menu Explanation
             case 2:
                 pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_2, null);
-               break;
+                break;
 
-            //Offline Access / Security
+            //Horizontal Schedule
             case 3:
                 pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_3, null);
+                break;
 
-                //Set the typeface for the icon
+            //Offline Access / Security
+            case 4:
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_4, null);
+
+                //Set the typeface for icons
                 TextView securityIcon = (TextView)pageView.findViewById(R.id.security_icon);
                 securityIcon.setTypeface(App.getIconFont());
+                TextView settingsIcon = (TextView)pageView.findViewById(R.id.settings_icon);
+                settingsIcon.setTypeface(App.getIconFont());
+                TextView emailIcon = (TextView)pageView.findViewById(R.id.email_icon);
+                emailIcon.setTypeface(App.getIconFont());
 
                 break;
 
             //Help/About/Bugs
-            case 4:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_4, null);
+            case 5:
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, null);
 
                 //Set the typeface for the icon
                 TextView bugIcon = (TextView)pageView.findViewById(R.id.bug_icon);
@@ -84,8 +93,8 @@ public class WalkthroughFragment extends Fragment {
                 break;
 
             //Default Homepage / Faculty
-            case 5:
-                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, null);
+            case 6:
+                pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_6, null);
 
                 Spinner homepage = (Spinner)pageView.findViewById(R.id.homepage);
                 final HomePageAdapter homePageAdapter = new HomePageAdapter(getActivity());
