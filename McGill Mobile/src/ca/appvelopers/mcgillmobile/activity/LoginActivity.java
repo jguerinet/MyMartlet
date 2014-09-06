@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
@@ -73,7 +72,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //Get the username text
-                final String username = usernameView.getText().toString().trim();
+                String username = usernameView.getText().toString().trim();
 
                 //Get the password text
                 final String password = passwordView.getText().toString().trim();
@@ -97,29 +96,32 @@ public class LoginActivity extends BaseActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 
+                //Set up the email
+                final String email = username + getString(R.string.login_email);
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         //Set the username and password
-                        Connection.getInstance().setUsername(username + LoginActivity.this.getResources().getString(R.string.login_email));
+                        Connection.getInstance().setUsername(email);
                         Connection.getInstance().setPassword(password);
 						final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(LoginActivity.this);
 						// If the connection was successful, go to Homepage
 						if (connectionStatus == ConnectionStatus.CONNECTION_OK) {
 							// Store the login info.
-							Save.saveUsername(LoginActivity.this, username);
+							Save.saveUsername(LoginActivity.this, email);
                             Save.savePassword(LoginActivity.this, password);
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
                             GoogleAnalytics.sendEvent(LoginActivity.this, "Login", "Remember Username",
                                     "" + rememberUsernameView.isChecked(), null);
                             
-                            //set the background reciever after successful login
+                            //set the background receiver after successful login
 //                            if(!App.isAlarmActive()){
 //                            	App.SetAlarm(LoginActivity.this);
 //                            }
-                   
-                            Connection.getInstance().downloadAll(LoginActivity.this);
-                            startActivity(new Intent(LoginActivity.this, App.getHomePage().getHomePageClass()));
+
+                            //Go to the SplashActivity
+                            startActivity(new Intent(LoginActivity.this, SplashActivity.class));
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

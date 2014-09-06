@@ -30,6 +30,7 @@ import javax.net.ssl.HttpsURLConnection;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.LoginActivity;
+import ca.appvelopers.mcgillmobile.activity.SplashActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
@@ -93,23 +94,32 @@ public class Connection {
         this.password = password;
     }
 
-    //Download all of the info (upon opening of the app)
-    public void downloadAll(Context activity){
+    /**
+     * Download all of the info (upon opening of the app)
+     * @param context The app context
+     * @param infoDownloader The task that is currently downloading the info (to update the progress)
+     */
+    public void downloadAll(Context context, SplashActivity.InfoDownloader infoDownloader){
         Connection connection = getInstance();
+
+        //Update : downloading transcript
+        infoDownloader.publishNewProgress("Updating Transcript...");
 
         //Download the transcript
         if(!Test.LOCAL_TRANSCRIPT){
-            Parser.parseTranscript(connection.getUrl(activity, TRANSCRIPT));
+            Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
         }
 
-        //Set the default Semester
         List<Semester> semesters = App.getTranscript().getSemesters();
         //Find the latest semester
         for(Semester semester : semesters){
             Term term = semester.getTerm();
 
+            //Update : downloading transcript
+            infoDownloader.publishNewProgress("Updating " + term.toString(context) + " Schedule...");
+
             //Download the schedule
-            Parser.parseClassList(term, connection.getUrl(activity, getScheduleURL(term)));
+            Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
         }
 
         //Set the default term if there is none set yet
@@ -117,9 +127,16 @@ public class Connection {
             App.setDefaultTerm(Term.dateConverter(Calendar.getInstance().getTime()));
         }
 
+        //Update : downloading transcript
+        infoDownloader.publishNewProgress("Updating eBill...");
+
         //Download the ebill and user info
-        String ebillString = Connection.getInstance().getUrl(activity, EBILL);
+        String ebillString = Connection.getInstance().getUrl(context, EBILL);
         Parser.parseEbill(ebillString);
+
+        //Update : downloading transcript
+        infoDownloader.publishNewProgress("Updating User Info...");
+
         Parser.parseUserInfo(ebillString);
     }
 
