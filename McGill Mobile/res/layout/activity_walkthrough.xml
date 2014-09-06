@@ -36,6 +36,7 @@
             android:textColor="@color/white_greypressed"
             android:textSize="@dimen/text_medium"
             android:clickable="true"
+            android:visibility="invisible"
             android:gravity="left"/>
 
         <TextView
