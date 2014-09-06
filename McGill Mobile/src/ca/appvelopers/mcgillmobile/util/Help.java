@@ -76,16 +76,7 @@ public class Help {
      * @return The height of the given display
      */
     public static int getDisplayHeight(Display display){
-        Point size = new Point();
-
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            size.set(display.getWidth(), display.getHeight());
-        }
-        else{
-            display.getSize(size);
-        }
-
-        return size.y;
+        return getDisplaySize(display).y;
     }
 
     /**
@@ -94,6 +85,10 @@ public class Help {
      * @return The width of the given display
      */
     public static int getDisplayWidth(Display display){
+        return getDisplaySize(display).x;
+    }
+
+    private static Point getDisplaySize(Display display){
         Point size = new Point();
 
         if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
@@ -103,7 +98,7 @@ public class Help {
             display.getSize(size);
         }
 
-        return size.x;
+        return size;
     }
 
     /**
