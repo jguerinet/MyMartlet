@@ -103,7 +103,7 @@ public class Connection {
         Connection connection = getInstance();
 
         //Update : downloading transcript
-        infoDownloader.publishNewProgress("Updating Transcript...");
+        infoDownloader.publishNewProgress(context.getString(R.string.updating_transcript));
 
         //Download the transcript
         if(!Test.LOCAL_TRANSCRIPT){
@@ -116,7 +116,7 @@ public class Connection {
             Term term = semester.getTerm();
 
             //Update : downloading transcript
-            infoDownloader.publishNewProgress("Updating " + term.toString(context) + " Schedule...");
+            infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
 
             //Download the schedule
             Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
@@ -128,14 +128,14 @@ public class Connection {
         }
 
         //Update : downloading transcript
-        infoDownloader.publishNewProgress("Updating eBill...");
+        infoDownloader.publishNewProgress(context.getString(R.string.updating_ebill));
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(context, EBILL);
         Parser.parseEbill(ebillString);
 
         //Update : downloading transcript
-        infoDownloader.publishNewProgress("Updating User Info...");
+        infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
 
         Parser.parseUserInfo(ebillString);
     }
