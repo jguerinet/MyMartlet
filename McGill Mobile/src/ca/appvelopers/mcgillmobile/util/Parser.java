@@ -109,7 +109,7 @@ public class Parser {
                     year = Integer.valueOf(scheduleSemesterItems[2]);
                 }
 
-                Log.e("TRANSCRIPT PARSER", season + " " + year);
+                //Log.e("TRANSCRIPT PARSER", season + " " + year);
                 String program = "";
                 String bachelor = "";
                 int programYear = 99;
@@ -226,10 +226,10 @@ public class Parser {
                             //Course failed -> Earned credit = 0
                             StringWriter sw = new StringWriter();
                             e.printStackTrace(new PrintWriter(sw));
-                            Log.e("TRANSCRIPT PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.toString());
+                            //Log.e("TRANSCRIPT PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.toString());
                         }
                         catch(IndexOutOfBoundsException e){
-                            Log.e("TRANSCRIPT PARSER", "IndexOutOfBoundsException" + e.toString());
+                            //Log.e("TRANSCRIPT PARSER", "IndexOutOfBoundsException" + e.toString());
                         }
 
                         //Obtain user's grade
@@ -254,7 +254,7 @@ public class Parser {
                         }
                         catch(IndexOutOfBoundsException e){
                             //String not found
-                            Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e.getMessage());
+                            //Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e.getMessage());
                         }
                         courses.add(new Course(new Term(season, year), courseTitle, courseCode, credits,
                                 userGrade, averageGrade));
@@ -319,11 +319,11 @@ public class Parser {
 
                                 }
                                 catch(IndexOutOfBoundsException e2){
-                                    Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e2.getMessage());
+                                    //Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e2.getMessage());
                                     e.printStackTrace();
                                 }
                                 catch(Exception e3){
-                                    Log.e("TRANSCRIPT PARSER", "Generic error" + e3.getMessage());
+                                    //Log.e("TRANSCRIPT PARSER", "Generic error" + e3.getMessage());
                                     e.printStackTrace();
                                 }
                             }
@@ -368,7 +368,7 @@ public class Parser {
             }
             index++;
         }
-        Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
+        //Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
         App.setTranscript(new Transcript(cgpa, totalCredits, semesters));
     }
 
