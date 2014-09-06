@@ -5,39 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="@dimen/padding_micro">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_small"
+        android:gravity="center"
         android:textColor="@color/black"
         android:textSize="@dimen/text_medium"
-        android:text="@string/walkthrough_homepage"
-        android:gravity="center"/>
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/homepage"/>
+        android:text="@string/walkthrough_help"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/padding_small"
-        android:paddingRight="@dimen/padding_small"
-        android:paddingLeft="@dimen/padding_small"
-        android:paddingTop="@dimen/padding_medium"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_medium"
-        android:text="@string/walkthrough_faculty"
-        android:gravity="center"/>
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/red"
+        android:text="@string/icon_question"
+        android:id="@+id/help_icon"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="@dimen/padding_small"/>
 
-    <Spinner
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:id="@+id/faculty"/>
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_medium"
+        android:text="@string/walkthrough_bugs"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/red"
+        android:text="@string/icon_bug"
+        android:id="@+id/bug_icon"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="@dimen/padding_small"/>
 
 </LinearLayout>

@@ -85,14 +85,12 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         }
 
         //Download the Transcript (if ever the user has new semesters on their transcript)
-        new TranscriptDownloader(this) {
+        new TranscriptDownloader(this, false) {
             @Override
-            protected void onPreExecute() {
-            }
+            protected void onPreExecute() {}
 
             @Override
-            protected void onPostExecute(Boolean loadInfo) {
-            }
+            protected void onPostExecute(Boolean loadInfo) {}
         }.execute();
     }
 

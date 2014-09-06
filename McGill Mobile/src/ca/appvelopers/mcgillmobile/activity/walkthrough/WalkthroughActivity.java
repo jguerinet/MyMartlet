@@ -9,12 +9,14 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-//import com.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
+
+//import com.viewpagerindicator.CirclePageIndicator;
 
 /**
  * Author : Julien
@@ -64,17 +66,6 @@ public class WalkthroughActivity extends BaseFragmentActivity {
             }
         });
 
-        //Close
-        TextView close = (TextView) findViewById(R.id.walkthrough_close);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GoogleAnalytics.sendEvent(WalkthroughActivity.this, "Walkthrough", "Skip", null, null);
-                finish();
-                overridePendingTransition(0, R.anim.out_to_top);
-            }
-        });
-
         //Back
         final TextView back = (TextView) findViewById(R.id.walkthrough_back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +76,7 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         });
 
         //Indicator
-        /*CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.walkthrough_pageindicator);
+        CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.walkthrough_pageindicator);
         indicator.setViewPager(mViewPager);
         indicator.setStrokeColor(Color.WHITE);
         indicator.setPageColor(Color.GRAY);
@@ -102,6 +93,6 @@ public class WalkthroughActivity extends BaseFragmentActivity {
             }
             @Override
             public void onPageScrollStateChanged(int i){}
-        });*/
+        });
     }
 }

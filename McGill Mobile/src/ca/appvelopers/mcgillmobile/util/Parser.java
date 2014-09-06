@@ -131,7 +131,8 @@ public class Parser {
                     }
 
                     //Semester Info
-                    else if(dataRow.text().startsWith(Token.BACHELOR.getString()) ||
+                    else if(dataRow.text().startsWith(Token.DIPLOMA.getString()) ||
+                            dataRow.text().startsWith(Token.BACHELOR.getString()) ||
                             dataRow.text().startsWith(Token.MASTER.getString()) ||
                             dataRow.text().startsWith(Token.DOCTOR.getString())){
 
@@ -167,7 +168,14 @@ public class Parser {
                             programYear = 5;
                         }
 
-                        program = degreeDetails[2];
+                        int detailsIndex = 0;
+                        for(String detail : degreeDetails){
+                            //Skip first two lines --> these are for bachelor and full time/part time
+                            if(detailsIndex >= 2){
+                                program += detail + " ";
+                            }
+                            detailsIndex++;
+                        }
                     }
                     //Term GPA
                     else if(dataRow.text().startsWith(Token.TERM_GPA.getString())){
