@@ -106,6 +106,10 @@ public class App extends Application {
     }
 
     /* GETTER METHODS */
+    public static Context getContext(){
+        return context;
+    }
+
     public static Typeface getIconFont(){
         if(iconFont == null){
             iconFont = Typeface.createFromAsset(context.getAssets(), "icon-font.ttf");

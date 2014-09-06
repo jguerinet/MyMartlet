@@ -74,6 +74,12 @@ public class Connection {
 	
 	// Accessor method
 	public static Connection getInstance(){
+        if(http.username == null){
+            http.username = Load.loadUsername(App.getContext()) + App.getContext().getString(R.string.login_email);
+        }
+        if(http.password == null){
+            http.password = Load.loadPassword(App.getContext());
+        }
 		return http;
 	}
 	
@@ -87,7 +93,7 @@ public class Connection {
         this.password = password;
     }
 
-    //Download all of the info (upon login)
+    //Download all of the info (upon opening of the app)
     public void downloadAll(Context activity){
         Connection connection = getInstance();
 
@@ -99,20 +105,17 @@ public class Connection {
         //Set the default Semester
         List<Semester> semesters = App.getTranscript().getSemesters();
         //Find the latest semester
-//        Term defaultTerm = semesters.get(0).getTerm();
-//        for(Semester semester : semesters){
-//            Term term = semester.getTerm();
-//
-//            //Download the schedule
-//            Parser.parseClassList(term, connection.getUrl(activity, getScheduleURL(term)));
-//
-//            //Set the default term if it's later than the current default term
-//            if(term.isAfter(defaultTerm)){
-//                defaultTerm = term;
-//            }
-//        }
-//        App.setDefaultTerm(defaultTerm);
-        App.setDefaultTerm(Term.dateConverter(Calendar.getInstance().getTime()));
+        for(Semester semester : semesters){
+            Term term = semester.getTerm();
+
+            //Download the schedule
+            Parser.parseClassList(term, connection.getUrl(activity, getScheduleURL(term)));
+        }
+
+        //Set the default term if there is none set yet
+        if(App.getDefaultTerm() == null){
+            App.setDefaultTerm(Term.dateConverter(Calendar.getInstance().getTime()));
+        }
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(activity, EBILL);
