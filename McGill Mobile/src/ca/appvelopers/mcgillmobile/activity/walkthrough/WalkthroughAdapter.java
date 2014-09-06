@@ -21,6 +21,6 @@ public class WalkthroughAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount(){
-        return mEmail ? 6 : 7;
+        return 7;
     }
 }

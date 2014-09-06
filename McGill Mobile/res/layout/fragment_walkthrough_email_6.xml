@@ -12,14 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_medium"
-        android:text="@string/help_email_walk2"
+        android:textSize="@dimen/text_large"
+        android:text="@string/help_email_walk6"
         android:padding="@dimen/padding_small"
         android:gravity="center"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/email2"/>
 
 </LinearLayout>

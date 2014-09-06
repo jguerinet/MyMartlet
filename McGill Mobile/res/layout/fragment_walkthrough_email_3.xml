@@ -13,13 +13,13 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="@dimen/text_medium"
-        android:text="@string/walkthrough_menu"
+        android:text="@string/help_email_walk3"
         android:padding="@dimen/padding_small"
         android:gravity="center"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/menu"/>
+        android:src="@drawable/email3"/>
 
 </LinearLayout>

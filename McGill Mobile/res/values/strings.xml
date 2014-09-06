@@ -285,13 +285,13 @@
     <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMartlet.</string>
     <string name="help_walkthrough">User Guide</string>
     <string name="help_email_walkthrough">Set up your email on your device</string>
-    <string name="help_email_walk1">Go to Settings → + Add account</string>
-    <string name="help_email_walk2">Select Email</string>
-    <string name="help_email_walk3">Enter your McGill email and password and select next</string>
-    <string name="help_email_walk4">Select Exchange</string>
-    <string name="help_email_walk5">Select OK</string>
-    <string name="help_email_walk6">Select Next</string>
-    <string name="help_email_walk7">You\'re email is set up!</string>
+    <string name="help_email_walk0">Warning: steps may vary slightly based on Android version and phone model. \nGo to Settings → + Add account</string>
+    <string name="help_email_walk1">Select Email</string>
+    <string name="help_email_walk2">Enter your McGill email and password and select next</string>
+    <string name="help_email_walk3">Select Exchange</string>
+    <string name="help_email_walk4">Select OK</string>
+    <string name="help_email_walk5">Select Next</string>
+    <string name="help_email_walk6">Your email is set up!</string>
 
     <!-- Maps -->
     <string name="map_filter">Filter: </string>

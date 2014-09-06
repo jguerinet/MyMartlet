@@ -172,6 +172,10 @@ public class WalkthroughFragment extends Fragment {
                     pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_5, null);
                     break;
 
+                case 6:
+                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_6, null);
+                    break;
+
                 default:
                     return null;
             }
