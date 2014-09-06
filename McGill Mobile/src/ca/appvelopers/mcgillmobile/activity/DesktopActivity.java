@@ -48,7 +48,7 @@ public class DesktopActivity extends DrawerActivity{
         	}
             public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
-                        Load.loadUsername(DesktopActivity.this) + "';" +
+                        Load.loadFullUsername(DesktopActivity.this) + "';" +
                         "document.getElementById('password').value='" +
                         Load.loadPassword(DesktopActivity.this) + "'; document.LoginForm.submit(); })()");
                 view.setVisibility(View.VISIBLE);

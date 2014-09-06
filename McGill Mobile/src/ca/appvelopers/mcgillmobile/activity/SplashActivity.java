@@ -29,7 +29,7 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
 
         //Get the username and password stored
-        final String username = Load.loadUsername(this);
+        final String username = Load.loadFullUsername(this);
         final String password = Load.loadPassword(this);
 
         //If one of them is null, send the user to the LoginActivity

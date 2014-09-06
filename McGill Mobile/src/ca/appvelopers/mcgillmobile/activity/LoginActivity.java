@@ -72,7 +72,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //Get the username text
-                String username = usernameView.getText().toString().trim();
+                final String username = usernameView.getText().toString().trim();
 
                 //Get the password text
                 final String password = passwordView.getText().toString().trim();
@@ -96,20 +96,17 @@ public class LoginActivity extends BaseActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 
-                //Set up the email
-                final String email = username + getString(R.string.login_email);
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         //Set the username and password
-                        Connection.getInstance().setUsername(email);
+                        Connection.getInstance().setUsername(username + getString(R.string.login_email));
                         Connection.getInstance().setPassword(password);
 						final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(LoginActivity.this);
 						// If the connection was successful, go to Homepage
 						if (connectionStatus == ConnectionStatus.CONNECTION_OK) {
 							// Store the login info.
-							Save.saveUsername(LoginActivity.this, email);
+							Save.saveUsername(LoginActivity.this, username);
                             Save.savePassword(LoginActivity.this, password);
                             Save.saveRememberUsername(LoginActivity.this, rememberUsernameView.isChecked());
                             GoogleAnalytics.sendEvent(LoginActivity.this, "Login", "Remember Username",

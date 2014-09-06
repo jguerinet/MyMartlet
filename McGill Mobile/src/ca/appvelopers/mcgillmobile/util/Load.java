@@ -14,6 +14,7 @@ import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
@@ -73,6 +74,10 @@ public class Load {
     public static Faculty loadFaculty(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return Faculty.values()[sharedPrefs.getInt(Constants.FACULTY, 0)];
+    }
+
+    public static String loadFullUsername(Context context){
+        return loadUsername(context) + context.getString(R.string.login_email);
     }
 
     public static String loadUsername(Context context){
