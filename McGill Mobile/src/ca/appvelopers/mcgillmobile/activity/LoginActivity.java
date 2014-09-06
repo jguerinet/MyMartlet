@@ -114,9 +114,9 @@ public class LoginActivity extends BaseActivity {
                                     "" + rememberUsernameView.isChecked(), null);
                             
                             //set the background reciever after successful login
-                            if(!App.isAlarmActive()){
-                            	App.SetAlarm(LoginActivity.this);
-                            }
+//                            if(!App.isAlarmActive()){
+//                            	App.SetAlarm(LoginActivity.this);
+//                            }
                    
                             Connection.getInstance().downloadAll(LoginActivity.this);
                             startActivity(new Intent(LoginActivity.this, App.getHomePage().getHomePageClass()));

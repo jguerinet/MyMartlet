@@ -49,9 +49,9 @@ public class SplashActivity extends BaseActivity {
                     
                     if(connectionResult == ConnectionStatus.CONNECTION_OK){
                     	//set the background reciever after successful login
-                        if(!App.isAlarmActive()){
-                        	App.SetAlarm(SplashActivity.this);
-                        }
+//                        if(!App.isAlarmActive()){
+//                        	App.SetAlarm(SplashActivity.this);
+//                        }
                     }
                     //Successful connection: ScheduleActivity
                     if(connectionResult == ConnectionStatus.CONNECTION_OK ||
