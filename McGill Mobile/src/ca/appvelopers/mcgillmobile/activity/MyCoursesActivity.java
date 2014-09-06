@@ -39,7 +39,7 @@ public class MyCoursesActivity extends DrawerActivity{
 			public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function f(){" +
                     "(document.getElementsByName('j_username')[0]).value='" +
-                    Load.loadFullUsername(MyCoursesActivity.this) + "';" +
+                    Load.loadUsername(MyCoursesActivity.this) + "';" +
                     "(document.getElementsByName('j_password')[0]).value='" +
                     Load.loadPassword(MyCoursesActivity.this) + "'; document.forms[0].submit();})()");
                 

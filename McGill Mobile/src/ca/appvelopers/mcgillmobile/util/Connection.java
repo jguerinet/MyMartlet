@@ -76,7 +76,7 @@ public class Connection {
 	// Accessor method
 	public static Connection getInstance(){
         if(http.username == null){
-            http.username = Load.loadUsername(App.getContext()) + App.getContext().getString(R.string.login_email);
+            http.username = Load.loadUsername(App.getContext());
         }
         if(http.password == null){
             http.password = Load.loadPassword(App.getContext());
