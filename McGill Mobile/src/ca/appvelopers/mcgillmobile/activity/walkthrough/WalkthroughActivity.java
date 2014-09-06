@@ -66,17 +66,6 @@ public class WalkthroughActivity extends BaseFragmentActivity {
             }
         });
 
-        //Close
-        TextView close = (TextView) findViewById(R.id.walkthrough_close);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GoogleAnalytics.sendEvent(WalkthroughActivity.this, "Walkthrough", "Skip", null, null);
-                finish();
-                overridePendingTransition(0, R.anim.out_to_top);
-            }
-        });
-
         //Back
         final TextView back = (TextView) findViewById(R.id.walkthrough_back);
         back.setOnClickListener(new View.OnClickListener() {
