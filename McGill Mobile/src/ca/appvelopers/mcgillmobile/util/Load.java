@@ -77,7 +77,7 @@ public class Load {
     }
 
     public static String loadFullUsername(Context context){
-        return loadUsername(context) + context.getResources().getString(R.string.login_email);
+        return loadUsername(context) + context.getString(R.string.login_email);
     }
 
     public static String loadUsername(Context context){

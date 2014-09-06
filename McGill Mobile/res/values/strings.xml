@@ -283,9 +283,14 @@
     <string name="help_answer1">MyMartlet is an app that allows McGill University students to quickly and conveniently access their MyMcGill portal on their mobile device.</string>
     <string name="help_answer2">This app was made by McGill University students</string>
     <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMartlet.</string>
+<<<<<<< HEAD
     <string name="help_walk">User guide</string>
     <string name="help_email_walk">Set up your email</string>
 
+=======
+    <string name="help_walkthrough">User guide</string>
+    <string name="help_email_walkthrough">Set up your email on your device</string>
+>>>>>>> 2e1bf19149d4677985c5cd10171a16d98626b88a
 
     <!-- Maps -->
     <string name="map_filter">Filter: </string>
@@ -333,4 +338,10 @@
     <string name="social_post_success">Post Successful!</string>
     <string name="social_post_failure">An error occurred. Please try again.</string>
     <string name="twitter_post_failure_time">An error occurred. Please try again. Are the date and time on your device correctly set?</string>
+
+    <!-- Splash Screen -->
+    <string name="updating_transcript">Updating Transcript&#8230;</string>
+    <string name="updating_semester">Updating %s Schedule&#8230;</string>
+    <string name="updating_ebill">Updating eBill&#8230;</string>
+    <string name="updating_user">Updating User Info&#8230;</string>
 </resources>

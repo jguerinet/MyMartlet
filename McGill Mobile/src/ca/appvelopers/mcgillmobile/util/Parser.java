@@ -7,6 +7,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +109,7 @@ public class Parser {
                     year = Integer.valueOf(scheduleSemesterItems[2]);
                 }
 
+                //Log.e("TRANSCRIPT PARSER", season + " " + year);
                 String program = "";
                 String bachelor = "";
                 int programYear = 99;
@@ -188,10 +191,15 @@ public class Parser {
 
                     //Extract course information if row contains a course code
                     //Regex looks for a string in the form "ABCD ###"
-                    else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*")){
+                    else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*") ||
+                            dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}")){
                         String courseCode = "";
                         //One semester courses are in the form ABCD ###
                         if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
+                            courseCode = dataRow.text();
+                        }
+                        //Some courses have the form ABC#
+                        else if(dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}")){
                             courseCode = dataRow.text();
                         }
                         //Multi semester courses are in the form ABCD ###D#
@@ -216,9 +224,12 @@ public class Parser {
                         }
                         catch(NumberFormatException e){
                             //Course failed -> Earned credit = 0
+                            StringWriter sw = new StringWriter();
+                            e.printStackTrace(new PrintWriter(sw));
+                            //Log.e("TRANSCRIPT PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.toString());
                         }
                         catch(IndexOutOfBoundsException e){
-                            e.printStackTrace();
+                            //Log.e("TRANSCRIPT PARSER", "IndexOutOfBoundsException" + e.toString());
                         }
 
                         //Obtain user's grade
@@ -243,6 +254,7 @@ public class Parser {
                         }
                         catch(IndexOutOfBoundsException e){
                             //String not found
+                            //Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e.getMessage());
                         }
                         courses.add(new Course(new Term(season, year), courseTitle, courseCode, credits,
                                 userGrade, averageGrade));
@@ -307,9 +319,11 @@ public class Parser {
 
                                 }
                                 catch(IndexOutOfBoundsException e2){
+                                    //Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e2.getMessage());
                                     e.printStackTrace();
                                 }
                                 catch(Exception e3){
+                                    //Log.e("TRANSCRIPT PARSER", "Generic error" + e3.getMessage());
                                     e.printStackTrace();
                                 }
                             }
@@ -354,7 +368,7 @@ public class Parser {
             }
             index++;
         }
-        Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
+        //Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
         App.setTranscript(new Transcript(cgpa, totalCredits, semesters));
     }
 
