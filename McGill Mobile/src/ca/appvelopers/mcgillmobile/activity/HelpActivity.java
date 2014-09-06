@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,26 +24,40 @@ import ca.appvelopers.mcgillmobile.object.HelpItem;
  * Date :  2014-06-17 10:15 PM
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
-public class HelpActivity extends BaseActivity implements AdapterView.OnItemClickListener{
-
-    private ArrayList<HelpItem> HelpItemList ;
-
+public class HelpActivity extends BaseActivity{
+    private ArrayList<HelpItem> mHelpItemList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Set up the email walkthrough and walkthrough buttons
+        TextView emailWalkthrough = (TextView)findViewById(R.id.help_email);
+        emailWalkthrough.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        TextView walkthrough = (TextView)findViewById(R.id.help_walkthrough);
+        walkthrough.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class);
+                startActivity(intent);
+            }
+        });
         
-        // get ListView
+        //FAQ ListView
         ListView helpListView = (ListView) findViewById(R.id.helpListView);
 
         populateList();
 
-        HelpAdapter adapter = new HelpAdapter(this,HelpItemList);
+        HelpAdapter adapter = new HelpAdapter(this, mHelpItemList);
         helpListView.setAdapter(adapter);
-
-        helpListView.setOnItemClickListener(this);
     }
     
     @Override
@@ -58,49 +70,19 @@ public class HelpActivity extends BaseActivity implements AdapterView.OnItemClic
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void populateList()
-    {
-        HelpItemList = new ArrayList<HelpItem>();
-
-        // Q/A
-        HelpItemList.add(new HelpItem(getResources().getString(R.string.help_question1),getResources().getString(R.string.help_answer1)));
-        HelpItemList.add(new HelpItem(getResources().getString(R.string.help_question2),getResources().getString(R.string.help_answer2)));
-        HelpItemList.add(new HelpItem(getResources().getString(R.string.help_question3),getResources().getString(R.string.help_answer3)));
-        HelpItemList.add(new HelpItem(getResources().getString(R.string.help_walk),""));
-        HelpItemList.add(new HelpItem(getResources().getString(R.string.help_email_walk),""));
-
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        HelpItem item = (HelpItem) adapterView.getItemAtPosition(position);
-
-        String walk = getString(R.string.help_walk);
-        String emailWalk = getString(R.string.help_email_walk);
-        if (walk.equals(item.getQuestion()))
-        {
-            // launch walkthrough
-            Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class);
-
-            startActivity(intent);
-        }
-        else if (emailWalk.equals(item.getQuestion()))
-        {
-            // launch email walkthrough
-            //Toast.makeText(HelpActivity.this, "you clicked:" + item.getQuestion(), Toast.LENGTH_SHORT).show();
-        }
-
-
-
+    private void populateList(){
+        //FAQ
+        mHelpItemList = new ArrayList<HelpItem>();
+        mHelpItemList.add(new HelpItem(getResources().getString(R.string.help_question1),getResources().getString(R.string.help_answer1)));
+        mHelpItemList.add(new HelpItem(getResources().getString(R.string.help_question2), getResources().getString(R.string.help_answer2)));
+        mHelpItemList.add(new HelpItem(getResources().getString(R.string.help_question3), getResources().getString(R.string.help_answer3)));
     }
 
     public class HelpAdapter extends BaseAdapter {
         private List<HelpItem> mHelp;
         private Context mContext;
 
-        public HelpAdapter (Context context, List<HelpItem> help)
-        {
+        public HelpAdapter (Context context, List<HelpItem> help){
             this.mContext = context;
             this.mHelp = help;
         }

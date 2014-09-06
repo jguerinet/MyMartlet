@@ -218,7 +218,7 @@
     <string name="help_answer1">MyMartlet est un app qui rend l\'acces du portail des élèves de l\'Université McGill très rapide et pratique sur leurs portables  </string>
     <string name="help_answer2">Cet app a été crée par les élèves de l\'University McGill</string>
     <string name="help_answer3">Présentement, on develope une version iOS et Windows Phone de MyMartlet.</string>
-    <string name="help_walkthrough">Guide d\'utilisation</string>
+    <string name="help_walkthrough">Guide d\'Utilisation</string>
     <string name="help_email_walkthrough">Configurez votre email sur votre mobile</string>
 
     <!-- Maps -->
