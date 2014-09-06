@@ -20,7 +20,6 @@ public enum PlaceCategory{
     BUILDING,
     FOOD,
     SOCIAL,
-    ATHLETICS,
     LIBRARY,
     RESIDENCE;
 
@@ -34,8 +33,6 @@ public enum PlaceCategory{
                 return context.getString(R.string.map_food);
             case SOCIAL:
                 return context.getString(R.string.map_social);
-            case ATHLETICS:
-                return context.getString(R.string.map_athletics);
             case LIBRARY:
                 return context.getString(R.string.map_library);
             case RESIDENCE:
@@ -56,9 +53,6 @@ public enum PlaceCategory{
             }
             else if(category.equals("Social")){
                 categories.add(SOCIAL);
-            }
-            else if(category.equals("Athletics")){
-                categories.add(ATHLETICS);
             }
             else if(category.equals("Library")){
                 categories.add(LIBRARY);
