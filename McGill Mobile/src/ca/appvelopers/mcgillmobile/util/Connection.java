@@ -33,8 +33,6 @@ import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
-import ca.appvelopers.mcgillmobile.object.Day;
-import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
@@ -178,20 +176,25 @@ public class Connection {
 	
 	/**
 	 *  The method getURL with retrieve a webpage as text
-	 * 
-	  */
+	 */
 	public String getUrl(final Context context, String url){
+        return getUrl(context, url, true);
+    }
+
+    public String getUrl(final Context context, String url, boolean showErrors){
         //Initial internet check
         if(!isNetworkAvailable(context)){
         	if(context instanceof Activity){
-        		final Activity activity = (Activity) context;
-	            activity.runOnUiThread(new Runnable() {
-	                @Override
-	                public void run() {
-	                    DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-	                            activity.getResources().getString(R.string.error_no_internet));
-	                }
-	            });
+                if(showErrors){
+                    final Activity activity = (Activity) context;
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                    activity.getResources().getString(R.string.error_no_internet));
+                        }
+                    });
+                }
         	}
 
             //Return empty String
@@ -240,15 +243,16 @@ public class Connection {
             //No internet: show no internet dialog
             else if(connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
             	if(context instanceof Activity){
-            		final Activity activity = (Activity) context;
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                    activity.getResources().getString(R.string.error_no_internet));
-                        }
-                    });
-
+                    if(showErrors){
+                        final Activity activity = (Activity) context;
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                        activity.getResources().getString(R.string.error_no_internet));
+                            }
+                        });
+                    }
             	}
 
                 //Return empty String
