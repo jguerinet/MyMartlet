@@ -16,6 +16,7 @@ public enum Token {
     READMITTED_WINTER,
     READMITTED_SUMMER,
 
+    DIPLOMA,
     BACHELOR,
     MASTER,
     DOCTOR,
@@ -49,6 +50,8 @@ public enum Token {
                 return "Readmitted Winter";
             case READMITTED_SUMMER:
                 return "Readmitted Summer";
+            case DIPLOMA:
+                return "Dip";
             case BACHELOR:
                 return "Bachelor";
             case MASTER:
