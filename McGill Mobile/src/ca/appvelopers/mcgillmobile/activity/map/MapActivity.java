@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class MapActivity extends DrawerFragmentActivity {
     private TextView mAddress;
     private TextView mFavorite;
     private MapPlace mPlaceMarker;
+    private LinearLayout mInfoContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MapActivity extends DrawerFragmentActivity {
         GoogleAnalytics.sendScreen(this, "Map");
 
         //Bind the TextViews
+        mInfoContainer = (LinearLayout)findViewById(R.id.info_container);
         mTitle = (TextView)findViewById(R.id.place_title);
         mAddress = (TextView)findViewById(R.id.place_address);
         mFavorite = (TextView)findViewById(R.id.map_favorite);
@@ -93,6 +96,10 @@ public class MapActivity extends DrawerFragmentActivity {
                     //If there was a marker that was selected before set it back to red
                     if(mPlaceMarker != null){
                         mPlaceMarker.mMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    }
+                    //If it was null, we need to pull up the info container
+                    else{
+                        mInfoContainer.setVisibility(View.VISIBLE);
                     }
 
                     //Find the concerned place
