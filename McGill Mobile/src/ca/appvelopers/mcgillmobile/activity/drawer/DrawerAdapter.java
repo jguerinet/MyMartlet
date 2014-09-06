@@ -165,33 +165,43 @@ public class DrawerAdapter extends BaseAdapter {
                 switch(position){
                     case SCHEDULE_POSITION:
                         mActivity.startActivity(new Intent(mActivity, ScheduleActivity.class));
+                        mActivity.finish();
                         break;
                     case TRANSCRIPT_POSITION:
                         mActivity.startActivity(new Intent(mActivity, TranscriptActivity.class));
+                        mActivity.finish();
                         break;
                     case MYCOURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
+                        mActivity.finish();
                         break;
                     case COURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesListActivity.class));
+                        mActivity.finish();
                         break;
                     case SEARCH_COURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, RegistrationActivity.class));
+                        mActivity.finish();
                         break;
                     case WISHLIST_POSITION:
                         mActivity.startActivity(new Intent(mActivity, CoursesListActivity.class));
+                        mActivity.finish();
                         break;
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));
+                        mActivity.finish();
                         break;
                     case MAP_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MapActivity.class));
+                        mActivity.finish();
                         break;
                     case DESKTOP_POSITION:
                         mActivity.startActivity(new Intent(mActivity, DesktopActivity.class));
+                        mActivity.finish();
                         break;
                     case SETTINGS_POSITION:
                         mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
+                        mActivity.finish();
                         break;
                     case FACEBOOK_POSITION:
                         Help.postOnFacebook(mActivity);
