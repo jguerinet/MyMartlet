@@ -25,7 +25,6 @@ import ca.appvelopers.mcgillmobile.util.Help;
 public class WalkthroughActivity extends BaseFragmentActivity {
     private ViewPager mViewPager;
     private WalkthroughAdapter mWalkthroughAdapter;
-    private boolean mEmail;
 
     static int position;
 
@@ -37,9 +36,9 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
 
         //Check if this is the normal walkthrough or the email one
-        mEmail = getIntent().getBooleanExtra(Constants.EMAIL, false);
+        boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
 
-        GoogleAnalytics.sendScreen(this, mEmail ? "Email Walkthrough" : "Walkthrough");
+        GoogleAnalytics.sendScreen(this, email ? "Email Walkthrough" : "Walkthrough");
 
         //Get the screen height
         int displayHeight = Help.getDisplayHeight(getWindowManager().getDefaultDisplay());
@@ -50,7 +49,7 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         layout.setLayoutParams(params);
 
         mViewPager = (ViewPager) findViewById(R.id.walkthrough_viewpager);
-        mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), mEmail);
+        mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), email);
         mViewPager.setAdapter(mWalkthroughAdapter);
 
         //Next

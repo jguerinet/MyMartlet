@@ -18,6 +18,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.object.HelpItem;
+import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
  * Author : Julien
@@ -38,7 +39,9 @@ public class HelpActivity extends BaseActivity{
         emailWalkthrough.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class);
+                intent.putExtra(Constants.EMAIL, true);
+                startActivity(intent);
             }
         });
 
