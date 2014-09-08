@@ -24,15 +24,12 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
-import ca.appvelopers.mcgillmobile.object.Day;
-import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
-import ca.appvelopers.mcgillmobile.view.FacultyAdapter;
 import ca.appvelopers.mcgillmobile.view.TermAdapter;
 
 /**
@@ -40,9 +37,8 @@ import ca.appvelopers.mcgillmobile.view.TermAdapter;
  * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
-    private Spinner mTermSpinner, mFacultySpinner;
+    private Spinner mTermSpinner;
     private TermAdapter mTermAdapter;
-    private FacultyAdapter mFacultyAdapter;
     private TimePicker mStartTime, mEndTime;
     private EditText mCourseSubject, mCourseNumber, mCourseTitle, mMinCredits, mMaxCredits;
     private CheckBox mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday;
@@ -216,7 +212,6 @@ public class RegistrationActivity extends DrawerActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_reset){
             //Reset all of the views
-            mFacultySpinner.setSelection(0);
             mStartTime.setCurrentHour(0);
             mStartTime.setCurrentMinute(0);
             mEndTime.setCurrentHour(0);
