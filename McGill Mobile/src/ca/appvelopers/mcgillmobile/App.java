@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
@@ -14,7 +13,6 @@ import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Place;
-import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
@@ -49,9 +47,7 @@ public class App extends Application {
     private static List<ClassItem> wishlist;
     private static List<Place> places;
     private static List<Place> favoritePlaces;
-
     //List of semesters you can currently register in
-    //TODO Find a way to make this dynamic
     private static List<Term> registerTerms;
 
     //object to catch event starting background activity
@@ -87,14 +83,10 @@ public class App extends Application {
         wishlist = Load.loadClassWishlist(this);
         //Load the places
         places = Load.loadPlaces(this);
-        //Load the favorite palces
+        //Load the favorite places
         favoritePlaces = Load.loadFavoritePlaces(this);
-
-        //Set up the register terms
-        registerTerms = new ArrayList<Term>();
-        registerTerms.add(new Term(Season.SUMMER, 2014));
-        registerTerms.add(new Term(Season.FALL, 2014));
-        registerTerms.add(new Term(Season.WINTER, 2015));
+        //Load the register terms
+        registerTerms = Load.loadRegisterTerms(this);
 
         //Download the new config
         new ConfigDownloader(this, forceReload).start();
@@ -245,6 +237,12 @@ public class App extends Application {
         App.favoritePlaces = places;
         //Save it to internal storage
         Save.saveFavoritePlaces(context);
+    }
+
+    public static void setRegisterTerms(List<Term> terms){
+        App.registerTerms = terms;
+        //Save it to internal storage
+        Save.saveRegisterTerms(context);
     }
 
     /* HELPER METHODS */

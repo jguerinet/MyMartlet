@@ -339,6 +339,38 @@ public class Load {
         return places;
     }
 
+    public static List<Term> loadRegisterTerms(Context context){
+        List<Term> terms = new ArrayList<Term>();
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.REGISTER_TERMS_FILE);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            terms = (List<Term>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return terms;
+        } catch (OptionalDataException e) {
+            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return terms;
+        } catch (FileNotFoundException e) {
+            Log.e("Load Register Terms Failure", "File not found");
+            e.printStackTrace();
+            return terms;
+        } catch (StreamCorruptedException e) {
+            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return terms;
+        } catch (IOException e) {
+            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return terms;
+        }
+
+        return terms;
+    }
+
     //Last date the webservice was queried
     public static String loadIfModifiedSinceDate(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
