@@ -87,7 +87,8 @@ public class Parser {
                     row.text().startsWith(Token.SUMMER.getString()) ||
                     row.text().startsWith(Token.READMITTED_FALL.getString()) ||
                     row.text().startsWith(Token.READMITTED_WINTER.getString()) ||
-                    row.text().startsWith(Token.READMITTED_SUMMER.getString()) ){
+                    row.text().startsWith(Token.READMITTED_SUMMER.getString()) ||
+                    row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
 
                 //Initialize variables
                 String scheduleSemester = row.text().trim();
@@ -103,6 +104,10 @@ public class Parser {
 
                     season = Season.findSeason(scheduleSemesterItems[0]);
                     year = Integer.valueOf(scheduleSemesterItems[1]);
+                }
+                else if(row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
+                    season = Season.findSeason(scheduleSemesterItems[3]);
+                    year = Integer.valueOf(scheduleSemesterItems[4]);
                 }
                 else{
                     season = Season.findSeason(scheduleSemesterItems[1]);
@@ -340,7 +345,8 @@ public class Parser {
                             dataRow.text().startsWith(Token.SUMMER.getString()) ||
                             dataRow.text().startsWith(Token.READMITTED_FALL.getString()) ||
                             dataRow.text().startsWith(Token.READMITTED_WINTER.getString()) ||
-                            dataRow.text().startsWith(Token.READMITTED_SUMMER.getString()) ){
+                            dataRow.text().startsWith(Token.READMITTED_SUMMER.getString()) ||
+                            dataRow.text().startsWith(Token.CHANGE_PROGRAM.getString())){
 
                         break;
                     }
