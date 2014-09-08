@@ -27,7 +27,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
 public class HelpActivity extends BaseActivity{
-    private ArrayList<HelpItem> mHelpItemList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,10 +65,7 @@ public class HelpActivity extends BaseActivity{
         
         //FAQ ListView
         ListView helpListView = (ListView) findViewById(R.id.helpListView);
-
-        populateList();
-
-        HelpAdapter adapter = new HelpAdapter(this, mHelpItemList);
+        HelpAdapter adapter = new HelpAdapter(this);
         helpListView.setAdapter(adapter);
     }
     
@@ -83,30 +79,22 @@ public class HelpActivity extends BaseActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private void populateList(){
-        //FAQ
-        mHelpItemList = new ArrayList<HelpItem>();
-        mHelpItemList.add(new HelpItem(getResources().getString(R.string.help_question1),getResources().getString(R.string.help_answer1)));
-        mHelpItemList.add(new HelpItem(getResources().getString(R.string.help_question2), getResources().getString(R.string.help_answer2)));
-        mHelpItemList.add(new HelpItem(getResources().getString(R.string.help_question3), getResources().getString(R.string.help_answer3)));
-    }
-
     public class HelpAdapter extends BaseAdapter {
-        private List<HelpItem> mHelp;
+        private List<HelpItem> mHelpList;
         private Context mContext;
 
-        public HelpAdapter (Context context, List<HelpItem> help){
+        public HelpAdapter (Context context){
             this.mContext = context;
-            this.mHelp = help;
+            populateList();
         }
         @Override
         public int getCount() {
-            return mHelp.size();
+            return mHelpList.size();
         }
 
         @Override
         public HelpItem getItem(int i) {
-            return mHelp.get(i);
+            return mHelpList.get(i);
         }
 
         @Override
@@ -132,6 +120,13 @@ public class HelpActivity extends BaseActivity{
             answer.setText(helpItem.getAnswer());
 
             return view;
+        }
+
+        private void populateList(){
+            mHelpList = new ArrayList<HelpItem>();
+            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question1),getResources().getString(R.string.help_answer1)));
+            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question2), getResources().getString(R.string.help_answer2)));
+            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question3), getResources().getString(R.string.help_answer3)));
         }
     }
 }
