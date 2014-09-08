@@ -14,7 +14,7 @@ public class Test {
     /**
      * Switch this to true if you want to read the transcript locally
      */
-    public static boolean LOCAL_TRANSCRIPT = true;
+    public static boolean LOCAL_TRANSCRIPT = false;
 
     /**
      * Test the transcript by reading from a local one
@@ -22,7 +22,7 @@ public class Test {
      */
     public static void testTranscript(Context context){
         //Read from the file
-        String transcriptString = Help.readFromFile(context, R.raw.missingfall2014);
+        String transcriptString ="";// Help.readFromFile(context, R.raw.missingfall2014);
 
         Parser.parseTranscript(transcriptString);
     }
