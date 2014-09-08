@@ -54,7 +54,8 @@
         android:text="@string/about_FAQ"
         android:id="@+id/FAQ"
         android:layout_gravity="center_horizontal"
-        android:textSize="@dimen/text_large" />
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold|italic"/>
 
     <ListView
         android:layout_width="match_parent"

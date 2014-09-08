@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:text="@string/about_question"
             android:textSize="@dimen/text_large"
-            android:textStyle="bold|italic"
+            android:textStyle="bold"
             android:paddingLeft="@dimen/padding_small"
             android:id="@+id/about_question"
             android:paddingTop="5dp" />
