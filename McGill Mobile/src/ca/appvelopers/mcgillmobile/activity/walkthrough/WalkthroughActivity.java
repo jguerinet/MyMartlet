@@ -52,6 +52,9 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), email);
         mViewPager.setAdapter(mWalkthroughAdapter);
 
+        //Set the position to 0 initially
+        position = 0;
+
         //Next
         final TextView next = (TextView) findViewById(R.id.walkthrough_next);
         next.setOnClickListener(new View.OnClickListener() {
