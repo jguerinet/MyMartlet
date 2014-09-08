@@ -2,6 +2,7 @@ package ca.appvelopers.mcgillmobile.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -51,6 +52,15 @@ public class HelpActivity extends BaseActivity{
             public void onClick(View v) {
                 Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        //Official McGill App download button
+        TextView download = (TextView)findViewById(R.id.help_download);
+        download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.mcgill")));
             }
         });
         

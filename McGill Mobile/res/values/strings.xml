@@ -292,6 +292,7 @@
     <string name="help_email_walk4">Select OK</string>
     <string name="help_email_walk5">Select Next</string>
     <string name="help_email_walk6">Your email is set up!</string>
+    <string name="help_download">Don\'t forget to download the official McGill App by clicking here.</string>
 
     <!-- Maps -->
     <string name="map_filter">Filter: </string>
