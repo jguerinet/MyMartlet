@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,15 +24,12 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
-import ca.appvelopers.mcgillmobile.object.Day;
-import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
-import ca.appvelopers.mcgillmobile.view.FacultyAdapter;
 import ca.appvelopers.mcgillmobile.view.TermAdapter;
 
 /**
@@ -39,9 +37,8 @@ import ca.appvelopers.mcgillmobile.view.TermAdapter;
  * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
  */
 public class RegistrationActivity extends DrawerActivity{
-    private Spinner mTermSpinner, mFacultySpinner;
+    private Spinner mTermSpinner;
     private TermAdapter mTermAdapter;
-    private FacultyAdapter mFacultyAdapter;
     private TimePicker mStartTime, mEndTime;
     private EditText mCourseSubject, mCourseNumber, mCourseTitle, mMinCredits, mMaxCredits;
     private CheckBox mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday;
@@ -60,16 +57,13 @@ public class RegistrationActivity extends DrawerActivity{
         mTermAdapter = new TermAdapter(this, App.getRegisterTerms());
         mTermSpinner.setAdapter(mTermAdapter);
 
-        //Set up the faculty spinner
-        mFacultySpinner = (Spinner)findViewById(R.id.registration_faculty);
-        mFacultyAdapter = new FacultyAdapter(this, true);
-        mFacultySpinner.setAdapter(mFacultyAdapter);
-
         mStartTime = (TimePicker)findViewById(R.id.registration_start_time);
+        mStartTime.setIs24HourView(false);
         mStartTime.setCurrentHour(0);
         mStartTime.setCurrentMinute(0);
 
         mEndTime = (TimePicker)findViewById(R.id.registration_end_time);
+        mEndTime.setIs24HourView(false);
         mEndTime.setCurrentHour(0);
         mEndTime.setCurrentMinute(0);
 
@@ -115,13 +109,10 @@ public class RegistrationActivity extends DrawerActivity{
         //Get the selected term
         Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
 
-        //Get the selected faculty
-        Faculty faculty = mFacultyAdapter.getItem(mFacultySpinner.getSelectedItemPosition());
-
         //Subject Input
         String courseSubject = mCourseSubject.getText().toString().toUpperCase().trim();
 
-        if(faculty == null && courseSubject.isEmpty()){
+        if(courseSubject.isEmpty()){
             Toast.makeText(this, getString(R.string.registration_error_no_faculty), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -157,38 +148,58 @@ public class RegistrationActivity extends DrawerActivity{
         //Start time
         int startHour = mStartTime.getCurrentHour();
         int startMinute = mStartTime.getCurrentMinute();
+        char startAMPM = 'a';
+        if(startHour == 12){
+            startAMPM = 'p';
+        }
+        else if(startHour > 12){
+            startAMPM = 'p';
+            startHour = startHour - 12;
+        }
+
 
         //End Time
         int endHour = mEndTime.getCurrentHour();
         int endMinute = mEndTime.getCurrentMinute();
+        char endAMPM = 'a';
+        if(endHour == 12){
+            endAMPM = 'p';
+        }
+        else if(endHour > 12){
+            endAMPM = 'p';
+            endHour = endHour - 12;
+        }
+
 
         //Days
-        List<Day> days = new ArrayList<Day>();
+        List<String> days = new ArrayList<String>();
         if(mMonday.isChecked()){
-            days.add(Day.MONDAY);
+            days.add("m");
         }
         if(mTuesday.isChecked()){
-            days.add(Day.TUESDAY);
+            days.add("t");
         }
         if(mWednesday.isChecked()){
-            days.add(Day.WEDNESDAY);
+            days.add("w");
         }
         if(mThursday.isChecked()){
-            days.add(Day.THURSDAY);
+            days.add("r");
         }
         if(mFriday.isChecked()){
-            days.add(Day.FRIDAY);
+            days.add("f");
         }
         if(mSaturday.isChecked()){
-            days.add(Day.SATURDAY);
+            days.add("s");
         }
         if(mSunday.isChecked()){
-            days.add(Day.SUNDAY);
+            days.add("u");
         }
 
         //Obtain courses
-        new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, faculty, courseNumber,
-                courseTitle, minCredits, maxCredits, startHour, startMinute, endHour, endMinute, days)).execute();
+        Log.e("Registration options", startHour + ":" + startMinute + " " + endHour + ":" + endMinute + " " + days );
+        new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, courseNumber,
+                courseTitle, minCredits, maxCredits, startHour, startMinute, startAMPM, endHour,
+                endMinute, endAMPM, days)).execute();
     }
 
     @Override
@@ -201,7 +212,6 @@ public class RegistrationActivity extends DrawerActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_reset){
             //Reset all of the views
-            mFacultySpinner.setSelection(0);
             mStartTime.setCurrentHour(0);
             mStartTime.setCurrentMinute(0);
             mEndTime.setCurrentHour(0);
@@ -246,6 +256,7 @@ public class RegistrationActivity extends DrawerActivity{
         //Retrieve courses obtained from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
+            Log.e("Class search URL",  mClassSearchURL);
             String classesString = Connection.getInstance().getUrl(RegistrationActivity.this, mClassSearchURL);
 
             //There was an error

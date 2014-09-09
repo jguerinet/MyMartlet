@@ -1,5 +1,7 @@
 package ca.appvelopers.mcgillmobile.activity.mycourseslist;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -64,7 +66,7 @@ public class MyCoursesListActivity extends DrawerActivity {
             @Override
             public void onClick(View view) {
                 //Get checked courses from adapter
-                List<ClassItem> unregisterCoursesList = mAdapter.getCheckedClasses();
+                final List<ClassItem> unregisterCoursesList = mAdapter.getCheckedClasses();
 
                 //Too many courses
                 if (unregisterCoursesList.size() > 10) {
@@ -74,8 +76,25 @@ public class MyCoursesListActivity extends DrawerActivity {
                     Toast.makeText(MyCoursesListActivity.this, getResources().getString(R.string.courses_none_selected),
                             Toast.LENGTH_SHORT).show();
                 } else if (unregisterCoursesList.size() > 0) {
-                    //Execute unregistration of checked classes in a new thread
-                    new UnregistrationThread(unregisterCoursesList).execute();
+
+                    //Ask for confirmation before unregistering
+                    new AlertDialog.Builder(MyCoursesListActivity.this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle(MyCoursesListActivity.this.getResources().getString(R.string.unregister_dialog_title))
+                            .setMessage(MyCoursesListActivity.this.getResources().getString(R.string.unregister_dialog_message))
+                            .setPositiveButton(MyCoursesListActivity.this.getResources().getString(R.string.unregister_dialog_positive), new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Execute unregistration of checked classes in a new thread
+                                    new UnregistrationThread(unregisterCoursesList).execute();
+                                }
+                            })
+                            .setNegativeButton(MyCoursesListActivity.this.getResources().getString(R.string.logout_dialog_negative), null)
+                            .create()
+                            .show();
+
+
                 }
             }
         });
@@ -83,16 +102,6 @@ public class MyCoursesListActivity extends DrawerActivity {
         //Remove this button
         TextView wishlist = (TextView)findViewById(R.id.course_wishlist);
         wishlist.setVisibility(View.GONE);
-
-        executeClassDownloader();
-
-        //Download the Transcript (if ever the user has new semesters on their transcript)
-        new TranscriptDownloader(this) {
-            @Override
-            protected void onPreExecute() {}
-            @Override
-            protected void onPostExecute(Boolean loadInfo) {}
-        }.execute();
     }
 
     @Override
@@ -144,6 +153,14 @@ public class MyCoursesListActivity extends DrawerActivity {
         else if(item.getItemId() == R.id.action_refresh){
             //Execute the class downloader
             executeClassDownloader();
+
+            //Download the Transcript (if ever the user has new semesters on their transcript)
+            new TranscriptDownloader(this) {
+                @Override
+                protected void onPreExecute() {}
+                @Override
+                protected void onPostExecute(Boolean loadInfo) {}
+            }.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);

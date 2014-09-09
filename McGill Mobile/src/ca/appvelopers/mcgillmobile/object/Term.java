@@ -3,6 +3,8 @@ package ca.appvelopers.mcgillmobile.object;
 import android.content.Context;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Author : Julien
@@ -74,5 +76,32 @@ public class Term implements Serializable {
 
     public String toString(Context context){
         return mSeason.toString(context) + " " + mYear;
+    }
+
+    /**
+     * Parse a term from a String
+     * @param termString The term String
+     * @return The parsed term
+     */
+    public static Term parseTerm(String termString){
+        String[] termParts = termString.split(" ");
+        return new Term(Season.findSeason(termParts[0]), Integer.valueOf(termParts[1]));
+    }
+
+    public static Term dateConverter(Date date) {
+        SimpleDateFormat dateConverter = new SimpleDateFormat("dd-MM-yyyy");
+        String[] convertedDate = dateConverter.format(date).split("-");
+        int month = Integer.parseInt(convertedDate[1]);
+        int year = Integer.parseInt(convertedDate[2]);
+        if (month >= 9 && month <= 12) {
+            Term term = new Term(Season.FALL, year);
+            return term;
+        } else if (month >= 1 && month <= 4) {
+            Term term = new Term(Season.WINTER, year);
+            return term;
+        } else {
+            Term term = new Term(Season.SUMMER, year);
+            return term;
+        }
     }
 }

@@ -22,7 +22,7 @@ public class Test {
      */
     public static void testTranscript(Context context){
         //Read from the file
-        String transcriptString = Help.readFromFile(context, R.raw.test_transcript);
+        String transcriptString ="";// Help.readFromFile(context, R.raw.missingfall2014);
 
         Parser.parseTranscript(transcriptString);
     }

@@ -16,42 +16,27 @@ import ca.appvelopers.mcgillmobile.R;
  */
 
 public enum PlaceCategory{
+    FAVORITES,
     BUILDING,
     FOOD,
     SOCIAL,
-    ADMINISTRATION,
-    ATHLETICS,
     LIBRARY,
-    MUSEUM,
-    RESIDENCE,
-    SECURITY,
-    STUDENT_ASSOCIATION,
-    FACULTY_OFFICE;
+    RESIDENCE;
 
     public String toString(Context context){
         switch(this){
+            case FAVORITES:
+                return context.getString(R.string.map_favorites);
             case BUILDING:
                 return context.getString(R.string.map_building);
             case FOOD:
                 return context.getString(R.string.map_food);
             case SOCIAL:
                 return context.getString(R.string.map_social);
-            case ADMINISTRATION:
-                return context.getString(R.string.map_administration);
-            case ATHLETICS:
-                return context.getString(R.string.map_athletics);
             case LIBRARY:
                 return context.getString(R.string.map_library);
-            case MUSEUM:
-                return context.getString(R.string.map_museum);
             case RESIDENCE:
                 return context.getString(R.string.map_residence);
-            case SECURITY:
-                return context.getString(R.string.map_security);
-            case STUDENT_ASSOCIATION:
-                return context.getString(R.string.map_student_associations);
-            case FACULTY_OFFICE:
-                return context.getString(R.string.map_faculty_offices);
             default:
                 return null;
         }
@@ -69,29 +54,11 @@ public enum PlaceCategory{
             else if(category.equals("Social")){
                 categories.add(SOCIAL);
             }
-            else if(category.equals("Administration")){
-                categories.add(ADMINISTRATION);
-            }
-            else if(category.equals("Athletics")){
-                categories.add(ATHLETICS);
-            }
             else if(category.equals("Library")){
                 categories.add(LIBRARY);
             }
-            else if(category.equals("Museum")){
-                categories.add(MUSEUM);
-            }
             else if(category.equals("Residence")){
                 categories.add(RESIDENCE);
-            }
-            else if(category.equals("Security")){
-                categories.add(SECURITY);
-            }
-            else if(category.equals("Student")){
-                categories.add(STUDENT_ASSOCIATION);
-            }
-            else if(category.equals("Faculty")){
-                categories.add(FACULTY_OFFICE);
             }
         }
 

@@ -32,6 +32,7 @@ import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
  * Author: Shabbir
@@ -54,7 +55,9 @@ public class DrawerAdapter extends BaseAdapter {
     public static final int MAP_POSITION = EBILL_POSITION + 1;
     public static final int DESKTOP_POSITION = MAP_POSITION + 1;
     public static final int SETTINGS_POSITION = DESKTOP_POSITION + 1;
-    public static final int LOGOUT_POSITION = SETTINGS_POSITION + 1;
+    public static final int FACEBOOK_POSITION = SETTINGS_POSITION + 1;
+    public static final int TWITTER_POSITION = FACEBOOK_POSITION+ 1;
+    public static final int LOGOUT_POSITION = TWITTER_POSITION + 1;
 
     public DrawerAdapter(Activity activity, DrawerLayout drawerLayout, int selectedPosition){
         this.mActivity = activity;
@@ -106,6 +109,14 @@ public class DrawerAdapter extends BaseAdapter {
         mDrawerItems.add(SETTINGS_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_settings),
                 mActivity.getResources().getString(R.string.icon_settings)));
 
+        //Facebook
+        mDrawerItems.add(FACEBOOK_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_facebook),
+                mActivity.getResources().getString(R.string.icon_facebook)));
+
+        //Twitter
+        mDrawerItems.add(TWITTER_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_twitter),
+                mActivity.getResources().getString(R.string.icon_twitter)));
+
         //Logout
         mDrawerItems.add(LOGOUT_POSITION, new DrawerItem(mActivity.getResources().getString(R.string.title_logout),
                 mActivity.getResources().getString(R.string.icon_logout)));
@@ -154,33 +165,49 @@ public class DrawerAdapter extends BaseAdapter {
                 switch(position){
                     case SCHEDULE_POSITION:
                         mActivity.startActivity(new Intent(mActivity, ScheduleActivity.class));
+                        mActivity.finish();
                         break;
                     case TRANSCRIPT_POSITION:
                         mActivity.startActivity(new Intent(mActivity, TranscriptActivity.class));
+                        mActivity.finish();
                         break;
                     case MYCOURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesActivity.class));
+                        mActivity.finish();
                         break;
                     case COURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MyCoursesListActivity.class));
+                        mActivity.finish();
                         break;
                     case SEARCH_COURSES_POSITION:
                         mActivity.startActivity(new Intent(mActivity, RegistrationActivity.class));
+                        mActivity.finish();
                         break;
                     case WISHLIST_POSITION:
                         mActivity.startActivity(new Intent(mActivity, CoursesListActivity.class));
+                        mActivity.finish();
                         break;
                     case EBILL_POSITION:
                         mActivity.startActivity(new Intent(mActivity, EbillActivity.class));
+                        mActivity.finish();
                         break;
                     case MAP_POSITION:
                         mActivity.startActivity(new Intent(mActivity, MapActivity.class));
+                        mActivity.finish();
                         break;
                     case DESKTOP_POSITION:
                         mActivity.startActivity(new Intent(mActivity, DesktopActivity.class));
+                        mActivity.finish();
                         break;
                     case SETTINGS_POSITION:
                         mActivity.startActivity(new Intent(mActivity, SettingsActivity.class));
+                        mActivity.finish();
+                        break;
+                    case FACEBOOK_POSITION:
+                        Help.postOnFacebook(mActivity);
+                        break;
+                    case TWITTER_POSITION:
+                        Help.loginTwitter(mActivity);
                         break;
                     case LOGOUT_POSITION:
                         new AlertDialog.Builder(mActivity)

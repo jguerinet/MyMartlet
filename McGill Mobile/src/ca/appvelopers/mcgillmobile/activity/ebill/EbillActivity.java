@@ -48,9 +48,6 @@ public class EbillActivity extends DrawerActivity {
 
         //Load the stored info
         loadInfo();
-
-        //Start the thread to get the ebill
-        new EbillGetter().execute();
 	}
 
     private void loadInfo(){

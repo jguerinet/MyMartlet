@@ -55,4 +55,16 @@ public class Place implements Serializable{
     public double getLongitude(){
         return mLongitude;
     }
+
+    @Override
+    public boolean equals(Object object){
+        if(!(object instanceof Place)){
+            return false;
+        }
+
+        Place place = (Place)object;
+
+        return mName.equalsIgnoreCase(place.getName()) && mAddress.equalsIgnoreCase(place.getAddress()) &&
+                mLatitude == place.getLatitude() && mLongitude == place.getLongitude();
+    }
 }

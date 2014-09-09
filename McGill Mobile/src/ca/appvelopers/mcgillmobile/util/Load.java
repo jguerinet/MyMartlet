@@ -58,7 +58,12 @@ public class Load {
 
     public static HomePage loadHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return HomePage.values()[sharedPrefs.getInt(Constants.HOMEPAGE, 0)];
+        int homePage = sharedPrefs.getInt(Constants.HOMEPAGE, -1);
+        //Return schedule by default
+        if(homePage == -1){
+            return HomePage.SCHEDULE;
+        }
+        return HomePage.values()[homePage];
     }
 
     public static boolean loadStatistics(Context context){
@@ -72,7 +77,7 @@ public class Load {
     }
 
     public static String loadFullUsername(Context context){
-        return loadUsername(context) + context.getResources().getString(R.string.login_email);
+        return loadUsername(context) + context.getString(R.string.login_email);
     }
 
     public static String loadUsername(Context context){
@@ -300,6 +305,70 @@ public class Load {
         }
 
         return places;
+    }
+
+    public static List<Place> loadFavoritePlaces(Context context){
+        List<Place> places = new ArrayList<Place>();
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.FAVORITE_PLACES_FILE);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            places = (List<Place>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (OptionalDataException e) {
+            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (FileNotFoundException e) {
+            Log.e("Load Favorite Places Failure", "File not found");
+            e.printStackTrace();
+            return places;
+        } catch (StreamCorruptedException e) {
+            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        } catch (IOException e) {
+            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return places;
+        }
+
+        return places;
+    }
+
+    public static List<Term> loadRegisterTerms(Context context){
+        List<Term> terms = new ArrayList<Term>();
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.REGISTER_TERMS_FILE);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            terms = (List<Term>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return terms;
+        } catch (OptionalDataException e) {
+            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return terms;
+        } catch (FileNotFoundException e) {
+            Log.e("Load Register Terms Failure", "File not found");
+            e.printStackTrace();
+            return terms;
+        } catch (StreamCorruptedException e) {
+            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return terms;
+        } catch (IOException e) {
+            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return terms;
+        }
+
+        return terms;
     }
 
     //Last date the webservice was queried

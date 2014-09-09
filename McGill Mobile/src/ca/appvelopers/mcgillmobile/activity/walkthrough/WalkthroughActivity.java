@@ -13,6 +13,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
@@ -34,7 +35,10 @@ public class WalkthroughActivity extends BaseFragmentActivity {
 
         overridePendingTransition(R.anim.in_from_top, R.anim.stay);
 
-        GoogleAnalytics.sendScreen(this, "Walkthrough");
+        //Check if this is the normal walkthrough or the email one
+        boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
+
+        GoogleAnalytics.sendScreen(this, email ? "Email Walkthrough" : "Walkthrough");
 
         //Get the screen height
         int displayHeight = Help.getDisplayHeight(getWindowManager().getDefaultDisplay());
@@ -45,8 +49,11 @@ public class WalkthroughActivity extends BaseFragmentActivity {
         layout.setLayoutParams(params);
 
         mViewPager = (ViewPager) findViewById(R.id.walkthrough_viewpager);
-        mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager());
+        mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), email);
         mViewPager.setAdapter(mWalkthroughAdapter);
+
+        //Set the position to 0 initially
+        position = 0;
 
         //Next
         final TextView next = (TextView) findViewById(R.id.walkthrough_next);
@@ -61,17 +68,6 @@ public class WalkthroughActivity extends BaseFragmentActivity {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
                 }
 
-            }
-        });
-
-        //Close
-        TextView close = (TextView) findViewById(R.id.walkthrough_close);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GoogleAnalytics.sendEvent(WalkthroughActivity.this, "Walkthrough", "Skip", null, null);
-                finish();
-                overridePendingTransition(0, R.anim.out_to_top);
             }
         });
 

@@ -7,6 +7,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +87,8 @@ public class Parser {
                     row.text().startsWith(Token.SUMMER.getString()) ||
                     row.text().startsWith(Token.READMITTED_FALL.getString()) ||
                     row.text().startsWith(Token.READMITTED_WINTER.getString()) ||
-                    row.text().startsWith(Token.READMITTED_SUMMER.getString()) ){
+                    row.text().startsWith(Token.READMITTED_SUMMER.getString()) ||
+                    row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
 
                 //Initialize variables
                 String scheduleSemester = row.text().trim();
@@ -102,11 +105,16 @@ public class Parser {
                     season = Season.findSeason(scheduleSemesterItems[0]);
                     year = Integer.valueOf(scheduleSemesterItems[1]);
                 }
+                else if(row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
+                    season = Season.findSeason(scheduleSemesterItems[3]);
+                    year = Integer.valueOf(scheduleSemesterItems[4]);
+                }
                 else{
                     season = Season.findSeason(scheduleSemesterItems[1]);
                     year = Integer.valueOf(scheduleSemesterItems[2]);
                 }
 
+                //Log.e("TRANSCRIPT PARSER", season + " " + year);
                 String program = "";
                 String bachelor = "";
                 int programYear = 99;
@@ -131,7 +139,8 @@ public class Parser {
                     }
 
                     //Semester Info
-                    else if(dataRow.text().startsWith(Token.BACHELOR.getString()) ||
+                    else if(dataRow.text().startsWith(Token.DIPLOMA.getString()) ||
+                            dataRow.text().startsWith(Token.BACHELOR.getString()) ||
                             dataRow.text().startsWith(Token.MASTER.getString()) ||
                             dataRow.text().startsWith(Token.DOCTOR.getString())){
 
@@ -167,7 +176,14 @@ public class Parser {
                             programYear = 5;
                         }
 
-                        program = degreeDetails[2];
+                        int detailsIndex = 0;
+                        for(String detail : degreeDetails){
+                            //Skip first two lines --> these are for bachelor and full time/part time
+                            if(detailsIndex >= 2){
+                                program += detail + " ";
+                            }
+                            detailsIndex++;
+                        }
                     }
                     //Term GPA
                     else if(dataRow.text().startsWith(Token.TERM_GPA.getString())){
@@ -180,10 +196,15 @@ public class Parser {
 
                     //Extract course information if row contains a course code
                     //Regex looks for a string in the form "ABCD ###"
-                    else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*")){
+                    else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*") ||
+                            dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}")){
                         String courseCode = "";
                         //One semester courses are in the form ABCD ###
                         if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
+                            courseCode = dataRow.text();
+                        }
+                        //Some courses have the form ABC#
+                        else if(dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}")){
                             courseCode = dataRow.text();
                         }
                         //Multi semester courses are in the form ABCD ###D#
@@ -208,9 +229,12 @@ public class Parser {
                         }
                         catch(NumberFormatException e){
                             //Course failed -> Earned credit = 0
+                            StringWriter sw = new StringWriter();
+                            e.printStackTrace(new PrintWriter(sw));
+                            //Log.e("TRANSCRIPT PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.toString());
                         }
                         catch(IndexOutOfBoundsException e){
-                            e.printStackTrace();
+                            //Log.e("TRANSCRIPT PARSER", "IndexOutOfBoundsException" + e.toString());
                         }
 
                         //Obtain user's grade
@@ -235,6 +259,7 @@ public class Parser {
                         }
                         catch(IndexOutOfBoundsException e){
                             //String not found
+                            //Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e.getMessage());
                         }
                         courses.add(new Course(new Term(season, year), courseTitle, courseCode, credits,
                                 userGrade, averageGrade));
@@ -299,9 +324,11 @@ public class Parser {
 
                                 }
                                 catch(IndexOutOfBoundsException e2){
+                                    //Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e2.getMessage());
                                     e.printStackTrace();
                                 }
                                 catch(Exception e3){
+                                    //Log.e("TRANSCRIPT PARSER", "Generic error" + e3.getMessage());
                                     e.printStackTrace();
                                 }
                             }
@@ -318,7 +345,8 @@ public class Parser {
                             dataRow.text().startsWith(Token.SUMMER.getString()) ||
                             dataRow.text().startsWith(Token.READMITTED_FALL.getString()) ||
                             dataRow.text().startsWith(Token.READMITTED_WINTER.getString()) ||
-                            dataRow.text().startsWith(Token.READMITTED_SUMMER.getString()) ){
+                            dataRow.text().startsWith(Token.READMITTED_SUMMER.getString()) ||
+                            dataRow.text().startsWith(Token.CHANGE_PROGRAM.getString())){
 
                         break;
                     }
@@ -346,7 +374,7 @@ public class Parser {
             }
             index++;
         }
-        Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
+        //Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
         App.setTranscript(new Transcript(cgpa, totalCredits, semesters));
     }
 

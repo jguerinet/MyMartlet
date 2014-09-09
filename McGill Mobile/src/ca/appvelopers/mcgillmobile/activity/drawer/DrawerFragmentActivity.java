@@ -1,17 +1,18 @@
 package ca.appvelopers.mcgillmobile.activity.drawer;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import ca.appvelopers.mcgillmobile.App;
+import com.facebook.Session;
+
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
@@ -22,7 +23,6 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
     public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
-    private boolean mExit;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -37,6 +37,8 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         if(drawerLayout != null){
+            drawerLayout.setFocusableInTouchMode(false);
+
             //Set up the drawer toggle
             drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
 
@@ -65,27 +67,30 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
 
     @Override
     public void onBackPressed(){
-        //If it's not the Homepage, bring him to the homepage
-        if(!this.getClass().equals(App.getHomePage().getHomePageClass())){
-            startActivity(new Intent(this, App.getHomePage().getHomePageClass()));
-            super.onBackPressed();
+        //Open the menu if it is not open
+        if(!drawerLayout.isDrawerOpen(drawerList)){
+            drawerLayout.openDrawer(drawerList);
         }
+        //If it is open, ask the user if he wants to exit
         else{
-            if(mExit) {
-                super.onBackPressed();
-                return;
-            }
-            mExit = true;
-            Toast.makeText(this, R.string.back_toaster_message, Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mExit = false;
-                }
-            }, 2000);
+            new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.drawer_exit))
+                    .setPositiveButton(getString(android.R.string.yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DrawerFragmentActivity.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton(getString(android.R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
         }
     }
+
 
 
     @Override
@@ -106,5 +111,12 @@ public class DrawerFragmentActivity extends BaseFragmentActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    //For Facebook Sharing
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
     }
 }

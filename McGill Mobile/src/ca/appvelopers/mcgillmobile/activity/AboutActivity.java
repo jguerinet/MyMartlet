@@ -2,6 +2,8 @@ package ca.appvelopers.mcgillmobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +22,9 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         super.onCreate(savedInstanceState);
         GoogleAnalytics.sendScreen(this, "About");
-
+        
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        
         //Set up the info for all of the different people
 
         //Adnan
@@ -125,5 +129,15 @@ public class AboutActivity extends BaseActivity {
                 startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.about_email_picker_title)));
             }
         });
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

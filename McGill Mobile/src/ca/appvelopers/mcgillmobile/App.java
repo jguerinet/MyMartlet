@@ -4,16 +4,15 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Place;
-import ca.appvelopers.mcgillmobile.object.Season;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
@@ -47,18 +46,20 @@ public class App extends Application {
     private static UserInfo userInfo;
     private static List<ClassItem> wishlist;
     private static List<Place> places;
-
+    private static List<Place> favoritePlaces;
     //List of semesters you can currently register in
-    //TODO Find a way to make this dynamic
     private static List<Term> registerTerms;
 
+    //object to catch event starting background activity
+    private static AlarmReceiver webFetcherReceiver = new AlarmReceiver();
+    
     @Override
     public void onCreate(){
         super.onCreate();
 
         //Set the static context
         context = this;
-
+        
         //Run the update code, if any
         Update.update(this);
 
@@ -82,12 +83,10 @@ public class App extends Application {
         wishlist = Load.loadClassWishlist(this);
         //Load the places
         places = Load.loadPlaces(this);
-
-        //Set up the register terms
-        registerTerms = new ArrayList<Term>();
-        registerTerms.add(new Term(Season.SUMMER, 2014));
-        registerTerms.add(new Term(Season.FALL, 2014));
-        registerTerms.add(new Term(Season.WINTER, 2015));
+        //Load the favorite places
+        favoritePlaces = Load.loadFavoritePlaces(this);
+        //Load the register terms
+        registerTerms = Load.loadRegisterTerms(this);
 
         //Download the new config
         new ConfigDownloader(this, forceReload).start();
@@ -99,6 +98,10 @@ public class App extends Application {
     }
 
     /* GETTER METHODS */
+    public static Context getContext(){
+        return context;
+    }
+
     public static Typeface getIconFont(){
         if(iconFont == null){
             iconFont = Typeface.createFromAsset(context.getAssets(), "icon-font.ttf");
@@ -117,6 +120,9 @@ public class App extends Application {
         return classes;
     }
 
+    public static boolean isAlarmActive(){
+    	return webFetcherReceiver.isActive();
+    }
     public static List<EbillItem> getEbill(){
         return ebill;
     }
@@ -147,6 +153,10 @@ public class App extends Application {
 
     public static List<Place> getPlaces(){
         return places;
+    }
+
+    public static List<Place> getFavoritePlaces(){
+        return favoritePlaces;
     }
 
     public static List<Term> getRegisterTerms(){
@@ -223,5 +233,27 @@ public class App extends Application {
         Save.savePlaces(context);
     }
 
+    public static void setFavoritePlaces(List<Place> places){
+        App.favoritePlaces = places;
+        //Save it to internal storage
+        Save.saveFavoritePlaces(context);
+    }
+
+    public static void setRegisterTerms(List<Term> terms){
+        App.registerTerms = terms;
+        //Save it to internal storage
+        Save.saveRegisterTerms(context);
+    }
+
     /* HELPER METHODS */
+    
+    //to be set after successful login
+    public static void SetAlarm(Context context){
+    	
+        webFetcherReceiver.setAlarm(context);
+    }
+    public static void UnsetAlarm(Context context){
+
+        webFetcherReceiver.cancelAlarm(context);
+    }
 }

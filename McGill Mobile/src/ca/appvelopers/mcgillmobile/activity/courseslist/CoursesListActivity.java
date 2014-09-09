@@ -391,7 +391,7 @@ public class CoursesListActivity extends DrawerActivity {
 
                 String registrationUrl = Connection.getCourseURL(course.getTerm(),
                         courseSubject, null, courseNumber,
-                        "", 0, 0, 0, 0, 0, 0, null);
+                        0, 0, 0, 0, '0', 0, 0, '0', null);
 
                 String classesString = Connection.getInstance().getUrl(CoursesListActivity.this, registrationUrl);
 

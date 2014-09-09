@@ -21,6 +21,7 @@ import java.net.CookieManager;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +30,10 @@ import javax.net.ssl.HttpsURLConnection;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.LoginActivity;
+import ca.appvelopers.mcgillmobile.activity.SplashActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
-import ca.appvelopers.mcgillmobile.object.Day;
-import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
@@ -75,6 +75,12 @@ public class Connection {
 	
 	// Accessor method
 	public static Connection getInstance(){
+        if(http.username == null){
+            http.username = Load.loadFullUsername(App.getContext());
+        }
+        if(http.password == null){
+            http.password = Load.loadPassword(App.getContext());
+        }
 		return http;
 	}
 	
@@ -88,35 +94,49 @@ public class Connection {
         this.password = password;
     }
 
-    //Download all of the info (upon login)
-    public void downloadAll(Activity activity){
+    /**
+     * Download all of the info (upon opening of the app)
+     * @param context The app context
+     * @param infoDownloader The task that is currently downloading the info (to update the progress)
+     */
+    public void downloadAll(Context context, SplashActivity.InfoDownloader infoDownloader){
         Connection connection = getInstance();
+
+        //Update : downloading transcript
+        infoDownloader.publishNewProgress(context.getString(R.string.updating_transcript));
 
         //Download the transcript
         if(!Test.LOCAL_TRANSCRIPT){
-            Parser.parseTranscript(connection.getUrl(activity, TRANSCRIPT));
+            Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
         }
 
-        //Set the default Semester
         List<Semester> semesters = App.getTranscript().getSemesters();
         //Find the latest semester
-        Term defaultTerm = semesters.get(0).getTerm();
         for(Semester semester : semesters){
             Term term = semester.getTerm();
 
-            //Download the schedule
-            Parser.parseClassList(term, connection.getUrl(activity, getScheduleURL(term)));
+            //Update : downloading transcript
+            infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
 
-            //Set the default term if it's later than the current default term
-            if(term.isAfter(defaultTerm)){
-                defaultTerm = term;
-            }
+            //Download the schedule
+            Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
         }
-        App.setDefaultTerm(defaultTerm);
+
+        //Set the default term if there is none set yet
+        if(App.getDefaultTerm() == null){
+            App.setDefaultTerm(Term.dateConverter(Calendar.getInstance().getTime()));
+        }
+
+        //Update : downloading transcript
+        infoDownloader.publishNewProgress(context.getString(R.string.updating_ebill));
 
         //Download the ebill and user info
-        String ebillString = Connection.getInstance().getUrl(activity, EBILL);
+        String ebillString = Connection.getInstance().getUrl(context, EBILL);
         Parser.parseEbill(ebillString);
+
+        //Update : downloading transcript
+        infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
+
         Parser.parseUserInfo(ebillString);
     }
 
@@ -176,18 +196,26 @@ public class Connection {
 	
 	/**
 	 *  The method getURL with retrieve a webpage as text
-	 * 
-	  */
-	public String getUrl(final Activity activity, String url){
+	 */
+	public String getUrl(final Context context, String url){
+        return getUrl(context, url, true);
+    }
+
+    public String getUrl(final Context context, String url, boolean showErrors){
         //Initial internet check
-        if(!isNetworkAvailable(activity)){
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                            activity.getResources().getString(R.string.error_no_internet));
+        if(!isNetworkAvailable(context)){
+        	if(context instanceof Activity){
+                if(showErrors){
+                    final Activity activity = (Activity) context;
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                    activity.getResources().getString(R.string.error_no_internet));
+                        }
+                    });
                 }
-            });
+        	}
 
             //Return empty String
             return "";
@@ -198,7 +226,7 @@ public class Connection {
             result = http.getPageContent(url);
         } catch (MinervaLoggedOutException e) {
             //User has been logged out, so we need to log him back in
-            final ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(activity);
+            final ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context);
 
             //Successfully logged him back in, try retrieving the stuff again
             if(connectionResult == ConnectionStatus.CONNECTION_OK){
@@ -210,33 +238,42 @@ public class Connection {
             }
             //Wrong credentials: back to login screen
             else if(connectionResult == ConnectionStatus.CONNECTION_WRONG_INFO){
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Clear.clearAllInfo(activity);
+            	if(context instanceof Activity){
+            		final Activity activity = (Activity) context;
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Clear.clearAllInfo(activity);
 
-                        //Go back to LoginActivity
-                        Intent intent = new Intent(activity, LoginActivity.class);
-                        intent.putExtra(Constants.CONNECTION_STATUS, connectionResult);
-                        activity.startActivity(intent);
+                            //Go back to LoginContext
+                            Intent intent = new Intent(activity, LoginActivity.class);
+                            intent.putExtra(Constants.CONNECTION_STATUS, connectionResult);
+                            activity.startActivity(intent);
 
-                        //Finish this activity
-                        activity.finish();
-                    }
-                });
+                            //Finish this activity
+                            activity.finish();
+                        }
+                    });
+            	}
+
 
                 //Return empty String
                 result = "";
             }
             //No internet: show no internet dialog
             else if(connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                activity.getResources().getString(R.string.error_no_internet));
+            	if(context instanceof Activity){
+                    if(showErrors){
+                        final Activity activity = (Activity) context;
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
+                                        activity.getResources().getString(R.string.error_no_internet));
+                            }
+                        });
                     }
-                });
+            	}
 
                 //Return empty String
                 result = "";
@@ -467,10 +504,12 @@ public class Connection {
      * @param courseNumber The course number
      * @return The proper search URL
      */
-    public static String getCourseURL(Term term, String subject, Faculty faculty, String courseNumber,
+    public static String getCourseURL(Term term, String subject, String courseNumber,
                                       String title, int minCredit, int maxCredit, int startHour,
-                                      int startMinute, int endHour, int endMinute, List<Day> days){
-        return COURSE_SEARCH
+                                      int startMinute, char startAMPM, int endHour, int endMinute,
+                                      char endAMPM, List<String> days){
+
+        String courseSearchURL = COURSE_SEARCH
                 + "term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
                 "&sel_subj=dummy" +
                 "&sel_day=dummy" +
@@ -484,21 +523,28 @@ public class Connection {
                 "&sel_attr=dummy" +
                 "&sel_subj=" + subject +
                 "&sel_crse=" + courseNumber +
-                "&sel_title=" +
+                "&sel_title=" + title +
                 "&sel_schd=%25" +
-                "&sel_from_cred=" +
-                "&sel_to_cred=" +
+                "&sel_from_cred=" + minCredit +
+                "&sel_to_cred=" + maxCredit +
                 "&sel_levl=%25" +
                 "&sel_ptrm=%25" +
                 "&sel_instr=%25" +
                 "&sel_attr=%25" +
-                "&begin_hh=0" +
-                "&begin_mi=0" +
-                "&begin_ap=a" +
-                "&end_hh=0" +
-                "&end_mi=0" +
-                "&end_ap=a" +
-                "%20Response%20Headersview%20source";
+                "&begin_hh=" + startHour +
+                "&begin_mi=" + startMinute +
+                "&begin_ap=" + startAMPM +
+                "&end_hh=" + endHour +
+                "&end_mi=" + endMinute +
+                "&end_ap=" + endAMPM;
+        
+        if(days!=null){
+	        for(String day : days){
+	            courseSearchURL += "&sel_day=" + day;
+	        }
+        }
+
+        return courseSearchURL;
     }
 
     /**

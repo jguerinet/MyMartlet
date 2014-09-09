@@ -225,6 +225,42 @@ public class Save {
         }
     }
 
+    public static void saveFavoritePlaces(Context context) {
+        List<Place> places = App.getFavoritePlaces();
+
+        try{
+            FileOutputStream fos = context.openFileOutput(Constants.FAVORITE_PLACES_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(places);
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveRegisterTerms(Context context){
+        List<Term> terms = App.getRegisterTerms();
+
+        try{
+            FileOutputStream fos = context.openFileOutput(Constants.REGISTER_TERMS_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(terms);
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void saveIfModifiedSinceDate(Context context, String date){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()

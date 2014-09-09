@@ -1,6 +1,7 @@
 package ca.appvelopers.mcgillmobile.util.downloader;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
@@ -16,31 +17,45 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
 public abstract class TranscriptDownloader extends AsyncTask<Void, Void, Boolean>{
-    private Activity mActivity;
-    public TranscriptDownloader(Activity activity){
-        mActivity = activity;
+    private Context mContext;
+    private boolean mShowErrors;
+
+    public TranscriptDownloader(Context context){
+    	mContext = context;
+        mShowErrors = true;
     }
 
-    @Override
+    //This is to not show 2 errors in the Schedule page
+    public TranscriptDownloader(Context context, boolean showErrors){
+        mContext = context;
+        mShowErrors = showErrors;
+    }
+
+	@Override
     protected abstract void onPreExecute();
 
     @Override
     protected Boolean doInBackground(Void... params) {
         if(!Test.LOCAL_TRANSCRIPT){
-            String transcriptString = Connection.getInstance().getUrl(mActivity, Connection.TRANSCRIPT);
+            String transcriptString = Connection.getInstance().getUrl(mContext, Connection.TRANSCRIPT, mShowErrors);
 
             if(transcriptString == null){
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            DialogHelper.showNeutralAlertDialog(mActivity, mActivity.getResources().getString(R.string.error),
-                                    mActivity.getResources().getString(R.string.error_other));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+            	if(mContext instanceof Activity){
+            		final Activity mActivity = (Activity) mContext;
+                    if(mShowErrors){
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    DialogHelper.showNeutralAlertDialog(mActivity, mActivity.getResources().getString(R.string.error),
+                                            mActivity.getResources().getString(R.string.error_other));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
-                });
+            	}
                 return false;
             }
             //Empty String: no need for an alert dialog but no need to reload

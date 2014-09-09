@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.appvelopers.mcgillmobile"
-    android:versionCode="4"
-    android:versionName="0.5" >
+    android:versionCode="6"
+    android:versionName="1" >
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+   
 
     <permission
         android:name="com.example.googlemaps.permission.MAPS_RECEIVE"
@@ -44,6 +47,16 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.TwitterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="mymartlet"
+                    android:scheme="oauth" />
             </intent-filter>
         </activity>
         <activity
@@ -104,6 +117,16 @@
         <activity android:name=".activity.mycourseslist.MyCoursesListActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.HelpActivity" />
+        
+        <receiver android:name=".background.AlarmReceiver"></receiver>
+        
+        <receiver android:name=".background.BootReceiver"
+                android:enabled="false">
+            <intent-filter>
+            	<action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+        <service android:name=".background.WebFetcherService" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -112,6 +135,14 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyARrfyIRGoPZjbmatLu8XyBS4JW8xjOfak" />
+
+        <!-- Facebook -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_id" />
+
+        <activity android:name="com.facebook.LoginActivity" />
+        <activity android:name=".activity.TwitterActivity" />
     </application>
 
 </manifest>

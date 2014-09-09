@@ -104,19 +104,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:text="@string/registration_faculty"
-                            android:textSize="@dimen/text_medium" />
-
-                        <Spinner
-                            android:id="@+id/registration_faculty"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="right|center_vertical" />
-
                     </LinearLayout>
 
                     <LinearLayout

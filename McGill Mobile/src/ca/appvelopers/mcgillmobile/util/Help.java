@@ -1,12 +1,28 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
@@ -15,6 +31,10 @@ import java.io.InputStream;
 import java.io.StringWriter;
 
 import ca.appvelopers.mcgillmobile.R;
+import twitter4j.StatusUpdate;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  * Class that contains various useful static help methods
@@ -56,16 +76,7 @@ public class Help {
      * @return The height of the given display
      */
     public static int getDisplayHeight(Display display){
-        Point size = new Point();
-
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            size.set(display.getWidth(), display.getHeight());
-        }
-        else{
-            display.getSize(size);
-        }
-
-        return size.y;
+        return getDisplaySize(display).y;
     }
 
     /**
@@ -74,6 +85,10 @@ public class Help {
      * @return The width of the given display
      */
     public static int getDisplayWidth(Display display){
+        return getDisplaySize(display).x;
+    }
+
+    private static Point getDisplaySize(Display display){
         Point size = new Point();
 
         if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
@@ -83,7 +98,7 @@ public class Help {
             display.getSize(size);
         }
 
-        return size.x;
+        return size;
     }
 
     /**
@@ -136,5 +151,208 @@ public class Help {
      */
     public static String getDocuumLink(String courseName, String courseCode){
         return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
+    }
+
+    /**
+     * Post on Facebook
+     * @param activity The calling activity
+     */
+    public static void postOnFacebook(final Activity activity){
+        GoogleAnalytics.sendEvent(activity, "facebook", "attempt_post", null, null);
+
+        //Start Facebook Login
+        Session.openActiveSession(activity, true, new Session.StatusCallback() {
+            @Override
+            public void call(final Session session, SessionState state, Exception exception) {
+                if (session.isOpened()) {
+                    //Make request to the /me API (Access to user's profile)
+                    Request.newMeRequest(session, new Request.GraphUserCallback() {
+                        @Override
+                        public void onCompleted(GraphUser user, Response response) {
+
+                            //The bundle with the post params
+                            Bundle postParams = new Bundle();
+                            //All of the params are in the strings
+                            String title = activity.getResources().getString(R.string.social_facebook_title, "Android");
+                            String link = activity.getResources().getString(R.string.social_link_android);
+                            String description = activity.getResources().getString(R.string.social_facebook_description_android);
+                            postParams.putString("name", title);
+                            postParams.putString("caption", activity.getResources().getString(R.string.social_facebook_caption));
+                            postParams.putString("description", description);
+                            postParams.putString("link", link);
+                            postParams.putString("picture", activity.getResources().getString(R.string.social_facebook_image));
+
+                            //Create a new FeedDialogBuilder so the user can configure the post on his wall
+                            com.facebook.widget.WebDialog.FeedDialogBuilder feedDialogBuilder = new com.facebook.widget.WebDialog.FeedDialogBuilder(activity, Session.getActiveSession(), postParams);
+                            feedDialogBuilder.setOnCompleteListener(new com.facebook.widget.WebDialog.OnCompleteListener() {
+
+                                @Override
+                                public void onComplete(Bundle values, FacebookException error) {
+                                    if (error == null) {
+                                        final String postId = values.getString("post_id");
+                                        //Success
+                                        if (postId != null) {
+                                            //Let the user know he posted successfully
+                                            Toast.makeText(activity, activity.getResources().getString(R.string.social_post_success), Toast.LENGTH_SHORT).show();
+                                            GoogleAnalytics.sendEvent(activity, "facebook", "successful_post", null, null);
+                                        }
+                                        //Cancelled
+                                        else {
+                                            // User clicked the Cancel button
+                                            Log.e("Facebook Post", "Cancelled");
+                                        }
+                                    } else if (error instanceof FacebookOperationCanceledException) {
+                                        // User clicked the "x" button
+                                        Log.e("Facebook Post", "Cancelled");
+                                    }
+                                    //Tell the user an error occurred
+                                    else {
+                                        Toast.makeText(activity, activity.getResources().getString(R.string.social_post_failure), Toast.LENGTH_SHORT).show();
+                                        error.printStackTrace();
+                                        GoogleAnalytics.sendEvent(activity, "facebook", "failed_post", null, null);
+                                    }
+                                }
+                            });
+                            com.facebook.widget.WebDialog feedDialog = feedDialogBuilder.build();
+                            feedDialog.show();
+                        }
+                    }).executeAsync();
+                } else if (exception != null) {
+                    Toast.makeText(activity, activity.getResources().getString(R.string.social_post_failure), Toast.LENGTH_SHORT).show();
+                    GoogleAnalytics.sendEvent(activity, "facebook", "failed_post", null, null);
+                    exception.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Method to log into Twitter
+     * @param activity The calling activity
+     */
+    public static void loginTwitter(final Activity activity){
+        GoogleAnalytics.sendEvent(activity, "twitter", "attempt_post", null, null);
+
+        //Login using AsyncTask, using the keys stored in Constants.
+        new AsyncTask<Void,Void,Void>(){
+
+            protected Void doInBackground(Void... args){
+                ConfigurationBuilder builder = new ConfigurationBuilder();
+                builder.setOAuthConsumerKey(Constants.TWITTER_CONSUMER_KEY);
+                builder.setOAuthConsumerSecret(Constants.TWITTER_CONSUMER_SECRET);
+                twitter4j.conf.Configuration config = builder.build();
+
+                //Prepare the Twitter Object
+                TwitterFactory twitterFactory = new TwitterFactory(config);
+                Constants.twitter = twitterFactory.getInstance();
+
+                try{
+                    Constants.requestToken = Constants.twitter.getOAuthRequestToken(Constants.TWITTER_CALLBACK_URL);
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.requestToken.getAuthenticationURL())));
+                } catch (TwitterException e) {
+                    final String detailMessage;
+
+                    //Choose the correct error message
+                    if(e.getMessage().contains("Received authentication challenge is null")){
+                        //If this is the case, it's because the time of the device might be wrong
+                        detailMessage = activity.getString(R.string.twitter_post_failure_time);
+                    }
+                    else{
+                        detailMessage = activity.getString(R.string.social_post_failure);
+                    }
+
+                    //Display error message
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, detailMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    GoogleAnalytics.sendEvent(activity, "twitter", "failed_post", null, null);
+
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+    }
+
+    /**
+     * Method to post on Twitter
+     * @param activity The calling activity
+     */
+    public static void postOnTwitter(final Activity activity){
+        //Show dialog where user can edit his message (pre-defined message given)
+        //Inflate the view
+        View dialogView = View.inflate(activity, R.layout.dialog_edittext, null);
+
+        //Set the title
+        ((TextView)dialogView.findViewById(R.id.dialog_title)).setText(activity.getString(R.string.title_twitter));
+
+        //Create the Builder
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+        //Set up the view
+        alertDialogBuilder.setView(dialogView);
+        //EditText
+        final EditText userInput = (EditText) dialogView.findViewById(R.id.dialog_input);
+        userInput.setText(activity.getString(R.string.social_twitter_message_android, "Android"));
+
+        //Set up the dialog
+        alertDialogBuilder.setCancelable(false)
+                .setNegativeButton(activity.getString(android.R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton(activity.getString(android.R.string.ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Get the user input
+                                String statusMessage = userInput.getText().toString();
+                                //If statusMessage = null, user cancelled so do nothing
+                                if (statusMessage != null) {
+                                    //Add the link at the end of his message
+                                    statusMessage += " " + activity.getString(R.string.social_link_android);
+
+                                    //Post using an AsyncTask
+                                    new AsyncTask<String, Void, Void>() {
+                                        protected Void doInBackground(String... args) {
+                                            try {
+                                                //Retrieve the message
+                                                String message = args[0];
+
+                                                //Prepare StatusUpdate object
+                                                StatusUpdate status = new StatusUpdate(message);
+                                                Constants.twitter.updateStatus(status);
+
+                                                activity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        GoogleAnalytics.sendEvent(activity, "twitter", "successful_post", null, null);
+                                                        Toast.makeText(activity, activity.getString(R.string.social_post_success), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                                activity.finish();
+                                            } catch (TwitterException e) {
+                                                GoogleAnalytics.sendEvent(activity, "twitter", "failed_post", null, null);
+                                                Log.e("Twitter Status", "Error:" + e.getMessage());
+                                                activity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(activity, activity.getString(R.string.social_post_failure), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                                activity.finish();
+                                                e.printStackTrace();
+                                            }
+
+                                            return null;
+                                        }
+                                    }.execute(statusMessage);
+                                }
+                            }
+                        })
+                .create().show();
     }
 }

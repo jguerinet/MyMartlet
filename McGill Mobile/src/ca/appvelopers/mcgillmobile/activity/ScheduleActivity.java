@@ -73,9 +73,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         //Load the stored info
         loadInfo();
 
-        //Set up the class downloader
-        executeClassDownloader();
-
         //Check if this is the first time the user is using the app
         if(Load.isFirstOpen(this)){
             //Show him the walkthrough if it is
@@ -83,17 +80,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             //Save the fact that the walkthrough has been seen at least once
             Save.saveFirstOpen(this);
         }
-
-        //Download the Transcript (if ever the user has new semesters on their transcript)
-        new TranscriptDownloader(this) {
-            @Override
-            protected void onPreExecute() {
-            }
-
-            @Override
-            protected void onPostExecute(Boolean loadInfo) {
-            }
-        }.execute();
     }
 
     //Method that returns a list of courses for a given day
@@ -113,6 +99,10 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
+
+        //Reload the menu
+        invalidateOptionsMenu();
+
         if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
             setContentView(R.layout.activity_schedule_land);
             LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -380,10 +370,24 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                 //Get the chosen term
                 mTerm = (Term)data.getSerializableExtra(Constants.TERM);
                 executeClassDownloader();
+
+                //Download the Transcript (if ever the user has new semesters on their transcript)
+                new TranscriptDownloader(this, false) {
+                    @Override
+                    protected void onPreExecute() {}
+
+                    @Override
+                    protected void onPostExecute(Boolean loadInfo) {}
+                }.execute();
             }
         }
         else{
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        return getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE;
     }
 }

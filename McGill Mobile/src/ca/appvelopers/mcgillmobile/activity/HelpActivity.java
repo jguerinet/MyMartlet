@@ -1,8 +1,11 @@
 package ca.appvelopers.mcgillmobile.activity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,62 +17,84 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
+import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.object.HelpItem;
+import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
  * Author : Julien
  * Date :  2014-06-17 10:15 PM
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
-public class HelpActivity extends BaseActivity {
-
-    private ArrayList<HelpItem> HelpItemList ;
-
+public class HelpActivity extends BaseActivity{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // get ListView
+        //Set up the email walkthrough and walkthrough buttons
+        TextView emailWalkthrough = (TextView)findViewById(R.id.help_email);
+        emailWalkthrough.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class);
+                intent.putExtra(Constants.EMAIL, true);
+                startActivity(intent);
+            }
+        });
+
+        TextView walkthrough = (TextView)findViewById(R.id.help_walkthrough);
+        walkthrough.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //Official McGill App download button
+        TextView download = (TextView)findViewById(R.id.help_download);
+        download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.mcgill")));
+            }
+        });
+        
+        //FAQ ListView
         ListView helpListView = (ListView) findViewById(R.id.helpListView);
-
-        populateList();
-
-        HelpAdapter adapter = new HelpAdapter(this,HelpItemList);
+        HelpAdapter adapter = new HelpAdapter(this);
         helpListView.setAdapter(adapter);
-
     }
-
-    private void populateList()
-    {
-        HelpItemList = new ArrayList<HelpItem>();
-
-        // Q/A
-        HelpItemList.add(new HelpItem(getResources().getString(R.string.help_question1),getResources().getString(R.string.help_answer1)));
-        HelpItemList.add(new HelpItem(getResources().getString(R.string.help_question2),getResources().getString(R.string.help_answer2)));
-        HelpItemList.add(new HelpItem(getResources().getString(R.string.help_question3),getResources().getString(R.string.help_answer3)));
-
-
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public class HelpAdapter extends BaseAdapter {
-        private List<HelpItem> mHelp;
+        private List<HelpItem> mHelpList;
         private Context mContext;
 
-        public HelpAdapter (Context context, List<HelpItem> help)
-        {
+        public HelpAdapter (Context context){
             this.mContext = context;
-            this.mHelp = help;
+            populateList();
         }
         @Override
         public int getCount() {
-            return mHelp.size();
+            return mHelpList.size();
         }
 
         @Override
         public HelpItem getItem(int i) {
-            return mHelp.get(i);
+            return mHelpList.get(i);
         }
 
         @Override
@@ -80,8 +105,8 @@ public class HelpActivity extends BaseActivity {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             if (view == null){
-                LayoutInflater infalter = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = infalter.inflate(R.layout.item_faq,null);
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.item_faq,null);
             }
 
             assert (view != null);
@@ -95,6 +120,13 @@ public class HelpActivity extends BaseActivity {
             answer.setText(helpItem.getAnswer());
 
             return view;
+        }
+
+        private void populateList(){
+            mHelpList = new ArrayList<HelpItem>();
+            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question1),getResources().getString(R.string.help_answer1)));
+            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question2), getResources().getString(R.string.help_answer2)));
+            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question3), getResources().getString(R.string.help_answer3)));
         }
     }
 }

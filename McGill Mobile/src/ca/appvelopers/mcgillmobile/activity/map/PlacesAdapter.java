@@ -35,6 +35,13 @@ public class PlacesAdapter extends BaseAdapter {
         Collections.sort(mCategories, new Comparator<PlaceCategory>() {
             @Override
             public int compare(PlaceCategory category, PlaceCategory category2) {
+                //If it's Favorites, it's first
+                if(category == PlaceCategory.FAVORITES){
+                    return -1;
+                }
+                else if(category2 == PlaceCategory.FAVORITES){
+                    return 1;
+                }
                 return category.toString(mContext).compareToIgnoreCase(category2.toString(mContext));
             }
         });
