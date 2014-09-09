@@ -20,6 +20,8 @@
     <string name="title_courses">Mes Classes</string>
     <string name="title_help">Aide</string>
     <string name="title_report_bug">Signaler un Problème</string>
+    <string name="title_facebook">Partager</string>
+    <string name="title_twitter">Tweeter</string>
 
     <!-- General Strings -->
     <string name="error">Erreur</string>
@@ -168,6 +170,8 @@
     <string name="walkthrough_bugs">Si vous trouvez des bugs, n\'hésitez pas à nous le signaler via la section Réglages.</string>
     <string name="walkthrough_homepage">Veuillez choisir une page que vous allez voir en premier en ouvrant cette application. Cette page peut être changée a n\'importe quel moment dans les Réglages.</string>
     <string name="walkthrough_faculty">Pour nous donner une meilleure idée de qui utilise cette application, nous aimerons savoir de quel faculté vous faites parti(e):</string>
+    <string name="walkthrough_schedule">Vous pouvez voir votre calendrier en mode paysage en tourant votre appareil horizontalement dans la section Calendrier.</string>
+    <string name="walkthrough_email">Ajoutez votre email McGill sur votre appareil en allant dans Réglages -> Aide -> Configurer votre Email</string>
 
     <!-- CoursesList / Course Wishlist -->
     <string name="wishlist_remove">%s cour(s) enlevés de la liste d\'envies</string>
@@ -188,7 +192,7 @@
     <string name="about_gabriel_description">Gabriel est connu comme un ami de EUS. Pendant plusieurs semestres il faisait partie du PMO et OAP. Fait peu connu, pendant un an il s\'est engagé à être le frère de la présidente de ECSESS.</string>
     <string name="about_hernan_role">Développeur iOS</string>
     <string name="about_hernan_description">Une citation ? Je suis COOL! (Plus que Josh.)</string>
-    <string name="about_joshua_role">Développeur Android</string>
+    <string name="about_joshua_role">Développeur Android, Graphiste</string>
     <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre de l\'ECSESS RoboElectronics qui a comme but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette application mobile.</string>
     <string name="about_julien_role">Maître Scrum, Développeur Android Principal</string>
     <string name="about_julien_description">Julien est un étudiant en quatrième année de génie informatique, et gère l\'équipe Android.</string>
@@ -216,28 +220,54 @@
     <string name="help_question2">Est ce que cet app est officiellement fait par McGill?</string>
     <string name="help_question3">Dans quel platforme pouvons nous trouver cet app?</string>
     <string name="help_answer1">MyMartlet est un app qui rend l\'acces du portail des élèves de l\'Université McGill très rapide et pratique sur leurs portables  </string>
-    <string name="help_answer2">Cet app a été crée par les élèves de l\'University McGill</string>
-    <string name="help_answer3">Présentement, on develope une version iOS et Windows Phone de MyMartlet.</string>
+    <string name="help_answer2">Cette application a été créée par des élèves de l’Université McGill et n’est pas l’application officielle de McGill.</string>
+    <string name="help_answer3">Cette application existe sur Android et nous sommes en train de déveloper une version iOS et Windows Phone.</string>
     <string name="help_walkthrough">Guide d\'Utilisation</string>
     <string name="help_email_walkthrough">Configurez votre email sur votre mobile</string>
+    <string name="help_email_walk0">Avertissement: ces étapes peuvent varier selon votre version d’Android et le modèle de votre téléphone. \nAllez dans Réglages → + Ajouter un Compte</string>
+    <string name="help_email_walk1">Choisissez Email</string>
+    <string name="help_email_walk2">Entrez votre email McGill et mot de passe et appuyez sur Suivant.</string>
+    <string name="help_email_walk3">Choisissez Exchange</string>
+    <string name="help_email_walk4">Appuyez sur OK</string>
+    <string name="help_email_walk5">Appuyez sur Suivant</string>
+    <string name="help_email_walk6">Votre email est configuré!</string>
+    <string name="help_download">N’oubliez pas de télécharger l’application officielle de McGill en cliquant ici.</string>
 
     <!-- Maps -->
     <string name="map_filter">Filtrer: </string>
     <string name="map_all">Tous</string>
+    <string name="map_favorites">Favoris</string>
     <string name="map_building">Bâtiments</string>
     <string name="map_food">Services Alimentaires</string>
     <string name="map_social">Evènements Sociaux</string>
     <string name="map_athletics">Services de Sports</string>
     <string name="map_library">Bibliothèques</string>
     <string name="map_residence">Résidences</string>
-
-    <!-- Email Walkthrough -->
+    <string name="map_directions">Directions</string>
+    <string name="map_favorites_add">Ajouter à mes Favoris</string>
+    <string name="map_favorites_remove">Retirer de mes Favoris</string>
+    <string name="map_favorites_added">%s ajouté(e) à mes Favoris</string>
+    <string name="map_favorites_removed">%s retiré(e) à mes Favoris</string>
+    <string name="unregister_dialog_title">Désinscription de Cours</string>
+    <string name="unregister_dialog_message">Êtes-vous sûr de vouloir vous désinscrire de ce(s) cours?</string>
     <string name="unregister_dialog_positive">Continuer</string>
     <string name="unregister_dialog_negative">Annuler</string>
 
     <!-- Drawer -->
+    <string name="drawer_exit">Êtes-vous sûr de vouloir quitter l\'application?</string>
 
     <!-- Social Networks -->
+    <string name="social_facebook_title">MyMartlet pour %s</string>
+    <string name="social_facebook_caption">McGill au bout de vos doigts!</string>
+    <string name="social_facebook_description_android">MyMartlet permet aux étudiants de McGill d’accéder facilement tous les essentiels de McGill tels que leur calendrier, bulletin, liste de cours et plus!</string>
+    <string name="social_twitter_message_android">Télécharger MyMartlet pour %s!</string>
+    <string name="social_post_success">Posté avec Succès!</string>
+    <string name="social_post_failure">Une erreur est survenue. Réessayez s\'il vous plaît.</string>
+    <string name="twitter_post_failure_time">Une erreur est survenue. Réessayez s\'il vous plaît. La date et l\'heure sur votre appareil sont-elles bien configurées?</string>
 
     <!-- Splash Screen -->
+    <string name="updating_transcript">Mise à jour de votre bulletin&#8230;</string>
+    <string name="updating_semester">Mise à jour du semestre: %s&#8230;</string>
+    <string name="updating_ebill">Mise à jour de votre eBill&#8230;</string>
+    <string name="updating_user">Mise à jour de l’information de l’utilisateur&#8230;</string>
 </resources>

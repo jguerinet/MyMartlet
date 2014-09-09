@@ -199,7 +199,7 @@
     <string name="walkthrough_homepage">Please choose a page you will see first when opening this app. You can change this at any time in the Settings.</string>
     <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
     <string name="walkthrough_schedule">See your schedule in landscape mode by tilting your screen horizontally in the Schedule tab.</string>
-    <string name="walkthrough_email">Set up your McGill email account on your phone by going to Settings -> Help -> Set up your Email</string>
+    <string name="walkthrough_email">Set up your McGill email account on your device by going to Settings -> Help -> Set up your Email</string>
 
     <!-- CoursesList / Course Wishlist -->
     <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
@@ -230,7 +230,7 @@
     <string name="about_hernan_linkedin">ca.linkedin.com/in/hernangatta</string>
     <string name="about_hernan_email">gattahernan\@gmail.com</string>
     <string name="about_joshua">Joshua David Alfaro</string>
-    <string name="about_joshua_role">Android Developer</string>
+    <string name="about_joshua_role">Android Developer, Graphic Designer</string>
     <string name="about_joshua_description">Josh is an Electrical Engineering student at McGill University. Josh is also a member of ECSESS RoboElectronics which helps students learn and prepare for design competitions. While taking his minor in Software Engineering, Josh supported the development of this mobile application. </string>
     <string name="about_joshua_linkedin">http://ca.linkedin.com/pub/joshua-david-alfaro/24/988/5b7</string>
     <string name="about_joshua_email">JoshuaDavidAlfaro\@gmail.com</string>
@@ -281,8 +281,8 @@
     <string name="help_question2">Is this app officially made by McGill?</string>
     <string name="help_question3">On which platforms can we find this app?</string>
     <string name="help_answer1">MyMartlet is an app that allows McGill University students to quickly and conveniently access their MyMcGill portal on their mobile device.</string>
-    <string name="help_answer2">This app was made by McGill University students</string>
-    <string name="help_answer3">Currently we are developing an iOS and Windows Phone version of MyMartlet.</string>
+    <string name="help_answer2">This app was made by McGill University students and is not the official McGill app</string>
+    <string name="help_answer3">This app exists on Android and we are currently developing an iOS and Windows Phone version.</string>
     <string name="help_walkthrough">User Guide</string>
     <string name="help_email_walkthrough">Set up your email on your device</string>
     <string name="help_email_walk0">Warning: steps may vary slightly based on Android version and phone model. \nGo to Settings → + Add account</string>
@@ -310,19 +310,8 @@
     <string name="map_favorites_added">Added %s to Favorites</string>
     <string name="map_favorites_removed">Removed %s to Favorites</string>
 
-    <!-- Email Walkthrough -->
-    <string name="ewalk_intruction1">Sign into your McGill email and enter the email client </string>
-    <string name="ewalk_intruction2">Click on \'Options\' on the top right corner</string>
-    <string name="ewalk_intruction3">Click on \'Create an Inbox Rule\'</string>
-    <string name="ewalk_intruction4">Click on \'New\'</string>
-    <string name="ewalk_intruction5">Click on \'More Options\'</string>
-    <string name="ewalk_intruction6">On the first feild select \'[Apply to all messages]\'</string>
-    <string name="ewalk_intruction7">On the second feild select \'Forward the message to&#8230;\'</string>
-    <string name="ewalk_intruction8">Enter your email address at the bottom field</string>
-    <string name="ewalk_intruction9">Click Save</string>
-
     <!-- Unregister Dialog -->
-    <string name="unregister_dialog_title">Drop classes</string>
+    <string name="unregister_dialog_title">Drop Classes</string>
     <string name="unregister_dialog_message">Are you sure you want to drop the selected classes?</string>
     <string name="unregister_dialog_positive">Yes</string>
     <string name="unregister_dialog_negative">Cancel</string>
@@ -332,7 +321,7 @@
 
     <!-- Social Networks -->
     <string name="social_facebook_title">MyMartlet for %s</string>
-    <string name="social_facebook_caption">All the essential McGill services at your fingertips.</string>
+    <string name="social_facebook_caption">McGill at your fingertips !</string>
     <string name="social_facebook_description_android">MyMartlet allows any McGill student to have easy access to the McGill essentials such as their calendar, transcript, course list, and more!</string>
     <string name="social_facebook_image">http://imgur.com/iWPs14U.jpg</string>
     <string name="social_link_android">https://play.google.com/store/apps/details?id=ca.appvelopers.mcgillmobile</string>
