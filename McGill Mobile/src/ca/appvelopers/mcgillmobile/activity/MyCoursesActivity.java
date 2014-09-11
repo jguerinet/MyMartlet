@@ -1,7 +1,12 @@
 package ca.appvelopers.mcgillmobile.activity;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -14,6 +19,9 @@ import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 public class MyCoursesActivity extends DrawerActivity{
+
+    protected Context mContext = this;
+
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,30 @@ public class MyCoursesActivity extends DrawerActivity{
                     Load.loadPassword(MyCoursesActivity.this) + "'; document.forms[0].submit();})()");
                 
                 view.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(url.endsWith(".pdf")){
+                    Uri source = Uri.parse(url);
+                    // Make a new request pointing to the .apk url
+                    DownloadManager.Request request = new DownloadManager.Request(source);
+                    // appears the same in Notification bar while downloading
+                    request.setDescription("Description for the DownloadManager Bar");
+                    request.setTitle("MyCourses File");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        request.allowScanningByMediaScanner();
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    }
+                    // save the file in the "Downloads" folder of SDCARD
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"");
+                    // get download service and enqueue file
+                    DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                    manager.enqueue(request);
+
+                    return true;
+                }
+                return false;
             }
         });
     }
