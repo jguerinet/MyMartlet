@@ -222,6 +222,7 @@ public class DrawerAdapter extends BaseAdapter {
                                         Clear.clearAllInfo(mActivity);
                                         //Go back to LoginActivity
                                         mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
+                                        MyCoursesActivity.deleteCookies();
                                     }
 
                                 })

@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -21,6 +23,7 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 public class MyCoursesActivity extends DrawerActivity{
 
     protected Context mContext = this;
+    protected static CookieManager cookieManager;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -36,10 +39,16 @@ public class MyCoursesActivity extends DrawerActivity{
             return;
         }
 
+        CookieSyncManager.createInstance(mContext);
+        cookieManager = CookieManager.getInstance();
+        if(cookieManager.hasCookies())
+            cookieManager.removeAllCookie();
+
         //Get the Webview
         final WebView webView = (WebView)findViewById(R.id.desktop_webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
+        webView.getSettings().setSaveFormData(false);
 
         webView.loadUrl("https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=https://shibboleth.mcgill.ca/idp/shibboleth&target=https%3A%2F%2Fmycourses2.mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l");
         webView.setWebViewClient(new WebViewClient() {
@@ -78,5 +87,12 @@ public class MyCoursesActivity extends DrawerActivity{
                 return false;
             }
         });
+    }
+
+
+    public static void deleteCookies(){
+
+        if(cookieManager.hasCookies())
+            cookieManager.removeAllCookie();
     }
 }
