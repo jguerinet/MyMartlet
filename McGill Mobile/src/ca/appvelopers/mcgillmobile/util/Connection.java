@@ -110,16 +110,21 @@ public class Connection {
             Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
         }
 
-        List<Semester> semesters = App.getTranscript().getSemesters();
-        //Find the latest semester
-        for(Semester semester : semesters){
-            Term term = semester.getTerm();
+        if(!Test.LOCAL_SCHEDULE){
+            List<Semester> semesters = App.getTranscript().getSemesters();
+            //Find the latest semester
+            for(Semester semester : semesters){
+                Term term = semester.getTerm();
 
-            //Update : downloading transcript
-            infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
+                //Update : downloading transcript
+                infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
 
-            //Download the schedule
-            Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
+                //Download the schedule
+                Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
+            }
+        }
+        else{
+            Test.testSchedule(context);
         }
 
         //Set the default term if there is none set yet
