@@ -20,11 +20,12 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
+
 public class MyCoursesActivity extends DrawerActivity{
 
     protected Context mContext = this;
     protected static CookieManager cookieManager;
-
+    Long downloadId;
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -65,24 +66,31 @@ public class MyCoursesActivity extends DrawerActivity{
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if(url.endsWith(".pdf")){
+                if(url.endsWith(".pdf") || url.contains("/attachment/")){
+                    String[] urlSplit = url.split("/");
+                    String fileName = urlSplit[urlSplit.length - 1];
+
+                    //assume attachments only has pdf
+                    if (!fileName.endsWith(".pdf")) {
+                        fileName = fileName.concat(".pdf");
+                    }
                     Uri source = Uri.parse(url);
                     // Make a new request pointing to the .apk url
                     DownloadManager.Request request = new DownloadManager.Request(source);
                     // appears the same in Notification bar while downloading
+                    String cookie = cookieManager.getCookie(url);
+                    request.addRequestHeader("Cookie", cookie);
                     request.setDescription("Description for the DownloadManager Bar");
-                    request.setTitle("MyCourses File");
+                    request.setTitle(fileName);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                         request.allowScanningByMediaScanner();
                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                     }
                     // save the file in the "Downloads" folder of SDCARD
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"");
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
                     // get download service and enqueue file
                     DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                    manager.enqueue(request);
-
-                    return true;
+                    downloadId = manager.enqueue(request);
                 }
                 return false;
             }
