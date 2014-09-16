@@ -53,8 +53,11 @@ public class ClassItem implements Serializable{
         this.mSection = section;
         this.mActualStartTime = new LocalTime(startHour, startMinute);
         //Remove 5 minutes to the start to get round numbers
-        this.mStartTime = new LocalTime(startHour, (startMinute - 5) % 60);
-        this.mActualEndTime = new LocalTime(endHour, endMinute);
+        int newStartMin = (startMinute - 5) % 60;
+        if(newStartMin < 0){
+            newStartMin = startMinute;
+        }
+        this.mStartTime = new LocalTime(startHour, newStartMin);this.mActualEndTime = new LocalTime(endHour, endMinute);
         //Add 5 minutes to the end to get round numbers, increment the hour if the minutes get set to 0s
         int endM = (endMinute + 5) % 60;
         int endH = endHour;
