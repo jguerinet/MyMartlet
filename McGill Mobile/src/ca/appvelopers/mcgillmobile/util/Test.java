@@ -3,6 +3,8 @@ package ca.appvelopers.mcgillmobile.util;
 import android.content.Context;
 
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.object.Season;
+import ca.appvelopers.mcgillmobile.object.Term;
 
 /**
  * Author: Julien Guerinet
@@ -15,6 +17,10 @@ public class Test {
      * Switch this to true if you want to read the transcript locally
      */
     public static boolean LOCAL_TRANSCRIPT = false;
+    /**
+     * Switch this to true if you want to read the schedule locally
+     */
+    public static boolean LOCAL_SCHEDULE = false;
 
     /**
      * Test the transcript by reading from a local one
@@ -25,5 +31,19 @@ public class Test {
         String transcriptString ="";// Help.readFromFile(context, R.raw.missingfall2014);
 
         Parser.parseTranscript(transcriptString);
+    }
+
+    /**
+     * Test the schedule by reading from a local one
+     * @param context The app context
+     */
+    public static void testSchedule(Context context){
+        //Choose file to read from here
+        String scheduleString = Help.readFromFile(context, R.raw.sched_nursing);
+
+        //Choose term that this schedule is for here
+        Term term = new Term(Season.FALL, 2014);
+
+        Parser.parseClassList(term, scheduleString);
     }
 }

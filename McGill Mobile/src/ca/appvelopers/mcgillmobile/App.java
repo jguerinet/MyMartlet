@@ -95,6 +95,10 @@ public class App extends Application {
         if(Test.LOCAL_TRANSCRIPT){
             Test.testTranscript(this);
         }
+
+        if(Test.LOCAL_SCHEDULE){
+            Test.testSchedule(this);
+        }
     }
 
     /* GETTER METHODS */

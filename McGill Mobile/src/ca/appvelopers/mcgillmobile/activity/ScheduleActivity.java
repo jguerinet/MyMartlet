@@ -36,6 +36,7 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
 import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
@@ -369,7 +370,9 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             if(resultCode == RESULT_OK){
                 //Get the chosen term
                 mTerm = (Term)data.getSerializableExtra(Constants.TERM);
-                executeClassDownloader();
+                if(!Test.LOCAL_SCHEDULE){
+                    executeClassDownloader();
+                }
 
                 //Download the Transcript (if ever the user has new semesters on their transcript)
                 new TranscriptDownloader(this, false) {
