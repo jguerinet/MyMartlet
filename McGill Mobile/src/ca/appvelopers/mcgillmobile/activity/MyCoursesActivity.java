@@ -100,7 +100,7 @@ public class MyCoursesActivity extends DrawerActivity{
 
     public static void deleteCookies(){
 
-        if(cookieManager.hasCookies())
+        if(cookieManager != null && cookieManager.hasCookies())
             cookieManager.removeAllCookie();
     }
 }
