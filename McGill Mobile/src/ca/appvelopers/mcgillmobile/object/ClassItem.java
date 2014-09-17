@@ -2,6 +2,7 @@ package ca.appvelopers.mcgillmobile.object;
 
 import android.content.Context;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import java.io.Serializable;
@@ -38,7 +39,104 @@ public class ClassItem implements Serializable{
     private int mWaitlistRemaining;
     private double mCredits;
     private String mDates;
+    private DateTime mStartDateRange;
+    private DateTime mEndDateRange;
 
+    /**
+     * Constructor
+     * @param term
+     * @param courseCode
+     * @param courseSubject
+     * @param courseNumber
+     * @param courseTitle
+     * @param crn
+     * @param section
+     * @param startHour
+     * @param startMinute
+     * @param endHour
+     * @param endMinute
+     * @param days
+     * @param sectionType
+     * @param location
+     * @param instructor
+     * @param capacity
+     * @param seatsAvailable
+     * @param seatsRemaining
+     * @param waitlistCapacity
+     * @param waitlistAvailable
+     * @param waitlistRemaining
+     * @param credits
+     * @param startDateRange
+     * @param endDateRange
+     */
+    public ClassItem(Term term, String courseCode, String courseSubject, String courseNumber, String courseTitle, int crn,
+                     String section, int startHour, int startMinute, int endHour, int endMinute,
+                     List<Day> days, String sectionType, String location, String instructor, int capacity,
+                     int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
+                     int waitlistRemaining, double credits, String dates, DateTime startDateRange, DateTime endDateRange){
+        this.mTerm = term;
+        this.mCourseCode = courseCode;
+        this.mCourseSubject = courseSubject;
+        this.mCourseNumber = courseNumber;
+        this.mCourseTitle = courseTitle;
+        this.mCRN = crn;
+        this.mSection = section;
+        this.mActualStartTime = new LocalTime(startHour, startMinute);
+        //Remove 5 minutes to the start to get round numbers
+        int newStartMin = (startMinute - 5) % 60;
+        if(newStartMin < 0){
+            newStartMin = startMinute;
+        }
+        this.mStartTime = new LocalTime(startHour, newStartMin);this.mActualEndTime = new LocalTime(endHour, endMinute);
+        //Add 5 minutes to the end to get round numbers, increment the hour if the minutes get set to 0s
+        int endM = (endMinute + 5) % 60;
+        int endH = endHour;
+        if(endM == 0){
+            endH ++;
+        }
+        this.mEndTime = new LocalTime(endH, endM);
+        this.mDays = days;
+        this.mSectionType = sectionType;
+        this.mLocation = location;
+        this.mInstructor = instructor;
+        this.mCapacity = capacity;
+        this.mSeatsAvailable = seatsAvailable;
+        this.mSeatsRemaining = seatsRemaining;
+        this.mWaitlistCapacity = waitlistCapacity;
+        this.mWaitlistAvailable = waitlistAvailable;
+        this.mWaitlistRemaining = waitlistRemaining;
+        this.mCredits = credits;
+        this.mDates = dates;
+        this.mStartDateRange = startDateRange;
+        this.mEndDateRange = endDateRange;
+    }
+
+    /**
+     * Constructor without date range
+     * @param term
+     * @param courseCode
+     * @param courseSubject
+     * @param courseNumber
+     * @param courseTitle
+     * @param crn
+     * @param section
+     * @param startHour
+     * @param startMinute
+     * @param endHour
+     * @param endMinute
+     * @param days
+     * @param sectionType
+     * @param location
+     * @param instructor
+     * @param capacity
+     * @param seatsAvailable
+     * @param seatsRemaining
+     * @param waitlistCapacity
+     * @param waitlistAvailable
+     * @param waitlistRemaining
+     * @param credits
+     * @param dates
+     */
     public ClassItem(Term term, String courseCode, String courseSubject, String courseNumber, String courseTitle, int crn,
                      String section, int startHour, int startMinute, int endHour, int endMinute,
                      List<Day> days, String sectionType, String location, String instructor, int capacity,
@@ -77,8 +175,9 @@ public class ClassItem implements Serializable{
         this.mWaitlistRemaining = waitlistRemaining;
         this.mCredits = credits;
         this.mDates = dates;
+        this.mStartDateRange = null;
+        this.mEndDateRange = null;
     }
-
 	/* GETTERS */
 
     /**
@@ -218,6 +317,19 @@ public class ClassItem implements Serializable{
     }
 
     /**
+     * Get the start date of the date range
+     * @return the start date
+     */
+    public DateTime getStartDateRage() { return mStartDateRange; }
+
+    /**
+     * Get the end date of the date range
+     * @return the end date
+     */
+    public DateTime getEndDateRange() { return mEndDateRange; }
+
+
+    /**
      * Set the start time of the course (rounded off to the nearest half hour)
      */
     public void setStartTime(LocalTime time){
@@ -273,6 +385,22 @@ public class ClassItem implements Serializable{
         this.mWaitlistRemaining = waitlistRemaining;
     }
 
+    /**
+     * Update the start date of the date range
+     * @param startDateRange
+     */
+    public void setStartDateRange(DateTime startDateRange) {
+        this.mStartDateRange = startDateRange;
+    }
+
+    /**
+     * Update the end date of the date range
+     * @param endDateRange
+     */
+    public void setEndDateRange(DateTime endDateRange) {
+        this.mEndDateRange = endDateRange;
+    }
+
     /* HELPER METHODS */
     /**
      * Update the ClassItem
@@ -288,10 +416,12 @@ public class ClassItem implements Serializable{
      * @param location The new location
      * @param instructor The new instructor
      * @param credits The new credits
+     * @param startDateRange start date of date range
+     * @param endDateRange end date of date range
      */
     public void update(String courseCode, String courseTitle, String section, int startHour, int startMinute,
                        int endHour, int endMinute, List<Day> days, String sectionType, String location, String instructor,
-                       double credits){
+                       double credits, String dates, DateTime startDateRange, DateTime endDateRange){
         this.mCourseCode = courseCode;
         this.mCourseTitle = courseTitle;
         this.mSection = section;
@@ -311,6 +441,9 @@ public class ClassItem implements Serializable{
         this.mLocation = location;
         this.mInstructor = instructor;
         this.mCredits = credits;
+        this.mDates = dates;
+        this.mStartDateRange = startDateRange;
+        this.mEndDateRange = endDateRange;
     }
 
     /**
