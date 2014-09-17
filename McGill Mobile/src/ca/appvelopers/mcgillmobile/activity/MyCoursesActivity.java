@@ -66,12 +66,17 @@ public class MyCoursesActivity extends DrawerActivity{
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if(url.endsWith(".pdf") || url.contains("/attachment/")){
+                // Allow downloads for numerous file types
+                if(url.endsWith(".pdf") || url.contains("/attachment/") || url.endsWith(".pptm")
+                        || url.endsWith(".pptx") || url.endsWith(".ppt") || url.endsWith(".doc")
+                        || url.endsWith(".docx") || url.endsWith(".xlsx") || url.endsWith(".xls")
+                        || url.endsWith(".txt") || url.endsWith(".zip") || url.endsWith(".mp3")
+                        || url.endsWith(".mp4")){
                     String[] urlSplit = url.split("/");
                     String fileName = urlSplit[urlSplit.length - 1];
 
                     //assume attachments only has pdf
-                    if (!fileName.endsWith(".pdf")) {
+                    if (!fileName.endsWith(".pdf") && url.contains("/attachment/")) {
                         fileName = fileName.concat(".pdf");
                     }
                     Uri source = Uri.parse(url);
