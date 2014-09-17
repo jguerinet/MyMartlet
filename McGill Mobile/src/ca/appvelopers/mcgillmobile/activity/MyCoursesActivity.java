@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.DownloadListener;
+import android.webkit.MimeTypeMap;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -25,7 +27,6 @@ public class MyCoursesActivity extends DrawerActivity{
 
     protected Context mContext = this;
     protected static CookieManager cookieManager;
-    Long downloadId;
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,35 @@ public class MyCoursesActivity extends DrawerActivity{
 
         //Get the Webview
         final WebView webView = (WebView)findViewById(R.id.desktop_webview);
+
+        //allows download any file
+        webView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent,
+                                        String contentDisposition, String mimeType,
+                                        long contentLength) {
+                String[] urlSplit = url.split("/");
+                String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
+                String fileName = urlSplit[urlSplit.length - 1].concat("." + extension);
+                Uri source = Uri.parse(url);
+                // Make a new request pointing to the url
+                DownloadManager.Request request = new DownloadManager.Request(source);
+                // appears the same in Notification bar while downloading
+                String cookie = cookieManager.getCookie(url);
+                request.addRequestHeader("Cookie", cookie);
+                request.setDescription("Description for the DownloadManager Bar");
+                request.setTitle(fileName);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    request.allowScanningByMediaScanner();
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                }
+                // save the file in the "Downloads" folder of SDCARD
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+                // get download service and enqueue file
+                DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                manager.enqueue(request);
+            }
+        });
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
         webView.getSettings().setSaveFormData(false);
@@ -62,42 +92,6 @@ public class MyCoursesActivity extends DrawerActivity{
                     Load.loadPassword(MyCoursesActivity.this) + "'; document.forms[0].submit();})()");
                 
                 view.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // Allow downloads for numerous file types
-                if(url.endsWith(".pdf") || url.contains("/attachment/") || url.endsWith(".pptm")
-                        || url.endsWith(".pptx") || url.endsWith(".ppt") || url.endsWith(".doc")
-                        || url.endsWith(".docx") || url.endsWith(".xlsx") || url.endsWith(".xls")
-                        || url.endsWith(".txt") || url.endsWith(".zip") || url.endsWith(".mp3")
-                        || url.endsWith(".mp4")){
-                    String[] urlSplit = url.split("/");
-                    String fileName = urlSplit[urlSplit.length - 1];
-
-                    //assume attachments only has pdf
-                    if (!fileName.endsWith(".pdf") && url.contains("/attachment/")) {
-                        fileName = fileName.concat(".pdf");
-                    }
-                    Uri source = Uri.parse(url);
-                    // Make a new request pointing to the .apk url
-                    DownloadManager.Request request = new DownloadManager.Request(source);
-                    // appears the same in Notification bar while downloading
-                    String cookie = cookieManager.getCookie(url);
-                    request.addRequestHeader("Cookie", cookie);
-                    request.setDescription("Description for the DownloadManager Bar");
-                    request.setTitle(fileName);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        request.allowScanningByMediaScanner();
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    }
-                    // save the file in the "Downloads" folder of SDCARD
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-                    // get download service and enqueue file
-                    DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                    downloadId = manager.enqueue(request);
-                }
-                return false;
             }
         });
     }
