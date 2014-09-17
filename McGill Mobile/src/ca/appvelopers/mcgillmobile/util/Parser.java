@@ -2,6 +2,11 @@ package ca.appvelopers.mcgillmobile.util;
 
 import android.util.Log;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,6 +14,7 @@ import org.jsoup.select.Elements;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -445,71 +451,110 @@ public class Parser {
 
                 //Check if there is any data to parse
                 if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
-                    //Time, Days, Location, Section Type, Instructor
-                    row = scheduleTable.get(i+1).getElementsByTag("tr").get(1);
-                    Elements cells = row.getElementsByTag("td");
-                    String[] times = cells.get(0).text().split(" - ");
-                    char[] dayCharacters = cells.get(1).text().toCharArray();
-                    String location = cells.get(2).text();
-                    String sectionType = cells.get(4).text();
-                    String instructor = cells.get(5).text();
+                    Elements scheduledTimesRows = scheduleTable.get(i+1).getElementsByTag("tr");
+                    for (int j = 1; j < scheduledTimesRows.size(); j++) {
+                        //Time, Days, Location, Section Type, Instructor
+                        row = scheduledTimesRows.get(j);
+                        Elements cells = row.getElementsByTag("td");
+                        String[] times = cells.get(0).text().split(" - ");
+                        char[] dayCharacters = cells.get(1).text().toCharArray();
+                        String location = cells.get(2).text();
+                        String dateRange = cells.get(3).text();
+                        String sectionType = cells.get(4).text();
+                        String instructor = cells.get(5).text();
 
-                    //Time parsing
-                    int startHour, startMinute, endHour, endMinute;
-                    try {
-                        startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-                        startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-                        endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-                        endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
-                        String startPM = times[0].split(" ")[1];
-                        String endPM = times[1].split(" ")[1];
+                        //Time parsing
+                        int startHour, startMinute, endHour, endMinute;
+                        try {
+                            startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+                            startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+                            endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+                            endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+                            String startPM = times[0].split(" ")[1];
+                            String endPM = times[1].split(" ")[1];
 
-                        //If it's PM, then add 12 hours to the hours for 24 hours format
-                        //Make sure it isn't noon
-                        if (startPM.equals("PM") && startHour != 12) {
-                            startHour += 12;
+                            //If it's PM, then add 12 hours to the hours for 24 hours format
+                            //Make sure it isn't noon
+                            if (startPM.equals("PM") && startHour != 12) {
+                                startHour += 12;
+                            }
+                            if (endPM.equals("PM") && endHour != 12) {
+                                endHour += 12;
+                            }
                         }
-                        if (endPM.equals("PM") && endHour != 12) {
-                            endHour += 12;
+                        //Try/Catch for classes with no assigned times
+                        catch (NumberFormatException e) {
+                            startHour = 0;
+                            //So that the the time will be 0
+                            startMinute = 5;
+                            endHour = 0;
+                            //So that the time will be 0
+                            endMinute = 55;
                         }
-                    }
-                    //Try/Catch for classes with no assigned times
-                    catch (NumberFormatException e) {
-                        startHour = 0;
-                        //So that the the time will be 0
-                        startMinute = 5;
-                        endHour = 0;
-                        //So that the time will be 0
-                        endMinute = 55;
-                    }
 
-                    //Day Parsing
-                    List<Day> days = new ArrayList<Day>();
-                    for (char dayCharacter : dayCharacters) {
-                        days.add(Day.getDay(dayCharacter));
-                    }
-
-                    //Check if the class already exists
-                    boolean classExists = false;
-                    for (ClassItem classItem : classItems) {
-                        if (classItem.getCRN() == crn && classItem.getTerm().equals(term)) {
-                            classExists = true;
-                            //If you find an equivalent, just update it
-                            classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
-                                    days, sectionType, location, instructor, credits);
-
-                            //Remove it from the list of class items to remove
-                            classesToRemove.remove(classItem);
-                            break;
+                        //Day Parsing
+                        List<Day> days = new ArrayList<Day>();
+                        for (char dayCharacter : dayCharacters) {
+                            days.add(Day.getDay(dayCharacter));
                         }
-                    }
-                    //It not, add a new class item
-                    if (!classExists) {
-                        //Find the concerned course
-                        classItems.add(new ClassItem(term, courseCode, courseCode.substring(0, 4),
-                                courseCode.substring(5, 8), courseTitle, crn, section, startHour,
-                                startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
-                                -1, -1, -1, -1, -1, credits, null));
+
+                        //Date Range parsing
+
+                        String startDateString = dateRange.split(" - ")[0];
+                        String endDateString = dateRange.split(" - ")[1];
+                        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMM dd, yyyy");
+                        DateTime startDate = dateFormatter.parseDateTime(startDateString);
+                        DateTime endDate = dateFormatter.parseDateTime(endDateString);
+                        DateTime currentDate = DateTime.now();
+                        Term currentTerm = Term.dateConverter(currentDate);
+                        if (currentTerm.equals(term)) {
+                            DateTime mostRecentMonday = currentDate.withDayOfWeek(DateTimeConstants.MONDAY);
+                            DateTime closestSunday = currentDate.withDayOfWeek(DateTimeConstants.SUNDAY);
+                            DateTimeComparator comparator = DateTimeComparator.getInstance();
+                            //if start date is after current week or end date is before current week, ignores
+                            if (Term.dateConverter(startDate).equals(currentTerm) && (comparator.compare(startDate, closestSunday) > 0 || comparator.compare(endDate, mostRecentMonday) < 0)) {
+                                continue;
+                            }
+                        }
+
+
+                        //Check if the class already exists
+                        //There is a classItem for every row in the schedule times table, if there is a row but no corresponding classItem
+                        //will add a new one to the next index
+                        boolean classExists = false;
+                        int k = 0;
+                        for (ClassItem classItem : classItems) {
+                            int classItemIndex = classItems.indexOf(classItem);
+                            if (classItem.getCRN() == crn && classItem.getTerm().equals(term)) {
+                                k++;
+                                classExists = true;
+                                if (k == j) {
+                                    //If you find an equivalent, just update it
+                                    classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
+                                            days, sectionType, location, instructor, credits, dateRange, startDate, endDate);
+
+                                    //Remove it from the list of class items to remove
+                                    classesToRemove.remove(classItem);
+                                    break;
+                                }
+                            } else if (k > 0 && k == (j - 1)) {
+                                //a row is not yet included in classItems list
+                                classItems.add(classItemIndex + 1, new ClassItem(term, courseCode, courseCode.substring(0, 4),
+                                        courseCode.substring(5, 8), courseTitle, crn, section, startHour,
+                                        startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
+                                        -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
+                                k++;
+                                break;
+                            }
+                        }
+                        //If not, add a new class item
+                        if (!classExists) {
+                            //Find the concerned course
+                            classItems.add(new ClassItem(term, courseCode, courseCode.substring(0, 4),
+                                    courseCode.substring(5, 8), courseTitle, crn, section, startHour,
+                                    startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
+                                    -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
+                        }
                     }
                 }
                 //If there is no data to parse, reset i and continue
@@ -568,6 +613,7 @@ public class Parser {
             int waitlistCapacity = 0;
             int waitlistAvailable = 0;
             int waitlistRemaining = 0;
+
 
             int i = 0;
             while (true) {
