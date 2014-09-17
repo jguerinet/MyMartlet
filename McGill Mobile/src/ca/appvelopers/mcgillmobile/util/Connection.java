@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -129,7 +130,7 @@ public class Connection {
 
         //Set the default term if there is none set yet
         if(App.getDefaultTerm() == null){
-            App.setDefaultTerm(Term.dateConverter(Calendar.getInstance().getTime()));
+            App.setDefaultTerm(Term.dateConverter(DateTime.now()));
         }
 
         //Update : downloading transcript
