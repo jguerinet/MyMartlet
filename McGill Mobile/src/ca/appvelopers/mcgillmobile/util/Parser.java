@@ -499,18 +499,22 @@ public class Parser {
                         }
 
                         //Date Range parsing
+
                         String startDateString = dateRange.split(" - ")[0];
                         String endDateString = dateRange.split(" - ")[1];
                         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMM dd, yyyy");
                         DateTime startDate = dateFormatter.parseDateTime(startDateString);
                         DateTime endDate = dateFormatter.parseDateTime(endDateString);
                         DateTime currentDate = DateTime.now();
-                        DateTime mostRecentMonday = currentDate.withDayOfWeek(DateTimeConstants.MONDAY);
-                        DateTime closestSunday = currentDate.withDayOfWeek(DateTimeConstants.SUNDAY);
-                        DateTimeComparator comparator = DateTimeComparator.getInstance();
-                        //if start date is after current week or end date is before current week, ignores
-                        if (comparator.compare(startDate, closestSunday) > 0 || comparator.compare(endDate, mostRecentMonday) < 0 ) {
-                            continue;
+                        Term currentTerm = Term.dateConverter(currentDate);
+                        if (currentTerm.equals(term)) {
+                            DateTime mostRecentMonday = currentDate.withDayOfWeek(DateTimeConstants.MONDAY);
+                            DateTime closestSunday = currentDate.withDayOfWeek(DateTimeConstants.SUNDAY);
+                            DateTimeComparator comparator = DateTimeComparator.getInstance();
+                            //if start date is after current week or end date is before current week, ignores
+                            if (Term.dateConverter(startDate).equals(currentTerm) && (comparator.compare(startDate, closestSunday) > 0 || comparator.compare(endDate, mostRecentMonday) < 0)) {
+                                continue;
+                            }
                         }
 
 
@@ -524,7 +528,7 @@ public class Parser {
                             if (classItem.getCRN() == crn && classItem.getTerm().equals(term)) {
                                 k++;
                                 classExists = true;
-                                if (j == k) {
+                                if (k == j) {
                                     //If you find an equivalent, just update it
                                     classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
                                             days, sectionType, location, instructor, credits, dateRange, startDate, endDate);
@@ -532,14 +536,15 @@ public class Parser {
                                     //Remove it from the list of class items to remove
                                     classesToRemove.remove(classItem);
                                     break;
-                                } else if (k < j) {
-                                    //a row is not yet included in classItems list
-                                    classItems.add(classItemIndex + 1, new ClassItem(term, courseCode, courseCode.substring(0, 4),
-                                            courseCode.substring(5, 8), courseTitle, crn, section, startHour,
-                                            startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
-                                            -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
-                                    break;
                                 }
+                            } else if (k == (j - 1)) {
+                                //a row is not yet included in classItems list
+                                classItems.add(classItemIndex + 1, new ClassItem(term, courseCode, courseCode.substring(0, 4),
+                                        courseCode.substring(5, 8), courseTitle, crn, section, startHour,
+                                        startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
+                                        -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
+                                k++;
+                                break;
                             }
                         }
                         //If not, add a new class item

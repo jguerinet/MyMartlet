@@ -1,10 +1,8 @@
 package ca.appvelopers.mcgillmobile.object;
 
 import android.content.Context;
-
+import org.joda.time.DateTime;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Author : Julien
@@ -88,11 +86,14 @@ public class Term implements Serializable {
         return new Term(Season.findSeason(termParts[0]), Integer.valueOf(termParts[1]));
     }
 
-    public static Term dateConverter(Date date) {
-        SimpleDateFormat dateConverter = new SimpleDateFormat("dd-MM-yyyy");
-        String[] convertedDate = dateConverter.format(date).split("-");
-        int month = Integer.parseInt(convertedDate[1]);
-        int year = Integer.parseInt(convertedDate[2]);
+    /**
+     * Convert a DateTime object to the Term that date falls in
+     * @param date
+     * @return term date is in
+     */
+    public static Term dateConverter(DateTime date) {
+        int month = date.monthOfYear().get();
+        int year = date.year().get();
         if (month >= 9 && month <= 12) {
             Term term = new Term(Season.FALL, year);
             return term;
