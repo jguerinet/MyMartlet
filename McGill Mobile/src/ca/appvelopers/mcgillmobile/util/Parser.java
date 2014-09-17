@@ -537,7 +537,7 @@ public class Parser {
                                     classesToRemove.remove(classItem);
                                     break;
                                 }
-                            } else if (k == (j - 1)) {
+                            } else if (k > 0 && k == (j - 1)) {
                                 //a row is not yet included in classItems list
                                 classItems.add(classItemIndex + 1, new ClassItem(term, courseCode, courseCode.substring(0, 4),
                                         courseCode.substring(5, 8), courseTitle, crn, section, startHour,
