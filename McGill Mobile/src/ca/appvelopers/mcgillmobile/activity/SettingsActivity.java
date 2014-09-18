@@ -147,7 +147,8 @@ public class SettingsActivity extends DrawerActivity {
                                                 appVersionNumber,
                                                 osVersion,
                                                 sdkVersionNumber,
-                                                phoneModel));
+                                                phoneModel,
+                                                Load.loadFullUsername(SettingsActivity.this)));
                                         //Type(Email)
                                         bugEmail.setType("message/rfc822");
                                         startActivity(Intent.createChooser(bugEmail, getResources().getString(R.string.about_email_picker_title)));
