@@ -2,6 +2,7 @@ package ca.appvelopers.mcgillmobile.activity.walkthrough;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,8 +123,9 @@ public class WalkthroughFragment extends Fragment {
 
                     Spinner faculty = (Spinner)pageView.findViewById(R.id.faculty);
                     //Standard ArrayAdapter
-                    final FacultyAdapter facultyAdapter = new FacultyAdapter(getActivity(), false);
+                    final FacultyAdapter facultyAdapter = new FacultyAdapter(getActivity(), true);
                     faculty.setAdapter(facultyAdapter);
+                    //Default selection is empty
                     faculty.setSelection(0);
                     faculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
@@ -131,10 +133,10 @@ public class WalkthroughFragment extends Fragment {
                             //Get the chosen language
                             Faculty faculty = facultyAdapter.getItem(position);
 
-                            GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Faculty", faculty.toString(), null);
-
-                            //Update it in the App
-                            App.setFaculty(faculty);
+                            //If the faculty is not null, send the GA
+                            if(faculty != null){
+                                GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Faculty", faculty.toString(), null);
+                            }
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {}

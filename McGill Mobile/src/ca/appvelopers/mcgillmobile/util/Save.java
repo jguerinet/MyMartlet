@@ -70,13 +70,6 @@ public class Save {
                 .apply();
     }
 
-    public static void saveFaculty(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
-                .putInt(Constants.FACULTY, App.getFaculty().ordinal())
-                .apply();
-    }
-
     public static void saveUsername(Context context, String username){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()

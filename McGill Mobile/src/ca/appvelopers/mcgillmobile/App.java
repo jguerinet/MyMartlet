@@ -38,7 +38,6 @@ public class App extends Application {
 
     private static Language language;
     private static HomePage homePage;
-    private static Faculty faculty;
     private static Transcript transcript;
     private static List<ClassItem> classes;
     private static Term defaultTerm;
@@ -75,8 +74,6 @@ public class App extends Application {
         language = Load.loadLanguage(this);
         //Load the user's chosen homepage
         homePage = Load.loadHomePage(this);
-        //Load the user's faculty
-        faculty = Load.loadFaculty(this);
         //Load the default term for the schedule
         defaultTerm = Load.loadDefaultTerm(this);
         //Load the course wishlist
@@ -143,10 +140,6 @@ public class App extends Application {
         return homePage;
     }
 
-    public static Faculty getFaculty(){
-        return faculty;
-    }
-
     public static Term getDefaultTerm(){
         return defaultTerm;
     }
@@ -210,12 +203,6 @@ public class App extends Application {
 
         //Save it to internal storage when this is set
         Save.saveHomePage(context);
-    }
-
-    public static void setFaculty(Faculty faculty){
-        App.faculty = faculty;
-
-        Save.saveFaculty(context);
     }
 
     public static void setDefaultTerm(Term term){
