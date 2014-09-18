@@ -71,11 +71,6 @@ public class Load {
         return sharedPrefs.getBoolean(Constants.STATISTICS, true);
     }
 
-    public static Faculty loadFaculty(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return Faculty.values()[sharedPrefs.getInt(Constants.FACULTY, 0)];
-    }
-
     public static String loadFullUsername(Context context){
         return loadUsername(context) + context.getString(R.string.login_email);
     }
