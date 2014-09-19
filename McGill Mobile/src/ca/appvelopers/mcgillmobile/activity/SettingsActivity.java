@@ -30,6 +30,7 @@ import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
@@ -98,60 +99,7 @@ public class SettingsActivity extends DrawerActivity {
                                         GoogleAnalytics.sendEvent(SettingsActivity.this, "About", "Report a Bug",
                                                 null, null);
 
-                                        //Get the user input
-                                        final String summary = userInput.getText().toString();
-                                        //Get the other necessary info
-                                        //App Version Name & Number
-                                        PackageInfo packageInfo = null;
-                                        try {
-                                            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                                        } catch (PackageManager.NameNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
-                                        String appVersionName = "";
-                                        int appVersionNumber = 0;
-                                        if (packageInfo != null) {
-                                            appVersionName = packageInfo.versionName;
-                                            appVersionNumber = packageInfo.versionCode;
-                                        }
-
-                                        //OS Version
-                                        String osVersion = Build.VERSION.RELEASE;
-                                        //SDK Version Number
-                                        int sdkVersionNumber = Build.VERSION.SDK_INT;
-
-                                        //Manufacturer
-                                        String manufacturer = Build.MANUFACTURER;
-                                        //Model
-                                        String model = Build.MODEL;
-
-                                        String phoneModel;
-                                        if (!model.startsWith(manufacturer)) {
-                                            phoneModel = manufacturer + " " + model;
-                                        } else {
-                                            phoneModel = model;
-                                        }
-
-                                        //Prepare the email
-                                        Intent bugEmail = new Intent(Intent.ACTION_SEND);
-                                        //Recipient
-                                        bugEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.REPORT_A_BUG_EMAIL});
-                                        //Title
-                                        bugEmail.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.help_bug_title,
-                                                "Android") + " " + summary);
-                                        //Message
-                                        bugEmail.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.help_bug_summary,
-                                                "Android",
-                                                App.getLanguage().getLanguageString(),
-                                                appVersionName,
-                                                appVersionNumber,
-                                                osVersion,
-                                                sdkVersionNumber,
-                                                phoneModel,
-                                                Load.loadFullUsername(SettingsActivity.this)));
-                                        //Type(Email)
-                                        bugEmail.setType("message/rfc822");
-                                        startActivity(Intent.createChooser(bugEmail, getResources().getString(R.string.about_email_picker_title)));
+                                        Help.sendBugReport(SettingsActivity.this, userInput.getText().toString(), "");
                                     }
                                 })
                         .create().show();
