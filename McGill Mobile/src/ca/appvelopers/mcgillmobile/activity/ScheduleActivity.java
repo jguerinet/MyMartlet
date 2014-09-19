@@ -92,9 +92,6 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         //Reload the view
         loadView(newConfig.orientation);
-
-        //Reload the drawer
-        loadDrawer();
     }
 
     private void loadView(int orientation){
@@ -137,6 +134,9 @@ public class ScheduleActivity extends DrawerFragmentActivity {
                     break;
             }
         }
+
+        //Reload the drawer
+        loadDrawer();
     }
 
     private void loadInfo(){
