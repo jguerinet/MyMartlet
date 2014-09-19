@@ -37,6 +37,14 @@
     <string name="back">Back</string>
     <string name="start">Start</string>
     <string name="skip">Skip</string>
+    <string name="bug_parser_transcript">There was a bug while downloading your transcript. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ?</string>
+    <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ?</string>
+    <string name="bug_parser_yes">Yes, submit a bug report and have the developers contact me</string>
+    <string name="bug_parser_no">No, do not submit a bug report, I will live without the missing information. </string>
+    <string name="bug_parser">For developers: Exception caught: %s</string>
+    <string name="bug_parser_no_show">Don\'t show this to me again</string>
+    <string name="bug_parser_transcript_title">Parsing bug in Transcript for Class : %s</string>
+    <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %s and Class %s</string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>

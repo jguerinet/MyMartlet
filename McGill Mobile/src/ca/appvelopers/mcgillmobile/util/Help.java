@@ -5,9 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -30,7 +33,9 @@ import org.joda.time.DateTime;
 import java.io.InputStream;
 import java.io.StringWriter;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
 import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -151,6 +156,61 @@ public class Help {
      */
     public static String getDocuumLink(String courseName, String courseCode){
         return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
+    }
+
+    public static void sendBugReport(Activity activity, String title, String message){
+        //Get the necessary info
+        //App Version Name & Number
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String appVersionName = "";
+        int appVersionNumber = 0;
+        if (packageInfo != null) {
+            appVersionName = packageInfo.versionName;
+            appVersionNumber = packageInfo.versionCode;
+        }
+
+        //OS Version
+        String osVersion = Build.VERSION.RELEASE;
+        //SDK Version Number
+        int sdkVersionNumber = Build.VERSION.SDK_INT;
+
+        //Manufacturer
+        String manufacturer = Build.MANUFACTURER;
+        //Model
+        String model = Build.MODEL;
+
+        String phoneModel;
+        if (!model.startsWith(manufacturer)) {
+            phoneModel = manufacturer + " " + model;
+        } else {
+            phoneModel = model;
+        }
+
+        //Prepare the email
+        Intent bugEmail = new Intent(Intent.ACTION_SEND);
+        //Recipient
+        bugEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.REPORT_A_BUG_EMAIL});
+        //Title
+        bugEmail.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.help_bug_title,
+                "Android") + " " + title);
+        //Message
+        bugEmail.putExtra(Intent.EXTRA_TEXT, message + "\n" + activity.getString(R.string.help_bug_summary,
+                "Android",
+                App.getLanguage().getLanguageString(),
+                appVersionName,
+                appVersionNumber,
+                osVersion,
+                sdkVersionNumber,
+                phoneModel,
+                Load.loadFullUsername(activity)));
+        //Type(Email)
+        bugEmail.setType("message/rfc822");
+        activity.startActivity(Intent.createChooser(bugEmail, activity.getString(R.string.about_email_picker_title)));
     }
 
     /**
