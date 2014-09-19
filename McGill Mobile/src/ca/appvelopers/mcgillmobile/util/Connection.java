@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -143,6 +144,43 @@ public class Connection {
         //Update : downloading transcript
         infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
 
+        Parser.parseUserInfo(ebillString);
+    }
+
+    /**
+     * Download the relevant info (upon opening of the app)
+     * @param context The app context
+     */
+    public void downloadEssential(Context context){
+        Connection connection = getInstance();
+
+        //Download the transcript
+        if(!Test.LOCAL_TRANSCRIPT){
+            Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
+        }
+        if(!Test.LOCAL_SCHEDULE){
+            List<Semester> semesters = App.getTranscript().getSemesters();
+
+            //Find the current term
+            Term currentTerm = Term.dateConverter(DateTime.now());
+
+            //Download only the current and future semesters
+            for(Semester semester : semesters){
+                Term term = semester.getTerm();
+
+                if(term.equals(currentTerm) || term.isAfter(currentTerm)){
+                    //Download the schedule
+                    Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
+                }
+            }
+        }
+        else{
+            Test.testSchedule(context);
+        }
+
+        //Download the ebill and user info
+        String ebillString = Connection.getInstance().getUrl(context, EBILL);
+        Parser.parseEbill(ebillString);
         Parser.parseUserInfo(ebillString);
     }
 
