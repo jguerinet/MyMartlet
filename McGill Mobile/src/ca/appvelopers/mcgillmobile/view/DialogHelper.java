@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.Help;
 
@@ -31,22 +32,21 @@ public class DialogHelper {
 
     /**
      * Show this dialog when there was a bug in the parsing of the transcript
-     * @param activity The calling activity
      * @param className The class that the bug is in
      * @param exception The exception that was thrown
      */
-    public static void showTranscriptBugDialog(final Activity activity, final String className, final String exception) {
-        //Creates an alert dialog with the
-        //given string as a message, an OK button, and Error as the title
-        new AlertDialog.Builder(activity)
-                .setMessage(activity.getString(R.string.bug_parser_transcript))
-                .setPositiveButton(activity.getString(R.string.bug_parser_yes), new DialogInterface.OnClickListener() {
+    public static void showTranscriptBugDialog(final String className, final String exception) {
+        final Context context = App.getContext();
+
+        new AlertDialog.Builder(context)
+                .setMessage(context.getString(R.string.bug_parser_transcript))
+                .setPositiveButton(context.getString(R.string.bug_parser_yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Help.sendBugReport(activity, activity.getString(R.string.bug_parser_transcript_title, className), exception);
+                        Help.sendBugReport(context, context.getString(R.string.bug_parser_transcript_title, className), exception);
                     }
                 })
-                .setNegativeButton(activity.getString(R.string.bug_parser_no), new DialogInterface.OnClickListener() {
+                .setNegativeButton(context.getString(R.string.bug_parser_no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -58,21 +58,22 @@ public class DialogHelper {
 
     /**
      * Show this dialog when there was a bug in the parsing of the semester
-     * @param activity The calling activity
      * @param term The term that the bug is in
      * @param className The class that the bug is in
      * @param exception The exception that was thrown
      */
-    public static void showSemesterBugDialog(final Activity activity, final String term, final String className, final String exception) {
-        new AlertDialog.Builder(activity)
-                .setMessage(activity.getString(R.string.bug_parser_semester, term))
-                .setPositiveButton(activity.getString(R.string.bug_parser_yes), new DialogInterface.OnClickListener() {
+    public static void showSemesterBugDialog(final String term, final String className, final String exception) {
+        final Context context = App.getContext();
+
+        new AlertDialog.Builder(context)
+                .setMessage(context.getString(R.string.bug_parser_semester, term))
+                .setPositiveButton(context.getString(R.string.bug_parser_yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Help.sendBugReport(activity, activity.getString(R.string.bug_parser_semester_title, term, className), exception);
+                        Help.sendBugReport(context, context.getString(R.string.bug_parser_semester_title, term, className), exception);
                     }
                 })
-                .setNegativeButton(activity.getString(R.string.bug_parser_no), new DialogInterface.OnClickListener() {
+                .setNegativeButton(context.getString(R.string.bug_parser_no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
