@@ -78,8 +78,16 @@ public class SplashActivity extends BaseActivity {
 //                        	App.SetAlarm(SplashActivity.this);
 //                        }
 
-                //Update everything
-                Connection.getInstance().downloadAll(mContext, this);
+                //Check if there is all the info
+                if(App.getClasses() == null || App.getTranscript() == null || App.getUserInfo() == null ||
+                        App.getEbill() == null){
+                    //If there isn't, Update everything
+                    Connection.getInstance().downloadAll(mContext, this);
+                }
+                else{
+                    //If there is, update the essentials
+                    Connection.getInstance().downloadEssential(mContext);
+                }
             }
 
             return connectionStatus;
