@@ -22,6 +22,7 @@ import org.joda.time.Minutes;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -39,6 +40,7 @@ import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
 import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
+import ca.appvelopers.mcgillmobile.view.ScheduleViewBuilder;
 
 /**
  * @author Nhat-Quang Dao
@@ -50,9 +52,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private static final int CHANGE_SEMESTER_CODE = 100;
 
     private List<ClassItem> mClassList;
-    private ViewPager mPager;
-    private FragmentManager mSupportFragmentManager;
     private Term mTerm;
+    private ScheduleViewBuilder mScheduleViewBuilder;
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,12 +68,11 @@ public class ScheduleActivity extends DrawerFragmentActivity {
 
         mClassList = new ArrayList<ClassItem>();
 
-        //ViewPager stuff
-        mSupportFragmentManager = getSupportFragmentManager();
-        mPager = (ViewPager)findViewById(R.id.pager);
+        //Set up the ScheduleViewBuilder
+        mScheduleViewBuilder = new ScheduleViewBuilder(this);
 
-        //Load the stored info
-        loadInfo();
+        //Load the right view
+        loadView(getResources().getConfiguration().orientation);
 
         //Check if this is the first time the user is using the app
         if(Load.isFirstOpen(this)){
@@ -80,6 +80,130 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             startActivity(new Intent(this, WalkthroughActivity.class));
             //Save the fact that the walkthrough has been seen at least once
             Save.saveFirstOpen(this);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+
+        //Reload the menu
+        invalidateOptionsMenu();
+
+        //Reload the view
+        loadView(newConfig.orientation);
+
+        //Reload the drawer
+        loadDrawer();
+    }
+
+    private void loadView(int orientation){
+        loadInfo();
+
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+            mScheduleViewBuilder.renderLandscapeView();
+        }
+        else{
+            //Load the right view
+            setContentView(R.layout.activity_schedule);
+
+            //Set up the ViewPager
+            ViewPager pager = (ViewPager) findViewById(R.id.pager);
+            SchedulePagerAdapter adapter = new SchedulePagerAdapter(getSupportFragmentManager());
+            pager.setAdapter(adapter);
+            //Open it to the right day
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+            switch (day){
+                case Calendar.MONDAY:
+                    pager.setCurrentItem(500003);
+                    break;
+                case Calendar.TUESDAY:
+                    pager.setCurrentItem(500004);
+                    break;
+                case Calendar.WEDNESDAY:
+                    pager.setCurrentItem(500005);
+                    break;
+                case Calendar.THURSDAY:
+                    pager.setCurrentItem(500006);
+                    break;
+                case Calendar.FRIDAY:
+                    pager.setCurrentItem(500007);
+                    break;
+                case Calendar.SATURDAY:
+                    pager.setCurrentItem(500008);
+                    break;
+                case Calendar.SUNDAY:
+                    pager.setCurrentItem(500009);
+                    break;
+            }
+        }
+    }
+
+    private void loadInfo(){
+        //Title
+        setTitle(mTerm.toString(this));
+
+        //Clear the current course list, add the courses that are for this semester
+        mClassList.clear();
+        for(ClassItem classItem : App.getClasses()){
+            if(classItem.getTerm().equals(mTerm)){
+                mClassList.add(classItem);
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.refresh_change_semester, menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Opens the context menu    
+            case R.id.action_change_semester:
+            	Intent intent = new Intent(this, ChangeSemesterActivity.class);
+                intent.putExtra(Constants.REGISTER_TERMS, false);
+                intent.putExtra(Constants.TERM, mTerm);
+                startActivityForResult(intent, CHANGE_SEMESTER_CODE);
+            	return true;
+            case R.id.action_refresh:
+                //Start thread to retrieve schedule
+                executeClassDownloader();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        //Only show the menu in portrait mode
+        return getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CHANGE_SEMESTER_CODE){
+            if(resultCode == RESULT_OK){
+                //Get the chosen term
+                mTerm = (Term)data.getSerializableExtra(Constants.TERM);
+                if(!Test.LOCAL_SCHEDULE){
+                    executeClassDownloader();
+                }
+
+                //Download the Transcript (if ever the user has new semesters on their transcript)
+                new TranscriptDownloader(this, false) {
+                    @Override
+                    protected void onPreExecute() {}
+
+                    @Override
+                    protected void onPostExecute(Boolean loadInfo) {}
+                }.execute();
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -96,213 +220,8 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         return courses;
     }
 
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig){
-        super.onConfigurationChanged(newConfig);
-
-        //Reload the menu
-        invalidateOptionsMenu();
-
-        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
-            setContentView(R.layout.activity_schedule_land);
-            LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-
-            LinearLayout timetableContainer = (LinearLayout) findViewById(R.id.timetable_container);
-            fillTimetable(inflater, timetableContainer);
-
-            LinearLayout scheduleContainer = (LinearLayout)findViewById(R.id.schedule_container);
-            for(int i = 0; i < 7; i ++){
-                LinearLayout coursesLayout = new LinearLayout(this);
-                coursesLayout.setOrientation(LinearLayout.VERTICAL);
-                coursesLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                        getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                fillSchedule(inflater, coursesLayout, Day.getDay(i));
-                scheduleContainer.addView(coursesLayout);
-
-                //Line
-                View line = new View(this);
-                line.setBackgroundColor(getResources().getColor(R.color.black));
-                line.setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.line),
-                        ViewGroup.LayoutParams.MATCH_PARENT));
-                scheduleContainer.addView(line);
-            }
-
-
-        }
-        else{
-            setContentView(R.layout.activity_schedule);
-            mPager = (ViewPager)findViewById(R.id.pager);
-            loadInfo();
-        }
-
-        loadDrawer();
-    }
-
-    private void loadInfo(){
-        //Title
-        setTitle(mTerm.toString(this));
-
-        //Clear the current course list
-        mClassList.clear();
-        for(ClassItem classItem : App.getClasses()){
-            if(classItem.getTerm().equals(mTerm)){
-                mClassList.add(classItem);
-            }
-        }
-
-        SchedulePagerAdapter adapter = new SchedulePagerAdapter(mSupportFragmentManager);
-        mPager.setAdapter(adapter);
-
-        //Open it to the right day
-        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-
-        switch (day){
-	        case Calendar.MONDAY:
-	            mPager.setCurrentItem(500003);
-	            break;
-	        case Calendar.TUESDAY:
-	            mPager.setCurrentItem(500004);
-	            break;
-	        case Calendar.WEDNESDAY:
-	            mPager.setCurrentItem(500005);
-	            break;
-	        case Calendar.THURSDAY:
-	            mPager.setCurrentItem(500006);
-	            break;
-	        case Calendar.FRIDAY:
-	            mPager.setCurrentItem(500007);
-	            break;
-	        case Calendar.SATURDAY:
-	            mPager.setCurrentItem(500008);
-	            break;
-	        case Calendar.SUNDAY:
-	            mPager.setCurrentItem(500009);
-	            break;
-        }
-    }
-
-    private void fillTimetable(LayoutInflater inflater, LinearLayout timetableContainer){
-        //Empty view for the days
-        //Day name
-        View dayView = inflater.inflate(R.layout.fragment_day_name, null);
-
-        //Black line
-        View dayViewLine = dayView.findViewById(R.id.day_line);
-        dayViewLine.setVisibility(View.VISIBLE);
-
-        timetableContainer.addView(dayView);
-
-        //Cycle through the hours
-        for(int hour = 8; hour < 22; hour++){
-            //Start inflating a timetable cell
-            View timetableCell = inflater.inflate(R.layout.item_day_timetable, null);
-
-            //Quick check
-            assert(timetableCell != null);
-
-            //Put the correct time
-            TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-            time.setText(Help.getShortTimeString(this, hour));
-
-            //Add it to the right container
-            timetableContainer.addView(timetableCell);
-        }
-    }
-
-    //Method that fills the schedule based on given data
-    private void fillSchedule(LayoutInflater inflater,
-                              LinearLayout scheduleContainer, Day currentDay){
-        //This will be used of an end time of a course when it is added to the schedule container
-        LocalTime currentCourseEndTime = null;
-
-        List<ClassItem> classItems = getClassesForDay(currentDay);
-
-        //Day name
-        View dayView = inflater.inflate(R.layout.fragment_day_name, null);
-        TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
-        dayViewTitle.setText(currentDay.getDayString(this));
-
-        scheduleContainer.addView(dayView);
-
-        //Cycle through the hours
-        for(int hour = 8; hour < 22; hour++){
-            //Cycle through the half hours
-            for(int min = 0; min < 31; min+= 30){
-                //Initialize the current course to null
-                ClassItem currentClass = null;
-
-                //Get the current time
-                LocalTime currentTime = new LocalTime(hour, min);
-
-                //if currentCourseEndTime = null (no course is being added) or it is equal to
-                //the current time in min (end of a course being added) we need to add a new view
-                if(currentCourseEndTime == null || currentCourseEndTime.equals(currentTime)){
-                    //Reset currentCourseEndTime
-                    currentCourseEndTime = null;
-
-                    //Check if there is a course at this time
-                    for(ClassItem course : classItems){
-                        //If there is, set the current course to that time, and calculate the
-                        //ending time of this course
-                        if(course.getStartTime().equals(currentTime)){
-                            currentClass = course;
-                            currentCourseEndTime = course.getEndTime();
-                            break;
-                        }
-                    }
-
-                    View scheduleCell;
-
-                    //There is a course at this time
-                    if(currentClass != null){
-                        //Inflate the right view
-                        scheduleCell = inflater.inflate(R.layout.item_day_class, null);
-
-                        //Quick check
-                        assert(scheduleCell != null);
-
-                        //Set up all of the info
-                        TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
-                        courseName.setText(currentClass.getCourseCode());
-
-                        TextView courseType = (TextView)scheduleCell.findViewById(R.id.course_type);
-                        courseType.setText(currentClass.getSectionType());
-
-                        TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
-                        courseTime.setText(currentClass.getTimeString(this));
-
-                        TextView courseLocation = (TextView)scheduleCell.findViewById(R.id.course_location);
-                        courseLocation.setText(currentClass.getLocation());
-
-                        //Find out how long this course is in terms of blocks of 30 min
-                        int length = Minutes.minutesBetween(currentClass.getStartTime(), currentClass.getEndTime()).getMinutes() / 30;
-
-                        //Set the height of the view depending on this height
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                (int) this.getResources().getDimension(R.dimen.cell_30min_height) * length);
-                        scheduleCell.setLayoutParams(lp);
-
-                        //OnClick: CourseActivity (for                                                                                                                                                                                                  b                                                                                                                                               a detailed description of the course)
-                        scheduleCell.setClickable(false);
-                    }
-                    else{
-                        //Inflate the empty view
-                        scheduleCell = inflater.inflate(R.layout.item_day_empty, null);
-
-                        //Quick check
-                        assert(scheduleCell != null);
-                    }
-
-                    //Add the given view to the schedule container
-                    scheduleContainer.addView(scheduleCell);
-                }
-            }
-        }
-    }
-
-    public void executeClassDownloader(){
+    //Downloads the list of classes for the given term
+    private void executeClassDownloader(){
         new ClassDownloader(this, mTerm){
             @Override
             protected void onPreExecute(){
@@ -338,59 +257,5 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         public int getCount() {
             return 1000000;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.refresh_change_semester, menu);
-    	return true;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Opens the context menu    
-            case R.id.action_change_semester:
-            	Intent intent = new Intent(this, ChangeSemesterActivity.class);
-                intent.putExtra(Constants.REGISTER_TERMS, false);
-                intent.putExtra(Constants.TERM, mTerm);
-                startActivityForResult(intent, CHANGE_SEMESTER_CODE);
-            	return true;
-            case R.id.action_refresh:
-                //Start thread to retrieve schedule
-                executeClassDownloader();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == CHANGE_SEMESTER_CODE){
-            if(resultCode == RESULT_OK){
-                //Get the chosen term
-                mTerm = (Term)data.getSerializableExtra(Constants.TERM);
-                if(!Test.LOCAL_SCHEDULE){
-                    executeClassDownloader();
-                }
-
-                //Download the Transcript (if ever the user has new semesters on their transcript)
-                new TranscriptDownloader(this, false) {
-                    @Override
-                    protected void onPreExecute() {}
-
-                    @Override
-                    protected void onPostExecute(Boolean loadInfo) {}
-                }.execute();
-            }
-        }
-        else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu (Menu menu) {
-        return getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE;
     }
 }
