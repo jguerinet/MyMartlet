@@ -76,6 +76,11 @@ public class Term implements Serializable {
         return mSeason.toString(context) + " " + mYear;
     }
 
+    @Override
+    public String toString(){
+        return mSeason.toString() + " " + mYear;
+    }
+
     /**
      * Parse a term from a String
      * @param termString The term String

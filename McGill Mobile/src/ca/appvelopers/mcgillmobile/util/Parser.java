@@ -1,5 +1,6 @@
 package ca.appvelopers.mcgillmobile.util;
 
+import android.app.Dialog;
 import android.util.Log;
 
 import org.joda.time.DateTime;
@@ -12,6 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -31,6 +33,7 @@ import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Token;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Author : Julien
@@ -75,6 +78,7 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     cgpa = -1;
+                    DialogHelper.showTranscriptBugDialog("CGPA", e.toString());
                 }
             }
             //Credits
@@ -85,6 +89,7 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     totalCredits = -1;
+                    DialogHelper.showTranscriptBugDialog("Total Credits", e.toString());
                 }
             }
             //Semester Information
@@ -101,23 +106,41 @@ public class Parser {
                 String[] scheduleSemesterItems = scheduleSemester.split("\\s+");
 
                 //Find the right season and year, making sure to get the right array index
-                Season season = null;
-                int year = 99;
+                Season season;
+                int year;
 
                 if(row.text().startsWith(Token.FALL.getString()) ||
                         row.text().startsWith(Token.WINTER.getString()) ||
                         row.text().startsWith(Token.SUMMER.getString()) ){
 
                     season = Season.findSeason(scheduleSemesterItems[0]);
-                    year = Integer.valueOf(scheduleSemesterItems[1]);
+                    try{
+                        year = Integer.valueOf(scheduleSemesterItems[1]);
+                    }
+                    catch(NumberFormatException e){
+                        DialogHelper.showTranscriptBugDialog(season.toString(), e.toString());
+                        year = 2000;
+                    }
                 }
                 else if(row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
                     season = Season.findSeason(scheduleSemesterItems[3]);
-                    year = Integer.valueOf(scheduleSemesterItems[4]);
+                    try{
+                        year = Integer.valueOf(scheduleSemesterItems[4]);
+                    }
+                    catch(NumberFormatException e){
+                        DialogHelper.showTranscriptBugDialog(season.toString(), e.toString());
+                        year = 2000;
+                    }
                 }
                 else{
                     season = Season.findSeason(scheduleSemesterItems[1]);
-                    year = Integer.valueOf(scheduleSemesterItems[2]);
+                    try{
+                        year = Integer.valueOf(scheduleSemesterItems[2]);
+                    }
+                    catch(NumberFormatException e){
+                        DialogHelper.showTranscriptBugDialog(season.toString(), e.toString());
+                        year = 2000;
+                    }
                 }
 
                 //Log.e("TRANSCRIPT PARSER", season + " " + year);
@@ -181,6 +204,9 @@ public class Parser {
                         else if(degreeDetails[1].contains("5")){
                             programYear = 5;
                         }
+                        else if(degreeDetails[1].contains("6")){
+                            programYear = 6;
+                        }
 
                         int detailsIndex = 0;
                         for(String detail : degreeDetails){
@@ -193,11 +219,21 @@ public class Parser {
                     }
                     //Term GPA
                     else if(dataRow.text().startsWith(Token.TERM_GPA.getString())){
-                        termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
+                        try{
+                            termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
+                        }
+                        catch (NumberFormatException e){
+                            DialogHelper.showTranscriptBugDialog(season.toString() + year, e.toString());
+                        }
                     }
                     //Term Credits
                     else if(dataRow.text().startsWith(Token.TERM_CREDITS.getString())){
-                        termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
+                        try{
+                            termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
+                        }
+                        catch (NumberFormatException e){
+                            DialogHelper.showTranscriptBugDialog(season.toString() + year, e.toString());
+                        }
                     }
 
                     //Extract course information if row contains a course code
@@ -220,6 +256,7 @@ public class Parser {
                                 courseCode = dataRow.text().substring(0, 10);
                             }
                             catch(Exception e){
+                                DialogHelper.showTranscriptBugDialog(season.toString() + year, e.toString());
                                 e.printStackTrace();
                             }
                         }
@@ -396,9 +433,11 @@ public class Parser {
             return numCredits;
         }
         catch (NumberFormatException e){
+            DialogHelper.showTranscriptBugDialog("Credit Extractor", e.toString());
             return 99;
         }
         catch(Exception e){
+            DialogHelper.showTranscriptBugDialog("Credit Extractor", e.toString());
             return 88;
         }
     }
@@ -442,12 +481,24 @@ public class Parser {
                 //CRN
                 row = currentElement.getElementsByTag("tr").get(1);
                 String crnString = row.getElementsByTag("td").first().text();
-                int crn = Integer.parseInt(crnString);
+                int crn = -1;
+                try{
+                    crn = Integer.parseInt(crnString);
+                }
+                catch (NumberFormatException e){
+                    DialogHelper.showSemesterBugDialog(term.toString(), courseTitle, e.toString());
+                }
 
                 //Credits
                 row = currentElement.getElementsByTag("tr").get(5);
                 String creditString = row.getElementsByTag("td").first().text();
-                double credits = Double.parseDouble(creditString);
+                double credits = -1;
+                try{
+                    credits = Double.parseDouble(creditString);
+                }
+                catch (NumberFormatException e){
+                    DialogHelper.showSemesterBugDialog(term.toString(), courseTitle, e.toString());
+                }
 
                 //Check if there is any data to parse
                 if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
