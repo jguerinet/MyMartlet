@@ -63,6 +63,13 @@ public class Save {
                 .apply();
     }
 
+    public static void saveParserErrorDoNotShow(Context context, boolean doNotShow){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, doNotShow)
+                .apply();
+    }
+
     public static void saveStatistics(Context context, boolean statistics){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()

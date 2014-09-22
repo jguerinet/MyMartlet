@@ -66,6 +66,11 @@ public class Load {
         return HomePage.values()[homePage];
     }
 
+    public static boolean loadParserErrorDoNotShow(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, false);
+    }
+
     public static boolean loadStatistics(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getBoolean(Constants.STATISTICS, true);

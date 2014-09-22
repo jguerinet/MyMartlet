@@ -26,6 +26,7 @@
     <!-- General Strings -->
     <string name="facebook_id">828093890556007</string>
     <string name="error">Error</string>
+    <string name="warning">Warning</string>
     <string name="please_wait">Please Wait&#8230;</string>
     <string name="done">Done</string>
     <string name="refresh">Refresh</string>
@@ -43,7 +44,7 @@
     <string name="bug_parser_no">No, do not submit a bug report, I will live without the missing information. </string>
     <string name="bug_parser">For developers: Exception caught: %s</string>
     <string name="bug_parser_no_show">Don\'t show this to me again</string>
-    <string name="bug_parser_transcript_title">Parsing bug in Transcript for Class : %s</string>
+    <string name="bug_parser_transcript_title">Parsing bug in Transcript for: %s</string>
     <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %s and Class %s</string>
 
     <!-- Icons -->
