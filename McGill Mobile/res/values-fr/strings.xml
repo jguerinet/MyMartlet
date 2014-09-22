@@ -25,6 +25,7 @@
 
     <!-- General Strings -->
     <string name="error">Erreur</string>
+    <string name="warning">Avertissement</string>
     <string name="please_wait">Veuillez attendre s\'il vous plaît…</string>
     <string name="done">Terminer</string>
     <string name="refresh">Rafraîchir</string>
