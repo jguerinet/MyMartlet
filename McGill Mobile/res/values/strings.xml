@@ -46,6 +46,7 @@
     <string name="bug_parser_no_show">Don\'t show this to me again</string>
     <string name="bug_parser_transcript_title">Parsing bug in Transcript for: %s</string>
     <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %1$s and Class %2$s</string>
+    <string name="skip_loading">If you continue, your most recent information (current schedule and transcript) will not automatically be updated. Continue ?</string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>

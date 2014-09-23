@@ -22,8 +22,6 @@ import java.net.CookieManager;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -118,7 +116,7 @@ public class Connection {
             for(Semester semester : semesters){
                 Term term = semester.getTerm();
 
-                //Update : downloading transcript
+                //Update : downloading classes
                 infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
 
                 //Download the schedule
@@ -134,14 +132,14 @@ public class Connection {
             App.setDefaultTerm(Term.dateConverter(DateTime.now()));
         }
 
-        //Update : downloading transcript
+        //Update : downloading eBill
         infoDownloader.publishNewProgress(context.getString(R.string.updating_ebill));
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(context, EBILL);
         Parser.parseEbill(ebillString);
 
-        //Update : downloading transcript
+        //Update : downloading user info
         infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
 
         Parser.parseUserInfo(ebillString);
@@ -151,11 +149,13 @@ public class Connection {
      * Download the relevant info (upon opening of the app)
      * @param context The app context
      */
-    public void downloadEssential(Context context){
+    public void downloadEssential(Context context, SplashActivity.InfoDownloader infoDownloader){
         Connection connection = getInstance();
 
+        infoDownloader.publishNewProgress(context.getString(R.string.updating_transcript));
+
         //Download the transcript
-        if(!Test.LOCAL_TRANSCRIPT){
+        if(!Test.LOCAL_TRANSCRIPT && !infoDownloader.isCancelled()){
             Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
         }
         if(!Test.LOCAL_SCHEDULE){
@@ -166,9 +166,16 @@ public class Connection {
 
             //Download only the current and future semesters
             for(Semester semester : semesters){
+                //Leave the loop if the download has been cancelled
+                if(infoDownloader.isCancelled()){
+                    break;
+                }
+
                 Term term = semester.getTerm();
 
                 if(term.equals(currentTerm) || term.isAfter(currentTerm)){
+                    infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
+
                     //Download the schedule
                     Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
                 }
@@ -178,10 +185,14 @@ public class Connection {
             Test.testSchedule(context);
         }
 
-        //Download the ebill and user info
-        String ebillString = Connection.getInstance().getUrl(context, EBILL);
-        Parser.parseEbill(ebillString);
-        Parser.parseUserInfo(ebillString);
+        if(!infoDownloader.isCancelled()){
+            infoDownloader.publishNewProgress(context.getString(R.string.updating_ebill));
+            String ebillString = Connection.getInstance().getUrl(context, EBILL);
+            Parser.parseEbill(ebillString);
+
+            infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
+            Parser.parseUserInfo(ebillString);
+        }
     }
 
 	public ConnectionStatus connectToMinerva(Context context){
