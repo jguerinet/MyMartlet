@@ -70,6 +70,13 @@ public class Save {
                 .apply();
     }
 
+    public static void saveLoadingDoNotShow(Context context, boolean doNotShow){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putBoolean(Constants.LOADING_DO_NOT_SHOW, doNotShow)
+                .apply();
+    }
+
     public static void saveStatistics(Context context, boolean statistics){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
