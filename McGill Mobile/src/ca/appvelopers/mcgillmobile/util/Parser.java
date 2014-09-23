@@ -585,9 +585,27 @@ public class Parser {
                                     break;
                                 }
                             } else if (k > 0 && k == (j - 1)) {
+                                String subject = "";
+                                try{
+                                    subject = courseCode.substring(0, 4);
+                                }
+                                catch(StringIndexOutOfBoundsException e){
+                                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course subject Substring", null);
+//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                                }
+
+                                String code = "";
+                                try{
+                                    code = courseCode.substring(5, 8);
+                                }
+                                catch(StringIndexOutOfBoundsException e){
+                                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course Code Substring", null);
+//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                                }
+
                                 //a row is not yet included in classItems list
-                                classItems.add(classItemIndex + 1, new ClassItem(term, courseCode, courseCode.substring(0, 4),
-                                        courseCode.substring(5, 8), courseTitle, crn, section, startHour,
+                                classItems.add(classItemIndex + 1, new ClassItem(term, courseCode, subject,
+                                        code, courseTitle, crn, section, startHour,
                                         startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                         -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
                                 k++;
@@ -596,9 +614,27 @@ public class Parser {
                         }
                         //If not, add a new class item
                         if (!classExists) {
+                            String subject = "";
+                            try{
+                                subject = courseCode.substring(0, 4);
+                            }
+                            catch(StringIndexOutOfBoundsException e){
+                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course subject Substring", null);
+//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                            }
+
+                            String code = "";
+                            try{
+                                code = courseCode.substring(5, 8);
+                            }
+                            catch(StringIndexOutOfBoundsException e){
+                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course Code Substring", null);
+//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                            }
+
                             //Find the concerned course
-                            classItems.add(new ClassItem(term, courseCode, courseCode.substring(0, 4),
-                                    courseCode.substring(5, 8), courseTitle, crn, section, startHour,
+                            classItems.add(new ClassItem(term, courseCode, subject,
+                                    code, courseTitle, crn, section, startHour,
                                     startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                     -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
                         }
