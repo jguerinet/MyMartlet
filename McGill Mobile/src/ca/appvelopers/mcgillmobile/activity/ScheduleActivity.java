@@ -203,9 +203,9 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     public List<ClassItem> getClassesForDate(Day day, DateTime date){
         List<ClassItem> courses = new ArrayList<ClassItem>();
 
-        //Go through the list of courses, find which ones have the same day
+        //Go through the list of courses, find which ones have the same day and are for the given date
         for(ClassItem course : mClassList){
-            if(course.getDays().contains(day)){
+            if(course.isForDate(date) && course.getDays().contains(day)){
                 courses.add(course);
             }
         }
