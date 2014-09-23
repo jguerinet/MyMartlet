@@ -1,8 +1,6 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
-import org.joda.time.DateTimeConstants;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
@@ -565,17 +563,6 @@ public class Parser {
                         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMM dd, yyyy");
                         DateTime startDate = dateFormatter.parseDateTime(startDateString);
                         DateTime endDate = dateFormatter.parseDateTime(endDateString);
-                        DateTime currentDate = DateTime.now();
-                        Term currentTerm = Term.dateConverter(currentDate);
-                        if (currentTerm.equals(term)) {
-                            DateTime mostRecentMonday = currentDate.withDayOfWeek(DateTimeConstants.MONDAY);
-                            DateTime closestSunday = currentDate.withDayOfWeek(DateTimeConstants.SUNDAY);
-                            DateTimeComparator comparator = DateTimeComparator.getInstance();
-                            //if start date is after current week or end date is before current week, ignores
-                            if (Term.dateConverter(startDate).equals(currentTerm) && (comparator.compare(startDate, closestSunday) > 0 || comparator.compare(endDate, mostRecentMonday) < 0)) {
-                                continue;
-                            }
-                        }
 
 
                         //Check if the class already exists
