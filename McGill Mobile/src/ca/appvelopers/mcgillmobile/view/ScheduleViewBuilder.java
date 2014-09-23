@@ -5,9 +5,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
+import java.util.Calendar;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
@@ -39,6 +41,33 @@ public class ScheduleViewBuilder {
         //Get the schedule container
         LinearLayout scheduleContainer = (LinearLayout)mActivity.findViewById(R.id.schedule_container);
 
+        //Find the index of the current day
+        int currentDayIndex = -1;
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        switch (day){
+            case Calendar.MONDAY:
+                currentDayIndex = 0;
+                break;
+            case Calendar.TUESDAY:
+                currentDayIndex = 1;
+                break;
+            case Calendar.WEDNESDAY:
+                currentDayIndex = 2;
+                break;
+            case Calendar.THURSDAY:
+                currentDayIndex = 3;
+                break;
+            case Calendar.FRIDAY:
+                currentDayIndex = 4;
+                break;
+            case Calendar.SATURDAY:
+                currentDayIndex = 5;
+                break;
+            case Calendar.SUNDAY:
+                currentDayIndex = 6;
+                break;
+        }
+
         //Fill out the schedule
         for(int i = 0; i < 7; i ++){
             LinearLayout coursesLayout = new LinearLayout(mActivity);
@@ -46,7 +75,7 @@ public class ScheduleViewBuilder {
             coursesLayout.setLayoutParams(new LinearLayout.LayoutParams(
                     mActivity.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
-            fillSchedule(Day.getDay(i), coursesLayout);
+            fillSchedule(Day.getDay(i), DateTime.now().plusDays(i - currentDayIndex), coursesLayout);
             scheduleContainer.addView(coursesLayout);
 
             //Line
@@ -88,12 +117,12 @@ public class ScheduleViewBuilder {
     }
 
     //Method that fills the schedule based on given data
-    private void fillSchedule(Day currentDay, LinearLayout scheduleContainer){
+    private void fillSchedule(Day currentDay, DateTime date, LinearLayout scheduleContainer){
         //This will be used of an end time of a course when it is added to the schedule container
         LocalTime currentCourseEndTime = null;
 
         //Get the classes for today
-        List<ClassItem> classItems = mActivity.getClassesForDate(currentDay, null);
+        List<ClassItem> classItems = mActivity.getClassesForDate(currentDay, date);
 
         //Day name
         View dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);

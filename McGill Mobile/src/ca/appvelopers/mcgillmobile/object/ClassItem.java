@@ -317,17 +317,13 @@ public class ClassItem implements Serializable{
     }
 
     /**
-     * Get the start date of the date range
-     * @return the start date
+     * Checks that the course is for the given date
+     * @param date The given date
+     * @return True if it is, false otherwise
      */
-    public DateTime getStartDateRage() { return mStartDateRange; }
-
-    /**
-     * Get the end date of the date range
-     * @return the end date
-     */
-    public DateTime getEndDateRange() { return mEndDateRange; }
-
+    public boolean isForDate(DateTime date){
+        return !date.isBefore(mStartDateRange) || !date.isAfter(mEndDateRange);
+    }
 
     /**
      * Set the start time of the course (rounded off to the nearest half hour)
