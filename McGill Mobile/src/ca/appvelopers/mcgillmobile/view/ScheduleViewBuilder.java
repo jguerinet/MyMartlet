@@ -1,8 +1,5 @@
 package ca.appvelopers.mcgillmobile.view;
 
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -96,7 +93,7 @@ public class ScheduleViewBuilder {
         LocalTime currentCourseEndTime = null;
 
         //Get the classes for today
-        List<ClassItem> classItems = mActivity.getClassesForDay(currentDay);
+        List<ClassItem> classItems = mActivity.getClassesForDate(currentDay, null);
 
         //Day name
         View dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);

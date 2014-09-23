@@ -29,13 +29,15 @@ import com.facebook.model.GraphUser;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.InputStream;
 import java.io.StringWriter;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
+import ca.appvelopers.mcgillmobile.object.Language;
 import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -73,6 +75,19 @@ public class Help {
             return context.getResources().getString(R.string.am_long, hours, minutes);
         }
         return context.getResources().getString(R.string.pm_long, hours, minutes);
+    }
+
+    public static String getDateString(DateTime date){
+        //Depending on the language chosen
+        DateTimeFormatter fmt;
+        if(App.getLanguage() == Language.ENGLISH){
+            fmt = DateTimeFormat.forPattern("MMMM dd, yyyy");
+        }
+        else{
+            fmt = DateTimeFormat.forPattern("dd MMMM yyyy");
+        }
+
+        return fmt.print(date);
     }
 
     /**

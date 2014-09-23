@@ -7,22 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -34,7 +27,6 @@ import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
@@ -208,7 +200,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     }
 
     //Method that returns a list of courses for a given day
-    public List<ClassItem> getClassesForDay(Day day){
+    public List<ClassItem> getClassesForDate(Day day, DateTime date){
         List<ClassItem> courses = new ArrayList<ClassItem>();
 
         //Go through the list of courses, find which ones have the same day
@@ -243,14 +235,43 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     }
 
     private class SchedulePagerAdapter extends FragmentStatePagerAdapter{
+        private int mCurrentDayIndex;
+
         public SchedulePagerAdapter(FragmentManager fm){
             super(fm);
+
+            //Find the index of the current day
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+            switch (day){
+                case Calendar.MONDAY:
+                    mCurrentDayIndex = 500003;
+                    break;
+                case Calendar.TUESDAY:
+                    mCurrentDayIndex = 500004;
+                    break;
+                case Calendar.WEDNESDAY:
+                    mCurrentDayIndex = 500005;
+                    break;
+                case Calendar.THURSDAY:
+                    mCurrentDayIndex = 500006;
+                    break;
+                case Calendar.FRIDAY:
+                    mCurrentDayIndex = 500007;
+                    break;
+                case Calendar.SATURDAY:
+                    mCurrentDayIndex = 500008;
+                    break;
+                case Calendar.SUNDAY:
+                    mCurrentDayIndex = 500009;
+                    break;
+            }
         }
 
         @Override
         public Fragment getItem(int i) {
             Day currentDay = Day.getDay(i%7);
-            return DayFragment.newInstance(currentDay);
+            DateTime date = DateTime.now().plusDays(i - mCurrentDayIndex);
+            return DayFragment.newInstance(currentDay, date);
         }
 
         @Override
