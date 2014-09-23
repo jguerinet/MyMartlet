@@ -45,7 +45,7 @@
     <string name="bug_parser">For developers: Exception caught: %s</string>
     <string name="bug_parser_no_show">Don\'t show this to me again</string>
     <string name="bug_parser_transcript_title">Parsing bug in Transcript for: %s</string>
-    <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %s and Class %s</string>
+    <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %1$s and Class %2$s</string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
