@@ -1,8 +1,5 @@
 package ca.appvelopers.mcgillmobile.util;
 
-import android.app.Dialog;
-import android.util.Log;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.DateTimeConstants;
@@ -13,10 +10,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +28,6 @@ import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Token;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Author : Julien
@@ -78,7 +72,8 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     cgpa = -1;
-                    DialogHelper.showTranscriptBugDialog("CGPA", e.toString());
+                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "CGPA", null);
+//                    DialogHelper.showTranscriptBugDialog((Activity)context, "CGPA", e.toString());
                 }
             }
             //Credits
@@ -89,7 +84,8 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     totalCredits = -1;
-                    DialogHelper.showTranscriptBugDialog("Total Credits", e.toString());
+                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Total Credits", null);
+//                    DialogHelper.showTranscriptBugDialog((Activity)context, "Total Credits", e.toString());
                 }
             }
             //Semester Information
@@ -118,7 +114,8 @@ public class Parser {
                         year = Integer.valueOf(scheduleSemesterItems[1]);
                     }
                     catch(NumberFormatException e){
-                        DialogHelper.showTranscriptBugDialog(season.toString(), e.toString());
+                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
                         year = 2000;
                     }
                 }
@@ -128,7 +125,8 @@ public class Parser {
                         year = Integer.valueOf(scheduleSemesterItems[4]);
                     }
                     catch(NumberFormatException e){
-                        DialogHelper.showTranscriptBugDialog(season.toString(), e.toString());
+                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
                         year = 2000;
                     }
                 }
@@ -138,7 +136,8 @@ public class Parser {
                         year = Integer.valueOf(scheduleSemesterItems[2]);
                     }
                     catch(NumberFormatException e){
-                        DialogHelper.showTranscriptBugDialog(season.toString(), e.toString());
+                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
                         year = 2000;
                     }
                 }
@@ -223,7 +222,8 @@ public class Parser {
                             termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
                         }
                         catch (NumberFormatException e){
-                            DialogHelper.showTranscriptBugDialog(season.toString() + year, e.toString());
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Term GPA", null);
+//                            DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
                         }
                     }
                     //Term Credits
@@ -232,7 +232,8 @@ public class Parser {
                             termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                         }
                         catch (NumberFormatException e){
-                            DialogHelper.showTranscriptBugDialog(season.toString() + year, e.toString());
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Term Credits", null);
+//                            DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
                         }
                     }
 
@@ -256,7 +257,8 @@ public class Parser {
                                 courseCode = dataRow.text().substring(0, 10);
                             }
                             catch(Exception e){
-                                DialogHelper.showTranscriptBugDialog(season.toString() + year, e.toString());
+                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Course Code", null);
+//                                DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
                                 e.printStackTrace();
                             }
                         }
@@ -433,11 +435,13 @@ public class Parser {
             return numCredits;
         }
         catch (NumberFormatException e){
-            DialogHelper.showTranscriptBugDialog("Credit Extractor", e.toString());
+            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
+//            DialogHelper.showTranscriptBugDialog((Activity)context, "Credit Extractor", e.toString());
             return 99;
         }
         catch(Exception e){
-            DialogHelper.showTranscriptBugDialog("Credit Extractor", e.toString());
+            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
+//            DialogHelper.showTranscriptBugDialog((Activity)context, "Credit Extractor", e.toString());
             return 88;
         }
     }
@@ -486,7 +490,10 @@ public class Parser {
                     crn = Integer.parseInt(crnString);
                 }
                 catch (NumberFormatException e){
-                    DialogHelper.showSemesterBugDialog(term.toString(), courseTitle, e.toString());
+                    //GA
+                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "crn", null);
+//                    DialogHelper.showSemesterBugDialog((Activity)context, term.toString(), courseTitle, e.toString());
+                    e.printStackTrace();
                 }
 
                 //Credits
@@ -497,7 +504,9 @@ public class Parser {
                     credits = Double.parseDouble(creditString);
                 }
                 catch (NumberFormatException e){
-                    DialogHelper.showSemesterBugDialog(term.toString(), courseTitle, e.toString());
+                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "credits", null);
+//                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                    e.printStackTrace();
                 }
 
                 //Check if there is any data to parse
