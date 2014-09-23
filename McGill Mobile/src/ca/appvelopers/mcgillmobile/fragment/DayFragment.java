@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
@@ -29,14 +30,16 @@ import ca.appvelopers.mcgillmobile.util.Help;
  */
 public class DayFragment extends Fragment{
     private Day mDay;
+    private DateTime mDate;
     private List<ClassItem> mClassItems;
 
-    public static DayFragment newInstance(Day day){
+    public static DayFragment newInstance(Day day, DateTime date){
         DayFragment fragment = new DayFragment();
 
         //Put the day in the bundle
         Bundle args = new Bundle();
         args.putSerializable(Constants.DAY, day);
+        args.putSerializable(Constants.DATE, date);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,8 +53,9 @@ public class DayFragment extends Fragment{
         setRetainInstance(true);
 
         mDay = (Day)getArguments().get(Constants.DAY);
+        mDate = (DateTime)getArguments().get(Constants.DATE);
         //Get the courses from ScheduleActivity
-        mClassItems = ((ScheduleActivity)getActivity()).getClassesForDay(mDay);
+        mClassItems = ((ScheduleActivity)getActivity()).getClassesForDate(mDay, mDate);
     }
 
     @Override
@@ -60,6 +64,9 @@ public class DayFragment extends Fragment{
 
         TextView dayTitle = (TextView)view.findViewById(R.id.day_title);
         dayTitle.setText(mDay.getDayString(getActivity()));
+
+        TextView dayDate = (TextView)view.findViewById(R.id.day_date);
+        dayDate.setText(Help.getDateString(mDate));
 
         //Get the container for the timetable
         LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);
