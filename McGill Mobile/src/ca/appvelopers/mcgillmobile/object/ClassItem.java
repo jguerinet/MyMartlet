@@ -322,7 +322,7 @@ public class ClassItem implements Serializable{
      * @return True if it is, false otherwise
      */
     public boolean isForDate(DateTime date){
-        return !date.isBefore(mStartDateRange) || !date.isAfter(mEndDateRange);
+        return !date.isBefore(mStartDateRange) && !date.isAfter(mEndDateRange);
     }
 
     /**
