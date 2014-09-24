@@ -569,10 +569,11 @@ public class Parser {
                         //There is a classItem for every row in the schedule times table, if there is a row but no corresponding classItem
                         //will add a new one to the next index
                         boolean classExists = false;
-                        if (scheduledTimesRows.size() > 2);
                         int k = 0;
                         for (ClassItem classItem : classItems) {
                             int classItemIndex = classItems.indexOf(classItem);
+                            int classItemCRN = classItem.getCRN();
+                            Term classItemTerm = classItem.getTerm();
                             if (classItem.getCRN() == crn && classItem.getTerm().equals(term)) {
                                 k++;
                                 classExists = true;
@@ -584,6 +585,10 @@ public class Parser {
                                     //Remove it from the list of class items to remove
                                     classesToRemove.remove(classItem);
                                     break;
+                                } else if (classItemIndex == classItems.size() - 1) {
+                                    //boundary case, if the current classItem is last item in list but there's still another row to add
+                                    //treat as if it is not yet in list (to add to end of list)
+                                    classExists = false;
                                 }
                             } else if (k > 0 && k == (j - 1)) {
                                 String subject = "";
@@ -610,7 +615,6 @@ public class Parser {
                                         startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                         -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
                                 k++;
-                                classExists = true;
                                 break;
                             }
                         }
