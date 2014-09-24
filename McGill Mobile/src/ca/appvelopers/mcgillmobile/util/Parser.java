@@ -582,9 +582,9 @@ public class Parser {
 
                         //Find the concerned course
                         classItems.add(new ClassItem(term, courseCode, subject,
-                                code, courseTitle, crn, section, startHour,
-                                startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
-                                -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
+                                code, courseTitle, crn, section, startHour, startMinute, endHour,
+                                endMinute, days, sectionType, location, instructor, credits,
+                                dateRange, startDate, endDate));
                     }
                 }
                 //If there is no data to parse, reset i and continue

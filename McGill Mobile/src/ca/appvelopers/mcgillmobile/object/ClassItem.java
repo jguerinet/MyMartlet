@@ -39,41 +39,34 @@ public class ClassItem implements Serializable{
     private int mWaitlistRemaining;
     private double mCredits;
     private String mDates;
-    private DateTime mStartDateRange;
-    private DateTime mEndDateRange;
+    private DateTime mStartDate;
+    private DateTime mEndDate;
 
     /**
-     * Constructor
-     * @param term
-     * @param courseCode
-     * @param courseSubject
-     * @param courseNumber
-     * @param courseTitle
-     * @param crn
-     * @param section
-     * @param startHour
-     * @param startMinute
-     * @param endHour
-     * @param endMinute
-     * @param days
-     * @param sectionType
-     * @param location
-     * @param instructor
-     * @param capacity
-     * @param seatsAvailable
-     * @param seatsRemaining
-     * @param waitlistCapacity
-     * @param waitlistAvailable
-     * @param waitlistRemaining
-     * @param credits
-     * @param startDateRange
-     * @param endDateRange
+     * Constructor for the user's already registered classes
+     * @param term The term that this class is for
+     * @param courseCode The full course code
+     * @param courseSubject The course subject
+     * @param courseNumber The course number
+     * @param courseTitle The course title
+     * @param crn The course CRN
+     * @param section The course section
+     * @param startHour The course's starting hour
+     * @param startMinute The course's starting minute
+     * @param endHour The course's ending hour
+     * @param endMinute The course's ending minute
+     * @param days The days this course is on
+     * @param sectionType The section type
+     * @param location The course location
+     * @param instructor The course instructor
+     * @param credits The number of credits
+     * @param startDate The starting date for this course
+     * @param endDate The ending date for this course
      */
     public ClassItem(Term term, String courseCode, String courseSubject, String courseNumber, String courseTitle, int crn,
                      String section, int startHour, int startMinute, int endHour, int endMinute,
-                     List<Day> days, String sectionType, String location, String instructor, int capacity,
-                     int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
-                     int waitlistRemaining, double credits, String dates, DateTime startDateRange, DateTime endDateRange){
+                     List<Day> days, String sectionType, String location, String instructor, double credits,
+                     String dates, DateTime startDate, DateTime endDate){
         this.mTerm = term;
         this.mCourseCode = courseCode;
         this.mCourseSubject = courseSubject;
@@ -99,46 +92,48 @@ public class ClassItem implements Serializable{
         this.mSectionType = sectionType;
         this.mLocation = location;
         this.mInstructor = instructor;
-        this.mCapacity = capacity;
-        this.mSeatsAvailable = seatsAvailable;
-        this.mSeatsRemaining = seatsRemaining;
-        this.mWaitlistCapacity = waitlistCapacity;
-        this.mWaitlistAvailable = waitlistAvailable;
-        this.mWaitlistRemaining = waitlistRemaining;
         this.mCredits = credits;
         this.mDates = dates;
-        this.mStartDateRange = startDateRange;
-        this.mEndDateRange = endDateRange;
+        this.mStartDate = startDate;
+        this.mEndDate = endDate;
+
+        //These fields are not needed (they are used for the search results)
+        this.mCapacity = -1;
+        this.mSeatsAvailable = -1;
+        this.mSeatsRemaining = -1;
+        this.mWaitlistCapacity = -1;
+        this.mWaitlistAvailable = -1;
+        this.mWaitlistRemaining = -1;
     }
 
     /**
-     * Constructor without date range
-     * @param term
-     * @param courseCode
-     * @param courseSubject
-     * @param courseNumber
-     * @param courseTitle
-     * @param crn
-     * @param section
-     * @param startHour
-     * @param startMinute
-     * @param endHour
-     * @param endMinute
-     * @param days
-     * @param sectionType
-     * @param location
-     * @param instructor
-     * @param capacity
-     * @param seatsAvailable
-     * @param seatsRemaining
-     * @param waitlistCapacity
-     * @param waitlistAvailable
-     * @param waitlistRemaining
-     * @param credits
-     * @param dates
+     * Constructor for course search results
+     * @param term The term that this class is for
+     * @param courseCode The full course code
+     * @param courseSubject The course subject
+     * @param courseNumber The course number
+     * @param courseTitle The course title
+     * @param crn The course CRN
+     * @param section The course section
+     * @param startHour The course's starting hour
+     * @param startMinute The course's starting minute
+     * @param endHour The course's ending hour
+     * @param endMinute The course's ending minute
+     * @param days The days this course is on
+     * @param sectionType The section type
+     * @param location The course location
+     * @param instructor The course instructor
+     * @param credits The number of credits
+     * @param capacity The course capacity
+     * @param seatsAvailable The number of seats available
+     * @param seatsRemaining The number of seats remaining
+     * @param waitlistCapacity The waitlist capacity
+     * @param waitlistAvailable The number of seats available on waitlist
+     * @param waitlistRemaining The number of seats remaining on waitlist
+     * @param dates The dates this course is for
      */
-    public ClassItem(Term term, String courseCode, String courseSubject, String courseNumber, String courseTitle, int crn,
-                     String section, int startHour, int startMinute, int endHour, int endMinute,
+    public ClassItem(Term term, String courseCode, String courseSubject, String courseNumber, String courseTitle,
+                     int crn, String section, int startHour, int startMinute, int endHour, int endMinute,
                      List<Day> days, String sectionType, String location, String instructor, int capacity,
                      int seatsAvailable, int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
                      int waitlistRemaining, double credits, String dates){
@@ -175,8 +170,10 @@ public class ClassItem implements Serializable{
         this.mWaitlistRemaining = waitlistRemaining;
         this.mCredits = credits;
         this.mDates = dates;
-        this.mStartDateRange = null;
-        this.mEndDateRange = null;
+
+        /* These fields are not used (they are used for the user's courses) */
+        this.mStartDate = null;
+        this.mEndDate = null;
     }
 	/* GETTERS */
 
@@ -317,21 +314,14 @@ public class ClassItem implements Serializable{
     }
 
     /**
-     * Checks that the course is for the given date
-     * @param date The given date
-     * @return True if it is, false otherwise
-     */
-    public boolean isForDate(DateTime date){
-        return !date.isBefore(mStartDateRange) && !date.isAfter(mEndDateRange);
-    }
-
-    /**
      * Get the starting date
      * @return The starting date
      */
     public DateTime getStartDate(){
-        return mStartDateRange;
+        return mStartDate;
     }
+
+    /* SETTERS */
 
     /**
      * Set the start time of the course (rounded off to the nearest half hour)
@@ -389,65 +379,14 @@ public class ClassItem implements Serializable{
         this.mWaitlistRemaining = waitlistRemaining;
     }
 
-    /**
-     * Update the start date of the date range
-     * @param startDateRange
-     */
-    public void setStartDateRange(DateTime startDateRange) {
-        this.mStartDateRange = startDateRange;
-    }
-
-    /**
-     * Update the end date of the date range
-     * @param endDateRange
-     */
-    public void setEndDateRange(DateTime endDateRange) {
-        this.mEndDateRange = endDateRange;
-    }
-
     /* HELPER METHODS */
     /**
-     * Update the ClassItem
-     * @param courseCode The new course code
-     * @param courseTitle The new course title
-     * @param section The new course section
-     * @param startHour The new start hour
-     * @param startMinute The new start minute
-     * @param endHour The new end hour
-     * @param endMinute The new end minute
-     * @param days The new days
-     * @param sectionType The new section type
-     * @param location The new location
-     * @param instructor The new instructor
-     * @param credits The new credits
-     * @param startDateRange start date of date range
-     * @param endDateRange end date of date range
+     * Checks that the course is for the given date
+     * @param date The given date
+     * @return True if it is, false otherwise
      */
-    public void update(String courseCode, String courseTitle, String section, int startHour, int startMinute,
-                       int endHour, int endMinute, List<Day> days, String sectionType, String location, String instructor,
-                       double credits, String dates, DateTime startDateRange, DateTime endDateRange){
-        this.mCourseCode = courseCode;
-        this.mCourseTitle = courseTitle;
-        this.mSection = section;
-        this.mActualStartTime = new LocalTime(startHour, startMinute);
-        //Remove 5 minutes to the start to get round numbers
-        this.mStartTime = new LocalTime(startHour, (startMinute - 5) % 60);
-        this.mActualEndTime = new LocalTime(endHour, endMinute);
-        //Add 5 minutes to the end to get round numbers, increment the hour if the minutes get set to 0s
-        int endM = (endMinute + 5) % 60;
-        int endH = endHour;
-        if(endM == 0){
-            endH ++;
-        }
-        this.mEndTime = new LocalTime(endH, endM);
-        this.mDays = days;
-        this.mSectionType = sectionType;
-        this.mLocation = location;
-        this.mInstructor = instructor;
-        this.mCredits = credits;
-        this.mDates = dates;
-        this.mStartDateRange = startDateRange;
-        this.mEndDateRange = endDateRange;
+    public boolean isForDate(DateTime date){
+        return !date.isBefore(mStartDate) && !date.isAfter(mEndDate);
     }
 
     /**
