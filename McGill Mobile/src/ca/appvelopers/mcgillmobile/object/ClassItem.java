@@ -326,6 +326,14 @@ public class ClassItem implements Serializable{
     }
 
     /**
+     * Get the starting date
+     * @return The starting date
+     */
+    public DateTime getStartDate(){
+        return mStartDateRange;
+    }
+
+    /**
      * Set the start time of the course (rounded off to the nearest half hour)
      */
     public void setStartTime(LocalTime time){

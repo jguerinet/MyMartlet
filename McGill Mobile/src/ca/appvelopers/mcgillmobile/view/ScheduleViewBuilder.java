@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
-import java.util.Calendar;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
@@ -31,7 +30,7 @@ public class ScheduleViewBuilder {
         this.mActivity = activity;
     }
 
-    public void renderLandscapeView(){
+    public void renderLandscapeView(DateTime startingDate){
         //Load the right view
         mActivity.setContentView(R.layout.activity_schedule_land);
 
@@ -41,32 +40,8 @@ public class ScheduleViewBuilder {
         //Get the schedule container
         LinearLayout scheduleContainer = (LinearLayout)mActivity.findViewById(R.id.schedule_container);
 
-        //Find the index of the current day
-        int currentDayIndex = -1;
-        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        switch (day){
-            case Calendar.MONDAY:
-                currentDayIndex = 0;
-                break;
-            case Calendar.TUESDAY:
-                currentDayIndex = 1;
-                break;
-            case Calendar.WEDNESDAY:
-                currentDayIndex = 2;
-                break;
-            case Calendar.THURSDAY:
-                currentDayIndex = 3;
-                break;
-            case Calendar.FRIDAY:
-                currentDayIndex = 4;
-                break;
-            case Calendar.SATURDAY:
-                currentDayIndex = 5;
-                break;
-            case Calendar.SUNDAY:
-                currentDayIndex = 6;
-                break;
-        }
+        //Find the index of the given date (days are offset by 1 in Jodatime)
+        int currentDayIndex = startingDate.getDayOfWeek() - 1;
 
         //Fill out the schedule
         for(int i = 0; i < 7; i ++){
@@ -75,7 +50,7 @@ public class ScheduleViewBuilder {
             coursesLayout.setLayoutParams(new LinearLayout.LayoutParams(
                     mActivity.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
-            fillSchedule(Day.getDay(i), DateTime.now().plusDays(i - currentDayIndex), coursesLayout);
+            fillSchedule(Day.getDay(i), startingDate.plusDays(i - currentDayIndex), coursesLayout);
             scheduleContainer.addView(coursesLayout);
 
             //Line
