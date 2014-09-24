@@ -9,7 +9,6 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
-import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Place;
@@ -31,6 +30,7 @@ import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
  */
 public class App extends Application {
     public static boolean forceReload = false;
+    public static boolean forceUserReload = false;
 
     private static Context context;
 

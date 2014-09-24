@@ -35,6 +35,9 @@ public class Update {
                 //Break out of the loop
                 break;
             }
+            if(storedVersion == 6){
+                update7();
+            }
 
             /* This will be where the version updates would go */
 
@@ -51,5 +54,10 @@ public class Update {
     private static void init(){
         //Force the config downloader
         App.forceReload = true;
+    }
+
+    private static void update7(){
+        //Force the user to re-update all of the information in the app
+        App.forceUserReload = true;
     }
 }
