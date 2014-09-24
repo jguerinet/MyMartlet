@@ -25,7 +25,7 @@ public class FacultyAdapter extends BaseAdapter {
     private Context mContext;
     private List<Faculty> mFaculties;
 
-    public FacultyAdapter(Context context, boolean emptyTerm){
+    public FacultyAdapter(Context context, boolean emptyFaculty){
         this.mContext = context;
         this.mFaculties = new ArrayList<Faculty>();
         mFaculties.addAll(Arrays.asList(Faculty.values()));
@@ -38,8 +38,8 @@ public class FacultyAdapter extends BaseAdapter {
             }
         });
 
-        //See if we need to add an empty term
-        if(emptyTerm){
+        //See if we need to add an empty faculty
+        if(emptyFaculty){
             mFaculties.add(0, null);
         }
     }

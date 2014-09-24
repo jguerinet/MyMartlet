@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,7 +22,6 @@ import java.net.CookieManager;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -110,34 +110,89 @@ public class Connection {
             Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
         }
 
-        List<Semester> semesters = App.getTranscript().getSemesters();
-        //Find the latest semester
-        for(Semester semester : semesters){
-            Term term = semester.getTerm();
+        if(!Test.LOCAL_SCHEDULE){
+            List<Semester> semesters = App.getTranscript().getSemesters();
+            //Find the latest semester
+            for(Semester semester : semesters){
+                Term term = semester.getTerm();
 
-            //Update : downloading transcript
-            infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
+                //Update : downloading classes
+                infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
 
-            //Download the schedule
-            Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
+                //Download the schedule
+                Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
+            }
+        }
+        else{
+            Test.testSchedule(context);
         }
 
         //Set the default term if there is none set yet
         if(App.getDefaultTerm() == null){
-            App.setDefaultTerm(Term.dateConverter(Calendar.getInstance().getTime()));
+            App.setDefaultTerm(Term.dateConverter(DateTime.now()));
         }
 
-        //Update : downloading transcript
+        //Update : downloading eBill
         infoDownloader.publishNewProgress(context.getString(R.string.updating_ebill));
 
         //Download the ebill and user info
         String ebillString = Connection.getInstance().getUrl(context, EBILL);
         Parser.parseEbill(ebillString);
 
-        //Update : downloading transcript
+        //Update : downloading user info
         infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
 
         Parser.parseUserInfo(ebillString);
+    }
+
+    /**
+     * Download the relevant info (upon opening of the app)
+     * @param context The app context
+     */
+    public void downloadEssential(Context context, SplashActivity.InfoDownloader infoDownloader){
+        Connection connection = getInstance();
+
+        infoDownloader.publishNewProgress(context.getString(R.string.updating_transcript));
+
+        //Download the transcript
+        if(!Test.LOCAL_TRANSCRIPT && !infoDownloader.isCancelled()){
+            Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
+        }
+        if(!Test.LOCAL_SCHEDULE){
+            List<Semester> semesters = App.getTranscript().getSemesters();
+
+            //Find the current term
+            Term currentTerm = Term.dateConverter(DateTime.now());
+
+            //Download only the current and future semesters
+            for(Semester semester : semesters){
+                //Leave the loop if the download has been cancelled
+                if(infoDownloader.isCancelled()){
+                    break;
+                }
+
+                Term term = semester.getTerm();
+
+                if(term.equals(currentTerm) || term.isAfter(currentTerm)){
+                    infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
+
+                    //Download the schedule
+                    Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
+                }
+            }
+        }
+        else{
+            Test.testSchedule(context);
+        }
+
+        if(!infoDownloader.isCancelled()){
+            infoDownloader.publishNewProgress(context.getString(R.string.updating_ebill));
+            String ebillString = Connection.getInstance().getUrl(context, EBILL);
+            Parser.parseEbill(ebillString);
+
+            infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
+            Parser.parseUserInfo(ebillString);
+        }
     }
 
 	public ConnectionStatus connectToMinerva(Context context){

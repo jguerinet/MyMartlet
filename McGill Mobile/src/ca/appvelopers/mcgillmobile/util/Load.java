@@ -17,7 +17,6 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
-import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Place;
@@ -66,14 +65,19 @@ public class Load {
         return HomePage.values()[homePage];
     }
 
+    public static boolean loadParserErrorDoNotShow(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, false);
+    }
+
+    public static boolean loadLoadingDoNotShow(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.LOADING_DO_NOT_SHOW, false);
+    }
+
     public static boolean loadStatistics(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getBoolean(Constants.STATISTICS, true);
-    }
-
-    public static Faculty loadFaculty(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return Faculty.values()[sharedPrefs.getInt(Constants.FACULTY, 0)];
     }
 
     public static String loadFullUsername(Context context){

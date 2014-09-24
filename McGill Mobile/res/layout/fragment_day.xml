@@ -10,11 +10,21 @@
         android:layout_height="wrap_content"
         android:id="@+id/day_title"
         android:textSize="@dimen/text_large"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         android:textColor="@color/red"
-        android:paddingBottom="@dimen/padding_micro"
         android:paddingTop="@dimen/padding_micro"
         android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/day_date"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="italic"
+        android:textColor="@color/black"
+        android:paddingBottom="@dimen/padding_micro"
+        android:gravity="center"/>
+
 
     <ScrollView
         android:layout_width="match_parent"

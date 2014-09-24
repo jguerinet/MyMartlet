@@ -1,7 +1,8 @@
 package ca.appvelopers.mcgillmobile.util;
 
-import android.util.Log;
-
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -69,6 +70,8 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     cgpa = -1;
+                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "CGPA", null);
+//                    DialogHelper.showTranscriptBugDialog((Activity)context, "CGPA", e.toString());
                 }
             }
             //Credits
@@ -79,6 +82,8 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     totalCredits = -1;
+                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Total Credits", null);
+//                    DialogHelper.showTranscriptBugDialog((Activity)context, "Total Credits", e.toString());
                 }
             }
             //Semester Information
@@ -95,23 +100,44 @@ public class Parser {
                 String[] scheduleSemesterItems = scheduleSemester.split("\\s+");
 
                 //Find the right season and year, making sure to get the right array index
-                Season season = null;
-                int year = 99;
+                Season season;
+                int year;
 
                 if(row.text().startsWith(Token.FALL.getString()) ||
                         row.text().startsWith(Token.WINTER.getString()) ||
                         row.text().startsWith(Token.SUMMER.getString()) ){
 
                     season = Season.findSeason(scheduleSemesterItems[0]);
-                    year = Integer.valueOf(scheduleSemesterItems[1]);
+                    try{
+                        year = Integer.valueOf(scheduleSemesterItems[1]);
+                    }
+                    catch(NumberFormatException e){
+                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
+                        year = 2000;
+                    }
                 }
                 else if(row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
                     season = Season.findSeason(scheduleSemesterItems[3]);
-                    year = Integer.valueOf(scheduleSemesterItems[4]);
+                    try{
+                        year = Integer.valueOf(scheduleSemesterItems[4]);
+                    }
+                    catch(NumberFormatException e){
+                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
+                        year = 2000;
+                    }
                 }
                 else{
                     season = Season.findSeason(scheduleSemesterItems[1]);
-                    year = Integer.valueOf(scheduleSemesterItems[2]);
+                    try{
+                        year = Integer.valueOf(scheduleSemesterItems[2]);
+                    }
+                    catch(NumberFormatException e){
+                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
+                        year = 2000;
+                    }
                 }
 
                 //Log.e("TRANSCRIPT PARSER", season + " " + year);
@@ -175,6 +201,9 @@ public class Parser {
                         else if(degreeDetails[1].contains("5")){
                             programYear = 5;
                         }
+                        else if(degreeDetails[1].contains("6")){
+                            programYear = 6;
+                        }
 
                         int detailsIndex = 0;
                         for(String detail : degreeDetails){
@@ -187,11 +216,23 @@ public class Parser {
                     }
                     //Term GPA
                     else if(dataRow.text().startsWith(Token.TERM_GPA.getString())){
-                        termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
+                        try{
+                            termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
+                        }
+                        catch (NumberFormatException e){
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Term GPA", null);
+//                            DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
+                        }
                     }
                     //Term Credits
                     else if(dataRow.text().startsWith(Token.TERM_CREDITS.getString())){
-                        termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
+                        try{
+                            termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
+                        }
+                        catch (NumberFormatException e){
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Term Credits", null);
+//                            DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
+                        }
                     }
 
                     //Extract course information if row contains a course code
@@ -214,6 +255,8 @@ public class Parser {
                                 courseCode = dataRow.text().substring(0, 10);
                             }
                             catch(Exception e){
+                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Course Code", null);
+//                                DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
                                 e.printStackTrace();
                             }
                         }
@@ -390,9 +433,13 @@ public class Parser {
             return numCredits;
         }
         catch (NumberFormatException e){
+            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
+//            DialogHelper.showTranscriptBugDialog((Activity)context, "Credit Extractor", e.toString());
             return 99;
         }
         catch(Exception e){
+            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
+//            DialogHelper.showTranscriptBugDialog((Activity)context, "Credit Extractor", e.toString());
             return 88;
         }
     }
@@ -406,18 +453,18 @@ public class Parser {
         //Get the list of classes already parsed for that year
         List<ClassItem> classItems = App.getClasses();
 
-        //This will be the list of classes to remove at the end (the user has unregistered)
+        if(classItems == null){
+            classItems = new ArrayList<ClassItem>();
+        }
+
+        //Remove all of the classes for this semester
         List<ClassItem> classesToRemove = new ArrayList<ClassItem>();
-        //It starts out with all of the classes for this term
         for(ClassItem classItem : classItems){
             if(classItem.getTerm().equals(term)){
                 classesToRemove.add(classItem);
             }
         }
-
-        if(classItems == null){
-            classItems = new ArrayList<ClassItem>();
-        }
+        classItems.removeAll(classesToRemove);
 
         Document doc = Jsoup.parse(classHTML);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
@@ -436,80 +483,108 @@ public class Parser {
                 //CRN
                 row = currentElement.getElementsByTag("tr").get(1);
                 String crnString = row.getElementsByTag("td").first().text();
-                int crn = Integer.parseInt(crnString);
+                int crn = -1;
+                try{
+                    crn = Integer.parseInt(crnString);
+                }
+                catch (NumberFormatException e){
+                    //GA
+                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "crn", null);
+//                    DialogHelper.showSemesterBugDialog((Activity)context, term.toString(), courseTitle, e.toString());
+                    e.printStackTrace();
+                }
 
                 //Credits
                 row = currentElement.getElementsByTag("tr").get(5);
                 String creditString = row.getElementsByTag("td").first().text();
-                double credits = Double.parseDouble(creditString);
+                double credits = -1;
+                try{
+                    credits = Double.parseDouble(creditString);
+                }
+                catch (NumberFormatException e){
+                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "credits", null);
+//                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                    e.printStackTrace();
+                }
 
                 //Check if there is any data to parse
                 if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
-                    //Time, Days, Location, Section Type, Instructor
-                    row = scheduleTable.get(i+1).getElementsByTag("tr").get(1);
-                    Elements cells = row.getElementsByTag("td");
-                    String[] times = cells.get(0).text().split(" - ");
-                    char[] dayCharacters = cells.get(1).text().toCharArray();
-                    String location = cells.get(2).text();
-                    String sectionType = cells.get(4).text();
-                    String instructor = cells.get(5).text();
+                    Elements scheduledTimesRows = scheduleTable.get(i+1).getElementsByTag("tr");
+                    for (int j = 1; j < scheduledTimesRows.size(); j++) {
+                        //Time, Days, Location, Section Type, Instructor
+                        row = scheduledTimesRows.get(j);
+                        Elements cells = row.getElementsByTag("td");
+                        String[] times = cells.get(0).text().split(" - ");
+                        char[] dayCharacters = cells.get(1).text().toCharArray();
+                        String location = cells.get(2).text();
+                        String dateRange = cells.get(3).text();
+                        String sectionType = cells.get(4).text();
+                        String instructor = cells.get(5).text();
 
-                    //Time parsing
-                    int startHour, startMinute, endHour, endMinute;
-                    try {
-                        startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-                        startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-                        endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-                        endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
-                        String startPM = times[0].split(" ")[1];
-                        String endPM = times[1].split(" ")[1];
+                        //Time parsing
+                        int startHour, startMinute, endHour, endMinute;
+                        try {
+                            startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+                            startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+                            endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+                            endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+                            String startPM = times[0].split(" ")[1];
+                            String endPM = times[1].split(" ")[1];
 
-                        //If it's PM, then add 12 hours to the hours for 24 hours format
-                        //Make sure it isn't noon
-                        if (startPM.equals("PM") && startHour != 12) {
-                            startHour += 12;
+                            //If it's PM, then add 12 hours to the hours for 24 hours format
+                            //Make sure it isn't noon
+                            if (startPM.equals("PM") && startHour != 12) {
+                                startHour += 12;
+                            }
+                            if (endPM.equals("PM") && endHour != 12) {
+                                endHour += 12;
+                            }
                         }
-                        if (endPM.equals("PM") && endHour != 12) {
-                            endHour += 12;
+                        //Try/Catch for classes with no assigned times
+                        catch (NumberFormatException e) {
+                            startHour = 0;
+                            //So that the the time will be 0
+                            startMinute = 5;
+                            endHour = 0;
+                            //So that the time will be 0
+                            endMinute = 55;
                         }
-                    }
-                    //Try/Catch for classes with no assigned times
-                    catch (NumberFormatException e) {
-                        startHour = 0;
-                        //So that the the time will be 0
-                        startMinute = 5;
-                        endHour = 0;
-                        //So that the time will be 0
-                        endMinute = 55;
-                    }
 
-                    //Day Parsing
-                    List<Day> days = new ArrayList<Day>();
-                    for (char dayCharacter : dayCharacters) {
-                        days.add(Day.getDay(dayCharacter));
-                    }
-
-                    //Check if the class already exists
-                    boolean classExists = false;
-                    for (ClassItem classItem : classItems) {
-                        if (classItem.getCRN() == crn && classItem.getTerm().equals(term)) {
-                            classExists = true;
-                            //If you find an equivalent, just update it
-                            classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
-                                    days, sectionType, location, instructor, credits);
-
-                            //Remove it from the list of class items to remove
-                            classesToRemove.remove(classItem);
-                            break;
+                        //Day Parsing
+                        List<Day> days = new ArrayList<Day>();
+                        for (char dayCharacter : dayCharacters) {
+                            days.add(Day.getDay(dayCharacter));
                         }
-                    }
-                    //It not, add a new class item
-                    if (!classExists) {
+
+                        //Date Range parsing
+                        String startDateString = dateRange.split(" - ")[0];
+                        String endDateString = dateRange.split(" - ")[1];
+                        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMM dd, yyyy");
+                        DateTime startDate = dateFormatter.parseDateTime(startDateString);
+                        DateTime endDate = dateFormatter.parseDateTime(endDateString);
+
+
+                        String subject = "";
+                        try {
+                            subject = courseCode.substring(0, 4);
+                        } catch (StringIndexOutOfBoundsException e) {
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course subject Substring", null);
+//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                        }
+
+                        String code = "";
+                        try {
+                            code = courseCode.substring(5, 8);
+                        } catch (StringIndexOutOfBoundsException e) {
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course Code Substring", null);
+//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                        }
+
                         //Find the concerned course
-                        classItems.add(new ClassItem(term, courseCode, courseCode.substring(0, 4),
-                                courseCode.substring(5, 8), courseTitle, crn, section, startHour,
+                        classItems.add(new ClassItem(term, courseCode, subject,
+                                code, courseTitle, crn, section, startHour,
                                 startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
-                                -1, -1, -1, -1, -1, credits, null));
+                                -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
                     }
                 }
                 //If there is no data to parse, reset i and continue
@@ -518,9 +593,6 @@ public class Parser {
                 }
             }
         }
-
-        //Remove the classes to remove
-        classItems.removeAll(classesToRemove);
 
         //Save it to the instance variable in Application class
         App.setClasses(classItems);
@@ -568,6 +640,7 @@ public class Parser {
             int waitlistCapacity = 0;
             int waitlistAvailable = 0;
             int waitlistRemaining = 0;
+
 
             int i = 0;
             while (true) {

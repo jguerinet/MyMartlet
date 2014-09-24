@@ -63,17 +63,24 @@ public class Save {
                 .apply();
     }
 
+    public static void saveParserErrorDoNotShow(Context context, boolean doNotShow){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, doNotShow)
+                .apply();
+    }
+
+    public static void saveLoadingDoNotShow(Context context, boolean doNotShow){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putBoolean(Constants.LOADING_DO_NOT_SHOW, doNotShow)
+                .apply();
+    }
+
     public static void saveStatistics(Context context, boolean statistics){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putBoolean(Constants.STATISTICS, statistics)
-                .apply();
-    }
-
-    public static void saveFaculty(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
-                .putInt(Constants.FACULTY, App.getFaculty().ordinal())
                 .apply();
     }
 

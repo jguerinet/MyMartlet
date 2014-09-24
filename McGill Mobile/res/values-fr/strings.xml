@@ -25,6 +25,7 @@
 
     <!-- General Strings -->
     <string name="error">Erreur</string>
+    <string name="warning">Avertissement</string>
     <string name="please_wait">Veuillez attendre s\'il vous plaît…</string>
     <string name="done">Terminer</string>
     <string name="refresh">Rafraîchir</string>
@@ -36,6 +37,8 @@
     <string name="back">Retour</string>
     <string name="start">Commencer</string>
     <string name="skip">Sauter</string>
+    <string name="bug_parser_no_show">Ne plus afficher</string>
+    <string name="skip_loading">Si vous continuez, votre information la plus récente (emploi du temps actuel et bulletin) ne sera pas mise à jour. Continuer ?</string>
 
     <!-- Icons -->
 
@@ -214,7 +217,7 @@
     <string name="about_answer">Je suis une réponse</string>
     <string name="about_FAQ">Question Fréquentes</string>
     <string name="help_bug_title">Bug %s</string>
-    <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
+    <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>
     <string name="help_question1">Qu\'est ce que MyMartlet?</string>
     <string name="help_question2">Est ce que cet app est officiellement fait par McGill?</string>
@@ -266,8 +269,8 @@
     <string name="twitter_post_failure_time">Une erreur est survenue. Réessayez s\'il vous plaît. La date et l\'heure sur votre appareil sont-elles bien configurées?</string>
 
     <!-- Splash Screen -->
-    <string name="updating_transcript">Mise à jour de votre bulletin&#8230;</string>
-    <string name="updating_semester">Mise à jour du semestre: %s&#8230;</string>
-    <string name="updating_ebill">Mise à jour de votre eBill&#8230;</string>
-    <string name="updating_user">Mise à jour de l’information de l’utilisateur&#8230;</string>
+    <string name="updating_transcript">Téléchargement de votre bulletin&#8230;</string>
+    <string name="updating_semester">Téléchargement du semestre: %s&#8230;</string>
+    <string name="updating_ebill">Téléchargement de votre eBill&#8230;</string>
+    <string name="updating_user">Téléchargement de l’information de l’utilisateur&#8230;</string>
 </resources>

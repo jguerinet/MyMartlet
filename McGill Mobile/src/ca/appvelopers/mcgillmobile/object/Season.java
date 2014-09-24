@@ -11,7 +11,8 @@ import ca.appvelopers.mcgillmobile.R;
 public enum Season {
     FALL,
     WINTER,
-    SUMMER;
+    SUMMER,
+    ERROR;
 
     public static Season findSeason(String season){
         if(season.equalsIgnoreCase(Token.FALL.getString())){
@@ -23,7 +24,7 @@ public enum Season {
         else if(season.equalsIgnoreCase(Token.SUMMER.getString())){
             return SUMMER;
         }
-        return null;
+        return ERROR;
     }
 
     public String toString(Context context){
@@ -35,7 +36,21 @@ public enum Season {
             case SUMMER:
                 return context.getResources().getString(R.string.summer);
             default:
-                return null;
+                return context.getString(R.string.error);
+        }
+    }
+
+    @Override
+    public String toString(){
+        switch (this){
+            case FALL:
+                return "Fall";
+            case WINTER:
+                return "Winter";
+            case SUMMER:
+                return "Summer";
+            default:
+                return "Error";
         }
     }
 
@@ -48,7 +63,7 @@ public enum Season {
             case SUMMER:
                 return "05";
             default:
-                return null;
+                return "-1";
         }
     }
 }

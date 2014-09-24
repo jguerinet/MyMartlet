@@ -26,6 +26,7 @@
     <!-- General Strings -->
     <string name="facebook_id">828093890556007</string>
     <string name="error">Error</string>
+    <string name="warning">Warning</string>
     <string name="please_wait">Please Wait&#8230;</string>
     <string name="done">Done</string>
     <string name="refresh">Refresh</string>
@@ -37,6 +38,15 @@
     <string name="back">Back</string>
     <string name="start">Start</string>
     <string name="skip">Skip</string>
+    <string name="bug_parser_transcript">There was a bug while downloading your transcript. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ?</string>
+    <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ?</string>
+    <string name="bug_parser_yes">Yes, submit a bug report and have the developers contact me</string>
+    <string name="bug_parser_no">No, do not submit a bug report, I will live without the missing information. </string>
+    <string name="bug_parser">For developers: Exception caught: %s</string>
+    <string name="bug_parser_no_show">Don\'t show this to me again</string>
+    <string name="bug_parser_transcript_title">Parsing bug in Transcript for: %s</string>
+    <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %1$s and Class %2$s</string>
+    <string name="skip_loading">If you continue, your most recent information (current schedule and transcript) will not automatically be updated. Continue ?</string>
 
     <!-- Icons -->
     <string name="icon_chevronRight">&#xf054;</string>
@@ -275,7 +285,7 @@
     <string name="about_answer">This is an answer</string>
     <string name="about_FAQ">FAQ</string>
     <string name="help_bug_title">%s Bug: </string>
-    <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s</string>
+    <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>
     <string name="help_question1">What is MyMartlet?</string>
     <string name="help_question2">Is this app officially made by McGill?</string>
@@ -331,8 +341,8 @@
     <string name="twitter_post_failure_time">An error occurred. Please try again. Are the date and time on your device correctly set?</string>
 
     <!-- Splash Screen -->
-    <string name="updating_transcript">Updating Transcript&#8230;</string>
-    <string name="updating_semester">Updating %s Schedule&#8230;</string>
-    <string name="updating_ebill">Updating eBill&#8230;</string>
-    <string name="updating_user">Updating User Info&#8230;</string>
+    <string name="updating_transcript">Downloading Transcript&#8230;</string>
+    <string name="updating_semester">Downloading %s Schedule&#8230;</string>
+    <string name="updating_ebill">Downloading eBill&#8230;</string>
+    <string name="updating_user">Downloading User Info&#8230;</string>
 </resources>
