@@ -569,6 +569,7 @@ public class Parser {
                         //There is a classItem for every row in the schedule times table, if there is a row but no corresponding classItem
                         //will add a new one to the next index
                         boolean classExists = false;
+                        if (scheduledTimesRows.size() > 2);
                         int k = 0;
                         for (ClassItem classItem : classItems) {
                             int classItemIndex = classItems.indexOf(classItem);
@@ -604,11 +605,12 @@ public class Parser {
                                 }
 
                                 //a row is not yet included in classItems list
-                                classItems.add(classItemIndex + 1, new ClassItem(term, courseCode, subject,
+                                classItems.add(classItemIndex, new ClassItem(term, courseCode, subject,
                                         code, courseTitle, crn, section, startHour,
                                         startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
                                         -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
                                 k++;
+                                classExists = true;
                                 break;
                             }
                         }
