@@ -56,7 +56,7 @@ public class SplashActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         //Only show the skip option if we already have data in the app
         if(App.getClasses() != null && App.getTranscript() != null && App.getUserInfo() != null &&
-                App.getEbill() != null){
+                App.getEbill() != null && !App.forceUserReload){
             getMenuInflater().inflate(R.menu.skip, menu);
         }
         return true;
