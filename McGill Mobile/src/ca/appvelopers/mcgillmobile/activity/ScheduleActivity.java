@@ -14,7 +14,6 @@ import android.view.Window;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -46,6 +45,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     private List<ClassItem> mClassList;
     private Term mTerm;
     private ScheduleViewBuilder mScheduleViewBuilder;
+    private DateTime mDate;
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,41 +90,19 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         loadInfo();
 
         if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            mScheduleViewBuilder.renderLandscapeView();
+            mScheduleViewBuilder.renderLandscapeView(mDate);
         }
         else{
             //Load the right view
             setContentView(R.layout.activity_schedule);
 
             //Set up the ViewPager
+            //Open it to the right day (offset of 500002 to get the right day
+            int firstDayIndex = 500002 + mDate.getDayOfWeek();
             ViewPager pager = (ViewPager) findViewById(R.id.pager);
-            SchedulePagerAdapter adapter = new SchedulePagerAdapter(getSupportFragmentManager());
+            SchedulePagerAdapter adapter = new SchedulePagerAdapter(getSupportFragmentManager(), firstDayIndex);
             pager.setAdapter(adapter);
-            //Open it to the right day
-            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-            switch (day){
-                case Calendar.MONDAY:
-                    pager.setCurrentItem(500003);
-                    break;
-                case Calendar.TUESDAY:
-                    pager.setCurrentItem(500004);
-                    break;
-                case Calendar.WEDNESDAY:
-                    pager.setCurrentItem(500005);
-                    break;
-                case Calendar.THURSDAY:
-                    pager.setCurrentItem(500006);
-                    break;
-                case Calendar.FRIDAY:
-                    pager.setCurrentItem(500007);
-                    break;
-                case Calendar.SATURDAY:
-                    pager.setCurrentItem(500008);
-                    break;
-                case Calendar.SUNDAY:
-                    pager.setCurrentItem(500009);
-                    break;
-            }
+            pager.setCurrentItem(firstDayIndex);
         }
 
         //Reload the drawer
@@ -140,6 +118,17 @@ public class ScheduleActivity extends DrawerFragmentActivity {
         for(ClassItem classItem : App.getClasses()){
             if(classItem.getTerm().equals(mTerm)){
                 mClassList.add(classItem);
+            }
+        }
+
+        //Check if we are in the current semester
+        mDate = DateTime.now();
+        if(!mTerm.equals(Term.getCurrentTerm())){
+            //If not, find the starting date of this semester instead of using today
+            for(ClassItem classItem : mClassList){
+                if(classItem.getStartDate().isBefore(mDate)){
+                    mDate = classItem.getStartDate();
+                }
             }
         }
     }
@@ -226,7 +215,7 @@ public class ScheduleActivity extends DrawerFragmentActivity {
             protected void onPostExecute(Boolean loadInfo) {
                 if(loadInfo){
                     //Reload the adapter
-                    loadInfo();
+                    loadView(getResources().getConfiguration().orientation);
                 }
 
                 setProgressBarIndeterminateVisibility(false);
@@ -235,42 +224,17 @@ public class ScheduleActivity extends DrawerFragmentActivity {
     }
 
     private class SchedulePagerAdapter extends FragmentStatePagerAdapter{
-        private int mCurrentDayIndex;
+        private int mFirstDayIndex;
 
-        public SchedulePagerAdapter(FragmentManager fm){
+        public SchedulePagerAdapter(FragmentManager fm, int firstDayIndex){
             super(fm);
-
-            //Find the index of the current day
-            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-            switch (day){
-                case Calendar.MONDAY:
-                    mCurrentDayIndex = 500003;
-                    break;
-                case Calendar.TUESDAY:
-                    mCurrentDayIndex = 500004;
-                    break;
-                case Calendar.WEDNESDAY:
-                    mCurrentDayIndex = 500005;
-                    break;
-                case Calendar.THURSDAY:
-                    mCurrentDayIndex = 500006;
-                    break;
-                case Calendar.FRIDAY:
-                    mCurrentDayIndex = 500007;
-                    break;
-                case Calendar.SATURDAY:
-                    mCurrentDayIndex = 500008;
-                    break;
-                case Calendar.SUNDAY:
-                    mCurrentDayIndex = 500009;
-                    break;
-            }
+            this.mFirstDayIndex = firstDayIndex;
         }
 
         @Override
         public Fragment getItem(int i) {
             Day currentDay = Day.getDay(i%7);
-            DateTime date = DateTime.now().plusDays(i - mCurrentDayIndex);
+            DateTime date = mDate.plusDays(i - mFirstDayIndex);
             return DayFragment.newInstance(currentDay, date);
         }
 
