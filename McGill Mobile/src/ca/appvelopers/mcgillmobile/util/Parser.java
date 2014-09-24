@@ -453,18 +453,18 @@ public class Parser {
         //Get the list of classes already parsed for that year
         List<ClassItem> classItems = App.getClasses();
 
-        //This will be the list of classes to remove at the end (the user has unregistered)
+        if(classItems == null){
+            classItems = new ArrayList<ClassItem>();
+        }
+
+        //Remove all of the classes for this semester
         List<ClassItem> classesToRemove = new ArrayList<ClassItem>();
-        //It starts out with all of the classes for this term
         for(ClassItem classItem : classItems){
             if(classItem.getTerm().equals(term)){
                 classesToRemove.add(classItem);
             }
         }
-
-        if(classItems == null){
-            classItems = new ArrayList<ClassItem>();
-        }
+        classItems.removeAll(classesToRemove);
 
         Document doc = Jsoup.parse(classHTML);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
@@ -557,7 +557,6 @@ public class Parser {
                         }
 
                         //Date Range parsing
-
                         String startDateString = dateRange.split(" - ")[0];
                         String endDateString = dateRange.split(" - ")[1];
                         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMM dd, yyyy");
@@ -565,85 +564,27 @@ public class Parser {
                         DateTime endDate = dateFormatter.parseDateTime(endDateString);
 
 
-                        //Check if the class already exists
-                        //There is a classItem for every row in the schedule times table, if there is a row but no corresponding classItem
-                        //will add a new one to the next index
-                        boolean classExists = false;
-                        int k = 0;
-                        for (ClassItem classItem : classItems) {
-                            int classItemIndex = classItems.indexOf(classItem);
-                            int classItemCRN = classItem.getCRN();
-                            Term classItemTerm = classItem.getTerm();
-                            if (classItem.getCRN() == crn && classItem.getTerm().equals(term)) {
-                                k++;
-                                classExists = true;
-                                if (k == j) {
-                                    //If you find an equivalent, just update it
-                                    classItem.update(courseCode, courseTitle, section, startHour, startMinute, endHour, endMinute,
-                                            days, sectionType, location, instructor, credits, dateRange, startDate, endDate);
-
-                                    //Remove it from the list of class items to remove
-                                    classesToRemove.remove(classItem);
-                                    break;
-                                } else if (classItemIndex == classItems.size() - 1) {
-                                    //boundary case, if the current classItem is last item in list but there's still another row to add
-                                    //treat as if it is not yet in list (to add to end of list)
-                                    classExists = false;
-                                }
-                            } else if (k > 0 && k == (j - 1)) {
-                                String subject = "";
-                                try{
-                                    subject = courseCode.substring(0, 4);
-                                }
-                                catch(StringIndexOutOfBoundsException e){
-                                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course subject Substring", null);
+                        String subject = "";
+                        try {
+                            subject = courseCode.substring(0, 4);
+                        } catch (StringIndexOutOfBoundsException e) {
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course subject Substring", null);
 //                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
-                                }
-
-                                String code = "";
-                                try{
-                                    code = courseCode.substring(5, 8);
-                                }
-                                catch(StringIndexOutOfBoundsException e){
-                                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course Code Substring", null);
-//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
-                                }
-
-                                //a row is not yet included in classItems list
-                                classItems.add(classItemIndex, new ClassItem(term, courseCode, subject,
-                                        code, courseTitle, crn, section, startHour,
-                                        startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
-                                        -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
-                                k++;
-                                break;
-                            }
                         }
-                        //If not, add a new class item
-                        if (!classExists) {
-                            String subject = "";
-                            try{
-                                subject = courseCode.substring(0, 4);
-                            }
-                            catch(StringIndexOutOfBoundsException e){
-                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course subject Substring", null);
-//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
-                            }
 
-                            String code = "";
-                            try{
-                                code = courseCode.substring(5, 8);
-                            }
-                            catch(StringIndexOutOfBoundsException e){
-                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course Code Substring", null);
+                        String code = "";
+                        try {
+                            code = courseCode.substring(5, 8);
+                        } catch (StringIndexOutOfBoundsException e) {
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course Code Substring", null);
 //                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
-                            }
-
-                            //Find the concerned course
-                            classItems.add(new ClassItem(term, courseCode, subject,
-                                    code, courseTitle, crn, section, startHour,
-                                    startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
-                                    -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
                         }
+
+                        //Find the concerned course
+                        classItems.add(new ClassItem(term, courseCode, subject,
+                                code, courseTitle, crn, section, startHour,
+                                startMinute, endHour, endMinute, days, sectionType, location, instructor, -1,
+                                -1, -1, -1, -1, -1, credits, dateRange, startDate, endDate));
                     }
                 }
                 //If there is no data to parse, reset i and continue
@@ -652,9 +593,6 @@ public class Parser {
                 }
             }
         }
-
-        //Remove the classes to remove
-        classItems.removeAll(classesToRemove);
 
         //Save it to the instance variable in Application class
         App.setClasses(classItems);
