@@ -20,7 +20,7 @@ public class Test {
     /**
      * Switch this to true if you want to read the schedule locally
      */
-    public static boolean LOCAL_SCHEDULE = false;
+    public static boolean LOCAL_SCHEDULE = true;
 
     /**
      * Test the transcript by reading from a local one
