@@ -1,7 +1,9 @@
 package ca.appvelopers.mcgillmobile.object;
 
 import android.content.Context;
+
 import org.joda.time.DateTime;
+
 import java.io.Serializable;
 
 /**
@@ -109,5 +111,9 @@ public class Term implements Serializable {
             Term term = new Term(Season.SUMMER, year);
             return term;
         }
+    }
+
+    public static Term getCurrentTerm(){
+        return dateConverter(DateTime.now());
     }
 }
