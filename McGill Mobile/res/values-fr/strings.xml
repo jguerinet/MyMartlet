@@ -37,6 +37,8 @@
     <string name="back">Retour</string>
     <string name="start">Commencer</string>
     <string name="skip">Sauter</string>
+    <string name="bug_parser_no_show">Ne plus afficher</string>
+    <string name="skip_loading">Si vous continuez, votre information la plus récente (emploi du temps actuel et bulletin) ne sera pas mise à jour. Continuer ?</string>
 
     <!-- Icons -->
 
