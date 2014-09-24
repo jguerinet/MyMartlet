@@ -117,9 +117,9 @@ public class SplashActivity extends BaseActivity {
 //                        	App.SetAlarm(SplashActivity.this);
 //                        }
 
-                //Check if there is all the info
+                //Check if there is all the info or if we need to force reload everything
                 if(App.getClasses() == null || App.getTranscript() == null || App.getUserInfo() == null ||
-                        App.getEbill() == null){
+                        App.getEbill() == null || App.forceUserReload){
                     //If there isn't, Update everything
                     Connection.getInstance().downloadAll(mContext, this);
                 }
