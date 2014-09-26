@@ -3,6 +3,7 @@ package ca.appvelopers.mcgillmobile.activity.map;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -197,6 +198,12 @@ public class MapActivity extends DrawerFragmentActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.searchable, menu);
+        return true;
     }
 
     class MapPlace{
