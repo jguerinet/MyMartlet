@@ -1,5 +1,6 @@
 package ca.appvelopers.mcgillmobile.activity.map;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,6 +49,8 @@ public class MapActivity extends DrawerFragmentActivity {
     private MapPlace mPlaceMarker;
     private LinearLayout mInfoContainer;
     private PlaceCategory mCategory;
+    private boolean mSearchMode;
+    private MapPlace mSearchPlace;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,14 @@ public class MapActivity extends DrawerFragmentActivity {
         loadDrawer();
 
         GoogleAnalytics.sendScreen(this, "Map");
+
+        //Get search intent
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            mSearchMode = true;
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            findPlaceByString(query);
+        }
 
         //Bind the TextViews
         mInfoContainer = (LinearLayout)findViewById(R.id.info_container);
@@ -206,6 +217,16 @@ public class MapActivity extends DrawerFragmentActivity {
         return true;
     }
 
+    private void findPlaceByString(String query) {
+        for (MapPlace mapPlace : mPlaces) {
+            if (mapPlace.mPlace.getName().contains(query)) {
+                mapPlace.mMarker.setVisible(true);
+            } else {
+                mapPlace.mMarker.setVisible(false);
+            }
+        }
+    }
+
     class MapPlace{
         private Place mPlace;
         private Marker mMarker;
@@ -223,6 +244,15 @@ public class MapActivity extends DrawerFragmentActivity {
             }
         }
 
+        return null;
+    }
+
+    private MapPlace findMarker(Place place) {
+        for (MapPlace mapPlace : mPlaces) {
+            if(mapPlace.mPlace.equals(place)) {
+                return mapPlace;
+            }
+        }
         return null;
     }
 }
