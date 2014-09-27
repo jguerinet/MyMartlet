@@ -94,7 +94,8 @@
         <activity
             android:name=".activity.map.MapActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_map">
+            android:label="@string/title_map"
+            android:launchMode="singleTop">
                 <intent-filter>
                     <action android:name="android.intent.action.SEARCH" />
                 </intent-filter>
