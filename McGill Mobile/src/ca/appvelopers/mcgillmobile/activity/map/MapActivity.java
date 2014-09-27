@@ -1,6 +1,7 @@
 package ca.appvelopers.mcgillmobile.activity.map;
 
 import android.app.SearchManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -233,12 +234,26 @@ public class MapActivity extends DrawerFragmentActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             findPlaceByString(query);
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String data = intent.getDataString();
+            focusPlace(data);
         }
     }
 
     private void findPlaceByString(String query) {
         for (MapPlace mapPlace : mPlaces) {
             if (containsString(mapPlace.mPlace.getName(), query)) {
+                mapPlace.mMarker.setVisible(true);
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mapPlace.mPlace.getLatitude(), mapPlace.mPlace.getLongitude())));
+            } else {
+                mapPlace.mMarker.setVisible(false);
+            }
+        }
+    }
+
+    private void focusPlace(String place) {
+        for (MapPlace mapPlace : mPlaces) {
+            if (mapPlace.mPlace.getName().equals(place)) {
                 mapPlace.mMarker.setVisible(true);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mapPlace.mPlace.getLatitude(), mapPlace.mPlace.getLongitude())));
             } else {

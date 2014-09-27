@@ -2,5 +2,8 @@
 
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="@string/map_search"
-    android:hint="@string/map_search_hint">
+    android:hint="@string/map_search_hint"
+    android:searchSuggestAuthority="ca.appvelopers.mcgillmobile.util.MapSuggestionProvider"
+    android:searchSuggestIntentAction="android.intent.action.VIEW"
+    android:searchSuggestThreshold="3">
 </searchable>
