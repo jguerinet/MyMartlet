@@ -2,10 +2,14 @@ package ca.appvelopers.mcgillmobile.object;
 
 import android.content.Context;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
 /**
@@ -15,50 +19,63 @@ import ca.appvelopers.mcgillmobile.R;
  * Represents the category of a place
  */
 
-public enum PlaceCategory{
-    FAVORITES,
-    BUILDING,
-    FOOD,
-    SOCIAL,
-    LIBRARY,
-    RESIDENCE;
+@JsonIgnoreProperties(ignoreUnknown =  true)
+public class PlaceCategory{
+    public static final String FAVORITES = "Favorites";
+    public static final String ALL = "All";
 
-    public String toString(Context context){
-        switch(this){
-            case FAVORITES:
-                return context.getString(R.string.map_favorites);
-            case BUILDING:
-                return context.getString(R.string.map_building);
-            case FOOD:
-                return context.getString(R.string.map_food);
-            case SOCIAL:
-                return context.getString(R.string.map_social);
-            case LIBRARY:
-                return context.getString(R.string.map_library);
-            case RESIDENCE:
-                return context.getString(R.string.map_residence);
-            default:
-                return null;
+    private String mName;
+    private String mEnglishString;
+    private String mFrenchString;
+
+    public PlaceCategory(@JsonProperty("Name") String name,
+                         @JsonProperty("En") String englishString,
+                         @JsonProperty("Fr") String frenchString){
+        this.mName = name;
+        this.mEnglishString = englishString;
+        this.mFrenchString = frenchString;
+    }
+
+    //For the Favorites and All Categories
+    public PlaceCategory(boolean favorite){
+        this.mName = favorite ? FAVORITES : ALL;
+        this.mEnglishString = null;
+        this.mFrenchString = null;
+    }
+
+    /* GETTERS */
+    public String getName(){
+        return this.mName;
+    }
+
+    /* HELPERS */
+    @Override
+    public String toString(){
+        //If it's Favorites, then get the String from the Strings document
+        if(mName.equals(FAVORITES)){
+            return App.getContext().getString(R.string.map_favorites);
         }
+        else if(mName.equals(ALL)){
+            return App.getContext().getString(R.string.map_all);
+        }
+
+        if(App.getLanguage() == Language.FRENCH){
+            return mFrenchString;
+        }
+        return mEnglishString;
     }
 
     public static List<PlaceCategory> getCategories(String[] categoryStrings){
         List<PlaceCategory> categories = new ArrayList<PlaceCategory>();
+        //Go through the category Strings
         for(String category : categoryStrings){
-            if(category.equals("Building")){
-                categories.add(BUILDING);
-            }
-            else if(category.equals("Food")){
-                categories.add(FOOD);
-            }
-            else if(category.equals("Social")){
-                categories.add(SOCIAL);
-            }
-            else if(category.equals("Library")){
-                categories.add(LIBRARY);
-            }
-            else if(category.equals("Residence")){
-                categories.add(RESIDENCE);
+            //Go through the place categories
+            for(PlaceCategory placeCategory : App.getPlaceCategories()){
+                //If a category String equals the place category's name, then add it and break the loop
+                if(category.equals(placeCategory.getName())){
+                    categories.add(placeCategory);
+                    break;
+                }
             }
         }
 
@@ -69,8 +86,8 @@ public enum PlaceCategory{
         List<String> categories = new ArrayList<String>();
 
         //Get the Strings of each of the categories
-        for(PlaceCategory placeCategory : PlaceCategory.values()){
-            categories.add(placeCategory.toString(context));
+        for(PlaceCategory placeCategory : App.getPlaceCategories()){
+            categories.add(placeCategory.toString());
         }
 
         //Sort them alphabetically
@@ -80,5 +97,16 @@ public enum PlaceCategory{
         categories.add(0, context.getString(R.string.map_all));
 
         return categories;
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(!(object instanceof PlaceCategory)){
+            return false;
+        }
+
+        PlaceCategory placeCategory = (PlaceCategory)object;
+
+        return this.mName.equals(placeCategory.getName());
     }
 }

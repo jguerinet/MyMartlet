@@ -20,6 +20,7 @@ import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Place;
+import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
@@ -341,6 +342,38 @@ public class Load {
         }
 
         return places;
+    }
+
+    public static List<PlaceCategory> loadPlaceCategories(Context context){
+        List<PlaceCategory> placeCategories = new ArrayList<PlaceCategory>();
+
+        try{
+            FileInputStream fis = context.openFileInput(Constants.PLACE_CATEGORIES_FILE);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            placeCategories = (List<PlaceCategory>) in.readObject();
+        } catch (ClassNotFoundException e) {
+            Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return placeCategories;
+        } catch (OptionalDataException e) {
+            Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return placeCategories;
+        } catch (FileNotFoundException e) {
+            Log.e("Load Place Categories Failure", "File not found");
+            e.printStackTrace();
+            return placeCategories;
+        } catch (StreamCorruptedException e) {
+            Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return placeCategories;
+        } catch (IOException e) {
+            Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
+            e.printStackTrace();
+            return placeCategories;
+        }
+
+        return placeCategories;
     }
 
     public static List<Term> loadRegisterTerms(Context context){

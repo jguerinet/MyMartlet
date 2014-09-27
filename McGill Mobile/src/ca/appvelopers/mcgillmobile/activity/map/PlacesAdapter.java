@@ -8,11 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 
@@ -29,25 +29,21 @@ public class PlacesAdapter extends BaseAdapter {
     public PlacesAdapter(Context context){
         this.mContext = context;
         this.mCategories = new ArrayList<PlaceCategory>();
-        mCategories.addAll(Arrays.asList(PlaceCategory.values()));
+        mCategories.addAll(App.getPlaceCategories());
 
         //Sort them
         Collections.sort(mCategories, new Comparator<PlaceCategory>() {
             @Override
             public int compare(PlaceCategory category, PlaceCategory category2) {
-                //If it's Favorites, it's first
-                if(category == PlaceCategory.FAVORITES){
-                    return -1;
-                }
-                else if(category2 == PlaceCategory.FAVORITES){
-                    return 1;
-                }
-                return category.toString(mContext).compareToIgnoreCase(category2.toString(mContext));
+                return category.toString().compareToIgnoreCase(category2.toString());
             }
         });
 
-        //Add this for the All option
-        mCategories.add(0, null);
+        //Add the favorites option
+        mCategories.add(0, new PlaceCategory(true));
+
+        //Add the All option
+        mCategories.add(0, new PlaceCategory(false));
     }
 
     @Override
@@ -71,13 +67,9 @@ public class PlacesAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, viewGroup, false);
         }
 
+        //Set the category name
         PlaceCategory category = getItem(position);
-        if(category != null){
-            ((TextView)view).setText(category.toString(mContext));
-        }
-        else{
-            ((TextView)view).setText(mContext.getString(R.string.map_all));
-        }
+        ((TextView)view).setText(category.toString());
 
         return view;
     }
@@ -88,13 +80,9 @@ public class PlacesAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.spinner_dropdown, null);
         }
 
+        //Set the category name
         PlaceCategory category = getItem(position);
-        if(category != null){
-            ((TextView)view).setText(category.toString(mContext));
-        }
-        else{
-            ((TextView)view).setText(mContext.getString(R.string.map_all));
-        }
+        ((TextView)view).setText(category.toString());
 
         return view;
     }

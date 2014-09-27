@@ -163,14 +163,14 @@ public class MapActivity extends DrawerFragmentActivity {
                     //Get the selected category
                     mCategory = adapter.getItem(position);
 
-                    //If it's null, show everything
-                    if (mCategory == null) {
+                    //If it's all, show everything
+                    if (mCategory.getName().equals(PlaceCategory.ALL)) {
                         for (MapPlace place : mPlaces) {
                             place.mMarker.setVisible(true);
                         }
                     }
                     //Check if the favorites was selected
-                    else if (mCategory == PlaceCategory.FAVORITES) {
+                    else if (mCategory.getName().equals(PlaceCategory.FAVORITES)) {
                         for (MapPlace place : mPlaces) {
                             place.mMarker.setVisible(mFavoritePlaces.contains(place.mPlace));
                         }
@@ -199,7 +199,7 @@ public class MapActivity extends DrawerFragmentActivity {
                             mFavorite.setText(getString(R.string.map_favorites_add));
 
                             //If we are in the favorites category, we need to hide this pin
-                            if(mCategory == PlaceCategory.FAVORITES){
+                            if(mCategory.getName().equals(PlaceCategory.FAVORITES)){
                                 mPlaceMarker.mMarker.setVisible(false);
                             }
                         } else {

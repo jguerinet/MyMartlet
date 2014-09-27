@@ -12,6 +12,7 @@ import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Place;
+import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
@@ -46,6 +47,7 @@ public class App extends Application {
     private static List<ClassItem> wishlist;
     private static List<Place> places;
     private static List<Place> favoritePlaces;
+    private static List<PlaceCategory> placeCategories;
     //List of semesters you can currently register in
     private static List<Term> registerTerms;
 
@@ -82,6 +84,8 @@ public class App extends Application {
         places = Load.loadPlaces(this);
         //Load the favorite places
         favoritePlaces = Load.loadFavoritePlaces(this);
+        //Load the place categories
+        placeCategories = Load.loadPlaceCategories(this);
         //Load the register terms
         registerTerms = Load.loadRegisterTerms(this);
 
@@ -156,6 +160,10 @@ public class App extends Application {
         return favoritePlaces;
     }
 
+    public static List<PlaceCategory> getPlaceCategories(){
+        return placeCategories;
+    }
+
     public static List<Term> getRegisterTerms(){
         return registerTerms;
     }
@@ -228,6 +236,12 @@ public class App extends Application {
         App.favoritePlaces = places;
         //Save it to internal storage
         Save.saveFavoritePlaces(context);
+    }
+
+    public static void setPlaceCategories(List<PlaceCategory> placeCategories){
+        App.placeCategories = placeCategories;
+        //Save it to internal storage
+        Save.savePlaceCategories(context);
     }
 
     public static void setRegisterTerms(List<Term> terms){
