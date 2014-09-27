@@ -30,6 +30,7 @@ import javax.net.ssl.X509TrustManager;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.object.Place;
+import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -53,6 +54,7 @@ public class ConfigDownloader extends Thread{
     //JSON Keys for the config
     private static final String REGISTRATION_SEMESTERS_KEY = "RegistrationSemesters";
     private static final String PLACES_URL_KEY = "PlacesURL";
+    private static final String PLACE_CATEGORIES_KEY = "Place Categories";
 
     public ConfigDownloader(Context context, boolean forceReload){
         this.mContext = context;
@@ -200,6 +202,19 @@ public class ConfigDownloader extends Thread{
 
         //Save the registration terms
         App.setRegisterTerms(registrationTerms);
+
+        //Instantiate the Jackson ObjectMapper
+        ObjectMapper mapper = new ObjectMapper();
+
+        //Get the place categories
+        List<PlaceCategory> categories = new ArrayList<PlaceCategory>();
+        JSONArray categoriesJSON = configJSON.getJSONArray(PLACE_CATEGORIES_KEY);
+        for(int i = 0; i < categoriesJSON.length(); i ++){
+            categories.add(mapper.readValue(categoriesJSON.getJSONObject(i).toString(), PlaceCategory.class));
+        }
+
+        //Save the place categories
+        App.setPlaceCategories(categories);
     }
 
     private void parsePlaces(String placesString) throws IOException, JSONException {
