@@ -72,8 +72,8 @@ public class MapActivity extends DrawerFragmentActivity {
         mPlaces = new ArrayList<MapPlace>();
         mFavoritePlaces = App.getFavoritePlaces();
 
-        final GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        if (map !=null) {
+        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        if (mMap !=null) {
             //Set the camera's center position
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(MCGILL)
@@ -81,16 +81,15 @@ public class MapActivity extends DrawerFragmentActivity {
                     .bearing(Constants.DEFAULT_BEARING)
                     .tilt(0)
                     .build();
-            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            mMap = map;
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             //Show the user's location
-            map.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(true);
 
             //Go through all of the places
             for (Place place : App.getPlaces()) {
                 //Create a MapPlace for this
-                Marker marker = map.addMarker(new MarkerOptions()
+                Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(place.getLatitude(), place.getLongitude()))
                         .draggable(false)
                         .visible(true));
@@ -106,7 +105,7 @@ public class MapActivity extends DrawerFragmentActivity {
                 findPlaceByString(query);
             }
 
-            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     //If there was a marker that was selected before set it back to red
@@ -144,7 +143,7 @@ public class MapActivity extends DrawerFragmentActivity {
                 @Override
                 public void onClick(View v) {
                     if (mPlaceMarker != null) {
-                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Intent intent = new Intent(Intent.ACTION_VIEW,
                                 Uri.parse("http://maps.google.com/maps?f=d &daddr=" +
                                         mPlaceMarker.mMarker.getPosition().latitude + "," +
                                         mPlaceMarker.mMarker.getPosition().longitude));

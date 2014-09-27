@@ -319,6 +319,8 @@
     <string name="map_favorites_remove">Remove from Favorites</string>
     <string name="map_favorites_added">Added %s to Favorites</string>
     <string name="map_favorites_removed">Removed %s to Favorites</string>
+    <string name="map_search">Search</string>
+    <string name="map_search_hint">Search location</string>
 
     <!-- Unregister Dialog -->
     <string name="unregister_dialog_title">Drop Classes</string>
