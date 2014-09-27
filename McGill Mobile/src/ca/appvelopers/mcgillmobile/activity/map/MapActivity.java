@@ -1,7 +1,6 @@
 package ca.appvelopers.mcgillmobile.activity.map;
 
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -54,8 +53,7 @@ public class MapActivity extends DrawerFragmentActivity {
     private MapPlace mPlaceMarker;
     private LinearLayout mInfoContainer;
     private PlaceCategory mCategory;
-    private boolean mSearchMode;
-    private MapPlace mSearchPlace;
+    private GoogleMap mMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +66,6 @@ public class MapActivity extends DrawerFragmentActivity {
         //Get search intent
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            mSearchMode = true;
             String query = intent.getStringExtra(SearchManager.QUERY);
             findPlaceByString(query);
         }
@@ -85,6 +82,7 @@ public class MapActivity extends DrawerFragmentActivity {
         final GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         if (map !=null) {
             //Set the camera's center position
+            mMap = map;
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(MCGILL)
                     .zoom(Constants.DEFAULT_ZOOM)
@@ -226,18 +224,32 @@ public class MapActivity extends DrawerFragmentActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         // Assumes current activity is the search activity
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setIconifiedByDefault(false);
+        mSearchView.setIconifiedByDefault(true);
         return true;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            findPlaceByString(query);
+        }
     }
 
     private void findPlaceByString(String query) {
         for (MapPlace mapPlace : mPlaces) {
-            if (mapPlace.mPlace.getName().contains(query)) {
+            if (containsString(mapPlace.mPlace.getName(), query)) {
                 mapPlace.mMarker.setVisible(true);
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mapPlace.mPlace.getLatitude(), mapPlace.mPlace.getLongitude())));
             } else {
                 mapPlace.mMarker.setVisible(false);
             }
         }
+    }
+
+    private boolean containsString(String container, String query) {
+        return container.toLowerCase().contains(query.toLowerCase());
     }
 
     class MapPlace{
