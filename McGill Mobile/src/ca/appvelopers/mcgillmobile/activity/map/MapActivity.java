@@ -63,13 +63,6 @@ public class MapActivity extends DrawerFragmentActivity {
 
         GoogleAnalytics.sendScreen(this, "Map");
 
-        //Get search intent
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            findPlaceByString(query);
-        }
-
         //Bind the TextViews
         mInfoContainer = (LinearLayout)findViewById(R.id.info_container);
         mTitle = (TextView)findViewById(R.id.place_title);
@@ -82,7 +75,6 @@ public class MapActivity extends DrawerFragmentActivity {
         final GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         if (map !=null) {
             //Set the camera's center position
-            mMap = map;
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(MCGILL)
                     .zoom(Constants.DEFAULT_ZOOM)
@@ -90,6 +82,7 @@ public class MapActivity extends DrawerFragmentActivity {
                     .tilt(0)
                     .build();
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            mMap = map;
 
             //Show the user's location
             map.setMyLocationEnabled(true);
@@ -104,6 +97,13 @@ public class MapActivity extends DrawerFragmentActivity {
 
                 //Add it to the list
                 mPlaces.add(new MapPlace(place, marker));
+            }
+
+            //Get search intent
+            Intent intent = getIntent();
+            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+                String query = intent.getStringExtra(SearchManager.QUERY);
+                findPlaceByString(query);
             }
 
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
