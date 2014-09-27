@@ -1,12 +1,10 @@
 package ca.appvelopers.mcgillmobile.object;
 
-import android.content.Context;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -20,7 +18,9 @@ import ca.appvelopers.mcgillmobile.R;
  */
 
 @JsonIgnoreProperties(ignoreUnknown =  true)
-public class PlaceCategory{
+public class PlaceCategory implements Serializable{
+    private static final long serialVersionUID = 1L;
+
     public static final String FAVORITES = "Favorites";
     public static final String ALL = "All";
 
@@ -78,23 +78,6 @@ public class PlaceCategory{
                 }
             }
         }
-
-        return categories;
-    }
-
-    public static List<String> getCategories(Context context){
-        List<String> categories = new ArrayList<String>();
-
-        //Get the Strings of each of the categories
-        for(PlaceCategory placeCategory : App.getPlaceCategories()){
-            categories.add(placeCategory.toString());
-        }
-
-        //Sort them alphabetically
-        Collections.sort(categories);
-
-        //Add "All" at the top
-        categories.add(0, context.getString(R.string.map_all));
 
         return categories;
     }
