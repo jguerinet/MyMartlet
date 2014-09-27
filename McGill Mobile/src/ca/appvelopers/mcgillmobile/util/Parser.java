@@ -511,15 +511,31 @@ public class Parser {
                 if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
                     Elements scheduledTimesRows = scheduleTable.get(i+1).getElementsByTag("tr");
                     for (int j = 1; j < scheduledTimesRows.size(); j++) {
+
                         //Time, Days, Location, Section Type, Instructor
                         row = scheduledTimesRows.get(j);
                         Elements cells = row.getElementsByTag("td");
-                        String[] times = cells.get(0).text().split(" - ");
-                        char[] dayCharacters = cells.get(1).text().toCharArray();
-                        String location = cells.get(2).text();
-                        String dateRange = cells.get(3).text();
-                        String sectionType = cells.get(4).text();
-                        String instructor = cells.get(5).text();
+
+                        String[]times = {};
+                        char[] dayCharacters = {};
+                        String location = "";
+                        String dateRange = "";
+                        String sectionType = "";
+                        String instructor = "";
+
+                        try{
+                            times = cells.get(0).text().split(" - ");
+                            dayCharacters = cells.get(1).text().toCharArray();
+                            location = cells.get(2).text();
+                            dateRange = cells.get(3).text();
+                            sectionType = cells.get(4).text();
+                            instructor = cells.get(5).text();
+
+                        }
+                        catch(IndexOutOfBoundsException e){
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "IndexOutOfBounds on Info", null);
+//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                        }
 
                         //Time parsing
                         int startHour, startMinute, endHour, endMinute;
