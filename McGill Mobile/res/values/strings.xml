@@ -38,10 +38,10 @@
     <string name="back">Back</string>
     <string name="start">Start</string>
     <string name="skip">Skip</string>
-    <string name="bug_parser_transcript">There was a bug while downloading your transcript. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ?</string>
-    <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ?</string>
-    <string name="bug_parser_yes">Yes, submit a bug report and have the developers contact me</string>
-    <string name="bug_parser_no">No, do not submit a bug report, I will live without the missing information. </string>
+    <string name="bug_parser_transcript">There was a bug while downloading your transcript. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ? Please note that if this bug is not fixed, there will be an error on your transcript.</string>
+    <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ? Please noe that if this bug is not fixed, there will be an error in your semester schedule.</string>
+    <string name="bug_parser_yes">Sure !</string>
+    <string name="bug_parser_no">No Thanks</string>
     <string name="bug_parser">For developers: Exception caught: %s</string>
     <string name="bug_parser_no_show">Don\'t show this to me again</string>
     <string name="bug_parser_transcript_title">Parsing bug in Transcript for: %s</string>
@@ -308,12 +308,6 @@
     <string name="map_filter">Filter: </string>
     <string name="map_all">All</string>
     <string name="map_favorites">Favorites</string>
-    <string name="map_building">Building</string>
-    <string name="map_food">Food Services</string>
-    <string name="map_social">Social Events</string>
-    <string name="map_athletics">Athletics</string>
-    <string name="map_library">Libraries</string>
-    <string name="map_residence">Residences</string>
     <string name="map_directions">Directions</string>
     <string name="map_favorites_add">Add to Favorites</string>
     <string name="map_favorites_remove">Remove from Favorites</string>
