@@ -43,7 +43,7 @@ public class DialogHelper {
         final CheckBox dontShowAgain = (CheckBox) checkboxLayout.findViewById(R.id.skip);
         builder.setView(checkboxLayout);
         builder.setTitle(context.getString(R.string.warning));
-        builder.setMessage(transcriptBug ? context.getString(R.string.bug_parser_transcript) : context.getString(R.string.bug_parser_semester));
+        builder.setMessage(transcriptBug ? context.getString(R.string.bug_parser_transcript) : context.getString(R.string.bug_parser_semester, term));
         builder.setPositiveButton(context.getString(R.string.bug_parser_yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //Send the bug report
