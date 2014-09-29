@@ -16,7 +16,7 @@ public class Test {
     /**
      * Switch this to true if you want to read the transcript locally
      */
-    public static boolean LOCAL_TRANSCRIPT = true;
+    public static boolean LOCAL_TRANSCRIPT = false;
     /**
      * Switch this to true if you want to read the schedule locally
      */
