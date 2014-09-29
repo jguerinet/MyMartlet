@@ -36,7 +36,7 @@ import ca.appvelopers.mcgillmobile.view.TermAdapter;
  * Created by Ryan Singzon on 19/05/14.
  * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
  */
-public class RegistrationActivity extends DrawerActivity{
+public class RegistrationActivity extends DrawerActivity {
     private Spinner mTermSpinner;
     private TermAdapter mTermAdapter;
     private TimePicker mStartTime, mEndTime;
