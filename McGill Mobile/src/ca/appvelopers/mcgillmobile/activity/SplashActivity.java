@@ -89,9 +89,15 @@ public class SplashActivity extends BaseActivity {
         private TextView mProgressTextView;
         private ProgressBar mProgressBar;
         private ConnectionStatus mConnectionStatus;
+        //Bug Related info
+        private boolean mBugPresent;
+        private boolean mTranscriptBug;
+        private String mTermBug;
 
         public InfoDownloader(Context context){
             this.mContext = context;
+            this.mBugPresent = false;
+            this.mTranscriptBug = false;
         }
 
         @Override
@@ -118,15 +124,9 @@ public class SplashActivity extends BaseActivity {
 //                        }
 
                 //Check if there is all the info or if we need to force reload everything
-                if(App.getClasses() == null || App.getTranscript() == null || App.getUserInfo() == null ||
-                        App.getEbill() == null || App.forceUserReload){
-                    //If there isn't, Update everything
-                    Connection.getInstance().downloadAll(mContext, this);
-                }
-                else{
-                    //If there is, update the essentials
-                    Connection.getInstance().downloadEssential(mContext, this);
-                }
+                boolean downloadEverything = App.getClasses() == null || App.getTranscript() == null
+                        || App.getUserInfo() == null || App.getEbill() == null || App.forceUserReload;
+                Connection.getInstance().download(mContext, !downloadEverything, this);
             }
 
             return null;
@@ -134,6 +134,12 @@ public class SplashActivity extends BaseActivity {
 
         public void publishNewProgress(String title){
             publishProgress(title);
+        }
+
+        public void reportBug(boolean transcript, String term){
+            mBugPresent = true;
+            mTranscriptBug = transcript;
+            mTermBug = term;
         }
 
         @Override
@@ -157,7 +163,14 @@ public class SplashActivity extends BaseActivity {
             //Connection successful: home page
             if(mConnectionStatus == ConnectionStatus.CONNECTION_OK ||
                     mConnectionStatus == ConnectionStatus.CONNECTION_NO_INTERNET){
-                startActivity(new Intent(mContext, App.getHomePage().getHomePageClass()));
+
+                Intent intent = new Intent(mContext, App.getHomePage().getHomePageClass());
+                //If there's a bug, add it to the intent
+                if(mBugPresent){
+                    intent.putExtra(Constants.BUG, mTranscriptBug ? Constants.TRANSCRIPT : Constants.SCHEDULE)
+                        .putExtra(Constants.TERM, mTermBug);
+                }
+                startActivity(intent);
                 finish();
             }
             //Connection not successful : login page
