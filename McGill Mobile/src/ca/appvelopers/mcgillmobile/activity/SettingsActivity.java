@@ -97,7 +97,7 @@ public class SettingsActivity extends DrawerActivity {
                                         GoogleAnalytics.sendEvent(SettingsActivity.this, "About", "Report a Bug",
                                                 null, null);
 
-                                        Help.sendBugReport(SettingsActivity.this, userInput.getText().toString(), "");
+                                        Help.sendBugReport(SettingsActivity.this, userInput.getText().toString());
                                     }
                                 })
                         .create().show();
