@@ -97,34 +97,59 @@ public class Connection {
     /**
      * Download all of the info (upon opening of the app)
      * @param context The app context
+     * @param essential True if we download only the essentials, false otherwise
      * @param infoDownloader The task that is currently downloading the info (to update the progress)
      */
-    public void downloadAll(Context context, SplashActivity.InfoDownloader infoDownloader){
+    public void download(Context context, boolean essential, SplashActivity.InfoDownloader infoDownloader){
         Connection connection = getInstance();
 
         //Update : downloading transcript
         infoDownloader.publishNewProgress(context.getString(R.string.updating_transcript));
 
         //Download the transcript
+        String transcriptError;
         if(!Test.LOCAL_TRANSCRIPT){
-            Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
+            transcriptError = Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
+        }
+        else{
+            transcriptError = Test.testTranscript(context);
         }
 
+        //If there was an error, show it
+        if(transcriptError != null){
+            infoDownloader.reportBug(true, transcriptError);
+        }
+
+        String scheduleBug = null;
         if(!Test.LOCAL_SCHEDULE){
             List<Semester> semesters = App.getTranscript().getSemesters();
-            //Find the latest semester
+
+            //Find the current term
+            Term currentTerm = Term.dateConverter(DateTime.now());
+
             for(Semester semester : semesters){
+                //Leave the loop if the download has been cancelled
+                if(infoDownloader.isCancelled()){
+                    break;
+                }
+
                 Term term = semester.getTerm();
 
-                //Update : downloading classes
-                infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
+                //Download only current and future semesters if essential
+                if(essential && !term.equals(currentTerm) && !term.isAfter(currentTerm)){
+                    infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
 
-                //Download the schedule
-                Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
+                    //Download the schedule
+                    scheduleBug = Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
+                }
             }
         }
         else{
-            Test.testSchedule(context);
+            scheduleBug = Test.testSchedule(context);
+        }
+
+        if(scheduleBug != null){
+            infoDownloader.reportBug(false, scheduleBug);
         }
 
         //Set the default term if there is none set yet
@@ -143,56 +168,6 @@ public class Connection {
         infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
 
         Parser.parseUserInfo(ebillString);
-    }
-
-    /**
-     * Download the relevant info (upon opening of the app)
-     * @param context The app context
-     */
-    public void downloadEssential(Context context, SplashActivity.InfoDownloader infoDownloader){
-        Connection connection = getInstance();
-
-        infoDownloader.publishNewProgress(context.getString(R.string.updating_transcript));
-
-        //Download the transcript
-        if(!Test.LOCAL_TRANSCRIPT && !infoDownloader.isCancelled()){
-            Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
-        }
-        if(!Test.LOCAL_SCHEDULE){
-            List<Semester> semesters = App.getTranscript().getSemesters();
-
-            //Find the current term
-            Term currentTerm = Term.dateConverter(DateTime.now());
-
-            //Download only the current and future semesters
-            for(Semester semester : semesters){
-                //Leave the loop if the download has been cancelled
-                if(infoDownloader.isCancelled()){
-                    break;
-                }
-
-                Term term = semester.getTerm();
-
-                if(term.equals(currentTerm) || term.isAfter(currentTerm)){
-                    infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
-
-                    //Download the schedule
-                    Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
-                }
-            }
-        }
-        else{
-            Test.testSchedule(context);
-        }
-
-        if(!infoDownloader.isCancelled()){
-            infoDownloader.publishNewProgress(context.getString(R.string.updating_ebill));
-            String ebillString = Connection.getInstance().getUrl(context, EBILL);
-            Parser.parseEbill(ebillString);
-
-            infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
-            Parser.parseUserInfo(ebillString);
-        }
     }
 
 	public ConnectionStatus connectToMinerva(Context context){
