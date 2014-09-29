@@ -19,7 +19,6 @@ import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
-import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
 
@@ -91,15 +90,6 @@ public class App extends Application {
 
         //Download the new config
         new ConfigDownloader(this, forceReload).start();
-
-        /* TESTING CODE */
-        if(Test.LOCAL_TRANSCRIPT){
-            Test.testTranscript(this);
-        }
-
-        if(Test.LOCAL_SCHEDULE){
-            Test.testSchedule(this);
-        }
     }
 
     /* GETTER METHODS */
