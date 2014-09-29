@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
+import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
@@ -22,7 +22,7 @@ import ca.appvelopers.mcgillmobile.util.Help;
  * Date :  2014-05-26 8:54 PM
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
-public class WalkthroughActivity extends BaseFragmentActivity {
+public class WalkthroughActivity extends BaseActivity {
     private ViewPager mViewPager;
     private WalkthroughAdapter mWalkthroughAdapter;
 

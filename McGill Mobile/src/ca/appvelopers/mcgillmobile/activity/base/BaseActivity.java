@@ -1,8 +1,8 @@
 package ca.appvelopers.mcgillmobile.activity.base;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import java.util.Locale;
 
@@ -12,7 +12,7 @@ import ca.appvelopers.mcgillmobile.App;
  * Author: Julien
  * Date: 2014-03-16 11:42
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState){

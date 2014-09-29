@@ -15,10 +15,10 @@ import com.facebook.Session;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
-import ca.appvelopers.mcgillmobile.activity.base.BaseFragmentActivity;
+import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.map.MapActivity;
 
-public class DrawerFragmentActivity extends BaseFragmentActivity {
+public class DrawerFragmentActivity extends BaseActivity {
 
     public DrawerLayout drawerLayout;
     public ListView drawerList;
