@@ -2,10 +2,11 @@ package ca.appvelopers.mcgillmobile.activity.semester;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.BaseListActivity;
+import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
@@ -15,7 +16,7 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
  * Date: 31/01/14, 7:59 PM
  * Activity that will show a specific semester from the user's transcript
  */
-public class SemesterActivity extends BaseListActivity {
+public class SemesterActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -54,7 +55,8 @@ public class SemesterActivity extends BaseListActivity {
 
         //Set up the courses list
         SemesterAdapter adapter = new SemesterAdapter(this, semester);
-        setListAdapter(adapter);
+        ListView semesterList = (ListView)findViewById(R.id.semester_list);
+        semesterList.setAdapter(adapter);
     }
 
     @Override
