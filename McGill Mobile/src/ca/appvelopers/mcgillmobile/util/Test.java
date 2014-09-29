@@ -16,7 +16,7 @@ public class Test {
     /**
      * Switch this to true if you want to read the transcript locally
      */
-    public static boolean LOCAL_TRANSCRIPT = false;
+    public static boolean LOCAL_TRANSCRIPT = true;
     /**
      * Switch this to true if you want to read the schedule locally
      */
@@ -26,24 +26,24 @@ public class Test {
      * Test the transcript by reading from a local one
      * @param context The app context
      */
-    public static void testTranscript(Context context){
+    public static String testTranscript(Context context){
         //Read from the file
-        String transcriptString ="";// Help.readFromFile(context, R.raw.missingfall2014);
+        String transcriptString = Help.readFromFile(context, R.raw.test_transcript);
 
-        Parser.parseTranscript(transcriptString);
+        return Parser.parseTranscript(transcriptString);
     }
 
     /**
      * Test the schedule by reading from a local one
      * @param context The app context
      */
-    public static void testSchedule(Context context){
+    public static String testSchedule(Context context){
         //Choose file to read from here
         String scheduleString = Help.readFromFile(context, R.raw.sched_nursing);
 
         //Choose term that this schedule is for here
         Term term = new Term(Season.FALL, 2014);
 
-        Parser.parseClassList(term, scheduleString);
+        return Parser.parseClassList(term, scheduleString);
     }
 }

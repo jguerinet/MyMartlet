@@ -38,7 +38,9 @@ public class Parser {
      * Parses the HTML String to form a transcript
      * @param stringHTML The String to parse
      */
-    public static void parseTranscript(String stringHTML){
+    public static String parseTranscript(String stringHTML){
+        String transcriptError = null;
+
         Document transcriptDocument = Jsoup.parse(stringHTML);
         //Extract program, scholarships, total credits, and CGPA
         Elements rows = transcriptDocument.getElementsByClass("fieldmediumtext");
@@ -71,7 +73,7 @@ public class Parser {
                 catch (NumberFormatException e){
                     cgpa = -1;
                     GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "CGPA", null);
-//                    DialogHelper.showTranscriptBugDialog((Activity)context, "CGPA", e.toString());
+                    transcriptError = "CGPA";
                 }
             }
             //Credits
@@ -83,7 +85,7 @@ public class Parser {
                 catch (NumberFormatException e){
                     totalCredits = -1;
                     GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Total Credits", null);
-//                    DialogHelper.showTranscriptBugDialog((Activity)context, "Total Credits", e.toString());
+                    transcriptError = "Total Credits";
                 }
             }
             //Semester Information
@@ -113,7 +115,7 @@ public class Parser {
                     }
                     catch(NumberFormatException e){
                         GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
-//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
+                        transcriptError = season.toString();
                         year = 2000;
                     }
                 }
@@ -124,7 +126,7 @@ public class Parser {
                     }
                     catch(NumberFormatException e){
                         GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
-//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
+                        transcriptError = season.toString();
                         year = 2000;
                     }
                 }
@@ -135,7 +137,7 @@ public class Parser {
                     }
                     catch(NumberFormatException e){
                         GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
-//                        DialogHelper.showTranscriptBugDialog((Activity)context, season.toString(), e.toString());
+                        transcriptError = season.toString();
                         year = 2000;
                     }
                 }
@@ -221,7 +223,7 @@ public class Parser {
                         }
                         catch (NumberFormatException e){
                             GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Term GPA", null);
-//                            DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
+                            transcriptError = season.toString() + year;
                         }
                     }
                     //Term Credits
@@ -231,7 +233,7 @@ public class Parser {
                         }
                         catch (NumberFormatException e){
                             GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Term Credits", null);
-//                            DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
+                            transcriptError = season.toString() + year;
                         }
                     }
 
@@ -256,7 +258,7 @@ public class Parser {
                             }
                             catch(Exception e){
                                 GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Course Code", null);
-//                                DialogHelper.showTranscriptBugDialog((Activity)context, season.toString() + year, e.toString());
+                                transcriptError = season.toString() + year;
                                 e.printStackTrace();
                             }
                         }
@@ -321,7 +323,14 @@ public class Parser {
                             courseCode = rows.get(semesterIndex + 2).text();
 
                             //Extract the number of credits granted
-                            credits = extractCredits(courseCode);
+                            try{
+                                credits = extractCredits(courseCode);
+                            }
+                            catch(Exception e){
+                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
+                                transcriptError = season.toString() + year;
+                                credits = 99;
+                            }
 
                             Course course = new Course(new Term(season, year), "", courseCode, credits, userGrade,
                                     averageGrade);
@@ -373,6 +382,9 @@ public class Parser {
                                 catch(Exception e3){
                                     //Log.e("TRANSCRIPT PARSER", "Generic error" + e3.getMessage());
                                     e.printStackTrace();
+                                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
+                                    transcriptError = season.toString() + year;
+                                    credits = 99;
                                 }
                             }
                         }
@@ -419,29 +431,19 @@ public class Parser {
         }
         //Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
         App.setTranscript(new Transcript(cgpa, totalCredits, semesters));
+
+        return transcriptError;
     }
 
     //Extracts the number of credits
-    private static double extractCredits(String creditString){
+    private static double extractCredits(String creditString) throws Exception{
         double numCredits;
 
-        try{
-            creditString = creditString.replaceAll("\\s", "");
-            String[] creditArray = creditString.split("-");
-            creditArray = creditArray[1].split("credits");
-            numCredits = Double.parseDouble(creditArray[0]);
-            return numCredits;
-        }
-        catch (NumberFormatException e){
-            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
-//            DialogHelper.showTranscriptBugDialog((Activity)context, "Credit Extractor", e.toString());
-            return 99;
-        }
-        catch(Exception e){
-            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
-//            DialogHelper.showTranscriptBugDialog((Activity)context, "Credit Extractor", e.toString());
-            return 88;
-        }
+        creditString = creditString.replaceAll("\\s", "");
+        String[] creditArray = creditString.split("-");
+        creditArray = creditArray[1].split("credits");
+        numCredits = Double.parseDouble(creditArray[0]);
+        return numCredits;
     }
 
     /**
@@ -449,7 +451,9 @@ public class Parser {
      * @param term The term for these classes
      * @param classHTML The HTML String to parse
      */
-    public static void parseClassList(Term term, String classHTML){
+    public static String parseClassList(Term term, String classHTML){
+        String classError = null;
+
         //Get the list of classes already parsed for that year
         List<ClassItem> classItems = App.getClasses();
 
@@ -490,7 +494,7 @@ public class Parser {
                 catch (NumberFormatException e){
                     //GA
                     GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "crn", null);
-//                    DialogHelper.showSemesterBugDialog((Activity)context, term.toString(), courseTitle, e.toString());
+                    classError = term.toString();
                     e.printStackTrace();
                 }
 
@@ -503,7 +507,7 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "credits", null);
-//                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                    classError = term.toString();
                     e.printStackTrace();
                 }
 
@@ -534,7 +538,7 @@ public class Parser {
                         }
                         catch(IndexOutOfBoundsException e){
                             GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "IndexOutOfBounds on Info", null);
-//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                            classError = term.toString();
                         }
 
                         //Time parsing
@@ -585,7 +589,7 @@ public class Parser {
                             subject = courseCode.substring(0, 4);
                         } catch (StringIndexOutOfBoundsException e) {
                             GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course subject Substring", null);
-//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                            classError = term.toString();
                         }
 
                         String code = "";
@@ -593,7 +597,7 @@ public class Parser {
                             code = courseCode.substring(5, 8);
                         } catch (StringIndexOutOfBoundsException e) {
                             GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course Code Substring", null);
-//                                    DialogHelper.showSemesterBugDialog((Activity) context, term.toString(), courseTitle, e.toString());
+                             classError = term.toString();
                         }
 
                         //Find the concerned course
@@ -612,6 +616,8 @@ public class Parser {
 
         //Save it to the instance variable in Application class
         App.setClasses(classItems);
+
+        return classError;
     }
 
     /**
