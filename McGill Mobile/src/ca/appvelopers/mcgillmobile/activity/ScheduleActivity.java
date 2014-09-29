@@ -18,7 +18,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.drawer.DrawerFragmentActivity;
+import ca.appvelopers.mcgillmobile.activity.base.DrawerFragmentActivity;
 import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.fragment.DayFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;

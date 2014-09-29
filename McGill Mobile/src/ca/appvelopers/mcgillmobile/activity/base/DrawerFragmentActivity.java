@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.drawer;
+package ca.appvelopers.mcgillmobile.activity.base;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,7 +15,6 @@ import com.facebook.Session;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
-import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.map.MapActivity;
 
 public class DrawerFragmentActivity extends BaseActivity {

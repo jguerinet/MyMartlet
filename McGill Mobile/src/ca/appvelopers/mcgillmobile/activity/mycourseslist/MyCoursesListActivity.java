@@ -22,7 +22,7 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
-import ca.appvelopers.mcgillmobile.activity.drawer.DrawerActivity;
+import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
