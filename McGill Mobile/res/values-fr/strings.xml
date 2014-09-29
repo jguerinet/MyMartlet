@@ -240,12 +240,6 @@
     <string name="map_filter">Filtrer: </string>
     <string name="map_all">Tous</string>
     <string name="map_favorites">Favoris</string>
-    <string name="map_building">Bâtiments</string>
-    <string name="map_food">Services Alimentaires</string>
-    <string name="map_social">Evènements Sociaux</string>
-    <string name="map_athletics">Services de Sports</string>
-    <string name="map_library">Bibliothèques</string>
-    <string name="map_residence">Résidences</string>
     <string name="map_directions">Directions</string>
     <string name="map_favorites_add">Ajouter à mes Favoris</string>
     <string name="map_favorites_remove">Retirer de mes Favoris</string>
