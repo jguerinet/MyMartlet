@@ -173,7 +173,7 @@ public class Help {
         return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
     }
 
-    public static void sendBugReport(Context context, String title, String message){
+    public static void sendBugReport(Context context, String title){
         //Get the necessary info
         //App Version Name & Number
         PackageInfo packageInfo = null;
@@ -214,7 +214,7 @@ public class Help {
         bugEmail.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.help_bug_title,
                 "Android") + " " + title);
         //Message
-        bugEmail.putExtra(Intent.EXTRA_TEXT, message + "\n" + context.getString(R.string.help_bug_summary,
+        bugEmail.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.help_bug_summary,
                 "Android",
                 App.getLanguage().getLanguageString(),
                 appVersionName,
