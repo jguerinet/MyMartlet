@@ -17,14 +17,15 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
 import ca.appvelopers.mcgillmobile.activity.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.activity.RegistrationActivity;
+import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
+import ca.appvelopers.mcgillmobile.activity.map.MapActivity;
 import ca.appvelopers.mcgillmobile.activity.mycourseslist.MyCoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 
 public class DrawerActivity extends BaseActivity {
-
     public DrawerLayout drawerLayout;
     public ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
@@ -32,58 +33,74 @@ public class DrawerActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        loadDrawer();
+    }
+
+    public void loadDrawer(){
         assert (getActionBar() != null);
 
         // R.id.drawer_layout should be in every activity with exactly the same id.
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerLayout.setFocusableInTouchMode(false);
 
-        //Set up the drawer toggle
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
-        drawerLayout.setDrawerListener(drawerToggle);
+        //Check that drawerLayout isn't null before doing anything (it will be for MapActivity
+        //because maps requires the onCreate to be called before the setContentView
+        if(drawerLayout != null){
+            drawerLayout.setFocusableInTouchMode(false);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+            //Set up the drawer toggle
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, 0, 0);
+            drawerLayout.setDrawerListener(drawerToggle);
 
-        //Set up the adapter
-        DrawerAdapter drawerAdapter;
-        if(this instanceof TranscriptActivity){
-            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.TRANSCRIPT_POSITION);
-        }
-        else if(this instanceof RegistrationActivity){
-            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
-        }
-        else if(this instanceof EbillActivity){
-            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EBILL_POSITION);
-        }
-        else if(this instanceof DesktopActivity){
-            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.DESKTOP_POSITION);
-        }
-        else if(this instanceof SettingsActivity){
-            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SETTINGS_POSITION);
-        }
-        else if(this instanceof MyCoursesActivity){
-            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MYCOURSES_POSITION);
-        }
-        else if(this instanceof CoursesListActivity){
-            //Wishlist
-            if(((CoursesListActivity)this).wishlist){
-                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.WISHLIST_POSITION);
+            //Set up the adapter
+            DrawerAdapter drawerAdapter;
+            if(this instanceof ScheduleActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SCHEDULE_POSITION);
             }
-            //Course search
-            else{
+            else if(this instanceof TranscriptActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.TRANSCRIPT_POSITION);
+            }
+            else if(this instanceof RegistrationActivity){
                 drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
             }
-        }
-        else if(this instanceof MyCoursesListActivity){
-            drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.COURSES_POSITION);
-        }
-        else{
-            Log.e("Drawer Adapter", "not well initialized");
-            drawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
-        }
+            else if(this instanceof EbillActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.EBILL_POSITION);
+            }
+            else if(this instanceof DesktopActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.DESKTOP_POSITION);
+            }
+            else if(this instanceof SettingsActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SETTINGS_POSITION);
+            }
+            else if(this instanceof MyCoursesActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MYCOURSES_POSITION);
+            }
+            else if(this instanceof CoursesListActivity){
+                //Wishlist
+                if(((CoursesListActivity)this).wishlist){
+                    drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.WISHLIST_POSITION);
+                }
+                //Course search
+                else{
+                    drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.SEARCH_COURSES_POSITION);
+                }
+            }
+            else if(this instanceof MyCoursesListActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.COURSES_POSITION);
+            }
+            else if(this instanceof MapActivity){
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, DrawerAdapter.MAP_POSITION);
+            }
+            else{
+                drawerAdapter = new DrawerAdapter(this, drawerLayout, -1);
+                Log.e("Drawer", "Drawer Adapter was null");
+            }
 
-        drawerList = (ListView) findViewById(R.id.left_drawer);
-        drawerList.setAdapter(drawerAdapter);
+            drawerList = (ListView) findViewById(R.id.left_drawer);
+            drawerList.setAdapter(drawerAdapter);
+
+            drawerToggle.setDrawerIndicatorEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -111,6 +128,8 @@ public class DrawerActivity extends BaseActivity {
                     .show();
         }
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

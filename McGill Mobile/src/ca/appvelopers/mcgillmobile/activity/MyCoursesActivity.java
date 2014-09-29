@@ -23,7 +23,7 @@ import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 
-public class MyCoursesActivity extends DrawerActivity{
+public class MyCoursesActivity extends DrawerActivity {
 
     protected Context mContext = this;
     protected static CookieManager cookieManager;

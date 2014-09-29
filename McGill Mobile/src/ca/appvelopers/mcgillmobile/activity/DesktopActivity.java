@@ -18,7 +18,7 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * Author: Julien
  * Date: 22/01/14, 9:05 PM
  */
-public class DesktopActivity extends DrawerActivity{
+public class DesktopActivity extends DrawerActivity {
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_desktop);

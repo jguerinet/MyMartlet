@@ -30,7 +30,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerFragmentActivity;
+import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -41,7 +41,7 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
  * Date: 14/03/14 9:49 PM
  */
 
-public class MapActivity extends DrawerFragmentActivity {
+public class MapActivity extends DrawerActivity {
     private List<MapPlace> mPlaces;
     private List<Place> mFavoritePlaces;
 

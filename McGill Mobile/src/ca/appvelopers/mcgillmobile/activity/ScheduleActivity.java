@@ -18,7 +18,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerFragmentActivity;
+import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
 import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.fragment.DayFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
@@ -39,7 +39,7 @@ import ca.appvelopers.mcgillmobile.view.ScheduleViewBuilder;
  * 
  * This Activity loads the schedule from https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchd
  */
-public class ScheduleActivity extends DrawerFragmentActivity {
+public class ScheduleActivity extends DrawerActivity {
     private static final int CHANGE_SEMESTER_CODE = 100;
 
     private List<ClassItem> mClassList;
