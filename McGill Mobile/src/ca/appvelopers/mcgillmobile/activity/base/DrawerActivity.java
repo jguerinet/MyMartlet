@@ -24,6 +24,8 @@ import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.activity.map.MapActivity;
 import ca.appvelopers.mcgillmobile.activity.mycourseslist.MyCoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
+import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 public class DrawerActivity extends BaseActivity {
     public DrawerLayout drawerLayout;
@@ -34,6 +36,13 @@ public class DrawerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         loadDrawer();
+
+        //Show the BugDialog if there is one
+        String parserBug = getIntent().getStringExtra(Constants.BUG);
+        if(parserBug != null){
+            DialogHelper.showBugDialog(this, parserBug.equals(Constants.TRANSCRIPT),
+                    getIntent().getStringExtra(Constants.TERM));
+        }
     }
 
     public void loadDrawer(){
