@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.drawer;
+package ca.appvelopers.mcgillmobile.activity.base;
 
 import android.app.Activity;
 import android.app.AlertDialog;

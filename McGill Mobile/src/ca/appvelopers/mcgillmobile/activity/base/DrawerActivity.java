@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.drawer;
+package ca.appvelopers.mcgillmobile.activity.base;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,7 +18,6 @@ import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
 import ca.appvelopers.mcgillmobile.activity.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.activity.RegistrationActivity;
 import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
-import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.activity.mycourseslist.MyCoursesListActivity;
