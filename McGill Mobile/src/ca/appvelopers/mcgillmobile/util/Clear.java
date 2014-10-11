@@ -31,14 +31,14 @@ public class Clear {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .remove(Constants.USERNAME)
-                .commit();
+                .apply();
     }
 
     public static void clearPassword(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .remove(Constants.PASSWORD)
-                .commit();
+                .apply();
     }
 
     public static void clearTranscript(Context context){
