@@ -27,6 +27,8 @@ public class MyCoursesActivity extends DrawerActivity {
 
     protected Context mContext = this;
     protected static CookieManager cookieManager;
+    private WebView mWebView;
+
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,11 @@ public class MyCoursesActivity extends DrawerActivity {
         if(cookieManager.hasCookies())
             cookieManager.removeAllCookie();
 
-        //Get the Webview
-        final WebView webView = (WebView)findViewById(R.id.desktop_webview);
+        //Get the WebView
+        mWebView = (WebView)findViewById(R.id.desktop_webview);
 
         //allows download any file
-        webView.setDownloadListener(new DownloadListener() {
+        mWebView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent,
                                         String contentDisposition, String mimeType,
@@ -77,20 +79,20 @@ public class MyCoursesActivity extends DrawerActivity {
                 manager.enqueue(request);
             }
         });
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
-        webView.getSettings().setSaveFormData(false);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
+        mWebView.getSettings().setSaveFormData(false);
 
-        webView.loadUrl("https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=https://shibboleth.mcgill.ca/idp/shibboleth&target=https%3A%2F%2Fmycourses2.mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l");
-        webView.setWebViewClient(new WebViewClient() {
+        mWebView.loadUrl("https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=https://shibboleth.mcgill.ca/idp/shibboleth&target=https%3A%2F%2Fmycourses2.mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l");
+        mWebView.setWebViewClient(new WebViewClient() {
             @Override
-			public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function f(){" +
-                    "(document.getElementsByName('j_username')[0]).value='" +
-                    Load.loadFullUsername(MyCoursesActivity.this) + "';" +
-                    "(document.getElementsByName('j_password')[0]).value='" +
-                    Load.loadPassword(MyCoursesActivity.this) + "'; document.forms[0].submit();})()");
-                
+                        "(document.getElementsByName('j_username')[0]).value='" +
+                        Load.loadFullUsername(MyCoursesActivity.this) + "';" +
+                        "(document.getElementsByName('j_password')[0]).value='" +
+                        Load.loadPassword(MyCoursesActivity.this) + "'; document.forms[0].submit();})()");
+
                 view.setVisibility(View.VISIBLE);
             }
         });
@@ -98,8 +100,17 @@ public class MyCoursesActivity extends DrawerActivity {
 
 
     public static void deleteCookies(){
-
         if(cookieManager != null && cookieManager.hasCookies())
             cookieManager.removeAllCookie();
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(mWebView.canGoBack()){
+            mWebView.goBack();
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 }
