@@ -22,6 +22,7 @@ public class Clear {
         clearEbill(context);
         clearUserInfo(context);
         clearPassword(context);
+        clearHomepage(context);
         if(!Load.loadRememberUsername(context)){
             clearUsername(context);
         }
@@ -63,5 +64,12 @@ public class Clear {
         context.deleteFile(Constants.USER_INFO_FILE);
         //Reset the static instance in Application Class
         App.setUserInfo(null);
+    }
+
+    public static void clearHomepage(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .remove(Constants.HOMEPAGE)
+                .apply();
     }
 }
