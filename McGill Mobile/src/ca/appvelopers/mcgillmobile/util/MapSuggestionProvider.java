@@ -3,6 +3,7 @@ package ca.appvelopers.mcgillmobile.util;
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.SearchRecentSuggestionsProvider;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -19,7 +20,7 @@ import ca.appvelopers.mcgillmobile.object.Place;
 /**
  * Created by Quang on 9/27/2014.
  */
-public class MapSuggestionProvider extends ContentProvider {
+public class MapSuggestionProvider extends SearchRecentSuggestionsProvider {
     public static final String AUTHORITY = "ca.appvelopers.mcgillmobile.util.MapSuggestionProvider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/locations");
     private List<Place> places;
@@ -35,6 +36,9 @@ public class MapSuggestionProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGEST);
         uriMatcher.addURI(AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY + "/*", SEARCH_SUGGEST);
+    }
+    public MapSuggestionProvider() {
+        setupSuggestions(AUTHORITY, SearchRecentSuggestionsProvider.DATABASE_MODE_QUERIES);
     }
 
     @Override
