@@ -3,8 +3,10 @@ package ca.appvelopers.mcgillmobile.activity.map;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +37,7 @@ import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.MapSuggestionProvider;
 
 /**
  * Author: Ryan Singzon
@@ -98,6 +101,7 @@ public class MapActivity extends DrawerActivity {
                 mPlaces.add(new MapPlace(place, marker));
             }
 
+            setupSuggestions();
             //Get search intent
             Intent intent = getIntent();
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -263,6 +267,13 @@ public class MapActivity extends DrawerActivity {
 
     private boolean containsString(String container, String query) {
         return container.toLowerCase().contains(query.toLowerCase());
+    }
+
+    private void setupSuggestions() {
+        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, MapSuggestionProvider.AUTHORITY, SearchRecentSuggestionsProvider.DATABASE_MODE_QUERIES);
+        for (MapPlace place : mPlaces) {
+            suggestions.saveRecentQuery(place.mPlace.getName(), null);
+        }
     }
 
     class MapPlace{

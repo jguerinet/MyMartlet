@@ -5,5 +5,6 @@
     android:hint="@string/map_search_hint"
     android:searchSuggestAuthority="ca.appvelopers.mcgillmobile.util.MapSuggestionProvider"
     android:searchSuggestIntentAction="android.intent.action.VIEW"
+    android:searchSuggestSelection=" ? "
     android:searchSuggestThreshold="3">
 </searchable>
