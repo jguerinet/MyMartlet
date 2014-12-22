@@ -1,11 +1,6 @@
 package ca.appvelopers.mcgillmobile.background;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.R;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,13 +8,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Transcript;
-import ca.appvelopers.mcgillmobile.util.*;
+import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
 /**
