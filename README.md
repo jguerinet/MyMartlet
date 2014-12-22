@@ -17,10 +17,9 @@ Directories
 
 Team Members
 ------
-
-Joshua David Alfaro - Lead Designer
-Julien Guerinet - Project Leader
-Rafi Uddin - Android Support
-Ryan Singzon - Android Developer
-Shabbir Hussain - Android Developer
-Quang Dao - Android Developer
+* Joshua David Alfaro - Lead Designer
+* Julien Guerinet - Project Leader
+* Rafi Uddin - Android Support
+* Ryan Singzon - Android Developer
+* Shabbir Hussain - Android Developer
+* Quang Dao - Android Developer
