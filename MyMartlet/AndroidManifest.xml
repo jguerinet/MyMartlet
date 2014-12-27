@@ -8,20 +8,20 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
-    //Internet permission
+    <!-- Internet permission -->
     <uses-permission android:name="android.permission.INTERNET" />
-    //Save anything that is external to the app
+    <!-- Save anything that is external to the app -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    //To see if the user is connected to the internet
+    <!-- To see if the user is connected to the internet -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    //Location permissions for the map
+    <!-- Location permissions for the map -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    //For the seat and grade checkers
+    <!-- For the seat and grade checkers -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
-    //Maps Permission
+    <!-- Maps Permission -->
     <permission
         android:name="com.example.googlemaps.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
