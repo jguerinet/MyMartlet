@@ -55,7 +55,7 @@
     </style>
 
     <!-- Dialog Theme -->
-    <style name="Dialog.MyMartlet" parent="@android:style/Theme.Holo.Light.Dialog">
+    <style name="Dialog.MyMartlet" parent="Theme.AppCompat.Dialog">
         <!-- Action Bar Customizations -->
         <item name="android:actionBarItemBackground">@drawable/selectable_background_mymcgill</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.MyMartlet</item>
