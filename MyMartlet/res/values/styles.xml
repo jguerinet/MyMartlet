@@ -52,6 +52,8 @@
         <item name="colorAccent">@color/red</item>
         <!-- Button -->
         <item name="android:buttonStyle">@style/ButtonMyMartlet</item>
+        <!-- TextView -->
+        <item name="android:textViewStyle">@style/Theme.MyMartlet.TextView</item>
     </style>
 
     <!-- Dialog Theme -->
@@ -90,6 +92,11 @@
         <item name="android:listChoiceBackgroundIndicator">@drawable/mymcgill_list_selector_holo_light</item>
         <item name="android:activatedBackgroundIndicator">@drawable/mymcgill_activated_background_holo_light</item>
         <item name="android:fastScrollThumbDrawable">@drawable/mymcgill_fastscroll_thumb_holo</item>
+    </style>
+
+    <!-- TextView -->
+    <style name="Theme.MyMartlet.TextView" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <!-- Action Bar -->
