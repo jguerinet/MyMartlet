@@ -19,7 +19,6 @@
 
         <!-- EditText Customizations -->
         <item name="android:editTextBackground">@drawable/mymcgill_edit_text_holo_light</item>
-        <item name="android:textColorHighlight">#99db231e</item>
         <item name="android:textSelectHandleLeft">@drawable/mymcgill_text_select_handle_left</item>
         <item name="android:textSelectHandleRight">@drawable/mymcgill_text_select_handle_right</item>
         <item name="android:textSelectHandle">@drawable/mymcgill_text_select_handle_middle</item>
@@ -54,6 +53,8 @@
         <item name="android:buttonStyle">@style/ButtonMyMartlet</item>
         <!-- TextView -->
         <item name="android:textViewStyle">@style/Theme.MyMartlet.TextView</item>
+        <!-- EditText Highlight Color -->
+        <item name="android:textColorHighlight">#99db231e</item>
     </style>
 
     <!-- Dialog Theme -->
