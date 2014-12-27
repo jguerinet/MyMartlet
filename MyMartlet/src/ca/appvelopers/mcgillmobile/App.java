@@ -20,7 +20,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Update;
-import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
 
 /**
  * Author: Julien
@@ -87,9 +86,6 @@ public class App extends Application {
         placeCategories = Load.loadPlaceCategories(this);
         //Load the register terms
         registerTerms = Load.loadRegisterTerms(this);
-
-        //Download the new config
-        new ConfigDownloader(this, forceReload).start();
     }
 
     /* GETTER METHODS */

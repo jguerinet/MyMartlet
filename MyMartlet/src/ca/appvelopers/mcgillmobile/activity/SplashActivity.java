@@ -1,14 +1,24 @@
 package ca.appvelopers.mcgillmobile.activity;
 
+import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -21,6 +31,9 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
+import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
+import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Author: Julien
@@ -29,27 +42,30 @@ import ca.appvelopers.mcgillmobile.util.Load;
 public class SplashActivity extends BaseActivity {
     private InfoDownloader mInfoDownloader;
 
+    private String mUsername;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        //Get the username and password stored
-        final String username = Load.loadFullUsername(this);
-        final String password = Load.loadPassword(this);
+        new ConfigDownloader(this) {
+            @Override
+            protected void onPostExecute(Void param) {
+                //Get the username and password stored
+                mUsername = Load.loadUsername(SplashActivity.this);
+                String password = Load.loadPassword(SplashActivity.this);
 
-        //If one of them is null, send the user to the LoginActivity
-        if(username == null || password == null){
-            //If we need to go back to the login, make sure to delete anything with the previous user's info
-            Clear.clearAllInfo(this);
-            GoogleAnalytics.sendEvent(this, "Splash", "Auto-Login", "false", null);
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-        //If not, try to log him in, and send him to the LoginActivity if there's a problem
-        else{
-            mInfoDownloader = new InfoDownloader(this);
-            mInfoDownloader.execute();
-        }
+                //If one of them is null, show the login screen with no error message
+                if(mUsername == null || password == null){
+                    showLoginScreen((ConnectionStatus)getIntent().getSerializableExtra(Constants.CONNECTION_STATUS));
+                }
+                //If not, try to log him in and download the info
+                else{
+                    mInfoDownloader = new InfoDownloader();
+                    mInfoDownloader.execute();
+                }
+            }
+        }.execute();
     }
 
     @Override
@@ -84,29 +100,170 @@ public class SplashActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void showLoginScreen(ConnectionStatus error){
+        //Move the logo to the top
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        View logo = findViewById(R.id.logo);
+        logo.setLayoutParams(params);
+
+        //Show the login container
+        final LinearLayout loginContainer = (LinearLayout)findViewById(R.id.login_container);
+        loginContainer.setVisibility(View.VISIBLE);
+
+        //Make sure to delete anything with the previous user's info
+        Clear.clearAllInfo(this);
+
+        GoogleAnalytics.sendScreen(this, "Login");
+
+        //Get the necessary views
+        final Button login = (Button) findViewById(R.id.login_button);
+        final EditText usernameView = (EditText) findViewById(R.id.login_username);
+        final EditText passwordView = (EditText) findViewById(R.id.login_password);
+        //Set it to that when clicking the IME Action button it tries to log you in directly
+        passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_GO){
+                    login.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        final CheckBox rememberUsernameView = (CheckBox) findViewById(R.id.login_remember_username);
+        //Remember Me box checked based on user's previous preference
+        rememberUsernameView.setChecked(Load.loadRememberUsername(this));
+
+        //Check if an error message needs to be displayed, display it if so
+        if(error != null){
+            DialogHelper.showNeutralAlertDialog(this, getString(R.string.error), error.getErrorString(this));
+        }
+
+        //Fill out username text if it is present
+        if(mUsername != null){
+            usernameView.setText(mUsername);
+        }
+
+        //Set up the OnClickListener for the login button
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Get the username text
+                final String username = usernameView.getText().toString().trim();
+
+                //Get the password text
+                final String password = passwordView.getText().toString().trim();
+
+                //Check that both of them are not empty, create appropriate error messages if so
+                if(TextUtils.isEmpty(username)){
+                    DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
+                            getString(R.string.login_error_username_empty));
+                    return;
+                }
+                else if(TextUtils.isEmpty(password)){
+                    DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
+                            getString(R.string.login_error_password_empty));
+                    return;
+                }
+
+                final ProgressDialog progressDialog = new ProgressDialog(SplashActivity.this);
+                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Set the username and password
+                        Connection.getInstance().setUsername(username + getString(R.string.login_email));
+                        Connection.getInstance().setPassword(password);
+                        final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(SplashActivity.this);
+                        // If the connection was successful, go to Homepage
+                        if (connectionStatus == ConnectionStatus.CONNECTION_OK) {
+                            // Store the login info.
+                            Save.saveUsername(SplashActivity.this, username);
+                            Save.savePassword(SplashActivity.this, password);
+                            Save.saveRememberUsername(SplashActivity.this, rememberUsernameView.isChecked());
+                            GoogleAnalytics.sendEvent(SplashActivity.this, "Login", "Remember Username",
+                                    "" + rememberUsernameView.isChecked(), null);
+
+                            //set the background receiver after successful login
+//                            if(!App.isAlarmActive()){
+//                            	App.SetAlarm(LoginActivity.this);
+//                            }
+
+                            //Dismiss the progress dialog
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+
+                                    //Move the logo to the center
+                                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                                            ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+                                    params.addRule(RelativeLayout.CENTER_IN_PARENT);
+                                    View logo = findViewById(R.id.logo);
+                                    logo.setLayoutParams(params);
+
+                                    //Hide the login container
+                                    loginContainer.setVisibility(View.GONE);
+
+                                }
+                            });
+
+                            //Start the downloading of information
+                            mInfoDownloader = new InfoDownloader();
+                            mInfoDownloader.execute();
+                        }
+                        //Else show error dialog
+                        else{
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    GoogleAnalytics.sendEvent(SplashActivity.this, "Login", "Login Error",
+                                            connectionStatus.getGAString(), null);
+                                    progressDialog.dismiss();
+                                    DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
+                                            connectionStatus.getErrorString(SplashActivity.this));
+                                }
+                            });
+                        }
+                    }
+                }).start();
+            }
+        });
+    }
+
     public class InfoDownloader extends AsyncTask<Void, String, Void>{
         private Context mContext;
+        private LinearLayout mLoadingContainer;
         private TextView mProgressTextView;
-        private ProgressBar mProgressBar;
         private ConnectionStatus mConnectionStatus;
         //Bug Related info
         private boolean mBugPresent;
         private boolean mTranscriptBug;
         private String mTermBug;
 
-        public InfoDownloader(Context context){
-            this.mContext = context;
+        public InfoDownloader(){
+            this.mContext = SplashActivity.this;
             this.mBugPresent = false;
             this.mTranscriptBug = false;
         }
 
         @Override
         protected void onPreExecute(){
+            //Set the loading container to visible
+            mLoadingContainer = (LinearLayout)findViewById(R.id.loading_container);
+            mLoadingContainer.setVisibility(View.VISIBLE);
+
             mProgressTextView = (TextView)findViewById(R.id.loading_title);
 
-            //Set the progress bar to visible
-            mProgressBar = (ProgressBar)findViewById(R.id.loading_progress);
-            mProgressBar.setVisibility(View.VISIBLE);
+            //Reset the text (if it was set during a previous login attempt
+            mProgressTextView.setText("");
         }
 
         @Override
@@ -136,12 +293,6 @@ public class SplashActivity extends BaseActivity {
             publishProgress(title);
         }
 
-        public void reportBug(boolean transcript, String term){
-            mBugPresent = true;
-            mTranscriptBug = transcript;
-            mTermBug = term;
-        }
-
         @Override
         protected void onProgressUpdate(String... progress){
             //Update the TextView
@@ -153,12 +304,16 @@ public class SplashActivity extends BaseActivity {
             onPostExecute(null);
         }
 
+        public void reportBug(boolean transcript, String term){
+            mBugPresent = true;
+            mTranscriptBug = transcript;
+            mTermBug = term;
+        }
+
         @Override
         protected void onPostExecute(Void result) {
-            //Hide the text
-            mProgressTextView.setVisibility(View.INVISIBLE);
-            //Hide the progress bar
-            mProgressBar.setVisibility(View.INVISIBLE);
+            //Hide the container
+            mLoadingContainer.setVisibility(View.INVISIBLE);
 
             //Connection successful: home page
             if(mConnectionStatus == ConnectionStatus.CONNECTION_OK ||
@@ -173,13 +328,9 @@ public class SplashActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             }
-            //Connection not successful : login page
+            //Connection not successful : login
             else{
-                Clear.clearAllInfo(mContext);
-                Intent intent = new Intent(mContext, LoginActivity.class);
-                intent.putExtra(Constants.CONNECTION_STATUS, mConnectionStatus);
-                startActivity(intent);
-                finish();
+                showLoginScreen(mConnectionStatus);
             }
         }
     }

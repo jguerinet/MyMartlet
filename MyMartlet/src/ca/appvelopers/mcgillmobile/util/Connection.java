@@ -29,7 +29,6 @@ import javax.net.ssl.HttpsURLConnection;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.activity.SplashActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
@@ -276,7 +275,7 @@ public class Connection {
                             Clear.clearAllInfo(activity);
 
                             //Go back to LoginContext
-                            Intent intent = new Intent(activity, LoginActivity.class);
+                            Intent intent = new Intent(activity, SplashActivity.class);
                             intent.putExtra(Constants.CONNECTION_STATUS, connectionResult);
                             activity.startActivity(intent);
 
