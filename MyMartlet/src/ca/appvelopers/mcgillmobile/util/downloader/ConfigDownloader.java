@@ -1,6 +1,7 @@
 package ca.appvelopers.mcgillmobile.util.downloader;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
@@ -43,7 +44,7 @@ import ca.appvelopers.mcgillmobile.util.Save;
  * Date: 2014-07-12 10:09 PM
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
-public class ConfigDownloader extends Thread{
+public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     private Context mContext;
     private boolean mForceReload;
     private String mPlacesURL;
@@ -56,13 +57,13 @@ public class ConfigDownloader extends Thread{
     private static final String PLACES_URL_KEY = "PlacesURL";
     private static final String PLACE_CATEGORIES_KEY = "Place Categories";
 
-    public ConfigDownloader(Context context, boolean forceReload){
+    public ConfigDownloader(Context context){
         this.mContext = context;
-        this.mForceReload = forceReload;
+        this.mForceReload = App.forceReload;
     }
 
     @Override
-    public void run(){
+    public Void doInBackground(Void... params){
         //Check if we are connected to the internet
         if(Connection.isNetworkAvailable(mContext)){
             //If-Modified-Since
@@ -185,7 +186,11 @@ public class ConfigDownloader extends Thread{
             }
         }
         Log.e("Data Download", "Finished");
+        return null;
     }
+
+    @Override
+    protected abstract void onPostExecute(Void param);
 
     private void parseConfig(String configString) throws IOException, JSONException {
         JSONObject configJSON = new JSONObject(configString);

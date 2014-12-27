@@ -19,11 +19,11 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
-import ca.appvelopers.mcgillmobile.activity.LoginActivity;
 import ca.appvelopers.mcgillmobile.activity.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.activity.RegistrationActivity;
 import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.activity.SettingsActivity;
+import ca.appvelopers.mcgillmobile.activity.SplashActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.activity.map.MapActivity;
@@ -220,8 +220,8 @@ public class DrawerAdapter extends BaseAdapter {
                                     public void onClick(DialogInterface dialog, int which) {
                                         GoogleAnalytics.sendEvent(mActivity, "Logout", "Clicked", null, null);
                                         Clear.clearAllInfo(mActivity);
-                                        //Go back to LoginActivity
-                                        mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
+                                        //Go back to SplashActivity
+                                        mActivity.startActivity(new Intent(mActivity, SplashActivity.class));
                                         MyCoursesActivity.deleteCookies();
                                     }
 

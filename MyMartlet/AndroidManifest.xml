@@ -43,10 +43,6 @@
         android:theme="@style/Theme.MyMartlet"
         android:vmSafeMode="true" >
         <activity
-            android:name=".activity.LoginActivity"
-            android:label="@string/title_login"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
