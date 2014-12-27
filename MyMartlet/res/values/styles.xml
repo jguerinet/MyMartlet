@@ -3,10 +3,7 @@
 <!-- Base Styles File -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- App Theme -->
-    <style name="Theme.MyMartlet" parent="Theme.MyMartlet.Base"/>
-
-    <!-- App Base Theme -->
-    <style name="Theme.MyMartlet.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.MyMartlet" parent="Theme.MyMartlet.Base">
         <!-- Action Bar Customizations -->
         <item name="android:actionBarItemBackground">@drawable/selectable_background_mymcgill</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.MyMartlet</item>
@@ -20,14 +17,6 @@
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.MyMartlet</item>
         <item name="android:actionBarWidgetTheme">@style/MyMartlet.Widget</item>
 
-        <!-- Lollipop Additions -->
-        <!-- App Bar Color -->
-        <item name="colorPrimary">@color/red</item>
-        <!-- Darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">@color/red_dark</item>
-        <!-- UI Control Color -->
-        <item name="colorAccent">@color/red</item>
-
         <!-- EditText Customizations -->
         <item name="android:editTextBackground">@drawable/mymcgill_edit_text_holo_light</item>
         <item name="android:textColorHighlight">#99db231e</item>
@@ -39,7 +28,7 @@
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextView.MyMartlet</item>
         <item name="android:listChoiceIndicatorMultiple">@drawable/mymcgill_btn_check_holo_light</item>
         <item name="android:listChoiceIndicatorSingle">@drawable/mymcgill_btn_radio_holo_light</item>
-        <item name="android:buttonStyle">@style/Button.MyMartlet</item>
+        <item name="android:buttonStyle">@style/ButtonMyMartlet</item>
         <item name="android:imageButtonStyle">@style/ImageButton.MyMartlet</item>
         <item name="android:dropDownSpinnerStyle">@style/Spinner.MyMartlet</item>
         <item name="android:progressBarStyleHorizontal">@style/ProgressBar.MyMartlet</item>
@@ -51,6 +40,19 @@
         <item name="android:listChoiceBackgroundIndicator">@drawable/mymcgill_list_selector_holo_light</item>
         <item name="android:activatedBackgroundIndicator">@drawable/mymcgill_activated_background_holo_light</item>
         <item name="android:fastScrollThumbDrawable">@drawable/mymcgill_fastscroll_thumb_holo</item>
+    </style>
+
+    <!-- App Base Theme -->
+    <style name="Theme.MyMartlet.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Lollipop Additions -->
+        <!-- App Bar Color -->
+        <item name="colorPrimary">@color/red</item>
+        <!-- Darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/red_dark</item>
+        <!-- UI Control Color -->
+        <item name="colorAccent">@color/red</item>
+        <!-- Button -->
+        <item name="android:buttonStyle">@style/ButtonMyMartlet</item>
     </style>
 
     <!-- Dialog Theme -->
@@ -78,7 +80,6 @@
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextView.MyMartlet</item>
         <item name="android:listChoiceIndicatorMultiple">@drawable/mymcgill_btn_check_holo_light</item>
         <item name="android:listChoiceIndicatorSingle">@drawable/mymcgill_btn_radio_holo_light</item>
-        <item name="android:buttonStyle">@style/Button.MyMartlet</item>
         <item name="android:imageButtonStyle">@style/ImageButton.MyMartlet</item>
         <item name="android:dropDownSpinnerStyle">@style/Spinner.MyMartlet</item>
         <item name="android:progressBarStyleHorizontal">@style/ProgressBar.MyMartlet</item>
@@ -151,8 +152,8 @@
     </style>
 
     <!-- Button -->
-    <style name="Button.MyMartlet" parent="android:Widget.Holo.Light.Button">
-      <item name="android:background">@drawable/mymcgill_btn_default_holo_light</item>
+    <style name="ButtonMyMartlet">
+      <item name="android:background">@drawable/custom_btn</item>
       <item name="android:textColor">@color/white</item>
     </style>
 
