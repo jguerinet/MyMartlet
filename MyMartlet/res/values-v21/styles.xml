@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme for API 21+ -->
+    <style name="Theme.MyMartlet" parent="Theme.MyMartlet.Base">
+        <item name="android:statusBarColor">@color/red_dark</item>
+        <item name="android:alertDialogTheme">@style/Theme.MyMartlet.AlertDialog</item>
+    </style>
+
+    <style name="Theme.MyMartlet.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/red</item>
+        <item name="android:colorPrimaryDark">@color/red_dark</item>
+        <item name="android:colorAccent">@color/red</item>
+    </style>
+</resources>

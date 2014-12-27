@@ -1,109 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Generated with http://android-holo-colors.com -->
+<!-- Base Styles File -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="Theme.Mymcgill" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+    <!-- App Theme -->
+    <style name="Theme.MyMartlet" parent="Theme.MyMartlet.Base"/>
+
+    <!-- App Base Theme -->
+    <style name="Theme.MyMartlet.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Action Bar Customizations -->
         <item name="android:actionBarItemBackground">@drawable/selectable_background_mymcgill</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Mymcgill</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Mymcgill</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Mymcgill</item>
-        <item name="android:actionBarTabTextStyle">@style/ActionBarTabTextStyle.Mymcgill</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Mymcgill</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Mymcgill</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.MyMartlet</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.MyMartlet</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.MyMartlet</item>
+        <item name="android:actionBarTabTextStyle">@style/ActionBarTabTextStyle.MyMartlet</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.MyMartlet</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.MyMartlet</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_mymcgill</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_mymcgill</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Mymcgill</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.MyMartlet</item>
+        <item name="android:actionBarWidgetTheme">@style/MyMartlet.Widget</item>
 
-        <!-- Light.DarkActionBar specific -->
-        <item name="android:actionBarWidgetTheme">@style/Theme.Mymcgill.Widget</item>
+        <!-- Lollipop Additions -->
+        <!-- App Bar Color -->
+        <item name="colorPrimary">@color/red</item>
+        <!-- Darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/red_dark</item>
+        <!-- UI Control Color -->
+        <item name="colorAccent">@color/red</item>
 
+        <!-- EditText Customizations -->
+        <item name="android:editTextBackground">@drawable/mymcgill_edit_text_holo_light</item>
+        <item name="android:textColorHighlight">#99db231e</item>
+        <item name="android:textSelectHandleLeft">@drawable/mymcgill_text_select_handle_left</item>
+        <item name="android:textSelectHandleRight">@drawable/mymcgill_text_select_handle_right</item>
+        <item name="android:textSelectHandle">@drawable/mymcgill_text_select_handle_middle</item>
+
+        <!-- Other Components Customizations -->
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextView.MyMartlet</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/mymcgill_btn_check_holo_light</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/mymcgill_btn_radio_holo_light</item>
+        <item name="android:buttonStyle">@style/Button.MyMartlet</item>
+        <item name="android:imageButtonStyle">@style/ImageButton.MyMartlet</item>
+        <item name="android:dropDownSpinnerStyle">@style/Spinner.MyMartlet</item>
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBar.MyMartlet</item>
+        <item name="android:seekBarStyle">@style/SeekBar.MyMartlet</item>
+        <item name="android:ratingBarStyle">@style/RatingBar.MyMartlet</item>
+        <item name="android:ratingBarStyleIndicator">@style/RatingBarBig.MyMartlet</item>
+        <item name="android:ratingBarStyleSmall">@style/RatingBarSmall.MyMartlet</item>
+        <item name="android:buttonStyleToggle">@style/Toggle.MyMartlet</item>
+        <item name="android:listChoiceBackgroundIndicator">@drawable/mymcgill_list_selector_holo_light</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/mymcgill_activated_background_holo_light</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/mymcgill_fastscroll_thumb_holo</item>
     </style>
 
-    <style name="DialogTheme.Mymcgill" parent="@android:style/Theme.Holo.Light.Dialog">
+    <!-- Dialog Theme -->
+    <style name="Dialog.MyMartlet" parent="@android:style/Theme.Holo.Light.Dialog">
+        <!-- Action Bar Customizations -->
         <item name="android:actionBarItemBackground">@drawable/selectable_background_mymcgill</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Mymcgill</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Mymcgill</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Mymcgill</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Mymcgill</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Mymcgill</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.MyMartlet</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.MyMartlet</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.MyMartlet</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.MyMartlet</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.MyMartlet</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_mymcgill</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_mymcgill</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Mymcgill</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.MyMartlet</item>
+        <item name="android:actionBarWidgetTheme">@style/MyMartlet.Widget</item>
 
-        <!-- Light.DarkActionBar specific -->
-        <item name="android:actionBarWidgetTheme">@style/Theme.Mymcgill.Widget</item>
+        <!-- EditText Customizations -->
+        <item name="android:editTextBackground">@drawable/mymcgill_edit_text_holo_light</item>
+        <item name="android:textColorHighlight">#99db231e</item>
+        <item name="android:textSelectHandleLeft">@drawable/mymcgill_text_select_handle_left</item>
+        <item name="android:textSelectHandleRight">@drawable/mymcgill_text_select_handle_right</item>
+        <item name="android:textSelectHandle">@drawable/mymcgill_text_select_handle_middle</item>
 
+        <!-- Other Components Customizations -->
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextView.MyMartlet</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/mymcgill_btn_check_holo_light</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/mymcgill_btn_radio_holo_light</item>
+        <item name="android:buttonStyle">@style/Button.MyMartlet</item>
+        <item name="android:imageButtonStyle">@style/ImageButton.MyMartlet</item>
+        <item name="android:dropDownSpinnerStyle">@style/Spinner.MyMartlet</item>
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBar.MyMartlet</item>
+        <item name="android:seekBarStyle">@style/SeekBar.MyMartlet</item>
+        <item name="android:ratingBarStyle">@style/RatingBar.MyMartlet</item>
+        <item name="android:ratingBarStyleIndicator">@style/RatingBarBig.MyMartlet</item>
+        <item name="android:ratingBarStyleSmall">@style/RatingBarSmall.MyMartlet</item>
+        <item name="android:buttonStyleToggle">@style/Toggle.MyMartlet</item>
+        <item name="android:listChoiceBackgroundIndicator">@drawable/mymcgill_list_selector_holo_light</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/mymcgill_activated_background_holo_light</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/mymcgill_fastscroll_thumb_holo</item>
     </style>
 
-    <style name="ActionBar.Solid.Mymcgill" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <!-- Action Bar -->
+    <style name="ActionBar.Solid.MyMartlet" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/ab_solid_mymcgill</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_mymcgill</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_mymcgill</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Mymcgill</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.MyMartlet</item>
     </style>
 
-    <style name="ActionBar.Transparent.Mymcgill" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@drawable/ab_transparent_mymcgill</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Mymcgill</item>
-    </style>
-
-    <style name="PopupMenu.Mymcgill" parent="@android:style/Widget.Holo.ListPopupWindow">
+    <!-- Popup Menu -->
+    <style name="PopupMenu.MyMartlet" parent="@android:style/Widget.Holo.ListPopupWindow">
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_mymcgill</item>
     </style>
 
-    <style name="DropDownListView.Mymcgill" parent="@android:style/Widget.Holo.ListView.DropDown">
+    <!-- Drop-Down ListView -->
+    <style name="DropDownListView.MyMartlet" parent="@android:style/Widget.Holo.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_mymcgill</item>
     </style>
 
-    <style name="ActionBarTabStyle.Mymcgill" parent="@android:style/Widget.Holo.ActionBar.TabView">
+    <!-- Action Bar Tab Style -->
+    <style name="ActionBarTabStyle.MyMartlet" parent="@android:style/Widget.Holo.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_mymcgill</item>
-
     </style>
 
-    <style name="ActionBarTabTextStyle.Mymcgill" parent="@android:style/Widget.ActionBar.TabText">
+    <!-- Action Bar Tab Text Style -->
+    <style name="ActionBarTabTextStyle.MyMartlet" parent="@android:style/Widget.ActionBar.TabText">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="DropDownNav.Mymcgill" parent="@android:style/Widget.Holo.Spinner">
+    <!-- Drop-Down Navigation -->
+    <style name="DropDownNav.MyMartlet" parent="@android:style/Widget.Holo.Spinner">
         <item name="android:background">@drawable/spinner_background_ab_mymcgill</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_mymcgill</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_mymcgill</item>
     </style>
 
-    <style name="ProgressBar.Mymcgill" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_mymcgill</item>
+    <!-- Progress Bar -->
+    <style name="ProgressBar.MyMartlet" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/mymcgill_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/mymcgill_progress_indeterminate_horizontal_holo_light</item>
     </style>
 
-    <style name="ActionButton.CloseMode.Mymcgill" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+    <!-- Close Button -->
+    <style name="ActionButton.CloseMode.MyMartlet" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_mymcgill</item>
     </style>
 
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Mymcgill.Widget" parent="@android:style/Theme.Holo">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Mymcgill</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Mymcgill</item>
+    <!-- Widget Theme -->
+    <style name="MyMartlet.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.MyMartlet</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.MyMartlet</item>
     </style>
 
-    <style name="AutoCompleteTextViewMyMcGill" parent="android:Widget.Holo.Light.AutoCompleteTextView">
-      <item name="android:dropDownSelector">@drawable/mymcgill_list_selector_holo_light</item>
+    <!-- AutoComplete TextView -->
+    <style name="AutoCompleteTextView.MyMartlet" parent="android:Widget.Holo.Light.AutoCompleteTextView">
+        <item name="android:dropDownSelector">@drawable/mymcgill_list_selector_holo_light</item>
 	    <item name="android:background">@drawable/mymcgill_edit_text_holo_light</item>
-  </style>
+    </style>
 
-  <style name="ButtonMyMcGill" parent="android:Widget.Holo.Light.Button">
-	  <item name="android:background">@drawable/mymcgill_btn_default_holo_light</item>
+    <!-- Button -->
+    <style name="Button.MyMartlet" parent="android:Widget.Holo.Light.Button">
+      <item name="android:background">@drawable/mymcgill_btn_default_holo_light</item>
       <item name="android:textColor">@color/white</item>
-  </style>
+    </style>
 
-  <style name="ImageButtonMyMcGill" parent="android:Widget.Holo.Light.ImageButton">
-	  <item name="android:background">@drawable/mymcgill_btn_default_holo_light</item>
-  </style>
+    <!-- ImageButton -->
+    <style name="ImageButton.MyMartlet" parent="android:Widget.Holo.Light.ImageButton">
+      <item name="android:background">@drawable/mymcgill_btn_default_holo_light</item>
+    </style>
 
-  <style name="SpinnerMyMcGill" parent="android:Widget.Holo.Light.Spinner">
+    <!-- Spinner -->
+    <style name="Spinner.MyMartlet" parent="android:Widget.Holo.Light.Spinner">
       <item name="android:background">@drawable/mymcgill_spinner_background_holo_light</item>
       <item name="android:dropDownSelector">@drawable/mymcgill_list_selector_holo_light</item>
-  </style>
+    </style>
 
-  <style name="TabMyMcGill">
+    <!-- Tab -->
+    <style name="TabMyMartlet">
       <item name="android:gravity">center_horizontal</item>
       <item name="android:paddingLeft">16dip</item>
       <item name="android:paddingRight">16dip</item>
@@ -111,46 +176,46 @@
       <item name="android:layout_width">0dip</item>
       <item name="android:layout_weight">1</item>
       <item name="android:minWidth">80dip</item>
-  </style>
+    </style>
 
-  <style name="TabTextMyMcGill">
-	  <item name="android:textColor">#000000</item>
+    <!-- Tab Text -->
+    <style name="TabTextMyMartlet">
+      <item name="android:textColor">#000000</item>
       <item name="android:textSize">12sp</item>
       <item name="android:textStyle">bold</item>
-      <!-- v14 <item name="android:textAllCaps">true</item> -->
+      <item name="android:textAllCaps">true</item>
       <item name="android:ellipsize">marquee</item>
       <item name="android:maxLines">2</item>
       <item name="android:maxWidth">180dip</item>
-  </style>
+    </style>
 
-  <style name="ProgressBarMyMcGill" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
-      <item name="android:progressDrawable">@drawable/mymcgill_progress_horizontal_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/mymcgill_progress_indeterminate_horizontal_holo_light</item>
-  </style>
-
-  <style name="SeekBarMyMcGill" parent="android:Widget.Holo.Light.SeekBar">
+    <!-- SeekBar -->
+    <style name="SeekBar.MyMartlet" parent="android:Widget.Holo.Light.SeekBar">
       <item name="android:progressDrawable">@drawable/mymcgill_scrubber_progress_horizontal_holo_light</item>
       <item name="android:indeterminateDrawable">@drawable/mymcgill_scrubber_progress_horizontal_holo_light</item>
       <item name="android:thumb">@drawable/mymcgill_scrubber_control_selector_holo_light</item>
-  </style>
+    </style>
 
-  <style name="RatingBarMyMcGill" parent="android:Widget.Holo.Light.RatingBar">
+    <!-- Rating Bar -->
+    <style name="RatingBar.MyMartlet" parent="android:Widget.Holo.Light.RatingBar">
       <item name="android:progressDrawable">@drawable/mymcgill_ratingbar_full_holo_light</item>
       <item name="android:indeterminateDrawable">@drawable/mymcgill_ratingbar_full_holo_light</item>
-  </style>
+    </style>
 
-  <style name="RatingBarBigMyMcGill" parent="android:Widget.Holo.Light.RatingBar.Indicator">
+    <!-- Rating Bar Big -->
+    <style name="RatingBarBig.MyMartlet" parent="android:Widget.Holo.Light.RatingBar.Indicator">
       <item name="android:progressDrawable">@drawable/mymcgill_ratingbar_holo_light</item>
       <item name="android:indeterminateDrawable">@drawable/mymcgill_ratingbar_holo_light</item>
-  </style>
+    </style>
 
-  <style name="RatingBarSmallMyMcGill" parent="android:Widget.Holo.Light.RatingBar.Small">
+    <!-- Rating Bar Small -->
+    <style name="RatingBarSmall.MyMartlet" parent="android:Widget.Holo.Light.RatingBar.Small">
       <item name="android:progressDrawable">@drawable/mymcgill_ratingbar_small_holo_light</item>
       <item name="android:indeterminateDrawable">@drawable/mymcgill_ratingbar_small_holo_light</item>
-  </style>
+    </style>
 
-  <style name="ToggleMyMcGill" parent="android:Widget.Holo.Light.Button.Toggle">
+    <!-- Toggle -->
+    <style name="Toggle.MyMartlet" parent="android:Widget.Holo.Light.Button.Toggle">
       <item name="android:background">@drawable/mymcgill_btn_toggle_holo_light</item>
-  </style>
-
+    </style>
 </resources>
