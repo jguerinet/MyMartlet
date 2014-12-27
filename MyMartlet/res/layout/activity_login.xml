@@ -11,7 +11,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/activity_horizontal_margin">
 
@@ -22,12 +22,6 @@
             android:gravity="center"
             android:textSize="@dimen/text_medium"
             android:paddingBottom="@dimen/padding_large"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="@string/login_username"
-            android:textSize="@dimen/text_medium"/>
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -41,7 +35,9 @@
                 android:layout_weight="1"
                 android:paddingTop="@dimen/padding_small"
                 android:singleLine="true"
-                android:textSize="@dimen/text_medium"/>
+                android:textSize="@dimen/text_small"
+                android:inputType="text"
+                android:text="@string/login_username"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -56,23 +52,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/login_remember_username"
             android:text="@string/login_remember_username"
-            android:textSize="@dimen/text_small"
+            android:textSize="@dimen/text_micro"
             android:layout_marginBottom="@dimen/padding_medium"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="@string/login_password"
-            android:textSize="@dimen/text_medium"/>
 
         <EditText
             android:id="@+id/login_password"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:textSize="@dimen/text_medium"
+            android:textSize="@dimen/text_small"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:imeOptions="actionGo"/>
+            android:imeOptions="actionGo"
+            android:hint="@string/login_password"/>
 
         <Button
             android:id="@+id/login_button"
