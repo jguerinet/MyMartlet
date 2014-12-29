@@ -101,9 +101,9 @@
 
     <!-- Login Screen -->
     <string name="login_welcome">Welcome to MyMartlet. Please input your McGill username and password below.</string>
-    <string name="login_username">Username: </string>
+    <string name="login_username">Username</string>
     <string name="login_email">\@mail.mcgill.ca</string>
-    <string name="login_password">Password: </string>
+    <string name="login_password">Password</string>
     <string name="login_button">Login</string>
     <string name="login_error_wrong_data">The username or password you have entered is incorrect. Please try again. </string>
     <string name="login_error_username_empty">You must input a username.</string>
