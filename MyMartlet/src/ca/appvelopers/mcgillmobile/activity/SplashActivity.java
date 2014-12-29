@@ -159,12 +159,11 @@ public class SplashActivity extends BaseActivity {
                 final String password = passwordView.getText().toString().trim();
 
                 //Check that both of them are not empty, create appropriate error messages if so
-                if(TextUtils.isEmpty(username)){
+                if (TextUtils.isEmpty(username)) {
                     DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
                             getString(R.string.login_error_username_empty));
                     return;
-                }
-                else if(TextUtils.isEmpty(password)){
+                } else if (TextUtils.isEmpty(password)) {
                     DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
                             getString(R.string.login_error_password_empty));
                     return;
@@ -220,7 +219,7 @@ public class SplashActivity extends BaseActivity {
                             mInfoDownloader.execute();
                         }
                         //Else show error dialog
-                        else{
+                        else {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -256,14 +255,20 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         protected void onPreExecute(){
-            //Set the loading container to visible
+            //Bind the views
             mLoadingContainer = (LinearLayout)findViewById(R.id.loading_container);
-            mLoadingContainer.setVisibility(View.VISIBLE);
-
             mProgressTextView = (TextView)findViewById(R.id.loading_title);
 
-            //Reset the text (if it was set during a previous login attempt
-            mProgressTextView.setText("");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //Set the loading container to visible
+                    mLoadingContainer.setVisibility(View.VISIBLE);
+
+                    //Reset the text (if it was set during a previous login attempt
+                    mProgressTextView.setText("");
+                }
+            });
         }
 
         @Override
