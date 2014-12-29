@@ -71,8 +71,8 @@
     <string name="faculty_religion">Faculté d\'Études Religieuses</string>
     <string name="faculty_science">Faculté des Sciences</string>
     <string name="login_welcome">Bienvenue à MyMartlet. Veuillez s\'il vous plaît entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
-    <string name="login_username">Nom d\'Utilisateur:</string>
-    <string name="login_password">Mot de Passe:</string>
+    <string name="login_username">Nom d\'Utilisateur</string>
+    <string name="login_password">Mot de Passe</string>
     <string name="login_button">Connexion</string>
     <string name="login_error_wrong_data">Le nom d\'utilisateur ou mot de passe est incorrect. Veuillez réessayer s\'il vous plaît.</string>
     <string name="login_error_username_empty">Vous devez entrer un nom d\'utilisateur.</string>
