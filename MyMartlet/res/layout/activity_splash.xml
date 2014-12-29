@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:padding="@dimen/default_margin">
+    android:layout_gravity="center">
+
+<RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:padding="@dimen/default_margin"
+    android:layout_gravity="center"
+    android:gravity="center">
 
     <ImageView
         android:layout_height="wrap_content"
@@ -111,3 +120,4 @@
             android:padding="@dimen/padding_micro"/>
     </LinearLayout>
 </RelativeLayout>
+</ScrollView>
