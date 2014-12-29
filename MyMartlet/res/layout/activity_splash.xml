@@ -101,9 +101,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="invisible"
         android:id="@+id/loading_container"
-        android:layout_alignParentBottom="true">
+        android:layout_below="@id/logo"
+        android:paddingTop="@dimen/padding_double">
 
         <ProgressBar
             android:layout_width="match_parent"
