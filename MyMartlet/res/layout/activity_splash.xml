@@ -44,7 +44,7 @@
                 android:singleLine="true"
                 android:textSize="@dimen/text_small"
                 android:inputType="text"
-                android:text="@string/login_username"/>
+                android:hint="@string/login_username"/>
 
             <TextView
                 android:layout_height="wrap_content"
