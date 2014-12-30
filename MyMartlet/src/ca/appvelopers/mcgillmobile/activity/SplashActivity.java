@@ -9,8 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -75,38 +73,6 @@ public class SplashActivity extends BaseActivity {
                 }
             }
         }.execute();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        //Only show the skip option if we already have data in the app
-        if(App.getClasses() != null && App.getTranscript() != null && App.getUserInfo() != null &&
-                App.getEbill() != null && !App.forceUserReload){
-            getMenuInflater().inflate(R.menu.skip, menu);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //If they choose skip, show them the dialog
-        if(item.getItemId() == R.id.action_skip){
-            final SkipDialog skipDialog = new SkipDialog(this);
-            skipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    if(skipDialog.skip()){
-                        mInfoDownloader.cancel(true);
-                    }
-                }
-            });
-            if(!skipDialog.show()){
-                mInfoDownloader.cancel(true);
-            }
-
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void showLoginScreen(ConnectionStatus error){
@@ -246,9 +212,13 @@ public class SplashActivity extends BaseActivity {
     public class InfoDownloader extends AsyncTask<Void, String, Void>{
         private Context mContext;
         private boolean mLoggedIn;
+        private ConnectionStatus mConnectionStatus;
+        private boolean mDownloadEverything;
+
         private LinearLayout mLoadingContainer;
         private TextView mProgressTextView;
-        private ConnectionStatus mConnectionStatus;
+        private Button mSkip;
+
         //Bug Related info
         private boolean mBugPresent;
         private boolean mTranscriptBug;
@@ -268,23 +238,49 @@ public class SplashActivity extends BaseActivity {
             //Bind the views
             mLoadingContainer = (LinearLayout)findViewById(R.id.loading_container);
             mProgressTextView = (TextView)findViewById(R.id.loading_title);
+            mSkip = (Button)findViewById(R.id.skip);
+
+            //Check if we need to download everything or only the essential stuff
+            //We need to download everything if there is null info or if we are forcing a user reload
+            mDownloadEverything = App.getClasses() == null || App.getTranscript() == null ||
+                    App.getUserInfo() == null || App.getEbill() == null || App.forceUserReload;
+
+            //OnClick listener for the skip button
+            mSkip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Show the explanation dialog
+                    final SkipDialog skipDialog = new SkipDialog(SplashActivity.this);
+                    skipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            //If the user skips, cancel the info downloader
+                            if(skipDialog.skip()){
+                                mInfoDownloader.cancel(true);
+                            }
+                        }
+                    });
+                    //If the dialog isn't showing, this means that the user has decided to never
+                        //see the dialog again so cancel the info downloader
+                    if(!skipDialog.show()){
+                        mInfoDownloader.cancel(true);
+                    }
+                }
+            });
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //Move the logo to the top
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
-                    params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                    params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                    View logo = findViewById(R.id.logo);
-                    logo.setLayoutParams(params);
-
                     //Set the loading container to visible
                     mLoadingContainer.setVisibility(View.VISIBLE);
 
                     //Reset the text (if it was set during a previous login attempt
                     mProgressTextView.setText("");
+
+                    //If we are not downloading everything, show the skip button
+                    if(!mDownloadEverything){
+                        mSkip.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }
@@ -295,11 +291,6 @@ public class SplashActivity extends BaseActivity {
 
             //The connection
             Connection connection = Connection.getInstance();
-
-            //Check if we need to download everything or only the essential stuff
-            //We need to download everything if there is null info or if we are forcing a user reload
-            boolean downloadEverything = App.getClasses() == null || App.getTranscript() == null ||
-                    App.getUserInfo() == null || App.getEbill() == null || App.forceUserReload;
 
             //Set up a while loop to go through everything while checking if the user cancelled every time
             int downloadIndex = 0;
@@ -326,7 +317,7 @@ public class SplashActivity extends BaseActivity {
                         break;
                     //Transcript
                     case 1:
-                        publishNewProgress(mContext.getString(downloadEverything ? R.string.downloading_transcript :
+                        publishNewProgress(mContext.getString(mDownloadEverything ? R.string.downloading_transcript :
                                 R.string.updating_transcript));
 
                         //Download the transcript
@@ -364,8 +355,8 @@ public class SplashActivity extends BaseActivity {
 
                                 //If we are not downloading everything, only download it if it's the
                                 //  current or future term
-                                if(downloadEverything || term.equals(currentTerm) || term.isAfter(currentTerm)){
-                                    publishNewProgress(mContext.getString(downloadEverything ?
+                                if(mDownloadEverything || term.equals(currentTerm) || term.isAfter(currentTerm)){
+                                    publishNewProgress(mContext.getString(mDownloadEverything ?
                                             R.string.downloading_semester : R.string.updating_semester,
                                             term.toString(mContext)));
 
@@ -389,7 +380,7 @@ public class SplashActivity extends BaseActivity {
                     //eBill + user info
                     case 3:
                         //eBill
-                        publishNewProgress(mContext.getString(downloadEverything ? R.string.downloading_ebill :
+                        publishNewProgress(mContext.getString(mDownloadEverything ? R.string.downloading_ebill :
                                 R.string.updating_ebill));
 
                         //Download the eBill and user info
@@ -397,7 +388,7 @@ public class SplashActivity extends BaseActivity {
                         Parser.parseEbill(ebillString);
 
                         //User Info
-                        publishNewProgress(mContext.getString(downloadEverything ? R.string.downloading_user :
+                        publishNewProgress(mContext.getString(mDownloadEverything ? R.string.downloading_user :
                                 R.string.updating_user));
 
                         Parser.parseUserInfo(ebillString);
@@ -438,6 +429,9 @@ public class SplashActivity extends BaseActivity {
         protected void onPostExecute(Void result) {
             //Hide the container
             mLoadingContainer.setVisibility(View.GONE);
+
+            //Hide th skip button
+            mSkip.setVisibility(View.GONE);
 
             //Connection successful: home page
             if(mConnectionStatus == ConnectionStatus.CONNECTION_OK ||
