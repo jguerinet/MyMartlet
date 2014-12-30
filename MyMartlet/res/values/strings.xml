@@ -346,4 +346,5 @@
     <string name="updating_semester">Updating %s Schedule&#8230;</string>
     <string name="updating_ebill">Updating eBill&#8230;</string>
     <string name="updating_user">Updating User Info&#8230;</string>
+    <string name="skipping">Skipping&#8230;</string>
 </resources>

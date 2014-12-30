@@ -272,4 +272,5 @@
     <string name="updating_semester">Mise à jour du semestre: %s&#8230;</string>
     <string name="updating_ebill">Mise à jour de votre eBill&#8230;</string>
     <string name="updating_user">Mise à jour de l’information de l’utilisateur&#8230;</string>
+    <string name="skipping">Un moment&#8230;</string>
 </resources>
