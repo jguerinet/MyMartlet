@@ -61,7 +61,7 @@ public class SplashActivity extends BaseActivity {
                 }
                 //If not, try to log him in and download the info
                 else{
-                    mInfoDownloader = new InfoDownloader();
+                    mInfoDownloader = new InfoDownloader(false);
                     mInfoDownloader.execute();
                 }
             }
@@ -215,7 +215,7 @@ public class SplashActivity extends BaseActivity {
                             });
 
                             //Start the downloading of information
-                            mInfoDownloader = new InfoDownloader();
+                            mInfoDownloader = new InfoDownloader(true);
                             mInfoDownloader.execute();
                         }
                         //Else show error dialog
@@ -239,6 +239,7 @@ public class SplashActivity extends BaseActivity {
 
     public class InfoDownloader extends AsyncTask<Void, String, Void>{
         private Context mContext;
+        private boolean mLoggedIn;
         private LinearLayout mLoadingContainer;
         private TextView mProgressTextView;
         private ConnectionStatus mConnectionStatus;
@@ -247,8 +248,11 @@ public class SplashActivity extends BaseActivity {
         private boolean mTranscriptBug;
         private String mTermBug;
 
-        public InfoDownloader(){
+        //The passed boolean is true when they sign in for the first time,
+        //  false when it's on auto-login.
+        public InfoDownloader(boolean loggedIn){
             this.mContext = SplashActivity.this;
+            this.mLoggedIn = loggedIn;
             this.mBugPresent = false;
             this.mTranscriptBug = false;
         }
@@ -275,8 +279,14 @@ public class SplashActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             GoogleAnalytics.sendEvent(SplashActivity.this, "Splash", "Auto-Login", "true", null);
 
-            //Connect to Minerva
-            mConnectionStatus = Connection.getInstance().connectToMinerva(mContext);
+            //If he's already logged in, the connection is OK
+            if(mLoggedIn){
+                mConnectionStatus = ConnectionStatus.CONNECTION_OK;
+            }
+            //Connect to Minerva if the user is not already logged in
+            else{
+                mConnectionStatus = Connection.getInstance().connectToMinerva(mContext);
+            }
 
             //If we successfully connect
             if(mConnectionStatus == ConnectionStatus.CONNECTION_OK){
