@@ -318,7 +318,7 @@ public class SplashActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void result) {
             //Hide the container
-            mLoadingContainer.setVisibility(View.INVISIBLE);
+            mLoadingContainer.setVisibility(View.GONE);
 
             //Connection successful: home page
             if(mConnectionStatus == ConnectionStatus.CONNECTION_OK ||
