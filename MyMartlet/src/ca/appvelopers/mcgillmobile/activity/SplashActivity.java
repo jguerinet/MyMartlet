@@ -21,17 +21,25 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+
+import java.util.List;
+
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.dialog.SkipDialog;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
+import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
+import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
@@ -279,37 +287,122 @@ public class SplashActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             GoogleAnalytics.sendEvent(SplashActivity.this, "Splash", "Auto-Login", "true", null);
 
-            //Check if the user cancelled
-            if(isCancelled()){
-                return null;
-            }
+            //The connection
+            Connection connection = Connection.getInstance();
 
-            //If he's already logged in, the connection is OK
-            if(mLoggedIn){
-                mConnectionStatus = ConnectionStatus.CONNECTION_OK;
-            }
-            //Connect to Minerva if the user is not already logged in
-            else{
-                publishNewProgress(getString(R.string.logging_in));
-                mConnectionStatus = Connection.getInstance().connectToMinerva(mContext);
-            }
+            //Check if we need to download everything or only the essential stuff
+            //We need to download everything if there is null info or if we are forcing a user reload
+            boolean downloadEverything = App.getClasses() == null || App.getTranscript() == null ||
+                    App.getUserInfo() == null || App.getEbill() == null || App.forceUserReload;
 
-            //Check if the user cancelled
-            if(isCancelled()){
-                return null;
-            }
+            //Set up a while loop to go through everything while checking if the user cancelled every time
+            int downloadIndex = 0;
+            downloadLoop: while(true){
+                //If the AsyncTask was cancelled, stop everything
+                if(isCancelled()){
+                    break;
+                }
 
-            //If we successfully connect
-            if(mConnectionStatus == ConnectionStatus.CONNECTION_OK){
-                //set the background receiver after successful login
-//                        if(!App.isAlarmActive()){
-//                        	App.SetAlarm(SplashActivity.this);
-//                        }
+                //Use a switch to figure out what to download next based on the index
+                switch(downloadIndex){
+                    //Log him in
+                    case 0:
+                        publishNewProgress(getString(R.string.logging_in));
 
-                //Check if there is all the info or if we need to force reload everything
-                boolean downloadEverything = App.getClasses() == null || App.getTranscript() == null
-                        || App.getUserInfo() == null || App.getEbill() == null || App.forceUserReload;
-                Connection.getInstance().download(mContext, !downloadEverything, this);
+                        //If he's already logged in, the connection is OK
+                        mConnectionStatus = mLoggedIn ? ConnectionStatus.CONNECTION_OK :
+                                connection.connectToMinerva(mContext);
+
+                        //If we did not connect, break the loop now
+                        if(mConnectionStatus != ConnectionStatus.CONNECTION_OK){
+                            break downloadLoop;
+                        }
+                        break;
+                    //Transcript
+                    case 1:
+                        publishNewProgress(mContext.getString(downloadEverything ? R.string.downloading_transcript :
+                                R.string.updating_transcript));
+
+                        //Download the transcript
+                        String transcriptBug = Test.LOCAL_TRANSCRIPT ? Test.testTranscript(mContext) :
+                                Parser.parseTranscript(connection.getUrl(mContext, Connection.TRANSCRIPT));
+
+                        //If there was an error, show it
+                        if(transcriptBug != null){
+                            reportBug(true, transcriptBug);
+                        }
+                        break;
+                    //Semesters
+                    case 2:
+                        String scheduleBug = null;
+
+                        //Test mode : only one semester to do
+                        if(Test.LOCAL_SCHEDULE){
+                            scheduleBug = Test.testSchedule(mContext);
+                        }
+                        else {
+                            //List of semesters
+                            List<Semester> semesters = App.getTranscript().getSemesters();
+                            //The current term
+                            Term currentTerm = Term.dateConverter(DateTime.now());
+
+                            //Go through the semesters
+                            for(Semester semester: semesters){
+                                //If the AsyncTask was cancelled, stop everything
+                                if (isCancelled()) {
+                                    break downloadLoop;
+                                }
+
+                                //Get the term of this semester
+                                Term term = semester.getTerm();
+
+                                //If we are not downloading everything, only download it if it's the
+                                //  current or future term
+                                if(downloadEverything || term.equals(currentTerm) || term.isAfter(currentTerm)){
+                                    publishNewProgress(mContext.getString(downloadEverything ?
+                                            R.string.downloading_semester : R.string.updating_semester,
+                                            term.toString(mContext)));
+
+                                    //Download the schedule
+                                    scheduleBug = Parser.parseClassList(term, connection.getUrl(mContext,
+                                            Connection.getScheduleURL(term)));
+                                }
+                            }
+
+                            //Set the default term if there is none set yet
+                            if(App.getDefaultTerm() == null){
+                                App.setDefaultTerm(Term.dateConverter(DateTime.now()));
+                            }
+                        }
+
+                        //If there was an error, show it
+                        if(scheduleBug != null){
+                            reportBug(false, scheduleBug);
+                        }
+                        break;
+                    //eBill + user info
+                    case 3:
+                        //eBill
+                        publishNewProgress(mContext.getString(downloadEverything ? R.string.downloading_ebill :
+                                R.string.updating_ebill));
+
+                        //Download the eBill and user info
+                        String ebillString = Connection.getInstance().getUrl(mContext, Connection.EBILL);
+                        Parser.parseEbill(ebillString);
+
+                        //User Info
+                        publishNewProgress(mContext.getString(downloadEverything ? R.string.downloading_user :
+                                R.string.updating_user));
+
+                        Parser.parseUserInfo(ebillString);
+                        break;
+                    //We've reached the end, break the loop
+                    default:
+                        break downloadLoop;
+                }
+
+                //Increment the download index
+                downloadIndex ++;
             }
 
             return null;

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,7 +32,6 @@ import ca.appvelopers.mcgillmobile.activity.SplashActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
-import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
@@ -91,82 +89,6 @@ public class Connection {
     //Setting password
     public void setPassword(String password){
         this.password = password;
-    }
-
-    /**
-     * Download all of the info (upon opening of the app)
-     * @param context The app context
-     * @param essential True if we download only the essentials, false otherwise
-     * @param infoDownloader The task that is currently downloading the info (to update the progress)
-     */
-    public void download(Context context, boolean essential, SplashActivity.InfoDownloader infoDownloader){
-        Connection connection = getInstance();
-
-        //Update : downloading transcript
-        infoDownloader.publishNewProgress(context.getString(R.string.updating_transcript));
-
-        //Download the transcript
-        String transcriptError;
-        if(!Test.LOCAL_TRANSCRIPT){
-            transcriptError = Parser.parseTranscript(connection.getUrl(context, TRANSCRIPT));
-        }
-        else{
-            transcriptError = Test.testTranscript(context);
-        }
-
-        //If there was an error, show it
-        if(transcriptError != null){
-            infoDownloader.reportBug(true, transcriptError);
-        }
-
-        String scheduleBug = null;
-        if(!Test.LOCAL_SCHEDULE){
-            List<Semester> semesters = App.getTranscript().getSemesters();
-
-            //Find the current term
-            Term currentTerm = Term.dateConverter(DateTime.now());
-
-            for(Semester semester : semesters){
-                //Leave the loop if the download has been cancelled
-                if(infoDownloader.isCancelled()){
-                    break;
-                }
-
-                Term term = semester.getTerm();
-
-                //Download only current and future semesters if essential
-                if(essential && !term.equals(currentTerm) && !term.isAfter(currentTerm)){
-                    infoDownloader.publishNewProgress(context.getString(R.string.updating_semester, term.toString(context)));
-
-                    //Download the schedule
-                    scheduleBug = Parser.parseClassList(term, connection.getUrl(context, getScheduleURL(term)));
-                }
-            }
-        }
-        else{
-            scheduleBug = Test.testSchedule(context);
-        }
-
-        if(scheduleBug != null){
-            infoDownloader.reportBug(false, scheduleBug);
-        }
-
-        //Set the default term if there is none set yet
-        if(App.getDefaultTerm() == null){
-            App.setDefaultTerm(Term.dateConverter(DateTime.now()));
-        }
-
-        //Update : downloading eBill
-        infoDownloader.publishNewProgress(context.getString(R.string.updating_ebill));
-
-        //Download the ebill and user info
-        String ebillString = Connection.getInstance().getUrl(context, EBILL);
-        Parser.parseEbill(ebillString);
-
-        //Update : downloading user info
-        infoDownloader.publishNewProgress(context.getString(R.string.updating_user));
-
-        Parser.parseUserInfo(ebillString);
     }
 
 	public ConnectionStatus connectToMinerva(Context context){
