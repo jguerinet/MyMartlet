@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -160,6 +161,11 @@ public class SplashActivity extends BaseActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Hide the keyboard
+                usernameView.clearFocus();
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(usernameView.getWindowToken(), 0);
+
                 //Get the username text
                 final String username = usernameView.getText().toString().trim();
 
@@ -209,22 +215,14 @@ public class SplashActivity extends BaseActivity {
                                 public void run() {
                                     progressDialog.dismiss();
 
-                                    //Move the logo to the center
-                                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                                            ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
-                                    params.addRule(RelativeLayout.CENTER_IN_PARENT);
-                                    View logo = findViewById(R.id.logo);
-                                    logo.setLayoutParams(params);
-
                                     //Hide the login container
                                     loginContainer.setVisibility(View.GONE);
 
+                                    //Start the downloading of information
+                                    mInfoDownloader = new InfoDownloader(true);
+                                    mInfoDownloader.execute();
                                 }
                             });
-
-                            //Start the downloading of information
-                            mInfoDownloader = new InfoDownloader(true);
-                            mInfoDownloader.execute();
                         }
                         //Else show error dialog
                         else {
@@ -274,6 +272,14 @@ public class SplashActivity extends BaseActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    //Move the logo to the top
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+                    params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                    View logo = findViewById(R.id.logo);
+                    logo.setLayoutParams(params);
+
                     //Set the loading container to visible
                     mLoadingContainer.setVisibility(View.VISIBLE);
 
@@ -404,7 +410,6 @@ public class SplashActivity extends BaseActivity {
                 //Increment the download index
                 downloadIndex ++;
             }
-
             return null;
         }
 
