@@ -263,8 +263,13 @@
     <string name="twitter_post_failure_time">Une erreur est survenue. Réessayez s\'il vous plaît. La date et l\'heure sur votre appareil sont-elles bien configurées?</string>
 
     <!-- Splash Screen -->
-    <string name="updating_transcript">Téléchargement de votre bulletin&#8230;</string>
-    <string name="updating_semester">Téléchargement du semestre: %s&#8230;</string>
-    <string name="updating_ebill">Téléchargement de votre eBill&#8230;</string>
-    <string name="updating_user">Téléchargement de l’information de l’utilisateur&#8230;</string>
+    <string name="logging_in">Connexion&#8230;</string>
+    <string name="downloading_transcript">Téléchargement de votre bulletin&#8230;</string>
+    <string name="downloading_semester">Téléchargement du semestre: %s&#8230;</string>
+    <string name="downloading_ebill">Téléchargement de votre eBill&#8230;</string>
+    <string name="downloading_user">Téléchargement de l’information de l’utilisateur&#8230;</string>
+    <string name="updating_transcript">Mise à jour de votre bulletin&#8230;</string>
+    <string name="updating_semester">Mise à jour du semestre: %s&#8230;</string>
+    <string name="updating_ebill">Mise à jour de votre eBill&#8230;</string>
+    <string name="updating_user">Mise à jour de l’information de l’utilisateur&#8230;</string>
 </resources>

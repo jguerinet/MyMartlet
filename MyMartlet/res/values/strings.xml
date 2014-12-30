@@ -337,8 +337,13 @@
     <string name="twitter_post_failure_time">An error occurred. Please try again. Are the date and time on your device correctly set?</string>
 
     <!-- Splash Screen -->
-    <string name="updating_transcript">Downloading Transcript&#8230;</string>
-    <string name="updating_semester">Downloading %s Schedule&#8230;</string>
-    <string name="updating_ebill">Downloading eBill&#8230;</string>
-    <string name="updating_user">Downloading User Info&#8230;</string>
+    <string name="logging_in">Logging In&#8230;</string>
+    <string name="downloading_transcript">Downloading Transcript&#8230;</string>
+    <string name="downloading_semester">Downloading %s Schedule&#8230;</string>
+    <string name="downloading_ebill">Downloading eBill&#8230;</string>
+    <string name="downloading_user">Downloading User Info&#8230;</string>
+    <string name="updating_transcript">Updating Transcript&#8230;</string>
+    <string name="updating_semester">Updating %s Schedule&#8230;</string>
+    <string name="updating_ebill">Updating eBill&#8230;</string>
+    <string name="updating_user">Updating User Info&#8230;</string>
 </resources>

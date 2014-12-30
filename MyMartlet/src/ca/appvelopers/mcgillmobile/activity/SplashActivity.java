@@ -279,13 +279,24 @@ public class SplashActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             GoogleAnalytics.sendEvent(SplashActivity.this, "Splash", "Auto-Login", "true", null);
 
+            //Check if the user cancelled
+            if(isCancelled()){
+                return null;
+            }
+
             //If he's already logged in, the connection is OK
             if(mLoggedIn){
                 mConnectionStatus = ConnectionStatus.CONNECTION_OK;
             }
             //Connect to Minerva if the user is not already logged in
             else{
+                publishNewProgress(getString(R.string.logging_in));
                 mConnectionStatus = Connection.getInstance().connectToMinerva(mContext);
+            }
+
+            //Check if the user cancelled
+            if(isCancelled()){
+                return null;
             }
 
             //If we successfully connect
