@@ -249,6 +249,11 @@ public class SplashActivity extends BaseActivity {
             mSkip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //If it's already been cancelled, no need to do it again
+                    if(mInfoDownloader.isCancelled()){
+                        return;
+                    }
+
                     //Show the explanation dialog
                     final SkipDialog skipDialog = new SkipDialog(SplashActivity.this);
                     skipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -256,14 +261,16 @@ public class SplashActivity extends BaseActivity {
                         public void onDismiss(DialogInterface dialogInterface) {
                             //If the user skips, cancel the info downloader
                             if(skipDialog.skip()){
-                                mInfoDownloader.cancel(true);
+                                mInfoDownloader.publishNewProgress(getString(R.string.skipping));
+                                mInfoDownloader.cancel(false);
                             }
                         }
                     });
                     //If the dialog isn't showing, this means that the user has decided to never
                         //see the dialog again so cancel the info downloader
                     if(!skipDialog.show()){
-                        mInfoDownloader.cancel(true);
+                        mInfoDownloader.publishNewProgress(getString(R.string.skipping));
+                        mInfoDownloader.cancel(false);
                     }
                 }
             });
@@ -294,12 +301,7 @@ public class SplashActivity extends BaseActivity {
 
             //Set up a while loop to go through everything while checking if the user cancelled every time
             int downloadIndex = 0;
-            downloadLoop: while(true){
-                //If the AsyncTask was cancelled, stop everything
-                if(isCancelled()){
-                    break;
-                }
-
+            downloadLoop: while(!isCancelled()){
                 //Use a switch to figure out what to download next based on the index
                 switch(downloadIndex){
                     //Log him in
