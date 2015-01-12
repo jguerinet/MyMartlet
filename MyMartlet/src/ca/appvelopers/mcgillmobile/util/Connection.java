@@ -47,7 +47,7 @@ public class Connection {
 	private String password;
 	private List<String> cookies;
 	private HttpsURLConnection conn;
-	private ConnectionStatus status = ConnectionStatus.CONNECTION_FIRSTACCESS;
+	private ConnectionStatus status = ConnectionStatus.CONNECTION_FIRST_ACCESS;
 	
 	// Constants
     public static final String TRANSCRIPT = "https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
@@ -67,7 +67,7 @@ public class Connection {
 	// Singleton architecture
 	private static Connection http = new Connection();
 	private Connection(){
-		status = ConnectionStatus.CONNECTION_FIRSTACCESS;
+		status = ConnectionStatus.CONNECTION_FIRST_ACCESS;
 	}
 	
 	// Accessor method
@@ -97,7 +97,7 @@ public class Connection {
             return ConnectionStatus.CONNECTION_NO_INTERNET;
         }
         
-        if(status == ConnectionStatus.CONNECTION_FIRSTACCESS){
+        if(status == ConnectionStatus.CONNECTION_FIRST_ACCESS){
 			// make sure cookies is turn on
 			CookieHandler.setDefault(new CookieManager());
         }

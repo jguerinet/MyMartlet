@@ -15,7 +15,7 @@ public enum ConnectionStatus {
     CONNECTION_NO_INTERNET,
     CONNECTION_MINERVA_LOGOUT,
     CONNECTION_AUTHENTICATING,
-    CONNECTION_FIRSTACCESS;
+    CONNECTION_FIRST_ACCESS;
 
     public String getErrorString(Context context){
         switch(this){
