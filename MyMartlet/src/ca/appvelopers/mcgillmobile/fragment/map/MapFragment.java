@@ -1,5 +1,6 @@
-package ca.appvelopers.mcgillmobile.activity.map;
+package ca.appvelopers.mcgillmobile.fragment.map;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +8,14 @@ import android.content.SearchRecentSuggestionsProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -20,7 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,7 +37,6 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
 import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -40,11 +44,14 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.MapSuggestionProvider;
 
 /**
- * Author: Ryan Singzon
- * Date: 14/03/14 9:49 PM
+ * Author: Julien Guerinet
+ * Date: 2015-01-17 5:26 PM
+ * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
 
-public class MapActivity extends DrawerActivity {
+public class MapFragment extends Fragment {
+    private Activity mActivity;
+
     private List<MapPlace> mPlaces;
     private List<Place> mFavoritePlaces;
 
@@ -61,21 +68,29 @@ public class MapActivity extends DrawerActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        loadDrawer();
 
-        GoogleAnalytics.sendScreen(this, "Map");
+        mActivity = getActivity();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = View.inflate(mActivity, R.layout.fragment_map, null);
+
+        //Title
+        mActivity.setTitle(getString(R.string.title_map));
+
+        GoogleAnalytics.sendScreen(mActivity, "Map");
 
         //Bind the TextViews
-        mInfoContainer = (LinearLayout)findViewById(R.id.info_container);
-        mTitle = (TextView)findViewById(R.id.place_title);
-        mAddress = (TextView)findViewById(R.id.place_address);
-        mFavorite = (TextView)findViewById(R.id.map_favorite);
+        mInfoContainer = (LinearLayout)view.findViewById(R.id.info_container);
+        mTitle = (TextView)view.findViewById(R.id.place_title);
+        mAddress = (TextView)view.findViewById(R.id.place_address);
+        mFavorite = (TextView)view.findViewById(R.id.map_favorite);
 
         mPlaces = new ArrayList<MapPlace>();
         mFavoritePlaces = App.getFavoritePlaces();
 
-        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         if (mMap !=null) {
             //Set the camera's center position
             CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -102,12 +117,12 @@ public class MapActivity extends DrawerActivity {
             }
 
             setupSuggestions();
-            //Get search intent
-            Intent intent = getIntent();
-            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-                String query = intent.getStringExtra(SearchManager.QUERY);
-                findPlaceByString(query);
-            }
+            //TODO Get search intent
+//            Intent intent = getIntent();
+//            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+//                String query = intent.getStringExtra(SearchManager.QUERY);
+//                findPlaceByString(query);
+//            }
 
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
@@ -142,7 +157,7 @@ public class MapActivity extends DrawerActivity {
             });
 
             //Set up the two buttons
-            TextView directions = (TextView) findViewById(R.id.map_directions);
+            TextView directions = (TextView) view.findViewById(R.id.map_directions);
             directions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -157,8 +172,8 @@ public class MapActivity extends DrawerActivity {
             });
 
             //Set up the spinner
-            final Spinner filter = (Spinner) findViewById(R.id.map_filter);
-            final PlacesAdapter adapter = new PlacesAdapter(this);
+            final Spinner filter = (Spinner) view.findViewById(R.id.map_filter);
+            final PlacesAdapter adapter = new PlacesAdapter(mActivity);
             filter.setAdapter(adapter);
             filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -198,7 +213,7 @@ public class MapActivity extends DrawerActivity {
                         //Check if it was in the favorites
                         if (mFavoritePlaces.contains(mPlaceMarker.mPlace)) {
                             mFavoritePlaces.remove(mPlaceMarker.mPlace);
-                            Toast.makeText(MapActivity.this, getString(R.string.map_favorites_removed, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity, getString(R.string.map_favorites_removed, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
                             mFavorite.setText(getString(R.string.map_favorites_add));
 
                             //If we are in the favorites category, we need to hide this pin
@@ -207,7 +222,7 @@ public class MapActivity extends DrawerActivity {
                             }
                         } else {
                             mFavoritePlaces.add(mPlaceMarker.mPlace);
-                            Toast.makeText(MapActivity.this, getString(R.string.map_favorites_added, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity, getString(R.string.map_favorites_added, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
                             mFavorite.setText(getString(R.string.map_favorites_remove));
                         }
                         App.setFavoritePlaces(mFavoritePlaces);
@@ -215,33 +230,35 @@ public class MapActivity extends DrawerActivity {
                 }
             });
         }
+
+        return view;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search, menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search, menu);
         MenuItem mSearchMenuItem = menu.findItem(R.id.action_search);
         SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
 
         // Get the SearchView and set the search configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        // Assumes current activity is the search activity
-        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        SearchManager searchManager = (SearchManager)mActivity.getSystemService(Context.SEARCH_SERVICE);
+        // TODO Assumes current activity is the search activity
+//        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         mSearchView.setIconifiedByDefault(true);
-        return true;
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            findPlaceByString(query);
-        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            String data = intent.getDataString();
-            focusPlace(data);
-        }
-    }
+    //TODO
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        setIntent(intent);
+//        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+//            String query = intent.getStringExtra(SearchManager.QUERY);
+//            findPlaceByString(query);
+//        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+//            String data = intent.getDataString();
+//            focusPlace(data);
+//        }
+//    }
 
     private void findPlaceByString(String query) {
         for (MapPlace mapPlace : mPlaces) {
@@ -270,7 +287,7 @@ public class MapActivity extends DrawerActivity {
     }
 
     private void setupSuggestions() {
-        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, MapSuggestionProvider.AUTHORITY, SearchRecentSuggestionsProvider.DATABASE_MODE_QUERIES);
+        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(mActivity, MapSuggestionProvider.AUTHORITY, SearchRecentSuggestionsProvider.DATABASE_MODE_QUERIES);
         for (MapPlace place : mPlaces) {
             suggestions.saveRecentQuery(place.mPlace.getName(), null);
         }

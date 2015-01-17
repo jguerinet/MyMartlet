@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.map;
+package ca.appvelopers.mcgillmobile.fragment.map;
 
 import android.content.Context;
 import android.view.LayoutInflater;
