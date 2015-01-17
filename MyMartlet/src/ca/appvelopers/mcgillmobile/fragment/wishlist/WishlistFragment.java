@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.fragment.courseslist;
+package ca.appvelopers.mcgillmobile.fragment.wishlist;
 
 import android.app.Activity;
 import android.content.Intent;
