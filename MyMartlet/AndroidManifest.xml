@@ -66,10 +66,6 @@
             android:label="@string/title_desktop"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.ScheduleActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_schedule" />
-        <activity
             android:name=".activity.transcript.TranscriptActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_transcript" />
@@ -107,10 +103,6 @@
             android:authorities="ca.appvelopers.mcgillmobile.util.MapSuggestionProvider"
             android:name=".util.MapSuggestionProvider"
             android:syncable="false"/>
-
-        <activity
-            android:name=".activity.RegistrationActivity"
-            android:label="@string/title_registration"/>
 
         <activity
             android:name=".activity.ChangeSemesterActivity"

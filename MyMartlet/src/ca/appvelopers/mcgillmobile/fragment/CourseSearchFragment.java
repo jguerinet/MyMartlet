@@ -64,6 +64,9 @@ public class CourseSearchFragment extends Fragment {
 
         GoogleAnalytics.sendScreen(mActivity, "Registration");
 
+        //Title
+        mActivity.setTitle(getString(R.string.title_registration));
+
         //Set up the term spinner
         mTermSpinner = (Spinner) view.findViewById(R.id.registration_semester);
         mTermAdapter = new TermAdapter(mActivity, App.getRegisterTerms());
