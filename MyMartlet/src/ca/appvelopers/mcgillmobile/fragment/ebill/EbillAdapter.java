@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.ebill;
+package ca.appvelopers.mcgillmobile.fragment.ebill;
 
 import android.content.Context;
 import android.view.LayoutInflater;

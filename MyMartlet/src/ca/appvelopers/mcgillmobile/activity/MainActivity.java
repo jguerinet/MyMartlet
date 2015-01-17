@@ -26,6 +26,7 @@ import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.fragment.MyCoursesFragment;
 import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.fragment.courses.CoursesFragment;
+import ca.appvelopers.mcgillmobile.fragment.ebill.EbillFragment;
 import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
@@ -54,8 +55,9 @@ public class MainActivity extends BaseActivity {
     private TranscriptFragment mTranscriptFragment;
     private MyCoursesFragment mMyCoursesFragment;
     private CoursesFragment mCoursesFragment;
-    private WishlistFragment mWishlistFragment;
     private CourseSearchFragment mCourseSearchFragment;
+    private WishlistFragment mWishlistFragment;
+    private EbillFragment mEbillFragment;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -81,8 +83,9 @@ public class MainActivity extends BaseActivity {
         mTranscriptFragment = new TranscriptFragment();
         mMyCoursesFragment = new MyCoursesFragment();
         mCoursesFragment = new CoursesFragment();
-        mWishlistFragment = WishlistFragment.createInstance(true, null);
         mCourseSearchFragment = new CourseSearchFragment();
+        mWishlistFragment = WishlistFragment.createInstance(true, null);
+        mEbillFragment = new EbillFragment();
 
         //Get the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -155,8 +158,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mWishlistFragment;
                 break;
             case EBILL:
-                //TODO
-                fragment = null;
+                fragment = mEbillFragment;
                 break;
             case MAP:
                 //TODO

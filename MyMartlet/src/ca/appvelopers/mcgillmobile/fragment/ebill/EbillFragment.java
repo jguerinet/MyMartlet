@@ -1,12 +1,15 @@
-package ca.appvelopers.mcgillmobile.activity.ebill;
+package ca.appvelopers.mcgillmobile.fragment.ebill;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,7 +18,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
+import ca.appvelopers.mcgillmobile.activity.MainActivity;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -23,39 +26,57 @@ import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
-public class EbillActivity extends DrawerActivity {
-	private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
+/**
+ * Author: Julien Guerinet
+ * Date: 2015-01-17 5:21 PM
+ * Copyright (c) 2014 Appvelopers. All rights reserved.
+ */
+
+public class EbillFragment extends Fragment {
+    private MainActivity mActivity;
+
+    private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
     private UserInfo mUserInfo;
     private TextView mUserName, mUserId;
     private ListView mListView;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_ebill);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GoogleAnalytics.sendScreen(this, "Ebill");
+        mActivity = (MainActivity)getActivity();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = View.inflate(mActivity, R.layout.fragment_ebill, null);
+
+        //Title
+        mActivity.setTitle(getString(R.string.title_ebill));
+
+        GoogleAnalytics.sendScreen(mActivity, "Ebill");
 
         //Get the initial info from the App
         mEbillItems = App.getEbill();
         mUserInfo = App.getUserInfo();
 
         //Get the views
-        mUserName = (TextView)findViewById(R.id.ebill_user_name);
-        mUserId = (TextView)findViewById(R.id.ebill_user_id);
-        mListView = (ListView)findViewById(android.R.id.list);
+        mUserName = (TextView)view.findViewById(R.id.ebill_user_name);
+        mUserId = (TextView)view.findViewById(R.id.ebill_user_id);
+        mListView = (ListView)view.findViewById(android.R.id.list);
 
         //Load the stored info
         loadInfo();
-	}
+
+        return view;
+    }
 
     private void loadInfo(){
         if(mUserInfo != null){
             mUserName.setText(mUserInfo.getName());
             mUserId.setText(mUserInfo.getId());
         }
-        EbillAdapter adapter = new EbillAdapter(this, mEbillItems);
+        EbillAdapter adapter = new EbillAdapter(mActivity, mEbillItems);
         mListView.setAdapter(adapter);
     }
 
@@ -63,23 +84,20 @@ public class EbillActivity extends DrawerActivity {
         @Override
         protected void onPreExecute(){
             //Show the user we are refreshing his content
-            setProgressBarIndeterminateVisibility(true);
-
+            mActivity.showToolbarSpinner(true);
         }
 
         //Retrieve content from transcript page
         @Override
         protected Boolean doInBackground(Void... params){
-            final Activity activity = EbillActivity.this;
-
-            String ebillString = Connection.getInstance().getUrl(activity, Connection.EBILL);
+            String ebillString = Connection.getInstance().getUrl(mActivity, Connection.EBILL);
 
             if(ebillString == null){
-                activity.runOnUiThread(new Runnable() {
+                mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                activity.getResources().getString(R.string.error_other));
+                        DialogHelper.showNeutralAlertDialog(mActivity, mActivity.getResources().getString(R.string.error),
+                                mActivity.getResources().getString(R.string.error_other));
                     }
                 });
                 return false;
@@ -110,14 +128,13 @@ public class EbillActivity extends DrawerActivity {
                 loadInfo();
             }
 
-            setProgressBarIndeterminateVisibility(false);
+            mActivity.showToolbarSpinner(false);
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.refresh, menu);
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.refresh, menu);
     }
 
     @Override
@@ -131,5 +148,3 @@ public class EbillActivity extends DrawerActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-
