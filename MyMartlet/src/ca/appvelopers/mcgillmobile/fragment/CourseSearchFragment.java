@@ -1,14 +1,19 @@
-package ca.appvelopers.mcgillmobile.activity;
+package ca.appvelopers.mcgillmobile.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,7 +27,6 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -33,10 +37,13 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.view.TermAdapter;
 
 /**
- * Created by Ryan Singzon on 19/05/14.
- * Takes user input from RegistrationActivity and obtains a list of courses from Minerva
+ * Author: Julien Guerinet
+ * Date: 2015-01-17 4:15 PM
+ * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
-public class RegistrationActivity extends DrawerActivity {
+
+public class CourseSearchFragment extends Fragment {
+    private Activity mActivity;
     private Spinner mTermSpinner;
     private TermAdapter mTermAdapter;
     private TimePicker mStartTime, mEndTime;
@@ -45,45 +52,50 @@ public class RegistrationActivity extends DrawerActivity {
 
     private boolean mMoreOptions = false;
 
-    public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_registration);
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        GoogleAnalytics.sendScreen(this, "Registration");
+        mActivity = getActivity();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = View.inflate(mActivity, R.layout.activity_registration, null);
+
+        GoogleAnalytics.sendScreen(mActivity, "Registration");
 
         //Set up the term spinner
-        mTermSpinner = (Spinner) findViewById(R.id.registration_semester);
-        mTermAdapter = new TermAdapter(this, App.getRegisterTerms());
+        mTermSpinner = (Spinner) view.findViewById(R.id.registration_semester);
+        mTermAdapter = new TermAdapter(mActivity, App.getRegisterTerms());
         mTermSpinner.setAdapter(mTermAdapter);
 
-        mStartTime = (TimePicker)findViewById(R.id.registration_start_time);
+        mStartTime = (TimePicker)view.findViewById(R.id.registration_start_time);
         mStartTime.setIs24HourView(false);
         mStartTime.setCurrentHour(0);
         mStartTime.setCurrentMinute(0);
 
-        mEndTime = (TimePicker)findViewById(R.id.registration_end_time);
+        mEndTime = (TimePicker)view.findViewById(R.id.registration_end_time);
         mEndTime.setIs24HourView(false);
         mEndTime.setCurrentHour(0);
         mEndTime.setCurrentMinute(0);
 
         //Get the other views
-        mCourseSubject = (EditText) findViewById(R.id.registration_subject);
-        mCourseNumber = (EditText) findViewById(R.id.registration_course_number);
-        mCourseTitle = (EditText)findViewById(R.id.registration_course_title);
-        mMinCredits = (EditText)findViewById(R.id.registration_credits_min);
-        mMaxCredits = (EditText)findViewById(R.id.registration_credits_max);
-        mMonday = (CheckBox)findViewById(R.id.registration_monday);
-        mTuesday = (CheckBox)findViewById(R.id.registration_tuesday);
-        mWednesday = (CheckBox)findViewById(R.id.registration_wednesday);
-        mThursday = (CheckBox)findViewById(R.id.registration_thursday);
-        mFriday = (CheckBox)findViewById(R.id.registration_friday);
-        mSaturday = (CheckBox)findViewById(R.id.registration_saturday);
-        mSunday = (CheckBox)findViewById(R.id.registration_sunday);
+        mCourseSubject = (EditText)view.findViewById(R.id.registration_subject);
+        mCourseNumber = (EditText)view.findViewById(R.id.registration_course_number);
+        mCourseTitle = (EditText)view.findViewById(R.id.registration_course_title);
+        mMinCredits = (EditText)view.findViewById(R.id.registration_credits_min);
+        mMaxCredits = (EditText)view.findViewById(R.id.registration_credits_max);
+        mMonday = (CheckBox)view.findViewById(R.id.registration_monday);
+        mTuesday = (CheckBox)view.findViewById(R.id.registration_tuesday);
+        mWednesday = (CheckBox)view.findViewById(R.id.registration_wednesday);
+        mThursday = (CheckBox)view.findViewById(R.id.registration_thursday);
+        mFriday = (CheckBox)view.findViewById(R.id.registration_friday);
+        mSaturday = (CheckBox)view.findViewById(R.id.registration_saturday);
+        mSunday = (CheckBox)view.findViewById(R.id.registration_sunday);
 
         //Set up the more options button
-        final LinearLayout moreOptionsContainer = (LinearLayout)findViewById(R.id.more_options_container);
-        final TextView moreOptions = (TextView)findViewById(R.id.more_options);
+        final LinearLayout moreOptionsContainer = (LinearLayout)view.findViewById(R.id.more_options_container);
+        final TextView moreOptions = (TextView)view.findViewById(R.id.more_options);
         moreOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,10 +114,21 @@ public class RegistrationActivity extends DrawerActivity {
                 }
             }
         });
+
+        //Set up the search button
+        Button searchButton = (Button)view.findViewById(R.id.search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchCourses();
+            }
+        });
+
+        return view;
     }
 
     //Searches for the selected courses
-    public void searchCourses(View v){
+    public void searchCourses(){
         //Get the selected term
         Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
 
@@ -113,11 +136,11 @@ public class RegistrationActivity extends DrawerActivity {
         String courseSubject = mCourseSubject.getText().toString().toUpperCase().trim();
 
         if(courseSubject.isEmpty()){
-            Toast.makeText(this, getString(R.string.registration_error_no_faculty), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.registration_error_no_faculty), Toast.LENGTH_SHORT).show();
             return;
         }
-        else if(!courseSubject.isEmpty() && !courseSubject.matches("[A-Za-z]{4}")){
-            Toast.makeText(this, getString(R.string.registration_invalid_subject), Toast.LENGTH_SHORT).show();
+        else if(!courseSubject.matches("[A-Za-z]{4}")){
+            Toast.makeText(mActivity, getString(R.string.registration_invalid_subject), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -141,7 +164,8 @@ public class RegistrationActivity extends DrawerActivity {
         }
 
         if(maxCredits < minCredits){
-            Toast.makeText(this, getString(R.string.registration_error_credits), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, getString(R.string.registration_error_credits), Toast.LENGTH_SHORT)
+                    .show();
             return;
         }
 
@@ -196,16 +220,15 @@ public class RegistrationActivity extends DrawerActivity {
         }
 
         //Obtain courses
-        Log.e("Registration options", startHour + ":" + startMinute + " " + endHour + ":" + endMinute + " " + days );
+        Log.e("Registration options", startHour + ":" + startMinute + " " + endHour + ":" + endMinute + " " + days);
         new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, courseNumber,
                 courseTitle, minCredits, maxCredits, startHour, startMinute, startAMPM, endHour,
                 endMinute, endAMPM, days)).execute();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.reset, menu);
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.reset, menu);
     }
 
     @Override
@@ -247,7 +270,7 @@ public class RegistrationActivity extends DrawerActivity {
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
-            mDialog = new ProgressDialog(RegistrationActivity.this);
+            mDialog = new ProgressDialog(mActivity);
             mDialog.setMessage(getResources().getString(R.string.please_wait));
             mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mDialog.show();
@@ -257,7 +280,7 @@ public class RegistrationActivity extends DrawerActivity {
         @Override
         protected Boolean doInBackground(Void... params){
             Log.e("Class search URL",  mClassSearchURL);
-            String classesString = Connection.getInstance().getUrl(RegistrationActivity.this, mClassSearchURL);
+            String classesString = Connection.getInstance().getUrl(mActivity, mClassSearchURL);
 
             //There was an error
             if(classesString == null){
@@ -278,7 +301,7 @@ public class RegistrationActivity extends DrawerActivity {
             //There was an error
             if(!coursesParsed){
                 try {
-                    DialogHelper.showNeutralAlertDialog(RegistrationActivity.this, getResources().getString(R.string.error),
+                    DialogHelper.showNeutralAlertDialog(mActivity, getResources().getString(R.string.error),
                             getResources().getString(R.string.error_other));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -286,7 +309,7 @@ public class RegistrationActivity extends DrawerActivity {
             }
             //Go to the CoursesListActivity with the parsed courses
             else{
-                Intent intent = new Intent(RegistrationActivity.this, CoursesListActivity.class);
+                Intent intent = new Intent(mActivity, CoursesListActivity.class);
                 intent.putExtra(Constants.WISHLIST, false);
                 intent.putExtra(Constants.TERM, mTerm);
                 startActivity(intent);
