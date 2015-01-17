@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.mycourseslist;
+package ca.appvelopers.mcgillmobile.fragment.courses;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -23,13 +23,13 @@ import ca.appvelopers.mcgillmobile.object.Term;
  * Date :  2014-05-26 7:14 PM
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
-public class MyCoursesAdapter extends BaseAdapter {
+public class CoursesAdapter extends BaseAdapter {
     private Context mContext;
     private List<ClassItem> mClassItems;
     private List<ClassItem> mCheckedClassItems;
     private boolean mCanUnregister;
 
-    public MyCoursesAdapter(Context context, Term term, boolean canUnregister){
+    public CoursesAdapter(Context context, Term term, boolean canUnregister){
         this.mContext = context;
         this.mClassItems = new ArrayList<ClassItem>();
         this.mCheckedClassItems = new ArrayList<ClassItem>();
