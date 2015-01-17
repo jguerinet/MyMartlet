@@ -108,8 +108,6 @@
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/title_about" />
-        <activity android:name=".activity.mycourseslist.MyCoursesListActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".activity.HelpActivity" />
         
         <receiver android:name=".background.AlarmReceiver"></receiver>

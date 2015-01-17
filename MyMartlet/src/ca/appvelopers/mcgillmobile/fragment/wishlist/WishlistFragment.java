@@ -79,7 +79,7 @@ public class WishlistFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(mActivity, R.layout.activity_courseslist, null);
+        View view = View.inflate(mActivity, R.layout.fragment_courses, null);
 
         if(wishlist){
             GoogleAnalytics.sendScreen(mActivity, "Wishlist");
