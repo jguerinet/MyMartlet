@@ -1,13 +1,17 @@
-package ca.appvelopers.mcgillmobile.activity;
+package ca.appvelopers.mcgillmobile.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
@@ -16,40 +20,53 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
+/**
+ * Author: Julien Guerinet
+ * Date: 2015-01-17 4:42 PM
+ * Copyright (c) 2014 Appvelopers. All rights reserved.
+ */
 
-public class MyCoursesActivity extends DrawerActivity {
-
-    protected Context mContext = this;
+public class MyCoursesFragment extends Fragment {
+    private Activity mActivity;
     protected static CookieManager cookieManager;
     private WebView mWebView;
 
     @Override
-    @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_desktop);
         super.onCreate(savedInstanceState);
 
-        GoogleAnalytics.sendScreen(this, "MyCourses");
+        //Bind the activity
+        mActivity = getActivity();
+    }
 
-        if(!Connection.isNetworkAvailable(this)){
-            DialogHelper.showNeutralAlertDialog(this, this.getResources().getString(R.string.error),
-                    this.getResources().getString(R.string.error_no_internet));
-            return;
+    @Override
+    @SuppressLint("SetJavaScriptEnabled")
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = View.inflate(mActivity, R.layout.fragment_web, null);
+
+        //Title
+        mActivity.setTitle(getString(R.string.title_mycourses));
+
+        GoogleAnalytics.sendScreen(mActivity, "MyCourses");
+
+        if(!Connection.isNetworkAvailable(mActivity)){
+            DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.error),
+                    getString(R.string.error_no_internet));
+            return view;
         }
 
-        CookieSyncManager.createInstance(mContext);
+        CookieSyncManager.createInstance(mActivity);
         cookieManager = CookieManager.getInstance();
         if(cookieManager.hasCookies())
             cookieManager.removeAllCookie();
 
         //Get the WebView
-        mWebView = (WebView)findViewById(R.id.desktop_webview);
+        mWebView = (WebView)view.findViewById(R.id.desktop_webview);
 
         //allows download any file
         mWebView.setDownloadListener(new DownloadListener() {
@@ -75,7 +92,7 @@ public class MyCoursesActivity extends DrawerActivity {
                 // save the file in the "Downloads" folder of SDCARD
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
                 // get download service and enqueue file
-                DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                DownloadManager manager = (DownloadManager) mActivity.getSystemService(Context.DOWNLOAD_SERVICE);
                 manager.enqueue(request);
             }
         });
@@ -89,28 +106,23 @@ public class MyCoursesActivity extends DrawerActivity {
             public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function f(){" +
                         "(document.getElementsByName('j_username')[0]).value='" +
-                        Load.loadFullUsername(MyCoursesActivity.this) + "';" +
+                        Load.loadFullUsername(mActivity) + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
-                        Load.loadPassword(MyCoursesActivity.this) + "'; document.forms[0].submit();})()");
+                        Load.loadPassword(mActivity) + "'; document.forms[0].submit();})()");
 
                 view.setVisibility(View.VISIBLE);
             }
         });
-    }
 
+        return view;
+    }
 
     public static void deleteCookies(){
         if(cookieManager != null && cookieManager.hasCookies())
             cookieManager.removeAllCookie();
     }
 
-    @Override
-    public void onBackPressed(){
-        if(mWebView.canGoBack()){
-            mWebView.goBack();
-        }
-        else{
-            super.onBackPressed();
-        }
+    public WebView getWebView(){
+        return mWebView;
     }
 }

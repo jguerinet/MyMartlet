@@ -72,11 +72,6 @@
             android:theme="@style/Dialog.MyMartlet"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.MyCoursesActivity"
-            android:label="@string/title_mycourses"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".activity.ebill.EbillActivity"
             android:label="@string/title_ebill"
             android:screenOrientation="portrait">
