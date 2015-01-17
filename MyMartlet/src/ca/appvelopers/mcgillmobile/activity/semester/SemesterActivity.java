@@ -6,7 +6,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
+import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;

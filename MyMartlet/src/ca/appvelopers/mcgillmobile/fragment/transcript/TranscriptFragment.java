@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.MainActivity;
+import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;

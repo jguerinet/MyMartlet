@@ -17,7 +17,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.CourseActivity;
-import ca.appvelopers.mcgillmobile.activity.MainActivity;
+import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.util.Constants;

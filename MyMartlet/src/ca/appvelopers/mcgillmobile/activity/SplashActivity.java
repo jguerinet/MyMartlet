@@ -26,7 +26,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
+import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.dialog.SkipDialog;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.object.Semester;
