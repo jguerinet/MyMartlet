@@ -1,10 +1,8 @@
 package ca.appvelopers.mcgillmobile.fragment;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,8 +38,7 @@ import ca.appvelopers.mcgillmobile.view.TermAdapter;
  * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
 
-public class CourseSearchFragment extends Fragment {
-    private Activity mActivity;
+public class CourseSearchFragment extends BaseFragment {
     private Spinner mTermSpinner;
     private TermAdapter mTermAdapter;
     private TimePicker mStartTime, mEndTime;
@@ -52,12 +49,12 @@ public class CourseSearchFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-        mActivity = getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View view = View.inflate(mActivity, R.layout.fragment_course_search, null);
 
         GoogleAnalytics.sendScreen(mActivity, "Registration");

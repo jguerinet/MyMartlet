@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,7 +24,7 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
-import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
+import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -42,10 +41,8 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
 
-public class CoursesFragment extends Fragment {
+public class CoursesFragment extends BaseFragment {
     public static final int CHANGE_SEMESTER_CODE = 100;
-
-    private MainActivity mActivity;
 
     private ListView mListView;
     private TextView mUnregisterButton;
@@ -57,12 +54,12 @@ public class CoursesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mActivity = (MainActivity)getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View view = View.inflate(mActivity, R.layout.fragment_courses, null);
 
         GoogleAnalytics.sendScreen(mActivity, "View Courses");

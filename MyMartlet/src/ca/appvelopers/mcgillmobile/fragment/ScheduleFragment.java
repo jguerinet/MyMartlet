@@ -23,7 +23,6 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
-import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
@@ -42,10 +41,8 @@ import ca.appvelopers.mcgillmobile.view.ScheduleViewBuilder;
  * Copyright (c) 2014 Appvelopers Inc. All rights reserved.
  */
 
-public class ScheduleFragment extends Fragment {
+public class ScheduleFragment extends BaseFragment {
     private static final int CHANGE_SEMESTER_CODE = 100;
-
-    private MainActivity mActivity;
 
     private List<ClassItem> mClassList;
     private Term mTerm;
@@ -56,9 +53,6 @@ public class ScheduleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        //Bind the activity
-        mActivity = (MainActivity)getActivity();
-
         //Fragment has a menu
         setHasOptionsMenu(true);
     }
@@ -66,6 +60,8 @@ public class ScheduleFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         //Get the semester
         mTerm = App.getDefaultTerm();
 

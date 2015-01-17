@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,6 +21,7 @@ import com.facebook.Session;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.SplashActivity;
+import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.fragment.DesktopFragment;
 import ca.appvelopers.mcgillmobile.fragment.MyCoursesFragment;
@@ -48,7 +48,7 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private ProgressBar mToolbarProgress;
+    private ProgressBar mToolbarProgressBar;
 
     private ActionBarDrawerToggle drawerToggle;
     private DrawerItem mCurrentDrawerItem, mNewDrawerItem;
@@ -78,8 +78,8 @@ public class MainActivity extends BaseActivity {
         //Set is as the action bar
         setSupportActionBar(toolbar);
 
-        //Bind the progress bar
-        mToolbarProgress = (ProgressBar)findViewById(R.id.toolbar_progress);
+        //Bind the progress bars
+        mToolbarProgressBar = (ProgressBar)findViewById(R.id.toolbar_progress);
 
         //Create the fragments
         mScheduleFragment = new ScheduleFragment();
@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity {
         //Update the current drawer item
         mCurrentDrawerItem = drawerItem;
 
-        Fragment fragment = null;
+        BaseFragment fragment = null;
         switch(drawerItem) {
             case SCHEDULE:
                 fragment = mScheduleFragment;
@@ -303,7 +303,7 @@ public class MainActivity extends BaseActivity {
      * @param visible True if it should be visible, false otherwise
      */
     public void showToolbarSpinner(boolean visible){
-        mToolbarProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     /**

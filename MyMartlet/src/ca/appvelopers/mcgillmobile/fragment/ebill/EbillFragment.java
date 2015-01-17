@@ -2,7 +2,6 @@ package ca.appvelopers.mcgillmobile.fragment.ebill;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +17,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
+import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -32,9 +31,7 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
 
-public class EbillFragment extends Fragment {
-    private MainActivity mActivity;
-
+public class EbillFragment extends BaseFragment {
     private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
     private UserInfo mUserInfo;
     private TextView mUserName, mUserId;
@@ -43,12 +40,12 @@ public class EbillFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mActivity = (MainActivity)getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View view = View.inflate(mActivity, R.layout.fragment_ebill, null);
 
         //Title

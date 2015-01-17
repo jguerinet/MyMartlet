@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +21,7 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
-import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
+import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Term;
@@ -38,11 +37,9 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
 
-public class WishlistFragment extends Fragment {
+public class WishlistFragment extends BaseFragment {
     public static final int CHANGE_SEMESTER_CODE = 100;
     public boolean wishlist;
-
-    private MainActivity mActivity;
 
     private ListView mListView;
     private CoursesAdapter mAdapter;
@@ -71,14 +68,14 @@ public class WishlistFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActivity = (MainActivity)getActivity();
-
         wishlist = getArguments().getBoolean(Constants.WISHLIST);
         mTerm = (Term)getArguments().getSerializable(Constants.TERM);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View view = View.inflate(mActivity, R.layout.fragment_courses, null);
 
         if(wishlist){
