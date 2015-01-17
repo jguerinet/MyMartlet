@@ -25,6 +25,7 @@ import ca.appvelopers.mcgillmobile.activity.base.DrawerAdapter;
 import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.fragment.MyCoursesFragment;
 import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
+import ca.appvelopers.mcgillmobile.fragment.courseslist.CoursesFragment;
 import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity {
     private ScheduleFragment mScheduleFragment;
     private TranscriptFragment mTranscriptFragment;
     private MyCoursesFragment mMyCoursesFragment;
+    private CoursesFragment mCoursesFragment;
     private CourseSearchFragment mCourseSearchFragment;
 
     public void onCreate(Bundle savedInstanceState){
@@ -76,6 +78,7 @@ public class MainActivity extends BaseActivity {
         mScheduleFragment = new ScheduleFragment();
         mTranscriptFragment = new TranscriptFragment();
         mMyCoursesFragment = new MyCoursesFragment();
+        mCoursesFragment = CoursesFragment.createInstance(true, null);
         mCourseSearchFragment = new CourseSearchFragment();
 
         //Get the drawer
@@ -147,8 +150,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mCourseSearchFragment;
                 break;
             case WISHLIST:
-                //TODO
-                fragment = null;
+                fragment = mCoursesFragment;
                 break;
             case EBILL:
                 //TODO
