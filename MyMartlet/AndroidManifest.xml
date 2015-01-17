@@ -67,9 +67,6 @@
             android:name=".activity.CourseActivity"
             android:theme="@style/Dialog.MyMartlet"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:screenOrientation="portrait"/>
         <provider
             android:authorities="ca.appvelopers.mcgillmobile.util.MapSuggestionProvider"
             android:name=".util.MapSuggestionProvider"
