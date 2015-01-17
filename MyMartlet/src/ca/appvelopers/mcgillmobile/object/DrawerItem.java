@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
+
 public enum DrawerItem {
     SCHEDULE,
     TRANSCRIPT,
@@ -38,31 +39,6 @@ public enum DrawerItem {
         homePages.add(DESKTOP);
 
         return homePages;
-    }
-
-    //TODO
-    public Class<?> getHomePageClass(){
-        return null;
-//        switch(this){
-//            case SCHEDULE:
-//                return ScheduleActivity.class;
-//            case TRANSCRIPT:
-//                return TranscriptActivity.class;
-//            case MY_COURSES:
-//                return MyCoursesActivity.class;
-//            case SEARCH_COURSES:
-//                return RegistrationActivity.class;
-//            case WISHLIST:
-//                return CoursesListActivity.class;
-//            case EBILL:
-//                return EbillActivity.class;
-//            case MAP:
-//                return MapActivity.class;
-//            case DESKTOP:
-//                return DesktopActivity.class;
-//            default:
-//                return ScheduleActivity.class;
-//        }
     }
 
     public String toString(Context context){

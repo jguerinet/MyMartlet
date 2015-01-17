@@ -41,7 +41,7 @@
     </style>
 
     <!-- App Base Theme -->
-    <style name="Theme.MyMartlet.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.MyMartlet.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Lollipop Additions -->
         <!-- App Bar Color -->
         <item name="colorPrimary">@color/red</item>

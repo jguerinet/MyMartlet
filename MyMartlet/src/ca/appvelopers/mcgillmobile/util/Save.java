@@ -60,7 +60,7 @@ public class Save {
     public static void saveHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
-                .putInt(Constants.HOMEPAGE, App.getDrawerItem().ordinal())
+                .putInt(Constants.HOMEPAGE, App.getHomePage().ordinal())
                 .apply();
     }
 

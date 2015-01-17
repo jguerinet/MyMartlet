@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 
 import com.facebook.Session;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.SplashActivity;
 import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
@@ -68,12 +69,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Get the current page
-        mCurrentDrawerItem = (DrawerItem)getIntent().getSerializableExtra(Constants.HOMEPAGE);
-        //If it's null, set it to the Schedule
-        if(mCurrentDrawerItem == null){
-            mCurrentDrawerItem = DrawerItem.SCHEDULE;
-        }
+        //Load the home page
+        mCurrentDrawerItem = App.getHomePage();
 
         //Get the toolbar
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -100,8 +97,8 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.setFocusableInTouchMode(false);
 
         //Set up the drawer toggle
-//        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, 0, 0);
-//        mDrawerLayout.setDrawerListener(drawerToggle);
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0);
+        mDrawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.setDrawerIndicatorEnabled(true);
 
         //Set up the drawer
@@ -112,8 +109,6 @@ public class MainActivity extends BaseActivity {
         //Set the currently checked one
         for(int i = 0; i < drawerAdapter.getCount(); i++){
             DrawerItem drawerItem = drawerAdapter.getItem(i);
-
-            //Set the checked item accordingly
             mDrawerList.setItemChecked(i, drawerItem == mCurrentDrawerItem);
         }
 
@@ -145,6 +140,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setFragment(DrawerItem drawerItem){
+        //Update the current drawer item
+        mCurrentDrawerItem = drawerItem;
+
         Fragment fragment = null;
         switch(drawerItem) {
             case SCHEDULE:
