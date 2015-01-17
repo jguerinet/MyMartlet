@@ -35,7 +35,7 @@ public class ScheduleViewBuilder {
 
     public View renderLandscapeView(DateTime startingDate){
         //Load the right view
-        View view = View.inflate(mContext, R.layout.activity_schedule_land, null);
+        View view = View.inflate(mContext, R.layout.fragment_schedule_land, null);
 
         //Fill out the timetable container
         fillTimetable(view);

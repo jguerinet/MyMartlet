@@ -17,7 +17,7 @@ public class ScheduleActivity extends DrawerActivity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.fragment_schedule);
         super.onCreate(savedInstanceState);
 
         GoogleAnalytics.sendScreen(this, "Schedule");
