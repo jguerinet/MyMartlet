@@ -1,45 +1,62 @@
-package ca.appvelopers.mcgillmobile.activity.transcript;
+package ca.appvelopers.mcgillmobile.fragment.transcript;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
+import ca.appvelopers.mcgillmobile.activity.MainActivity;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
 /**
- * Author: Ryan Singzon
- * Date: 30/01/14, 6:01 PM
+ * Author: Julien Guerinet
+ * Date: 2015-01-17 4:32 PM
+ * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
-public class TranscriptActivity extends DrawerActivity {
+
+public class TranscriptFragment extends Fragment {
+    private MainActivity mActivity;
     private Transcript mTranscript;
     private TextView mCGPA, mTotalCredits;
     private ListView mListView;
 
     public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_transcript);
         super.onCreate(savedInstanceState);
 
-        GoogleAnalytics.sendScreen(this, "Transcript");
+        mActivity = (MainActivity)getActivity();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = View.inflate(mActivity, R.layout.fragment_transcript, null);
+
+        //Title
+        mActivity.setTitle(getString(R.string.title_transcript));
+
+        GoogleAnalytics.sendScreen(mActivity, "Transcript");
 
         //Get the stored transcript from the App
         mTranscript = App.getTranscript();
 
         //Get the views
-        mCGPA = (TextView)findViewById(R.id.transcript_cgpa);
-        mTotalCredits = (TextView)findViewById(R.id.transcript_credits);
-        mListView = (ListView)findViewById(android.R.id.list);
+        mCGPA = (TextView)view.findViewById(R.id.transcript_cgpa);
+        mTotalCredits = (TextView)view.findViewById(R.id.transcript_credits);
+        mListView = (ListView)view.findViewById(android.R.id.list);
 
         //Load the info stored on the device
         loadInfo();
+
+        return view;
     }
 
     private void loadInfo(){
@@ -48,14 +65,13 @@ public class TranscriptActivity extends DrawerActivity {
         mTotalCredits.setText(getResources().getString(R.string.transcript_credits, mTranscript.getTotalCredits()));
 
         //Reload the adapter
-        TranscriptAdapter adapter = new TranscriptAdapter(TranscriptActivity.this, mTranscript);
+        TranscriptAdapter adapter = new TranscriptAdapter(mActivity, mTranscript);
         mListView.setAdapter(adapter);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.refresh, menu);
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.refresh, menu);
     }
 
     @Override
@@ -70,11 +86,11 @@ public class TranscriptActivity extends DrawerActivity {
     }
 
     private void executeTranscriptDownloader(){
-        new TranscriptDownloader(this) {
+        new TranscriptDownloader(mActivity) {
             @Override
             protected void onPreExecute() {
                 //Show the user we are downloading new info
-                setProgressBarIndeterminateVisibility(true);
+                mActivity.showToolbarSpinner(true);
             }
 
             @Override
@@ -85,7 +101,7 @@ public class TranscriptActivity extends DrawerActivity {
                     //Reload the info in the views
                     loadInfo();
                 }
-                setProgressBarIndeterminateVisibility(false);
+                mActivity.showToolbarSpinner(false);
             }
         }.execute();
     }
