@@ -1,6 +1,5 @@
 package ca.appvelopers.mcgillmobile.fragment.map;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.SearchRecentSuggestionsProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +35,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -49,9 +48,7 @@ import ca.appvelopers.mcgillmobile.util.MapSuggestionProvider;
  * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
 
-public class MapFragment extends Fragment {
-    private Activity mActivity;
-
+public class MapFragment extends BaseFragment {
     private List<MapPlace> mPlaces;
     private List<Place> mFavoritePlaces;
 
@@ -68,12 +65,12 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mActivity = getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View view = View.inflate(mActivity, R.layout.fragment_map, null);
 
         //Title

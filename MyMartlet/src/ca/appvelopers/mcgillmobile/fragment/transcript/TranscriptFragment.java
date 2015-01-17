@@ -1,7 +1,6 @@
 package ca.appvelopers.mcgillmobile.fragment.transcript;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
+import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
@@ -24,8 +23,7 @@ import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
  * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
 
-public class TranscriptFragment extends Fragment {
-    private MainActivity mActivity;
+public class TranscriptFragment extends BaseFragment{
     private Transcript mTranscript;
     private TextView mCGPA, mTotalCredits;
     private ListView mListView;
@@ -33,11 +31,12 @@ public class TranscriptFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActivity = (MainActivity)getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View view = View.inflate(mActivity, R.layout.fragment_transcript, null);
 
         //Title
