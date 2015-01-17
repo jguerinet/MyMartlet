@@ -15,7 +15,6 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.MainActivity;
-import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Semester;
@@ -159,6 +158,7 @@ public class WebFetcherService extends IntentService {
 	/**
 	 * This method queries minerva to check for new seat openings
 	 */
+    //TODO Rework this with new activity/fragment structure
 	protected void CheckSeats(){
 		List<ClassItem> wishlistClasses = App.getClassWishlist();
 		
@@ -236,7 +236,7 @@ public class WebFetcherService extends IntentService {
 		for(ClassItem wantedClass : wishlistClasses){
 			if(wantedClass.getSeatsRemaining()>0){
 				//show notification
-				LocalToast("A spot has opened up for the class: "+wantedClass.getCourseTitle(), CoursesListActivity.class,NOTIFICATION_ID_CLASSES);
+				LocalToast("A spot has opened up for the class: "+wantedClass.getCourseTitle(), MainActivity.class,NOTIFICATION_ID_CLASSES);
 				return;
 			}
 		}

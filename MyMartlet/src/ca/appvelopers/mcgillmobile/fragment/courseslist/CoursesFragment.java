@@ -1,13 +1,16 @@
-package ca.appvelopers.mcgillmobile.activity.courseslist;
+package ca.appvelopers.mcgillmobile.fragment.courseslist;
 
-
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +22,7 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
+import ca.appvelopers.mcgillmobile.activity.MainActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Term;
@@ -30,41 +33,65 @@ import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
- * Author : Julien
- * Date :  2014-05-26 7:09 PM
- * Shows a list of courses
+ * Author: Julien Guerinet
+ * Date: 2015-01-17 4:56 PM
+ * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
-public class CoursesListActivity extends DrawerActivity {
+
+public class CoursesFragment extends Fragment {
     public static final int CHANGE_SEMESTER_CODE = 100;
     public boolean wishlist;
 
+    private MainActivity mActivity;
+
     private ListView mListView;
-    private ClassAdapter mAdapter;
+    private CoursesAdapter mAdapter;
 
     private List<ClassItem> mClasses;
     private Term mTerm;
 
+    /**
+     * Creates an instance of a CoursesFragment with passed variables
+     * @param wishlist True if this is supposed to show a wishlist, false if this is a search result
+     * @param term The current term we are searching (null if this is for a wishlsit)
+     * @return The CoursesFragment with the arguments bundled
+     */
+    public static CoursesFragment createInstance(boolean wishlist, Term term){
+        Bundle args = new Bundle();
+        args.putBoolean(Constants.WISHLIST, wishlist);
+        args.putSerializable(Constants.TERM, term);
+
+        CoursesFragment fragment = new CoursesFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_courseslist);
-
-        wishlist = getIntent().getBooleanExtra(Constants.WISHLIST, true);
-
         super.onCreate(savedInstanceState);
 
+        mActivity = (MainActivity)getActivity();
+
+        wishlist = getArguments().getBoolean(Constants.WISHLIST);
+        mTerm = (Term)getArguments().getSerializable(Constants.TERM);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = View.inflate(mActivity, R.layout.activity_courseslist, null);
+
         if(wishlist){
-            GoogleAnalytics.sendScreen(this, "Wishlist");
+            GoogleAnalytics.sendScreen(mActivity, "Wishlist");
         }
         else{
-            GoogleAnalytics.sendScreen(this, "Search Results");
+            GoogleAnalytics.sendScreen(mActivity, "Search Results");
         }
 
         // Views
-        mListView = (ListView)findViewById(R.id.courses_list);
-        mListView.setEmptyView(findViewById(R.id.courses_empty));
+        mListView = (ListView)view.findViewById(R.id.courses_list);
+        mListView.setEmptyView(view.findViewById(R.id.courses_empty));
 
-        //Get the term from the intent (From the course search
-        mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
         //If it's null, just load the default term
         if(mTerm == null){
             mTerm = App.getDefaultTerm();
@@ -80,7 +107,7 @@ public class CoursesListActivity extends DrawerActivity {
         }
 
         //Register button
-        TextView registerButton = (TextView) findViewById(R.id.course_register);
+        TextView registerButton = (TextView) view.findViewById(R.id.course_register);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,10 +116,10 @@ public class CoursesListActivity extends DrawerActivity {
 
                 //Too many courses
                 if (registerCoursesList.size() > 10) {
-                    Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.courses_too_many_courses),
+                    Toast.makeText(mActivity, getString(R.string.courses_too_many_courses),
                             Toast.LENGTH_SHORT).show();
                 } else if (registerCoursesList.isEmpty()) {
-                    Toast.makeText(CoursesListActivity.this, getResources().getString(R.string.courses_none_selected),
+                    Toast.makeText(mActivity, getString(R.string.courses_none_selected),
                             Toast.LENGTH_SHORT).show();
                 } else if (registerCoursesList.size() > 0) {
                     //Execute registration of checked classes in a new thread
@@ -102,7 +129,7 @@ public class CoursesListActivity extends DrawerActivity {
         });
 
         //Add/Remove to/from Wishlist Button
-        TextView wishlistButton = (TextView)findViewById(R.id.course_wishlist);
+        TextView wishlistButton = (TextView)view.findViewById(R.id.course_wishlist);
         if(wishlist){
             wishlistButton.setText(getResources().getString(R.string.courses_remove_wishlist));
         }
@@ -128,8 +155,8 @@ public class CoursesListActivity extends DrawerActivity {
                     //Save the courses to the App context
                     App.setClassWishlist(mClasses);
 
-                    GoogleAnalytics.sendEvent(CoursesListActivity.this, "Wishlist", "Remove",
-                            "" + checkedClasses.size(), null);
+                    GoogleAnalytics.sendEvent(mActivity, "Wishlist", "Remove", "" + checkedClasses.size(),
+                            null);
 
                     //Reload the adapter
                     loadInfo();
@@ -151,14 +178,14 @@ public class CoursesListActivity extends DrawerActivity {
                     //Save the courses to the App context
                     App.setClassWishlist(wishlist);
 
-                    GoogleAnalytics.sendEvent(CoursesListActivity.this, "Search Results", "Add to Wishlist",
+                    GoogleAnalytics.sendEvent(mActivity, "Search Results", "Add to Wishlist",
                             "" + coursesAdded, null);
 
                     toastMessage = getResources().getString(R.string.wishlist_add, coursesAdded);
                 }
 
                 //Visual feedback of what was just done
-                Toast.makeText(CoursesListActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -166,6 +193,8 @@ public class CoursesListActivity extends DrawerActivity {
             //Update the wishlist
             new WishlistThread().execute();
         }
+
+        return view;
     }
 
     @Override
@@ -174,39 +203,28 @@ public class CoursesListActivity extends DrawerActivity {
         loadInfo();
     }
 
-    @Override
-    public void onBackPressed(){
-        if(!wishlist){
-            finish();
-        }
-        else{
-            super.onBackPressed();
-        }
-    }
-
     private void loadInfo(){
         //Set the title
-        setTitle(mTerm.toString(this));
+        mActivity.setTitle(mTerm.toString(mActivity));
 
         //Reload the adapter
-        mAdapter = new ClassAdapter(this, mTerm, mClasses);
+        mAdapter = new CoursesAdapter(mActivity, mTerm, mClasses);
         mListView.setAdapter(mAdapter);
     }
 
     // JDAlfaro
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         //Inflate the refresh button only if we are in the wishlist
         if(wishlist){
-            getMenuInflater().inflate(R.menu.refresh_change_semester, menu);
+            inflater.inflate(R.menu.refresh_change_semester, menu);
         }
-        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_change_semester){
-            Intent intent = new Intent(this, ChangeSemesterActivity.class);
+            Intent intent = new Intent(mActivity, ChangeSemesterActivity.class);
             intent.putExtra(Constants.REGISTER_TERMS, true);
             intent.putExtra(Constants.TERM, mTerm);
             startActivityForResult(intent, CHANGE_SEMESTER_CODE);
@@ -221,7 +239,7 @@ public class CoursesListActivity extends DrawerActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == CHANGE_SEMESTER_CODE){
-            if(resultCode == RESULT_OK){
+            if(resultCode == Activity.RESULT_OK){
                 mTerm = (Term)data.getSerializableExtra(Constants.TERM);
                 loadInfo();
             }
@@ -246,21 +264,21 @@ public class CoursesListActivity extends DrawerActivity {
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
-            setProgressBarIndeterminateVisibility(true);
+            mActivity.showToolbarSpinner(true);
         }
 
         //Retrieve page that contains registration status from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            String resultString = Connection.getInstance().getUrl(CoursesListActivity.this, mRegistrationURL);
+            String resultString = Connection.getInstance().getUrl(mActivity, mRegistrationURL);
 
             //If result string is null, there was an error
             if(resultString == null){
-                runOnUiThread(new Runnable() {
+                mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            DialogHelper.showNeutralAlertDialog(CoursesListActivity.this, getString(R.string.error),
+                            DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.error),
                                     getString(R.string.error_other));
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -279,12 +297,12 @@ public class CoursesListActivity extends DrawerActivity {
         //Update or create transcript object and display data
         @Override
         protected void onPostExecute(Boolean success){
-            setProgressBarIndeterminateVisibility(false);
+            mActivity.showToolbarSpinner(false);
 
             if(success){
                 //Display whether the user was successfully registered
                 if(mRegistrationErrors.isEmpty()){
-                    Toast.makeText(CoursesListActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, R.string.registration_success, Toast.LENGTH_LONG).show();
                 }
 
                 //Display a message if a registration error has occurred
@@ -319,7 +337,7 @@ public class CoursesListActivity extends DrawerActivity {
                     }
 
                     //Show an alert dialog with the errors
-                    DialogHelper.showNeutralAlertDialog(CoursesListActivity.this, getString(R.string.registration_error),
+                    DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.registration_error),
                             errorMessage);
                 }
 
@@ -346,7 +364,7 @@ public class CoursesListActivity extends DrawerActivity {
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
-            setProgressBarIndeterminateVisibility(true);
+            mActivity.showToolbarSpinner(true);
         }
 
         //Retrieve page that contains registration status from Minerva
@@ -393,7 +411,7 @@ public class CoursesListActivity extends DrawerActivity {
                         courseSubject, null, courseNumber,
                         0, 0, 0, 0, '0', 0, 0, '0', null);
 
-                String classesString = Connection.getInstance().getUrl(CoursesListActivity.this, registrationUrl);
+                String classesString = Connection.getInstance().getUrl(mActivity, registrationUrl);
 
                 //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
                 //This parses all ClassItems for a given course
@@ -424,7 +442,7 @@ public class CoursesListActivity extends DrawerActivity {
         //Update or create transcript object and display data
         @Override
         protected void onPostExecute(Boolean success){
-            setProgressBarIndeterminateVisibility(false);
+            mActivity.showToolbarSpinner(false);
 
             if(success){
                 //Set the new wishlist

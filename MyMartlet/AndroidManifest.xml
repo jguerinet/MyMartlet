@@ -101,8 +101,6 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".activity.courseslist.CoursesListActivity" />
-        <activity
             android:name=".activity.walkthrough.WalkthroughActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog.MyMartlet"/>=
