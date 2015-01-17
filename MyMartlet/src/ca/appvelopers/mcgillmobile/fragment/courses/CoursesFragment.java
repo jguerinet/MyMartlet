@@ -54,6 +54,9 @@ public class CoursesFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Fragment has a menu
+        setHasOptionsMenu(true);
     }
 
     @Override
