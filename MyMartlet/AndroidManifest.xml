@@ -62,10 +62,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DesktopActivity"
-            android:label="@string/title_desktop"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".activity.semester.SemesterActivity"/>
         <activity
             android:name=".activity.CourseActivity"
