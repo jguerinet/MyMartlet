@@ -170,7 +170,7 @@ public class SettingsFragment extends Fragment {
         Spinner homepages = (Spinner)view.findViewById(R.id.settings_homepage);
         final HomePageAdapter homePageAdapter = new HomePageAdapter(mActivity);
         homepages.setAdapter(homePageAdapter);
-        homepages.setSelection(homePageAdapter.getPosition(App.getDrawerItem()));
+        homepages.setSelection(homePageAdapter.getPosition(App.getHomePage()));
         homepages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

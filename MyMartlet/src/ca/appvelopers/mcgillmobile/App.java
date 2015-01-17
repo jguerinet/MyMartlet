@@ -36,7 +36,7 @@ public class App extends Application {
     private static Typeface iconFont;
 
     private static Language language;
-    private static DrawerItem drawerItem;
+    private static DrawerItem homePage;
     private static Transcript transcript;
     private static List<ClassItem> classes;
     private static Term defaultTerm;
@@ -73,7 +73,7 @@ public class App extends Application {
         //Load the user's chosen language and update the locale
         language = Load.loadLanguage(this);
         //Load the user's chosen homepage
-        drawerItem = Load.loadHomePage(this);
+        homePage = Load.loadHomePage(this);
         //Load the default term for the schedule
         defaultTerm = Load.loadDefaultTerm(this);
         //Load the course wishlist
@@ -114,6 +114,7 @@ public class App extends Application {
     public static boolean isAlarmActive(){
     	return webFetcherReceiver.isActive();
     }
+
     public static List<EbillItem> getEbill(){
         return ebill;
     }
@@ -126,8 +127,8 @@ public class App extends Application {
         return language;
     }
 
-    public static DrawerItem getDrawerItem(){
-        return drawerItem;
+    public static DrawerItem getHomePage(){
+        return homePage;
     }
 
     public static Term getDefaultTerm(){
@@ -193,7 +194,7 @@ public class App extends Application {
     }
 
     public static void setHomePage(DrawerItem drawerItem){
-        App.drawerItem = drawerItem;
+        App.homePage = drawerItem;
 
         //Save it to internal storage when this is set
         Save.saveHomePage(context);

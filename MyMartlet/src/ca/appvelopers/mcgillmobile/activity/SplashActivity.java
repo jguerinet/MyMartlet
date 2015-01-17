@@ -27,6 +27,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
+import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.dialog.SkipDialog;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.object.Semester;
@@ -439,7 +440,7 @@ public class SplashActivity extends BaseActivity {
             if(mConnectionStatus == ConnectionStatus.CONNECTION_OK ||
                     mConnectionStatus == ConnectionStatus.CONNECTION_NO_INTERNET){
 
-                Intent intent = new Intent(mContext, App.getDrawerItem().getHomePageClass());
+                Intent intent = new Intent(mContext, MainActivity.class);
                 //If there's a bug, add it to the intent
                 if(mBugPresent){
                     intent.putExtra(Constants.BUG, mTranscriptBug ? Constants.TRANSCRIPT : Constants.SCHEDULE)
