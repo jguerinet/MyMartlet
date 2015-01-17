@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.transcript;
+package ca.appvelopers.mcgillmobile.fragment.transcript;
 
 import android.content.Context;
 import android.content.Intent;

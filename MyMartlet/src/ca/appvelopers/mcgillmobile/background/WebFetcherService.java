@@ -14,8 +14,8 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.activity.MainActivity;
 import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
-import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Semester;
@@ -86,6 +86,7 @@ public class WebFetcherService extends IntentService {
 	 * @param oldTrans
 	 * @param newTrans
 	 */
+    //TODO Rework this with new activity/fragment structure
 	protected void CompareTranscripts(Transcript oldTrans, Transcript newTrans){
 		
 		//check for error
@@ -95,7 +96,7 @@ public class WebFetcherService extends IntentService {
 		
 		//check if cgpa is changed
 		if(Math.abs(oldTrans.getCgpa() - newTrans.getCgpa()) >= 0.01){
-			LocalToast("Your new CGPA is "+newTrans.getCgpa(), TranscriptActivity.class,NOTIFICATION_ID_GRADES);
+			LocalToast("Your new CGPA is "+newTrans.getCgpa(), MainActivity.class,NOTIFICATION_ID_GRADES);
 			return;
 		}
 		
@@ -136,7 +137,7 @@ public class WebFetcherService extends IntentService {
 				
 				//check if grades have changed
 				if(!oldCourse.getUserGrade().equals(newCourse.getUserGrade())){
-					LocalToast("Your Grades are updated", TranscriptActivity.class,NOTIFICATION_ID_GRADES+1);
+					LocalToast("Your Grades are updated", MainActivity.class,NOTIFICATION_ID_GRADES+1);
 					return; //we only need one notification so return after this
 				}
 				

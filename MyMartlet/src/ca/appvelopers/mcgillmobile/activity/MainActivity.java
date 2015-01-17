@@ -24,6 +24,7 @@ import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.base.DrawerAdapter;
 import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
+import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity {
 
     //The Fragments
     private ScheduleFragment mScheduleFragment;
+    private TranscriptFragment mTranscriptFragment;
     private CourseSearchFragment mCourseSearchFragment;
 
     public void onCreate(Bundle savedInstanceState){
@@ -128,8 +130,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mScheduleFragment;
                 break;
             case TRANSCRIPT:
-                //TODO
-                fragment = null;
+                fragment = mTranscriptFragment;
                 break;
             case MY_COURSES:
                 //TODO
