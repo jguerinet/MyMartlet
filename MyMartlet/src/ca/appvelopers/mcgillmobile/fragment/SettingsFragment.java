@@ -1,5 +1,6 @@
-package ca.appvelopers.mcgillmobile.activity;
+package ca.appvelopers.mcgillmobile.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,7 +8,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -24,7 +28,8 @@ import java.util.Locale;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
+import ca.appvelopers.mcgillmobile.activity.AboutActivity;
+import ca.appvelopers.mcgillmobile.activity.HelpActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
@@ -33,51 +38,65 @@ import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
 
-public class SettingsActivity extends DrawerActivity {
+/**
+ * Author: Julien Guerinet
+ * Date: 2015-01-17 5:40 PM
+ * Copyright (c) 2014 Appvelopers. All rights reserved.
+ */
+
+public class SettingsFragment extends Fragment {
+    private Activity mActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_settings);
         super.onCreate(savedInstanceState);
 
-        GoogleAnalytics.sendScreen(this, "Settings");
-        // Walkthrough
+        mActivity = getActivity();
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = View.inflate(mActivity, R.layout.fragment_settings, null);
+
+        //Title
+        mActivity.setTitle(getString(R.string.title_settings));
+
+        GoogleAnalytics.sendScreen(mActivity, "Settings");
 
         //Help
-        TextView helpIcon = (TextView)findViewById(R.id.help_icon);
+        TextView helpIcon = (TextView)view.findViewById(R.id.help_icon);
         helpIcon.setTypeface(App.getIconFont());
-        LinearLayout helpContainer = (LinearLayout)findViewById(R.id.settings_help);
+        LinearLayout helpContainer = (LinearLayout)view.findViewById(R.id.settings_help);
         helpContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SettingsActivity.this, HelpActivity.class));
+                startActivity(new Intent(mActivity, HelpActivity.class));
             }
         });
 
         //About
-        TextView aboutIcon = (TextView)findViewById(R.id.about_icon);
+        TextView aboutIcon = (TextView)view.findViewById(R.id.about_icon);
         aboutIcon.setTypeface(App.getIconFont());
-        LinearLayout aboutContainer = (LinearLayout)findViewById(R.id.settings_about);
+        LinearLayout aboutContainer = (LinearLayout)view.findViewById(R.id.settings_about);
         aboutContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SettingsActivity.this, AboutActivity.class));
+                startActivity(new Intent(mActivity, AboutActivity.class));
             }
         });
 
         //Report a Bug
-        TextView bugIcon = (TextView)findViewById(R.id.bug_icon);
+        TextView bugIcon = (TextView)mActivity.findViewById(R.id.bug_icon);
         bugIcon.setTypeface(App.getIconFont());
-        LinearLayout bugContainer = (LinearLayout)findViewById(R.id.settings_bug);
+        LinearLayout bugContainer = (LinearLayout)mActivity.findViewById(R.id.settings_bug);
         bugContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Inflate the view
-                View dialogView = View.inflate(SettingsActivity.this, R.layout.dialog_edittext, null);
+                View dialogView = View.inflate(mActivity, R.layout.dialog_edittext, null);
 
                 //Create the Builder
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SettingsActivity.this);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
                 //Set up the view
                 alertDialogBuilder.setView(dialogView);
                 //EditText
@@ -94,10 +113,10 @@ public class SettingsActivity extends DrawerActivity {
                         .setPositiveButton(getResources().getString(android.R.string.ok),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
-                                        GoogleAnalytics.sendEvent(SettingsActivity.this, "About", "Report a Bug",
+                                        GoogleAnalytics.sendEvent(mActivity, "About", "Report a Bug",
                                                 null, null);
 
-                                        Help.sendBugReport(SettingsActivity.this, userInput.getText().toString());
+                                        Help.sendBugReport(mActivity, userInput.getText().toString());
                                     }
                                 })
                         .create().show();
@@ -105,14 +124,14 @@ public class SettingsActivity extends DrawerActivity {
         });
 
         //Set up the info
-        Spinner languages = (Spinner)findViewById(R.id.settings_language);
+        Spinner languages = (Spinner)view.findViewById(R.id.settings_language);
         //Set up the array of languages
         List<String> languageStrings = new ArrayList<String>();
         languageStrings.add(getResources().getString(R.string.english));
         languageStrings.add(getResources().getString(R.string.french));
         Collections.sort(languageStrings);
         //Standard ArrayAdapter
-        ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(mActivity,
                 R.layout.spinner_item, languageStrings);
         languageAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         //Apply the adapter to the spinner
@@ -125,7 +144,7 @@ public class SettingsActivity extends DrawerActivity {
                 //Get the chosen language
                 Language chosenLanguage = Language.values()[position];
 
-                GoogleAnalytics.sendEvent(SettingsActivity.this, "Settings", "Language", chosenLanguage.getLanguageString(), null);
+                GoogleAnalytics.sendEvent(mActivity, "Settings", "Language", chosenLanguage.getLanguageString(), null);
 
                 //If it's different than the previously selected language, update it and reload
                 if(App.getLanguage() != chosenLanguage){
@@ -134,12 +153,13 @@ public class SettingsActivity extends DrawerActivity {
                     //Update locale and config
                     Locale locale = new Locale(chosenLanguage.getLanguageString());
                     Locale.setDefault(locale);
-                    Configuration config = getBaseContext().getResources().getConfiguration();
+                    Configuration config = mActivity.getBaseContext().getResources().getConfiguration();
                     config.locale = locale;
-                    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+                    mActivity.getBaseContext().getResources().updateConfiguration(config,
+                            mActivity.getBaseContext().getResources().getDisplayMetrics());
 
-                    startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
-                    finish();
+                    //TODO Reload fragment
+//                    startActivity(new Intent(mActivity, SettingsActivity.class));
                 }
             }
 
@@ -147,8 +167,8 @@ public class SettingsActivity extends DrawerActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        Spinner homepages = (Spinner)findViewById(R.id.settings_homepage);
-        final HomePageAdapter homePageAdapter = new HomePageAdapter(this);
+        Spinner homepages = (Spinner)view.findViewById(R.id.settings_homepage);
+        final HomePageAdapter homePageAdapter = new HomePageAdapter(mActivity);
         homepages.setAdapter(homePageAdapter);
         homepages.setSelection(homePageAdapter.getPosition(App.getDrawerItem()));
         homepages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -157,7 +177,7 @@ public class SettingsActivity extends DrawerActivity {
                 //Get the chosen homepage
                 DrawerItem chosenHomePage = homePageAdapter.getItem(position);
 
-                GoogleAnalytics.sendEvent(SettingsActivity.this, "Settings", "Homepage", chosenHomePage.toString(), null);
+                GoogleAnalytics.sendEvent(mActivity, "Settings", "Homepage", chosenHomePage.toString(), null);
 
                 //Update it in App
                 App.setHomePage(chosenHomePage);
@@ -168,24 +188,26 @@ public class SettingsActivity extends DrawerActivity {
         });
 
         //Statistics
-        CheckBox statistics = (CheckBox)findViewById(R.id.settings_statistics);
-        statistics.setChecked(Load.loadStatistics(this));
+        CheckBox statistics = (CheckBox)view.findViewById(R.id.settings_statistics);
+        statistics.setChecked(Load.loadStatistics(mActivity));
         statistics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Save.saveStatistics(SettingsActivity.this, b);
+                Save.saveStatistics(mActivity, b);
             }
         });
 
         //Version Number
         try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            PackageInfo packageInfo = mActivity.getPackageManager().getPackageInfo(mActivity.getPackageName(), 0);
             String appVersionName = packageInfo.versionName;
 
-            TextView versionNumber = (TextView)findViewById(R.id.settings_version);
+            TextView versionNumber = (TextView)view.findViewById(R.id.settings_version);
             versionNumber.setText(getResources().getString(R.string.settings_version, appVersionName));
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        return view;
     }
 }

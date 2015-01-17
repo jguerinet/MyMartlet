@@ -26,6 +26,7 @@ import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.fragment.DesktopFragment;
 import ca.appvelopers.mcgillmobile.fragment.MyCoursesFragment;
 import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
+import ca.appvelopers.mcgillmobile.fragment.SettingsFragment;
 import ca.appvelopers.mcgillmobile.fragment.courses.CoursesFragment;
 import ca.appvelopers.mcgillmobile.fragment.ebill.EbillFragment;
 import ca.appvelopers.mcgillmobile.fragment.map.MapFragment;
@@ -62,6 +63,7 @@ public class MainActivity extends BaseActivity {
     private EbillFragment mEbillFragment;
     private MapFragment mMapFragment;
     private DesktopFragment mDesktopFragment;
+    private SettingsFragment mSettingsFragment;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -92,6 +94,7 @@ public class MainActivity extends BaseActivity {
         mEbillFragment = new EbillFragment();
         mMapFragment = new MapFragment();
         mDesktopFragment = new DesktopFragment();
+        mSettingsFragment = new SettingsFragment();
 
         //Get the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -173,8 +176,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mDesktopFragment;
                 break;
             case SETTINGS:
-                //TODO
-                fragment = null;
+                fragment = mSettingsFragment;
                 break;
             case FACEBOOK:
                 Help.postOnFacebook(MainActivity.this);
