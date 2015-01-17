@@ -70,6 +70,9 @@ public class WishlistFragment extends BaseFragment {
 
         wishlist = getArguments().getBoolean(Constants.WISHLIST);
         mTerm = (Term)getArguments().getSerializable(Constants.TERM);
+
+        //Fragment has a menu
+        setHasOptionsMenu(true);
     }
 
     @Override
