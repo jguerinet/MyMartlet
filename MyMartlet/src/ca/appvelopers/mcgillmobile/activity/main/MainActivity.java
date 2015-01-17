@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
     private ProgressBar mToolbarProgress;
 
     private ActionBarDrawerToggle drawerToggle;
-    private DrawerItem mCurrentDrawerItem;
+    private DrawerItem mCurrentDrawerItem, mNewDrawerItem;
 
     //The Fragments
     private ScheduleFragment mScheduleFragment;
@@ -71,6 +71,7 @@ public class MainActivity extends BaseActivity {
 
         //Load the home page
         mCurrentDrawerItem = App.getHomePage();
+        mNewDrawerItem = mCurrentDrawerItem;
 
         //Get the toolbar
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -97,7 +98,18 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.setFocusableInTouchMode(false);
 
         //Set up the drawer toggle
-        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0);
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0){
+            @Override
+            public void onDrawerClosed(View view){
+                super.onDrawerClosed(view);
+
+                //Check if the current and new drawer items are the same
+                if(mCurrentDrawerItem != mNewDrawerItem){
+                    //If it isn't update the fragment
+                    setFragment(mNewDrawerItem);
+                }
+            }
+        };
         mDrawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.setDrawerIndicatorEnabled(true);
 
@@ -107,7 +119,7 @@ public class MainActivity extends BaseActivity {
         mDrawerList.setAdapter(drawerAdapter);
 
         //Set the currently checked one
-        for(int i = 0; i < drawerAdapter.getCount(); i++){
+        for(int i = 1; i < drawerAdapter.getCount(); i++){
             DrawerItem drawerItem = drawerAdapter.getItem(i);
             mDrawerList.setItemChecked(i, drawerItem == mCurrentDrawerItem);
         }
@@ -119,11 +131,8 @@ public class MainActivity extends BaseActivity {
         mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Get the concerned page
-                DrawerItem drawerItem = drawerAdapter.getItem(position);
-
-                //Take the appropriate action
-                setFragment(drawerItem);
+                //Get the concerned page and save it as the new drawer item
+                mNewDrawerItem = drawerAdapter.getItem(position);
 
                 // Highlight the selected item and close the drawer
                 mDrawerList.setItemChecked(position, true);

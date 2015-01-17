@@ -2,6 +2,8 @@
 <resources>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="black_faded">#DE000000</color>
+    <color name="black_faded_drawer">#8A000000</color>
     <color name="grey_light">#FFE4E4E4</color>
     <color name="grey">#FF808080</color>
     <color name="red">#FFDB231E</color>
