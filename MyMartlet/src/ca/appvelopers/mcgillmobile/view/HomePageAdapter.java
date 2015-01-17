@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.HomePage;
+import ca.appvelopers.mcgillmobile.object.DrawerItem;
 
 /**
  * Author : Julien
@@ -22,29 +21,29 @@ import ca.appvelopers.mcgillmobile.object.HomePage;
  */
 public class HomePageAdapter extends BaseAdapter {
     private Context mContext;
-    private List<HomePage> mHomePages;
+    private List<DrawerItem> mHomePageItems;
 
     public HomePageAdapter(Context context){
         this.mContext = context;
-        this.mHomePages = Arrays.asList(HomePage.values());
+        this.mHomePageItems = DrawerItem.getHomePages();
 
         //Sort them
-        Collections.sort(mHomePages, new Comparator<HomePage>() {
+        Collections.sort(mHomePageItems, new Comparator<DrawerItem>() {
             @Override
-            public int compare(HomePage homePage, HomePage homePage2) {
-                return homePage.toString(mContext).compareToIgnoreCase(homePage2.toString(mContext));
+            public int compare(DrawerItem drawerItem, DrawerItem drawerItem2) {
+                return drawerItem.toString(mContext).compareToIgnoreCase(drawerItem2.toString(mContext));
             }
         });
     }
 
     @Override
     public int getCount() {
-        return mHomePages.size();
+        return mHomePageItems.size();
     }
 
     @Override
-    public HomePage getItem(int i) {
-        return mHomePages.get(i);
+    public DrawerItem getItem(int i) {
+        return mHomePageItems.get(i);
     }
 
     @Override
@@ -58,8 +57,8 @@ public class HomePageAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, null);
         }
 
-        HomePage homePage = getItem(position);
-        ((TextView)view).setText(homePage.toString(mContext));
+        DrawerItem drawerItem = getItem(position);
+        ((TextView)view).setText(drawerItem.toString(mContext));
 
         return view;
     }
@@ -70,13 +69,13 @@ public class HomePageAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.spinner_dropdown, null);
         }
 
-        HomePage homePage = getItem(position);
-        ((TextView)view).setText(homePage.toString(mContext));
+        DrawerItem drawerItem = getItem(position);
+        ((TextView)view).setText(drawerItem.toString(mContext));
 
         return view;
     }
 
-    public int getPosition(HomePage homePage){
-        return mHomePages.indexOf(homePage);
+    public int getPosition(DrawerItem drawerItem){
+        return mHomePageItems.indexOf(drawerItem);
     }
 }

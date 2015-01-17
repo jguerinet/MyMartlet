@@ -17,7 +17,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.CourseActivity;
-import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
+import ca.appvelopers.mcgillmobile.activity.MainActivity;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -55,7 +55,7 @@ public class DayFragment extends Fragment{
         mDay = (Day)getArguments().get(Constants.DAY);
         mDate = (DateTime)getArguments().get(Constants.DATE);
         //Get the courses from ScheduleActivity
-        mClassItems = ((ScheduleActivity)getActivity()).getClassesForDate(mDay, mDate);
+        mClassItems = ((MainActivity)getActivity()).getScheduleFragment().getClassesForDate(mDay, mDate);
     }
 
     @Override

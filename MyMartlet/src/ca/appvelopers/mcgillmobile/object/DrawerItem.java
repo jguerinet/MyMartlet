@@ -1,22 +1,171 @@
 package ca.appvelopers.mcgillmobile.object;
 
-/**
- * Author: Julien
- * Date: 24/02/14, 11:50 PM
- */
-public class DrawerItem {
-    private String mTitle, mIcon;
+import android.content.Context;
 
-    public DrawerItem(String title, String icon){
-        this.mTitle = title;
-        this.mIcon = icon;
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.activity.DesktopActivity;
+import ca.appvelopers.mcgillmobile.activity.MyCoursesActivity;
+import ca.appvelopers.mcgillmobile.activity.RegistrationActivity;
+import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
+import ca.appvelopers.mcgillmobile.activity.courseslist.CoursesListActivity;
+import ca.appvelopers.mcgillmobile.activity.ebill.EbillActivity;
+import ca.appvelopers.mcgillmobile.activity.map.MapActivity;
+import ca.appvelopers.mcgillmobile.activity.transcript.TranscriptActivity;
+
+public enum DrawerItem {
+    SCHEDULE,
+    TRANSCRIPT,
+    MY_COURSES,
+    COURSES,
+    WISHLIST,
+    SEARCH_COURSES,
+    EBILL,
+    MAP,
+    DESKTOP,
+    SETTINGS,
+    FACEBOOK,
+    TWITTER,
+    LOGOUT;
+
+    /**
+     * Returns a list of possible homepages
+     * @return The list of possible homepages
+     */
+    public static List<DrawerItem> getHomePages(){
+        List<DrawerItem> homePages = new ArrayList<DrawerItem>();
+        homePages.add(SCHEDULE);
+        homePages.add(TRANSCRIPT);
+        homePages.add(MY_COURSES);
+        homePages.add(COURSES);
+        homePages.add(WISHLIST);
+        homePages.add(SEARCH_COURSES);
+        homePages.add(EBILL);
+        homePages.add(MAP);
+        homePages.add(DESKTOP);
+
+        return homePages;
     }
 
-    public String getTitle(){
-        return this.mTitle;
+    public Class<?> getHomePageClass(){
+        switch(this){
+            case SCHEDULE:
+                return ScheduleActivity.class;
+            case TRANSCRIPT:
+                return TranscriptActivity.class;
+            case MY_COURSES:
+                return MyCoursesActivity.class;
+            case SEARCH_COURSES:
+                return RegistrationActivity.class;
+            case WISHLIST:
+                return CoursesListActivity.class;
+            case EBILL:
+                return EbillActivity.class;
+            case MAP:
+                return MapActivity.class;
+            case DESKTOP:
+                return DesktopActivity.class;
+            default:
+                return ScheduleActivity.class;
+        }
     }
 
-    public String getIcon(){
-        return this.mIcon;
+    public String toString(Context context){
+        switch(this){
+            case SCHEDULE:
+                return context.getResources().getString(R.string.homepage_schedule);
+            case TRANSCRIPT:
+                return context.getResources().getString(R.string.homepage_transcript);
+            case MY_COURSES:
+                return context.getResources().getString(R.string.homepage_mycourses);
+            case SEARCH_COURSES:
+                return context.getResources().getString(R.string.homepage_search);
+            case WISHLIST:
+                return context.getResources().getString(R.string.homepage_wishlist);
+            case EBILL:
+                return context.getResources().getString(R.string.homepage_ebill);
+            case MAP:
+                return context.getResources().getString(R.string.homepage_map);
+            case DESKTOP:
+                return context.getResources().getString(R.string.homepage_desktop);
+            default:
+                return context.getResources().getString(R.string.homepage_schedule);
+        }
+    }
+
+    /**
+     * Returns the title for the drawer
+     * @return The page title
+     */
+    public String getTitle(Context context){
+        switch(this){
+            case SCHEDULE:
+                return context.getString(R.string.title_schedule);
+            case TRANSCRIPT:
+                return context.getString(R.string.title_transcript);
+            case MY_COURSES:
+                return context.getString(R.string.title_mycourses);
+            case COURSES:
+                return context.getString(R.string.title_courses);
+            case WISHLIST:
+                return context.getString(R.string.title_wishlist);
+            case SEARCH_COURSES:
+                return context.getString(R.string.title_registration);
+            case EBILL:
+                return context.getString(R.string.title_ebill);
+            case MAP:
+                return context.getString(R.string.title_map);
+            case DESKTOP:
+                return context.getString(R.string.title_desktop);
+            case SETTINGS:
+                return context.getString(R.string.title_settings);
+            case FACEBOOK:
+                return context.getString(R.string.title_facebook);
+            case TWITTER:
+                return context.getString(R.string.title_twitter);
+            case LOGOUT:
+                return context.getString(R.string.title_logout);
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * Returns the icon for the drawer
+     * @return The page icon
+     */
+    public String getIcon(Context context){
+        switch(this){
+            case SCHEDULE:
+                return context.getString(R.string.icon_schedule);
+            case TRANSCRIPT:
+                return context.getString(R.string.icon_transcript);
+            case MY_COURSES:
+                return context.getString(R.string.icon_mycourses);
+            case COURSES:
+                return context.getString(R.string.icon_courses);
+            case WISHLIST:
+                return context.getString(R.string.icon_star);
+            case SEARCH_COURSES:
+                return context.getString(R.string.icon_search);
+            case EBILL:
+                return context.getString(R.string.icon_ebill);
+            case MAP:
+                return context.getString(R.string.icon_map);
+            case DESKTOP:
+                return context.getString(R.string.icon_desktop);
+            case SETTINGS:
+                return context.getString(R.string.icon_settings);
+            case FACEBOOK:
+                return context.getString(R.string.icon_facebook);
+            case TWITTER:
+                return context.getString(R.string.icon_twitter);
+            case LOGOUT:
+                return context.getString(R.string.icon_logout);
+            default:
+                return "";
+        }
     }
 }
