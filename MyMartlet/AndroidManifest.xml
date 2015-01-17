@@ -74,17 +74,6 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".activity.map.MapActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_map"
-            android:launchMode="singleTop">
-                <intent-filter>
-                    <action android:name="android.intent.action.SEARCH" />
-                </intent-filter>
-                <meta-data android:name="android.app.searchable"
-                           android:resource="@xml/searchable"/>
-        </activity>
         <provider
             android:authorities="ca.appvelopers.mcgillmobile.util.MapSuggestionProvider"
             android:name=".util.MapSuggestionProvider"
