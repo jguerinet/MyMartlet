@@ -22,6 +22,7 @@ import com.facebook.Session;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.base.DrawerAdapter;
+import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
@@ -46,6 +47,7 @@ public class MainActivity extends BaseActivity {
 
     //The Fragments
     private ScheduleFragment mScheduleFragment;
+    private CourseSearchFragment mCourseSearchFragment;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -68,6 +70,7 @@ public class MainActivity extends BaseActivity {
 
         //Create the fragments
         mScheduleFragment = new ScheduleFragment();
+        mCourseSearchFragment = new CourseSearchFragment();
 
         //Get the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -137,8 +140,7 @@ public class MainActivity extends BaseActivity {
                 fragment = null;
                 break;
             case SEARCH_COURSES:
-                //TODO
-                fragment = null;
+                fragment = mCourseSearchFragment;
                 break;
             case WISHLIST:
                 //TODO
