@@ -12,6 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:indeterminateTint="@color/white"
+        android:indeterminateTintMode="src_atop"
         android:indeterminate="true"
         android:visibility="gone" />
 
