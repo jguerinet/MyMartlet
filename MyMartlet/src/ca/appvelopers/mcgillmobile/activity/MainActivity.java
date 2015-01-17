@@ -23,6 +23,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.base.DrawerAdapter;
 import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
+import ca.appvelopers.mcgillmobile.fragment.DesktopFragment;
 import ca.appvelopers.mcgillmobile.fragment.MyCoursesFragment;
 import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.fragment.courses.CoursesFragment;
@@ -60,6 +61,7 @@ public class MainActivity extends BaseActivity {
     private WishlistFragment mWishlistFragment;
     private EbillFragment mEbillFragment;
     private MapFragment mMapFragment;
+    private DesktopFragment mDesktopFragment;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -89,6 +91,7 @@ public class MainActivity extends BaseActivity {
         mWishlistFragment = WishlistFragment.createInstance(true, null);
         mEbillFragment = new EbillFragment();
         mMapFragment = new MapFragment();
+        mDesktopFragment = new DesktopFragment();
 
         //Get the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -167,8 +170,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mMapFragment;
                 break;
             case DESKTOP:
-                //TODO
-                fragment = null;
+                fragment = mDesktopFragment;
                 break;
             case SETTINGS:
                 //TODO
@@ -213,7 +215,8 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed(){
         //If we are on a web page, check if we can go back in the web page itself
-        if(mCurrentDrawerItem == DrawerItem.MY_COURSES && mMyCoursesFragment.getWebView().canGoBack()){
+        if((mCurrentDrawerItem == DrawerItem.MY_COURSES || mCurrentDrawerItem == DrawerItem.DESKTOP) &&
+                mMyCoursesFragment.getWebView().canGoBack()){
             mMyCoursesFragment.getWebView().goBack();
             return;
         }
