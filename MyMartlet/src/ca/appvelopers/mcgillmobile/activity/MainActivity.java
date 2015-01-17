@@ -23,6 +23,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.base.DrawerAdapter;
 import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
+import ca.appvelopers.mcgillmobile.fragment.MyCoursesFragment;
 import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
@@ -49,6 +50,7 @@ public class MainActivity extends BaseActivity {
     //The Fragments
     private ScheduleFragment mScheduleFragment;
     private TranscriptFragment mTranscriptFragment;
+    private MyCoursesFragment mMyCoursesFragment;
     private CourseSearchFragment mCourseSearchFragment;
 
     public void onCreate(Bundle savedInstanceState){
@@ -72,6 +74,8 @@ public class MainActivity extends BaseActivity {
 
         //Create the fragments
         mScheduleFragment = new ScheduleFragment();
+        mTranscriptFragment = new TranscriptFragment();
+        mMyCoursesFragment = new MyCoursesFragment();
         mCourseSearchFragment = new CourseSearchFragment();
 
         //Get the drawer
@@ -133,8 +137,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mTranscriptFragment;
                 break;
             case MY_COURSES:
-                //TODO
-                fragment = null;
+                fragment = mMyCoursesFragment;
                 break;
             case COURSES:
                 //TODO
@@ -180,7 +183,7 @@ public class MainActivity extends BaseActivity {
                                 Clear.clearAllInfo(MainActivity.this);
                                 //Go back to SplashActivity
                                 startActivity(new Intent(MainActivity.this, SplashActivity.class));
-                                MyCoursesActivity.deleteCookies();
+                                MyCoursesFragment.deleteCookies();
                             }
 
                         })
@@ -201,6 +204,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed(){
+        //If we are on a web page, check if we can go back in the web page itself
+        if(mCurrentDrawerItem == DrawerItem.MY_COURSES && mMyCoursesFragment.getWebView().canGoBack()){
+            mMyCoursesFragment.getWebView().goBack();
+            return;
+        }
+
         //Open the menu if it is not open
         if(!mDrawerLayout.isDrawerOpen(mDrawerList)){
             mDrawerLayout.openDrawer(mDrawerList);

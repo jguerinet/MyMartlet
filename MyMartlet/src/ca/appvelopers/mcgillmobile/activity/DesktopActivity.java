@@ -23,7 +23,7 @@ public class DesktopActivity extends DrawerActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_desktop);
+        setContentView(R.layout.fragment_web);
         super.onCreate(savedInstanceState);
 
         GoogleAnalytics.sendScreen(this, "Desktop Site");
