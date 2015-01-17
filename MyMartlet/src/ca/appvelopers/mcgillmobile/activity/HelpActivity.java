@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.base.BaseActivity;
+import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.object.HelpItem;
 import ca.appvelopers.mcgillmobile.util.Constants;

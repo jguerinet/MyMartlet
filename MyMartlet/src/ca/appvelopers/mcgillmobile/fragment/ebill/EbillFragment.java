@@ -18,7 +18,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.MainActivity;
+import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Connection;

@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.activity.base;
+package ca.appvelopers.mcgillmobile.activity.main;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
