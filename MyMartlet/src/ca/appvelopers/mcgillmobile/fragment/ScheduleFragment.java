@@ -146,7 +146,7 @@ public class ScheduleFragment extends Fragment {
         }
         else{
             //Load the right view
-            view = View.inflate(mActivity, R.layout.activity_schedule, null);
+            view = View.inflate(mActivity, R.layout.fragment_schedule, null);
 
             //Set up the ViewPager
             //Open it to the right day (offset of 500002 to get the right day)
