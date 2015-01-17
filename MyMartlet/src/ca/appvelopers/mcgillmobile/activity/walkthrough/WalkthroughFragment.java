@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.view.FacultyAdapter;
@@ -105,16 +105,16 @@ public class WalkthroughFragment extends Fragment {
                     Spinner homepage = (Spinner)pageView.findViewById(R.id.homepage);
                     final HomePageAdapter homePageAdapter = new HomePageAdapter(getActivity());
                     homepage.setAdapter(homePageAdapter);
-                    homepage.setSelection(homePageAdapter.getPosition(App.getHomePage()));
+                    homepage.setSelection(homePageAdapter.getPosition(App.getDrawerItem()));
                     homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                            HomePage chosenHomePage = homePageAdapter.getItem(position);
+                            DrawerItem chosenDrawerItem = homePageAdapter.getItem(position);
 
-                            GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Homepage", chosenHomePage.toString(), null);
+                            GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Homepage", chosenDrawerItem.toString(), null);
 
                             //Update it in the App
-                            App.setHomePage(chosenHomePage);
+                            App.setHomePage(chosenDrawerItem);
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {}

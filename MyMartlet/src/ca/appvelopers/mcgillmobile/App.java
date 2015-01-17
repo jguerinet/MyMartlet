@@ -8,8 +8,8 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
+import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
@@ -36,7 +36,7 @@ public class App extends Application {
     private static Typeface iconFont;
 
     private static Language language;
-    private static HomePage homePage;
+    private static DrawerItem drawerItem;
     private static Transcript transcript;
     private static List<ClassItem> classes;
     private static Term defaultTerm;
@@ -73,7 +73,7 @@ public class App extends Application {
         //Load the user's chosen language and update the locale
         language = Load.loadLanguage(this);
         //Load the user's chosen homepage
-        homePage = Load.loadHomePage(this);
+        drawerItem = Load.loadHomePage(this);
         //Load the default term for the schedule
         defaultTerm = Load.loadDefaultTerm(this);
         //Load the course wishlist
@@ -126,8 +126,8 @@ public class App extends Application {
         return language;
     }
 
-    public static HomePage getHomePage(){
-        return homePage;
+    public static DrawerItem getDrawerItem(){
+        return drawerItem;
     }
 
     public static Term getDefaultTerm(){
@@ -192,8 +192,8 @@ public class App extends Application {
         Save.saveLanguage(context);
     }
 
-    public static void setHomePage(HomePage homePage){
-        App.homePage = homePage;
+    public static void setHomePage(DrawerItem drawerItem){
+        App.drawerItem = drawerItem;
 
         //Save it to internal storage when this is set
         Save.saveHomePage(context);

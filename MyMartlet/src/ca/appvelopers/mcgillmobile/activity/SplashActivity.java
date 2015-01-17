@@ -439,7 +439,7 @@ public class SplashActivity extends BaseActivity {
             if(mConnectionStatus == ConnectionStatus.CONNECTION_OK ||
                     mConnectionStatus == ConnectionStatus.CONNECTION_NO_INTERNET){
 
-                Intent intent = new Intent(mContext, App.getHomePage().getHomePageClass());
+                Intent intent = new Intent(mContext, App.getDrawerItem().getHomePageClass());
                 //If there's a bug, add it to the intent
                 if(mBugPresent){
                     intent.putExtra(Constants.BUG, mTranscriptBug ? Constants.TRANSCRIPT : Constants.SCHEDULE)

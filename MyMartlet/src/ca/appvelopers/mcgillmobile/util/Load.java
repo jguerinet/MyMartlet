@@ -16,8 +16,8 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
+import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
-import ca.appvelopers.mcgillmobile.object.HomePage;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
@@ -56,14 +56,14 @@ public class Load {
         return Language.values()[(sharedPrefs.getInt(Constants.LANGUAGE, 0))];
     }
 
-    public static HomePage loadHomePage(Context context){
+    public static DrawerItem loadHomePage(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         int homePage = sharedPrefs.getInt(Constants.HOMEPAGE, -1);
         //Return schedule by default
         if(homePage == -1){
-            return HomePage.SCHEDULE;
+            return DrawerItem.SCHEDULE;
         }
-        return HomePage.values()[homePage];
+        return DrawerItem.values()[homePage];
     }
 
     public static boolean loadParserErrorDoNotShow(Context context){

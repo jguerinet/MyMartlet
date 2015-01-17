@@ -25,7 +25,7 @@ import java.util.Locale;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.base.DrawerActivity;
-import ca.appvelopers.mcgillmobile.object.HomePage;
+import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
@@ -150,12 +150,12 @@ public class SettingsActivity extends DrawerActivity {
         Spinner homepages = (Spinner)findViewById(R.id.settings_homepage);
         final HomePageAdapter homePageAdapter = new HomePageAdapter(this);
         homepages.setAdapter(homePageAdapter);
-        homepages.setSelection(homePageAdapter.getPosition(App.getHomePage()));
+        homepages.setSelection(homePageAdapter.getPosition(App.getDrawerItem()));
         homepages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 //Get the chosen homepage
-                HomePage chosenHomePage = homePageAdapter.getItem(position);
+                DrawerItem chosenHomePage = homePageAdapter.getItem(position);
 
                 GoogleAnalytics.sendEvent(SettingsActivity.this, "Settings", "Homepage", chosenHomePage.toString(), null);
 

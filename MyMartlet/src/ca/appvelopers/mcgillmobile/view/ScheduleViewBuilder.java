@@ -1,5 +1,6 @@
 package ca.appvelopers.mcgillmobile.view;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -12,7 +13,7 @@ import org.joda.time.Minutes;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.ScheduleActivity;
+import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.util.Help;
@@ -24,52 +25,56 @@ import ca.appvelopers.mcgillmobile.util.Help;
  */
 
 public class ScheduleViewBuilder {
-    public ScheduleActivity mActivity;
+    public ScheduleFragment mFragment;
+    public Context mContext;
 
-    public ScheduleViewBuilder(ScheduleActivity activity){
-        this.mActivity = activity;
+    public ScheduleViewBuilder(ScheduleFragment fragment){
+        this.mFragment = fragment;
+        this.mContext = fragment.getActivity();
     }
 
-    public void renderLandscapeView(DateTime startingDate){
+    public View renderLandscapeView(DateTime startingDate){
         //Load the right view
-        mActivity.setContentView(R.layout.activity_schedule_land);
+        View view = View.inflate(mContext, R.layout.activity_schedule_land, null);
 
         //Fill out the timetable container
-        fillTimetable();
+        fillTimetable(view);
 
         //Get the schedule container
-        LinearLayout scheduleContainer = (LinearLayout)mActivity.findViewById(R.id.schedule_container);
+        LinearLayout scheduleContainer = (LinearLayout) view.findViewById(R.id.schedule_container);
 
         //Find the index of the given date (days are offset by 1 in Jodatime)
         int currentDayIndex = startingDate.getDayOfWeek() - 1;
 
         //Fill out the schedule
         for(int i = 0; i < 7; i ++){
-            LinearLayout coursesLayout = new LinearLayout(mActivity);
+            LinearLayout coursesLayout = new LinearLayout(mContext);
             coursesLayout.setOrientation(LinearLayout.VERTICAL);
             coursesLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                    mActivity.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
+                    mFragment.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             fillSchedule(Day.getDay(i), startingDate.plusDays(i - currentDayIndex), coursesLayout);
             scheduleContainer.addView(coursesLayout);
 
             //Line
-            View line = new View(mActivity);
-            line.setBackgroundColor(mActivity.getResources().getColor(R.color.black));
-            line.setLayoutParams(new ViewGroup.LayoutParams(mActivity.getResources().getDimensionPixelSize(R.dimen.line),
+            View line = new View(mContext);
+            line.setBackgroundColor(mContext.getResources().getColor(R.color.black));
+            line.setLayoutParams(new ViewGroup.LayoutParams(mFragment.getResources().getDimensionPixelSize(R.dimen.line),
                     ViewGroup.LayoutParams.MATCH_PARENT));
             scheduleContainer.addView(line);
         }
+
+        return view;
     }
 
     //Fills the timetable without the classes
-    private void fillTimetable(){
+    private void fillTimetable(View view){
         //Get the timetable container
-        LinearLayout timetableContainer = (LinearLayout)mActivity.findViewById(R.id.timetable_container);
+        LinearLayout timetableContainer = (LinearLayout) view.findViewById(R.id.timetable_container);
 
         //Empty view for the days
         //Day name
-        View dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);
+        View dayView = View.inflate(mContext, R.layout.fragment_day_name, null);
 
         //Black line
         View dayViewLine = dayView.findViewById(R.id.day_line);
@@ -80,11 +85,11 @@ public class ScheduleViewBuilder {
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
             //Start inflating a timetable cell
-            View timetableCell = View.inflate(mActivity, R.layout.item_day_timetable, null);
+            View timetableCell = View.inflate(mContext, R.layout.item_day_timetable, null);
 
             //Put the correct time
             TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-            time.setText(Help.getShortTimeString(mActivity, hour));
+            time.setText(Help.getShortTimeString(mContext, hour));
 
             //Add it to the right container
             timetableContainer.addView(timetableCell);
@@ -97,12 +102,12 @@ public class ScheduleViewBuilder {
         LocalTime currentCourseEndTime = null;
 
         //Get the classes for today
-        List<ClassItem> classItems = mActivity.getClassesForDate(currentDay, date);
+        List<ClassItem> classItems = mFragment.getClassesForDate(currentDay, date);
 
         //Day name
-        View dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);
+        View dayView = View.inflate(mContext, R.layout.fragment_day_name, null);
         TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
-        dayViewTitle.setText(currentDay.getDayString(mActivity));
+        dayViewTitle.setText(currentDay.getDayString(mContext));
 
         scheduleContainer.addView(dayView);
 
@@ -138,7 +143,7 @@ public class ScheduleViewBuilder {
                     //There is a course at this time
                     if(currentClass != null){
                         //Inflate the right view
-                        scheduleCell = View.inflate(mActivity, R.layout.item_day_class, null);
+                        scheduleCell = View.inflate(mContext, R.layout.item_day_class, null);
 
                         //Quick check
                         assert(scheduleCell != null);
@@ -151,7 +156,7 @@ public class ScheduleViewBuilder {
                         courseType.setText(currentClass.getSectionType());
 
                         TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
-                        courseTime.setText(currentClass.getTimeString(mActivity));
+                        courseTime.setText(currentClass.getTimeString(mContext));
 
                         TextView courseLocation = (TextView)scheduleCell.findViewById(R.id.course_location);
                         courseLocation.setText(currentClass.getLocation());
@@ -161,7 +166,7 @@ public class ScheduleViewBuilder {
 
                         //Set the height of the view depending on this height
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                (int) mActivity.getResources().getDimension(R.dimen.cell_30min_height) * length);
+                                (int) mFragment.getResources().getDimension(R.dimen.cell_30min_height) * length);
                         scheduleCell.setLayoutParams(lp);
 
                         //OnClick: CourseActivity (for                                                                                                                                                                                                  b                                                                                                                                               a detailed description of the course)
@@ -169,7 +174,7 @@ public class ScheduleViewBuilder {
                     }
                     else{
                         //Inflate the empty view
-                        scheduleCell = View.inflate(mActivity, R.layout.item_day_empty, null);
+                        scheduleCell = View.inflate(mContext, R.layout.item_day_empty, null);
 
                         //Quick check
                         assert(scheduleCell != null);

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/padding_micro"
-    android:background="@drawable/drawerblack_darkredpressed">
+    android:background="@drawable/drawer_background">
 
     <TextView
         android:layout_width="0dp"
@@ -16,7 +16,7 @@
         android:duplicateParentState="true"
         android:gravity="center"
         android:paddingRight="@dimen/padding_micro"
-        android:textColor="@color/black_whitepressed"/>
+        android:textColor="@color/drawer_text"/>
 
     <TextView
         android:layout_width="0dp"
@@ -26,5 +26,5 @@
         android:textSize="@dimen/text_medium"
         android:duplicateParentState="true"
         android:gravity="center_vertical"
-        android:textColor="@color/black_whitepressed"/>
+        android:textColor="@color/drawer_text"/>
 </LinearLayout>
