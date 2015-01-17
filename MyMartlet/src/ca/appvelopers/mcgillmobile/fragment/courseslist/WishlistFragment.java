@@ -38,7 +38,7 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * Copyright (c) 2014 Appvelopers. All rights reserved.
  */
 
-public class CoursesFragment extends Fragment {
+public class WishlistFragment extends Fragment {
     public static final int CHANGE_SEMESTER_CODE = 100;
     public boolean wishlist;
 
@@ -56,12 +56,12 @@ public class CoursesFragment extends Fragment {
      * @param term The current term we are searching (null if this is for a wishlsit)
      * @return The CoursesFragment with the arguments bundled
      */
-    public static CoursesFragment createInstance(boolean wishlist, Term term){
+    public static WishlistFragment createInstance(boolean wishlist, Term term){
         Bundle args = new Bundle();
         args.putBoolean(Constants.WISHLIST, wishlist);
         args.putSerializable(Constants.TERM, term);
 
-        CoursesFragment fragment = new CoursesFragment();
+        WishlistFragment fragment = new WishlistFragment();
         fragment.setArguments(args);
 
         return fragment;
