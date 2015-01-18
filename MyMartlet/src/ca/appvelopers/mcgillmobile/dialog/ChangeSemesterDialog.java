@@ -34,8 +34,7 @@ public class ChangeSemesterDialog extends AlertDialog {
     private Term mTerm;
     private CheckBox mDefaultCheckbox;
 
-    public ChangeSemesterDialog(Activity activity, boolean registerTerms, Term term,
-                                DialogInterface.OnDismissListener onDismissListener) {
+    public ChangeSemesterDialog(Activity activity, boolean registerTerms, Term term) {
         super(activity);
 
         GoogleAnalytics.sendScreen(activity, "Schedule - Change Semester");
@@ -115,14 +114,16 @@ public class ChangeSemesterDialog extends AlertDialog {
                 }
             });
         mDialog = builder.create();
-
-        //Set the onDismissListener sent
-        mDialog.setOnDismissListener(onDismissListener);
     }
 
     @Override
     public void show(){
         mDialog.show();
+    }
+
+    @Override
+    public void setOnDismissListener(OnDismissListener onDismissListener){
+        mDialog.setOnDismissListener(onDismissListener);
     }
 
     public Term getTerm(){
