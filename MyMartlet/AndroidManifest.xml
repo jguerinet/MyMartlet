@@ -70,8 +70,7 @@
             android:syncable="false"/>
         <activity
             android:name=".activity.walkthrough.WalkthroughActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.MyMartlet.AlertDialog"/>=
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/title_about" />

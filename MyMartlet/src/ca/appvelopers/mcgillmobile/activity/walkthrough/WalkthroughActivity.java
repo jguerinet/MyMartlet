@@ -4,8 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.viewpagerindicator.CirclePageIndicator;
@@ -14,7 +12,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
-import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
  * Author : Julien
@@ -31,20 +28,10 @@ public class WalkthroughActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walkthrough);
 
-        overridePendingTransition(R.anim.in_from_top, R.anim.stay);
-
         //Check if this is the normal walkthrough or the email one
         boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
 
         GoogleAnalytics.sendScreen(this, email ? "Email Walkthrough" : "Walkthrough");
-
-        //Get the screen height
-        int displayHeight = Help.getDisplayHeight(getWindowManager().getDefaultDisplay());
-        //Set the height to be 2/3 of the screen
-        LinearLayout layout = (LinearLayout)findViewById(R.id.walkthrough_container);
-        ViewGroup.LayoutParams params = layout.getLayoutParams();
-        params.height = (3 * displayHeight) / 4;
-        layout.setLayoutParams(params);
 
         mViewPager = (ViewPager) findViewById(R.id.walkthrough_viewpager);
         mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), email);
@@ -61,7 +48,6 @@ public class WalkthroughActivity extends BaseActivity {
                 //We've reached the end of the walkthrough
                 if (position == mWalkthroughAdapter.getCount() - 1) {
                     finish();
-                    overridePendingTransition(0, R.anim.out_to_top);
                 } else {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
                 }
@@ -76,7 +62,6 @@ public class WalkthroughActivity extends BaseActivity {
             public void onClick(View view) {
                 GoogleAnalytics.sendEvent(WalkthroughActivity.this, "Walkthrough", "Skip", null, null);
                 finish();
-                overridePendingTransition(0, R.anim.out_to_top);
             }
         });
 
