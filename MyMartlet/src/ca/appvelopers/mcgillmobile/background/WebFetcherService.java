@@ -256,7 +256,7 @@ public class WebFetcherService extends IntentService {
 
 	        NotificationCompat.Builder mBuilder =
 	                new NotificationCompat.Builder(this)
-	        .setSmallIcon(R.drawable.ic_launcher)
+	        .setSmallIcon(R.mipmap.ic_launcher)
 	        .setContentTitle(getString(R.string.app_name))
 	        .setStyle(new NotificationCompat.BigTextStyle()
 	        .bigText(message))
