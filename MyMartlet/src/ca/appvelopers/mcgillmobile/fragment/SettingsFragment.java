@@ -82,9 +82,9 @@ public class SettingsFragment extends BaseFragment {
         });
 
         //Report a Bug
-        TextView bugIcon = (TextView)mActivity.findViewById(R.id.bug_icon);
+        TextView bugIcon = (TextView)view.findViewById(R.id.bug_icon);
         bugIcon.setTypeface(App.getIconFont());
-        LinearLayout bugContainer = (LinearLayout)mActivity.findViewById(R.id.settings_bug);
+        LinearLayout bugContainer = (LinearLayout)view.findViewById(R.id.settings_bug);
         bugContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
