@@ -44,23 +44,25 @@ public enum DrawerItem {
     public String toString(Context context){
         switch(this){
             case SCHEDULE:
-                return context.getResources().getString(R.string.homepage_schedule);
+                return context.getString(R.string.homepage_schedule);
             case TRANSCRIPT:
-                return context.getResources().getString(R.string.homepage_transcript);
+                return context.getString(R.string.homepage_transcript);
             case MY_COURSES:
-                return context.getResources().getString(R.string.homepage_mycourses);
-            case SEARCH_COURSES:
-                return context.getResources().getString(R.string.homepage_search);
+                return context.getString(R.string.homepage_mycourses);
+            case COURSES:
+                return context.getString(R.string.homepage_courses);
             case WISHLIST:
-                return context.getResources().getString(R.string.homepage_wishlist);
+                return context.getString(R.string.homepage_wishlist);
+            case SEARCH_COURSES:
+                return context.getString(R.string.homepage_search);
             case EBILL:
-                return context.getResources().getString(R.string.homepage_ebill);
+                return context.getString(R.string.homepage_ebill);
             case MAP:
-                return context.getResources().getString(R.string.homepage_map);
+                return context.getString(R.string.homepage_map);
             case DESKTOP:
-                return context.getResources().getString(R.string.homepage_desktop);
+                return context.getString(R.string.homepage_desktop);
             default:
-                return context.getResources().getString(R.string.homepage_schedule);
+                return "";
         }
     }
 

@@ -162,6 +162,7 @@
     <string name="homepage_schedule">Schedule</string>
     <string name="homepage_transcript">Transcript</string>
     <string name="homepage_mycourses">MyCourses</string>
+    <string name="homepage_courses">Course List</string>
     <string name="homepage_search">Courses Search</string>
     <string name="homepage_wishlist">Wishlist</string>
     <string name="homepage_ebill">eBill</string>
