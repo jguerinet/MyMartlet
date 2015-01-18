@@ -28,8 +28,10 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.AboutActivity;
 import ca.appvelopers.mcgillmobile.activity.HelpActivity;
+import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Language;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
@@ -154,8 +156,11 @@ public class SettingsFragment extends BaseFragment {
                     mActivity.getBaseContext().getResources().updateConfiguration(config,
                             mActivity.getBaseContext().getResources().getDisplayMetrics());
 
-                    //TODO Reload fragment
-//                    startActivity(new Intent(mActivity, SettingsActivity.class));
+                    //Reload MainActivity
+                    Intent intent = new Intent(mActivity, MainActivity.class);
+                    intent.putExtra(Constants.HOMEPAGE, DrawerItem.SETTINGS);
+                    startActivity(intent);
+                    mActivity.finish();
                 }
             }
 
