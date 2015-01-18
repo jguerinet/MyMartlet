@@ -244,7 +244,7 @@ public class MapFragment extends BaseFragment {
         SearchManager searchManager = (SearchManager)mActivity.getSystemService(Context.SEARCH_SERVICE);
         // TODO Assumes current activity is the search activity
 //        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setIconifiedByDefault(true);
+//        mSearchView.setIconifiedByDefault(true);
     }
 
     //TODO

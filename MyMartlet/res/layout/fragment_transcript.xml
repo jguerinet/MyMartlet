@@ -1,64 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/drawer_layout"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/default_margin"
+    android:paddingBottom="@dimen/default_margin">
 
-<!-- The main content view -->
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/default_margin"
-        android:paddingBottom="@dimen/default_margin">
+        android:layout_height="wrap_content"
+        android:id="@+id/transcript_error"
+        android:visibility="gone"
+        android:textStyle="italic"
+        android:textSize="@dimen/text_large"
+        android:gravity="center"
+        android:text="@string/transcript_error"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/transcript_error"
-            android:visibility="gone"
-            android:textStyle="italic"
-            android:textSize="@dimen/text_large"
-            android:gravity="center"
-            android:text="@string/transcript_error"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/transcript_cgpa"
+        android:textSize="@dimen/text_large"
+        android:gravity="center"
+        android:textColor="@color/red"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/transcript_cgpa"
-            android:textSize="@dimen/text_large"
-            android:gravity="center"
-            android:textColor="@color/red"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/transcript_credits"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="italic"
+        android:gravity="center"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/transcript_credits"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="italic"
-            android:gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/semester_title"
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="@string/transcript_semesters"
+        android:paddingLeft="@dimen/padding_micro"
+        android:paddingTop="@dimen/padding_small"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/semester_title"
-            android:textSize="@dimen/text_large"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:text="@string/transcript_semesters"
-            android:paddingLeft="@dimen/padding_micro"
-            android:paddingTop="@dimen/padding_small"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@android:id/list"/>
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@android:id/list"/>
-
-    </LinearLayout>
-
-<!-- The navigation drawer -->
-<include layout="@layout/drawer"/>
-
-</android.support.v4.widget.DrawerLayout>
+</LinearLayout>
