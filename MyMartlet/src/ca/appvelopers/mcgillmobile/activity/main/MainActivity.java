@@ -69,8 +69,11 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Load the home page
-        mCurrentDrawerItem = App.getHomePage();
+        //Get the page from the intent. If not, use the home page
+        mCurrentDrawerItem = (DrawerItem)getIntent().getSerializableExtra(Constants.HOMEPAGE);
+        if(mCurrentDrawerItem == null){
+            mCurrentDrawerItem = App.getHomePage();
+        }
         mNewDrawerItem = mCurrentDrawerItem;
 
         Toolbar toolbar = setUpToolbar();
