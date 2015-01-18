@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="@dimen/padding_micro"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:text="@string/course_time_title"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_time"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_medium"
+            android:paddingLeft="@dimen/padding_small"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:paddingTop="@dimen/padding_micro"
+            android:text="@string/course_location"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_location"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/black"
+            android:paddingLeft="@dimen/padding_small"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:paddingTop="@dimen/padding_micro"
+            android:text="@string/schedule_type"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/schedule_type"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/black"
+            android:paddingLeft="@dimen/padding_small"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:paddingTop="@dimen/padding_micro"
+            android:text="@string/course_prof"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_professor"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/black"
+            android:paddingLeft="@dimen/padding_small"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:paddingTop="@dimen/padding_micro"
+            android:text="@string/course_section"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_section"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/black"
+            android:paddingLeft="@dimen/padding_small"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:paddingTop="@dimen/padding_micro"
+            android:text="@string/course_credits_title"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_credits"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/black"
+            android:paddingLeft="@dimen/padding_small"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:paddingTop="@dimen/padding_micro"
+            android:text="@string/course_crn"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_crn"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/black"
+            android:paddingLeft="@dimen/padding_small"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:background="@color/grey_light"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_docuum"
+            android:background="@drawable/transparent_redpressed"
+            android:textColor="@color/black_whitepressed"
+            android:text="@string/course_docuum"
+            android:gravity="center"
+            android:padding="@dimen/padding_micro"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:background="@color/grey_light"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_map"
+            android:background="@drawable/transparent_redpressed"
+            android:textColor="@color/black_whitepressed"
+            android:text="@string/course_map"
+            android:gravity="center"
+            android:padding="@dimen/padding_micro"/>
+
+        </LinearLayout>
+
+</ScrollView>
