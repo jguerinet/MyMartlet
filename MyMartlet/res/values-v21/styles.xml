@@ -3,6 +3,7 @@
     <!-- Theme for API 21+ -->
     <style name="Theme.MyMartlet" parent="Theme.MyMartlet.Base">
         <item name="android:statusBarColor">@color/red_dark</item>
+        <item name="android:dialogTheme">@style/Theme.MyMartlet.AlertDialog</item>
         <item name="android:alertDialogTheme">@style/Theme.MyMartlet.AlertDialog</item>
         <item name="android:buttonStyle">@style/Theme.MyMartlet.Button</item>
         <item name="android:windowContentTransitions">true</item>
@@ -12,14 +13,14 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
 
-    <style name="Theme.MyMartlet.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
-        <item name="android:colorPrimary">@color/red</item>
-        <item name="android:colorPrimaryDark">@color/red_dark</item>
-        <item name="android:colorAccent">@color/red</item>
-    </style>
-
     <style name="Theme.MyMartlet.Button" parent="android:Widget.Material.Button">
         <item name="android:background">@drawable/custom_btn</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.MyMartlet.AlertDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/red_dark</item>
+        <item name="colorAccent">@color/red</item>
     </style>
 </resources>

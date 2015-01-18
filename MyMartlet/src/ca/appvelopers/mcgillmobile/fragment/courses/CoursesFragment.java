@@ -1,9 +1,7 @@
 package ca.appvelopers.mcgillmobile.fragment.courses;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,12 +21,11 @@ import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
+import ca.appvelopers.mcgillmobile.dialog.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
@@ -42,8 +39,6 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  */
 
 public class CoursesFragment extends BaseFragment {
-    public static final int CHANGE_SEMESTER_CODE = 100;
-
     private ListView mListView;
     private TextView mUnregisterButton;
     private View mLine;
@@ -156,9 +151,18 @@ public class CoursesFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_change_semester){
-            Intent intent = new Intent(mActivity, ChangeSemesterActivity.class);
-            intent.putExtra(Constants.TERM, mTerm);
-            startActivityForResult(intent, CHANGE_SEMESTER_CODE);
+            new ChangeSemesterDialog(mActivity, false, mTerm, new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    Term term = ((ChangeSemesterDialog)dialog).getTerm();
+
+                    //Term selected: download the clases for the selected term
+                    if(term != null){
+                        mTerm = term;
+                        executeClassDownloader();
+                    }
+                }
+            }).show();
             return true;
         }
         else if(item.getItemId() == R.id.action_refresh){
@@ -175,19 +179,6 @@ public class CoursesFragment extends BaseFragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == CHANGE_SEMESTER_CODE){
-            if(resultCode == Activity.RESULT_OK){
-                mTerm = (Term)data.getSerializableExtra(Constants.TERM);
-                executeClassDownloader();
-            }
-        }
-        else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     public void executeClassDownloader(){

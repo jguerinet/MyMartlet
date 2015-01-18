@@ -1,7 +1,6 @@
 package ca.appvelopers.mcgillmobile.fragment.wishlist;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
+import ca.appvelopers.mcgillmobile.dialog.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
@@ -38,7 +37,6 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  */
 
 public class WishlistFragment extends BaseFragment {
-    public static final int CHANGE_SEMESTER_CODE = 100;
     public boolean wishlist;
 
     private ListView mListView;
@@ -224,29 +222,24 @@ public class WishlistFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_change_semester){
-            Intent intent = new Intent(mActivity, ChangeSemesterActivity.class);
-            intent.putExtra(Constants.REGISTER_TERMS, true);
-            intent.putExtra(Constants.TERM, mTerm);
-            startActivityForResult(intent, CHANGE_SEMESTER_CODE);
+            new ChangeSemesterDialog(mActivity, true, mTerm, new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    Term term = ((ChangeSemesterDialog)dialog).getTerm();
+
+                    //If there is a term selected, refresh the view
+                    if(term != null){
+                        mTerm = term;
+                        loadInfo();
+                    }
+                }
+            }).show();
             return true;
         }
         else if(item.getItemId() == R.id.action_refresh){
             new WishlistThread().execute();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == CHANGE_SEMESTER_CODE){
-            if(resultCode == Activity.RESULT_OK){
-                mTerm = (Term)data.getSerializableExtra(Constants.TERM);
-                loadInfo();
-            }
-        }
-        else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     //Connects to Minerva in a new thread to register for courses

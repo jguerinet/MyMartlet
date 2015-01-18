@@ -1,6 +1,6 @@
 package ca.appvelopers.mcgillmobile.fragment;
 
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -22,12 +22,11 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.ChangeSemesterActivity;
 import ca.appvelopers.mcgillmobile.activity.walkthrough.WalkthroughActivity;
+import ca.appvelopers.mcgillmobile.dialog.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
@@ -42,8 +41,6 @@ import ca.appvelopers.mcgillmobile.view.ScheduleViewBuilder;
  */
 
 public class ScheduleFragment extends BaseFragment {
-    private static final int CHANGE_SEMESTER_CODE = 100;
-
     private List<ClassItem> mClassList;
     private Term mTerm;
     private ScheduleViewBuilder mScheduleViewBuilder;
@@ -94,10 +91,29 @@ public class ScheduleFragment extends BaseFragment {
         switch (item.getItemId()) {
             // Opens the context menu
             case R.id.action_change_semester:
-                Intent intent = new Intent(mActivity, ChangeSemesterActivity.class);
-                intent.putExtra(Constants.REGISTER_TERMS, false);
-                intent.putExtra(Constants.TERM, mTerm);
-                startActivityForResult(intent, CHANGE_SEMESTER_CODE);
+                new ChangeSemesterDialog(mActivity, false, mTerm, new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        //Get the chosen term
+                        Term term = ((ChangeSemesterDialog)dialog).getTerm();
+                        if(term != null){
+                            mTerm = term;
+
+                            //If we aren't in test mode, reload the classes
+                            if(!Test.LOCAL_SCHEDULE){
+                                executeClassDownloader();
+                            }
+
+                            //Download the Transcript (if ever the user has new semesters on their transcript)
+                            new TranscriptDownloader(mActivity, false) {
+                                @Override
+                                protected void onPreExecute() {}
+                                @Override
+                                protected void onPostExecute(Boolean loadInfo) {}
+                            }.execute();
+                        }
+                    }
+                }).show();
                 return true;
             case R.id.action_refresh:
                 //Start thread to retrieve schedule
@@ -105,32 +121,6 @@ public class ScheduleFragment extends BaseFragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == CHANGE_SEMESTER_CODE){
-            if(resultCode == Activity.RESULT_OK){
-                //Get the chosen term
-                mTerm = (Term)data.getSerializableExtra(Constants.TERM);
-
-                //If we aren't in test mode, reload the classes
-                if(!Test.LOCAL_SCHEDULE){
-                    executeClassDownloader();
-                }
-
-                //Download the Transcript (if ever the user has new semesters on their transcript)
-                new TranscriptDownloader(mActivity, false) {
-                    @Override
-                    protected void onPreExecute() {}
-                    @Override
-                    protected void onPostExecute(Boolean loadInfo) {}
-                }.execute();
-            }
-        }
-        else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     public View loadView(int orientation){
