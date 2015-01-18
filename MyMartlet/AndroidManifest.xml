@@ -63,10 +63,7 @@
         </activity>
         <activity
             android:name=".activity.semester.SemesterActivity"/>
-        <activity
-            android:name=".activity.CourseActivity"
-            android:theme="@style/Theme.MyMartlet.AlertDialog"
-            android:screenOrientation="portrait"/>
+
         <provider
             android:authorities="ca.appvelopers.mcgillmobile.util.MapSuggestionProvider"
             android:name=".util.MapSuggestionProvider"

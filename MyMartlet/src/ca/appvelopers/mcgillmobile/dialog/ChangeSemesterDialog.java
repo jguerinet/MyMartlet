@@ -1,7 +1,7 @@
 package ca.appvelopers.mcgillmobile.dialog;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
@@ -34,13 +34,13 @@ public class ChangeSemesterDialog extends AlertDialog {
     private Term mTerm;
     private CheckBox mDefaultCheckbox;
 
-    public ChangeSemesterDialog(Activity activity, boolean registerTerms, Term term) {
-        super(activity);
+    public ChangeSemesterDialog(Context context, boolean registerTerms, Term term) {
+        super(context);
 
-        GoogleAnalytics.sendScreen(activity, "Schedule - Change Semester");
+        GoogleAnalytics.sendScreen(context, "Schedule - Change Semester");
 
         //Inflate the right view
-        View layout = View.inflate(activity, R.layout.dialog_change_semester, null);
+        View layout = View.inflate(context, R.layout.dialog_change_semester, null);
 
         //Set up the default checkbox
         mDefaultCheckbox = (CheckBox)layout.findViewById(R.id.change_semester_default);
@@ -74,7 +74,7 @@ public class ChangeSemesterDialog extends AlertDialog {
 
         //Set up the spinner
         Spinner spinner = (Spinner)layout.findViewById(R.id.change_semester_term);
-        final TermAdapter adapter = new TermAdapter(activity, terms);
+        final TermAdapter adapter = new TermAdapter(context, terms);
         spinner.setAdapter(adapter);
         spinner.setSelection(terms.indexOf(mTerm));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -88,11 +88,11 @@ public class ChangeSemesterDialog extends AlertDialog {
         });
 
         //Build the dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false)
             .setView(layout)
-            .setCustomTitle(View.inflate(activity, R.layout.dialog_change_semester_title, null))
-            .setPositiveButton(activity.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            .setCustomTitle(View.inflate(context, R.layout.dialog_change_semester_title, null))
+            .setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     //Check if the default checkbox is checked
                     if (mDefaultCheckbox.isChecked()) {
@@ -106,7 +106,7 @@ public class ChangeSemesterDialog extends AlertDialog {
                     dialog.dismiss();
                 }
             })
-            .setNegativeButton(activity.getString(android.R.string.no), new DialogInterface.OnClickListener() {
+            .setNegativeButton(context.getString(android.R.string.no), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     //Dismiss with the term set to null
                     mTerm = null;

@@ -1,6 +1,5 @@
 package ca.appvelopers.mcgillmobile.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,8 +15,8 @@ import org.joda.time.Minutes;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.CourseActivity;
 import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
+import ca.appvelopers.mcgillmobile.dialog.CourseDialog;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -158,9 +157,7 @@ public class DayFragment extends Fragment{
                         scheduleCell.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(getActivity(), CourseActivity.class);
-                                intent.putExtra(Constants.CLASS, course);
-                                startActivity(intent);
+                                new CourseDialog(getActivity(), course).show();
                             }
                         });
                     }
