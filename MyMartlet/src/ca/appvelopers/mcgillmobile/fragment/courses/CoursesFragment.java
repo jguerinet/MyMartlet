@@ -151,18 +151,20 @@ public class CoursesFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_change_semester){
-            new ChangeSemesterDialog(mActivity, false, mTerm, new DialogInterface.OnDismissListener() {
+            final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, false, mTerm);
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
-                public void onDismiss(DialogInterface dialog) {
-                    Term term = ((ChangeSemesterDialog)dialog).getTerm();
+                public void onDismiss(DialogInterface dialogInterface) {
+                    Term term = dialog.getTerm();
 
-                    //Term selected: download the clases for the selected term
+                    //Term selected: download the classes for the selected term
                     if(term != null){
                         mTerm = term;
                         executeClassDownloader();
                     }
                 }
-            }).show();
+            });
+            dialog.show();
             return true;
         }
         else if(item.getItemId() == R.id.action_refresh){

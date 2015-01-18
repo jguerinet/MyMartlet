@@ -91,29 +91,36 @@ public class ScheduleFragment extends BaseFragment {
         switch (item.getItemId()) {
             // Opens the context menu
             case R.id.action_change_semester:
-                new ChangeSemesterDialog(mActivity, false, mTerm, new DialogInterface.OnDismissListener() {
+                final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity,
+                        false, mTerm);
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialog) {
+                    public void onDismiss(DialogInterface dialogInterface) {
                         //Get the chosen term
-                        Term term = ((ChangeSemesterDialog)dialog).getTerm();
-                        if(term != null){
+                        Term term = dialog.getTerm();
+                        if (term != null) {
                             mTerm = term;
 
                             //If we aren't in test mode, reload the classes
-                            if(!Test.LOCAL_SCHEDULE){
+                            if (!Test.LOCAL_SCHEDULE) {
                                 executeClassDownloader();
                             }
 
                             //Download the Transcript (if ever the user has new semesters on their transcript)
                             new TranscriptDownloader(mActivity, false) {
                                 @Override
-                                protected void onPreExecute() {}
+                                protected void onPreExecute() {
+                                }
+
                                 @Override
-                                protected void onPostExecute(Boolean loadInfo) {}
+                                protected void onPostExecute(Boolean loadInfo) {
+                                }
                             }.execute();
                         }
                     }
-                }).show();
+                });
+                dialog.show();
+
                 return true;
             case R.id.action_refresh:
                 //Start thread to retrieve schedule

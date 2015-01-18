@@ -222,10 +222,11 @@ public class WishlistFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_change_semester){
-            new ChangeSemesterDialog(mActivity, true, mTerm, new DialogInterface.OnDismissListener() {
+            final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, true, mTerm);
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
-                public void onDismiss(DialogInterface dialog) {
-                    Term term = ((ChangeSemesterDialog)dialog).getTerm();
+                public void onDismiss(DialogInterface dialogInterface) {
+                    Term term = dialog.getTerm();
 
                     //If there is a term selected, refresh the view
                     if(term != null){
@@ -233,7 +234,8 @@ public class WishlistFragment extends BaseFragment {
                         loadInfo();
                     }
                 }
-            }).show();
+            });
+            dialog.show();
             return true;
         }
         else if(item.getItemId() == R.id.action_refresh){
