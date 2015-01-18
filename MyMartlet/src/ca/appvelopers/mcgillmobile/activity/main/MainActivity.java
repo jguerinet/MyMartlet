@@ -73,10 +73,7 @@ public class MainActivity extends BaseActivity {
         mCurrentDrawerItem = App.getHomePage();
         mNewDrawerItem = mCurrentDrawerItem;
 
-        //Get the toolbar
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        //Set is as the action bar
-        setSupportActionBar(toolbar);
+        Toolbar toolbar = setUpToolbar();
 
         //Bind the progress bars
         mToolbarProgressBar = (ProgressBar)findViewById(R.id.toolbar_progress);

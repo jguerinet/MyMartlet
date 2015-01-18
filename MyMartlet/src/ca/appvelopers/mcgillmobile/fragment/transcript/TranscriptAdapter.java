@@ -52,7 +52,7 @@ public class TranscriptAdapter extends BaseAdapter {
         if(view == null){
             //Get the inflater
             LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.activity_transcript_semester, null);
+            view = inflater.inflate(R.layout.item_semester, null);
         }
 
         //Get the current semester we are inflating

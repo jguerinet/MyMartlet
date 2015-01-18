@@ -23,7 +23,9 @@ public class SemesterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_semester);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setUpToolbar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         GoogleAnalytics.sendScreen(this, "Transcript - Semester");
 

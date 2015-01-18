@@ -32,7 +32,9 @@ public class HelpActivity extends BaseActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setUpToolbar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Set up the email walkthrough and walkthrough buttons
         TextView emailWalkthrough = (TextView)findViewById(R.id.help_email);

@@ -21,8 +21,9 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         super.onCreate(savedInstanceState);
         GoogleAnalytics.sendScreen(this, "About");
-        
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setUpToolbar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         //Set up the info for all of the different people
 
