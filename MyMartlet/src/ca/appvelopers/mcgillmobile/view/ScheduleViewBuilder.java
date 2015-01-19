@@ -1,6 +1,11 @@
 package ca.appvelopers.mcgillmobile.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -13,6 +18,7 @@ import org.joda.time.Minutes;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.fragment.DayFragment;
 import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
@@ -21,7 +27,7 @@ import ca.appvelopers.mcgillmobile.util.Help;
 /**
  * Author: Julien Guerinet
  * Date: 2014-09-19 10:52 AM
- * Copyright (c) 2014 Julien Guerinet. All rights reserved.
+ * Copyright (c) 2015 Appvelopers. All rights reserved.
  */
 
 public class ScheduleViewBuilder {
@@ -33,10 +39,20 @@ public class ScheduleViewBuilder {
         this.mContext = fragment.getActivity();
     }
 
-    public View renderLandscapeView(DateTime startingDate){
-        //Load the right view
-        View view = View.inflate(mContext, R.layout.fragment_schedule_land, null);
+    public View renderView(int orientation, DateTime date){
+        View view = View.inflate(mContext, R.layout.fragment_schedule, null);
 
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+            renderLandscapeView(view, date);
+        }
+        else{
+            renderPortraitView(view, date);
+        }
+
+        return view;
+    }
+
+    public void renderLandscapeView(View view, DateTime startingDate){
         //Fill out the timetable container
         fillTimetable(view);
 
@@ -63,8 +79,6 @@ public class ScheduleViewBuilder {
                     ViewGroup.LayoutParams.MATCH_PARENT));
             scheduleContainer.addView(line);
         }
-
-        return view;
     }
 
     //Fills the timetable without the classes
@@ -184,6 +198,48 @@ public class ScheduleViewBuilder {
                     scheduleContainer.addView(scheduleCell);
                 }
             }
+        }
+    }
+
+    public void renderPortraitView(View view, DateTime date){
+        //Get the first day (offset of 500002 to get the right day)
+        int firstDayIndex = 500002 + date.getDayOfWeek();
+
+        //Set up the adapter
+        SchedulePagerAdapter adapter = new SchedulePagerAdapter(mFragment.getChildFragmentManager(),
+                date, firstDayIndex);
+
+        //Set up the ViewPager
+        ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+        pager.setCurrentItem(firstDayIndex);
+    }
+
+    private class SchedulePagerAdapter extends FragmentStatePagerAdapter {
+        private DateTime mDate;
+        private int mFirstDayIndex;
+
+        public SchedulePagerAdapter(FragmentManager fm, DateTime date, int firstDayIndex){
+            super(fm);
+            this.mDate = date;
+            this.mFirstDayIndex = firstDayIndex;
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            Day currentDay = Day.getDay(i%7);
+            DateTime date = mDate.plusDays(i - mFirstDayIndex);
+            return DayFragment.newInstance(currentDay, date);
+        }
+
+        @Override
+        public int getCount() {
+            return 1000000;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
     }
 }
