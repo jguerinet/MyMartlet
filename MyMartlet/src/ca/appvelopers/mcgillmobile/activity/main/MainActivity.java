@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -213,9 +213,9 @@ public class MainActivity extends BaseActivity {
 
         //If there is a fragment, insert it by replacing any existing fragment
         if(fragment != null){
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_content, fragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -287,7 +287,7 @@ public class MainActivity extends BaseActivity {
             invalidateOptionsMenu();
 
             //Reload the view
-            mScheduleFragment.loadView(newConfig.orientation);
+            mScheduleFragment.updateView(newConfig.orientation);
         }
     }
 
@@ -312,5 +312,13 @@ public class MainActivity extends BaseActivity {
      */
     public ScheduleFragment getScheduleFragment(){
         return mScheduleFragment;
+    }
+
+    public void reloadFragment(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .detach(fragment)
+                .attach(fragment)
+                .commit();
     }
 }

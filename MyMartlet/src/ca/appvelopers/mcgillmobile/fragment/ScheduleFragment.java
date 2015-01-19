@@ -59,8 +59,10 @@ public class ScheduleFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        //Get the semester
-        mTerm = App.getDefaultTerm();
+        //If there is no term set, use the default one
+        if(mTerm == null){
+            mTerm = App.getDefaultTerm();
+        }
 
         mClassList = new ArrayList<ClassItem>();
 
@@ -83,7 +85,10 @@ public class ScheduleFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        inflater.inflate(R.menu.refresh_change_semester, menu);
+        //Only load the menu in portrait mode
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            inflater.inflate(R.menu.refresh_change_semester, menu);
+        }
     }
 
     @Override
@@ -131,29 +136,6 @@ public class ScheduleFragment extends BaseFragment {
     }
 
     public View loadView(int orientation){
-        loadInfo();
-
-        View view;
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            view = mScheduleViewBuilder.renderLandscapeView(mDate);
-        }
-        else{
-            //Load the right view
-            view = View.inflate(mActivity, R.layout.fragment_schedule, null);
-
-            //Set up the ViewPager
-            //Open it to the right day (offset of 500002 to get the right day)
-            int firstDayIndex = 500002 + mDate.getDayOfWeek();
-            ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
-            SchedulePagerAdapter adapter = new SchedulePagerAdapter(mActivity.getSupportFragmentManager(), firstDayIndex);
-            pager.setAdapter(adapter);
-            pager.setCurrentItem(firstDayIndex);
-        }
-
-        return view;
-    }
-
-    private void loadInfo(){
         //Title
         mActivity.setTitle(mTerm.toString(mActivity));
 
@@ -175,6 +157,27 @@ public class ScheduleFragment extends BaseFragment {
                 }
             }
         }
+
+        View view;
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+            view = mScheduleViewBuilder.renderLandscapeView(mDate);
+        }
+        else{
+            //Load the right view
+            view = View.inflate(mActivity, R.layout.fragment_schedule, null);
+
+            //Set up the ViewPager
+            //Open it to the right day (offset of 500002 to get the right day)
+            int firstDayIndex = 500002 + mDate.getDayOfWeek();
+
+            SchedulePagerAdapter adapter = new SchedulePagerAdapter(getChildFragmentManager(), firstDayIndex);
+
+            ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
+            pager.setAdapter(adapter);
+            pager.setCurrentItem(firstDayIndex);
+        }
+
+        return view;
     }
 
     //Downloads the list of classes for the given term
@@ -189,12 +192,11 @@ public class ScheduleFragment extends BaseFragment {
             // onPostExecute displays the results of the AsyncTask.
             @Override
             protected void onPostExecute(Boolean loadInfo) {
-                if(loadInfo){
-                    //Reload the adapter
-                    loadView(getResources().getConfiguration().orientation);
-                }
-
                 mActivity.showToolbarSpinner(false);
+
+                if(loadInfo){
+                    updateView(mActivity.getRequestedOrientation());
+                }
             }
         }.execute();
     }
@@ -231,5 +233,21 @@ public class ScheduleFragment extends BaseFragment {
         public int getCount() {
             return 1000000;
         }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+    }
+
+    public void updateView(int orientation){
+        ViewGroup rootView = (ViewGroup) getView();
+
+        // Remove all the existing views from the root view.
+        // This is also a good place to recycle any resources you won't need anymore
+        rootView.removeAllViews();
+
+        rootView.addView(loadView(orientation));
+        // Viola, you have the new view setup
     }
 }
