@@ -15,7 +15,6 @@ import org.joda.time.Minutes;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.dialog.CourseDialog;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
@@ -53,7 +52,7 @@ public class DayFragment extends Fragment{
         mDay = (Day)getArguments().get(Constants.DAY);
         mDate = (DateTime)getArguments().get(Constants.DATE);
         //Get the courses from ScheduleActivity
-        mClassItems = ((MainActivity)getActivity()).getScheduleFragment().getClassesForDate(mDay, mDate);
+        mClassItems = ((ScheduleFragment)getParentFragment()).getClassesForDate(mDay, mDate);
     }
 
     @Override
