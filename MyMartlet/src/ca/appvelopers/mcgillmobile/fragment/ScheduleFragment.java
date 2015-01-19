@@ -4,10 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +40,6 @@ public class ScheduleFragment extends BaseFragment {
     private List<ClassItem> mClassList;
     private Term mTerm;
     private ScheduleViewBuilder mScheduleViewBuilder;
-    private DateTime mDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -114,12 +109,9 @@ public class ScheduleFragment extends BaseFragment {
                             //Download the Transcript (if ever the user has new semesters on their transcript)
                             new TranscriptDownloader(mActivity, false) {
                                 @Override
-                                protected void onPreExecute() {
-                                }
-
+                                protected void onPreExecute() {}
                                 @Override
-                                protected void onPostExecute(Boolean loadInfo) {
-                                }
+                                protected void onPostExecute(Boolean loadInfo) {}
                             }.execute();
                         }
                     }
@@ -147,37 +139,20 @@ public class ScheduleFragment extends BaseFragment {
             }
         }
 
+        //Date is by default set to today
+        DateTime date = DateTime.now();
         //Check if we are in the current semester
-        mDate = DateTime.now();
         if(!mTerm.equals(Term.getCurrentTerm())){
             //If not, find the starting date of this semester instead of using today
             for(ClassItem classItem : mClassList){
-                if(classItem.getStartDate().isBefore(mDate)){
-                    mDate = classItem.getStartDate();
+                if(classItem.getStartDate().isBefore(date)){
+                    date = classItem.getStartDate();
                 }
             }
         }
 
-        View view;
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            view = mScheduleViewBuilder.renderLandscapeView(mDate);
-        }
-        else{
-            //Load the right view
-            view = View.inflate(mActivity, R.layout.fragment_schedule, null);
-
-            //Set up the ViewPager
-            //Open it to the right day (offset of 500002 to get the right day)
-            int firstDayIndex = 500002 + mDate.getDayOfWeek();
-
-            SchedulePagerAdapter adapter = new SchedulePagerAdapter(getChildFragmentManager(), firstDayIndex);
-
-            ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
-            pager.setAdapter(adapter);
-            pager.setCurrentItem(firstDayIndex);
-        }
-
-        return view;
+        //Return the view
+        return mScheduleViewBuilder.renderView(orientation, date);
     }
 
     //Downloads the list of classes for the given term
@@ -195,7 +170,7 @@ public class ScheduleFragment extends BaseFragment {
                 mActivity.showToolbarSpinner(false);
 
                 if(loadInfo){
-                    updateView(mActivity.getRequestedOrientation());
+                    updateView(mActivity.getResources().getConfiguration().orientation);
                 }
             }
         }.execute();
@@ -214,40 +189,14 @@ public class ScheduleFragment extends BaseFragment {
         return courses;
     }
 
-    private class SchedulePagerAdapter extends FragmentStatePagerAdapter {
-        private int mFirstDayIndex;
-
-        public SchedulePagerAdapter(FragmentManager fm, int firstDayIndex){
-            super(fm);
-            this.mFirstDayIndex = firstDayIndex;
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            Day currentDay = Day.getDay(i%7);
-            DateTime date = mDate.plusDays(i - mFirstDayIndex);
-            return DayFragment.newInstance(currentDay, date);
-        }
-
-        @Override
-        public int getCount() {
-            return 1000000;
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-    }
-
     public void updateView(int orientation){
+        //Get the root view
         ViewGroup rootView = (ViewGroup) getView();
 
         // Remove all the existing views from the root view.
-        // This is also a good place to recycle any resources you won't need anymore
         rootView.removeAllViews();
 
+        //Reload a new view
         rootView.addView(loadView(orientation));
-        // Viola, you have the new view setup
     }
 }
