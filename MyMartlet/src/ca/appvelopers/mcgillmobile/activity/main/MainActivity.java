@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -304,21 +303,5 @@ public class MainActivity extends BaseActivity {
      */
     public void showToolbarSpinner(boolean visible){
         mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
-    }
-
-    /**
-     * Get the schedule fragment
-     * @return The schedule fragment
-     */
-    public ScheduleFragment getScheduleFragment(){
-        return mScheduleFragment;
-    }
-
-    public void reloadFragment(Fragment fragment){
-        getSupportFragmentManager()
-                .beginTransaction()
-                .detach(fragment)
-                .attach(fragment)
-                .commit();
     }
 }
