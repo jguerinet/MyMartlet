@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -37,6 +39,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
+import twitter4j.TwitterException;
 
 /**
  * Author: Julien Guerinet
@@ -145,6 +148,29 @@ public class MainActivity extends BaseActivity {
             DialogHelper.showBugDialog(this, parserBug.equals(Constants.TRANSCRIPT),
                     getIntent().getStringExtra(Constants.TERM));
         }
+
+        //Twitter Callback
+        new AsyncTask<Uri,Void,Void>(){
+            protected Void doInBackground(Uri... args){
+                Uri uri = args[0];
+                if (uri != null && uri.toString().startsWith(Constants.TWITTER_CALLBACK_URL)) {
+                    // oAuth verifier
+                    String verifier = uri.getQueryParameter(Constants.URL_TWITTER_OAUTH_VERIFIER);
+                    try {
+                        Constants.twitter.getOAuthAccessToken(Constants.requestToken, verifier);
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Help.postOnTwitter(MainActivity.this);
+                        }
+                    });
+                }
+                return null;
+            }
+        }.execute(getIntent().getData());
     }
 
     private void setFragment(DrawerItem drawerItem){
