@@ -163,7 +163,7 @@
     <string name="homepage_transcript">Transcript</string>
     <string name="homepage_mycourses">MyCourses</string>
     <string name="homepage_courses">Course List</string>
-    <string name="homepage_search">Courses Search</string>
+    <string name="homepage_search">Course Search</string>
     <string name="homepage_wishlist">Wishlist</string>
     <string name="homepage_ebill">eBill</string>
     <string name="homepage_map">Campus Map</string>
@@ -177,13 +177,13 @@
 
     <!-- Register Page -->
     <string name="registration_semester">Semester:</string>
-    <string name="registration_subject">Subject (ex: MATH):</string>
-    <string name="registration_course_number">Course Number:</string>
+    <string name="registration_subject">Subject (ex: MATH)</string>
+    <string name="registration_course_number">Course Number</string>
     <string name="registration_invalid_subject">Invalid subject: Please a enter four character subject.</string>
     <string name="registration_error">Registration Error</string>
     <string name="registration_success">Registration Successful!</string>
     <string name="registration_faculty">Faculty:</string>
-    <string name="registration_title">Title:</string>
+    <string name="registration_title">Title</string>
     <string name="registration_start_time">Start Time:</string>
     <string name="registration_end_time">End Time:</string>
     <string name="registration_days">Days:</string>
@@ -219,7 +219,7 @@
     <string name="courses_register">Register</string>
     <string name="courses_unregister">Unregister</string>
     <string name="courses_add_wishlist">Add to Wishlist</string>
-    <string name="courses_remove_wishlist">Remove from Wishlist</string>
+    <string name="courses_remove_wishlist">Remove</string>
     <string name="courses_too_many_courses">You must select fewer than 10 courses.</string>
     <string name="courses_none_selected">You must select at least one course.</string>
 

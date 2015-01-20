@@ -41,8 +41,6 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 public class CoursesFragment extends BaseFragment {
     private ListView mListView;
     private TextView mUnregisterButton;
-    private View mLine;
-
     private CoursesAdapter mAdapter;
     private Term mTerm;
 
@@ -67,7 +65,6 @@ public class CoursesFragment extends BaseFragment {
         // Views
         mListView = (ListView)view.findViewById(R.id.courses_list);
         mListView.setEmptyView(view.findViewById(R.id.courses_empty));
-        mLine = view.findViewById(R.id.course_line);
 
         mTerm = App.getDefaultTerm();
 
@@ -128,7 +125,6 @@ public class CoursesFragment extends BaseFragment {
 
         //Change the text and the visibility if we are in the list of currently registered courses
         if(canUnregister){
-            mLine.setVisibility(View.VISIBLE);
             mUnregisterButton.setVisibility(View.VISIBLE);
             mUnregisterButton.setText(getString(R.string.courses_unregister));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -136,7 +132,6 @@ public class CoursesFragment extends BaseFragment {
             mUnregisterButton.setLayoutParams(params);
         }
         else{
-            mLine.setVisibility(View.GONE);
             mUnregisterButton.setVisibility(View.GONE);
         }
 
