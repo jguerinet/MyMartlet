@@ -25,11 +25,11 @@ import ca.appvelopers.mcgillmobile.dialog.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
+import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
-import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
@@ -58,7 +58,7 @@ public class CoursesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = View.inflate(mActivity, R.layout.fragment_courses, null);
+        View view = View.inflate(mActivity, R.layout.fragment_wishlist, null);
 
         GoogleAnalytics.sendScreen(mActivity, "View Courses");
 

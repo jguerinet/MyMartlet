@@ -19,9 +19,9 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Transcript;
+import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 
 /**
  * Author: Shabbir

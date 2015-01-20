@@ -1,4 +1,4 @@
-package ca.appvelopers.mcgillmobile.util.downloader;
+package ca.appvelopers.mcgillmobile.thread;
 
 import android.content.Context;
 import android.os.AsyncTask;

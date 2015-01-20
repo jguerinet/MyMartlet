@@ -23,11 +23,11 @@ import ca.appvelopers.mcgillmobile.dialog.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
+import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
-import ca.appvelopers.mcgillmobile.util.downloader.ClassDownloader;
-import ca.appvelopers.mcgillmobile.util.downloader.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.view.ScheduleViewBuilder;
 
 /**

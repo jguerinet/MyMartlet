@@ -1,6 +1,7 @@
 package ca.appvelopers.mcgillmobile.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.activity.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -310,11 +312,9 @@ public class CourseSearchFragment extends BaseFragment {
             }
             //Go to the CoursesListActivity with the parsed courses
             else{
-                //TODO Where to go ?
-//                Intent intent = new Intent(mActivity, CoursesListActivity.class);
-//                intent.putExtra(Constants.WISHLIST, false);
-//                intent.putExtra(Constants.TERM, mTerm);
-//                startActivity(intent);
+                Intent intent = new Intent(mActivity, SearchResultsActivity.class);
+                intent.putExtra(Constants.TERM, mTerm);
+                startActivity(intent);
             }
         }
     }

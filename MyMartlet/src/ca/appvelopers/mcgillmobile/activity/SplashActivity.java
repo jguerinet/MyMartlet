@@ -32,6 +32,7 @@ import ca.appvelopers.mcgillmobile.dialog.SkipDialog;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -40,7 +41,6 @@ import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
-import ca.appvelopers.mcgillmobile.util.downloader.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**

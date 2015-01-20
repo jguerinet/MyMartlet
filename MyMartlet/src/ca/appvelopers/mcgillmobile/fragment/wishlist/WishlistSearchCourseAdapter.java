@@ -22,12 +22,12 @@ import ca.appvelopers.mcgillmobile.object.Term;
  * Date :  2014-05-26 7:14 PM
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
-public class CoursesAdapter extends BaseAdapter {
+public class WishlistSearchCourseAdapter extends BaseAdapter {
     private Context mContext;
     private List<ClassItem> mClassItems;
     private List<ClassItem> mCheckedClassItems;
 
-    public CoursesAdapter(Context context, Term term, List<ClassItem> classItems){
+    public WishlistSearchCourseAdapter(Context context, Term term, List<ClassItem> classItems){
         this.mContext = context;
         this.mClassItems = new ArrayList<ClassItem>();
         this.mCheckedClassItems = new ArrayList<ClassItem>();
