@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -41,7 +41,7 @@ public class WalkthroughActivity extends BaseActivity {
         position = 0;
 
         //Next
-        final TextView next = (TextView) findViewById(R.id.walkthrough_next);
+        final Button next = (Button) findViewById(R.id.walkthrough_next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +56,7 @@ public class WalkthroughActivity extends BaseActivity {
         });
 
         //Close
-        TextView close = (TextView) findViewById(R.id.walkthrough_close);
+        Button close = (Button) findViewById(R.id.walkthrough_close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +66,7 @@ public class WalkthroughActivity extends BaseActivity {
         });
 
         //Back
-        final TextView back = (TextView) findViewById(R.id.walkthrough_back);
+        final Button back = (Button) findViewById(R.id.walkthrough_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
