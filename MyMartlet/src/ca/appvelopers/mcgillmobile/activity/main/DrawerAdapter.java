@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,13 +25,13 @@ public class DrawerAdapter extends BaseAdapter {
 
     public DrawerAdapter(Activity activity){
         this.mActivity = activity;
-        this.mDrawerItems = new ArrayList<DrawerItem>();
         this.mDrawerItems = Arrays.asList(DrawerItem.values());
     }
 
     @Override
     public int getCount() {
-        return mDrawerItems.size();
+        //Add 1 for the header
+        return mDrawerItems.size() + 1;
     }
 
     @Override
