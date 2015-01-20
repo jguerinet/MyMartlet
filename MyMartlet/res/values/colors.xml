@@ -10,5 +10,6 @@
     <color name="red_transparent">#CCDB231E</color>
     <color name="red_dark">#FF751814</color>
     <color name="transparent">#00000000</color>
+    <color name="background">#ffeeeeee</color>
 
 </resources>
