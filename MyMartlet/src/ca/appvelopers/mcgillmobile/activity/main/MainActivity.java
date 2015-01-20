@@ -41,7 +41,7 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 /**
  * Author: Julien Guerinet
  * Date: 2015-01-12 8:39 PM
- * Copyright (c) 2014 Appvelopers Inc. All rights reserved.
+ * Copyright (c) 2015 Appvelopers Inc. All rights reserved.
  */
 
 public class MainActivity extends BaseActivity {
@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
         mMyCoursesFragment = new MyCoursesFragment();
         mCoursesFragment = new CoursesFragment();
         mCourseSearchFragment = new CourseSearchFragment();
-        mWishlistFragment = WishlistFragment.createInstance(true, null);
+        mWishlistFragment = new WishlistFragment();
         mEbillFragment = new EbillFragment();
         mMapFragment = new MapFragment();
         mDesktopFragment = new DesktopFragment();
