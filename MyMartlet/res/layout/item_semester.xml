@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:id="@+id/semester_chevron"
         android:gravity="center"
-        android:textSize="@dimen/text_large"
+        android:textSize="@dimen/text_small"
         android:textColor="@color/grey_whitepressed"
         android:duplicateParentState="true"
         android:text="@string/icon_chevronRight"/>
