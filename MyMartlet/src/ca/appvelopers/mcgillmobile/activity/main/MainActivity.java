@@ -136,8 +136,13 @@ public class MainActivity extends BaseActivity {
                 //Get the concerned page and save it as the new drawer item
                 mNewDrawerItem = drawerAdapter.getItem(position);
 
-                // Highlight the selected item and close the drawer
-                mDrawerList.setItemChecked(position, true);
+                //Facebook and Twitter should never be selected since they are one time things
+                if(mNewDrawerItem  != DrawerItem.FACEBOOK && mNewDrawerItem != DrawerItem.TWITTER){
+                    // Highlight the selected item
+                    mDrawerList.setItemChecked(position, true);
+                }
+
+                //Close the drawer
                 mDrawerLayout.closeDrawer(mDrawerList);
             }
         });
