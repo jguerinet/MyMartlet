@@ -21,7 +21,7 @@ import ca.appvelopers.mcgillmobile.object.Term;
 /**
  * Author : Julien
  * Date :  2014-05-26 7:14 PM
- * Copyright (c) 2014 Julien Guerinet. All rights reserved.
+ * Copyright (c) 2015 Appvelopers. All rights reserved.
  */
 public class CoursesAdapter extends BaseAdapter {
     private Context mContext;
@@ -97,6 +97,8 @@ public class CoursesAdapter extends BaseAdapter {
         //Don't show it if we are only viewing the courses
         if(!mCanUnregister){
             checkBox.setVisibility(View.GONE);
+            //Also set it to not selectable
+            view.setEnabled(false);
         }
         else{
             checkBox.setVisibility(View.VISIBLE);

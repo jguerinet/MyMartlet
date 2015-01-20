@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/default_margin"
     android:paddingRight="@dimen/default_margin"
     android:paddingTop="@dimen/padding_micro"
-    android:paddingBottom="@dimen/padding_micro">
+    android:paddingBottom="@dimen/padding_micro"
+    android:background="@drawable/transparent_redpressed">
 
     <CheckBox
         android:layout_width="wrap_content"
