@@ -24,16 +24,19 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 public class DesktopFragment extends BaseFragment {
     private WebView mWebView;
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
+    @SuppressLint("SetJavaScriptEnabled")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = View.inflate(mActivity, R.layout.fragment_web, null);
+
+        lockPortraitMode();
 
         //Title
         mActivity.setTitle(getString(R.string.title_desktop));

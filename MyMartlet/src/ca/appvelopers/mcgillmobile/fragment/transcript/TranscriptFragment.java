@@ -39,6 +39,8 @@ public class TranscriptFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        lockPortraitMode();
+
         View view = View.inflate(mActivity, R.layout.fragment_transcript, null);
 
         //Title
