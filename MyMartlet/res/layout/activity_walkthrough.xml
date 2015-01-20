@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:id="@+id/walkthrough_container">
 
-    <TextView
+    <Button
+        style="?android:attr/borderlessButtonStyle"
         android:id="@+id/walkthrough_close"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:textColor="@color/red"
         android:text="@string/skip"
-        android:textColor="@color/black_redpressed"
         android:textSize="@dimen/text_medium"
-        android:gravity="left"
         android:paddingLeft="@dimen/padding_micro"
         android:paddingRight="@dimen/padding_micro"
         android:paddingTop="@dimen/padding_micro"/>
@@ -22,8 +20,7 @@
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/walkthrough_pageindicator"
         android:layout_height="10dp"
-        android:layout_width="match_parent"
-        android:background="@color/white"/>
+        android:layout_width="match_parent"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/walkthrough_viewpager"
@@ -35,31 +32,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/padding_micro"
-        android:background="@color/red">
+        android:padding="@dimen/padding_drawer">
 
-        <TextView
+        <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/walkthrough_back"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
+            android:textColor="@color/red"
             android:text="@string/back"
-            android:textColor="@color/white_greypressed"
             android:textSize="@dimen/text_medium"
-            android:clickable="true"
-            android:visibility="invisible"
-            android:gravity="left"/>
+            android:gravity="start"
+            android:visibility="invisible"/>
 
-        <TextView
-            android:id="@+id/walkthrough_next"
-            android:layout_height="wrap_content"
+        <View
             android:layout_width="0dp"
-            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/walkthrough_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
             android:text="@string/next"
-            android:textColor="@color/white_greypressed"
             android:textSize="@dimen/text_medium"
-            android:clickable="true"
-            android:gravity="right"/>
+            android:gravity="end"/>
     </LinearLayout>
 
 </LinearLayout>
