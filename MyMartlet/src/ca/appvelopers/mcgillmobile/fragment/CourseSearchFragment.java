@@ -62,6 +62,8 @@ public class CourseSearchFragment extends BaseFragment {
 
         View view = View.inflate(mActivity, R.layout.fragment_course_search, null);
 
+        lockPortraitMode();
+
         GoogleAnalytics.sendScreen(mActivity, "Registration");
 
         //Title

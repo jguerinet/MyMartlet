@@ -51,6 +51,8 @@ public class EbillFragment extends BaseFragment {
 
         View view = View.inflate(mActivity, R.layout.fragment_ebill, null);
 
+        lockPortraitMode();
+
         //Title
         mActivity.setTitle(getString(R.string.title_ebill));
 

@@ -55,6 +55,8 @@ public class WishlistFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = View.inflate(mActivity, R.layout.fragment_wishlist, null);
 
+        lockPortraitMode();
+
         GoogleAnalytics.sendScreen(mActivity, "Wishlist");
 
         // Views

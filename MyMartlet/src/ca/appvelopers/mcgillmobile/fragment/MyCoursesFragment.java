@@ -45,6 +45,8 @@ public class MyCoursesFragment extends BaseFragment {
 
         View view = View.inflate(mActivity, R.layout.fragment_web, null);
 
+        lockPortraitMode();
+
         //Title
         mActivity.setTitle(getString(R.string.title_mycourses));
 

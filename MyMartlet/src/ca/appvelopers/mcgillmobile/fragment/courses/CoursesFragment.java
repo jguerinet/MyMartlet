@@ -60,6 +60,8 @@ public class CoursesFragment extends BaseFragment {
 
         View view = View.inflate(mActivity, R.layout.fragment_wishlist, null);
 
+        lockPortraitMode();
+
         GoogleAnalytics.sendScreen(mActivity, "View Courses");
 
         // Views
