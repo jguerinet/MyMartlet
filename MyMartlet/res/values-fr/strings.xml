@@ -127,6 +127,7 @@
     <string name="homepage_schedule">Calendrier</string>
     <string name="homepage_transcript">Bulletin</string>
     <string name="homepage_mycourses">MyCourses</string>
+    <string name="homepage_courses">Liste de Cours </string>
     <string name="homepage_search">Recherche de Cours</string>
     <string name="homepage_wishlist">Liste d\'Envies</string>
     <string name="homepage_ebill">eBill</string>
@@ -141,13 +142,13 @@
 
     <!-- Register Page -->
     <string name="registration_semester">Semestre:</string>
-    <string name="registration_subject">Sujet (ex: MATH):</string>
-    <string name="registration_course_number">Numéro de Cours:</string>
+    <string name="registration_subject">Sujet (ex: MATH)</string>
+    <string name="registration_course_number">Numéro de Cours</string>
     <string name="registration_invalid_subject">Sujet Invalide: Veullez entrer un sujet de 4 caractères</string>
     <string name="registration_error">Erreur d\'Inscription</string>
     <string name="registration_success">Inscription Réussie!</string>
     <string name="registration_faculty">Faculté:</string>
-    <string name="registration_title">Titre:</string>
+    <string name="registration_title">Titre</string>
     <string name="registration_start_time">Heure de Début:</string>
     <string name="registration_end_time">Heure de Fin:</string>
     <string name="registration_days">Jours:</string>
@@ -183,7 +184,7 @@
     <string name="courses_register">S\'inscrire</string>
     <string name="courses_unregister">Se Désinscrire</string>
     <string name="courses_add_wishlist">Ajouter à la Liste d\'Envies</string>
-    <string name="courses_remove_wishlist">Enlever de la Liste d\'Envies</string>
+    <string name="courses_remove_wishlist">Enlever</string>
     <string name="courses_too_many_courses">Vous devez choisir moins de 10 cours. </string>
     <string name="courses_none_selected">Vous devez choisir au moins un cours.</string>
 
