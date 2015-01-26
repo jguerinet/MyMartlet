@@ -21,68 +21,21 @@
             android:orientation="vertical"
             android:padding="@dimen/padding_micro"
             android:animateLayoutChanges="true">
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/registration_no_semesters"
+                android:id="@+id/registration_no_semesters"
+                android:gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/padding_micro">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/registration_semester"
-                    android:paddingRight="@dimen/padding_small"
-                    android:paddingEnd="@dimen/padding_small"
-                    android:textSize="@dimen/text_medium" />
-
-                <Spinner
-                    android:id="@+id/registration_semester"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/registration_subject"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:paddingLeft="@dimen/padding_micro"
-                android:hint="@string/registration_subject"
-                android:inputType="textCapCharacters"
-                android:textSize="@dimen/text_medium"
-                android:padding="@dimen/padding_micro"
-                tools:ignore="RtlHardcoded" />
-
-            <EditText
-                android:id="@+id/registration_course_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/registration_course_number"
-                android:paddingLeft="@dimen/padding_micro"
-                android:singleLine="true"
-                android:textSize="@dimen/text_medium"
-                android:padding="@dimen/padding_micro"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/more_options_container"
                 android:orientation="vertical"
-                android:visibility="gone">
-
-                <EditText
-                    android:id="@+id/registration_course_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/registration_title"
-                    android:inputType="textCapWords"
-                    android:paddingLeft="@dimen/padding_micro"
-                    android:singleLine="true"
-                    android:textSize="@dimen/text_medium" />
+                android:id="@+id/registration_search">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -92,160 +45,223 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center_vertical"
+                        android:text="@string/registration_semester"
                         android:paddingRight="@dimen/padding_small"
-                        android:text="@string/registration_credits"
+                        android:paddingEnd="@dimen/padding_small"
                         android:textSize="@dimen/text_medium" />
 
+                    <Spinner
+                        android:id="@+id/registration_semester"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/registration_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:paddingLeft="@dimen/padding_micro"
+                    android:hint="@string/registration_subject"
+                    android:inputType="textCapCharacters"
+                    android:textSize="@dimen/text_medium"
+                    android:padding="@dimen/padding_micro"
+                    tools:ignore="RtlHardcoded" />
+
+                <EditText
+                    android:id="@+id/registration_course_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="@string/registration_course_number"
+                    android:paddingLeft="@dimen/padding_micro"
+                    android:singleLine="true"
+                    android:textSize="@dimen/text_medium"
+                    android:padding="@dimen/padding_micro"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/more_options_container"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
                     <EditText
-                        android:layout_width="wrap_content"
+                        android:id="@+id/registration_course_title"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/registration_credits_min"
-                        android:hint="0"
-                        android:inputType="number"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text=" - "
-                        android:textSize="@dimen/text_medium" />
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/registration_credits_max"
-                        android:hint="0"
-                        android:inputType="number"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="@string/registration_credits_hours"
-                        android:paddingLeft="@dimen/padding_small"
+                        android:hint="@string/registration_title"
+                        android:inputType="textCapWords"
+                        android:paddingLeft="@dimen/padding_micro"
                         android:singleLine="true"
-                        android:textSize="@dimen/text_medium" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/padding_small">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="@string/registration_start_time"
-                        android:textSize="@dimen/text_medium" />
-
-                    <TimePicker
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:timePickerMode="spinner"
-                        android:id="@+id/registration_start_time"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="@string/registration_end_time"
-                        android:textSize="@dimen/text_medium" />
-
-                    <TimePicker
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:timePickerMode="spinner"
-                        android:id="@+id/registration_end_time"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="@string/registration_days"
                         android:textSize="@dimen/text_medium" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/padding_small">
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/padding_micro">
 
-                        <CheckBox
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/monday"
-                            android:id="@+id/registration_monday"/>
+                            android:gravity="center_vertical"
+                            android:paddingRight="@dimen/padding_small"
+                            android:text="@string/registration_credits"
+                            android:textSize="@dimen/text_medium" />
 
-                        <CheckBox
-                            android:layout_width="match_parent"
+                        <EditText
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/tuesday"
-                            android:id="@+id/registration_tuesday"/>
+                            android:id="@+id/registration_credits_min"
+                            android:hint="0"
+                            android:inputType="number"/>
 
-                        <CheckBox
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/wednesday"
-                            android:id="@+id/registration_wednesday"/>
+                            android:gravity="center_vertical"
+                            android:text=" - "
+                            android:textSize="@dimen/text_medium" />
 
-                        <CheckBox
-                            android:layout_width="match_parent"
+                        <EditText
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/thursday"
-                            android:id="@+id/registration_thursday"/>
+                            android:id="@+id/registration_credits_max"
+                            android:hint="0"
+                            android:inputType="number"/>
 
-                        <CheckBox
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/friday"
-                            android:id="@+id/registration_friday"/>
+                            android:gravity="center_vertical"
+                            android:text="@string/registration_credits_hours"
+                            android:paddingLeft="@dimen/padding_small"
+                            android:singleLine="true"
+                            android:textSize="@dimen/text_medium" />
+                    </LinearLayout>
 
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/saturday"
-                            android:id="@+id/registration_saturday"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/padding_small">
 
-                        <CheckBox
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/registration_start_time"
+                            android:textSize="@dimen/text_medium" />
+
+                        <TimePicker
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/sunday"
-                            android:id="@+id/registration_sunday"/>
+                            android:layout_weight="1"
+                            android:timePickerMode="spinner"
+                            android:id="@+id/registration_start_time"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/registration_end_time"
+                            android:textSize="@dimen/text_medium" />
+
+                        <TimePicker
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:timePickerMode="spinner"
+                            android:id="@+id/registration_end_time"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="@string/registration_days"
+                            android:textSize="@dimen/text_medium" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/padding_small">
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/monday"
+                                android:id="@+id/registration_monday"/>
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tuesday"
+                                android:id="@+id/registration_tuesday"/>
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/wednesday"
+                                android:id="@+id/registration_wednesday"/>
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/thursday"
+                                android:id="@+id/registration_thursday"/>
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/friday"
+                                android:id="@+id/registration_friday"/>
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/saturday"
+                                android:id="@+id/registration_saturday"/>
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sunday"
+                                android:id="@+id/registration_sunday"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-            <Button
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_small"
-                android:id="@+id/more_options"
-                android:textColor="@color/black_redpressed"
-                android:text="@string/registration_show_options"
-                android:padding="@dimen/padding_small"
-                android:gravity="center"/>
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_small"
+                    android:id="@+id/more_options"
+                    android:textColor="@color/black_redpressed"
+                    android:text="@string/registration_show_options"
+                    android:padding="@dimen/padding_small"
+                    android:gravity="center"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

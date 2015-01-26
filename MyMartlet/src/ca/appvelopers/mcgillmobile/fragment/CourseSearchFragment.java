@@ -69,9 +69,34 @@ public class CourseSearchFragment extends BaseFragment {
         //Title
         mActivity.setTitle(getString(R.string.title_registration));
 
+        //Set up the search button
+        Button searchButton = (Button)view.findViewById(R.id.search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchCourses();
+            }
+        });
+
+        //Check if there are any terms to register for
+        List<Term> registerTerms = App.getRegisterTerms();
+        if(registerTerms.isEmpty()){
+            //Hide all of the search related stuff, show explanatory text, and return the view
+            TextView noSemesters = (TextView)view.findViewById(R.id.registration_no_semesters);
+            noSemesters.setVisibility(View.VISIBLE);
+
+            LinearLayout registrationContainer = (LinearLayout)view.findViewById(
+                    R.id.registration_search);
+            registrationContainer.setVisibility(View.GONE);
+
+            searchButton.setVisibility(View.GONE);
+
+            return view;
+        }
+
         //Set up the term spinner
         mTermSpinner = (Spinner) view.findViewById(R.id.registration_semester);
-        mTermAdapter = new TermAdapter(mActivity, App.getRegisterTerms());
+        mTermAdapter = new TermAdapter(mActivity, registerTerms);
         mTermSpinner.setAdapter(mTermAdapter);
 
         mStartTime = (TimePicker)view.findViewById(R.id.registration_start_time);
@@ -117,15 +142,6 @@ public class CourseSearchFragment extends BaseFragment {
                     moreOptionsContainer.setVisibility(View.VISIBLE);
                     moreOptions.setText(getString(R.string.registration_hide_options));
                 }
-            }
-        });
-
-        //Set up the search button
-        Button searchButton = (Button)view.findViewById(R.id.search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchCourses();
             }
         });
 
@@ -233,7 +249,10 @@ public class CourseSearchFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        inflater.inflate(R.menu.reset, menu);
+        //Only inflate the menu if there are semesters to register for
+        if(!App.getRegisterTerms().isEmpty()){
+            inflater.inflate(R.menu.reset, menu);
+        }
     }
 
     @Override
@@ -256,6 +275,8 @@ public class CourseSearchFragment extends BaseFragment {
             mFriday.setChecked(false);
             mSaturday.setChecked(false);
             mSunday.setChecked(false);
+
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
