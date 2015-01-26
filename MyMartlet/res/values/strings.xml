@@ -48,28 +48,6 @@
     <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %1$s and Class %2$s</string>
     <string name="skip_loading">If you continue, your most recent information (current schedule and transcript) will not automatically be updated. Continue ?</string>
 
-    <!-- Icons -->
-    <string name="icon_chevronRight">&#xf054;</string>
-    <string name="icon_schedule">&#xf073;</string>
-    <string name="icon_settings">&#xf013;</string>
-    <string name="icon_desktop">&#xf108;</string>
-    <string name="icon_email">&#xf0e0;</string>
-    <string name="icon_mycourses">&#xf19c;</string>
-    <string name="icon_ebill">&#xf155;</string>
-    <string name="icon_transcript">&#xf15c;</string>
-    <string name="icon_map">&#xf041;</string>
-    <string name="icon_logout">&#xf0a9;</string>
-    <string name="icon_bug">&#xf188;</string>
-    <string name="icon_security">&#xf023;</string>
-    <string name="icon_question">&#xf128;</string>
-    <string name="icon_linkedin">&#xf08c;</string>
-    <string name="icon_search">&#xf002;</string>
-    <string name="icon_star">&#xf005;</string>
-    <string name="icon_courses">&#xf02d;</string>
-    <string name="icon_info">&#xf05a;</string>
-    <string name="icon_facebook">&#xf082;</string>
-    <string name="icon_twitter">&#xf081;</string>
-
     <!-- Day Names -->
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
@@ -192,6 +170,7 @@
     <string name="registration_spots">%s spot(s) left</string>
     <string name="registration_waitlist">Waitlist Spots: %s</string>
     <string name="registration_reset">RESET</string>
+    <string name="registration_no_semesters">There are no semesters to currently register for !</string>
     <string name="registration_error_no_faculty">You must either select a faculty or input a course subject.</string>
     <string name="registration_error_credits">The maximum hours must be bigger than the minimum hours</string>
     <string name="registration_show_options">Show More Options</string>
@@ -265,6 +244,10 @@
     <string name="about_ryan_description">Ryan Singzon aka. The man with the smile is best known for being the only contender to the ridiculously photogenic guy. </string>
     <string name="about_ryan_linkedin">http://ca.linkedin.com/in/ryansingzon</string>
     <string name="about_ryan_email">ryan.singzon\@mail.mcgill.ca</string>
+    <string name="about_selim">Selim Belhaouane</string>
+    <string name="about_selim_role">Android Developer</string>
+    <string name="about_selim_description">Selim is a Mechanical Engineering student. He drew a free-body diagram of the app to make sure it was robust enough. </string>
+    <string name="about_selim_linkedin">https://www.linkedin.com/pub/selim-belhaouane/90/82/72</string>
     <string name="about_shabbir">Shabbir Hussain</string>
     <string name="about_shabbir_role">Scrum Master, Assistant to the Scrum Master, Windows Phone Developer, Android Developer</string>
     <string name="about_shabbir_description">Shabbir is an EE student who prefers software development. Although he did contribute to this project, the team knows him exclusively as Assistant to the Scrum Master. Contact him if you are interested in playing rec volleyball.</string>
