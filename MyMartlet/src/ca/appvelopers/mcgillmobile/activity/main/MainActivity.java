@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ProgressBar mToolbarProgressBar;
+    private LinearLayout mFragmentSwitcher;
 
     private ActionBarDrawerToggle drawerToggle;
     private DrawerItem mCurrentDrawerItem, mNewDrawerItem;
@@ -80,8 +82,9 @@ public class MainActivity extends BaseActivity {
 
         Toolbar toolbar = setUpToolbar();
 
-        //Bind the progress bars
+        //Bind the necessary views
         mToolbarProgressBar = (ProgressBar)findViewById(R.id.toolbar_progress);
+        mFragmentSwitcher = (LinearLayout)findViewById(R.id.fragment_switcher);
 
         //Create the fragments
         mScheduleFragment = new ScheduleFragment();
@@ -136,10 +139,16 @@ public class MainActivity extends BaseActivity {
                 //Get the concerned page and save it as the new drawer item
                 mNewDrawerItem = drawerAdapter.getItem(position);
 
-                //Facebook and Twitter should never be selected since they are one time things
-                if(mNewDrawerItem  != DrawerItem.FACEBOOK && mNewDrawerItem != DrawerItem.TWITTER){
+                //Facebook, Twitter, and logout should never be selected since they are one time things
+                if(mNewDrawerItem != DrawerItem.FACEBOOK && mNewDrawerItem != DrawerItem.TWITTER &&
+                        mNewDrawerItem != DrawerItem.LOGOUT){
                     // Highlight the selected item
                     mDrawerList.setItemChecked(position, true);
+
+                    //If it's new, show the progress bar
+                    if(mCurrentDrawerItem != mNewDrawerItem){
+                        showFragmentSwitcherProgressBar(true);
+                    }
                 }
 
                 //Close the drawer
@@ -330,9 +339,19 @@ public class MainActivity extends BaseActivity {
 
     /**
      * Method that shows or hides the spinner in the toolbar
+     *
      * @param visible True if it should be visible, false otherwise
      */
-    public void showToolbarSpinner(boolean visible){
+    public void showToolbarProgressBar(boolean visible){
         mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * Shows or hides the prgress bar in the main view while switching fragments
+     *
+     * @param visible True True if it should be visible, false otherwise
+     */
+    public void showFragmentSwitcherProgressBar(boolean visible){
+        mFragmentSwitcher.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

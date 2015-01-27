@@ -75,6 +75,9 @@ public class ScheduleFragment extends BaseFragment {
             Save.saveFirstOpen(mActivity);
         }
 
+        //Hide the loading indicator
+        hideLoadingIndicator();
+
         return view;
     }
 
@@ -161,13 +164,13 @@ public class ScheduleFragment extends BaseFragment {
             @Override
             protected void onPreExecute(){
                 //Show the user we are refreshing
-                mActivity.showToolbarSpinner(true);
+                mActivity.showToolbarProgressBar(true);
             }
 
             // onPostExecute displays the results of the AsyncTask.
             @Override
             protected void onPostExecute(Boolean loadInfo) {
-                mActivity.showToolbarSpinner(false);
+                mActivity.showToolbarProgressBar(false);
 
                 if(loadInfo){
                     updateView(mActivity.getResources().getConfiguration().orientation);

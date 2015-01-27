@@ -211,6 +211,9 @@ public class SettingsFragment extends BaseFragment {
             e.printStackTrace();
         }
 
+        //Hide the loading indicator
+        hideLoadingIndicator();
+
         return view;
     }
 }

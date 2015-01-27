@@ -70,6 +70,9 @@ public class DesktopFragment extends BaseFragment {
                         "document.getElementById('password').value='" +
                         Load.loadPassword(mActivity) + "'; document.LoginForm.submit(); })()");
                 view.setVisibility(View.VISIBLE);
+
+                //Hide the loading indicator
+                hideLoadingIndicator();
             }
         });
 
