@@ -36,6 +36,10 @@ public class BaseFragment extends Fragment {
         return null;
     }
 
+    public void hideLoadingIndicator(){
+        mActivity.showFragmentSwitcherProgressBar(false);
+    }
+
     /**
      * Locks the fragment in portrait mode
      */

@@ -130,6 +130,9 @@ public class WishlistFragment extends BaseFragment {
         //Update the wishlist
         new WishlistThread().execute();
 
+        //Hide the loading indicator
+        hideLoadingIndicator();
+
         return view;
     }
 
@@ -185,13 +188,13 @@ public class WishlistFragment extends BaseFragment {
             @Override
             protected void onPreExecute(){
                 //Show the user we are refreshing
-                mActivity.showToolbarSpinner(true);
+                mActivity.showToolbarProgressBar(true);
             }
 
             // onPostExecute displays the results of the AsyncTask.
             @Override
             protected void onPostExecute(Boolean success) {
-                mActivity.showToolbarSpinner(false);
+                mActivity.showToolbarProgressBar(false);
 
                 if(success) {
                     //Display whether the user was successfully registered
@@ -255,7 +258,7 @@ public class WishlistFragment extends BaseFragment {
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
-            mActivity.showToolbarSpinner(true);
+            mActivity.showToolbarProgressBar(true);
         }
 
         //Retrieve page that contains registration status from Minerva
@@ -329,7 +332,7 @@ public class WishlistFragment extends BaseFragment {
         //Update or create transcript object and display data
         @Override
         protected void onPostExecute(Boolean success){
-            mActivity.showToolbarSpinner(false);
+            mActivity.showToolbarProgressBar(false);
 
             if(success){
                 //Set the new wishlist

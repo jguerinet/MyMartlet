@@ -70,6 +70,8 @@ public class EbillFragment extends BaseFragment {
         //Load the stored info
         loadInfo();
 
+        hideLoadingIndicator();
+
         return view;
     }
 
@@ -86,7 +88,7 @@ public class EbillFragment extends BaseFragment {
         @Override
         protected void onPreExecute(){
             //Show the user we are refreshing his content
-            mActivity.showToolbarSpinner(true);
+            mActivity.showToolbarProgressBar(true);
         }
 
         //Retrieve content from transcript page
@@ -130,7 +132,7 @@ public class EbillFragment extends BaseFragment {
                 loadInfo();
             }
 
-            mActivity.showToolbarSpinner(false);
+            mActivity.showToolbarProgressBar(false);
         }
     }
 

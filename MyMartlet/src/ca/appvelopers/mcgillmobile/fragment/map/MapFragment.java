@@ -231,6 +231,8 @@ public class MapFragment extends BaseFragment {
             });
         }
 
+        hideLoadingIndicator();
+
         return view;
     }
 

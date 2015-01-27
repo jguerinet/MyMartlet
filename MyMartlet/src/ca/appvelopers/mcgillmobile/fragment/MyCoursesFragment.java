@@ -109,6 +109,9 @@ public class MyCoursesFragment extends BaseFragment {
                         Load.loadPassword(mActivity) + "'; document.forms[0].submit();})()");
 
                 view.setVisibility(View.VISIBLE);
+
+                //Hide the loading indicator
+                hideLoadingIndicator();
             }
         });
 

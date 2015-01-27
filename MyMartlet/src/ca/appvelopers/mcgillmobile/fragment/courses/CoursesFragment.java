@@ -108,6 +108,9 @@ public class CoursesFragment extends BaseFragment {
         TextView wishlist = (TextView)view.findViewById(R.id.course_wishlist);
         wishlist.setVisibility(View.GONE);
 
+        //Hide the loading indicator
+        hideLoadingIndicator();
+
         return view;
     }
 
@@ -184,7 +187,7 @@ public class CoursesFragment extends BaseFragment {
         new ClassDownloader(mActivity, mTerm) {
             @Override
             protected void onPreExecute() {
-                mActivity.showToolbarSpinner(true);
+                mActivity.showToolbarProgressBar(true);
             }
 
             @Override
@@ -193,7 +196,7 @@ public class CoursesFragment extends BaseFragment {
                     loadInfo();
                 }
 
-                mActivity.showToolbarSpinner(false);
+                mActivity.showToolbarProgressBar(false);
             }
         }.execute();
     }
@@ -210,7 +213,7 @@ public class CoursesFragment extends BaseFragment {
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
-            mActivity.showToolbarSpinner(true);
+            mActivity.showToolbarProgressBar(true);
         }
 
         //Retrieve page that contains registration status from Minerva
@@ -244,7 +247,7 @@ public class CoursesFragment extends BaseFragment {
         //Update or create transcript object and display data
         @Override
         protected void onPostExecute(Boolean success){
-            mActivity.showToolbarSpinner(false);
+            mActivity.showToolbarProgressBar(false);
 
             if(success){
                 //Display whether the user was successfully registered

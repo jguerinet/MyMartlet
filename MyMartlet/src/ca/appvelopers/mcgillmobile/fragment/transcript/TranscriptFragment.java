@@ -59,6 +59,9 @@ public class TranscriptFragment extends BaseFragment{
         //Load the info stored on the device
         loadInfo();
 
+        //Hide the loading indicator
+        hideLoadingIndicator();
+
         return view;
     }
 
@@ -93,7 +96,7 @@ public class TranscriptFragment extends BaseFragment{
             @Override
             protected void onPreExecute() {
                 //Show the user we are downloading new info
-                mActivity.showToolbarSpinner(true);
+                mActivity.showToolbarProgressBar(true);
             }
 
             @Override
@@ -104,7 +107,7 @@ public class TranscriptFragment extends BaseFragment{
                     //Reload the info in the views
                     loadInfo();
                 }
-                mActivity.showToolbarSpinner(false);
+                mActivity.showToolbarProgressBar(false);
             }
         }.execute();
     }

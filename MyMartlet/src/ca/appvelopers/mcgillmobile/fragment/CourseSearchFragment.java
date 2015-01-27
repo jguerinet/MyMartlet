@@ -91,6 +91,9 @@ public class CourseSearchFragment extends BaseFragment {
 
             searchButton.setVisibility(View.GONE);
 
+            //Hide the loading indicator
+            hideLoadingIndicator();
+
             return view;
         }
 
@@ -144,6 +147,9 @@ public class CourseSearchFragment extends BaseFragment {
                 }
             }
         });
+
+        //Hide the loading indicator
+        hideLoadingIndicator();
 
         return view;
     }
