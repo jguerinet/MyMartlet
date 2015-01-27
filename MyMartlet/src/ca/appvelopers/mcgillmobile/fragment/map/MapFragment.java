@@ -7,6 +7,7 @@ import android.content.SearchRecentSuggestionsProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -61,6 +62,7 @@ public class MapFragment extends BaseFragment {
     private LinearLayout mInfoContainer;
     private PlaceCategory mCategory;
     private GoogleMap mMap;
+    private SupportMapFragment mFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,8 +92,104 @@ public class MapFragment extends BaseFragment {
         mPlaces = new ArrayList<MapPlace>();
         mFavoritePlaces = App.getFavoritePlaces();
 
-        mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        if (mMap !=null) {
+        //Set up the spinner
+        final Spinner filter = (Spinner) view.findViewById(R.id.map_filter);
+        final PlacesAdapter adapter = new PlacesAdapter(mActivity);
+        filter.setAdapter(adapter);
+        filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Get the selected category
+                mCategory = adapter.getItem(position);
+
+                //If it's all, show everything
+                if (mCategory.getName().equals(PlaceCategory.ALL)) {
+                    for (MapPlace place : mPlaces) {
+                        place.mMarker.setVisible(true);
+                    }
+                }
+                //Check if the favorites was selected
+                else if (mCategory.getName().equals(PlaceCategory.FAVORITES)) {
+                    for (MapPlace place : mPlaces) {
+                        place.mMarker.setVisible(mFavoritePlaces.contains(place.mPlace));
+                    }
+                }
+                //If not, only show the ones pertaining to the current category
+                else {
+                    for (MapPlace place : mPlaces) {
+                        place.mMarker.setVisible(place.mPlace.hasCategory(mCategory));
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        //Set up the two buttons
+        TextView directions = (TextView) view.findViewById(R.id.map_directions);
+        directions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPlaceMarker != null) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://maps.google.com/maps?f=d &daddr=" +
+                                    mPlaceMarker.mMarker.getPosition().latitude + "," +
+                                    mPlaceMarker.mMarker.getPosition().longitude));
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+        mFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPlaceMarker != null) {
+                    //Check if it was in the favorites
+                    if (mFavoritePlaces.contains(mPlaceMarker.mPlace)) {
+                        mFavoritePlaces.remove(mPlaceMarker.mPlace);
+                        Toast.makeText(mActivity, getString(R.string.map_favorites_removed, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                        mFavorite.setText(getString(R.string.map_favorites_add));
+
+                        //If we are in the favorites category, we need to hide this pin
+                        if(mCategory.getName().equals(PlaceCategory.FAVORITES)){
+                            mPlaceMarker.mMarker.setVisible(false);
+                        }
+                    } else {
+                        mFavoritePlaces.add(mPlaceMarker.mPlace);
+                        Toast.makeText(mActivity, getString(R.string.map_favorites_added, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                        mFavorite.setText(getString(R.string.map_favorites_remove));
+                    }
+                    App.setFavoritePlaces(mFavoritePlaces);
+                }
+            }
+        });
+
+        FragmentManager fragmentManager = getChildFragmentManager();
+        //Get the MapFragment
+        mFragment = (SupportMapFragment)fragmentManager.findFragmentById(R.id.map);
+        //If it's null, initialize it and put it in its view
+        if(mFragment == null){
+            mFragment = SupportMapFragment.newInstance();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.map, mFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+        hideLoadingIndicator();
+
+        return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //If the map is null, bind it and add the markers
+        if(mMap == null){
+            mMap = mFragment.getMap();
             //Set the camera's center position
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(MCGILL)
@@ -155,86 +253,22 @@ public class MapFragment extends BaseFragment {
                     return false;
                 }
             });
-
-            //Set up the two buttons
-            TextView directions = (TextView) view.findViewById(R.id.map_directions);
-            directions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mPlaceMarker != null) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://maps.google.com/maps?f=d &daddr=" +
-                                        mPlaceMarker.mMarker.getPosition().latitude + "," +
-                                        mPlaceMarker.mMarker.getPosition().longitude));
-                        startActivity(intent);
-                    }
-                }
-            });
-
-            //Set up the spinner
-            final Spinner filter = (Spinner) view.findViewById(R.id.map_filter);
-            final PlacesAdapter adapter = new PlacesAdapter(mActivity);
-            filter.setAdapter(adapter);
-            filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    //Get the selected category
-                    mCategory = adapter.getItem(position);
-
-                    //If it's all, show everything
-                    if (mCategory.getName().equals(PlaceCategory.ALL)) {
-                        for (MapPlace place : mPlaces) {
-                            place.mMarker.setVisible(true);
-                        }
-                    }
-                    //Check if the favorites was selected
-                    else if (mCategory.getName().equals(PlaceCategory.FAVORITES)) {
-                        for (MapPlace place : mPlaces) {
-                            place.mMarker.setVisible(mFavoritePlaces.contains(place.mPlace));
-                        }
-                    }
-                    //If not, only show the ones pertaining to the current category
-                    else {
-                        for (MapPlace place : mPlaces) {
-                            place.mMarker.setVisible(place.mPlace.hasCategory(mCategory));
-                        }
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-
-            mFavorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mPlaceMarker != null) {
-                        //Check if it was in the favorites
-                        if (mFavoritePlaces.contains(mPlaceMarker.mPlace)) {
-                            mFavoritePlaces.remove(mPlaceMarker.mPlace);
-                            Toast.makeText(mActivity, getString(R.string.map_favorites_removed, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
-                            mFavorite.setText(getString(R.string.map_favorites_add));
-
-                            //If we are in the favorites category, we need to hide this pin
-                            if(mCategory.getName().equals(PlaceCategory.FAVORITES)){
-                                mPlaceMarker.mMarker.setVisible(false);
-                            }
-                        } else {
-                            mFavoritePlaces.add(mPlaceMarker.mPlace);
-                            Toast.makeText(mActivity, getString(R.string.map_favorites_added, mPlaceMarker.mPlace.getName()), Toast.LENGTH_SHORT).show();
-                            mFavorite.setText(getString(R.string.map_favorites_remove));
-                        }
-                        App.setFavoritePlaces(mFavoritePlaces);
-                    }
-                }
-            });
         }
-
-        hideLoadingIndicator();
-
-        return view;
     }
+
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        try {
+//            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+//            childFragmentManager.setAccessible(true);
+//            childFragmentManager.set(this, null);
+//        } catch (NoSuchFieldException e) {
+//            throw new RuntimeException(e);
+//        } catch (IllegalAccessException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
