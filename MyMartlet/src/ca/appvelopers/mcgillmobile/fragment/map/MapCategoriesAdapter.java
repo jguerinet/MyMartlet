@@ -22,11 +22,11 @@ import ca.appvelopers.mcgillmobile.object.PlaceCategory;
  * Copyright (c) 2014 Julien Guerinet. All rights reserved.
  */
 
-public class PlacesAdapter extends BaseAdapter {
+public class MapCategoriesAdapter extends BaseAdapter {
     private Context mContext;
     private List<PlaceCategory> mCategories;
 
-    public PlacesAdapter(Context context){
+    public MapCategoriesAdapter(Context context){
         this.mContext = context;
         this.mCategories = new ArrayList<PlaceCategory>();
         mCategories.addAll(App.getPlaceCategories());

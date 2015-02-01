@@ -292,8 +292,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
