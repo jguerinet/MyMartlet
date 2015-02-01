@@ -357,13 +357,4 @@ public class MapFragment extends BaseFragment {
 
         return null;
     }
-
-    private MapPlace findMarker(Place place) {
-        for (MapPlace mapPlace : mPlaces) {
-            if(mapPlace.mPlace.equals(place)) {
-                return mapPlace;
-            }
-        }
-        return null;
-    }
 }
