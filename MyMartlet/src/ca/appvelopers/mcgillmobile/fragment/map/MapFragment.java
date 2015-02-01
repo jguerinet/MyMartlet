@@ -58,6 +58,8 @@ public class MapFragment extends BaseFragment {
     private PlaceCategory mCategory;
     private GoogleMap mMap;
     private SupportMapFragment mFragment;
+    private List<MapPlace> mCurrentMapPlaces;
+    private String mSearchString;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,8 @@ public class MapFragment extends BaseFragment {
 
         mPlaces = new ArrayList<MapPlace>();
         mFavoritePlaces = App.getFavoritePlaces();
+        mCurrentMapPlaces = new ArrayList<MapPlace>();
+        mSearchString = "";
 
         //Set up the spinner
         final Spinner filter = (Spinner) view.findViewById(R.id.map_filter);
@@ -97,30 +101,16 @@ public class MapFragment extends BaseFragment {
                 //Get the selected category
                 mCategory = adapter.getItem(position);
 
-                //If it's all, show everything
-                if (mCategory.getName().equals(PlaceCategory.ALL)) {
-                    for (MapPlace place : mPlaces) {
-                        place.mMarker.setVisible(true);
-                    }
-                }
-                //Check if the favorites was selected
-                else if (mCategory.getName().equals(PlaceCategory.FAVORITES)) {
-                    for (MapPlace place : mPlaces) {
-                        place.mMarker.setVisible(mFavoritePlaces.contains(place.mPlace));
-                    }
-                }
-                //If not, only show the ones pertaining to the current category
-                else {
-                    for (MapPlace place : mPlaces) {
-                        place.mMarker.setVisible(place.mPlace.hasCategory(mCategory));
-                    }
-                }
+                //Filter the places
+                filterByCategory();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
+
+        //Set the all category as the first one
+        mCategory = adapter.getItem(0);
 
         //Set up the two buttons
         TextView directions = (TextView) view.findViewById(R.id.map_directions);
@@ -209,6 +199,9 @@ public class MapFragment extends BaseFragment {
                 mPlaces.add(new MapPlace(place, marker));
             }
 
+            //Filter
+            filterByCategory();
+
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
@@ -243,6 +236,41 @@ public class MapFragment extends BaseFragment {
         }
     }
 
+    public void filterByCategory(){
+        //Reset the current places
+        mCurrentMapPlaces.clear();
+
+        String categoryName = mCategory.getName();
+
+        //Go through the places
+        for(MapPlace place : mPlaces){
+            //If it's all, add everything
+            if(categoryName.equals(PlaceCategory.ALL)){
+                mCurrentMapPlaces.add(place);
+                place.mMarker.setVisible(true);
+            }
+            //If it's favorites, check if it's part of favorites
+            else if(categoryName.equals(PlaceCategory.FAVORITES)){
+                boolean partOfFavorites = mFavoritePlaces.contains(place.mPlace);
+                place.mMarker.setVisible(partOfFavorites);
+                if(partOfFavorites){
+                    mCurrentMapPlaces.add(place);
+                }
+            }
+            //If not, show the ones pertaining to the current category
+            else{
+                boolean partOfCategory = place.mPlace.hasCategory(mCategory);
+                place.mMarker.setVisible(partOfCategory);
+                if(partOfCategory){
+                    mCurrentMapPlaces.add(place);
+                }
+            }
+        }
+
+        //Filter also by the search String if there is one
+        filterBySearchString();
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
@@ -255,24 +283,42 @@ public class MapFragment extends BaseFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                findPlaceByString(query);
+                mSearchString = query;
+                filterBySearchString();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                findPlaceByString(newText);
+                mSearchString = newText;
+                filterBySearchString();
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mSearchString = "";
+                filterBySearchString();
                 return false;
             }
         });
     }
 
-    public void findPlaceByString(String query) {
+    public void filterBySearchString() {
+        //If there is no search String, just show everything
+        if(mSearchString.isEmpty()){
+            for(MapPlace mapPlace : mCurrentMapPlaces){
+                mapPlace.mMarker.setVisible(true);
+            }
+            return;
+        }
+
         //Keep track of the number of places you're showing
         int numberOfPlaces = 0;
         MapPlace place = null;
-        for (MapPlace mapPlace : mPlaces) {
-            if (mapPlace.mPlace.getName().toLowerCase().contains(query.toLowerCase())) {
+        for (MapPlace mapPlace : mCurrentMapPlaces) {
+            if (mapPlace.mPlace.getName().toLowerCase().contains(mSearchString.toLowerCase())) {
                 mapPlace.mMarker.setVisible(true);
                 numberOfPlaces ++;
                 place = mapPlace;
