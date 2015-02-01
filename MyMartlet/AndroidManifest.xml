@@ -54,10 +54,6 @@
         <activity
             android:name=".activity.semester.SemesterActivity"/>
 
-        <provider
-            android:authorities="ca.appvelopers.mcgillmobile.util.MapSuggestionProvider"
-            android:name=".util.MapSuggestionProvider"
-            android:syncable="false"/>
         <activity
             android:name=".activity.walkthrough.WalkthroughActivity"
             android:screenOrientation="portrait"/>
@@ -93,6 +89,7 @@
         <activity android:name=".activity.main.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
+                <!-- Twitter -->
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />

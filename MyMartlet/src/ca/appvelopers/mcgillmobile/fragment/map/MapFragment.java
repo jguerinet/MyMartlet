@@ -1,12 +1,8 @@
 package ca.appvelopers.mcgillmobile.fragment.map;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SearchRecentSuggestionsProvider;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
@@ -41,7 +37,6 @@ import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
-import ca.appvelopers.mcgillmobile.util.MapSuggestionProvider;
 
 /**
  * Author: Julien Guerinet
@@ -94,7 +89,7 @@ public class MapFragment extends BaseFragment {
 
         //Set up the spinner
         final Spinner filter = (Spinner) view.findViewById(R.id.map_filter);
-        final PlacesAdapter adapter = new PlacesAdapter(mActivity);
+        final MapCategoriesAdapter adapter = new MapCategoriesAdapter(mActivity);
         filter.setAdapter(adapter);
         filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -214,14 +209,6 @@ public class MapFragment extends BaseFragment {
                 mPlaces.add(new MapPlace(place, marker));
             }
 
-            setupSuggestions();
-            //TODO Get search intent
-//            Intent intent = getIntent();
-//            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-//                String query = intent.getStringExtra(SearchManager.QUERY);
-//                findPlaceByString(query);
-//            }
-
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
@@ -256,77 +243,53 @@ public class MapFragment extends BaseFragment {
         }
     }
 
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        try {
-//            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-//            childFragmentManager.setAccessible(true);
-//            childFragmentManager.set(this, null);
-//        } catch (NoSuchFieldException e) {
-//            throw new RuntimeException(e);
-//        } catch (IllegalAccessException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
-        MenuItem mSearchMenuItem = menu.findItem(R.id.action_search);
-        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
 
-        // Get the SearchView and set the search configuration
-        SearchManager searchManager = (SearchManager)mActivity.getSystemService(Context.SEARCH_SERVICE);
-        // TODO Assumes current activity is the search activity
-//        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        mSearchView.setIconifiedByDefault(true);
+        MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = new SearchView(mActivity.getSupportActionBar().getThemedContext());
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW |
+                MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        MenuItemCompat.setActionView(item, searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                findPlaceByString(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                findPlaceByString(newText);
+                return false;
+            }
+        });
     }
 
-    //TODO
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        setIntent(intent);
-//        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-//            String query = intent.getStringExtra(SearchManager.QUERY);
-//            findPlaceByString(query);
-//        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-//            String data = intent.getDataString();
-//            focusPlace(data);
-//        }
-//    }
-
-    private void findPlaceByString(String query) {
+    public void findPlaceByString(String query) {
+        //Keep track of the number of places you're showing
+        int numberOfPlaces = 0;
+        MapPlace place = null;
         for (MapPlace mapPlace : mPlaces) {
-            if (containsString(mapPlace.mPlace.getName(), query)) {
+            if (mapPlace.mPlace.getName().toLowerCase().contains(query.toLowerCase())) {
                 mapPlace.mMarker.setVisible(true);
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mapPlace.mPlace.getLatitude(), mapPlace.mPlace.getLongitude())));
+                numberOfPlaces ++;
+                place = mapPlace;
             } else {
                 mapPlace.mMarker.setVisible(false);
             }
         }
-    }
 
-    private void focusPlace(String place) {
-        for (MapPlace mapPlace : mPlaces) {
-            if (mapPlace.mPlace.getName().equals(place)) {
-                mapPlace.mMarker.setVisible(true);
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mapPlace.mPlace.getLatitude(), mapPlace.mPlace.getLongitude())));
-            } else {
-                mapPlace.mMarker.setVisible(false);
-            }
+        //If you're showing only one place, focus on that place
+        if(numberOfPlaces == 1){
+            focusPlace(place);
         }
     }
 
-    private boolean containsString(String container, String query) {
-        return container.toLowerCase().contains(query.toLowerCase());
-    }
-
-    private void setupSuggestions() {
-        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(mActivity, MapSuggestionProvider.AUTHORITY, SearchRecentSuggestionsProvider.DATABASE_MODE_QUERIES);
-        for (MapPlace place : mPlaces) {
-            suggestions.saveRecentQuery(place.mPlace.getName(), null);
-        }
+    public void focusPlace(MapPlace place) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(
+                new LatLng(place.mPlace.getLatitude(), place.mPlace.getLongitude())));
     }
 
     class MapPlace{
