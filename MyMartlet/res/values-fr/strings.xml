@@ -190,16 +190,14 @@
     <string name="about_email_picker_title">Compléter cette action avec&#8230;</string>
     <string name="about_adnan_role">Développeur Android</string>
     <string name="about_adnan_description">Plus connu comme le mec qui connaît tout le monde sur le campus. En 2014, Adnan a fameusement organisé un évènement de poulet frit qui tient toujours le record du plus petit nombre de cas de salmonelles à un évènement d\'ingénieur.</string>
-    <string name="about_gabriel_role">Testeur Principal</string>
-    <string name="about_gabriel_description">Gabriel est connu comme un ami de EUS. Pendant plusieurs semestres il faisait partie du PMO et OAP. Fait peu connu, pendant un an il s\'est engagé à être le frère de la présidente de ECSESS.</string>
-    <string name="about_hernan_role">Développeur iOS</string>
+    <string name="about_hernan_role">Chef du Développement iOS</string>
     <string name="about_hernan_description">Une citation ? Je suis COOL! (Plus que Josh.)</string>
-    <string name="about_joshua_role">Développeur Android, Graphiste</string>
+    <string name="about_joshua_role">Graphiste, Développeur Android</string>
     <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre de l\'ECSESS RoboElectronics qui a comme but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette application mobile.</string>
-    <string name="about_julien_role">Maître Scrum, Développeur Android Principal</string>
-    <string name="about_julien_description">Julien est un étudiant en quatrième année de génie informatique, et gère l\'équipe Android.</string>
-    <string name="about_omar_role">Développeur Générique et Testeur</string>
-    <string name="about_omar_description">Omar est un étudiant en Génie Logiciel avec un mineur en Sciences de l\'Informatique. Ceci lui permet de se vanter d\'être un traître aux deux cotés. Quand il n\'est pas en train de manger des sandwiches il essaye de créer une language de programmation la plus obscure et frustrante, possiblement une extension pour le JAVA. Il a aussi trahi Julien pendant ce projet. </string>
+    <string name="about_julia_role">Développeur iOS</string>
+    <string name="about_julia_description">TODO Julia</string>
+    <string name="about_julien_role">Chef de Projet, Chef du Développement Android</string>
+    <string name="about_julien_description">Julien a récemment terminé ses études à l’Université McGill en tant qu’ingénieur en informatique, et est actuellement le chef de développement mobile à Sigvaria Mobile Technologies Inc. </string>
     <string name="about_quang_role">Développeur Android</string>
     <string name="about_quang_description">Quang est un étudiant en Génie Logiciel avec un bon sens de goût. Le hackathon pendant lequel il a été Maître Scrum était un des moments les plus mémorables pour tous.</string>
     <string name="about_ryan_role">Développeur Android</string>
@@ -210,8 +208,8 @@
     <string name="about_shabbir_description">Shabbir est un élève en génie électronique qui préfère le développement de logiciel. Même s\'il a contribué à ce projet, l\'équipe le connaît exclusivement en tant que Assistant au Maître Scrum. Contactez-le si vous voulez jouer au volleyball récréatif. </string>
     <string name="about_xavier_role">Développeur Android</string>
     <string name="about_xavier_description">Xavier (Chi-Wing) est un étudiant en Génie Informatique avec un mineur en Sciences de l\'Informatique.</string>
-    <string name="about_yulric_role">Développeur Windows Mobile</string>
-    <string name="about_yulric_description">Yulric a récemment terminé ses études d\'ingénieur électrique à l\'Université McGill et fait partie de l\'équipe Windows Mobile.</string>
+    <string name="about_yulric_role">Développeur Web</string>
+    <string name="about_yulric_description">Yulric a récemment terminé ses études d\'ingénieur électrique à l\'Université McGill et est actuellement le chef de développement web à Sigvaria Mobile Technologies Inc. </string>
 
     <!-- Help -->
     <string name="about_question">Question</string>

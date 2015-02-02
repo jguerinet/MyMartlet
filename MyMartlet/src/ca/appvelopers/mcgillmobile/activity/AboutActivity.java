@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -17,6 +18,8 @@ import ca.appvelopers.mcgillmobile.util.Help;
  * Created by Adnan2
  */
 public class AboutActivity extends BaseActivity {
+    private LinearLayout mContainer;
+
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_about);
         super.onCreate(savedInstanceState);
@@ -26,65 +29,69 @@ public class AboutActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         //Set up the info for all of the different people
+        mContainer = (LinearLayout)findViewById(R.id.about_container);
 
         //Adnan
-        setUpInfo(findViewById(R.id.adnan), R.drawable.mymcgill_about_adnan, getResources().getString(R.string.about_adnan),
-                getResources().getString(R.string.about_adnan_role), getResources().getString(R.string.about_adnan_description),
-                getResources().getString(R.string.about_adnan_linkedin), getResources().getString(R.string.about_adnan_email));
-
-        //Gabriel
-        setUpInfo(findViewById(R.id.gabriel), R.drawable.mymcgill_about_gabe, getResources().getString(R.string.about_gabriel),
-                getResources().getString(R.string.about_gabriel_role), getResources().getString(R.string.about_gabriel_description),
-                getResources().getString(R.string.about_gabriel_linkedin), getResources().getString(R.string.about_gabriel_email));
+        setUpInfo(R.drawable.about_adnan, getString(R.string.about_adnan),
+                getString(R.string.about_adnan_role), getString(R.string.about_adnan_description),
+                getString(R.string.about_adnan_linkedin), getString(R.string.about_adnan_email));
 
         //Hernan
-        setUpInfo(findViewById(R.id.hernan), R.drawable.mymcgill_about_hernan, getResources().getString(R.string.about_hernan),
-                getResources().getString(R.string.about_hernan_role), getResources().getString(R.string.about_hernan_description),
-                getResources().getString(R.string.about_hernan_linkedin), getResources().getString(R.string.about_hernan_email));
+        setUpInfo(R.drawable.about_hernan, getString(R.string.about_hernan),
+                getString(R.string.about_hernan_role), getString(R.string.about_hernan_description),
+                getString(R.string.about_hernan_linkedin), getString(R.string.about_hernan_email));
 
         //Josh
-        setUpInfo(findViewById(R.id.josh), R.drawable.mymcgill_about_josh, getResources().getString(R.string.about_joshua),
-                getResources().getString(R.string.about_joshua_role), getResources().getString(R.string.about_joshua_description),
-                getResources().getString(R.string.about_joshua_linkedin), getResources().getString(R.string.about_joshua_email));
+        setUpInfo(R.drawable.about_josh, getString(R.string.about_joshua),
+                getString(R.string.about_joshua_role), getString(R.string.about_joshua_description),
+                getString(R.string.about_joshua_linkedin), getString(R.string.about_joshua_email));
+
+        //Julia
+        setUpInfo(R.drawable.about_julia, getString(R.string.about_julia),
+                getString(R.string.about_julia_role), getString(R.string.about_julia_description),
+                getString(R.string.about_julia_linkedin), getString(R.string.about_julia_email));
 
         //Julien
-        setUpInfo(findViewById(R.id.julien), R.drawable.mymcgill_about_julien, getResources().getString(R.string.about_julien),
-                getResources().getString(R.string.about_julien_role), getResources().getString(R.string.about_julien_description),
-                getResources().getString(R.string.about_julien_linkedin), getResources().getString(R.string.about_julien_email));
-
-        //Omar
-        setUpInfo(findViewById(R.id.omar), R.drawable.mymcgill_about_omar, getResources().getString(R.string.about_omar),
-                getResources().getString(R.string.about_omar_role), getResources().getString(R.string.about_omar_description),
-                getResources().getString(R.string.about_omar_linkedin), getResources().getString(R.string.about_omar_email));
+        setUpInfo(R.drawable.about_julien, getString(R.string.about_julien),
+                getString(R.string.about_julien_role), getString(R.string.about_julien_description),
+                getString(R.string.about_julien_linkedin), getString(R.string.about_julien_email));
 
         //Quang
-        setUpInfo(findViewById(R.id.quang), R.drawable.mymcgill_about_quang, getResources().getString(R.string.about_quang),
-                getResources().getString(R.string.about_quang_role), getResources().getString(R.string.about_quang_description),
-                getResources().getString(R.string.about_quang_linkedin), getResources().getString(R.string.about_quang_email));
+        setUpInfo(R.drawable.about_quang, getString(R.string.about_quang),
+                getString(R.string.about_quang_role), getString(R.string.about_quang_description),
+                getString(R.string.about_quang_linkedin), getString(R.string.about_quang_email));
 
         //Ryan
-        setUpInfo(findViewById(R.id.ryan), R.drawable.mymcgill_about_ryan, getResources().getString(R.string.about_ryan),
-                getResources().getString(R.string.about_ryan_role), getResources().getString(R.string.about_ryan_description),
-                getResources().getString(R.string.about_ryan_linkedin), getResources().getString(R.string.about_ryan_email));
+        setUpInfo(R.drawable.about_ryan, getString(R.string.about_ryan),
+                getString(R.string.about_ryan_role), getString(R.string.about_ryan_description),
+                getString(R.string.about_ryan_linkedin), getString(R.string.about_ryan_email));
+
+        //Selim
+        setUpInfo(R.drawable.about_selim, getString(R.string.about_selim),
+                getString(R.string.about_selim_role), getString(R.string.about_selim_description),
+                getString(R.string.about_selim_linkedin), getString(R.string.about_selim_email));
+
 
         //Shabbir
-        setUpInfo(findViewById(R.id.shabbir), R.drawable.mymcgill_about_shabbir, getResources().getString(R.string.about_shabbir),
-                getResources().getString(R.string.about_shabbir_role), getResources().getString(R.string.about_shabbir_description),
-                getResources().getString(R.string.about_shabbir_linkedin), getResources().getString(R.string.about_shabbir_email));
+        setUpInfo(R.drawable.about_shabbir, getString(R.string.about_shabbir),
+                getString(R.string.about_shabbir_role), getString(R.string.about_shabbir_description),
+                getString(R.string.about_shabbir_linkedin), getString(R.string.about_shabbir_email));
 
         //Xavier
-        setUpInfo(findViewById(R.id.xavier), R.drawable.mymcgill_about_xavier, getResources().getString(R.string.about_xavier),
-                getResources().getString(R.string.about_xavier_role), getResources().getString(R.string.about_xavier_description),
-                getResources().getString(R.string.about_xavier_linkedin), getResources().getString(R.string.about_xavier_email));
+        setUpInfo(R.drawable.about_xavier, getString(R.string.about_xavier),
+                getString(R.string.about_xavier_role), getString(R.string.about_xavier_description),
+                getString(R.string.about_xavier_linkedin), getString(R.string.about_xavier_email));
 
         //Yulric
-        setUpInfo(findViewById(R.id.yulric), R.drawable.mymcgill_about_yulric, getResources().getString(R.string.about_yulric),
-                getResources().getString(R.string.about_yulric_role), getResources().getString(R.string.about_yulric_description),
-                getResources().getString(R.string.about_yulric_linkedin), getResources().getString(R.string.about_yulric_email));
+        setUpInfo(R.drawable.about_yulric, getString(R.string.about_yulric),
+                getString(R.string.about_yulric_role), getString(R.string.about_yulric_description),
+                getString(R.string.about_yulric_linkedin), getString(R.string.about_yulric_email));
     }
 
-    private void setUpInfo(View view, int pictureResource, final String name, String role, String description,
+    private void setUpInfo(int pictureResource, final String name, String role, String description,
                            final String linkedin, final String email){
+        View view = View.inflate(this, R.layout.item_person, null);
+
         //Picture
         ImageView picture = (ImageView)view.findViewById(R.id.person_image);
         picture.setImageResource(pictureResource);
@@ -129,6 +136,9 @@ public class AboutActivity extends BaseActivity {
                 startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.about_email_picker_title)));
             }
         });
+
+        //Add it to the container
+        mContainer.addView(view);
     }
     
     @Override
