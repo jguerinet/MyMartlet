@@ -486,7 +486,7 @@ public class CourseCalendar {
 	}
     
     /**
-     * This is an example usage for this class. 
+     * This is an example usage for this class.
      * @param classes The list of classes to be exported
      * @param pattern Course contents for summary and description separated by 
 	 * 				  "-" (see parsePattern()). 
@@ -504,11 +504,12 @@ public class CourseCalendar {
     }
     
     /**
-     * This is an example usage for this class, using default parameters.
+     * Creates an iCal file with the given classes and save it to the given file
+     *
      * @param classes The list of classes to be exported
-     * @param file File to write iCal to 
+     * @param file    File to write iCal to
      */
-    public static void example(List<ClassItem> classes, File file) {
+    public static void createICalFile(List<ClassItem> classes, File file) {
     	CourseCalendar courseCal = new CourseCalendar(classes);
     	courseCal.writeCalendar(file);
     }
