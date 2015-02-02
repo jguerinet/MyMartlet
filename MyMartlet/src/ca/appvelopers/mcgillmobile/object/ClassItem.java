@@ -242,11 +242,29 @@ public class ClassItem implements Serializable{
     }
 
     /**
+     * Get the actual start time of the course
+     *
+     * @return The actual start time
+     */
+    public LocalTime getActualStartTime(){
+        return this.mActualStartTime;
+    }
+
+    /**
      * Get the end time of the course (rounded off the the nearest half hour)
      * @return The course end time
      */
     public LocalTime getEndTime(){
         return mEndTime;
+    }
+
+    /**
+     * Get the actual end time of the course
+     *
+     * @return The actual end time
+     */
+    public LocalTime getActualEndTime(){
+        return this.mActualEndTime;
     }
 
     /**
@@ -319,6 +337,15 @@ public class ClassItem implements Serializable{
      */
     public DateTime getStartDate(){
         return mStartDate;
+    }
+
+    /**
+     * Get the ending date
+     *
+     * @return The ending date
+     */
+    public DateTime getEndDate(){
+        return this.mEndDate;
     }
 
     /* SETTERS */
