@@ -8,7 +8,9 @@ import java.util.ArrayList;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
+import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
+import ca.appvelopers.mcgillmobile.object.Place;
 
 /**
  * Author: Julien
@@ -17,59 +19,65 @@ import ca.appvelopers.mcgillmobile.object.EbillItem;
  */
 public class Clear {
     public static void clearAllInfo(Context context){
-        clearSchedule(context);
-        clearTranscript(context);
-        clearEbill(context);
-        clearUserInfo(context);
-        clearPassword(context);
-        clearHomepage(context);
         if(!Load.loadRememberUsername(context)){
             clearUsername(context);
         }
+        clearPassword(context);
+        clearSchedule();
+        clearTranscript();
+        clearEbill();
+        clearUserInfo();
+        clearHomepage();
+        clearDefaultTerm();
+        clearWishlist();
+        clearFavoritePlaces();
     }
 
-    public static void clearUsername(Context context){
+    private static void clearUsername(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .remove(Constants.USERNAME)
                 .apply();
     }
 
-    public static void clearPassword(Context context){
+    private static void clearPassword(Context context){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .remove(Constants.PASSWORD)
                 .apply();
     }
 
-    public static void clearTranscript(Context context){
-        context.deleteFile(Constants.TRANSCRIPT_FILE);
-        //Reset the static instance in Application Class
+    private static void clearTranscript(){
         App.setTranscript(null);
     }
 
-    public static void clearSchedule(Context context){
-        context.deleteFile(Constants.CLASSES_FILE);
-        //Reset the static instance in Application Class
+    private static void clearSchedule(){
         App.setClasses(new ArrayList<ClassItem>());
     }
 
-    public static void clearEbill(Context context){
-        context.deleteFile(Constants.EBILL_FILE);
+    private static void clearEbill(){
         //Reset the static instance in Application Class
         App.setEbill(new ArrayList<EbillItem>());
     }
 
-    public static void clearUserInfo(Context context){
-        context.deleteFile(Constants.USER_INFO_FILE);
+    private static void clearUserInfo(){
         //Reset the static instance in Application Class
         App.setUserInfo(null);
     }
 
-    public static void clearHomepage(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
-                .remove(Constants.HOMEPAGE)
-                .apply();
+    private static void clearHomepage(){
+        App.setHomePage(DrawerItem.SCHEDULE);
+    }
+
+    private static void clearDefaultTerm(){
+        App.setDefaultTerm(null);
+    }
+
+    private static void clearWishlist(){
+        App.setClassWishlist(new ArrayList<ClassItem>());
+    }
+
+    private static void clearFavoritePlaces(){
+        App.setFavoritePlaces(new ArrayList<Place>());
     }
 }
