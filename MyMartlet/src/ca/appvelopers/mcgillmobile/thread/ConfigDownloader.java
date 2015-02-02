@@ -17,17 +17,10 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.object.Place;
@@ -70,37 +63,12 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
             String date = Load.loadIfModifiedSinceDate(mContext);
 
             try {
-                //This wil trust all certificates
-                TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return null;
-                        }
-                        @Override
-                        public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws java.security.cert.CertificateException {}
-                        @Override
-                        public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws java.security.cert.CertificateException {}
-                    }
-                };
-
-                HostnameVerifier allHostsValid = new HostnameVerifier() {
-                    public boolean verify(String hostname, SSLSession session) {
-                        return true;
-                    }
-                };
-
-                //Set up the SSL encryption
-                SSLContext sc = SSLContext.getInstance("SSL");
-                sc.init(null, trustAllCerts, new java.security.SecureRandom());
-                HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-                HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-
                 /* CONFIG */
                 mCurrentSection = "CONFIG";
 
                 //Connect to the server
                 URL url = new URL(Constants.CONFIG_URL);
-                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
                 //Set up the connection
                 connection.setRequestMethod("GET");
@@ -142,7 +110,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                     if(mPlacesURL != null){
                         //Connect to the server
                         url = new URL(mPlacesURL);
-                        connection = (HttpsURLConnection) url.openConnection();
+                        connection = (HttpURLConnection) url.openConnection();
 
                         //Set up the connection
                         connection.setRequestMethod("GET");
