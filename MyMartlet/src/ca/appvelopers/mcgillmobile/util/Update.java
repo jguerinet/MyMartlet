@@ -1,9 +1,6 @@
 package ca.appvelopers.mcgillmobile.util;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import ca.appvelopers.mcgillmobile.App;
 
@@ -15,14 +12,7 @@ import ca.appvelopers.mcgillmobile.App;
 public class Update {
     public static void update(Context context){
         //Get the version number
-        int versionNumber = -1;
-        try {
-            ComponentName comp = new ComponentName(context, context.getClass());
-            PackageInfo info = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);
-            versionNumber = info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        int versionNumber = Help.getVersionNumber(context);
 
         //Load the current version number from the preferences.
         int storedVersion = Load.loadVersionNumber(context);
