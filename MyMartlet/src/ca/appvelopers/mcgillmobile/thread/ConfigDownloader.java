@@ -41,6 +41,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     private Context mContext;
     private boolean mForceReload;
     private String mPlacesURL;
+    private int mMinVersion;
 
     //This is to keep track of which section the eventual error is in
     private String mCurrentSection;
@@ -49,6 +50,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     private static final String REGISTRATION_SEMESTERS_KEY = "RegistrationSemesters";
     private static final String PLACES_URL_KEY = "PlacesURL";
     private static final String PLACE_CATEGORIES_KEY = "Place Categories";
+    private static final String MIN_VERSION_KEY = "MinAndroidVersion";
 
     public ConfigDownloader(Context context){
         this.mContext = context;
@@ -160,8 +162,18 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     @Override
     protected abstract void onPostExecute(Void param);
 
+    /**
+     * @return The minimum version required
+     */
+    public int getMinVersion(){
+        return this.mMinVersion;
+    }
+
     private void parseConfig(String configString) throws IOException, JSONException {
         JSONObject configJSON = new JSONObject(configString);
+
+        //Get the min version
+        mMinVersion = configJSON.getInt(MIN_VERSION_KEY);
 
         //Get the Places URL
         mPlacesURL = configJSON.getString(PLACES_URL_KEY);
