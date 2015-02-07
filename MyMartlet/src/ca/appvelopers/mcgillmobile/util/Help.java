@@ -2,6 +2,7 @@ package ca.appvelopers.mcgillmobile.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -439,5 +440,22 @@ public class Help {
                 TypedValue.COMPLEX_UNIT_DIP,
                 dimensionId,
                 resources.getDisplayMetrics());
+    }
+
+    /**
+     * Get the app version number
+     *
+     * @param context The app context
+     * @return The version number
+     */
+    public static int getVersionNumber(Context context){
+        try {
+            ComponentName comp = new ComponentName(context, context.getClass());
+            PackageInfo info = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }
