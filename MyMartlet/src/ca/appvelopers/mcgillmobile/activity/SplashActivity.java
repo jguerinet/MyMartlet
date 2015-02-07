@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
@@ -59,6 +61,29 @@ public class SplashActivity extends BaseActivity {
         new ConfigDownloader(this) {
             @Override
             protected void onPostExecute(Void param) {
+                //Check if we have the minimum required version
+                if(this.getMinVersion() > Help.getVersionNumber(SplashActivity.this)){
+                    //If not, show the right container
+                    LinearLayout minVersionContainer =
+                            (LinearLayout) findViewById(R.id.version_container);
+                    minVersionContainer.setVisibility(View.VISIBLE);
+
+                    //Set up the button
+                    Button versionButton = (Button) findViewById(R.id.version_button);
+                    versionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Redirect them to the play store
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(Constants.PLAY_STORE_LINK));
+                            startActivity(intent);
+                        }
+                    });
+
+                    //Nothing else is done
+                    return;
+                }
+
                 //Get the username and password stored
                 mUsername = Load.loadUsername(SplashActivity.this);
                 String password = Load.loadPassword(SplashActivity.this);
