@@ -87,6 +87,8 @@
     <string name="login_error_username_empty">You must input a username.</string>
     <string name="login_error_password_empty">You must input a password. </string>
     <string name="login_remember_username">Remember my username</string>
+    <string name="new_version_title">A new version of the app is available, and we need you to download it before continuing. Promise, it\'ll be worth it. </string>
+    <string name="new_version_button">Get It Now</string>
 
     <!-- Logout Dialog -->
     <string name="logout_dialog_title">Logout</string>
