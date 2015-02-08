@@ -284,14 +284,14 @@
     <string name="help_bug_title">%s Bug: </string>
     <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>
-    <string name="help_question1">What is MyMartlet?</string>
-    <string name="help_question2">Is this app officially made by McGill?</string>
-    <string name="help_question3">On which platforms can we find this app?</string>
+    <string name="help_question1">What is MyMartlet ?</string>
+    <string name="help_question2">Is this app officially made by McGill ?</string>
+    <string name="help_question3">On which platforms can we find this app ?</string>
     <string name="help_answer1">MyMartlet is an app that allows McGill University students to quickly and conveniently access their MyMcGill portal on their mobile device.</string>
-    <string name="help_answer2">This app was made by McGill University students and is not the official McGill app</string>
-    <string name="help_answer3">This app exists on Android and we are currently developing an iOS and Windows Phone version.</string>
+    <string name="help_answer2">This app was made by McGill University students and is not the official McGill app.</string>
+    <string name="help_answer3">This app exists on Android and we are currently developing an iOS.</string>
     <string name="help_walkthrough">User Guide</string>
-    <string name="help_email_walkthrough">Set up your email on your device</string>
+    <string name="help_email_walkthrough">Set up Your Email on Your Device</string>
     <string name="help_email_walk0">Warning: steps may vary slightly based on Android version and phone model. \nGo to Settings → + Add account</string>
     <string name="help_email_walk1">Select Email</string>
     <string name="help_email_walk2">Enter your McGill email and password and select next</string>
@@ -299,7 +299,7 @@
     <string name="help_email_walk4">Select OK</string>
     <string name="help_email_walk5">Select Next</string>
     <string name="help_email_walk6">Your email is set up!</string>
-    <string name="help_download">Don\'t forget to download the official McGill App by clicking here.</string>
+    <string name="help_download">Download the Official McGill App</string>
 
     <!-- Maps -->
     <string name="map_filter">Filter: </string>
