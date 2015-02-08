@@ -86,9 +86,12 @@ public class MapFragment extends BaseFragment {
         mAddress = (TextView)view.findViewById(R.id.place_address);
         mFavorite = (TextView)view.findViewById(R.id.map_favorite);
 
-        mPlaces = new ArrayList<MapPlace>();
+        //Check if the places already exist
+        if(mPlaces == null){
+            mPlaces = new ArrayList<MapPlace>();
+            mCurrentMapPlaces = new ArrayList<MapPlace>();
+        }
         mFavoritePlaces = App.getFavoritePlaces();
-        mCurrentMapPlaces = new ArrayList<MapPlace>();
         mSearchString = "";
 
         //Set up the spinner
