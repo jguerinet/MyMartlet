@@ -38,6 +38,12 @@
     <string name="back">Retour</string>
     <string name="start">Commencer</string>
     <string name="skip">Sauter</string>
+    <string name="agree">Accepter</string>
+    <string name="decline">Decliner</string>
+    <string name="bug_parser_transcript">Il y avait une erreur en téléchargeant votre bulletin. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer ? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur sur votre bulletin. </string>
+    <string name="bug_parser_semester">Il y avait une erreur en téléchargeant les cours du semestre suivant de votre calendrier: %s. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer ? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur dans le calendrier pour ce semestre.</string>
+    <string name="bug_parser_yes">Biensûr !</string>
+    <string name="bug_parser_no">Non Merci</string>
     <string name="bug_parser_no_show">Ne plus afficher</string>
     <string name="skip_loading">Si vous continuez, votre information la plus récente (emploi du temps actuel et bulletin) ne sera pas mise à jour. Continuer ?</string>
 
@@ -77,9 +83,20 @@
     <string name="login_error_username_empty">Vous devez entrer un nom d\'utilisateur.</string>
     <string name="login_error_password_empty">Vous devez entrer un mot de passe.</string>
     <string name="login_remember_username">Mémoriser le nom d\'utilisateur</string>
+    <string name="new_version_title">Une nouvelle version de l’application est disponible, et nous avons besoin que vous la téléchargiez avant de continuer. Promis, ça vaudra le coup. </string>
+    <string name="new_version_button">Télécharger Maintenant</string>
 
     <!-- EULA -->
     <string name="eula_title">Contrat de Licence Utilisateur Final de l\'Application MyMartlet</string>
+    <string name="eula_description">Ce Contrat de Licence Utilisateur Final (“Contrat) est entre vous et Appvelopers et gouverne l’utilisation de cette application disponible par le Play Store. En installant l’application MyMartlet, vous acceptez d’être lié par ce Contrat. Si vous n’acceptez pas les termes et conditions de ce Contrat, vous n’avez pas le droit d’utiliser l’application MyMartlet. </string>
+    <string name="eula_parties">1. Parties</string>
+    <string name="eula_parties_decription">Ce Contrat est seulement entre vous et Appvelopers, et pas l’Université McGill. L’Université McGill n’est pas affiliée avec Appvelopers et l’Université McGill n’est pas responsable pour tout abus de l’application MyMartlet.</string>
+    <string name="eula_privacy">2. Confidentialité</string>
+    <string name="eula_privacy_description">MyMartlet a le droit de récolter et utiliser de l’information par rapport à votre utilisation de l’application MyMartlet. Ceci peut inclure quelques types d’informations depuis et par rapport à votre appareil. Appvelopers a le droit d’utiliser cette information, du moment que c’est sous une forme qui ne peut pas vous identifier personnellement, pour mesurer l’utilisation et la performance de l’application MyMartlet. </string>
+    <string name="eula_content">3. Contenu</string>
+    <string name="eula_content_description">Appvelopers ne récolte et n’utilise pas les informations personnelles qui sont présentées dans l’application MyMartlet (“Contenu de l’Utilisateur“). Le Contenu de l’Utilisateur et sauvegardé seulement sur l’appareil de l’utilisateur et l’utilisateur est entièrement responsable de la sécurité du Contenu de l’Utilisateur. Appvelopers n’est pas responsable, ni l’Université McGill, pour tout égarement ou abus du Contenu de l’Utilisateur. </string>
+    <string name="eula_license">4. Licence </string>
+    <string name="eula_license_description">Appvelopers vous accorde la capacité d’utiliser l’application MyMartlet pour votre utilisation personnelle et non-commerciale. Vous avez seulement le droit d’utiliser l’application MyMartlet sur les appareils que vous possédez ou contrôlez, comme permis par les conditions générales d’utilisation du Play Store.</string>
     <string name="logout_dialog_title">Déconnexion</string>
     <string name="logout_dialog_message">Voulez-vous continuer?</string>
     <string name="logout_dialog_positive">Continuer</string>
@@ -158,7 +175,8 @@
     <string name="registration_credits_hours">heures</string>
     <string name="registration_spots">%s place(s) restantes</string>
     <string name="registration_waitlist">Places sur Liste d\'Attente: %s</string>
-    <string name="registration_reset">REMETTRE</string>
+    <string name="registration_reset">Remettre</string>
+    <string name="registration_no_semesters">Il n’y a actuellement aucun semestre auquel vous pouvez vous inscrire !</string>
     <string name="registration_error_no_faculty">Vous devez sélectionner une faculté ou entrer un sujet de cours.</string>
     <string name="registration_error_credits">Le nombre d\'heures maximum doit être plus grand que le nombre minimum d\'heures. </string>
     <string name="registration_show_options">Montrer Plus d\'Options</string>
@@ -199,7 +217,7 @@
     <string name="about_joshua_role">Graphiste, Développeur Android</string>
     <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre de l\'ECSESS RoboElectronics qui a comme but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette application mobile.</string>
     <string name="about_julia_role">Développeur iOS</string>
-    <string name="about_julia_description">TODO Julia</string>
+    <string name="about_julia_description">Julia est une étudiante dans la faculté des Arts, et fait ses études dans les sciences de l’informatique. Elle est actuellement en train de développer la version iOS. </string>
     <string name="about_julien_role">Chef de Projet, Chef du Développement Android</string>
     <string name="about_julien_description">Julien a récemment terminé ses études à l’Université McGill en tant qu’ingénieur en informatique, et est actuellement le chef de développement mobile à Sigvaria Mobile Technologies Inc. </string>
     <string name="about_quang_role">Développeur Android</string>
@@ -221,7 +239,7 @@
     <string name="about_FAQ">Question Fréquentes</string>
     <string name="help_bug_title">Bug %s</string>
     <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
-    <string name="help_bug_prompt">Please give us a summary of the bug:</string>
+    <string name="help_bug_prompt">Donnez nous un résumé du bug s’il vous plaît:</string>
     <string name="help_question1">Qu\'est ce que c\'est MyMartlet?</string>
     <string name="help_question2">Est-ce que cette application est officiellement fait par McGill ?</string>
     <string name="help_question3">Sur quelles platformes pouvons nous trouver cette application ?</string>
@@ -248,6 +266,7 @@
     <string name="map_favorites_remove">Retirer de mes Favoris</string>
     <string name="map_favorites_added">%s ajouté(e) à mes Favoris</string>
     <string name="map_favorites_removed">%s retiré(e) à mes Favoris</string>
+    <string name="map_search">Rechercher</string>
     <string name="unregister_dialog_title">Désinscription de Cours</string>
     <string name="unregister_dialog_message">Êtes-vous sûr de vouloir vous désinscrire de ce(s) cours?</string>
     <string name="unregister_dialog_positive">Continuer</string>
