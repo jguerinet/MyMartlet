@@ -12,10 +12,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
             android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin">
+            android:paddingRight="@dimen/default_margin"
+            android:paddingTop="@dimen/padding_micro"
+            android:paddingBottom="@dimen/padding_micro">
 
             <TextView
                 android:layout_width="0dp"
@@ -37,10 +37,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
             android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin">
+            android:paddingRight="@dimen/default_margin"
+            android:paddingTop="@dimen/padding_micro"
+            android:paddingBottom="@dimen/padding_micro">
 
             <TextView
                 android:layout_width="0dp"
@@ -62,10 +62,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
             android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin">
+            android:paddingRight="@dimen/default_margin"
+            android:paddingTop="@dimen/padding_micro"
+            android:paddingBottom="@dimen/padding_micro">
 
             <TextView
                 android:layout_width="0dp"
@@ -87,11 +87,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/settings_help"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
             android:background="@drawable/transparent_redpressed"
             android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin">
+            android:paddingRight="@dimen/default_margin"
+            android:paddingTop="@dimen/padding_micro"
+            android:paddingBottom="@dimen/padding_micro">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -117,11 +117,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/settings_about"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
             android:background="@drawable/transparent_redpressed"
             android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin">
+            android:paddingRight="@dimen/default_margin"
+            android:paddingTop="@dimen/padding_micro"
+            android:paddingBottom="@dimen/padding_micro">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -146,11 +146,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/settings_bug"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
             android:background="@drawable/transparent_redpressed"
             android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin">
+            android:paddingRight="@dimen/default_margin"
+            android:paddingTop="@dimen/padding_micro"
+            android:paddingBottom="@dimen/padding_micro">
 
             <TextView
                 android:layout_width="wrap_content"
