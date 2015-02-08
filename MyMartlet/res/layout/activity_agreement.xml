@@ -83,6 +83,34 @@
                 android:layout_height="wrap_content"
                 android:text="@string/eula_license_description"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttons_container"
+                android:orientation="horizontal"
+                android:visibility="gone">
+                
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/decline"
+                    android:id="@+id/button_decline"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/agree"
+                    android:id="@+id/button_agree"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
