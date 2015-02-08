@@ -57,6 +57,11 @@
         <item name="android:textColorHighlight">#99db231e</item>
     </style>
 
+    <style name="Theme.MyMartlet.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- Primary Text Color -->
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
     <!-- Dialog Theme -->
     <style name="Dialog.MyMartlet" parent="Theme.AppCompat.Dialog">
         <!-- Action Bar Customizations -->
