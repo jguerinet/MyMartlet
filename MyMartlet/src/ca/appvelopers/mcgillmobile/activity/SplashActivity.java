@@ -50,6 +50,8 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * Date: 22/01/14, 7:34 PM
  */
 public class SplashActivity extends BaseActivity {
+    private static final int AGREEMENT_CODE = 100;
+
     private InfoDownloader mInfoDownloader;
 
     private String mUsername;
@@ -58,6 +60,35 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        //Check if the user has accepted the user agreement
+        if(Load.loadUserAgreement(this)){
+            //Run the config downloader if so
+            runConfigDownloader();
+        }
+        else{
+            //If not, show it
+            Intent intent = new Intent(this, AgreementActivity.class)
+                    .putExtra(Constants.EULA_REQUIRED, true);
+            startActivityForResult(intent, AGREEMENT_CODE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == AGREEMENT_CODE){
+            //If they agreed, run the config downloader
+            if(resultCode == RESULT_OK){
+                runConfigDownloader();
+            }
+            //If not, close the app
+            else if(resultCode == RESULT_CANCELED){
+                finish();
+            }
+        }
+    }
+
+    private void runConfigDownloader(){
         new ConfigDownloader(this) {
             @Override
             protected void onPostExecute(Void param) {

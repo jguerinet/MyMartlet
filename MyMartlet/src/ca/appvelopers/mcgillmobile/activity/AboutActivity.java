@@ -2,7 +2,6 @@ package ca.appvelopers.mcgillmobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -139,15 +138,5 @@ public class AboutActivity extends BaseActivity {
 
         //Add it to the container
         mContainer.addView(view);
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
