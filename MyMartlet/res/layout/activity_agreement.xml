@@ -95,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/decline"
                     android:id="@+id/button_decline"
+                    android:textColor="@color/red"
                     style="?android:attr/borderlessButtonStyle"/>
 
                 <View
@@ -107,6 +108,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/agree"
                     android:id="@+id/button_agree"
+                    android:textColor="@color/red"
                     style="?android:attr/borderlessButtonStyle"/>
 
             </LinearLayout>
