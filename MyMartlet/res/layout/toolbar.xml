@@ -6,6 +6,7 @@
     android:minHeight="?android:attr/actionBarSize"
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimary"
+    android:elevation="4dp"
     android:theme="@style/Theme.MyMartlet.Toolbar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
