@@ -45,7 +45,6 @@
     <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ? Please noe that if this bug is not fixed, there will be an error in your semester schedule.</string>
     <string name="bug_parser_yes">Sure !</string>
     <string name="bug_parser_no">No Thanks</string>
-    <string name="bug_parser">For developers: Exception caught: %s</string>
     <string name="bug_parser_no_show">Don\'t show this to me again</string>
     <string name="bug_parser_transcript_title">Parsing bug in Transcript for: %s</string>
     <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %1$s and Class %2$s</string>
@@ -99,9 +98,9 @@
     <string name="eula_parties">1. Parties</string>
     <string name="eula_parties_decription">This Agreement is between you and Appvelopers only, and not McGill University. McGill University is not affiliated with Appvelopers and McGill University is not responsible for any misuse of the MyMartlet App. Appvelopers, not McGill University, is solely responsible for the MyMartlet App.</string>
     <string name="eula_privacy">2. Privacy</string>
-    <string name="eula_privacy_description">MyMartlet may collect and use information about your usage of the MyMartlet App, including certain types of information from and about your device. MyMartlet may use this information, as long as it is in a form that does not personally identify you, to measure the use and performance of the MyMartlet App. </string>
+    <string name="eula_privacy_description">MyMartlet may collect and use information about your usage of the MyMartlet App, including certain types of information from and about your device. Appvelopers may use this information, as long as it is in a form that does not personally identify you, to measure the use and performance of the MyMartlet App. </string>
     <string name="eula_content">3. Content</string>
-    <string name="eula_content_description">Appvelopers does not collect nor use personal information that is presented by the MyMartlet App (“User Content”). User Content is stored only on the device and the user is solely responsible for upholding the safety of the User Content. Appvelopers is not responsible, nor McGill University, for the misplacement or misuse of the User Content.</string>
+    <string name="eula_content_description">Appvelopers does not collect nor use personal information that is presented by the MyMartlet App (“User Content”). User Content is stored only on the user\'s device and the user is solely responsible for upholding the safety of the User Content. Appvelopers is not responsible, nor McGill University, for the misplacement or misuse of the User Content.</string>
     <string name="eula_license">4. License</string>
     <string name="eula_license_description">Appvelopers grants the ability to use the MyMartlet App for your personal, non-commercial purposes. You may only use the MyMartlet App on devices that you own or control and as permitted by the Play Store Terms of Service.</string>
 
@@ -186,7 +185,7 @@
     <string name="registration_credits_hours">hours</string>
     <string name="registration_spots">%s spot(s) left</string>
     <string name="registration_waitlist">Waitlist Spots: %s</string>
-    <string name="registration_reset">RESET</string>
+    <string name="registration_reset">Reset</string>
     <string name="registration_no_semesters">There are no semesters to currently register for !</string>
     <string name="registration_error_no_faculty">You must either select a faculty or input a course subject.</string>
     <string name="registration_error_credits">The maximum hours must be bigger than the minimum hours</string>
@@ -238,7 +237,7 @@
     <string name="about_joshua_email">JoshuaDavidAlfaro\@gmail.com</string>
     <string name="about_julia">Julia Skrak</string>
     <string name="about_julia_role">iOS Developer</string>
-    <string name="about_julia_description">TODO Julia</string>
+    <string name="about_julia_description">Julia is an Arts Student majoring in Computer Science at McGill University. She is currently developing the iOS version. </string>
     <string name="about_julia_linkedin">www.linkedin.com/pub/julia-skrak/a7/a9/765</string>
     <string name="about_julia_email">julia.skrak\@mail.mcgill.ca</string>
     <string name="about_julien">Julien Guerinet</string>
@@ -311,7 +310,6 @@
     <string name="map_favorites_added">Added %s to Favorites</string>
     <string name="map_favorites_removed">Removed %s to Favorites</string>
     <string name="map_search">Search</string>
-    <string name="map_search_hint">Search location</string>
 
     <!-- Unregister Dialog -->
     <string name="unregister_dialog_title">Drop Classes</string>
@@ -327,7 +325,7 @@
     <string name="social_facebook_caption">McGill at your fingertips !</string>
     <string name="social_facebook_description_android">MyMartlet allows any McGill student to have easy access to the McGill essentials such as their calendar, transcript, course list, and more!</string>
     <string name="social_facebook_image">http://imgur.com/iWPs14U.jpg</string>
-    <string name="social_link_android">https://play.google.com/store/apps/details?id=ca.appvelopers.mcgillmobile</string>
+    <string name="social_link_android">http://mymartlet.ca</string>
     <string name="social_twitter_message_android">Download MyMartlet for %s!</string>
     <string name="social_post_success">Post Successful!</string>
     <string name="social_post_failure">An error occurred. Please try again.</string>
