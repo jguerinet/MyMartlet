@@ -125,7 +125,7 @@
     <!-- Settings Screen -->
     <string name="settings_language">Langue</string>
     <string name="settings_homepage">Page d\'Accueil</string>
-    <string name="settings_statistics">Autoriser les Statistiques Anonymes d\'Utilisation</string>
+    <string name="settings_statistics">Statistiques Anonymes d\'Utilisation</string>
     <string name="homepage_schedule">Calendrier</string>
     <string name="homepage_transcript">Bulletin</string>
     <string name="homepage_mycourses">MyCourses</string>

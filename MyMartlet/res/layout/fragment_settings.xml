@@ -6,15 +6,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_micro"
             android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small">
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin">
 
             <TextView
                 android:layout_width="0dp"
@@ -22,8 +23,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
-                android:text="@string/settings_language"
-                android:textSize="@dimen/text_medium"/>
+                android:text="@string/settings_language"/>
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -33,15 +33,14 @@
 
         </LinearLayout>
 
-        <include layout="@layout/line"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_micro"
             android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small">
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin">
 
             <TextView
                 android:layout_width="0dp"
@@ -49,8 +48,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/settings_homepage"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_medium"/>
+                android:textColor="@color/black"/>
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -60,15 +58,14 @@
 
         </LinearLayout>
 
-        <include layout="@layout/line"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_micro"
             android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small">
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin">
 
             <TextView
                 android:layout_width="0dp"
@@ -76,37 +73,33 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/settings_statistics"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_medium"/>
+                android:textColor="@color/black"/>
 
-            <CheckBox
+            <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/settings_statistics"/>
 
         </LinearLayout>
 
-        <include layout="@layout/line"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/settings_help"
-            android:padding="@dimen/padding_micro"
             android:paddingTop="@dimen/padding_small"
             android:paddingBottom="@dimen/padding_small"
             android:background="@drawable/transparent_redpressed"
-            android:gravity="center">
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/help_icon"
                 android:gravity="center"
-                android:textColor="@color/black_whitepressed"
+                android:textColor="@color/black"
                 android:text="@string/icon_question"
-                android:textSize="@dimen/text_medium"
                 android:duplicateParentState="true"
                 android:paddingRight="@dimen/padding_micro"/>
 
@@ -114,33 +107,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_help"
-                android:textColor="@color/black_whitepressed"
-                android:textSize="@dimen/text_medium"
+                android:textColor="@color/black"
                 android:duplicateParentState="true"/>
 
         </LinearLayout>
-
-        <include layout="@layout/line"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/settings_about"
-            android:padding="@dimen/padding_micro"
             android:paddingTop="@dimen/padding_small"
             android:paddingBottom="@dimen/padding_small"
             android:background="@drawable/transparent_redpressed"
-            android:gravity="center">
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/about_icon"
                 android:gravity="center"
-                android:textColor="@color/black_whitepressed"
+                android:textColor="@color/black"
                 android:text="@string/icon_info"
-                android:textSize="@dimen/text_medium"
                 android:duplicateParentState="true"
                 android:paddingRight="@dimen/padding_micro"/>
 
@@ -148,32 +137,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_about"
-                android:textColor="@color/black_whitepressed"
-                android:textSize="@dimen/text_medium"
+                android:textColor="@color/black"
                 android:duplicateParentState="true"/>
         </LinearLayout>
-
-        <include layout="@layout/line"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/settings_bug"
-            android:padding="@dimen/padding_micro"
             android:paddingTop="@dimen/padding_small"
             android:paddingBottom="@dimen/padding_small"
             android:background="@drawable/transparent_redpressed"
-            android:gravity="center">
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/bug_icon"
                 android:gravity="center"
-                android:textColor="@color/black_whitepressed"
+                android:textColor="@color/black"
                 android:text="@string/icon_bug"
-                android:textSize="@dimen/text_medium"
                 android:duplicateParentState="true"
                 android:paddingRight="@dimen/padding_micro"/>
 
@@ -181,20 +166,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_report_bug"
-                android:textColor="@color/black_whitepressed"
-                android:textSize="@dimen/text_medium"
+                android:textColor="@color/black"
                 android:duplicateParentState="true"/>
 
         </LinearLayout>
-
-        <include layout="@layout/line"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/settings_version"
             android:background="@color/transparent"
-            android:textSize="@dimen/text_large"
+            android:textSize="@dimen/text_medium"
             android:textColor="@color/grey"
             android:gravity="center"
             android:textStyle="italic"

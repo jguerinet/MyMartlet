@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -191,7 +191,7 @@ public class SettingsFragment extends BaseFragment {
         });
 
         //Statistics
-        CheckBox statistics = (CheckBox)view.findViewById(R.id.settings_statistics);
+        Switch statistics = (Switch)view.findViewById(R.id.settings_statistics);
         statistics.setChecked(Load.loadStatistics(mActivity));
         statistics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
