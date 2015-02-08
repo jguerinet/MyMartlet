@@ -22,6 +22,7 @@
     <string name="title_report_bug">Signaler un Problème</string>
     <string name="title_facebook">Partager</string>
     <string name="title_twitter">Tweeter</string>
+    <string name="title_agreement">CLUF</string>
 
     <!-- General Strings -->
     <string name="error">Erreur</string>
@@ -76,6 +77,9 @@
     <string name="login_error_username_empty">Vous devez entrer un nom d\'utilisateur.</string>
     <string name="login_error_password_empty">Vous devez entrer un mot de passe.</string>
     <string name="login_remember_username">Mémoriser le nom d\'utilisateur</string>
+
+    <!-- EULA -->
+    <string name="eula_title">Contrat de Licence Utilisateur Final de l\'Application MyMartlet</string>
     <string name="logout_dialog_title">Déconnexion</string>
     <string name="logout_dialog_message">Voulez-vous continuer?</string>
     <string name="logout_dialog_positive">Continuer</string>

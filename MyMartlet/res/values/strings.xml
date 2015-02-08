@@ -22,6 +22,7 @@
     <string name="title_report_bug">Report a Problem</string>
     <string name="title_facebook">Share</string>
     <string name="title_twitter">Tweet</string>
+    <string name="title_agreement">EULA</string>
 
     <!-- General Strings -->
     <string name="facebook_id">828093890556007</string>
@@ -38,6 +39,8 @@
     <string name="back">Back</string>
     <string name="start">Start</string>
     <string name="skip">Skip</string>
+    <string name="agree">Agree</string>
+    <string name="decline">Decline</string>
     <string name="bug_parser_transcript">There was a bug while downloading your transcript. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ? Please note that if this bug is not fixed, there will be an error on your transcript.</string>
     <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ? Please noe that if this bug is not fixed, there will be an error in your semester schedule.</string>
     <string name="bug_parser_yes">Sure !</string>
@@ -89,6 +92,18 @@
     <string name="login_remember_username">Remember my username</string>
     <string name="new_version_title">A new version of the app is available, and we need you to download it before continuing. Promise, it\'ll be worth it. </string>
     <string name="new_version_button">Get It Now</string>
+
+    <!-- EULA -->
+    <string name="eula_title">MyMartlet App End User License Agreement</string>
+    <string name="eula_description">This End User License Agreement (“Agreement”) is between you and Appvelopers and governs the use of this app made available through the Play Store. By installing the MyMartlet App, you agree to be bound by this Agreement. If you do not agree with the terms and conditions of this Agreement, you are not entitled to use the MyMartlet App.</string>
+    <string name="eula_parties">1. Parties</string>
+    <string name="eula_parties_decription">This Agreement is between you and Appvelopers only, and not McGill University. McGill University is not affiliated with Appvelopers and McGill University is not responsible for any misuse of the MyMartlet App. Appvelopers, not McGill University, is solely responsible for the MyMartlet App.</string>
+    <string name="eula_privacy">2. Privacy</string>
+    <string name="eula_privacy_description">MyMartlet may collect and use information about your usage of the MyMartlet App, including certain types of information from and about your device. MyMartlet may use this information, as long as it is in a form that does not personally identify you, to measure the use and performance of the MyMartlet App. </string>
+    <string name="eula_content">3. Content</string>
+    <string name="eula_content_description">Appvelopers does not collect nor use personal information that is presented by the MyMartlet App (“User Content”). User Content is stored only on the device and the user is solely responsible for upholding the safety of the User Content. Appvelopers is not responsible, nor McGill University, for the misplacement or misuse of the User Content.</string>
+    <string name="eula_license">4. License</string>
+    <string name="eula_license_description">Appvelopers grants the ability to use the MyMartlet App for your personal, non-commercial purposes. You may only use the MyMartlet App on devices that you own or control and as permitted by the Play Store Terms of Service.</string>
 
     <!-- Logout Dialog -->
     <string name="logout_dialog_title">Logout</string>
