@@ -11,60 +11,61 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title_agreement"
-        android:padding="@dimen/padding_small"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"
+        android:textColor="@color/black"
         android:id="@+id/help_eula"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/help_email_walkthrough"
-        android:textColor="@color/black_whitepressed"
-        android:textSize="@dimen/text_medium"
+        android:textColor="@color/black"
         android:id="@+id/help_email"
-        android:padding="@dimen/padding_micro"
-        android:paddingTop="@dimen/padding_small"
-        android:paddingBottom="@dimen/padding_small"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"/>
-
-    <include layout="@layout/line"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/help_walkthrough"
-        android:textColor="@color/black_whitepressed"
-        android:textSize="@dimen/text_medium"
+        android:textColor="@color/black"
         android:id="@+id/help_walkthrough"
-        android:padding="@dimen/padding_micro"
-        android:paddingTop="@dimen/padding_small"
-        android:paddingBottom="@dimen/padding_small"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"/>
-
-    <include layout="@layout/line"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/help_download"
-        android:textColor="@color/black_whitepressed"
-        android:textSize="@dimen/text_medium"
+        android:textColor="@color/black"
         android:id="@+id/help_download"
-        android:padding="@dimen/padding_micro"
-        android:paddingTop="@dimen/padding_small"
-        android:paddingBottom="@dimen/padding_small"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"/>
 
-    <include layout="@layout/line"/>
-
     <TextView
-        android:padding="@dimen/padding_medium"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/about_FAQ"
         android:id="@+id/FAQ"
         android:layout_gravity="center_horizontal"
-        android:textSize="@dimen/text_large"
+        android:textSize="@dimen/text_medium"
         android:textStyle="bold|italic"/>
 
     <ListView
