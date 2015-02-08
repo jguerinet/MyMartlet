@@ -413,4 +413,15 @@ public class Load {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getString(Constants.IF_MODIFIED_SINCE, null);
     }
+
+    /**
+     * Check if the user agreement has already been accepted
+     *
+     * @param context The app context
+     * @return True if it has been accepted, false otherwise
+     */
+    public static boolean loadUserAgreement(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.USER_AGREEMENT, false);
+    }
 }
