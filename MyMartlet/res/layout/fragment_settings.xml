@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/help_icon"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/black_whitepressed"
                 android:text="@string/icon_question"
                 android:duplicateParentState="true"
                 android:paddingRight="@dimen/padding_micro"/>
@@ -107,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_help"
-                android:textColor="@color/black"
+                android:textColor="@color/black_whitepressed"
                 android:duplicateParentState="true"/>
 
         </LinearLayout>
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/about_icon"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/black_whitepressed"
                 android:text="@string/icon_info"
                 android:duplicateParentState="true"
                 android:paddingRight="@dimen/padding_micro"/>
@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_about"
-                android:textColor="@color/black"
+                android:textColor="@color/black_whitepressed"
                 android:duplicateParentState="true"/>
         </LinearLayout>
 
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bug_icon"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/black_whitepressed"
                 android:text="@string/icon_bug"
                 android:duplicateParentState="true"
                 android:paddingRight="@dimen/padding_micro"/>
@@ -166,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_report_bug"
-                android:textColor="@color/black"
+                android:textColor="@color/black_whitepressed"
                 android:duplicateParentState="true"/>
 
         </LinearLayout>
