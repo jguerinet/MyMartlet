@@ -20,7 +20,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/registration_semester"
-            android:textSize="@dimen/text_medium" />
+            android:paddingRight="@dimen/padding_micro"/>
 
         <Spinner
             android:id="@+id/change_semester_term"
