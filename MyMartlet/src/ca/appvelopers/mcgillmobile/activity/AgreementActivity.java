@@ -22,7 +22,6 @@ public class AgreementActivity extends BaseActivity {
         setContentView(R.layout.activity_agreement);
 
         setUpToolbar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Check if we need to display the buttons
         if(getIntent().getBooleanExtra(Constants.EULA_REQUIRED, false)){
@@ -47,6 +46,10 @@ public class AgreementActivity extends BaseActivity {
                     finish();
                 }
             });
+        }
+        //Show the back button if not
+        else{
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 }
