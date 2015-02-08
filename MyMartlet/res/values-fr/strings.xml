@@ -222,14 +222,14 @@
     <string name="help_bug_title">Bug %s</string>
     <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
     <string name="help_bug_prompt">Please give us a summary of the bug:</string>
-    <string name="help_question1">Qu\'est ce que MyMartlet?</string>
-    <string name="help_question2">Est ce que cet app est officiellement fait par McGill?</string>
-    <string name="help_question3">Dans quel platforme pouvons nous trouver cet app?</string>
-    <string name="help_answer1">MyMartlet est un app qui rend l\'acces du portail des élèves de l\'Université McGill très rapide et pratique sur leurs portables  </string>
+    <string name="help_question1">Qu\'est ce que c\'est MyMartlet?</string>
+    <string name="help_question2">Est-ce que cette application est officiellement fait par McGill ?</string>
+    <string name="help_question3">Sur quelles platformes pouvons nous trouver cette application ?</string>
+    <string name="help_answer1">MyMartlet est un app qui rend l\'acces du portail des élèves de l\'Université McGill très rapide et pratique sur leurs portables.</string>
     <string name="help_answer2">Cette application a été créée par des élèves de l’Université McGill et n’est pas l’application officielle de McGill.</string>
-    <string name="help_answer3">Cette application existe sur Android et nous sommes en train de déveloper une version iOS et Windows Phone.</string>
+    <string name="help_answer3">Cette application existe sur Android et nous sommes en train de développer une version iOS.</string>
     <string name="help_walkthrough">Guide d\'Utilisation</string>
-    <string name="help_email_walkthrough">Configurez votre email sur votre mobile</string>
+    <string name="help_email_walkthrough">Configurez Votre Email sur Votre Mobile</string>
     <string name="help_email_walk0">Avertissement: ces étapes peuvent varier selon votre version d’Android et le modèle de votre téléphone. \nAllez dans Réglages → + Ajouter un Compte</string>
     <string name="help_email_walk1">Choisissez Email</string>
     <string name="help_email_walk2">Entrez votre email McGill et mot de passe et appuyez sur Suivant.</string>
@@ -237,7 +237,7 @@
     <string name="help_email_walk4">Appuyez sur OK</string>
     <string name="help_email_walk5">Appuyez sur Suivant</string>
     <string name="help_email_walk6">Votre email est configuré!</string>
-    <string name="help_download">N’oubliez pas de télécharger l’application officielle de McGill en cliquant ici.</string>
+    <string name="help_download">Télécharger l’Application Officielle de McGill</string>
 
     <!-- Maps -->
     <string name="map_filter">Filtrer: </string>
