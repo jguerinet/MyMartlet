@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -279,9 +281,20 @@ public class MapFragment extends BaseFragment {
         inflater.inflate(R.menu.search, menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
-        final SearchView searchView = new SearchView(mActivity.getSupportActionBar().getThemedContext());
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW |
-                MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        final SearchView searchView =
+                new SearchView(mActivity.getSupportActionBar().getThemedContext());
+        final int textViewID = searchView.getContext().getResources().
+                getIdentifier("android:id/search_src_text",null, null);
+        final AutoCompleteTextView searchTextView =
+                (AutoCompleteTextView) searchView.findViewById(textViewID);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            //Set the cursor to the same color as the text
+            mCursorDrawableRes.set(searchTextView, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         MenuItemCompat.setActionView(item, searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
