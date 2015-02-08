@@ -13,6 +13,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -577,11 +578,21 @@ public class Parser {
                         }
 
                         //Date Range parsing
-                        String startDateString = dateRange.split(" - ")[0];
-                        String endDateString = dateRange.split(" - ")[1];
-                        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MMM dd, yyyy");
-                        DateTime startDate = dateFormatter.parseDateTime(startDateString);
-                        DateTime endDate = dateFormatter.parseDateTime(endDateString);
+                        DateTime startDate = DateTime.now();
+                        DateTime endDate = DateTime.now();
+
+                        try{
+                            String startDateString = dateRange.split(" - ")[0];
+                            String endDateString = dateRange.split(" - ")[1];
+                            DateTimeFormatter dateFormatter =
+                                    DateTimeFormat.forPattern("MMM dd, yyyy").withLocale(Locale.US);
+                            startDate = dateFormatter.parseDateTime(startDateString);
+                            endDate = dateFormatter.parseDateTime(endDateString);
+                        } catch (IllegalArgumentException e){
+                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List",
+                                    "Start/End Date Parsing", null);
+                            classError = term.toString();
+                        }
 
 
                         String subject = "";
