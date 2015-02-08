@@ -11,7 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title_agreement"
-        android:padding="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"
         android:textColor="@color/black"
         android:id="@+id/help_eula"/>
@@ -22,7 +25,10 @@
         android:text="@string/help_email_walkthrough"
         android:textColor="@color/black"
         android:id="@+id/help_email"
-        android:padding="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"/>
 
     <TextView
@@ -31,7 +37,10 @@
         android:text="@string/help_walkthrough"
         android:textColor="@color/black"
         android:id="@+id/help_walkthrough"
-        android:padding="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"/>
 
     <TextView
@@ -40,11 +49,17 @@
         android:text="@string/help_download"
         android:textColor="@color/black"
         android:id="@+id/help_download"
-        android:padding="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"/>
 
     <TextView
-        android:padding="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/about_FAQ"
