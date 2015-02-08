@@ -293,4 +293,17 @@ public class Save {
                 .putString(Constants.IF_MODIFIED_SINCE, date)
                 .apply();
     }
+
+    /**
+     * Save if the user agreement has been accepted or not
+     *
+     * @param context  The app context
+     * @param accepted True if it has been accepted, false otherwise
+     */
+    public static void saveUserAgreement(Context context, boolean accepted){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs.edit()
+                .putBoolean(Constants.USER_AGREEMENT, accepted)
+                .apply();
+    }
 }
