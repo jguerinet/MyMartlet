@@ -60,6 +60,7 @@
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/title_about" />
+
         <activity android:name=".activity.HelpActivity" />
         
         <receiver android:name=".background.AlarmReceiver"/>
@@ -98,9 +99,13 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.SearchResultsActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.AgreementActivity" />
+
+        <activity android:name=".activity.AgreementActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_agreement"/>
     </application>
 
 </manifest>
