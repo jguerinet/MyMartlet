@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -35,6 +34,15 @@ public class HelpActivity extends BaseActivity{
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //EULA buttons
+        TextView eula = (TextView)findViewById(R.id.help_eula);
+        eula.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HelpActivity.this, AgreementActivity.class));
+            }
+        });
 
         //Set up the email walkthrough and walkthrough buttons
         TextView emailWalkthrough = (TextView)findViewById(R.id.help_email);
@@ -69,16 +77,6 @@ public class HelpActivity extends BaseActivity{
         ListView helpListView = (ListView) findViewById(R.id.helpListView);
         HelpAdapter adapter = new HelpAdapter(this);
         helpListView.setAdapter(adapter);
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public class HelpAdapter extends BaseAdapter {
