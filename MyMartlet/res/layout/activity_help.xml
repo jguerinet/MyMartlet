@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_agreement"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
+        android:background="@drawable/transparent_redpressed"
+        android:textColor="@color/black_whitepressed"
+        android:id="@+id/help_eula"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/help_email_walkthrough"
+        android:textColor="@color/black_whitepressed"
+        android:id="@+id/help_email"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
+        android:background="@drawable/transparent_redpressed"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/help_walkthrough"
+        android:textColor="@color/black_whitepressed"
+        android:id="@+id/help_walkthrough"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
+        android:background="@drawable/transparent_redpressed"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/help_download"
+        android:textColor="@color/black_whitepressed"
+        android:id="@+id/help_download"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
+        android:background="@drawable/transparent_redpressed"/>
+
+    <TextView
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="@dimen/padding_micro"
+        android:paddingBottom="@dimen/padding_micro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_FAQ"
+        android:id="@+id/FAQ"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="bold|italic"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:listSelector="@android:color/transparent"
+        android:id="@+id/helpListView" />
+
+</LinearLayout>

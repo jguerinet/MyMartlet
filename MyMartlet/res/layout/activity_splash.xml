@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:animateLayoutChanges="true">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:padding="@dimen/default_margin"
+        android:layout_gravity="center">
+
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:text="@string/skip"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/logo_small"
+            android:paddingBottom="@dimen/padding_large"
+            android:paddingTop="@dimen/padding_large"
+            android:id="@+id/logo"
+            android:adjustViewBounds="true"
+            android:scaleType="center"
+            tools:ignore="ContentDescription"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/skip"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/logo"
+            android:id="@+id/version_container"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/new_version_title"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding_small"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_version_button"
+                android:id="@+id/version_button"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/login_container"
+            android:layout_below="@id/logo"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large">
+
+                <EditText
+                    android:id="@+id/login_username"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="@dimen/padding_small"
+                    android:singleLine="true"
+                    android:textSize="@dimen/text_small"
+                    android:inputType="text"
+                    android:hint="@string/login_username"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_small"
+                    android:text="@string/login_email"/>
+
+            </LinearLayout>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_remember_username"
+                android:text="@string/login_remember_username"
+                android:textSize="@dimen/text_micro"
+                android:layout_marginBottom="@dimen/padding_medium"
+                android:layout_marginLeft="@dimen/padding_large"
+                android:layout_marginRight="@dimen/padding_large"/>
+
+            <EditText
+                android:id="@+id/login_password"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_small"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:imeOptions="actionGo"
+                android:hint="@string/login_password"
+                android:layout_marginLeft="@dimen/padding_large"
+                android:layout_marginRight="@dimen/padding_large"/>
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/padding_large"
+                android:text="@string/login_button"
+                android:textSize="@dimen/text_small"
+                android:layout_marginLeft="@dimen/padding_large"
+                android:layout_marginRight="@dimen/padding_large"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/loading_container"
+            android:paddingTop="@dimen/padding_double"
+            android:visibility="gone"
+            android:layout_below="@+id/logo">
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/loading_progress"
+                android:indeterminate="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/loading_title"
+                android:textSize="@dimen/text_small"
+                android:gravity="center"
+                android:padding="@dimen/padding_micro"/>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
