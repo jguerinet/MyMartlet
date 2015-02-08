@@ -62,7 +62,7 @@ public class ScheduleFragment extends BaseFragment {
         mClassList = new ArrayList<ClassItem>();
 
         //Set up the ScheduleViewBuilder
-        mScheduleViewBuilder = new ScheduleViewBuilder(this);
+        mScheduleViewBuilder = new ScheduleViewBuilder(this, getStartingDate());
 
         //Load the right view
         View view = loadView(getResources().getConfiguration().orientation);
@@ -104,6 +104,10 @@ public class ScheduleFragment extends BaseFragment {
                         if (term != null) {
                             mTerm = term;
 
+                            //Restart the schedule view builder with the right date
+                            mScheduleViewBuilder = new ScheduleViewBuilder(ScheduleFragment.this,
+                                    getStartingDate());
+
                             //If we aren't in test mode, reload the classes
                             if (!Test.LOCAL_SCHEDULE) {
                                 executeClassDownloader();
@@ -134,6 +138,16 @@ public class ScheduleFragment extends BaseFragment {
         //Title
         mActivity.setTitle(mTerm.toString(mActivity));
 
+        //Return the view
+        return mScheduleViewBuilder.renderView(orientation);
+    }
+
+    /**
+     * Get the starting date based on the term and get the concerned classes
+     *
+     * @return The starting date
+     */
+    private DateTime getStartingDate(){
         //Clear the current course list, add the courses that are for this semester
         mClassList.clear();
         for(ClassItem classItem : App.getClasses()){
@@ -154,8 +168,7 @@ public class ScheduleFragment extends BaseFragment {
             }
         }
 
-        //Return the view
-        return mScheduleViewBuilder.renderView(orientation, date);
+        return date;
     }
 
     //Downloads the list of classes for the given term

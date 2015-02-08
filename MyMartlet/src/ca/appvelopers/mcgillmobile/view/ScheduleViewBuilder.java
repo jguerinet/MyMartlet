@@ -31,28 +31,30 @@ import ca.appvelopers.mcgillmobile.util.Help;
  */
 
 public class ScheduleViewBuilder {
-    public ScheduleFragment mFragment;
-    public Context mContext;
+    private ScheduleFragment mFragment;
+    private Context mContext;
+    private DateTime mDate;
 
-    public ScheduleViewBuilder(ScheduleFragment fragment){
+    public ScheduleViewBuilder(ScheduleFragment fragment, DateTime startingDate){
         this.mFragment = fragment;
         this.mContext = fragment.getActivity();
+        this.mDate = startingDate;
     }
 
-    public View renderView(int orientation, DateTime date){
+    public View renderView(int orientation){
         View view = View.inflate(mContext, R.layout.fragment_schedule, null);
 
         if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            renderLandscapeView(view, date);
+            renderLandscapeView(view);
         }
         else{
-            renderPortraitView(view, date);
+            renderPortraitView(view);
         }
 
         return view;
     }
 
-    public void renderLandscapeView(View view, DateTime startingDate){
+    public void renderLandscapeView(View view){
         //Fill out the timetable container
         fillTimetable(view);
 
@@ -60,7 +62,7 @@ public class ScheduleViewBuilder {
         LinearLayout scheduleContainer = (LinearLayout) view.findViewById(R.id.schedule_container);
 
         //Find the index of the given date (days are offset by 1 in Jodatime)
-        int currentDayIndex = startingDate.getDayOfWeek() - 1;
+        int currentDayIndex = mDate.getDayOfWeek() - 1;
 
         //Fill out the schedule
         for(int i = 0; i < 7; i ++){
@@ -69,7 +71,7 @@ public class ScheduleViewBuilder {
             coursesLayout.setLayoutParams(new LinearLayout.LayoutParams(
                     mFragment.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
-            fillSchedule(Day.getDay(i), startingDate.plusDays(i - currentDayIndex), coursesLayout);
+            fillSchedule(Day.getDay(i), mDate.plusDays(i - currentDayIndex), coursesLayout);
             scheduleContainer.addView(coursesLayout);
 
             //Line
@@ -201,18 +203,28 @@ public class ScheduleViewBuilder {
         }
     }
 
-    public void renderPortraitView(View view, DateTime date){
+    public void renderPortraitView(View view){
         //Get the first day (offset of 500002 to get the right day)
-        int firstDayIndex = 500002 + date.getDayOfWeek();
+        int firstDayIndex = 500002 + mDate.getDayOfWeek();
 
         //Set up the adapter
-        SchedulePagerAdapter adapter = new SchedulePagerAdapter(mFragment.getChildFragmentManager(),
-                date, firstDayIndex);
+        final SchedulePagerAdapter adapter = new SchedulePagerAdapter(mFragment.getChildFragmentManager(),
+                mDate, firstDayIndex);
 
         //Set up the ViewPager
         ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(firstDayIndex);
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {}
+            @Override
+            public void onPageSelected(int i) {
+                mDate = adapter.getDate(i);
+            }
+            @Override
+            public void onPageScrollStateChanged(int i) {}
+        });
     }
 
     private class SchedulePagerAdapter extends FragmentStatePagerAdapter {
@@ -240,6 +252,10 @@ public class ScheduleViewBuilder {
         @Override
         public int getItemPosition(Object object) {
             return POSITION_NONE;
+        }
+
+        public DateTime getDate(int i){
+            return mDate.plusDays(i - mFirstDayIndex);
         }
     }
 }
