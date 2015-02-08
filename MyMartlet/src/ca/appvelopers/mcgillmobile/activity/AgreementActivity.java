@@ -8,12 +8,13 @@ import android.widget.LinearLayout;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Save;
 
 /**
  * Author: Julien Guerinet
  * Date: 2015-02-08 11:47
  * Copyright (c) 2015 Sigvaria Mobile Technologies Inc. All rights reserved.
- * Contains the EULA Agreement that the user has to first accept before using the app
+ * Contains the EULA that the user has to first accept before using the app
  */
 public class AgreementActivity extends BaseActivity {
     @Override
@@ -33,6 +34,9 @@ public class AgreementActivity extends BaseActivity {
             agree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //Save the fact that they accepted
+                    Save.saveUserAgreement(AgreementActivity.this, true);
+
                     setResult(RESULT_OK);
                     finish();
                 }
@@ -42,6 +46,9 @@ public class AgreementActivity extends BaseActivity {
             decline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //Save the fact that they declined
+                    Save.saveUserAgreement(AgreementActivity.this, false);
+
                     setResult(RESULT_CANCELED);
                     finish();
                 }
