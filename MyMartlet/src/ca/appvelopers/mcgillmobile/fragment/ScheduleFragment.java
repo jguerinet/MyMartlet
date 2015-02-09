@@ -148,13 +148,7 @@ public class ScheduleFragment extends BaseFragment {
      * @return The starting date
      */
     private DateTime getStartingDate(){
-        //Clear the current course list, add the courses that are for this semester
-        mClassList.clear();
-        for(ClassItem classItem : App.getClasses()){
-            if(classItem.getTerm().equals(mTerm)){
-                mClassList.add(classItem);
-            }
-        }
+        fillClassList();
 
         //Date is by default set to today
         DateTime date = DateTime.now();
@@ -169,6 +163,19 @@ public class ScheduleFragment extends BaseFragment {
         }
 
         return date;
+    }
+
+    /**
+     * Fills the class list with the current term's classes
+     */
+    private void fillClassList(){
+        //Clear the current course list, add the courses that are for this semester
+        mClassList.clear();
+        for(ClassItem classItem : App.getClasses()){
+            if(classItem.getTerm().equals(mTerm)){
+                mClassList.add(classItem);
+            }
+        }
     }
 
     //Downloads the list of classes for the given term
@@ -195,6 +202,12 @@ public class ScheduleFragment extends BaseFragment {
     //Method that returns a list of courses for a given day
     public List<ClassItem> getClassesForDate(Day day, DateTime date){
         List<ClassItem> courses = new ArrayList<ClassItem>();
+
+        //Make sure the class list is initialized
+        if(mClassList == null){
+            mClassList = new ArrayList<ClassItem>();
+            fillClassList();
+        }
 
         //Go through the list of courses, find which ones have the same day and are for the given date
         for(ClassItem course : mClassList){
