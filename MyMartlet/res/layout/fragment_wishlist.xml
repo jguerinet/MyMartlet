@@ -6,48 +6,64 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/courses_empty"
-        android:padding="@dimen/padding_medium"
-        android:text="@string/courses_empty"
+        android:text="@string/registration_no_semesters"
+        android:id="@+id/registration_no_semesters"
         android:gravity="center"
-        android:textStyle="italic"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_medium"/>
+        android:padding="@dimen/padding_micro"
+        android:textSize="@dimen/text_medium"
+        android:visibility="gone"/>
 
-    <ListView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/courses_list"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/courses_button_container" />
+        android:layout_height="match_parent"
+        android:id="@+id/main_container">
 
-    <LinearLayout
-        android:id="@+id/courses_button_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/courses_register"
-            android:padding="@dimen/padding_micro"
-            android:textSize="@dimen/text_medium"
-            android:gravity="center"
-            android:id="@+id/course_register"/>
-
-        <Button
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/courses_add_wishlist"
-            android:padding="@dimen/padding_micro"
-            android:textSize="@dimen/text_medium"
+            android:id="@+id/courses_empty"
+            android:padding="@dimen/padding_medium"
+            android:text="@string/courses_empty"
             android:gravity="center"
-            android:id="@+id/course_wishlist"/>
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_medium"/>
 
-    </LinearLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/courses_list"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/courses_button_container" />
 
+        <LinearLayout
+            android:id="@+id/courses_button_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/courses_register"
+                android:padding="@dimen/padding_micro"
+                android:textSize="@dimen/text_medium"
+                android:gravity="center"
+                android:id="@+id/course_register"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/courses_add_wishlist"
+                android:padding="@dimen/padding_micro"
+                android:textSize="@dimen/text_medium"
+                android:gravity="center"
+                android:id="@+id/course_wishlist"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </RelativeLayout>

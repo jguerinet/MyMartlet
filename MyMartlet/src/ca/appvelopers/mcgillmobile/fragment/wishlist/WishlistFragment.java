@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,12 +60,28 @@ public class WishlistFragment extends BaseFragment {
 
         GoogleAnalytics.sendScreen(mActivity, "Wishlist");
 
+        //Check if there are any terms to register for
+        if(App.getRegisterTerms().isEmpty()){
+            //Hide all of the main content, show explanatory text, and return the view
+            TextView noSemesters = (TextView)view.findViewById(R.id.registration_no_semesters);
+            noSemesters.setVisibility(View.VISIBLE);
+
+            RelativeLayout registrationContainer = (RelativeLayout)view.findViewById(
+                    R.id.main_container);
+            registrationContainer.setVisibility(View.GONE);
+
+            //Hide the loading indicator
+            hideLoadingIndicator();
+
+            return view;
+        }
+
         // Views
         mListView = (ListView)view.findViewById(R.id.courses_list);
         mListView.setEmptyView(view.findViewById(R.id.courses_empty));
 
-        //Load the default term
-        mTerm = App.getDefaultTerm();
+        //Load the first registration term
+        mTerm = App.getRegisterTerms().get(0);
 
         //Load the wishlist
         mClasses = App.getClassWishlist();
@@ -143,18 +160,29 @@ public class WishlistFragment extends BaseFragment {
     }
 
     private void loadInfo(){
-        //Set the title
-        mActivity.setTitle(mTerm.toString(mActivity));
+        //Only load the info if there is info to load
+        if(!App.getRegisterTerms().isEmpty()){
+            //Set the title
+            mActivity.setTitle(mTerm.toString(mActivity));
 
-        //Reload the adapter
-        mAdapter = new WishlistSearchCourseAdapter(mActivity, mTerm, mClasses);
-        mListView.setAdapter(mAdapter);
+            //Reload the adapter
+            mAdapter = new WishlistSearchCourseAdapter(mActivity, mTerm, mClasses);
+            mListView.setAdapter(mAdapter);
+        }
     }
 
     // JDAlfaro
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        inflater.inflate(R.menu.refresh_change_semester, menu);
+        //Only inflate the menu with the change semester if there is more than 1 semester to
+        //  register for
+        if(App.getRegisterTerms().size() > 1){
+            inflater.inflate(R.menu.refresh_change_semester, menu);
+        }
+        //If there is at least one semester to register for, show the refresh button
+        else if(!App.getRegisterTerms().isEmpty()){
+            inflater.inflate(R.menu.refresh, menu);
+        }
     }
 
     @Override
