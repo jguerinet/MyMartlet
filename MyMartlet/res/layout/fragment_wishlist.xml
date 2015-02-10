@@ -9,6 +9,7 @@
         android:text="@string/registration_no_semesters"
         android:id="@+id/registration_no_semesters"
         android:gravity="center"
+        android:padding="@dimen/padding_micro"
         android:textSize="@dimen/text_medium"
         android:visibility="gone"/>
 
