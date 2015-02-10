@@ -44,23 +44,25 @@ public class ChangeSemesterDialog extends AlertDialog {
 
         //Set up the default checkbox
         mDefaultCheckbox = (CheckBox)layout.findViewById(R.id.change_semester_default);
+        //Don't show it if we are doing the register terms only
+        if(registerTerms){
+            mDefaultCheckbox.setVisibility(View.GONE);
+        }
 
         //Check if there was a term sent, use the default one if none was sent
         mTerm = term == null ? App.getDefaultTerm() : term;
 
         List<Term> terms = new ArrayList<Term>();
-        //Extract all the terms that the user has registered in
-        for (Semester semester : App.getTranscript().getSemesters()) {
-            terms.add(semester.getTerm());
+        //We are using the user's existing terms
+        if(!registerTerms){
+            for (Semester semester : App.getTranscript().getSemesters()) {
+                terms.add(semester.getTerm());
+            }
         }
-
-        //If we are also using the registration term
-        if(registerTerms){
-            //Get the current terms that the user can register in
+        //We are using the registration terms
+        else{
             for(Term term1 : App.getRegisterTerms()){
-                if(!terms.contains(term1)){
-                    terms.add(term1);
-                }
+                terms.add(term1);
             }
         }
 
