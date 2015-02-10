@@ -160,12 +160,15 @@ public class WishlistFragment extends BaseFragment {
     }
 
     private void loadInfo(){
-        //Set the title
-        mActivity.setTitle(mTerm.toString(mActivity));
+        //Only load the info if there is info to load
+        if(!App.getRegisterTerms().isEmpty()){
+            //Set the title
+            mActivity.setTitle(mTerm.toString(mActivity));
 
-        //Reload the adapter
-        mAdapter = new WishlistSearchCourseAdapter(mActivity, mTerm, mClasses);
-        mListView.setAdapter(mAdapter);
+            //Reload the adapter
+            mAdapter = new WishlistSearchCourseAdapter(mActivity, mTerm, mClasses);
+            mListView.setAdapter(mAdapter);
+        }
     }
 
     // JDAlfaro
