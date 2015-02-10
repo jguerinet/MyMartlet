@@ -41,9 +41,9 @@
     <string name="skip">Skip</string>
     <string name="agree">Agree</string>
     <string name="decline">Decline</string>
-    <string name="bug_parser_transcript">There was a bug while downloading your transcript. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ? Please note that if this bug is not fixed, there will be an error on your transcript.</string>
-    <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us ? Please noe that if this bug is not fixed, there will be an error in your semester schedule.</string>
-    <string name="bug_parser_yes">Sure !</string>
+    <string name="bug_parser_transcript">There was a bug while downloading your transcript. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us? Please note that if this bug is not fixed, there will be an error on your transcript.</string>
+    <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us? Please noe that if this bug is not fixed, there will be an error in your semester schedule.</string>
+    <string name="bug_parser_yes">Sure!</string>
     <string name="bug_parser_no">No Thanks</string>
     <string name="bug_parser_no_show">Don\'t show this to me again</string>
     <string name="bug_parser_transcript_title">Parsing bug in Transcript for: %s</string>
@@ -186,7 +186,7 @@
     <string name="registration_spots">%s spot(s) left</string>
     <string name="registration_waitlist">Waitlist Spots: %s</string>
     <string name="registration_reset">Reset</string>
-    <string name="registration_no_semesters">There are no semesters to currently register for !</string>
+    <string name="registration_no_semesters">There currently are no semesters to register for!</string>
     <string name="registration_error_no_faculty">You must either select a faculty or input a course subject.</string>
     <string name="registration_error_credits">The maximum hours must be bigger than the minimum hours</string>
     <string name="registration_show_options">Show More Options</string>
@@ -322,7 +322,7 @@
 
     <!-- Social Networks -->
     <string name="social_facebook_title">MyMartlet for %s</string>
-    <string name="social_facebook_caption">McGill at your fingertips !</string>
+    <string name="social_facebook_caption">McGill at your fingertips!</string>
     <string name="social_facebook_description_android">MyMartlet allows any McGill student to have easy access to the McGill essentials such as their calendar, transcript, course list, and more!</string>
     <string name="social_facebook_image">http://imgur.com/iWPs14U.jpg</string>
     <string name="social_link_android">http://mymartlet.ca</string>

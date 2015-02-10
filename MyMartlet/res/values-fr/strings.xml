@@ -40,9 +40,9 @@
     <string name="skip">Sauter</string>
     <string name="agree">Accepter</string>
     <string name="decline">Decliner</string>
-    <string name="bug_parser_transcript">Il y avait une erreur en téléchargeant votre bulletin. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer ? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur sur votre bulletin. </string>
-    <string name="bug_parser_semester">Il y avait une erreur en téléchargeant les cours du semestre suivant de votre calendrier: %s. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer ? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur dans le calendrier pour ce semestre.</string>
-    <string name="bug_parser_yes">Biensûr !</string>
+    <string name="bug_parser_transcript">Il y avait une erreur en téléchargeant votre bulletin. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur sur votre bulletin. </string>
+    <string name="bug_parser_semester">Il y avait une erreur en téléchargeant les cours du semestre suivant de votre calendrier: %s. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur dans le calendrier pour ce semestre.</string>
+    <string name="bug_parser_yes">Biensûr!</string>
     <string name="bug_parser_no">Non Merci</string>
     <string name="bug_parser_no_show">Ne plus afficher</string>
     <string name="skip_loading">Si vous continuez, votre information la plus récente (emploi du temps actuel et bulletin) ne sera pas mise à jour. Continuer ?</string>
@@ -176,7 +176,7 @@
     <string name="registration_spots">%s place(s) restantes</string>
     <string name="registration_waitlist">Places sur Liste d\'Attente: %s</string>
     <string name="registration_reset">Remettre</string>
-    <string name="registration_no_semesters">Il n’y a actuellement aucun semestre auquel vous pouvez vous inscrire !</string>
+    <string name="registration_no_semesters">Il n’y a actuellement aucun semestre auquel vous pouvez vous inscrire!</string>
     <string name="registration_error_no_faculty">Vous devez sélectionner une faculté ou entrer un sujet de cours.</string>
     <string name="registration_error_credits">Le nombre d\'heures maximum doit être plus grand que le nombre minimum d\'heures. </string>
     <string name="registration_show_options">Montrer Plus d\'Options</string>
@@ -213,7 +213,7 @@
     <string name="about_adnan_role">Développeur Android</string>
     <string name="about_adnan_description">Plus connu comme le mec qui connaît tout le monde sur le campus. En 2014, Adnan a fameusement organisé un évènement de poulet frit qui tient toujours le record du plus petit nombre de cas de salmonelles à un évènement d\'ingénieur.</string>
     <string name="about_hernan_role">Chef du Développement iOS</string>
-    <string name="about_hernan_description">Une citation ? Je suis COOL! (Plus que Josh.)</string>
+    <string name="about_hernan_description">Une citation? Je suis COOL! (Plus que Josh.)</string>
     <string name="about_joshua_role">Graphiste, Développeur Android</string>
     <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre de l\'ECSESS RoboElectronics qui a comme but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette application mobile.</string>
     <string name="about_julia_role">Développeur iOS</string>
