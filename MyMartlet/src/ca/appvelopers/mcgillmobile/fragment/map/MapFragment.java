@@ -214,10 +214,8 @@ public class MapFragment extends BaseFragment {
                     if (mPlaceMarker != null) {
                         mPlaceMarker.mMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                     }
-                    //If it was null, we need to pull up the info container
-                    else {
-                        mInfoContainer.setVisibility(View.VISIBLE);
-                    }
+                    //Pull up the info container
+                    mInfoContainer.setVisibility(View.VISIBLE);
 
                     //Find the concerned place
                     mPlaceMarker = findPlace(marker);
