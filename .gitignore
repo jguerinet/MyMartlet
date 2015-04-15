@@ -11,3 +11,5 @@ Thumbs.db
 .settings/
 tmp/
 *.apk
+/build
+/captures
