@@ -1,1 +1,1 @@
-include ':MyMartlet'
+include ':app'
