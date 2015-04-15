@@ -74,7 +74,7 @@ public class MyCoursesFragment extends BaseFragment {
                                         long contentLength) {
                 String[] urlSplit = url.split("/");
                 String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
-                String fileName = urlSplit[urlSplit.length - 1].concat("." + extension);
+                String fileName = urlSplit[urlSplit.length - 1].concat("" + extension);
                 Uri source = Uri.parse(url);
                 // Make a new request pointing to the url
                 DownloadManager.Request request = new DownloadManager.Request(source);
