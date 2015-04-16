@@ -18,7 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.facebook.Session;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -68,6 +71,9 @@ public class MainActivity extends BaseActivity {
     private MapFragment mMapFragment;
     private DesktopFragment mDesktopFragment;
     private SettingsFragment mSettingsFragment;
+
+    //Callback Manager used for Facebook
+    private CallbackManager mCallbackManager;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -135,11 +141,12 @@ public class MainActivity extends BaseActivity {
         //OnClickListener
         mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 //Get the concerned page and save it as the new drawer item
                 mNewDrawerItem = drawerAdapter.getItem(position);
 
-                //Facebook, Twitter, and logout should never be selected since they are one time things
+                //Facebook, Twitter, and logout should never be selected since they are one time
+                // things
                 if(mNewDrawerItem != DrawerItem.FACEBOOK && mNewDrawerItem != DrawerItem.TWITTER &&
                         mNewDrawerItem != DrawerItem.LOGOUT){
                     // Highlight the selected item
@@ -155,6 +162,11 @@ public class MainActivity extends BaseActivity {
                 mDrawerLayout.closeDrawer(mDrawerList);
             }
         });
+
+        //Initialize the Facebook SDK
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        //Set up the callback manager
+        mCallbackManager = CallbackManager.Factory.create();
 
         //Show the BugDialog if there is one
         String parserBug = getIntent().getStringExtra(Constants.BUG);
@@ -224,7 +236,7 @@ public class MainActivity extends BaseActivity {
                 fragment = mSettingsFragment;
                 break;
             case FACEBOOK:
-                Help.postOnFacebook(MainActivity.this);
+                Help.postOnFacebook(MainActivity.this, mCallbackManager);
                 break;
             case TWITTER:
                 Help.loginTwitter(MainActivity.this);
@@ -332,7 +344,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
