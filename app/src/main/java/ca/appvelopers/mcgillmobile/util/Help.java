@@ -264,10 +264,15 @@ public class Help {
         dialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
             @Override
             public void onSuccess(Sharer.Result result){
-                //Let the user know he posted successfully
-                Toast.makeText(activity, activity.getString(R.string.social_post_success),
-                        Toast.LENGTH_SHORT).show();
-                GoogleAnalytics.sendEvent(activity, "facebook", "successful_post", null, null);
+                if(result.getPostId() != null){
+                    //Let the user know he posted successfully
+                    Toast.makeText(activity, activity.getString(R.string.social_post_success),
+                            Toast.LENGTH_SHORT).show();
+                    GoogleAnalytics.sendEvent(activity, "facebook", "successful_post", null, null);
+                }
+                else{
+                    Log.d("Facebook Post", "Cancelled");
+                }
             }
 
             @Override
