@@ -25,5 +25,5 @@ dependencies {
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.facebook.android:facebook-android-sdk:4.0.1'
     compile 'com.google.android.gms:play-services:7.0.0'
-    compile project(':ViewPagerIndicator')
+    compile 'com.viewpagerindicator:library:2.4.1@aar'
 }

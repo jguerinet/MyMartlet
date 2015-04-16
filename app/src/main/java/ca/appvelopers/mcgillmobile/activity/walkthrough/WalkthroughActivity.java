@@ -26,7 +26,7 @@ public class WalkthroughActivity extends BaseActivity {
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_walkthrough);
+        setContentView(ca.appvelopers.mcgillmobile.R.layout.activity_walkthrough);
 
         //Check if this is the normal walkthrough or the email one
         boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
