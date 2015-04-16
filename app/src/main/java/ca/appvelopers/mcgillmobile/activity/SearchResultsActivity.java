@@ -31,7 +31,6 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 public class SearchResultsActivity extends BaseActivity {
     private WishlistSearchCourseAdapter mAdapter;
-    private ProgressBar mToolbarProgressBar;
 
     private Term mTerm;
     private List<ClassItem> mClasses;
@@ -45,7 +44,6 @@ public class SearchResultsActivity extends BaseActivity {
 
         //Set up the toolbar
         Toolbar toolbar = setUpToolbar();
-        mToolbarProgressBar = (ProgressBar)findViewById(R.id.toolbar_progress);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Get the term from the intent
@@ -137,13 +135,13 @@ public class SearchResultsActivity extends BaseActivity {
             @Override
             protected void onPreExecute(){
                 //Show the user we are refreshing
-                showToolbarSpinner(true);
+                showToolbarProgress(true);
             }
 
             // onPostExecute displays the results of the AsyncTask.
             @Override
             protected void onPostExecute(Boolean success) {
-                showToolbarSpinner(false);
+                showToolbarProgress(false);
 
                 if(success) {
                     //Display whether the user was successfully registered
@@ -197,13 +195,5 @@ public class SearchResultsActivity extends BaseActivity {
                 }
             }
         }.execute();
-    }
-
-    /**
-     * Method that shows or hides the spinner in the toolbar
-     * @param visible True if it should be visible, false otherwise
-     */
-    public void showToolbarSpinner(boolean visible){
-        mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

@@ -88,7 +88,7 @@ public class EbillFragment extends BaseFragment {
         @Override
         protected void onPreExecute(){
             //Show the user we are refreshing his content
-            mActivity.showToolbarProgressBar(true);
+            mActivity.showToolbarProgress(true);
         }
 
         //Retrieve content from transcript page
@@ -132,7 +132,7 @@ public class EbillFragment extends BaseFragment {
                 loadInfo();
             }
 
-            mActivity.showToolbarProgressBar(false);
+            mActivity.showToolbarProgress(false);
         }
     }
 

@@ -96,7 +96,7 @@ public class TranscriptFragment extends BaseFragment{
             @Override
             protected void onPreExecute() {
                 //Show the user we are downloading new info
-                mActivity.showToolbarProgressBar(true);
+                mActivity.showToolbarProgress(true);
             }
 
             @Override
@@ -107,7 +107,7 @@ public class TranscriptFragment extends BaseFragment{
                     //Reload the info in the views
                     loadInfo();
                 }
-                mActivity.showToolbarProgressBar(false);
+                mActivity.showToolbarProgress(false);
             }
         }.execute();
     }

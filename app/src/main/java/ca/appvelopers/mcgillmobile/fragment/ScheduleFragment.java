@@ -184,13 +184,13 @@ public class ScheduleFragment extends BaseFragment {
             @Override
             protected void onPreExecute(){
                 //Show the user we are refreshing
-                mActivity.showToolbarProgressBar(true);
+                mActivity.showToolbarProgress(true);
             }
 
             // onPostExecute displays the results of the AsyncTask.
             @Override
             protected void onPostExecute(Boolean loadInfo) {
-                mActivity.showToolbarProgressBar(false);
+                mActivity.showToolbarProgress(false);
 
                 if(loadInfo){
                     updateView(mActivity.getResources().getConfiguration().orientation);

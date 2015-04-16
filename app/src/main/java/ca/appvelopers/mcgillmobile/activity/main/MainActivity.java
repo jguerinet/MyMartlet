@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.activity.main;
 
 import android.app.AlertDialog;
@@ -16,12 +32,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -46,33 +59,83 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
 import twitter4j.TwitterException;
 
 /**
- * Author: Julien Guerinet
- * Date: 2015-01-12 8:39 PM
- * Copyright (c) 2015 Appvelopers Inc. All rights reserved.
+ * The MainActivity the contains the side drawer and the main views for the fragments
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
-
 public class MainActivity extends BaseActivity {
+    /**
+     * Progress bar shown when the user is switching fragments
+     */
+    private LinearLayout mFragmentSwitcherProgress;
+    /**
+     * The drawer layout
+     */
     private DrawerLayout mDrawerLayout;
+    /**
+     * The ListView inside the drawer
+     */
     private ListView mDrawerList;
-    private ProgressBar mToolbarProgressBar;
-    private LinearLayout mFragmentSwitcher;
-
-    private ActionBarDrawerToggle drawerToggle;
-    private DrawerItem mCurrentDrawerItem, mNewDrawerItem;
-
-    //The Fragments
+    /**
+     * The toggle for the drawer inside the action bar
+     */
+    private ActionBarDrawerToggle mDrawerToggle;
+    /**
+     * The adapter for the drawer ListView
+     */
+    private DrawerAdapter mAdapter;
+    /**
+     * The currently selected drawer item
+     */
+    private DrawerItem mCurrentDrawerItem;
+    /**
+     * True if we need to change the currently showed fragment, false otherwise
+     */
+    private boolean mChangeFragment = false;
+    /**
+     * The schedule view
+     */
     private ScheduleFragment mScheduleFragment;
+    /**
+     * The transcript view
+     */
     private TranscriptFragment mTranscriptFragment;
+    /**
+     * The MyCourses view
+     */
     private MyCoursesFragment mMyCoursesFragment;
+    /**
+     * The courses view
+     */
     private CoursesFragment mCoursesFragment;
+    /**
+     * The course search view
+     */
     private CourseSearchFragment mCourseSearchFragment;
+    /**
+     * The wishlist view
+     */
     private WishlistFragment mWishlistFragment;
+    /**
+     * The eBill view
+     */
     private EbillFragment mEbillFragment;
+    /**
+     * The map view
+     */
     private MapFragment mMapFragment;
+    /**
+     * The desktop site view
+     */
     private DesktopFragment mDesktopFragment;
+    /**
+     * The settings view
+     */
     private SettingsFragment mSettingsFragment;
-
-    //Callback Manager used for Facebook
+    /**
+     * Callback manager used for Facebook
+     */
     private CallbackManager mCallbackManager;
 
     public void onCreate(Bundle savedInstanceState){
@@ -84,13 +147,9 @@ public class MainActivity extends BaseActivity {
         if(mCurrentDrawerItem == null){
             mCurrentDrawerItem = App.getHomePage();
         }
-        mNewDrawerItem = mCurrentDrawerItem;
-
-        Toolbar toolbar = setUpToolbar();
 
         //Bind the necessary views
-        mToolbarProgressBar = (ProgressBar)findViewById(R.id.toolbar_progress);
-        mFragmentSwitcher = (LinearLayout)findViewById(R.id.fragment_switcher);
+        mFragmentSwitcherProgress = (LinearLayout)findViewById(R.id.fragment_switcher);
 
         //Create the fragments
         mScheduleFragment = new ScheduleFragment();
@@ -104,69 +163,90 @@ public class MainActivity extends BaseActivity {
         mDesktopFragment = new DesktopFragment();
         mSettingsFragment = new SettingsFragment();
 
+        //Initialize the Facebook SDK
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        //Set up the Facebook callback manager
+        mCallbackManager = CallbackManager.Factory.create();
+
+        //Set up the toolbar
+        Toolbar toolbar = setUpToolbar();
+
         //Get the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setFocusableInTouchMode(false);
 
-        //Set up the drawer toggle
-        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0){
+        //Set up the drawer
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0){
             @Override
             public void onDrawerClosed(View view){
                 super.onDrawerClosed(view);
-
-                //Check if the current and new drawer items are the same
-                if(mCurrentDrawerItem != mNewDrawerItem){
-                    //If it isn't update the fragment
-                    setFragment(mNewDrawerItem);
+                //Change fragments if needed
+                if(mChangeFragment){
+                    setFragment();
                 }
             }
         };
-        mDrawerLayout.setDrawerListener(drawerToggle);
-        drawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
 
-        //Set up the drawer
+        //Set up the drawer list
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        final DrawerAdapter drawerAdapter = new DrawerAdapter(this);
-        mDrawerList.setAdapter(drawerAdapter);
-
-        //Set the currently checked one
-        for(int i = 1; i < drawerAdapter.getCount(); i++){
-            DrawerItem drawerItem = drawerAdapter.getItem(i);
-            mDrawerList.setItemChecked(i, drawerItem == mCurrentDrawerItem);
-        }
-
-        //Set the current fragment
-        setFragment(mCurrentDrawerItem);
-
-        //OnClickListener
+        mAdapter = new DrawerAdapter(this);
+        mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 //Get the concerned page and save it as the new drawer item
-                mNewDrawerItem = drawerAdapter.getItem(position);
+                DrawerItem drawerItem = mAdapter.getItem(position);
 
-                //Facebook, Twitter, and logout should never be selected since they are one time
-                // things
-                if(mNewDrawerItem != DrawerItem.FACEBOOK && mNewDrawerItem != DrawerItem.TWITTER &&
-                        mNewDrawerItem != DrawerItem.LOGOUT){
-                    // Highlight the selected item
-                    mDrawerList.setItemChecked(position, true);
-
-                    //If it's new, show the progress bar
-                    if(mCurrentDrawerItem != mNewDrawerItem){
-                        showFragmentSwitcherProgressBar(true);
-                    }
+                //If the using is sharing or logging out, take action here
+                if(drawerItem == DrawerItem.FACEBOOK){
+                    Help.postOnFacebook(MainActivity.this, mCallbackManager);
                 }
+                else if(drawerItem == DrawerItem.TWITTER){
+                    Help.loginTwitter(MainActivity.this);
+                }
+                else if(drawerItem == DrawerItem.LOGOUT){
+                    //Confirm with the user
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(getString(R.string.logout_dialog_title))
+                            .setMessage(getString(R.string.logout_dialog_message))
+                            .setPositiveButton(getString(R.string.logout_dialog_positive),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            GoogleAnalytics.sendEvent(MainActivity.this, "Logout",
+                                                    "Clicked", null, null);
+                                            Clear.clearAllInfo(MainActivity.this);
+                                            //Go back to SplashActivity
+                                            startActivity(new Intent(MainActivity.this,
+                                                    SplashActivity.class));
+                                            MyCoursesFragment.deleteCookies();
+                                        }
 
-                //Close the drawer
-                mDrawerLayout.closeDrawer(mDrawerList);
+                                    })
+                            .setNegativeButton(getString(R.string.logout_dialog_negative), null)
+                            .create()
+                            .show();
+                }
+                else{
+                    mChangeFragment = mCurrentDrawerItem != drawerItem;
+
+                    //If not, set the current drawer item if needed and close the drawer
+                    if(mChangeFragment){
+                        showFragmentSwitcherProgress(true);
+                        mCurrentDrawerItem = drawerItem;
+                    }
+
+                    mDrawerLayout.closeDrawer(mDrawerList);
+                }
+                checkItem();
             }
         });
 
-        //Initialize the Facebook SDK
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
-        //Set up the callback manager
-        mCallbackManager = CallbackManager.Factory.create();
+        //Load the initial checked item and fragment
+        checkItem();
+        setFragment();
 
         //Show the BugDialog if there is one
         String parserBug = getIntent().getStringExtra(Constants.BUG);
@@ -199,12 +279,21 @@ public class MainActivity extends BaseActivity {
         }.execute(getIntent().getData());
     }
 
-    private void setFragment(DrawerItem drawerItem){
-        //Update the current drawer item
-        mCurrentDrawerItem = drawerItem;
+    /**
+     * Sets the current drawer item to checked
+     */
+    private void checkItem(){
+        for(int i = 1; i < mAdapter.getCount(); i++){
+            mDrawerList.setItemChecked(i, mAdapter.getItem(i) == mCurrentDrawerItem);
+        }
+    }
 
+    /**
+     * Changes the fragment in the main container
+     */
+    private void setFragment(){
         BaseFragment fragment = null;
-        switch(drawerItem) {
+        switch(mCurrentDrawerItem) {
             case SCHEDULE:
                 fragment = mScheduleFragment;
                 break;
@@ -235,30 +324,7 @@ public class MainActivity extends BaseActivity {
             case SETTINGS:
                 fragment = mSettingsFragment;
                 break;
-            case FACEBOOK:
-                Help.postOnFacebook(MainActivity.this, mCallbackManager);
-                break;
-            case TWITTER:
-                Help.loginTwitter(MainActivity.this);
-                break;
-            case LOGOUT:
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle(getString(R.string.logout_dialog_title))
-                        .setMessage(getString(R.string.logout_dialog_message))
-                        .setPositiveButton(getString(R.string.logout_dialog_positive), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                GoogleAnalytics.sendEvent(MainActivity.this, "Logout", "Clicked", null, null);
-                                Clear.clearAllInfo(MainActivity.this);
-                                //Go back to SplashActivity
-                                startActivity(new Intent(MainActivity.this, SplashActivity.class));
-                                MyCoursesFragment.deleteCookies();
-                            }
-
-                        })
-                        .setNegativeButton(getString(R.string.logout_dialog_negative), null)
-                        .create()
-                        .show();
+            default:
                 break;
         }
 
@@ -274,12 +340,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed(){
         //If we are on a web page, check if we can go back in the web page itself
-        if((mCurrentDrawerItem == DrawerItem.MY_COURSES || mCurrentDrawerItem == DrawerItem.DESKTOP) &&
-                mMyCoursesFragment.getWebView().canGoBack()){
+        if((mCurrentDrawerItem == DrawerItem.MY_COURSES || mCurrentDrawerItem == DrawerItem.DESKTOP)
+                && mMyCoursesFragment.getWebView().canGoBack()){
             mMyCoursesFragment.getWebView().goBack();
             return;
         }
-
         //Open the menu if it is not open
         if(!mDrawerLayout.isDrawerOpen(mDrawerList)){
             mDrawerLayout.openDrawer(mDrawerList);
@@ -288,32 +353,29 @@ public class MainActivity extends BaseActivity {
         else{
             new AlertDialog.Builder(this)
                     .setMessage(getString(R.string.drawer_exit))
-                    .setPositiveButton(getString(android.R.string.yes), new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(android.R.string.yes),
+                            new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             MainActivity.super.onBackPressed();
                         }
                     })
-                    .setNegativeButton(getString(android.R.string.no), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
+                    .setNegativeButton(getString(android.R.string.no), null)
                     .show();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
         //Only show the menu in portrait mode for the schedule
         if(mCurrentDrawerItem == DrawerItem.SCHEDULE){
-            return getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE;
+            return getResources().getConfiguration().orientation !=
+                    Configuration.ORIENTATION_LANDSCAPE;
         }
 
         return super.onPrepareOptionsMenu(menu);
@@ -322,13 +384,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+        mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
 
         //Reload the menu and the view if this is the schedule
         if(mCurrentDrawerItem == DrawerItem.SCHEDULE){
@@ -340,28 +402,19 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    //For Facebook Sharing
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
+        //For Facebook sharing
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
-     * Method that shows or hides the spinner in the toolbar
+     * Shows or hides the progress bar in the main view while switching fragments
      *
      * @param visible True if it should be visible, false otherwise
      */
-    public void showToolbarProgressBar(boolean visible){
-        mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
-    }
-
-    /**
-     * Shows or hides the prgress bar in the main view while switching fragments
-     *
-     * @param visible True True if it should be visible, false otherwise
-     */
-    public void showFragmentSwitcherProgressBar(boolean visible){
-        mFragmentSwitcher.setVisibility(visible ? View.VISIBLE : View.GONE);
+    public void showFragmentSwitcherProgress(boolean visible){
+        mFragmentSwitcherProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

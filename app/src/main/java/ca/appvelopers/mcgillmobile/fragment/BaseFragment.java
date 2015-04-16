@@ -37,7 +37,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void hideLoadingIndicator(){
-        mActivity.showFragmentSwitcherProgressBar(false);
+        mActivity.showFragmentSwitcherProgress(false);
     }
 
     /**

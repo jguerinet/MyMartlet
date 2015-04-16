@@ -100,4 +100,8 @@ public class DrawerAdapter extends BaseAdapter {
 
         return view;
     }
+
+    public List<DrawerItem> getItems(){
+        return this.mDrawerItems;
+    }
 }

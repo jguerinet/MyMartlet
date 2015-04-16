@@ -187,7 +187,7 @@ public class CoursesFragment extends BaseFragment {
         new ClassDownloader(mActivity, mTerm) {
             @Override
             protected void onPreExecute() {
-                mActivity.showToolbarProgressBar(true);
+                mActivity.showToolbarProgress(true);
             }
 
             @Override
@@ -196,7 +196,7 @@ public class CoursesFragment extends BaseFragment {
                     loadInfo();
                 }
 
-                mActivity.showToolbarProgressBar(false);
+                mActivity.showToolbarProgress(false);
             }
         }.execute();
     }
@@ -213,7 +213,7 @@ public class CoursesFragment extends BaseFragment {
         @Override
         protected void onPreExecute(){
             //Show the user we are downloading new info
-            mActivity.showToolbarProgressBar(true);
+            mActivity.showToolbarProgress(true);
         }
 
         //Retrieve page that contains registration status from Minerva
@@ -247,7 +247,7 @@ public class CoursesFragment extends BaseFragment {
         //Update or create transcript object and display data
         @Override
         protected void onPostExecute(Boolean success){
-            mActivity.showToolbarProgressBar(false);
+            mActivity.showToolbarProgress(false);
 
             if(success){
                 //Display whether the user was successfully registered
