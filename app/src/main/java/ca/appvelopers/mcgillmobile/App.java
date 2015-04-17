@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
@@ -55,6 +58,9 @@ public class App extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
+                Constants.TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
 
         //Set the static context
         context = this;

@@ -32,6 +32,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.content.Intent;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -56,7 +62,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
-import twitter4j.TwitterException;
 
 /**
  * The MainActivity the contains the side drawer and the main views for the fragments
@@ -137,7 +142,6 @@ public class MainActivity extends BaseActivity {
      * Callback manager used for Facebook
      */
     private CallbackManager mCallbackManager;
-
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -254,29 +258,6 @@ public class MainActivity extends BaseActivity {
             DialogHelper.showBugDialog(this, parserBug.equals(Constants.TRANSCRIPT),
                     getIntent().getStringExtra(Constants.TERM));
         }
-
-        //Twitter Callback
-        new AsyncTask<Uri,Void,Void>(){
-            protected Void doInBackground(Uri... args){
-                Uri uri = args[0];
-                if (uri != null && uri.toString().startsWith(Constants.TWITTER_CALLBACK_URL)) {
-                    // oAuth verifier
-                    String verifier = uri.getQueryParameter(Constants.URL_TWITTER_OAUTH_VERIFIER);
-                    try {
-                        Constants.twitter.getOAuthAccessToken(Constants.requestToken, verifier);
-                    } catch (TwitterException e) {
-                        e.printStackTrace();
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Help.postOnTwitter(MainActivity.this);
-                        }
-                    });
-                }
-                return null;
-            }
-        }.execute(getIntent().getData());
     }
 
     /**
