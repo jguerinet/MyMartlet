@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.util;
 
 import android.app.Activity;
@@ -6,22 +22,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Display;
-import android.widget.Toast;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
-import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -31,21 +34,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.Language;
 
 /**
- * Class that contains various useful static help methods
- * Author: Julien
- * Date: 04/02/14, 7:45 PM
+ * Contains various useful static help methods
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class Help {
     private static final String TAG = "Help";
+
+    /* DATE STUFF  TODO: Move this to separate class */
 
     public static boolean timeIsAM(int hour){
         return hour / 12 == 0;
@@ -88,54 +91,54 @@ public class Help {
     }
 
     /**
-     * Get the height of the display
-     * @param display The display to measure
-     * @return The height of the given display
+     * Gets the String for the "If Modified Since" part of the URL
+     *
+     *  @param date The date to use
+     * @return The date in the correct String format
      */
-    public static int getDisplayHeight(Display display){
-        return getDisplaySize(display).y;
+    public static String getIfModifiedSinceString(DateTime date){
+        return date.dayOfWeek().getAsShortText() + ", " + date.getDayOfMonth() + " " +
+                date.monthOfYear().getAsShortText() + " " + date.getYear() + " " +
+                date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" +
+                date.getSecondOfMinute() + " GMT";
     }
+
+    /* URLS */
 
     /**
-     * Get the width of the display
-     * @param display The display to measure
-     * @return The width of the given display
-     */
-    public static int getDisplayWidth(Display display){
-        return getDisplaySize(display).x;
-    }
-
-    private static Point getDisplaySize(Display display){
-        Point size = new Point();
-
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            size.set(display.getWidth(), display.getHeight());
-        }
-        else{
-            display.getSize(size);
-        }
-
-        return size;
-    }
-
-    /**
-     * Method to open URLs
-     * @param activity The activity to open this URL from
-     * @param url The URL
+     * Opens a given URL
+     *
+     * @param activity The calling activity
+     * @param url      The URL
      */
     public static void openURL(Activity activity, String url){
         //Check that the URL starts with HTTP or HTTPS, add it if it is not the case.
         if(!url.startsWith("http://") && !url.startsWith("https://")){
             url = "http://" + url;
         }
+
         Intent urlIntent = new Intent(Intent.ACTION_VIEW)
                 .setData(Uri.parse(url));
         activity.startActivity(urlIntent);
     }
 
     /**
-     * Method to read a String from a local file
-     * @param context The app context
+     * Gets the Docuum link for a course
+     *
+     * @param courseName The 4-letter name of the code
+     * @param courseCode The course code number
+     * @return The Docuum URL
+     */
+    public static String getDocuumLink(String courseName, String courseCode){
+        return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
+    }
+
+    /* OTHER */
+
+    /**
+     * Reads a String from a local file
+     *
+     * @param context      The app context
      * @param fileResource The resource of the file to read
      * @return The file in String format
      */
@@ -168,24 +171,25 @@ public class Help {
     }
 
     /**
-     * Get the String for the "If Modified Since" part of the URL
-     * @param date The date to use
-     * @return The date in the correct String format
+     * Gets the app version number
+     *
+     * @param context The app context
+     * @return The version number
      */
-    public static String getIfModifiedSinceString(DateTime date){
-        return date.dayOfWeek().getAsShortText() + ", " + date.getDayOfMonth() + " " + date.monthOfYear().getAsShortText() + " " + date.getYear() + " " + date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" + date.getSecondOfMinute() + " GMT";
+    public static int getVersionNumber(Context context){
+        try {
+            ComponentName comp = new ComponentName(context, context.getClass());
+            PackageInfo info = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     /**
-     * Get the Docuum link for a course
-     * @param courseName The 4-letter name of the code
-     * @param courseCode The course code number
-     * @return The Docuum URL
+     * TODO Delete this
      */
-    public static String getDocuumLink(String courseName, String courseCode){
-        return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
-    }
-
     public static void sendBugReport(Context context, String title){
         //Get the necessary info
         //App Version Name & Number
@@ -239,108 +243,5 @@ public class Help {
         //Type(Email)
         bugEmail.setType("message/rfc822");
         context.startActivity(Intent.createChooser(bugEmail, context.getString(R.string.about_email_picker_title)));
-    }
-
-    /**
-     * Post on Facebook
-     * @param activity The calling activity
-     */
-    public static void postOnFacebook(final Activity activity,
-                                      final CallbackManager callbackManager){
-        Analytics.getInstance().sendEvent("facebook", "attempt_post", null);
-
-        //Set up all of the info
-        ShareLinkContent content = new ShareLinkContent.Builder()
-                .setContentTitle(activity.getString(
-                        R.string.social_facebook_title, "Android"))
-                .setContentDescription(activity.getString(
-                        R.string.social_facebook_description_android))
-                .setContentUrl(Uri.parse(activity.getString(
-                        R.string.social_link_android)))
-                .setImageUrl(Uri.parse(activity.getString(R
-                        .string.social_facebook_image)))
-                .build();
-
-        //Show the dialog
-        ShareDialog dialog = new ShareDialog(activity);
-        dialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-            @Override
-            public void onSuccess(Sharer.Result result){
-                if(result.getPostId() != null){
-                    //Let the user know he posted successfully
-                    Toast.makeText(activity, activity.getString(R.string.social_post_success),
-                            Toast.LENGTH_SHORT).show();
-                    Analytics.getInstance().sendEvent("facebook", "successful_post", null);
-                }
-                else{
-                    Log.d("Facebook Post", "Cancelled");
-                }
-            }
-
-            @Override
-            public void onCancel(){
-                Log.d("Facebook Post", "Cancelled");
-            }
-
-            @Override
-            public void onError(FacebookException e){
-                Toast.makeText(activity, activity.getString(R.string.social_post_failure),
-                        Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-                Analytics.getInstance().sendEvent("facebook", "failed_post", null);
-            }
-        });
-        dialog.show(content);
-    }
-
-    /**
-     * Method to post on Twitter
-     * @param activity The calling activity
-     */
-    public static void postOnTwitter(final Activity activity){
-        //Get the URL
-        URL url = null;
-        try{
-            url = new URL(activity.getString(R.string.social_link_android));
-        } catch(MalformedURLException e){
-            e.printStackTrace();
-        }
-
-        //Set up the Tweet Composer
-        TweetComposer.Builder builder = new TweetComposer.Builder(activity)
-                .text(activity.getString(R.string.social_twitter_message_android, "Android"));
-
-        //If there is a URL, add it
-        if(url != null){
-            builder.url(url);
-        }
-
-        //Show the TweetComposer
-        builder.show();
-    }
-
-    public static int getDimensionInPixels(Context context, int dimensionId){
-        Resources resources = context.getResources();
-        return (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dimensionId,
-                resources.getDisplayMetrics());
-    }
-
-    /**
-     * Get the app version number
-     *
-     * @param context The app context
-     * @return The version number
-     */
-    public static int getVersionNumber(Context context){
-        try {
-            ComponentName comp = new ComponentName(context, context.getClass());
-            PackageInfo info = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);
-            return info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return -1;
-        }
     }
 }

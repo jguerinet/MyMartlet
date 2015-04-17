@@ -20,19 +20,31 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -49,10 +61,9 @@ import ca.appvelopers.mcgillmobile.fragment.map.MapFragment;
 import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
@@ -62,6 +73,7 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * @since 1.0
  */
 public class MainActivity extends BaseActivity {
+    private static final String TAG = "MainActivity";
     /**
      * Progress bar shown when the user is switching fragments
      */
@@ -196,12 +208,13 @@ public class MainActivity extends BaseActivity {
                 //Get the concerned page and save it as the new drawer item
                 DrawerItem drawerItem = mAdapter.getItem(position);
 
-                //If the using is sharing or logging out, take action here
+                //Share on Facebook
                 if(drawerItem == DrawerItem.FACEBOOK){
-                    Help.postOnFacebook(MainActivity.this, mCallbackManager);
+                    shareOnFacebook();
                 }
+                //Share on Twitter
                 else if(drawerItem == DrawerItem.TWITTER){
-                    Help.postOnTwitter(MainActivity.this);
+                    shareOnTwitter();
                 }
                 else if(drawerItem == DrawerItem.LOGOUT){
                     //Confirm with the user
@@ -250,64 +263,6 @@ public class MainActivity extends BaseActivity {
         if(parserBug != null){
             DialogHelper.showBugDialog(this, parserBug.equals(Constants.TRANSCRIPT),
                     getIntent().getStringExtra(Constants.TERM));
-        }
-    }
-
-    /**
-     * Sets the current drawer item to checked
-     */
-    private void checkItem(){
-        for(int i = 1; i < mAdapter.getCount(); i++){
-            mDrawerList.setItemChecked(i, mAdapter.getItem(i) == mCurrentDrawerItem);
-        }
-    }
-
-    /**
-     * Changes the fragment in the main container
-     */
-    private void setFragment(){
-        BaseFragment fragment = null;
-        switch(mCurrentDrawerItem) {
-            case SCHEDULE:
-                fragment = mScheduleFragment;
-                break;
-            case TRANSCRIPT:
-                fragment = mTranscriptFragment;
-                break;
-            case MY_COURSES:
-                fragment = mMyCoursesFragment;
-                break;
-            case COURSES:
-                fragment = mCoursesFragment;
-                break;
-            case SEARCH_COURSES:
-                fragment = mCourseSearchFragment;
-                break;
-            case WISHLIST:
-                fragment = mWishlistFragment;
-                break;
-            case EBILL:
-                fragment = mEbillFragment;
-                break;
-            case MAP:
-                fragment = mMapFragment;
-                break;
-            case DESKTOP:
-                fragment = mDesktopFragment;
-                break;
-            case SETTINGS:
-                fragment = mSettingsFragment;
-                break;
-            default:
-                break;
-        }
-
-        //If there is a fragment, insert it by replacing any existing fragment
-        if(fragment != null){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_content, fragment)
-                    .addToBackStack(null)
-                    .commit();
         }
     }
 
@@ -383,6 +338,66 @@ public class MainActivity extends BaseActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    /* HELPERS */
+
+    /**
+     * Sets the current drawer item to checked
+     */
+    private void checkItem(){
+        for(int i = 1; i < mAdapter.getCount(); i++){
+            mDrawerList.setItemChecked(i, mAdapter.getItem(i) == mCurrentDrawerItem);
+        }
+    }
+
+    /**
+     * Changes the fragment in the main container
+     */
+    private void setFragment(){
+        BaseFragment fragment = null;
+        switch(mCurrentDrawerItem) {
+            case SCHEDULE:
+                fragment = mScheduleFragment;
+                break;
+            case TRANSCRIPT:
+                fragment = mTranscriptFragment;
+                break;
+            case MY_COURSES:
+                fragment = mMyCoursesFragment;
+                break;
+            case COURSES:
+                fragment = mCoursesFragment;
+                break;
+            case SEARCH_COURSES:
+                fragment = mCourseSearchFragment;
+                break;
+            case WISHLIST:
+                fragment = mWishlistFragment;
+                break;
+            case EBILL:
+                fragment = mEbillFragment;
+                break;
+            case MAP:
+                fragment = mMapFragment;
+                break;
+            case DESKTOP:
+                fragment = mDesktopFragment;
+                break;
+            case SETTINGS:
+                fragment = mSettingsFragment;
+                break;
+            default:
+                break;
+        }
+
+        //If there is a fragment, insert it by replacing any existing fragment
+        if(fragment != null){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_content, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
     /**
      * Shows or hides the progress bar in the main view while switching fragments
      *
@@ -390,5 +405,68 @@ public class MainActivity extends BaseActivity {
      */
     public void showFragmentSwitcherProgress(boolean visible){
         mFragmentSwitcherProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * Shares the app on Facebook
+     */
+    private void shareOnFacebook(){
+        Analytics.getInstance().sendEvent("facebook", "attempt_post", null);
+
+        //Set up all of the info
+        ShareLinkContent content = new ShareLinkContent.Builder()
+                .setContentTitle(getString(R.string.social_facebook_title, "Android"))
+                .setContentDescription(getString(R.string.social_facebook_description_android))
+                .setContentUrl(Uri.parse(getString(R.string.social_link_android)))
+                .setImageUrl(Uri.parse(getString(R.string.social_facebook_image)))
+                .build();
+
+        //Show the dialog
+        ShareDialog dialog = new ShareDialog(MainActivity.this);
+        dialog.registerCallback(mCallbackManager, new FacebookCallback<Sharer.Result>(){
+            @Override
+            public void onSuccess(Sharer.Result result){
+                if(result.getPostId() != null){
+                    //Let the user know he posted successfully
+                    Toast.makeText(MainActivity.this, getString(R.string.social_post_success),
+                            Toast.LENGTH_SHORT).show();
+                    Analytics.getInstance().sendEvent("facebook", "successful_post", null);
+                }
+                else{
+                    Log.d(TAG, "Facebook post cancelled");
+                }
+            }
+
+            @Override
+            public void onCancel(){
+                Log.d(TAG, "Facebook post cancelled");
+            }
+
+            @Override
+            public void onError(FacebookException e){
+                Toast.makeText(MainActivity.this, getString(R.string.social_post_failure),
+                        Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+                Analytics.getInstance().sendEvent("facebook", "failed_post", null);
+            }
+        });
+        dialog.show(content);
+    }
+
+    /**
+     * Shares the app on Twitter
+     */
+    public void shareOnTwitter(){
+        try{
+            //Set up the Tweet Composer
+            TweetComposer.Builder builder = new TweetComposer.Builder(this)
+                    .text(getString(R.string.social_twitter_message_android, "Android"))
+                    .url(new URL(getString(R.string.social_link_android)));
+
+            //Show the TweetComposer
+            builder.show();
+        } catch(MalformedURLException e){
+            Log.e(TAG, "Twitter URL malformed");
+        }
     }
 }
