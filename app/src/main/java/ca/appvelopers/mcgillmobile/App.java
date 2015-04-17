@@ -6,6 +6,8 @@ import android.graphics.Typeface;
 
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+
 import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
@@ -58,9 +60,6 @@ public class App extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
-                Constants.TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
 
         //Set the static context
         context = this;
@@ -92,6 +91,12 @@ public class App extends Application {
         placeCategories = Load.loadPlaceCategories(this);
         //Load the register terms
         registerTerms = Load.loadRegisterTerms(this);
+
+        //Set up The Fabric stuff: Twitter
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
+                Constants.TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
+        Fabric.with(this, new TweetComposer());
     }
 
     /* GETTER METHODS */

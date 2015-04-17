@@ -208,7 +208,7 @@ public class MainActivity extends BaseActivity {
                     Help.postOnFacebook(MainActivity.this, mCallbackManager);
                 }
                 else if(drawerItem == DrawerItem.TWITTER){
-                    Help.loginTwitter(MainActivity.this);
+                    Help.postOnTwitter(MainActivity.this);
                 }
                 else if(drawerItem == DrawerItem.LOGOUT){
                     //Confirm with the user
