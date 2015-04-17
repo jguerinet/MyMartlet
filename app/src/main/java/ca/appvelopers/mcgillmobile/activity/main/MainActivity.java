@@ -33,6 +33,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.content.Intent;
+
+import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -142,6 +144,7 @@ public class MainActivity extends BaseActivity {
      * Callback manager used for Facebook
      */
     private CallbackManager mCallbackManager;
+
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

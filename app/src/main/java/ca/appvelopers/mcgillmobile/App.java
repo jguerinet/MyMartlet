@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
@@ -95,8 +96,7 @@ public class App extends Application {
         //Set up The Fabric stuff: Twitter
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
                 Constants.TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
-        Fabric.with(this, new TweetComposer());
+        Fabric.with(this, new Twitter(authConfig), new TweetComposer(), new Crashlytics());
     }
 
     /* GETTER METHODS */
