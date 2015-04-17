@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +18,7 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
@@ -40,7 +39,7 @@ public class SearchResultsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchresults);
 
-        GoogleAnalytics.sendScreen(this, "Search Results");
+        Analytics.getInstance().sendScreen("Search Results");
 
         //Set up the toolbar
         Toolbar toolbar = setUpToolbar();
@@ -117,8 +116,8 @@ public class SearchResultsActivity extends BaseActivity {
                     //Save the courses to the App context
                     App.setClassWishlist(wishlist);
 
-                    GoogleAnalytics.sendEvent(SearchResultsActivity.this, "Search Results",
-                            "Add to Wishlist", "" + coursesAdded, null);
+                    Analytics.getInstance().sendEvent("Search Results", "Add to Wishlist",
+                            String.valueOf(coursesAdded));
 
                     toastMessage = getResources().getString(R.string.wishlist_add, coursesAdded);
                 }

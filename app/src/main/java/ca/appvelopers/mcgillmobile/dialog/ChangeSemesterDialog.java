@@ -17,7 +17,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.view.TermAdapter;
 
 /**
@@ -35,7 +35,7 @@ public class ChangeSemesterDialog extends AlertDialog {
     public ChangeSemesterDialog(Context context, boolean registerTerms, Term term) {
         super(context);
 
-        GoogleAnalytics.sendScreen(context, "Schedule - Change Semester");
+        Analytics.getInstance().sendScreen("Schedule - Change Semester");
 
         //Inflate the right view
         View layout = View.inflate(context, R.layout.dialog_change_semester, null);

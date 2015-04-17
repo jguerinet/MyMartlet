@@ -10,7 +10,7 @@ import android.widget.TextView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
@@ -22,7 +22,7 @@ public class AboutActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_about);
         super.onCreate(savedInstanceState);
-        GoogleAnalytics.sendScreen(this, "About");
+        Analytics.getInstance().sendScreen("About");
 
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -113,7 +113,7 @@ public class AboutActivity extends BaseActivity {
         linkedinView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GoogleAnalytics.sendEvent(AboutActivity.this, "About", "Linkedin", name, null);
+                Analytics.getInstance().sendEvent("About", "Linkedin", name);
                 Help.openURL(AboutActivity.this, linkedin);
             }
         });
@@ -124,7 +124,7 @@ public class AboutActivity extends BaseActivity {
         emailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GoogleAnalytics.sendEvent(AboutActivity.this, "About", "Email", name, null);
+                Analytics.getInstance().sendEvent("About", "Email", name);
 
                 //Send an email :
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);

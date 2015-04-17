@@ -15,7 +15,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 
 /**
  * Author: Julien Guerinet
@@ -46,7 +46,7 @@ public class TranscriptFragment extends BaseFragment{
         //Title
         mActivity.setTitle(getString(R.string.title_transcript));
 
-        GoogleAnalytics.sendScreen(mActivity, "Transcript");
+        Analytics.getInstance().sendScreen("Transcript");
 
         //Get the stored transcript from the App
         mTranscript = App.getTranscript();

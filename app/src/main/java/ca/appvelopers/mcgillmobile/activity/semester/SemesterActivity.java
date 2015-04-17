@@ -9,7 +9,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 
 /**
  * Author: Julien
@@ -27,7 +27,7 @@ public class SemesterActivity extends BaseActivity {
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        GoogleAnalytics.sendScreen(this, "Transcript - Semester");
+        Analytics.getInstance().sendScreen("Transcript - Semester");
 
         //Get the semester from the intent
         Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);

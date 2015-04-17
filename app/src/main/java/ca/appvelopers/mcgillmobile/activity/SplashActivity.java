@@ -37,7 +37,7 @@ import ca.appvelopers.mcgillmobile.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Parser;
@@ -148,7 +148,7 @@ public class SplashActivity extends BaseActivity {
         //Make sure to delete anything with the previous user's info
         Clear.clearAllInfo(this);
 
-        GoogleAnalytics.sendScreen(this, "Login");
+        Analytics.getInstance().sendScreen("Login");
 
         //Get the necessary views
         final Button login = (Button) findViewById(R.id.login_button);
@@ -224,8 +224,8 @@ public class SplashActivity extends BaseActivity {
                             Save.saveUsername(SplashActivity.this, username);
                             Save.savePassword(SplashActivity.this, password);
                             Save.saveRememberUsername(SplashActivity.this, rememberUsernameView.isChecked());
-                            GoogleAnalytics.sendEvent(SplashActivity.this, "Login", "Remember Username",
-                                    "" + rememberUsernameView.isChecked(), null);
+                            Analytics.getInstance().sendEvent("Login", "Remember Username",
+                                    String.valueOf(rememberUsernameView.isChecked()));
 
                             //set the background receiver after successful login
 //                            if(!App.isAlarmActive()){
@@ -252,8 +252,8 @@ public class SplashActivity extends BaseActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    GoogleAnalytics.sendEvent(SplashActivity.this, "Login", "Login Error",
-                                            connectionStatus.getGAString(), null);
+                                    Analytics.getInstance().sendEvent("Login", "Login Error",
+                                            connectionStatus.getGAString());
                                     progressDialog.dismiss();
                                     DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
                                             connectionStatus.getErrorString(SplashActivity.this));
@@ -351,7 +351,7 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            GoogleAnalytics.sendEvent(SplashActivity.this, "Splash", "Auto-Login", "true", null);
+            Analytics.getInstance().sendEvent("Splash", "Auto-Login", "true");
 
             //The connection
             Connection connection = Connection.getInstance();

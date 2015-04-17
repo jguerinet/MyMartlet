@@ -29,7 +29,7 @@ import ca.appvelopers.mcgillmobile.activity.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.view.TermAdapter;
@@ -64,7 +64,7 @@ public class CourseSearchFragment extends BaseFragment {
 
         lockPortraitMode();
 
-        GoogleAnalytics.sendScreen(mActivity, "Registration");
+        Analytics.getInstance().sendScreen("Registration");
 
         //Title
         mActivity.setTitle(getString(R.string.title_registration));

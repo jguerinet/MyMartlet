@@ -19,7 +19,7 @@ import android.webkit.WebViewClient;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
@@ -50,7 +50,7 @@ public class MyCoursesFragment extends BaseFragment {
         //Title
         mActivity.setTitle(getString(R.string.title_mycourses));
 
-        GoogleAnalytics.sendScreen(mActivity, "MyCourses");
+        Analytics.getInstance().sendScreen("MyCourses");
 
         if(!Connection.isNetworkAvailable(mActivity)){
             DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.error),

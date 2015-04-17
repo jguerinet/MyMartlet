@@ -1,53 +1,39 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookOperationCanceledException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
-import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -59,6 +45,7 @@ import ca.appvelopers.mcgillmobile.object.Language;
  * Date: 04/02/14, 7:45 PM
  */
 public class Help {
+    private static final String TAG = "Help";
 
     public static boolean timeIsAM(int hour){
         return hour / 12 == 0;
@@ -153,15 +140,31 @@ public class Help {
      * @return The file in String format
      */
     public static String readFromFile(Context context, int fileResource) {
-        InputStream is = context.getResources().openRawResource(fileResource);
-        StringWriter writer = new StringWriter();
+        //Get the input stream from the file
+        InputStream inputStream = context.getResources().openRawResource(fileResource);
+        //Get the reader from the input stream
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+        StringBuilder builder = new StringBuilder();
         try{
-            IOUtils.copy(is, writer, "UTF-8");
-        } catch(Exception e){
-            Log.e("Error Reading from Local File", e.getMessage());
-            e.printStackTrace();
+            //Append the file's lines to the builder until there are none left
+            String line;
+            while((line = reader.readLine()) != null){
+                builder.append(line);
+            }
+        } catch(IOException e){
+            Log.e(TAG, "Error reading from local file", e);
+        } finally {
+            //Close the stream and the reader
+            try{
+                inputStream.close();
+                reader.close();
+            } catch(IOException e){
+                Log.e(TAG, "Error closing the stream and reader after reading from file", e);
+            }
         }
-        return writer.toString();
+
+        return builder.toString();
     }
 
     /**
@@ -244,7 +247,7 @@ public class Help {
      */
     public static void postOnFacebook(final Activity activity,
                                       final CallbackManager callbackManager){
-        GoogleAnalytics.sendEvent(activity, "facebook", "attempt_post", null, null);
+        Analytics.getInstance().sendEvent("facebook", "attempt_post", null);
 
         //Set up all of the info
         ShareLinkContent content = new ShareLinkContent.Builder()
@@ -267,7 +270,7 @@ public class Help {
                     //Let the user know he posted successfully
                     Toast.makeText(activity, activity.getString(R.string.social_post_success),
                             Toast.LENGTH_SHORT).show();
-                    GoogleAnalytics.sendEvent(activity, "facebook", "successful_post", null, null);
+                    Analytics.getInstance().sendEvent("facebook", "successful_post", null);
                 }
                 else{
                     Log.d("Facebook Post", "Cancelled");
@@ -284,7 +287,7 @@ public class Help {
                 Toast.makeText(activity, activity.getString(R.string.social_post_failure),
                         Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
-                GoogleAnalytics.sendEvent(activity, "facebook", "failed_post", null, null);
+                Analytics.getInstance().sendEvent("facebook", "failed_post", null);
             }
         });
         dialog.show(content);

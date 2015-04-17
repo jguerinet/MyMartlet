@@ -11,7 +11,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 
 /**
  * Author : Julien
@@ -31,7 +31,7 @@ public class WalkthroughActivity extends BaseActivity {
         //Check if this is the normal walkthrough or the email one
         boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
 
-        GoogleAnalytics.sendScreen(this, email ? "Email Walkthrough" : "Walkthrough");
+        Analytics.getInstance().sendScreen(email ? "Email Walkthrough" : "Walkthrough");
 
         mViewPager = (ViewPager) findViewById(R.id.walkthrough_viewpager);
         mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), email);
@@ -60,7 +60,7 @@ public class WalkthroughActivity extends BaseActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GoogleAnalytics.sendEvent(WalkthroughActivity.this, "Walkthrough", "Skip", null, null);
+                Analytics.getInstance().sendEvent("Walkthrough", "Skip", null);
                 finish();
             }
         });

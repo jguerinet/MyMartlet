@@ -73,7 +73,7 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     cgpa = -1;
-                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "CGPA", null);
+                    Analytics.getInstance().sendEvent("Parsing Bug", "Transcript", "CGPA");
                     transcriptError = "CGPA";
                 }
             }
@@ -85,7 +85,7 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     totalCredits = -1;
-                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Total Credits", null);
+                    Analytics.getInstance().sendEvent("Parsing Bug", "Transcript", "Total Credits");
                     transcriptError = "Total Credits";
                 }
             }
@@ -115,7 +115,8 @@ public class Parser {
                         year = Integer.valueOf(scheduleSemesterItems[1]);
                     }
                     catch(NumberFormatException e){
-                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+                        Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
+                                "Semester Year");
                         transcriptError = season.toString();
                         year = 2000;
                     }
@@ -126,7 +127,8 @@ public class Parser {
                         year = Integer.valueOf(scheduleSemesterItems[4]);
                     }
                     catch(NumberFormatException e){
-                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+                        Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
+                                "Semester Year");
                         transcriptError = season.toString();
                         year = 2000;
                     }
@@ -137,7 +139,8 @@ public class Parser {
                         year = Integer.valueOf(scheduleSemesterItems[2]);
                     }
                     catch(NumberFormatException e){
-                        GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Semester Year", null);
+                        Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
+                                "Semester Year");
                         transcriptError = season.toString();
                         year = 2000;
                     }
@@ -223,7 +226,8 @@ public class Parser {
                             termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
                         }
                         catch (NumberFormatException e){
-                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Term GPA", null);
+                            Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
+                                    "Term GPA");
                             transcriptError = season.toString() + year;
                         }
                     }
@@ -233,7 +237,8 @@ public class Parser {
                             termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                         }
                         catch (NumberFormatException e){
-                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Term Credits", null);
+                            Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
+                                    "Term Credits");
                             transcriptError = season.toString() + year;
                         }
                     }
@@ -258,7 +263,8 @@ public class Parser {
                                 courseCode = dataRow.text().substring(0, 10);
                             }
                             catch(Exception e){
-                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Course Code", null);
+                                Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
+                                        "Course Code");
                                 transcriptError = season.toString() + year;
                                 e.printStackTrace();
                             }
@@ -328,7 +334,8 @@ public class Parser {
                                 credits = extractCredits(courseCode);
                             }
                             catch(Exception e){
-                                GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
+                                Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
+                                        "Credits");
                                 transcriptError = season.toString() + year;
                                 credits = 99;
                             }
@@ -383,7 +390,8 @@ public class Parser {
                                 catch(Exception e3){
                                     //Log.e("TRANSCRIPT PARSER", "Generic error" + e3.getMessage());
                                     e.printStackTrace();
-                                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Transcript", "Credits", null);
+                                    Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
+                                            "Credits");
                                     transcriptError = season.toString() + year;
                                     credits = 99;
                                 }
@@ -494,7 +502,7 @@ public class Parser {
                 }
                 catch (NumberFormatException e){
                     //GA
-                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "crn", null);
+                    Analytics.getInstance().sendEvent("Parsing Bug", "Class List", "crn");
                     classError = term.toString();
                     e.printStackTrace();
                 }
@@ -507,7 +515,7 @@ public class Parser {
                     credits = Double.parseDouble(creditString);
                 }
                 catch (NumberFormatException e){
-                    GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "credits", null);
+                    Analytics.getInstance().sendEvent("Parsing Bug", "Class List", "credits");
                     classError = term.toString();
                     e.printStackTrace();
                 }
@@ -538,7 +546,8 @@ public class Parser {
 
                         }
                         catch(IndexOutOfBoundsException e){
-                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "IndexOutOfBounds on Info", null);
+                            Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
+                                    "IndexOutOfBounds on Info");
                             classError = term.toString();
                         }
 
@@ -589,8 +598,8 @@ public class Parser {
                             startDate = dateFormatter.parseDateTime(startDateString);
                             endDate = dateFormatter.parseDateTime(endDateString);
                         } catch (IllegalArgumentException e){
-                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List",
-                                    "Start/End Date Parsing", null);
+                            Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
+                                    "Start/End Date Parsing");
                             classError = term.toString();
                         }
 
@@ -599,7 +608,8 @@ public class Parser {
                         try {
                             subject = courseCode.substring(0, 4);
                         } catch (StringIndexOutOfBoundsException e) {
-                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course subject Substring", null);
+                            Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
+                                    "Course subject Substring");
                             classError = term.toString();
                         }
 
@@ -607,7 +617,8 @@ public class Parser {
                         try {
                             code = courseCode.substring(5, 8);
                         } catch (StringIndexOutOfBoundsException e) {
-                            GoogleAnalytics.sendEvent(App.getContext(), "Parsing Bug", "Class List", "Course Code Substring", null);
+                            Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
+                                    "Course Code Substring");
                              classError = term.toString();
                         }
 

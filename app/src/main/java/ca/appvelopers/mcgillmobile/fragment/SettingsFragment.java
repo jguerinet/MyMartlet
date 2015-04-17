@@ -32,7 +32,7 @@ import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
@@ -61,7 +61,7 @@ public class SettingsFragment extends BaseFragment {
         //Title
         mActivity.setTitle(getString(R.string.title_settings));
 
-        GoogleAnalytics.sendScreen(mActivity, "Settings");
+        Analytics.getInstance().sendScreen("Settings");
 
         //Help
         TextView helpIcon = (TextView)view.findViewById(R.id.help_icon);
@@ -113,8 +113,8 @@ public class SettingsFragment extends BaseFragment {
                         .setPositiveButton(getResources().getString(android.R.string.ok),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
-                                        GoogleAnalytics.sendEvent(mActivity, "About", "Report a Bug",
-                                                null, null);
+                                        Analytics.getInstance().sendEvent("About", "Report a Bug",
+                                                null);
 
                                         Help.sendBugReport(mActivity, userInput.getText().toString());
                                     }
@@ -144,7 +144,8 @@ public class SettingsFragment extends BaseFragment {
                 //Get the chosen language
                 Language chosenLanguage = Language.values()[position];
 
-                GoogleAnalytics.sendEvent(mActivity, "Settings", "Language", chosenLanguage.getLanguageString(), null);
+                Analytics.getInstance().sendEvent("Settings", "Language",
+                        chosenLanguage.getLanguageString());
 
                 //If it's different than the previously selected language, update it and reload
                 if(App.getLanguage() != chosenLanguage){
@@ -180,7 +181,8 @@ public class SettingsFragment extends BaseFragment {
                 //Get the chosen homepage
                 DrawerItem chosenHomePage = homePageAdapter.getItem(position);
 
-                GoogleAnalytics.sendEvent(mActivity, "Settings", "Homepage", chosenHomePage.toString(), null);
+                Analytics.getInstance().sendEvent("Settings", "Homepage",
+                        chosenHomePage.toString());
 
                 //Update it in App
                 App.setHomePage(chosenHomePage);

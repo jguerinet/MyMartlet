@@ -21,7 +21,7 @@ import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
@@ -56,7 +56,7 @@ public class EbillFragment extends BaseFragment {
         //Title
         mActivity.setTitle(getString(R.string.title_ebill));
 
-        GoogleAnalytics.sendScreen(mActivity, "Ebill");
+        Analytics.getInstance().sendScreen("Ebill");
 
         //Get the initial info from the App
         mEbillItems = App.getEbill();

@@ -20,8 +20,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,14 +30,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.content.Intent;
-
-import com.crashlytics.android.Crashlytics;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -61,7 +51,7 @@ import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
@@ -222,8 +212,8 @@ public class MainActivity extends BaseActivity {
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            GoogleAnalytics.sendEvent(MainActivity.this, "Logout",
-                                                    "Clicked", null, null);
+                                            Analytics.getInstance().sendEvent("Logout", "Clicked",
+                                                    null);
                                             Clear.clearAllInfo(MainActivity.this);
                                             //Go back to SplashActivity
                                             startActivity(new Intent(MainActivity.this,

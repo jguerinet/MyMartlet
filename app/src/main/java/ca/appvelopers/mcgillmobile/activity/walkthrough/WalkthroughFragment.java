@@ -14,7 +14,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.view.FacultyAdapter;
 import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
 
@@ -111,7 +111,8 @@ public class WalkthroughFragment extends Fragment {
                         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                             DrawerItem chosenDrawerItem = homePageAdapter.getItem(position);
 
-                            GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Homepage", chosenDrawerItem.toString(), null);
+                            Analytics.getInstance().sendEvent("Walkthrough", "Homepage",
+                                    chosenDrawerItem.toString());
 
                             //Update it in the App
                             App.setHomePage(chosenDrawerItem);
@@ -134,7 +135,8 @@ public class WalkthroughFragment extends Fragment {
 
                             //If the faculty is not null, send the GA
                             if(faculty != null){
-                                GoogleAnalytics.sendEvent(getActivity(), "Walkthrough", "Faculty", faculty.toString(), null);
+                                Analytics.getInstance().sendEvent("Walkthrough", "Faculty",
+                                        faculty.toString());
                             }
                         }
                         @Override

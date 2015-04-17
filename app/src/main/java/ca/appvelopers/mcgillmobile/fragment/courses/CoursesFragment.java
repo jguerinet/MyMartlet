@@ -28,7 +28,7 @@ import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
@@ -60,7 +60,7 @@ public class CoursesFragment extends BaseFragment {
 
         lockPortraitMode();
 
-        GoogleAnalytics.sendScreen(mActivity, "View Courses");
+        Analytics.getInstance().sendScreen("View Courses");
 
         // Views
         mListView = (ListView)view.findViewById(R.id.courses_list);

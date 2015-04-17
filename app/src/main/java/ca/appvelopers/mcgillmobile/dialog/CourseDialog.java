@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
@@ -24,7 +24,7 @@ public class CourseDialog extends AlertDialog {
     public CourseDialog(final Activity activity, final ClassItem classItem) {
         super(activity);
 
-        GoogleAnalytics.sendScreen(activity, "Schedule - Course");
+        Analytics.getInstance().sendScreen("Schedule - Course");
 
         //Inflate the title
         View title = View.inflate(activity, R.layout.dialog_course_title, null);

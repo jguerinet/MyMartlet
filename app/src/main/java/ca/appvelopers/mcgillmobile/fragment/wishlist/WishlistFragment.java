@@ -26,7 +26,7 @@ import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
@@ -58,7 +58,7 @@ public class WishlistFragment extends BaseFragment {
 
         lockPortraitMode();
 
-        GoogleAnalytics.sendScreen(mActivity, "Wishlist");
+        Analytics.getInstance().sendScreen("Wishlist");
 
         //Check if there are any terms to register for
         if(App.getRegisterTerms().isEmpty()){
@@ -132,8 +132,8 @@ public class WishlistFragment extends BaseFragment {
                     //Save the courses to the App context
                     App.setClassWishlist(mClasses);
 
-                    GoogleAnalytics.sendEvent(mActivity, "Wishlist", "Remove", "" + checkedClasses.size(),
-                            null);
+                    Analytics.getInstance().sendEvent("Wishlist", "Remove",
+                            String.valueOf(checkedClasses.size()));
 
                     //Reload the adapter
                     loadInfo();

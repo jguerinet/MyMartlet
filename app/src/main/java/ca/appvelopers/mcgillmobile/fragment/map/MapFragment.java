@@ -38,7 +38,7 @@ import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.GoogleAnalytics;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 
 /**
  * Author: Julien Guerinet
@@ -80,7 +80,7 @@ public class MapFragment extends BaseFragment {
         //Title
         mActivity.setTitle(getString(R.string.title_map));
 
-        GoogleAnalytics.sendScreen(mActivity, "Map");
+        Analytics.getInstance().sendScreen("Map");
 
         //Bind the TextViews
         mInfoContainer = (LinearLayout)view.findViewById(R.id.info_container);
