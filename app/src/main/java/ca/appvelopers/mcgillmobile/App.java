@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile;
 
 import android.app.Application;
@@ -5,11 +21,11 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 import com.crashlytics.android.Crashlytics;
+import com.instabug.library.Instabug;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
-import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
@@ -26,6 +42,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Update;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Author: Julien
@@ -93,10 +110,13 @@ public class App extends Application {
         //Load the register terms
         registerTerms = Load.loadRegisterTerms(this);
 
-        //Set up The Fabric stuff: Twitter
+        //Set up The Fabric stuff: Twitter, Crashlytics
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
                 Constants.TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), new Crashlytics());
+
+        //Set up Instabug
+        Instabug.initialize(this, Constants.INSTABUG_KEY);
     }
 
     /* GETTER METHODS */
