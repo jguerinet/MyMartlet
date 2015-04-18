@@ -18,12 +18,11 @@ package ca.appvelopers.mcgillmobile.activity.main;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-
-import com.instabug.wrapper.support.activity.InstabugActionBarActivity;
 
 import java.util.Locale;
 
@@ -34,7 +33,7 @@ import ca.appvelopers.mcgillmobile.R;
  * Author: Julien
  * Date: 2014-03-16 11:42
  */
-public class BaseActivity extends InstabugActionBarActivity {
+public class BaseActivity extends ActionBarActivity {
     /**
      * The progress bar shown in the toolbar
      */
