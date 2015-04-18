@@ -1,7 +1,21 @@
+/*
+ * Copyright 2014-2015 Appvelopers Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,11 +27,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.instabug.library.Instabug;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,18 +46,11 @@ import ca.appvelopers.mcgillmobile.activity.HelpActivity;
 import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Language;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
-
-/**
- * Author: Julien Guerinet
- * Date: 2015-01-17 5:40 PM
- * Copyright (c) 2014 Appvelopers. All rights reserved.
- */
 
 public class SettingsFragment extends BaseFragment {
     @Override
@@ -92,34 +100,8 @@ public class SettingsFragment extends BaseFragment {
         bugContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Inflate the view
-                View dialogView = View.inflate(mActivity, R.layout.dialog_edittext, null);
-
-                //Create the Builder
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-                //Set up the view
-                alertDialogBuilder.setView(dialogView);
-                //EditText
-                final EditText userInput = (EditText) dialogView.findViewById(R.id.dialog_input);
-
-                //Set up the dialog
-                alertDialogBuilder.setCancelable(false)
-                        .setNegativeButton(getResources().getString(android.R.string.cancel),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                    }
-                                })
-                        .setPositiveButton(getResources().getString(android.R.string.ok),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        Analytics.getInstance().sendEvent("About", "Report a Bug",
-                                                null);
-
-                                        Help.sendBugReport(mActivity, userInput.getText().toString());
-                                    }
-                                })
-                        .create().show();
+                Analytics.getInstance().sendEvent("About", "Report a Bug", null);
+                Instabug.getInstance().invokeFeedbackSender();
             }
         });
 
