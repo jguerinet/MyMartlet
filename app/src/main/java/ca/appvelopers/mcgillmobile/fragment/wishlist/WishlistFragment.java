@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.fragment.wishlist;
 
 import android.content.DialogInterface;
@@ -16,26 +32,23 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.dialog.ChangeSemesterDialog;
+import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
-/**
- * Author: Julien Guerinet
- * Date: 2015-01-17 4:56 PM
- * Copyright (c) 2015 Appvelopers. All rights reserved.
- */
-
+@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class WishlistFragment extends BaseFragment {
     private ListView mListView;
     private WishlistSearchCourseAdapter mAdapter;
@@ -212,71 +225,78 @@ public class WishlistFragment extends BaseFragment {
 
     //Registers to the given courses
     private void executeRegistrationThread(List<ClassItem> courses){
-        new RegistrationThread(mActivity, mTerm, courses){
-            @Override
-            protected void onPreExecute(){
-                //Show the user we are refreshing
-                mActivity.showToolbarProgress(true);
+        //Show the user we are refreshing
+        mActivity.showToolbarProgress(true);
+
+        final RegistrationThread thread = new RegistrationThread(mActivity, mTerm, courses);
+        thread.start();
+
+        synchronized(thread){
+            //Wait for the thread to finish
+            try{
+                thread.wait();
+            } catch(InterruptedException e){
+                e.printStackTrace();
             }
+        }
 
-            // onPostExecute displays the results of the AsyncTask.
-            @Override
-            protected void onPostExecute(Boolean success) {
-                mActivity.showToolbarProgress(false);
+        if(thread.success()) {
+            Map<String, String> registrationErrors = thread.getRegistrationErrors();
 
-                if(success) {
-                    //Display whether the user was successfully registered
-                    if (mRegistrationErrors.isEmpty()) {
-                        Toast.makeText(mActivity, R.string.registration_success, Toast.LENGTH_LONG).show();
-                    }
+            //Display whether the user was successfully registered
+            if (registrationErrors.isEmpty()) {
+                Toast.makeText(mActivity, R.string.registration_success, Toast.LENGTH_LONG).show();
+            }
+            //Display a message if a registration error has occurred
+            else {
+                List<ClassItem> unregisteredCourses = new ArrayList<>();
+                String errorMessage = "";
 
-                    //Display a message if a registration error has occurred
-                    else {
-                        List<ClassItem> unregisteredCourses = new ArrayList<ClassItem>();
-                        String errorMessage = "";
+                //Go through the list of errors and create the error message
+                for (String crn : registrationErrors.keySet()) {
+                    //Find the right class
+                    for (ClassItem classItem : mClasses) {
+                        if (classItem.getCRN() == Integer.valueOf(crn)) {
+                            //Add it to the list of registered courses
+                            unregisteredCourses.add(classItem);
 
-                        //Go through the list of errors and create the error message
-                        for (String crn : mRegistrationErrors.keySet()) {
-                            //Find the right class
-                            for (ClassItem classItem : mRegistrationCourses) {
-                                if (classItem.getCRN() == Integer.valueOf(crn)) {
-                                    //Add it to the list of registered courses
-                                    unregisteredCourses.add(classItem);
+                            //Add this class to the error message
+                            errorMessage += classItem.getCourseCode() + " ("
+                                    + classItem.getSectionType() + ") - "
+                                    + registrationErrors.get(crn) + "\n";
 
-                                    //Add this class to the error message
-                                    errorMessage += classItem.getCourseCode() + " ("
-                                            + classItem.getSectionType() + ") - " + mRegistrationErrors.get(crn) + "\n";
-
-                                    break;
-                                }
-                            }
+                            break;
                         }
-
-                        //Remove all of the unregistered courses from the list of registered courses
-                        mRegistrationCourses.removeAll(unregisteredCourses);
-
-                        //Show success messages for the correctly registered courses
-                        for (ClassItem classItem : mRegistrationCourses) {
-                            errorMessage += classItem.getCourseCode() + " (" +
-                                    classItem.getSectionType() + ") - " + getString(R.string.registration_success) + "\n";
-                        }
-
-                        //Show an alert dialog with the errors
-                        DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.registration_error),
-                                errorMessage);
                     }
-
-                    //Remove the courses from the wishlist if they were there
-                    mClasses.removeAll(mRegistrationCourses);
-
-                    //Set the new wishlist
-                    App.setClassWishlist(mClasses);
-
-                    //Reload the adapter
-                    loadInfo();
                 }
+
+                //Remove all of the unregistered courses from the list of registered courses
+                mClasses.removeAll(unregisteredCourses);
+
+                //Show success messages for the correctly registered courses
+                for (ClassItem classItem : mClasses) {
+                    errorMessage += classItem.getCourseCode() + " (" +
+                            classItem.getSectionType() + ") - " + getString(R.string.registration_success) + "\n";
+                }
+
+                //Show an alert dialog with the errors
+                DialogHelper.showNeutralAlertDialog(mActivity,
+                        getString(R.string.registration_error), errorMessage);
             }
-        }.execute();
+
+            //Remove the courses from the wishlist if they were there
+            List<ClassItem> wishlist = App.getClassWishlist();
+            wishlist.removeAll(mClasses);
+
+            //Set the new wishlist
+            App.setClassWishlist(mClasses);
+
+            //Reload the adapter
+            loadInfo();
+        }
+
+        //Stop the refreshing
+        mActivity.showToolbarProgress(false);
     }
 
     //Update the wishlist
@@ -325,11 +345,22 @@ public class WishlistFragment extends BaseFragment {
                     return false;
                 }
 
-                String registrationUrl = Connection.getCourseURL(course.getTerm(),
-                        courseSubject, null, courseNumber,
-                        0, 0, 0, 0, '0', 0, 0, '0', null);
+                String registrationUrl =
+                        new Connection.SearchURLBuilder(course.getTerm(), courseSubject)
+                            .courseNumber(courseNumber)
+                            .build();
 
-                String classesString = Connection.getInstance().getUrl(mActivity, registrationUrl);
+                String classesString;
+                try{
+                    classesString = Connection.getInstance().get(registrationUrl);
+                } catch(MinervaLoggedOutException e){
+                    //TODO
+                    e.printStackTrace();
+                    return true;
+                } catch(Exception e){
+                    e.printStackTrace();
+                    return true;
+                }
 
                 //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
                 //This parses all ClassItems for a given course
