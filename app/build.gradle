@@ -69,6 +69,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:7.0.0'
     compile 'joda-time:joda-time:2.7'
     compile 'com.instabug.library:instabugsupport:1+'
+    compile 'org.jsoup:jsoup:1.7.2'
     compile('com.twitter.sdk.android:twitter:1.4.0@aar') {
         transitive = true;
     }
