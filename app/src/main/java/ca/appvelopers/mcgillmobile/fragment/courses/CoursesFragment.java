@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.fragment.courses;
 
 import android.app.AlertDialog;
@@ -22,22 +38,18 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.dialog.ChangeSemesterDialog;
+import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
-/**
- * Author: Julien Guerinet
- * Date: 2015-01-17 5:12 PM
- * Copyright (c) 2014 Appvelopers. All rights reserved.
- */
-
+@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class CoursesFragment extends BaseFragment {
     private ListView mListView;
     private TextView mUnregisterButton;
@@ -172,33 +184,39 @@ public class CoursesFragment extends BaseFragment {
             executeClassDownloader();
 
             //Download the Transcript (if ever the user has new semesters on their transcript)
-            new TranscriptDownloader(mActivity) {
-                @Override
-                protected void onPreExecute() {}
-                @Override
-                protected void onPostExecute(Boolean loadInfo) {}
-            }.execute();
+            final TranscriptDownloader downloader = new TranscriptDownloader(mActivity, false);
+            downloader.start();
+
+            //Wait for the downloader to finish
+            synchronized(downloader){
+                try{
+                    downloader.wait();
+                } catch(InterruptedException e){}
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void executeClassDownloader(){
-        new ClassDownloader(mActivity, mTerm) {
-            @Override
-            protected void onPreExecute() {
-                mActivity.showToolbarProgress(true);
-            }
+        //Show the user we are refreshing
+        mActivity.showToolbarProgress(true);
 
-            @Override
-            protected void onPostExecute(Boolean loadInfo) {
-                if(loadInfo){
-                    loadInfo();
-                }
+        final ClassDownloader downloader = new ClassDownloader(mActivity, mTerm);
+        downloader.start();
 
-                mActivity.showToolbarProgress(false);
-            }
-        }.execute();
+        //Wait for the downloader to finish
+        synchronized(downloader){
+            try{
+                downloader.wait();
+            } catch(InterruptedException e){}
+        }
+
+        mActivity.showToolbarProgress(false);
+
+        if(downloader.success()){
+            loadInfo();
+        }
     }
 
     //Connects to Minerva in a new thread to register for courses
@@ -219,28 +237,17 @@ public class CoursesFragment extends BaseFragment {
         //Retrieve page that contains registration status from Minerva
         @Override
         protected Boolean doInBackground(Void... params){
-            String resultString = Connection.getInstance().getUrl(mActivity,
-                    Connection.getRegistrationURL(mTerm, mClasses, true));
-
-            //If result string is null, there was an error
-            if(resultString == null){
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.error),
-                                    getString(R.string.error_other));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                return false;
-            }
-            //Otherwise, check for errors
-            else{
+            try{
+                String resultString = Connection.getInstance().get(Connection.getRegistrationURL(
+                        mTerm, mClasses, true));
                 mRegistrationErrors = Parser.parseRegistrationErrors(resultString);
                 return true;
+            } catch(MinervaLoggedOutException e){
+                e.printStackTrace();
+                //TODO Receiver stuff
+                return false;
+            } catch(Exception e){
+                return false;
             }
         }
 
@@ -282,6 +289,10 @@ public class CoursesFragment extends BaseFragment {
                     DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.unregistration_error),
                             errorMessage);
                 }
+            }
+            else{
+                DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.error),
+                        getString(R.string.error_other));
             }
 
             executeClassDownloader();
