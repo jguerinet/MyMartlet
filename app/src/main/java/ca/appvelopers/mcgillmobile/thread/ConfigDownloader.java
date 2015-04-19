@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers Inc.
+ * Copyright 2014-2015 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.thread;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -31,17 +30,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Authenticator;
+import com.squareup.okhttp.Credentials;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.json.JSONException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,7 @@ import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 
 public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
+    private static final String TAG = "ConfigDownloader";
     private Context mContext;
     private boolean mForceReload;
     private String mPlacesURL;
@@ -86,38 +88,48 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                 /* CONFIG */
                 mCurrentSection = "CONFIG";
 
-                //Connect to the server
-                URL url = new URL(Constants.CONFIG_URL);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                //Initialize the OkHttp client
+                OkHttpClient client = new OkHttpClient();
 
-                //Set up the connection
-                connection.setRequestMethod("GET");
+                //Add authentication
+                client.setAuthenticator(new Authenticator() {
+                    @Override
+                    public Request authenticate(Proxy proxy, Response response) throws
+                            IOException{
+                        //Set up the credentials
+                        String credentials = Credentials.basic(Constants.CONFIG_USERNAME,
+                                Constants.CONFIG_PASSWORD);
+                        //Add it to the passed response's request object
+                        return response.request().newBuilder()
+                                .header("Authorization", credentials)
+                                .build();
+                    }
+                    @Override
+                    public Request authenticateProxy(Proxy proxy, Response response)
+                            throws IOException{
+                        return null;
+                    }
+                });
 
-                //Authentication
-                String authentication = Constants.CONFIG_USERNAME + ":" + Constants.CONFIG_PASSWORD;
-                String encoding = Base64.encodeToString(authentication.getBytes(), Base64.NO_WRAP);
-                connection.setRequestProperty("Authorization", "Basic " + encoding);
+
+                //Build the config request
+                Request.Builder requestBuilder = new Request.Builder()
+                        .get()
+                        .url(Constants.CONFIG_URL);
 
                 //No IfModifiedSince stuff if we are forcing the reload
                 if (!mForceReload && date != null) {
-                    connection.addRequestProperty("If-Modified-Since", date);
+                    requestBuilder.header("If-Modified-Since", date);
                 }
 
-                //Connect
-                connection.connect();
+                //Make the request and get the response
+                Response response = client.newCall(requestBuilder.build()).execute();
 
-                int responseCode = connection.getResponseCode();
-                Log.e("Config Response Code", String.valueOf(responseCode));
+                //Get the response code
+                int responseCode = response.code();
+                Log.d(TAG, "Config Response Code: " + String.valueOf(responseCode));
                 if (responseCode == 200) {
-                    //Read from the input stream
-                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String line;
-
-                    while ((line = in.readLine()) != null) {
-                        stringBuilder.append(line);
-                    }
-
+                    //Set up the Gson parser by adding our custom deserializers
                     GsonBuilder builder = new GsonBuilder();
                     builder.registerTypeAdapter(Place.class, new PlaceDeserializer());
                     builder.registerTypeAdapter(PlaceCategory.class, new PlaceCategoryDeserializer());
@@ -125,51 +137,27 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                     JsonParser parser = new JsonParser();
 
                     //Parse the downloaded String
-                    parseConfig(gson, parser, stringBuilder.toString());
-
-                    //Terminate the connection
-                    connection.disconnect();
+                    parseConfig(gson, parser, response.body().string());
 
                     /* PLACES */
                     mCurrentSection = "PLACES";
 
                     if(mPlacesURL != null){
-                        //Connect to the server
-                        url = new URL(mPlacesURL);
-                        connection = (HttpURLConnection) url.openConnection();
+                        //Use the same builder, just change the URL
+                        requestBuilder.url(mPlacesURL);
 
-                        //Set up the connection
-                        connection.setRequestMethod("GET");
-                        //Authentication
-                        connection.setRequestProperty("Authorization", "Basic " + encoding);
+                        //Make the request and get the response
+                        response = client.newCall(requestBuilder.build()).execute();
 
-                        //No IfModifiedSince stuff if we are forcing the reload
-                        if (!mForceReload && date != null) {
-                            connection.addRequestProperty("If-Modified-Since", date);
-                        }
-
-                        //Connect
-                        connection.connect();
-
-                        responseCode = connection.getResponseCode();
-                        Log.e("Places Response Code", String.valueOf(responseCode));
+                        responseCode = response.code();
+                        Log.d(TAG, "Places Response Code: " + String.valueOf(responseCode));
                         if (responseCode == 200) {
-                            //Read from the input stream
-                            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                            stringBuilder = new StringBuilder();
-
-                            while ((line = in.readLine()) != null) {
-                                stringBuilder.append(line);
-                            }
-
                             //Parse the downloaded String
-                            parsePlaces(gson, parser, stringBuilder.toString());
-
-                            //Terminate the connection
-                            connection.disconnect();
+                            parsePlaces(gson, parser, response.body().string());
 
                             //Update the If-Modified-Since date
-                            Save.saveIfModifiedSinceDate(mContext, Help.getIfModifiedSinceString(DateTime.now().withZone(DateTimeZone.forID("UCT"))));
+                            Save.saveIfModifiedSinceDate(mContext, Help.getIfModifiedSinceString(
+                                    DateTime.now().withZone(DateTimeZone.forID("UCT"))));
                         }
                     }
                 }
