@@ -233,7 +233,7 @@ public class SplashActivity extends BaseActivity {
                         //Set the username and password
                         Connection.getInstance().setUsername(username + getString(R.string.login_email));
                         Connection.getInstance().setPassword(password);
-                        final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(SplashActivity.this);
+                        final ConnectionStatus connectionStatus = Connection.getInstance().login(SplashActivity.this);
                         // If the connection was successful, go to Homepage
                         if (connectionStatus == ConnectionStatus.OK) {
                             // Store the login info.
@@ -383,7 +383,7 @@ public class SplashActivity extends BaseActivity {
 
                         //If he's already logged in, the connection is OK
                         mConnectionStatus = mLoggedIn ? ConnectionStatus.OK :
-                                connection.connectToMinerva(mContext);
+                                connection.login(mContext);
 
                         //If we did not connect, break the loop now
                         if(mConnectionStatus != ConnectionStatus.OK){

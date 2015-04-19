@@ -29,9 +29,7 @@ public enum ConnectionStatus {
     WRONG_INFO,
     ERROR_UNKNOWN,
     NO_INTERNET,
-    MINERVA_LOGOUT,
-    AUTHENTICATING,
-    CONNECTION_FIRST_ACCESS;
+    MINERVA_LOGOUT;
 
     public String getErrorString(Context context){
         switch(this){

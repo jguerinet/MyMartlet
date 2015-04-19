@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.fragment;
 
 import android.app.ProgressDialog;
@@ -20,25 +36,19 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.SearchResultsActivity;
+import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.view.TermAdapter;
-
-/**
- * Author: Julien Guerinet
- * Date: 2015-01-17 4:15 PM
- * Copyright (c) 2014 Appvelopers. All rights reserved.
- */
 
 public class CourseSearchFragment extends BaseFragment {
     private Spinner mTermSpinner;
@@ -171,14 +181,8 @@ public class CourseSearchFragment extends BaseFragment {
             return;
         }
 
-        //Course Number
-        String courseNumber = mCourseNumber.getText().toString();
-
-        //Course Title
-        String courseTitle = mCourseTitle.getText().toString();
-
-        //Credits
-        int minCredits, maxCredits ;
+        //Check that the credits are valid
+        int minCredits, maxCredits;
         try {
             minCredits = Integer.valueOf(mMinCredits.getText().toString());
         } catch (NumberFormatException e){
@@ -196,61 +200,43 @@ public class CourseSearchFragment extends BaseFragment {
             return;
         }
 
-        //Start time
-        int startHour = mStartTime.getCurrentHour();
-        int startMinute = mStartTime.getCurrentMinute();
-        char startAMPM = 'a';
-        if(startHour == 12){
-            startAMPM = 'p';
-        }
-        else if(startHour > 12){
-            startAMPM = 'p';
-            startHour = startHour - 12;
-        }
-
-
-        //End Time
-        int endHour = mEndTime.getCurrentHour();
-        int endMinute = mEndTime.getCurrentMinute();
-        char endAMPM = 'a';
-        if(endHour == 12){
-            endAMPM = 'p';
-        }
-        else if(endHour > 12){
-            endAMPM = 'p';
-            endHour = endHour - 12;
-        }
-
+        Connection.SearchURLBuilder builder = new Connection.SearchURLBuilder(term, courseSubject)
+                .courseNumber(mCourseNumber.getText().toString())
+                .title(mCourseTitle.getText().toString())
+                .minCredits(minCredits)
+                .maxCredits(maxCredits)
+                .startHour(mStartTime.getCurrentHour() % 12)
+                .startMinute(mStartTime.getCurrentMinute())
+                .startAM(mStartTime.getCurrentHour() < 12)
+                .endHour(mStartTime.getCurrentHour() % 12)
+                .endMinute(mStartTime.getCurrentMinute())
+                .endAM(mEndTime.getCurrentHour() < 12);
 
         //Days
-        List<String> days = new ArrayList<String>();
         if(mMonday.isChecked()){
-            days.add("m");
+            builder.addDay(Day.MONDAY);
         }
         if(mTuesday.isChecked()){
-            days.add("t");
+            builder.addDay(Day.TUESDAY);
         }
         if(mWednesday.isChecked()){
-            days.add("w");
+            builder.addDay(Day.WEDNESDAY);
         }
         if(mThursday.isChecked()){
-            days.add("r");
+            builder.addDay(Day.THURSDAY);
         }
         if(mFriday.isChecked()){
-            days.add("f");
+            builder.addDay(Day.FRIDAY);
         }
         if(mSaturday.isChecked()){
-            days.add("s");
+            builder.addDay(Day.SATURDAY);
         }
         if(mSunday.isChecked()){
-            days.add("u");
+            builder.addDay(Day.SUNDAY);
         }
 
         //Obtain courses
-        Log.e("Registration options", startHour + ":" + startMinute + " " + endHour + ":" + endMinute + " " + days);
-        new CoursesGetter(term, Connection.getCourseURL(term, courseSubject, courseNumber,
-                courseTitle, minCredits, maxCredits, startHour, startMinute, startAMPM, endHour,
-                endMinute, endAMPM, days)).execute();
+        new CoursesGetter(term, builder.build());
     }
 
     @Override

@@ -47,6 +47,7 @@ import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
+import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
 import okio.BufferedSink;
 
@@ -61,28 +62,6 @@ import okio.BufferedSink;
  */
 public class Connection {
 	private static final String TAG = "Connection";
-	/**
-	 * The user's username
-	 */
-	private String mUsername;
-	/**
-	 * The user's password
-	 */
-	private String mPassword;
-	/**
-	 * The list of cookies
-	 */
-	private List<String> mCookies;
-	/**
-	 * The OkHttpClient
-	 */
-	private OkHttpClient mClient;
-	/**
-	 * The current connection status
-	 */
-	private ConnectionStatus mStatus;
-
-	/* URL CONSTANTS */
 	/**
 	 * Minerva host
 	 */
@@ -102,7 +81,8 @@ public class Connection {
 	/**
 	 * Schedule URL
 	 */
-    private static final String SCHEDULE = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
+    private static final String SCHEDULE =
+			"https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
 	/**
 	 * Transcript URL
 	 */
@@ -135,6 +115,22 @@ public class Connection {
 	 * Singleton instance
 	 */
 	private static Connection connection;
+	/**
+	 * The user's username
+	 */
+	private String mUsername;
+	/**
+	 * The user's password
+	 */
+	private String mPassword;
+	/**
+	 * The list of cookies
+	 */
+	private List<String> mCookies;
+	/**
+	 * The OkHttpClient
+	 */
+	private OkHttpClient mClient;
 
 	/**
 	 * @return The connection instance
@@ -151,8 +147,6 @@ public class Connection {
 	 * Default Constructor
 	 */
 	private Connection(){
-		//Set the status to first access when instantiating the connection singleton object
-		this.mStatus = ConnectionStatus.CONNECTION_FIRST_ACCESS;
 		//Get the username and password from the SharedPrefs
 		this.mUsername = Load.loadFullUsername(App.getContext());
 		this.mPassword = Load.loadPassword(App.getContext());
@@ -163,8 +157,6 @@ public class Connection {
 		//Set up the cookie handler
 		CookieHandler.setDefault(new CookieManager());
 	}
-
-	/* GETTERS */
 
 	/* SETTERS */
 
@@ -184,50 +176,6 @@ public class Connection {
 
 	/* HELPERS */
 
-	/**
-	 * Attempts to connect to Minerva
-	 *
-	 * @return The resulting connection status
-	 */
-	public ConnectionStatus connectToMinerva(){
-		//Update the status to authenticating
-    	mStatus = ConnectionStatus.AUTHENTICATING;
-		try {
-			//1. Get Minerva's login page and determine the login parameters
-			String postParams = getLoginParameters(get(LOGIN_PAGE, false));
-			
-			//Search for "Authorization Failure"
-			if(postParams.contains("WRONG_INFO")){
-				mStatus = ConnectionStatus.WRONG_INFO;
-				return ConnectionStatus.WRONG_INFO;
-			}
-
-			//2. Construct above post's content and then send a POST request for authentication
-			String response = post(LOGIN_POST, LOGIN_PAGE, postParams);
-
-			//Check that the connection was actually made
-			if (!response.contains("WELCOME")){
-				mStatus = ConnectionStatus.WRONG_INFO;
-				return ConnectionStatus.WRONG_INFO;
-			}
-		} catch (MinervaLoggedOutException e) {
-			//This should never happen
-			Log.e(TAG, "MinervaLoggedOutException during login", e);
-			mStatus = ConnectionStatus.MINERVA_LOGOUT;
-			return ConnectionStatus.MINERVA_LOGOUT;
-		} catch (IOException e) {
-			Log.e(TAG, "IOException during login", e);
-            mStatus = ConnectionStatus.ERROR_UNKNOWN;
-			return ConnectionStatus.ERROR_UNKNOWN;
-		} catch(NoInternetException e){
-			mStatus = ConnectionStatus.NO_INTERNET;
-			return ConnectionStatus.NO_INTERNET;
-		}
-
-		mStatus = ConnectionStatus.OK;
-        return ConnectionStatus.OK;
-    }
-	 
 	/**
 	 * Sends a GET request and returns the body in String format
 	 *
@@ -266,7 +214,7 @@ public class Connection {
 
 		int responseCode = response.code();
 		Log.d(TAG, "Response Code: " + responseCode);
-		
+
 		//Check the response code
 		switch(responseCode){
 			//If this is a redirect, go to the new link
@@ -278,43 +226,37 @@ public class Connection {
 				//All is ignored, carry on
 				break;
 		}
-		
+
 		//Check the headers
 		if(!validateHeaders(response.headers())){
-			switch(mStatus){
-				//We've been logged out of Minerva
-				case MINERVA_LOGOUT:
-					//Try logging back in if needed
-					if(autoLogin){
-						//Launch the login process
-						final ConnectionStatus status = connectToMinerva();
+			//We've been logged out of Minerva. Try logging back in if needed
+			if(autoLogin){
+				//Launch the login process
+				final ConnectionStatus status = login();
 
-						//Successfully logged them back in, try retrieving the stuff again
-						if(status == ConnectionStatus.OK){
-							//TODO Catch exceptions here ?
-							return connection.get(url, false);
-						}
-						//No internet: show no internet dialog
-						else if(status == ConnectionStatus.NO_INTERNET){
-							throw new NoInternetException();
-						}
-						//Wrong credentials: back to login screen
-						else if(status == ConnectionStatus.WRONG_INFO){
-							//TODO Locally broadcast this
-							return null;
-						}
-					}
-					//If not, throw the exception
-					else{
-						throw new MinervaLoggedOutException();
-					}
-				default:
-					break;
+				//Successfully logged them back in, try retrieving the stuff again
+				if(status == ConnectionStatus.OK){
+					//TODO Catch exceptions here ?
+					return connection.get(url, false);
+				}
+				//No internet: show no internet dialog
+				else if(status == ConnectionStatus.NO_INTERNET){
+					throw new NoInternetException();
+				}
+				//Wrong credentials: back to login screen
+				else if(status == ConnectionStatus.WRONG_INFO){
+					//TODO Locally broadcast this
+					return null;
+				}
+			}
+			//If not, throw the exception
+			else{
+				throw new MinervaLoggedOutException();
 			}
 		}
 
 		//Get the response cookies and set them
-		setCookies(response.headers("Set-Cookie"));
+		mCookies = response.headers("Set-Cookie");
 
 		//Return the body in String format
 		return response.body().string();
@@ -370,6 +312,42 @@ public class Connection {
 		//Return the response body
 		return response.body().string();
 	}
+
+	/**
+	 * Attempts to log into Minerva
+	 *
+	 * @return The resulting connection status
+	 */
+	public ConnectionStatus login(){
+		try {
+			//1. Get Minerva's login page and determine the login parameters
+			String postParams = getLoginParameters(get(LOGIN_PAGE, false));
+			
+			//Search for "Authorization Failure"
+			if(postParams.contains("WRONG_INFO")){
+				return ConnectionStatus.WRONG_INFO;
+			}
+
+			//2. Construct above post's content and then send a POST request for authentication
+			String response = post(LOGIN_POST, LOGIN_PAGE, postParams);
+
+			//Check that the connection was actually made
+			if (!response.contains("WELCOME")){
+				return ConnectionStatus.WRONG_INFO;
+			}
+		} catch (MinervaLoggedOutException e) {
+			//This should never happen
+			Log.e(TAG, "MinervaLoggedOutException during login", e);
+			return ConnectionStatus.MINERVA_LOGOUT;
+		} catch (IOException e) {
+			Log.e(TAG, "IOException during login", e);
+			return ConnectionStatus.ERROR_UNKNOWN;
+		} catch(NoInternetException e){
+			return ConnectionStatus.NO_INTERNET;
+		}
+
+        return ConnectionStatus.OK;
+    }
 
 	/**
 	 * Gets the parameters to use for logging into Minerva
@@ -430,10 +408,6 @@ public class Connection {
 
 		return result.toString();
 	}
-	 
-	public void setCookies(List<String> cookies) {
-		this.mCookies = cookies;
-	}
 
 	/**
 	 * Check the headers for a bad connection
@@ -446,70 +420,22 @@ public class Connection {
     	List<String> setCookies = headers.values("Set-Cookie");
     	for(String cookie: setCookies){
 	    	if(cookie.contains("SESSID=;")){
-	    		if(mStatus != ConnectionStatus.AUTHENTICATING){
-				    //If we're not trying to authenticate, update the status to logged out
-				    mStatus = ConnectionStatus.MINERVA_LOGOUT;
-			    }
-	    		return false;
+			    return false;
 	    	}
     	}
     	return true;
     }
 
-    /* URL Builders */
+    /* URL BUILDERS */
 
+	/**
+	 * Returns the URL to download the schedule for a given term
+	 *
+	 * @param term The term
+	 * @return The schedule URL
+	 */
     public static String getScheduleURL(Term term){
         return Connection.SCHEDULE + term.getYear() + term.getSeason().getSeasonNumber();
-    }
-
-    /**
-     * Get the URL to look for courses for the given parameters
-     * @param term The course term
-     * @param subject The course subject
-     * @param courseNumber The course number
-     * @return The proper search URL
-     */
-    public static String getCourseURL(Term term, String subject, String courseNumber,
-                                      String title, int minCredit, int maxCredit, int startHour,
-                                      int startMinute, char startAMPM, int endHour, int endMinute,
-                                      char endAMPM, List<String> days){
-
-        String courseSearchURL = COURSE_SEARCH
-                + "term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
-                "&sel_subj=dummy" +
-                "&sel_day=dummy" +
-                "&sel_schd=dummy" +
-                "&sel_insm=dummy" +
-                "&sel_camp=dummy" +
-                "&sel_levl=dummy" +
-                "&sel_sess=dummy" +
-                "&sel_instr=dummy" +
-                "&sel_ptrm=dummy" +
-                "&sel_attr=dummy" +
-                "&sel_subj=" + subject +
-                "&sel_crse=" + courseNumber +
-                "&sel_title=" + title +
-                "&sel_schd=%25" +
-                "&sel_from_cred=" + minCredit +
-                "&sel_to_cred=" + maxCredit +
-                "&sel_levl=%25" +
-                "&sel_ptrm=%25" +
-                "&sel_instr=%25" +
-                "&sel_attr=%25" +
-                "&begin_hh=" + startHour +
-                "&begin_mi=" + startMinute +
-                "&begin_ap=" + startAMPM +
-                "&end_hh=" + endHour +
-                "&end_mi=" + endMinute +
-                "&end_ap=" + endAMPM;
-        
-        if(days!=null){
-	        for(String day : days){
-	            courseSearchURL += "&sel_day=" + day;
-	        }
-        }
-
-        return courseSearchURL;
     }
 
     /**
@@ -571,4 +497,216 @@ public class Connection {
         registrationURL += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
         return registrationURL;
     }
+
+	/**
+	 * Builder for the course search URL
+	 */
+	public static class SearchURLBuilder {
+		/**
+		 * The course term
+		 */
+		private Term mTerm;
+		/**
+		 * The course subject
+		 */
+		private String mSubject;
+		/**
+		 * The course number
+		 */
+		private String mCourseNumber = "";
+		/**
+		 * The course title
+		 */
+		private String mTitle = "";
+		/**
+		 * The course min credit
+		 */
+		private int mMinCredit = 0;
+		/**
+		 * The course max credit
+		 */
+		private int mMaxCredit = 0;
+		/**
+		 * The course start hour
+		 */
+		private int mStartHour = 0;
+		/**
+		 * The course start minute
+		 */
+		private int mStartMinute = 0;
+		/**
+		 * True if the start time is AM, false otherwise
+		 */
+		private boolean mStartAM = true;
+		/**
+		 * The course end hour
+		 */
+		private int mEndHour = 0;
+		/**
+		 * The course end minute
+		 */
+		private int mEndMinute = 0;
+		/**
+		 * True if the end time is AM, false otherwise
+		 */
+		private boolean mEndAM = true;
+		/**
+		 * The course days
+		 */
+		private List<Day> mDays = new ArrayList<>();
+
+		/**
+		 * Default Constructor
+		 *
+		 * @param term    The course term
+		 * @param subject The course subject
+		 */
+		public SearchURLBuilder(Term term, String subject){
+			this.mTerm = term;
+			this.mSubject = subject;
+		}
+
+		/* SETTERS */
+
+		/**
+		 * @param courseNumber Sets the course number
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder courseNumber(String courseNumber){
+			this.mCourseNumber = courseNumber;
+			return this;
+		}
+
+		/**
+		 * @param title Sets the course title
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder title(String title){
+			this.mTitle = title;
+			return this;
+		}
+
+		/**
+		 * @param minCredit Sets the course min credits
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder minCredits(int minCredit){
+			this.mMinCredit = minCredit;
+			return this;
+		}
+
+		/**
+		 * @param maxCredit Sets the course max credits
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder maxCredits(int maxCredit){
+			this.mMaxCredit = maxCredit;
+			return this;
+		}
+
+		/**
+		 * @param startHour Sest the course start hour
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder startHour(int startHour){
+			this.mStartHour = startHour;
+			return this;
+		}
+
+		/**
+		 * @param startMinute Sets the course start minute
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder startMinute(int startMinute){
+			this.mStartMinute = startMinute;
+			return this;
+		}
+
+		/**
+		 * @param startAM Sets if the course starting time is AM or PM
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder startAM(boolean startAM){
+			this.mStartAM = startAM;
+			return this;
+		}
+
+		/**
+		 * @param endHour Sets the course end hour
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder endHour(int endHour){
+			this.mEndHour = endHour;
+			return this;
+		}
+
+		/**
+		 * @param endMinute Sets the course end minute
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder endMinute(int endMinute){
+			this.mEndMinute = endMinute;
+			return this;
+		}
+
+		/**
+		 * @param endAM Sets if the course ending time is AM or PM
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder endAM(boolean endAM){
+			this.mEndAM = endAM;
+			return this;
+		}
+
+		/**
+		 * @param day Adds a course day
+		 * @return The builder instance
+		 */
+		public SearchURLBuilder addDay(Day day){
+			this.mDays.add(day);
+			return this;
+		}
+
+		/**
+		 * Builds the Course Search URL String
+		 *
+		 * @return The course search URL to use for this course search
+		 */
+		public String build(){
+			String url = COURSE_SEARCH +
+					"term_in=" + mTerm.getYear() + mTerm.getSeason().getSeasonNumber() +
+					"&sel_subj=dummy" +
+					"&sel_day=dummy" +
+					"&sel_schd=dummy" +
+					"&sel_insm=dummy" +
+					"&sel_camp=dummy" +
+					"&sel_levl=dummy" +
+					"&sel_sess=dummy" +
+					"&sel_instr=dummy" +
+					"&sel_ptrm=dummy" +
+					"&sel_attr=dummy" +
+					"&sel_subj=" + mSubject +
+					"&sel_crse=" + mCourseNumber +
+					"&sel_title=" + mTitle +
+					"&sel_schd=%25" +
+					"&sel_from_cred=" + mMinCredit +
+					"&sel_to_cred=" + mMaxCredit +
+					"&sel_levl=%25" +
+					"&sel_ptrm=%25" +
+					"&sel_instr=%25" +
+					"&sel_attr=%25" +
+					"&begin_hh=" + mStartHour +
+					"&begin_mi=" + mStartMinute +
+					"&begin_ap=" + (mStartAM ? 'a' : 'p') +
+					"&end_hh=" + mEndHour +
+					"&end_mi=" + mEndMinute +
+					"&end_ap=" + (mEndAM ? 'a' : 'p');
+
+			for(Day day : mDays){
+				url += "&sel_day=" + day.getDayChar();
+			}
+
+			return url;
+		}
+	}
 }
