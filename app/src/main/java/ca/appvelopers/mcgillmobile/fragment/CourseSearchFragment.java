@@ -42,6 +42,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.SearchResultsActivity;
+import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
@@ -279,7 +280,7 @@ public class CourseSearchFragment extends BaseFragment {
     private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
         private Term mTerm;
         private String mClassSearchURL;
-        private ArrayList<ClassItem> mClasses;
+        private List<ClassItem> mClasses;
         private ProgressDialog mDialog;
 
         public CoursesGetter(Term term, String classSearchURL){
@@ -300,16 +301,15 @@ public class CourseSearchFragment extends BaseFragment {
         @Override
         protected Boolean doInBackground(Void... params){
             Log.e("Class search URL",  mClassSearchURL);
-            String classesString = Connection.getInstance().getUrl(mActivity, mClassSearchURL);
-
-            //There was an error
-            if(classesString == null){
-                return false;
-            }
-            //Parse
-            else{
-                this.mClasses = (ArrayList<ClassItem>)Parser.parseClassResults(mTerm, classesString);
+            try{
+                String classesString = Connection.getInstance().get(mClassSearchURL);
+                this.mClasses = Parser.parseClassResults(mTerm, classesString);
                 return true;
+            } catch(MinervaLoggedOutException e){
+                //TODO Broadcast message here
+                return false;
+            } catch(Exception e){
+                return false;
             }
         }
 
@@ -331,7 +331,7 @@ public class CourseSearchFragment extends BaseFragment {
             else{
                 Intent intent = new Intent(mActivity, SearchResultsActivity.class)
                         .putExtra(Constants.TERM, mTerm)
-                        .putExtra(Constants.CLASSES, mClasses);
+                        .putExtra(Constants.CLASSES, (ArrayList<ClassItem>)mClasses);
                 startActivity(intent);
             }
         }
