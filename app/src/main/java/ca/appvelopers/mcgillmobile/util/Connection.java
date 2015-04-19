@@ -63,20 +63,6 @@ import okio.BufferedSink;
 public class Connection {
 	private static final String TAG = "Connection";
 	/**
-	 * Minerva host
-	 */
-    private static final String MINERVA_HOST = "horizon.mcgill.ca";
-	/**
-	 * Minerva base URL
-	 */
-	private static final String MINERVA_ORIGIN = "https://horizon.mcgill.ca";
-	/**
-	 * User Agent
-	 */
-	private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-			"AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-			"Mobile Safari/<WebKit Rev>";
-	/**
 	 * Login URL
 	 */
 	private static final String LOGIN_PAGE_URL =
@@ -283,8 +269,8 @@ public class Connection {
 						sink.writeString(postParams, Charset.forName("UTF-8"));
 					}
 				})
-				.header("Host", MINERVA_HOST)
-				.header("Origin", MINERVA_ORIGIN)
+				.header("Host", "horizon.mcgill.ca")
+				.header("Origin", "https://horizon.mcgill.ca")
 				.header("DNT", "1")
 				.header("Connection", "keep-alive")
 				.header("Referer", referer);
@@ -411,7 +397,9 @@ public class Connection {
 		return new Request.Builder()
 				.url(url)
 				.cacheControl(new CacheControl.Builder().noCache().build())
-				.header("User-Agent", USER_AGENT)
+				.header("User-Agent", "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+						"AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
+						"Mobile Safari/<WebKit Rev>")
 				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
 				.header("Accept-Language", "en-US,en;q=0.5");
 	}
