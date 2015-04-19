@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers Inc.
+ * Copyright 2014-2015 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
@@ -184,5 +186,17 @@ public class Help {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    /**
+     * Check if the user is connected to the internet
+     *
+     * @return True if the user is connected to the internet, false otherwise
+     */
+    public static boolean isConnected() {
+        ConnectivityManager connectManager = (ConnectivityManager)
+                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectManager.getActiveNetworkInfo();
+        return info != null && info.isConnected();
     }
 }

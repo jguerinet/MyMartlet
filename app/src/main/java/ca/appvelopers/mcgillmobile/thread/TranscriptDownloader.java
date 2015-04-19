@@ -1,8 +1,23 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.thread;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import ca.appvelopers.mcgillmobile.R;
@@ -12,12 +27,19 @@ import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
- * Author : Julien
- * Date :  2014-06-18 7:36 PM
- * Copyright (c) 2014 Julien Guerinet. All rights reserved.
+ * Downloads, parses and saves the user's transcript
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
-public abstract class TranscriptDownloader extends AsyncTask<Void, Void, Boolean>{
+public abstract class TranscriptDownloader implements Runnable {
+    /**
+     * The app context
+     */
     private Context mContext;
+    /**
+     * True if we should be showing errors in the parsing of the transcript, false otherwise
+     */
     private boolean mShowErrors;
 
     public TranscriptDownloader(Context context){
@@ -31,11 +53,8 @@ public abstract class TranscriptDownloader extends AsyncTask<Void, Void, Boolean
         mShowErrors = showErrors;
     }
 
-	@Override
-    protected abstract void onPreExecute();
-
     @Override
-    protected Boolean doInBackground(Void... params) {
+    public void run() {
         if(!Test.LOCAL_TRANSCRIPT){
             String transcriptString = Connection.getInstance().getUrl(mContext, Connection.TRANSCRIPT, mShowErrors);
 
@@ -71,8 +90,5 @@ public abstract class TranscriptDownloader extends AsyncTask<Void, Void, Boolean
 
         return false;
     }
-
-    @Override
-    protected abstract void onPostExecute(Boolean loadInfo);
 }
 

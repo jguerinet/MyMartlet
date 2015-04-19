@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.activity;
 
 import android.app.ActionBar;
@@ -34,10 +50,10 @@ import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.ConfigDownloader;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Parser;
@@ -219,7 +235,7 @@ public class SplashActivity extends BaseActivity {
                         Connection.getInstance().setPassword(password);
                         final ConnectionStatus connectionStatus = Connection.getInstance().connectToMinerva(SplashActivity.this);
                         // If the connection was successful, go to Homepage
-                        if (connectionStatus == ConnectionStatus.CONNECTION_OK) {
+                        if (connectionStatus == ConnectionStatus.OK) {
                             // Store the login info.
                             Save.saveUsername(SplashActivity.this, username);
                             Save.savePassword(SplashActivity.this, password);
@@ -366,11 +382,11 @@ public class SplashActivity extends BaseActivity {
                         publishNewProgress(getString(R.string.logging_in));
 
                         //If he's already logged in, the connection is OK
-                        mConnectionStatus = mLoggedIn ? ConnectionStatus.CONNECTION_OK :
+                        mConnectionStatus = mLoggedIn ? ConnectionStatus.OK :
                                 connection.connectToMinerva(mContext);
 
                         //If we did not connect, break the loop now
-                        if(mConnectionStatus != ConnectionStatus.CONNECTION_OK){
+                        if(mConnectionStatus != ConnectionStatus.OK){
                             break downloadLoop;
                         }
                         break;
@@ -493,8 +509,8 @@ public class SplashActivity extends BaseActivity {
             mSkip.setVisibility(View.GONE);
 
             //Connection successful: home page
-            if(mConnectionStatus == ConnectionStatus.CONNECTION_OK ||
-                    mConnectionStatus == ConnectionStatus.CONNECTION_NO_INTERNET){
+            if(mConnectionStatus == ConnectionStatus.OK ||
+                    mConnectionStatus == ConnectionStatus.NO_INTERNET){
 
                 Intent intent = new Intent(mContext, MainActivity.class);
                 //If there's a bug, add it to the intent

@@ -1,441 +1,455 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.util;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.util.Log;
+
+import com.squareup.okhttp.CacheControl;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.SplashActivity;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.object.Term;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
+import okio.BufferedSink;
 
 /**
- * Author: Julien, Shabbir, Rafi, Joshua
- * Date: 22/01/14, 8:09 PM
- * Update: 29/01/14
- * This package will hold the logic for logging someone in to MyMcGill
+ * All of the connection logic
+ * @author Shabbir Hussain
+ * @author Rafi Uddin
+ * @author Joshua David Alfaro
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class Connection {
-	
-	private String username;
-	private String password;
-	private List<String> cookies;
-	private HttpsURLConnection conn;
-	private ConnectionStatus status = ConnectionStatus.CONNECTION_FIRST_ACCESS;
-	
-	// Constants
-    public static final String TRANSCRIPT = "https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
-    public static final String EBILL = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
-    public static final String REGISTRATION_ERROR = "http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm";
+	private static final String TAG = "Connection";
+	/**
+	 * The user's username
+	 */
+	private String mUsername;
+	/**
+	 * The user's password
+	 */
+	private String mPassword;
+	/**
+	 * The list of cookies
+	 */
+	private List<String> mCookies;
+	/**
+	 * The OkHttpClient
+	 */
+	private OkHttpClient mClient;
+	/**
+	 * The current connection status
+	 */
+	private ConnectionStatus mStatus;
 
+	/* URL CONSTANTS */
+	/**
+	 * Minerva host
+	 */
     private static final String MINERVA_HOST = "horizon.mcgill.ca";
-    private static final String MINERVA_ORIGIN = "https://horizon.mcgill.ca";
+	/**
+	 * Minerva base URL
+	 */
+	private static final String MINERVA_ORIGIN = "https://horizon.mcgill.ca";
+	/**
+	 * Login URL
+	 */
 	private static final String LOGIN_PAGE = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
+	/**
+	 * Login POST URL
+	 */
 	private static final String LOGIN_POST = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
+	/**
+	 * Schedule URL
+	 */
     private static final String SCHEDULE = "https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
-    private static final String COURSE_SEARCH = "https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
+	/**
+	 * Transcript URL
+	 */
+	public static final String TRANSCRIPT =
+			"https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
+	/**
+	 * Ebill URL
+	 */
+	public static final String EBILL = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
+	/**
+	 * Course Search URL
+	 */
+    private static final String COURSE_SEARCH =
+			"https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
+	/**
+	 * Course Registration URL
+	 */
     private static final String COURSE_REGISTRATION = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
-	
-    private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>";
-	
-	// Singleton architecture
-	private static Connection http = new Connection();
-	private Connection(){
-		status = ConnectionStatus.CONNECTION_FIRST_ACCESS;
-	}
-	
-	// Accessor method
+	/**
+	 * Course Registration Errors URL
+	 */
+	public static final String REGISTRATION_ERROR = "http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm";
+	/**
+	 * User Agent
+	 */
+    private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+			"AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
+			"Mobile Safari/<WebKit Rev>";
+	/**
+	 * Singleton instance
+	 */
+	private static Connection connection;
+
+	/**
+	 * @return The connection instance
+	 */
 	public static Connection getInstance(){
-        if(http.username == null){
-            http.username = Load.loadFullUsername(App.getContext());
-        }
-        if(http.password == null){
-            http.password = Load.loadPassword(App.getContext());
-        }
-		return http;
+		//If the connection is null, create it
+		if(connection == null){
+			connection = new Connection();
+		}
+		return connection;
 	}
-	
-	//Setting username
+
+	/**
+	 * Default Constructor
+	 */
+	private Connection(){
+		//Set the status to first access when instantiating the connection singleton object
+		this.mStatus = ConnectionStatus.CONNECTION_FIRST_ACCESS;
+		//Get the username and password from the SharedPrefs
+		this.mUsername = Load.loadFullUsername(App.getContext());
+		this.mPassword = Load.loadPassword(App.getContext());
+		//Set up the client
+		this.mClient = new OkHttpClient();
+		//Set up the list of cookies
+		this.mCookies = new ArrayList<>();
+		//Set up the cookie handler
+		CookieHandler.setDefault(new CookieManager());
+	}
+
+	/* GETTERS */
+
+	/* SETTERS */
+
+	/**
+	 * @param username The username to use
+	 */
     public void setUsername(String username){
-        this.username = username;
+        this.mUsername = username;
     }
 
-    //Setting password
+	/**
+	 * @param password The password to use
+	 */
     public void setPassword(String password){
-        this.password = password;
+        this.mPassword = password;
     }
 
-	public ConnectionStatus connectToMinerva(Context context){
-        //First check if the user is connected to the internet
-        if(!isNetworkAvailable(context)){
-            return ConnectionStatus.CONNECTION_NO_INTERNET;
-        }
-        
-        if(status == ConnectionStatus.CONNECTION_FIRST_ACCESS){
-			// make sure cookies is turn on
-			CookieHandler.setDefault(new CookieManager());
-        }
+	/* HELPERS */
 
-    	String postParams;
-    	status = ConnectionStatus.CONNECTION_AUTHENTICATING;
-
+	/**
+	 * Attempts to connect to Minerva
+	 *
+	 * @return The resulting connection status
+	 */
+	public ConnectionStatus connectToMinerva(){
+		//Update the status to authenticating
+    	mStatus = ConnectionStatus.AUTHENTICATING;
 		try {
-			// 1. Send a "GET" request, so that you can extract the form's data.
-			String page = http.getPageContent(LOGIN_PAGE);
-			postParams = http.getFormParams(page, username, password);
+			//1. Get Minerva's login page and determine the login parameters
+			String postParams = getLoginParameters(get(LOGIN_PAGE, false));
 			
-			// search for "Authorization Failure"
-			if (postParams.contains("WRONG_INFO"))
-			{
-				status = ConnectionStatus.CONNECTION_WRONG_INFO;
-				return ConnectionStatus.CONNECTION_WRONG_INFO;
+			//Search for "Authorization Failure"
+			if(postParams.contains("WRONG_INFO")){
+				mStatus = ConnectionStatus.WRONG_INFO;
+				return ConnectionStatus.WRONG_INFO;
 			}
-			
-			
-			// 2. Construct above post's content and then send a POST request
-			// for authentication
-			String Post1Resp = http.sendPost(LOGIN_POST, LOGIN_PAGE,postParams, MINERVA_HOST, MINERVA_ORIGIN);
 
-			// Check is connection was actually made
-			if (!Post1Resp.contains("WELCOME"))
-			{
-				status = ConnectionStatus.CONNECTION_WRONG_INFO;
-				return ConnectionStatus.CONNECTION_WRONG_INFO;
+			//2. Construct above post's content and then send a POST request for authentication
+			String response = post(LOGIN_POST, LOGIN_PAGE, postParams);
+
+			//Check that the connection was actually made
+			if (!response.contains("WELCOME")){
+				mStatus = ConnectionStatus.WRONG_INFO;
+				return ConnectionStatus.WRONG_INFO;
 			}
-			
 		} catch (MinervaLoggedOutException e) {
-			//throw if still logged out bubble it up
-			e.printStackTrace();
-			status = ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
-			return ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
+			//This should never happen
+			Log.e(TAG, "MinervaLoggedOutException during login", e);
+			mStatus = ConnectionStatus.MINERVA_LOGOUT;
+			return ConnectionStatus.MINERVA_LOGOUT;
+		} catch (IOException e) {
+			Log.e(TAG, "IOException during login", e);
+            mStatus = ConnectionStatus.ERROR_UNKNOWN;
+			return ConnectionStatus.ERROR_UNKNOWN;
+		} catch(NoInternetException e){
+			mStatus = ConnectionStatus.NO_INTERNET;
+			return ConnectionStatus.NO_INTERNET;
 		}
-		catch (Exception e) {
-            e.printStackTrace();
-            status = ConnectionStatus.CONNECTION_OTHER;
-			return ConnectionStatus.CONNECTION_OTHER;
-		}
-		
-		status = ConnectionStatus.CONNECTION_OK;
-        return ConnectionStatus.CONNECTION_OK;
+
+		mStatus = ConnectionStatus.OK;
+        return ConnectionStatus.OK;
     }
-	
+	 
 	/**
-	 *  The method getURL with retrieve a webpage as text
+	 * Sends a GET request and returns the body in String format
+	 *
+	 * @param url       The URL
+	 * @param autoLogin True if we should try reconnecting the user automatically, false otherwise
+	 * @return The page contents in String format
+	 * @throws MinervaLoggedOutException
+	 * @throws IOException
+	 * @throws NoInternetException
 	 */
-	public String getUrl(final Context context, String url){
-        return getUrl(context, url, true);
-    }
-
-    public String getUrl(final Context context, String url, boolean showErrors){
-        //Initial internet check
-        if(!isNetworkAvailable(context)){
-        	if(context instanceof Activity){
-                if(showErrors){
-                    final Activity activity = (Activity) context;
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                    activity.getResources().getString(R.string.error_no_internet));
-                        }
-                    });
-                }
-        	}
-
-            //Return empty String
-            return "";
-        }
-
-        String	result = null;
-        try {
-            result = http.getPageContent(url);
-        } catch (MinervaLoggedOutException e) {
-            //User has been logged out, so we need to log him back in
-            final ConnectionStatus connectionResult = Connection.getInstance().connectToMinerva(context);
-
-            //Successfully logged him back in, try retrieving the stuff again
-            if(connectionResult == ConnectionStatus.CONNECTION_OK){
-                try{
-                    result = http.getPageContent(url);
-                } catch (Exception exception){
-                    //Another logged out exception: doesn't work so this will just return null
-                }
-            }
-            //Wrong credentials: back to login screen
-            else if(connectionResult == ConnectionStatus.CONNECTION_WRONG_INFO){
-            	if(context instanceof Activity){
-            		final Activity activity = (Activity) context;
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Clear.clearAllInfo(activity);
-
-                            //Go back to LoginContext
-                            Intent intent = new Intent(activity, SplashActivity.class);
-                            intent.putExtra(Constants.CONNECTION_STATUS, connectionResult);
-                            activity.startActivity(intent);
-
-                            //Finish this activity
-                            activity.finish();
-                        }
-                    });
-            	}
-
-
-                //Return empty String
-                result = "";
-            }
-            //No internet: show no internet dialog
-            else if(connectionResult == ConnectionStatus.CONNECTION_NO_INTERNET){
-            	if(context instanceof Activity){
-                    if(showErrors){
-                        final Activity activity = (Activity) context;
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                DialogHelper.showNeutralAlertDialog(activity, activity.getResources().getString(R.string.error),
-                                        activity.getResources().getString(R.string.error_no_internet));
-                            }
-                        });
-                    }
-            	}
-
-                //Return empty String
-                result = "";
-            }
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        //Other problems will return null
-        return result;
-	}
-	
-	/**
-	 *  The method
-	 * 
-	  */
-	private String sendPost(String url, String Referer, String postParams, String postHost, String postOrigin) throws Exception {
-			 
-		URL obj = new URL(url);
-		conn = (HttpsURLConnection) obj.openConnection();
-	 
-		// Acts like a browser
-		conn.setUseCaches(false);
-		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Host", postHost);
-		conn.setRequestProperty("Origin", postOrigin);
-		conn.setRequestProperty("DNT", "1");
-		conn.setRequestProperty("User-Agent", USER_AGENT);
-		conn.setRequestProperty("Accept",
-			"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-		conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-		for (String cookie : this.cookies) {
-			conn.addRequestProperty("Cookie", cookie.split(";", 1)[0]);
+	public String get(String url, boolean autoLogin) throws MinervaLoggedOutException, IOException,
+			NoInternetException{
+		//Check if the user is connected to the internet
+		if(!Help.isConnected()){
+			throw new NoInternetException();
 		}
-		conn.setRequestProperty("Connection", "keep-alive");
-		conn.setRequestProperty("Referer", Referer);
-		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		conn.setRequestProperty("Content-Length", Integer.toString(postParams.length()));
-	 
-		conn.setDoOutput(true);
-		conn.setDoInput(true);
-	 
-		// Send post request
-		DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-		wr.writeBytes(postParams);
-		wr.flush();
-		wr.close();
-	 
-		int responseCode = conn.getResponseCode();
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + postParams);
-		System.out.println("Response Code : " + responseCode);
-	 
-		BufferedReader in = 
-	             new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		String inputLine;
-		StringBuilder response = new StringBuilder();
-	 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
+
+		//Create the request
+		Request.Builder builder = new Request.Builder()
+				.get()
+				.url(url)
+				.cacheControl(new CacheControl.Builder().noCache().build())
+				.header("User-Agent", USER_AGENT)
+				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+				.header("Accept-Language", "en-US,en;q=0.5");
+
+		//Add the cookies if there are any
+		for(String cookie : mCookies){
+			builder.addHeader("Cookie", cookie.split(";", 1)[0]);
 		}
-		in.close();
+
+		Log.d(TAG, "Sending 'GET' request to: " + url);
+
+		//Execute the request, get the response
+		Response response = mClient.newCall(builder.build()).execute();
+
+		int responseCode = response.code();
+		Log.d(TAG, "Response Code: " + responseCode);
 		
-		//System.out.println(response.toString());
-		return response.toString();
-	  }
-	 
-	/**
-	 * The method
-	 * @throws IOException 
-	 * 
-	 */
-	private String getPageContent(String url) throws MinervaLoggedOutException, IOException {
-		//Initial check for internet connection
-        URL obj = new URL(url);
-		conn = (HttpsURLConnection) obj.openConnection();
-	 
-		// default is GET
-		conn.setRequestMethod("GET");
-	 
-		conn.setUseCaches(false);
-	 
-		// act like a browser
-		conn.setRequestProperty("User-Agent", USER_AGENT);
-		conn.setRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-		conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-		if (cookies != null) {
-			for (String cookie : this.cookies) {
-				conn.addRequestProperty("Cookie", cookie.split(";", 1)[0]);
-			}
-		}
-		
-		int responseCode = conn.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
-		
-		//check Response Code
+		//Check the response code
 		switch(responseCode){
-		case HttpsURLConnection.HTTP_OK:
-			//all is good
-			break;
-		case HttpsURLConnection.HTTP_MOVED_TEMP:
-		case HttpsURLConnection.HTTP_MOVED_PERM:
-			//follow the new link
-			String nextLocation = conn.getHeaderField("Location");
-			return getPageContent(nextLocation);
-		default:
-			// all is ignored. carry on
-			break;
+			//If this is a redirect, go to the new link
+			case HttpsURLConnection.HTTP_MOVED_TEMP:
+			case HttpsURLConnection.HTTP_MOVED_PERM:
+				String nextLocation = response.header("Location");
+				return get(nextLocation, autoLogin);
+			default:
+				//All is ignored, carry on
+				break;
 		}
 		
-		//check headers
-		if(!areHeadersOK(conn.getHeaderFields())){
-			switch(status){
-			case CONNECTION_MINERVA_LOGOUT:
-				//reconnect
-				if(status !=ConnectionStatus.CONNECTION_AUTHENTICATING)//if not trying to authenticate
-					throw new MinervaLoggedOutException();
-				
-			default:
-				break;
-			
+		//Check the headers
+		if(!validateHeaders(response.headers())){
+			switch(mStatus){
+				//We've been logged out of Minerva
+				case MINERVA_LOGOUT:
+					//Try logging back in if needed
+					if(autoLogin){
+						//Launch the login process
+						final ConnectionStatus status = connectToMinerva();
+
+						//Successfully logged them back in, try retrieving the stuff again
+						if(status == ConnectionStatus.OK){
+							//TODO Catch exceptions here ?
+							return connection.get(url, false);
+						}
+						//No internet: show no internet dialog
+						else if(status == ConnectionStatus.NO_INTERNET){
+							throw new NoInternetException();
+						}
+						//Wrong credentials: back to login screen
+						else if(status == ConnectionStatus.WRONG_INFO){
+							//TODO Locally broadcast this
+							return null;
+						}
+					}
+					//If not, throw the exception
+					else{
+						throw new MinervaLoggedOutException();
+					}
+				default:
+					break;
 			}
 		}
-	 
-		BufferedReader in = 
-	            new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		String inputLine;
-		StringBuilder response = new StringBuilder();
-	 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-	 
-		// Get the response cookies
-		setCookies(conn.getHeaderFields().get("Set-Cookie"));
-		
-		return response.toString();
-	 
-	  }
-	 
-	  public String getFormParams(String html, String username, String password)
-			throws UnsupportedEncodingException {
-	 
-		System.out.println("Extracting form's data...");
-	 
-		Document doc = Jsoup.parse(html);
-	 
-		// Google form id
-		List<String> paramList = new ArrayList<String>();
-		Elements forms = doc.getElementsByTag("form");
-		for (Element formElement : forms) {
-			String elemName = formElement.attr("name");
-			if (elemName.equals("loginform1")){//get the right login form
-				
-				Elements inputElements = formElement.getElementsByTag("input");
-				
-				for (Element inputElement : inputElements) {
-					String key = inputElement.attr("name");
-					String value;
-			 
-					if (key.equals("sid")){
-						value = username;
-						paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+
+		//Get the response cookies and set them
+		setCookies(response.headers("Set-Cookie"));
+
+		//Return the body in String format
+		return response.body().string();
+	}
+
+	/**
+	 *  Sends a post request and returns the response body in String format
+	 *
+	 * @param url        The URL
+	 * @param referer    The referer
+	 * @param postParams The post parameters
+	 * @return The response body in String format
+	 * @throws IOException
+	 */
+	private String post(String url, String referer, final String postParams) throws IOException{
+		//Create the request
+		Request.Builder builder = new Request.Builder()
+				.post(new RequestBody() {
+					@Override
+					public MediaType contentType(){
+						return MediaType.parse("application/x-www-form-urlencoded");
 					}
-					else if (key.equals("PIN")){
-						value = password;
-						paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+
+					@Override
+					public void writeTo(BufferedSink sink) throws IOException{
+						sink.writeString(postParams, Charset.forName("UTF-8"));
+					}
+				})
+				.url(url)
+				.cacheControl(new CacheControl.Builder().noCache().build())
+				.header("Host", MINERVA_HOST)
+				.header("Origin", MINERVA_ORIGIN)
+				.header("DNT", "1")
+				.header("User-Agent", USER_AGENT)
+				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0" +
+						".8")
+				.header("Accept-Language", "en-US,en;q=0.5")
+				.header("Connection", "keep-alive")
+				.header("Referer", referer);
+
+		//Add the cookies if there are any
+		for(String cookie : mCookies){
+			builder.addHeader("Cookie", cookie.split(";", 1)[0]);
+		}
+
+		Log.d(TAG, "Sending 'POST' request to: " + url);
+
+		//Execute the request, get the result
+		Response response = mClient.newCall(builder.build()).execute();
+
+		Log.d(TAG, "Response Code: " + String.valueOf(response.code()));
+
+		//Return the response body
+		return response.body().string();
+	}
+
+	/**
+	 * Gets the parameters to use for logging into Minerva
+	 *
+	 * @param html The login HTML page
+	 * @return String representing the parameters to use for logging into Minerva
+	 * @throws UnsupportedEncodingException
+	 */
+	private String getLoginParameters(String html) throws UnsupportedEncodingException{
+		List<String> params = new ArrayList<>();
+		Log.d(TAG, "Extracting form's data...");
+
+		//Parse the HTML document with JSoup
+		Document doc = Jsoup.parse(html);
+
+		//Google Form Id
+		Elements forms = doc.getElementsByTag("form");
+		//Go through the forms
+		for (Element formElement : forms) {
+			//Find the one with name 'loginform1'
+			if (formElement.attr("name").equals("loginform1")){
+				//Go through the input elements
+				for (Element inputElement : formElement.getElementsByTag("input")){
+					//Get the key of the input element
+					String key = inputElement.attr("name");
+
+					//Find the username and password elements
+					if(key.equals("sid") || key.equals("PIN")){
+						String value;
+						//Username
+						if(key.equals("sid")){
+							value = mUsername;
+						}
+						//Password
+						else{
+							value = mPassword;
+						}
+
+						//Add this to the list if params
+						params.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
 					}
 				}
-				
-			}	
+
+			}
 		}
-		
-		
-		
-	 
-		// build parameters list
+
+		//Go through the parameters
 		StringBuilder result = new StringBuilder();
-		for (String param : paramList) {
-			if (result.length() == 0) {
+		for (String param : params){
+			//No & for the first parameter
+			if (result.length() == 0){
 				result.append(param);
-			} else {
+			}
+			else{
 				result.append("&").append(param);
 			}
 		}
-		return result.toString();
-	  }
-	 
-	  public void setCookies(List<String> cookies) {
-		this.cookies = cookies;
-	  }
 
-    // Determine if network is available
-    public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-	
-    // Check headers for bad connection Response
-    private boolean areHeadersOK(Map <String, List<String>> Headers){
-    	
-    	//check for minerva logout
-    	List<String> setCookies = Headers.get("Set-Cookie");
-    	for(String aCookie: setCookies){    	
-	    	if(aCookie.contains("SESSID=;")){
-	    		if(status !=ConnectionStatus.CONNECTION_AUTHENTICATING)//if not trying to authenticate
-	    			status = ConnectionStatus.CONNECTION_MINERVA_LOGOUT;
+		return result.toString();
+	}
+	 
+	public void setCookies(List<String> cookies) {
+		this.mCookies = cookies;
+	}
+
+	/**
+	 * Check the headers for a bad connection
+	 *
+	 * @param headers The headers received from the response
+	 * @return True if the headers are validated, false otherwise
+	 */
+    private boolean validateHeaders(Headers headers){
+    	//Check for Minerva logout
+    	List<String> setCookies = headers.values("Set-Cookie");
+    	for(String cookie: setCookies){
+	    	if(cookie.contains("SESSID=;")){
+	    		if(mStatus != ConnectionStatus.AUTHENTICATING){
+				    //If we're not trying to authenticate, update the status to logged out
+				    mStatus = ConnectionStatus.MINERVA_LOGOUT;
+			    }
 	    		return false;
 	    	}
     	}
