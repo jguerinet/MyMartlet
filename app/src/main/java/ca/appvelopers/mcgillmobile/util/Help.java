@@ -25,20 +25,18 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.util.Log;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.Language;
+import okio.BufferedSource;
+import okio.Okio;
 
 /**
  * Contains various useful static help methods
@@ -144,31 +142,15 @@ public class Help {
      * @return The file in String format
      */
     public static String readFromFile(Context context, int fileResource) {
-        //Get the input stream from the file
-        InputStream inputStream = context.getResources().openRawResource(fileResource);
-        //Get the reader from the input stream
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-        StringBuilder builder = new StringBuilder();
         try{
-            //Append the file's lines to the builder until there are none left
-            String line;
-            while((line = reader.readLine()) != null){
-                builder.append(line);
-            }
-        } catch(IOException e){
-            Log.e(TAG, "Error reading from local file", e);
-        } finally {
-            //Close the stream and the reader
-            try{
-                inputStream.close();
-                reader.close();
-            } catch(IOException e){
-                Log.e(TAG, "Error closing the stream and reader after reading from file", e);
-            }
-        }
+            BufferedSource fileSource =
+                    Okio.buffer(Okio.source(context.getResources().openRawResource(fileResource)));
 
-        return builder.toString();
+            return fileSource.readUtf8();
+        } catch(IOException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
