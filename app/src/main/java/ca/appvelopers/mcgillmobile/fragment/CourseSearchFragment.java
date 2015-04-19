@@ -36,11 +36,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.SearchResultsActivity;
+import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Analytics;
@@ -277,7 +279,7 @@ public class CourseSearchFragment extends BaseFragment {
     private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
         private Term mTerm;
         private String mClassSearchURL;
-
+        private ArrayList<ClassItem> mClasses;
         private ProgressDialog mDialog;
 
         public CoursesGetter(Term term, String classSearchURL){
@@ -306,7 +308,7 @@ public class CourseSearchFragment extends BaseFragment {
             }
             //Parse
             else{
-                Constants.searchedClassItems = Parser.parseClassResults(mTerm, classesString);
+                this.mClasses = (ArrayList<ClassItem>)Parser.parseClassResults(mTerm, classesString);
                 return true;
             }
         }
@@ -327,8 +329,9 @@ public class CourseSearchFragment extends BaseFragment {
             }
             //Go to the CoursesListActivity with the parsed courses
             else{
-                Intent intent = new Intent(mActivity, SearchResultsActivity.class);
-                intent.putExtra(Constants.TERM, mTerm);
+                Intent intent = new Intent(mActivity, SearchResultsActivity.class)
+                        .putExtra(Constants.TERM, mTerm)
+                        .putExtra(Constants.CLASSES, mClasses);
                 startActivity(intent);
             }
         }

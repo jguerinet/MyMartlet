@@ -31,7 +31,23 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * @version 2.0
  * @since 2.0
  */
-public abstract class InfoDownloader implements Runnable{
+public abstract class InfoDownloader extends Thread {
+	/**
+	 * True if the info downloader was successful, false otherwise
+	 */
+	private boolean mSuccess = true;
+
+	/* GETTERS */
+
+	/**
+	 * @return True if the thread was successful, false otherwise
+	 */
+	public boolean success(){
+		return this.mSuccess;
+	}
+
+	/* HELPERS */
+
 	/**
 	 * Makes a request at the given URL and returns the response body if no errors occur
 	 * @param tag      The tag to use for any eventual errors
@@ -44,8 +60,10 @@ public abstract class InfoDownloader implements Runnable{
 			//Make the request
 			return Connection.getInstance().get(url);
 		} catch(MinervaLoggedOutException e){
+			mSuccess = false;
 			//TODO Broadcast this
 		} catch(Exception e){
+			mSuccess = false;
 			final boolean noInternet = e instanceof NoInternetException;
 			Log.e(tag, noInternet ? "No Internet" : "IOException", e);
 

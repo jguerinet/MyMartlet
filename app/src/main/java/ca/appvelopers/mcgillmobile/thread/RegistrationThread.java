@@ -32,7 +32,7 @@ import ca.appvelopers.mcgillmobile.util.Parser;
  * @version 2.0
  * @since 1.0
  */
-public abstract class RegistrationThread extends InfoDownloader{
+public class RegistrationThread extends InfoDownloader{
     private static final String TAG = "RegistrationThread";
     /**
      * The activity instance
@@ -67,12 +67,24 @@ public abstract class RegistrationThread extends InfoDownloader{
 
     @Override
     public void run(){
-        String registrationResult = get(TAG,
-                Connection.getRegistrationURL(mTerm, mRegistrationCourses, false), mActivity);
+        synchronized(this){
+            String registrationResult = get(TAG,
+                    Connection.getRegistrationURL(mTerm, mRegistrationCourses, false), mActivity);
 
-        //If there is a body response, parse it
-        if(registrationResult != null){
-            mRegistrationErrors = Parser.parseRegistrationErrors(registrationResult);
+            //If there is a body response, parse it
+            if(registrationResult != null){
+                mRegistrationErrors = Parser.parseRegistrationErrors(registrationResult);
+            }
         }
+        notify();
+    }
+
+    /* GETTERS */
+
+    /**
+     * @return The registration errors
+     */
+    public Map<String, String> getRegistrationErrors(){
+        return this.mRegistrationErrors;
     }
 }
