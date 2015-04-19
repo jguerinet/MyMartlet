@@ -44,6 +44,7 @@ import ca.appvelopers.mcgillmobile.util.Parser;
  * Date: 20/08/14, 5:42 PM
  * This class defines the tasks that will run in the background
  */
+@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class WebFetcherService extends IntentService {
 
 	protected NotificationManager mNotificationManager;
@@ -76,23 +77,25 @@ public class WebFetcherService extends IntentService {
 	 * This method queries the transcript to check for new or changed grades
 	 */
 	protected void CheckGrade(){
-		new TranscriptDownloader(this) {
-			Transcript oldTranscript;
-            @Override
-            protected void onPreExecute() {
-                //get previous grades
-            	oldTranscript = App.getTranscript();
-            }
+		final TranscriptDownloader downloader = new TranscriptDownloader(this, false);
+		downloader.start();
 
-            @Override
-            protected void onPostExecute(Boolean loadInfo) {
-                //compare old vs new for grade changes
-            	if(loadInfo){
-            		Transcript newTranscript = App.getTranscript();
-            		CompareTranscripts(oldTranscript,newTranscript);
-            	}
-            }
-        }.execute();
+		//get previous grades
+		Transcript oldTranscript = App.getTranscript();
+
+		synchronized(downloader){
+			try{
+				downloader.wait();
+			} catch(InterruptedException e){
+				e.printStackTrace();
+			}
+		}
+
+		//compare old vs new for grade changes
+		if(downloader.success()){
+			Transcript newTranscript = App.getTranscript();
+			CompareTranscripts(oldTranscript,newTranscript);
+		}
 	}
 	
 	/**
@@ -213,18 +216,24 @@ public class WebFetcherService extends IntentService {
                 return;
             }
 
-            String registrationUrl = Connection.getCourseURL(course.getTerm(),
-                    courseSubject, null, courseNumber,
-                    0, 0, 0, 0, '0', 0, 0, '0', null);
+            String registrationUrl = new Connection.SearchURLBuilder(course.getTerm(), courseSubject)
+		            .courseNumber(courseNumber)
+		            .build();
 
             //error check the url
             if(registrationUrl==null){
             	continue;
             }
-            
-            String classesString = Connection.getInstance().getUrl(this, registrationUrl);
 
-            //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
+	        String classesString = null;
+	        try{
+		        classesString = Connection.getInstance().get(registrationUrl);
+	        } catch(Exception e){
+		        //TODO
+		        e.printStackTrace();
+	        }
+
+	        //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
             //This parses all ClassItems for a given course
             List<ClassItem> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
 
