@@ -116,7 +116,23 @@ public class App extends Application {
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), new Crashlytics());
 
         //Set up Instabug
-        Instabug.initialize(this, Constants.INSTABUG_KEY);
+        Instabug.initialize(this, Constants.INSTABUG_KEY)
+                .enableEmailField(true, false)
+                .setCommentPlaceholder(getString(R.string.bug_prompt))
+                .setDefaultEmail(Load.loadFullUsername(this))
+                .setEmailPlaceholder(getString(R.string.bug_email_prompt))
+                .setInvalidCommentAlertText(getString(R.string.bug_comment_invalid))
+                .setSubmitButtonText(getString(R.string.submit))
+                .setCommentIsRequired(true)
+                .setDebugEnabled(BuildConfig.DEBUG)
+                .setInvocationEvent(Instabug.IBGInvocationEvent.IBGInvocationEventNone)
+                .setIsTrackingCrashes(false)
+                .setIsTrackingUserSteps(false)
+                .setShowIntroDialog(false)
+                .setPostFeedbackMessage(getString(R.string.success))
+                .setWillShowFeedbackSentAlert(true)
+                .setUserData("Email: " + Load.loadFullUsername(this) + "\n" +
+                        "App Language: " + App.getLanguage().getLanguageString());
     }
 
     /* GETTER METHODS */
