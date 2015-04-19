@@ -38,7 +38,6 @@ import com.squareup.okhttp.Response;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -56,22 +55,40 @@ import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 
+/**
+ * Downloads the config variables and the list of places from the web server
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     private static final String TAG = "ConfigDownloader";
+    /**
+     * The app context
+     */
     private Context mContext;
+    /**
+     * True if we need to force the reloading of the data in the app, false otherwise
+     */
     private boolean mForceReload;
+    /**
+     * The URL to download the places from
+     */
     private String mPlacesURL;
+    /**
+     * The minimum required version of the app that the client should be running
+     */
     private int mMinVersion;
-
-    //This is to keep track of which section the eventual error is in
+    /**
+     * Keeps track fo the eventual section that the error is in
+     */
     private String mCurrentSection;
 
-    //JSON Keys for the config
-    private static final String REGISTRATION_SEMESTERS_KEY = "RegistrationSemesters";
-    private static final String PLACES_URL_KEY = "PlacesURL";
-    private static final String PLACE_CATEGORIES_KEY = "Place Categories";
-    private static final String MIN_VERSION_KEY = "MinAndroidVersion";
-
+    /**
+     * Default Constructor
+     *
+     * @param context The app context
+     */
     public ConfigDownloader(Context context){
         this.mContext = context;
         this.mForceReload = App.forceReload;
@@ -81,7 +98,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     public Void doInBackground(Void... params){
         //Check if we are connected to the internet
         if(Connection.isNetworkAvailable(mContext)){
-            //If-Modified-Since
+            //Load the If-Modified-Since date
             String date = Load.loadIfModifiedSinceDate(mContext);
 
             try {
@@ -111,7 +128,6 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                     }
                 });
 
-
                 //Build the config request
                 Request.Builder requestBuilder = new Request.Builder()
                         .get()
@@ -132,7 +148,8 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                     //Set up the Gson parser by adding our custom deserializers
                     GsonBuilder builder = new GsonBuilder();
                     builder.registerTypeAdapter(Place.class, new PlaceDeserializer());
-                    builder.registerTypeAdapter(PlaceCategory.class, new PlaceCategoryDeserializer());
+                    builder.registerTypeAdapter(PlaceCategory.class,
+                            new PlaceCategoryDeserializer());
                     Gson gson = builder.create();
                     JsonParser parser = new JsonParser();
 
@@ -163,16 +180,19 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                 }
             }
             catch (Exception e) {
-                Log.e("Section Error:", mCurrentSection);
-                e.printStackTrace();
+                //Catch any possible exceptions
+                Log.e(TAG, "Section Error: " + mCurrentSection, e);
             }
         }
-        Log.e("Data Download", "Finished");
+
+        Log.d(TAG, "Finished");
         return null;
     }
 
     @Override
     protected abstract void onPostExecute(Void param);
+
+    /* GETTERS */
 
     /**
      * @return The minimum version required
@@ -181,18 +201,28 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         return this.mMinVersion;
     }
 
-    private void parseConfig(Gson gson, JsonParser parser, String configString) throws IOException {
-        JsonObject configJSON = (JsonObject)parser.parse(configString);
+    /* HELPERS */
+
+    /**
+     * Parses the config String into the different sections of the config
+     * @param gson         The GSON instance
+     * @param parser       The JSON parser
+     * @param configString The config String
+     * @throws IOException
+     */
+    private void parseConfig(Gson gson, JsonParser parser, String configString) throws IOException{
+        //Create the JSON object from the String
+        JsonObject configJSON = parser.parse(configString).getAsJsonObject();
 
         //Get the min version
-        mMinVersion = configJSON.get(MIN_VERSION_KEY).getAsInt();
+        mMinVersion = configJSON.get("MinAndroidVersion").getAsInt();
 
         //Get the Places URL
-        mPlacesURL = configJSON.get(PLACES_URL_KEY).getAsString();
+        mPlacesURL = configJSON.get("PlacesURL").getAsString();
 
         //Get the registration terms
-        List<Term> registrationTerms = new ArrayList<Term>();
-        JsonArray registrationTermsJSON = configJSON.getAsJsonArray(REGISTRATION_SEMESTERS_KEY);
+        List<Term> registrationTerms = new ArrayList<>();
+        JsonArray registrationTermsJSON = configJSON.getAsJsonArray("RegistrationSemesters");
         for(int i = 0; i < registrationTermsJSON.size(); i ++){
             registrationTerms.add(Term.parseTerm(registrationTermsJSON.get(i).getAsString()));
         }
@@ -201,8 +231,8 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         App.setRegisterTerms(registrationTerms);
 
         //Get the place categories
-        List<PlaceCategory> categories = new ArrayList<PlaceCategory>();
-        JsonArray categoriesJSON = configJSON.getAsJsonArray(PLACE_CATEGORIES_KEY);
+        List<PlaceCategory> categories = new ArrayList<>();
+        JsonArray categoriesJSON = configJSON.getAsJsonArray("Place Categories");
         for(int i = 0; i < categoriesJSON.size(); i ++){
             categories.add(gson.fromJson(categoriesJSON.get(i), PlaceCategory.class));
         }
@@ -211,9 +241,19 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         App.setPlaceCategories(categories);
     }
 
-    private void parsePlaces(Gson gson, JsonParser parser, String placesString) throws IOException, JSONException {
+    /**
+     * Parses the list of places
+     *
+     * @param gson         The GSON instance
+     * @param parser       The JSON parser
+     * @param placesString The places String
+     * @throws IOException
+     */
+    private void parsePlaces(Gson gson, JsonParser parser, String placesString) throws IOException{
+        //Convert the String into a JSON array
         JsonArray placesJSON = parser.parse(placesString).getAsJsonArray();
 
+        //Convert the JsonArray into a list of places
         List<Place> places = gson.fromJson(placesJSON, new TypeToken<List<Place>>(){}.getType());
 
         //Save it if it isn't null
@@ -222,10 +262,15 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         }
     }
 
+    /* DESERIALIZERS */
+
+    /**
+     * Deserializer used to deserialize the PlaceCategory object
+     */
     private static class PlaceCategoryDeserializer implements JsonDeserializer<PlaceCategory>{
         @Override
-        public PlaceCategory deserialize(JsonElement json, Type type, JsonDeserializationContext context)
-                throws JsonParseException{
+        public PlaceCategory deserialize(JsonElement json, Type type,
+                                     JsonDeserializationContext context) throws JsonParseException{
             JsonObject object = json.getAsJsonObject();
             return new PlaceCategory(object.get("Name").getAsString(),
                     object.get("En").getAsString(),
@@ -233,14 +278,17 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         }
     }
 
+    /**
+     * Deserializer used to deserialize the Place object
+     */
     private static class PlaceDeserializer implements JsonDeserializer<Place>{
         @Override
         public Place deserialize(JsonElement json, Type type, JsonDeserializationContext context)
                 throws JsonParseException{
-
             JsonObject object = json.getAsJsonObject();
             return new Place(object.get("Name").getAsString(),
-                    (String[])context.deserialize(object.get("Categories"), new TypeToken<String[]>(){}.getType()),
+                    (String[])context.deserialize(object.get("Categories"),
+                            new TypeToken<String[]>(){}.getType()),
                     object.get("Address").getAsString(),
                     object.get("Latitude").getAsDouble(),
                     object.get("Longitude").getAsDouble());
