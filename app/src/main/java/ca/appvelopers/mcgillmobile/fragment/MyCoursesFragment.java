@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
 import android.webkit.MimeTypeMap;
 import android.webkit.WebView;
@@ -68,10 +67,14 @@ public class MyCoursesFragment extends BaseFragment {
             return view;
         }
 
-        CookieSyncManager.createInstance(mActivity);
         cookieManager = CookieManager.getInstance();
         if(cookieManager.hasCookies())
-            cookieManager.removeAllCookie();
+            if(Build.VERSION.SDK_INT >= 21){
+                CookieManager.getInstance().removeAllCookies(null);
+            }
+            else{
+                CookieManager.getInstance().removeAllCookie();
+            }
 
         //Get the WebView
         mWebView = (WebView)view.findViewById(R.id.desktop_webview);
@@ -130,7 +133,12 @@ public class MyCoursesFragment extends BaseFragment {
 
     public static void deleteCookies(){
         if(cookieManager != null && cookieManager.hasCookies())
-            cookieManager.removeAllCookie();
+            if(Build.VERSION.SDK_INT >= 21){
+                CookieManager.getInstance().removeAllCookies(null);
+            }
+            else{
+                CookieManager.getInstance().removeAllCookie();
+            }
     }
 
     public WebView getWebView(){
