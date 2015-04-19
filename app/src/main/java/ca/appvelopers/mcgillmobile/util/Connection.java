@@ -71,46 +71,50 @@ public class Connection {
 	 */
 	private static final String MINERVA_ORIGIN = "https://horizon.mcgill.ca";
 	/**
+	 * User Agent
+	 */
+	private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+			"AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
+			"Mobile Safari/<WebKit Rev>";
+	/**
 	 * Login URL
 	 */
-	private static final String LOGIN_PAGE = "https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
+	private static final String LOGIN_PAGE_URL =
+			"https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
 	/**
 	 * Login POST URL
 	 */
-	private static final String LOGIN_POST = "https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
+	private static final String LOGIN_POST_URL =
+			"https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
 	/**
 	 * Schedule URL
 	 */
-    private static final String SCHEDULE =
+    private static final String SCHEDULE_URL =
 			"https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
 	/**
 	 * Transcript URL
 	 */
-	public static final String TRANSCRIPT =
+	public static final String TRANSCRIPT_URL =
 			"https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
 	/**
 	 * Ebill URL
 	 */
-	public static final String EBILL = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
+	public static final String EBILL_URL = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
 	/**
 	 * Course Search URL
 	 */
-    private static final String COURSE_SEARCH =
+    private static final String COURSE_SEARCH_URL =
 			"https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
 	/**
 	 * Course Registration URL
 	 */
-    private static final String COURSE_REGISTRATION = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
+    private static final String COURSE_REGISTRATION_URL =
+			"https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
 	/**
 	 * Course Registration Errors URL
 	 */
-	public static final String REGISTRATION_ERROR = "http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm";
-	/**
-	 * User Agent
-	 */
-    private final String USER_AGENT = "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-			"AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-			"Mobile Safari/<WebKit Rev>";
+	public static final String REGISTRATION_ERROR_URL =
+			"http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm";
 	/**
 	 * Singleton instance
 	 */
@@ -321,7 +325,7 @@ public class Connection {
 	public ConnectionStatus login(){
 		try {
 			//1. Get Minerva's login page and determine the login parameters
-			String postParams = getLoginParameters(get(LOGIN_PAGE, false));
+			String postParams = getLoginParameters(get(LOGIN_PAGE_URL, false));
 			
 			//Search for "Authorization Failure"
 			if(postParams.contains("WRONG_INFO")){
@@ -329,7 +333,7 @@ public class Connection {
 			}
 
 			//2. Construct above post's content and then send a POST request for authentication
-			String response = post(LOGIN_POST, LOGIN_PAGE, postParams);
+			String response = post(LOGIN_POST_URL, LOGIN_PAGE_URL, postParams);
 
 			//Check that the connection was actually made
 			if (!response.contains("WELCOME")){
@@ -435,58 +439,58 @@ public class Connection {
 	 * @return The schedule URL
 	 */
     public static String getScheduleURL(Term term){
-        return Connection.SCHEDULE + term.getYear() + term.getSeason().getSeasonNumber();
+        return Connection.SCHEDULE_URL + term.getYear() + term.getSeason().getSeasonNumber();
     }
 
     /**
-     * Get the URL to look for courses for the given parameters
-     * @param term The course term
-     * @param classes A list of classes to (un)register for
-     * @param dropCourse Changes URL if courses are being dropped
-     * @return The proper search URL
+     * Returns the URL to register for courses for the given parameters
+     *
+     * @param term       The course term
+     * @param classes    A list of classes to (un)register for
+     * @param dropCourse True if the user is dropping courses, false otherwise
+     * @return The proper registration URL
      */
     public static String getRegistrationURL(Term term, List<ClassItem> classes, boolean dropCourse){
-        String registrationURL;
-        registrationURL = COURSE_REGISTRATION + term.getYear() + term.getSeason().getSeasonNumber();
+        String registrationURL = COURSE_REGISTRATION_URL + term.getYear() +
+		        term.getSeason().getSeasonNumber();
 
-        //Add random Minerva crap that is apparently necessary
+        //Add random Minerva stuff that is apparently necessary
         registrationURL += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
                 "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY" +
                 "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY";
 
         if(dropCourse){
             for(ClassItem classItem : classes){
-                registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
-                        "&CRN_IN=" + classItem.getCRN() +
+                registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.getYear() +
+		                term.getSeason().getSeasonNumber() + "&CRN_IN=" + classItem.getCRN() +
                         "&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
                         "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
             }
         }
         else{
-            registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
-                    "&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
-                    "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+            registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getYear() +
+		            term.getSeason().getSeasonNumber() + "&CRN_IN=DUMMY&start_date_in=DUMMY&" +
+		            "end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMYLEVL=DUMMY&CRED=DUMMY&" +
+		            "GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
         }
 
         //Lots of junk
         for(int i = 0; i < 7; i++){
-            registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY";
-            registrationURL += "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY";
-            registrationURL += "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+            registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
+		            "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&" +
+		            "GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
         }
 
-        //More poop
+        //More junk
         registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
-                "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
-                "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY";
+                "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&" +
+		        "GMOD=DUMMY&TITLE=DUMMY";
 
         //Insert the CRNs into the URL
         for(ClassItem classItem : classes){
-
             //Use a different URL if courses are being dropped
             if(!dropCourse){
-                registrationURL += "&RSTS_IN=RW&CRN_IN=";
-                registrationURL += classItem.getCRN();
+                registrationURL += "&RSTS_IN=RW&CRN_IN=" + classItem.getCRN();
             }
             else{
                 registrationURL += "&RSTS_IN=&CRN_IN=";
@@ -673,7 +677,7 @@ public class Connection {
 		 * @return The course search URL to use for this course search
 		 */
 		public String build(){
-			String url = COURSE_SEARCH +
+			String url = COURSE_SEARCH_URL +
 					"term_in=" + mTerm.getYear() + mTerm.getSeason().getSeasonNumber() +
 					"&sel_subj=dummy" +
 					"&sel_day=dummy" +

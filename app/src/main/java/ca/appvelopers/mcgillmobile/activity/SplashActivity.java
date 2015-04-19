@@ -397,7 +397,7 @@ public class SplashActivity extends BaseActivity {
 
                         //Download the transcript
                         String transcriptBug = Test.LOCAL_TRANSCRIPT ? Test.testTranscript(mContext) :
-                                Parser.parseTranscript(connection.getUrl(mContext, Connection.TRANSCRIPT));
+                                Parser.parseTranscript(connection.getUrl(mContext, Connection.TRANSCRIPT_URL));
 
                         //If there was an error, show it
                         if(transcriptBug != null){
@@ -459,7 +459,7 @@ public class SplashActivity extends BaseActivity {
                                 R.string.updating_ebill));
 
                         //Download the eBill and user info
-                        String ebillString = Connection.getInstance().getUrl(mContext, Connection.EBILL);
+                        String ebillString = Connection.getInstance().getUrl(mContext, Connection.EBILL_URL);
                         Parser.parseEbill(ebillString);
 
                         //User Info

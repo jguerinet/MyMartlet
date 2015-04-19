@@ -56,7 +56,7 @@ public abstract class TranscriptDownloader implements Runnable {
     @Override
     public void run() {
         if(!Test.LOCAL_TRANSCRIPT){
-            String transcriptString = Connection.getInstance().getUrl(mContext, Connection.TRANSCRIPT, mShowErrors);
+            String transcriptString = Connection.getInstance().getUrl(mContext, Connection.TRANSCRIPT_URL, mShowErrors);
 
             if(transcriptString == null){
             	if(mContext instanceof Activity){

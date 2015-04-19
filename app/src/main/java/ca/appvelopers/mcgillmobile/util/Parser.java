@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.util;
 
 import org.joda.time.DateTime;
@@ -28,11 +44,6 @@ import ca.appvelopers.mcgillmobile.object.Token;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 
-/**
- * Author : Julien
- * Date :  2014-05-31 2:35 PM
- * Copyright (c) 2014 Julien Guerinet. All rights reserved.
- */
 public class Parser {
 
     /**
@@ -283,10 +294,10 @@ public class Parser {
                             //Course failed -> Earned credit = 0
                             StringWriter sw = new StringWriter();
                             e.printStackTrace(new PrintWriter(sw));
-                            //Log.e("TRANSCRIPT PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.toString());
+                            //Log.e("TRANSCRIPT_URL PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.toString());
                         }
                         catch(IndexOutOfBoundsException e){
-                            //Log.e("TRANSCRIPT PARSER", "IndexOutOfBoundsException" + e.toString());
+                            //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBoundsException" + e.toString());
                         }
 
                         //Obtain user's grade
@@ -311,7 +322,7 @@ public class Parser {
                         }
                         catch(IndexOutOfBoundsException e){
                             //String not found
-                            //Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e.getMessage());
+                            //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBounds" + e.getMessage());
                         }
                         courses.add(new Course(new Term(season, year), courseTitle, courseCode, credits,
                                 userGrade, averageGrade));
@@ -384,11 +395,11 @@ public class Parser {
 
                                 }
                                 catch(IndexOutOfBoundsException e2){
-                                    //Log.e("TRANSCRIPT PARSER", "IndexOutOfBounds" + e2.getMessage());
+                                    //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBounds" + e2.getMessage());
                                     e.printStackTrace();
                                 }
                                 catch(Exception e3){
-                                    //Log.e("TRANSCRIPT PARSER", "Generic error" + e3.getMessage());
+                                    //Log.e("TRANSCRIPT_URL PARSER", "Generic error" + e3.getMessage());
                                     e.printStackTrace();
                                     Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                             "Credits");
@@ -861,7 +872,7 @@ public class Parser {
                 //Insert list of CRNs and errors into a map
                 for(Element link : links){
 
-                    if(link.toString().contains(Connection.REGISTRATION_ERROR)){
+                    if(link.toString().contains(Connection.REGISTRATION_ERROR_URL)){
                         String CRN = link.parent().parent().child(1).text();
                         String error = link.text();
                         registrationErrors.put(CRN, error);
