@@ -1,68 +1,78 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.thread;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 
 import java.util.List;
 import java.util.Map;
 
-import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
- * Author: Julien Guerinet
- * Date: 2015-01-20 10:19 AM
- * Copyright (c) 2015 Appvelopers. All rights reserved.
- * Connects to Minerva in a new thread to register for courses
+ * Attempts to register the user to the given classes
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
-
-public abstract class RegistrationThread extends AsyncTask<Void, Void, Boolean> {
+public abstract class RegistrationThread extends InfoDownloader{
+    private static final String TAG = "RegistrationThread";
+    /**
+     * The activity instance
+     */
     private Activity mActivity;
-    private String mRegistrationURL;
-    protected List<ClassItem> mRegistrationCourses;
-    protected Map<String, String> mRegistrationErrors = null;
+    /**
+     * The term the user is registering in
+     */
+    private Term mTerm;
+    /**
+     * The list of courses to register for
+     */
+    private List<ClassItem> mRegistrationCourses;
+    /**
+     * A map of the possible registration errors, with the key being the course with the error
+     */
+    private Map<String, String> mRegistrationErrors = null;
 
+    /**
+     * Default Constructor
+     *
+     * @param activity The calling activity
+     * @param term     The term the user is registering in
+     * @param courses  The list of courses the user is registering for
+     */
     public RegistrationThread(Activity activity, Term term, List<ClassItem> courses){
         this.mActivity = activity;
         this.mRegistrationCourses = courses;
-        this.mRegistrationURL = Connection.getRegistrationURL(term, mRegistrationCourses, false);
+        this.mTerm = term;
         this.mRegistrationErrors = null;
     }
 
     @Override
-    protected abstract void onPreExecute();
+    public void run(){
+        String registrationResult = get(TAG,
+                Connection.getRegistrationURL(mTerm, mRegistrationCourses, false), mActivity);
 
-    //Retrieve page that contains registration status from Minerva
-    @Override
-    protected Boolean doInBackground(Void... params){
-        String resultString = Connection.getInstance().getUrl(mActivity, mRegistrationURL);
-
-        //If result string is null, there was an error
-        if(resultString == null){
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        DialogHelper.showNeutralAlertDialog(mActivity, mActivity.getString(R.string.error),
-                                mActivity.getString(R.string.error_other));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            return false;
-        }
-        //Otherwise, check for errors
-        else{
-            mRegistrationErrors = Parser.parseRegistrationErrors(resultString);
-            return true;
+        //If there is a body response, parse it
+        if(registrationResult != null){
+            mRegistrationErrors = Parser.parseRegistrationErrors(registrationResult);
         }
     }
-
-    @Override
-    protected abstract void onPostExecute(Boolean success);
 }
