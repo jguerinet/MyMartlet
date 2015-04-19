@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.fragment.ebill;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,11 +27,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
@@ -104,34 +106,29 @@ public class EbillFragment extends BaseFragment {
         //Retrieve content from transcript page
         @Override
         protected Boolean doInBackground(Void... params){
-            String ebillString = Connection.getInstance().getUrl(mActivity, Connection.EBILL_URL);
+            try{
+                String ebillString = Connection.getInstance().get(Connection.EBILL_URL);
+                mEbillItems.clear();
 
-            if(ebillString == null){
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DialogHelper.showNeutralAlertDialog(mActivity, mActivity.getResources().getString(R.string.error),
-                                mActivity.getResources().getString(R.string.error_other));
-                    }
-                });
-                return false;
+                //Parse the ebill and the user info
+                Parser.parseEbill(ebillString);
+                Parser.parseUserInfo(ebillString);
+
+                //Save it to the instance variable
+                mEbillItems = App.getEbill();
+                mUserInfo = App.getUserInfo();
+
+                return true;
+            } catch(MinervaLoggedOutException e){
+                //TODO
+                e.printStackTrace();
+            } catch(IOException e){
+                DialogHelper.showNeutralAlertDialog(mActivity, mActivity.getString(R.string.error),
+                        mActivity.getString(R.string.error_other));
+            } catch(NoInternetException e){
+                e.printStackTrace();
             }
-            //Empty String: no need for an alert dialog but no need to reload
-            else if(TextUtils.isEmpty(ebillString)){
-                return false;
-            }
-
-            mEbillItems.clear();
-
-            //Parse the ebill and the user info
-            Parser.parseEbill(ebillString);
-            Parser.parseUserInfo(ebillString);
-
-            //Save it to the instance variable
-            mEbillItems = App.getEbill();
-            mUserInfo = App.getUserInfo();
-
-            return true;
+            return false;
         }
 
         //Update or create transcript object and display data
