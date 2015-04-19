@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.fragment.transcript;
 
 import android.os.Bundle;
@@ -17,12 +33,7 @@ import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 
-/**
- * Author: Julien Guerinet
- * Date: 2015-01-17 4:32 PM
- * Copyright (c) 2014 Appvelopers. All rights reserved.
- */
-
+@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class TranscriptFragment extends BaseFragment{
     private Transcript mTranscript;
     private TextView mCGPA, mTotalCredits;
@@ -92,23 +103,26 @@ public class TranscriptFragment extends BaseFragment{
     }
 
     private void executeTranscriptDownloader(){
-        new TranscriptDownloader(mActivity) {
-            @Override
-            protected void onPreExecute() {
-                //Show the user we are downloading new info
-                mActivity.showToolbarProgress(true);
-            }
+        final TranscriptDownloader downloader = new TranscriptDownloader(mActivity, false);
+        downloader.start();
 
-            @Override
-            protected void onPostExecute(Boolean loadInfo) {
-                mTranscript = App.getTranscript();
+        //Show the user we are downloading new info
+        mActivity.showToolbarProgress(true);
 
-                if(loadInfo){
-                    //Reload the info in the views
-                    loadInfo();
-                }
-                mActivity.showToolbarProgress(false);
-            }
-        }.execute();
+        //Wait for the downloader to finish
+        synchronized(downloader){
+            try{
+                downloader.wait();
+            } catch(InterruptedException e){}
+        }
+
+        mTranscript = App.getTranscript();
+
+        if(downloader.success()){
+            //Reload the info in the views
+            loadInfo();
+        }
+
+        mActivity.showToolbarProgress(false);
     }
 }
