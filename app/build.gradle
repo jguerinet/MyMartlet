@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers Inc.
+ * Copyright 2014-2015 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,7 @@ dependencies {
     compile 'com.instabug.library:instabugsupport:1+'
     compile 'org.jsoup:jsoup:1.7.2'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile('com.twitter.sdk.android:twitter:1.4.0@aar') {
         transitive = true;
     }
