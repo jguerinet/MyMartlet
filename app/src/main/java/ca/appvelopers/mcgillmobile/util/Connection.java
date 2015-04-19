@@ -198,13 +198,7 @@ public class Connection {
 		}
 
 		//Create the request
-		Request.Builder builder = new Request.Builder()
-				.get()
-				.url(url)
-				.cacheControl(new CacheControl.Builder().noCache().build())
-				.header("User-Agent", USER_AGENT)
-				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-				.header("Accept-Language", "en-US,en;q=0.5");
+		Request.Builder builder = getDefaultRequest(url).get();
 
 		//Add the cookies if there are any
 		for(String cookie : mCookies){
@@ -277,7 +271,7 @@ public class Connection {
 	 */
 	private String post(String url, String referer, final String postParams) throws IOException{
 		//Create the request
-		Request.Builder builder = new Request.Builder()
+		Request.Builder builder = getDefaultRequest(url)
 				.post(new RequestBody() {
 					@Override
 					public MediaType contentType(){
@@ -289,15 +283,9 @@ public class Connection {
 						sink.writeString(postParams, Charset.forName("UTF-8"));
 					}
 				})
-				.url(url)
-				.cacheControl(new CacheControl.Builder().noCache().build())
 				.header("Host", MINERVA_HOST)
 				.header("Origin", MINERVA_ORIGIN)
 				.header("DNT", "1")
-				.header("User-Agent", USER_AGENT)
-				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0" +
-						".8")
-				.header("Accept-Language", "en-US,en;q=0.5")
 				.header("Connection", "keep-alive")
 				.header("Referer", referer);
 
@@ -411,6 +399,21 @@ public class Connection {
 		}
 
 		return result.toString();
+	}
+
+	/**
+	 * Gets the request builder with the default headers set up
+	 *
+	 * @param url The URL to connect to
+	 * @return The request builder
+	 */
+	private Request.Builder getDefaultRequest(String url){
+		return new Request.Builder()
+				.url(url)
+				.cacheControl(new CacheControl.Builder().noCache().build())
+				.header("User-Agent", USER_AGENT)
+				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+				.header("Accept-Language", "en-US,en;q=0.5");
 	}
 
 	/**
