@@ -220,8 +220,7 @@ public class Connection {
 
 				//Successfully logged them back in, try retrieving the stuff again
 				if(status == ConnectionStatus.OK){
-					//TODO Catch exceptions here ?
-					return connection.get(url, false);
+					return get(url, false);
 				}
 				//No internet: show no internet dialog
 				else if(status == ConnectionStatus.NO_INTERNET){
@@ -229,8 +228,7 @@ public class Connection {
 				}
 				//Wrong credentials: back to login screen
 				else if(status == ConnectionStatus.WRONG_INFO){
-					//TODO Locally broadcast this
-					return null;
+					throw new MinervaLoggedOutException();
 				}
 			}
 			//If not, throw the exception
@@ -244,6 +242,20 @@ public class Connection {
 
 		//Return the body in String format
 		return response.body().string();
+	}
+
+	/**
+	 * Sends a GET request and returns the body in String format with auto-login enabled
+	 *
+	 * @param url The URL
+	 * @return The page contents in String format
+	 * @throws MinervaLoggedOutException
+	 * @throws IOException
+	 * @throws NoInternetException
+	 */
+	public String get(String url) throws MinervaLoggedOutException, IOException,
+			NoInternetException{
+		return get(url, true);
 	}
 
 	/**

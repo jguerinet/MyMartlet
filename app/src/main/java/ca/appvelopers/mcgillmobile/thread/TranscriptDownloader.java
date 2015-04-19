@@ -18,9 +18,11 @@ package ca.appvelopers.mcgillmobile.thread;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
+import android.util.Log;
 
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Test;
@@ -33,6 +35,7 @@ import ca.appvelopers.mcgillmobile.view.DialogHelper;
  * @since 1.0
  */
 public abstract class TranscriptDownloader implements Runnable {
+    private static final String TAG = "TranscriptDownloader";
     /**
      * The app context
      */
@@ -42,53 +45,54 @@ public abstract class TranscriptDownloader implements Runnable {
      */
     private boolean mShowErrors;
 
-    public TranscriptDownloader(Context context){
-    	mContext = context;
-        mShowErrors = true;
-    }
-
-    //This is to not show 2 errors in the Schedule page
+    /**
+     * Constructor with the option of disabling the showing of errors on the UI
+     *  (for ScheduleFragment)
+     *
+     * @param context    The app context
+     * @param showErrors True if we should show any errors on the UI, false otherwise
+     */
     public TranscriptDownloader(Context context, boolean showErrors){
         mContext = context;
         mShowErrors = showErrors;
     }
 
+    /**
+     * Default Constructor
+     *
+     * @param context The app context
+     */
+    public TranscriptDownloader(Context context){
+        this(context, true);
+    }
+
     @Override
     public void run() {
+        //If we are using the local transcript, don't download the new one
         if(!Test.LOCAL_TRANSCRIPT){
-            String transcriptString = Connection.getInstance().getUrl(mContext, Connection.TRANSCRIPT_URL, mShowErrors);
+            try{
+                //Get and parse the transcript
+                Parser.parseTranscript(Connection.getInstance().get(Connection.TRANSCRIPT_URL));
+            } catch(MinervaLoggedOutException e){
+                //TODO Broadcast this
+            } catch(Exception e){
+                final boolean noInternet = e instanceof NoInternetException;
+                Log.e(TAG, noInternet ? "No Internet" : "IOException", e);
 
-            if(transcriptString == null){
-            	if(mContext instanceof Activity){
-            		final Activity mActivity = (Activity) mContext;
-                    if(mShowErrors){
-                        mActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    DialogHelper.showNeutralAlertDialog(mActivity, mActivity.getResources().getString(R.string.error),
-                                            mActivity.getResources().getString(R.string.error_other));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-            	}
-                return false;
+                //Show an error message if possible and needed
+                if(mContext instanceof  Activity && mShowErrors){
+                    ((Activity)mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run(){
+                            DialogHelper.showNeutralAlertDialog(mContext,
+                                    mContext.getString(R.string.error),
+                                    noInternet ? mContext.getString(R.string.error_no_internet) :
+                                    mContext.getString(R.string.error_other));
+                        }
+                    });
+                }
             }
-            //Empty String: no need for an alert dialog but no need to reload
-            else if(TextUtils.isEmpty(transcriptString)){
-                return false;
-            }
-
-            //Parse the transcript
-            Parser.parseTranscript(transcriptString);
-
-            return true;
         }
-
-        return false;
     }
 }
 
