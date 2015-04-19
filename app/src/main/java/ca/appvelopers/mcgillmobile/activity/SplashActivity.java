@@ -16,7 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.activity;
 
-import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -45,7 +45,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
-import ca.appvelopers.mcgillmobile.dialog.SkipDialog;
+import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.object.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.object.Semester;
 import ca.appvelopers.mcgillmobile.object.Term;
@@ -62,17 +62,19 @@ import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
- * Author: Julien
- * Date: 22/01/14, 7:34 PM
+ * First activity that is opened when the app is started
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class SplashActivity extends BaseActivity {
+    /**
+     * Code used when starting the AgreementActivity
+     */
     private static final int AGREEMENT_CODE = 100;
 
-    private InfoDownloader mInfoDownloader;
-
-    private String mUsername;
-
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
@@ -91,7 +93,6 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == AGREEMENT_CODE){
             //If they agreed, run the config downloader
             if(resultCode == RESULT_OK){
@@ -102,8 +103,14 @@ public class SplashActivity extends BaseActivity {
                 finish();
             }
         }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
+    /**
+     * Runs the config downloader
+     */
     private void runConfigDownloader(){
         new ConfigDownloader(this) {
             @Override
@@ -132,17 +139,17 @@ public class SplashActivity extends BaseActivity {
                 }
 
                 //Get the username and password stored
-                mUsername = Load.loadUsername(SplashActivity.this);
+                String username = Load.loadUsername(SplashActivity.this);
                 String password = Load.loadPassword(SplashActivity.this);
 
                 //If one of them is null, show the login screen with no error message
-                if(mUsername == null || password == null){
-                    showLoginScreen((ConnectionStatus)getIntent().getSerializableExtra(Constants.CONNECTION_STATUS));
+                if(username == null || password == null){
+                    showLoginScreen((ConnectionStatus)getIntent()
+                            .getSerializableExtra(Constants.CONNECTION_STATUS));
                 }
-                //If not, try to log him in and download the info
+                //If not, try to log them in and download the info
                 else{
-                    mInfoDownloader = new InfoDownloader(false);
-                    mInfoDownloader.execute();
+                    new AppInitializer(false).execute();
                 }
             }
         }.execute();
@@ -151,7 +158,7 @@ public class SplashActivity extends BaseActivity {
     public void showLoginScreen(ConnectionStatus error){
         //Move the logo to the top
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL);
         View logo = findViewById(R.id.logo);
@@ -161,6 +168,8 @@ public class SplashActivity extends BaseActivity {
         final LinearLayout loginContainer = (LinearLayout)findViewById(R.id.login_container);
         loginContainer.setVisibility(View.VISIBLE);
 
+        //Get the username before clearing everything
+        String username = Load.loadUsername(this);
         //Make sure to delete anything with the previous user's info
         Clear.clearAllInfo(this);
 
@@ -188,12 +197,13 @@ public class SplashActivity extends BaseActivity {
 
         //Check if an error message needs to be displayed, display it if so
         if(error != null){
-            DialogHelper.showNeutralAlertDialog(this, getString(R.string.error), error.getErrorString(this));
+            DialogHelper.showNeutralAlertDialog(this, getString(R.string.error),
+                    error.getErrorString(this));
         }
 
         //Fill out username text if it is present
-        if(mUsername != null){
-            usernameView.setText(mUsername);
+        if(username != null){
+            usernameView.setText(username);
         }
 
         //Set up the OnClickListener for the login button
@@ -202,28 +212,29 @@ public class SplashActivity extends BaseActivity {
             public void onClick(View v) {
                 //Hide the keyboard
                 usernameView.clearFocus();
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm =
+                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(usernameView.getWindowToken(), 0);
 
-                //Get the username text
+                //Get the inputted username and password
                 final String username = usernameView.getText().toString().trim();
-
-                //Get the password text
                 final String password = passwordView.getText().toString().trim();
 
                 //Check that both of them are not empty, create appropriate error messages if so
                 if (TextUtils.isEmpty(username)) {
-                    DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
+                    DialogHelper.showNeutralAlertDialog(SplashActivity.this,
+                            getString(R.string.error),
                             getString(R.string.login_error_username_empty));
                     return;
                 } else if (TextUtils.isEmpty(password)) {
-                    DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
+                    DialogHelper.showNeutralAlertDialog(SplashActivity.this,
+                            getString(R.string.error),
                             getString(R.string.login_error_password_empty));
                     return;
                 }
 
                 final ProgressDialog progressDialog = new ProgressDialog(SplashActivity.this);
-                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                progressDialog.setMessage(getString(R.string.please_wait));
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 
@@ -231,15 +242,17 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void run() {
                         //Set the username and password
-                        Connection.getInstance().setUsername(username + getString(R.string.login_email));
+                        Connection.getInstance().setUsername(
+                                username + getString(R.string.login_email));
                         Connection.getInstance().setPassword(password);
-                        final ConnectionStatus connectionStatus = Connection.getInstance().login(SplashActivity.this);
-                        // If the connection was successful, go to Homepage
-                        if (connectionStatus == ConnectionStatus.OK) {
+                        final ConnectionStatus status = Connection.getInstance().login();
+                        // If the connection was successful, start the app initializer
+                        if (status == ConnectionStatus.OK) {
                             // Store the login info.
                             Save.saveUsername(SplashActivity.this, username);
                             Save.savePassword(SplashActivity.this, password);
-                            Save.saveRememberUsername(SplashActivity.this, rememberUsernameView.isChecked());
+                            Save.saveRememberUsername(SplashActivity.this,
+                                    rememberUsernameView.isChecked());
                             Analytics.getInstance().sendEvent("Login", "Remember Username",
                                     String.valueOf(rememberUsernameView.isChecked()));
 
@@ -258,8 +271,7 @@ public class SplashActivity extends BaseActivity {
                                     loginContainer.setVisibility(View.GONE);
 
                                     //Start the downloading of information
-                                    mInfoDownloader = new InfoDownloader(true);
-                                    mInfoDownloader.execute();
+                                    new AppInitializer(true).execute();
                                 }
                             });
                         }
@@ -269,10 +281,11 @@ public class SplashActivity extends BaseActivity {
                                 @Override
                                 public void run() {
                                     Analytics.getInstance().sendEvent("Login", "Login Error",
-                                            connectionStatus.getGAString());
+                                            status.getGAString());
                                     progressDialog.dismiss();
-                                    DialogHelper.showNeutralAlertDialog(SplashActivity.this, getString(R.string.error),
-                                            connectionStatus.getErrorString(SplashActivity.this));
+                                    DialogHelper.showNeutralAlertDialog(SplashActivity.this,
+                                            getString(R.string.error),
+                                            status.getErrorString(SplashActivity.this));
                                 }
                             });
                         }
@@ -282,85 +295,130 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
-    public class InfoDownloader extends AsyncTask<Void, String, Void>{
-        private Context mContext;
+    /**
+     * Initializes the app by logging the user in and downloading the required information
+     */
+    public class AppInitializer extends AsyncTask<Void, String, Void>{
+        /**
+         * True if the user has already logged in (first open), false otherwise
+         */
         private boolean mLoggedIn;
+        /**
+         * The connection status
+         */
         private ConnectionStatus mConnectionStatus;
+        /**
+         * True if we need to download everything (first open), false otherwise
+         */
         private boolean mDownloadEverything;
-
+        /**
+         * The loading container
+         */
         private LinearLayout mLoadingContainer;
+        /**
+         * The TextView showing the progress
+         */
         private TextView mProgressTextView;
+        /**
+         * The skip button
+         */
         private Button mSkip;
-
-        //Bug Related info
-        private boolean mBugPresent;
-        private boolean mTranscriptBug;
+        /**
+         * True if a bug was found, false otherwise
+         */
+        private boolean mBugPresent = false;
+        /**
+         * True if it was a transcript bug, false if it was a schedule bug
+         */
+        private boolean mTranscriptBug = false;
+        /**
+         * The term that the bug was found in, if any
+         */
         private String mTermBug;
 
         //The passed boolean is true when they sign in for the first time,
         //  false when it's on auto-login.
-        public InfoDownloader(boolean loggedIn){
-            this.mContext = SplashActivity.this;
+
+        /**
+         * Default Constructor
+         *
+         * @param loggedIn True if the user has already logged in (first open), false otherwise
+         */
+        public AppInitializer(boolean loggedIn){
             this.mLoggedIn = loggedIn;
-            this.mBugPresent = false;
-            this.mTranscriptBug = false;
         }
 
         @Override
         protected void onPreExecute(){
-            //Bind the views
-            mLoadingContainer = (LinearLayout)findViewById(R.id.loading_container);
-            mProgressTextView = (TextView)findViewById(R.id.loading_title);
-            mSkip = (Button)findViewById(R.id.skip);
-
             //Check if we need to download everything or only the essential stuff
-            //We need to download everything if there is null info or if we are forcing a user reload
+            //We need to download everything if there is null info or if we are forcing a reload
             mDownloadEverything = App.getClasses() == null || App.getTranscript() == null ||
                     App.getUserInfo() == null || App.getEbill() == null || App.forceUserReload;
 
-            //OnClick listener for the skip button
+            //Loading Container
+            mLoadingContainer = (LinearLayout)findViewById(R.id.loading_container);
+            mLoadingContainer.setVisibility(View.VISIBLE);
+
+            //Progress dialog
+            mProgressTextView = (TextView)findViewById(R.id.loading_title);
+            //Reset the text (if it was set during a previous login attempt
+            mProgressTextView.setText("");
+
+            //Skip button
+            mSkip = (Button)findViewById(R.id.skip);
+            //If we are not downloading everything, show the skip button
+            if(!mDownloadEverything){
+                mSkip.setVisibility(View.VISIBLE);
+            }
             mSkip.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    //If it's already been cancelled, no need to do it again
-                    if(mInfoDownloader.isCancelled()){
+                public void onClick(View v){
+                    //If it's already been cancelled, no need to skip it again
+                    if(isCancelled()){
                         return;
                     }
 
-                    //Show the explanation dialog
-                    final SkipDialog skipDialog = new SkipDialog(SplashActivity.this);
-                    skipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            //If the user skips, cancel the info downloader
-                            if(skipDialog.skip()){
-                                mInfoDownloader.publishNewProgress(getString(R.string.skipping));
-                                mInfoDownloader.cancel(false);
-                            }
-                        }
-                    });
-                    //If the dialog isn't showing, this means that the user has decided to never
-                        //see the dialog again so cancel the info downloader
-                    if(!skipDialog.show()){
-                        mInfoDownloader.publishNewProgress(getString(R.string.skipping));
-                        mInfoDownloader.cancel(false);
+                    //If the user has checked the "Do Not Show" option previously, skip directly
+                    if(Load.loadLoadingDoNotShow(SplashActivity.this)){
+                        publishNewProgress(getString(R.string.skipping));
+                        cancel(false);
+                        return;
                     }
-                }
-            });
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Set the loading container to visible
-                    mLoadingContainer.setVisibility(View.VISIBLE);
+                    //If no, show the explanation dialog. Inflate the layout, bind the checkbox
+                    View layout = View.inflate(SplashActivity.this, R.layout.dialog_checkbox, null);
+                    final CheckBox doNotShow = (CheckBox)layout.findViewById(R.id.skip);
 
-                    //Reset the text (if it was set during a previous login attempt
-                    mProgressTextView.setText("");
+                    //Set up the dialog
+                    new AlertDialog.Builder(SplashActivity.this)
+                            .setCancelable(false)
+                            .setView(layout)
+                            .setTitle(getString(R.string.warning))
+                            .setMessage(getString(R.string.skip_loading))
+                            .setPositiveButton(getString(android.R.string.yes),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which){
+                                            //Save the do not show option
+                                            Save.saveLoadingDoNotShow(SplashActivity.this,
+                                                    doNotShow.isChecked());
 
-                    //If we are not downloading everything, show the skip button
-                    if(!mDownloadEverything){
-                        mSkip.setVisibility(View.VISIBLE);
-                    }
+                                            //Cancel the info downloader
+                                            publishNewProgress(getString(R.string.skipping));
+                                            cancel(false);
+
+                                            dialog.dismiss();
+                                        }
+                                    })
+                            .setNegativeButton(getString(android.R.string.no),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which){
+                                            //Save the do not show option
+                                            Save.saveLoadingDoNotShow(SplashActivity.this,
+                                                    doNotShow.isChecked());
+                                            dialog.dismiss();
+                                        }
+                                    })
+                            .create().show();
                 }
             });
         }
@@ -369,10 +427,11 @@ public class SplashActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             Analytics.getInstance().sendEvent("Splash", "Auto-Login", "true");
 
-            //The connection
+            //The connection instance
             Connection connection = Connection.getInstance();
 
-            //Set up a while loop to go through everything while checking if the user cancelled every time
+            //Set up a while loop to go through everything while checking if the user cancelled
+            //  every time
             int downloadIndex = 0;
             downloadLoop: while(!isCancelled()){
                 //Use a switch to figure out what to download next based on the index
@@ -382,8 +441,7 @@ public class SplashActivity extends BaseActivity {
                         publishNewProgress(getString(R.string.logging_in));
 
                         //If he's already logged in, the connection is OK
-                        mConnectionStatus = mLoggedIn ? ConnectionStatus.OK :
-                                connection.login(mContext);
+                        mConnectionStatus = mLoggedIn ? ConnectionStatus.OK : connection.login();
 
                         //If we did not connect, break the loop now
                         if(mConnectionStatus != ConnectionStatus.OK){
@@ -392,16 +450,30 @@ public class SplashActivity extends BaseActivity {
                         break;
                     //Transcript
                     case 1:
-                        publishNewProgress(mContext.getString(mDownloadEverything ? R.string.downloading_transcript :
-                                R.string.updating_transcript));
+                        publishNewProgress(getString(mDownloadEverything ?
+                                R.string.downloading_transcript : R.string.updating_transcript));
 
                         //Download the transcript
-                        String transcriptBug = Test.LOCAL_TRANSCRIPT ? Test.testTranscript(mContext) :
-                                Parser.parseTranscript(connection.getUrl(mContext, Connection.TRANSCRIPT_URL));
+                        try{
+                            String transcriptBug;
+                            if(Test.LOCAL_TRANSCRIPT){
+                                transcriptBug = Test.testTranscript();
+                            }
+                            else{
+                                transcriptBug = Parser.parseTranscript(
+                                        connection.get(Connection.TRANSCRIPT_URL));
+                            }
+                            //If there was an error, show it
+                            if(transcriptBug != null){
+                                reportBug(true, transcriptBug);
+                            }
 
-                        //If there was an error, show it
-                        if(transcriptBug != null){
-                            reportBug(true, transcriptBug);
+                        } catch(MinervaLoggedOutException e){
+                            //Set the connection status and break the loop
+                            mConnectionStatus = ConnectionStatus.WRONG_INFO;
+                            break downloadLoop;
+                        } catch(Exception e){
+                            //IOException or no internet - continue in any case
                         }
                         break;
                     //Semesters
@@ -410,7 +482,7 @@ public class SplashActivity extends BaseActivity {
 
                         //Test mode : only one semester to do
                         if(Test.LOCAL_SCHEDULE){
-                            scheduleBug = Test.testSchedule(mContext);
+                            scheduleBug = Test.testSchedule();
                         }
                         else {
                             //List of semesters
@@ -430,20 +502,30 @@ public class SplashActivity extends BaseActivity {
 
                                 //If we are not downloading everything, only download it if it's the
                                 //  current or future term
-                                if(mDownloadEverything || term.equals(currentTerm) || term.isAfter(currentTerm)){
-                                    publishNewProgress(mContext.getString(mDownloadEverything ?
-                                            R.string.downloading_semester : R.string.updating_semester,
-                                            term.toString(mContext)));
+                                if(mDownloadEverything || term.equals(currentTerm) ||
+                                        term.isAfter(currentTerm)){
+                                    publishNewProgress(getString(mDownloadEverything ?
+                                                    R.string.downloading_semester :
+                                                    R.string.updating_semester,
+                                            term.toString(SplashActivity.this)));
 
                                     //Download the schedule
-                                    scheduleBug = Parser.parseClassList(term, connection.getUrl(mContext,
-                                            Connection.getScheduleURL(term)));
+                                    try{
+                                        scheduleBug = Parser.parseClassList(term,
+                                                connection.get(Connection.getScheduleURL(term)));
+                                    } catch(MinervaLoggedOutException e){
+                                        //Set the connection status and break the loop
+                                        mConnectionStatus = ConnectionStatus.WRONG_INFO;
+                                        break downloadLoop;
+                                    } catch(Exception e){
+                                        //IOException or no internet - continue in any case
+                                    }
                                 }
                             }
 
                             //Set the default term if there is none set yet
                             if(App.getDefaultTerm() == null){
-                                App.setDefaultTerm(Term.dateConverter(DateTime.now()));
+                                App.setDefaultTerm(currentTerm);
                             }
                         }
 
@@ -452,21 +534,28 @@ public class SplashActivity extends BaseActivity {
                             reportBug(false, scheduleBug);
                         }
                         break;
-                    //eBill + user info
+                    //Ebill + user info
                     case 3:
-                        //eBill
-                        publishNewProgress(mContext.getString(mDownloadEverything ? R.string.downloading_ebill :
-                                R.string.updating_ebill));
+                        //Ebill
+                        publishNewProgress(getString(mDownloadEverything ?
+                                R.string.downloading_ebill : R.string.updating_ebill));
 
                         //Download the eBill and user info
-                        String ebillString = Connection.getInstance().getUrl(mContext, Connection.EBILL_URL);
-                        Parser.parseEbill(ebillString);
+                        try{
+                            String ebillString = connection.get(Connection.EBILL_URL);
+                            Parser.parseEbill(ebillString);
 
-                        //User Info
-                        publishNewProgress(mContext.getString(mDownloadEverything ? R.string.downloading_user :
-                                R.string.updating_user));
-
-                        Parser.parseUserInfo(ebillString);
+                            //User Info
+                            publishNewProgress(getString(mDownloadEverything ?
+                                    R.string.downloading_user : R.string.updating_user));
+                            Parser.parseUserInfo(ebillString);
+                        } catch(MinervaLoggedOutException e){
+                            //Set the connection status and break the loop
+                            mConnectionStatus = ConnectionStatus.WRONG_INFO;
+                            break downloadLoop;
+                        } catch(Exception e){
+                            //IOException or no internet - continue in any case
+                        }
                         break;
                     //We've reached the end, break the loop
                     default:
@@ -494,28 +583,22 @@ public class SplashActivity extends BaseActivity {
             onPostExecute(null);
         }
 
-        public void reportBug(boolean transcript, String term){
-            mBugPresent = true;
-            mTranscriptBug = transcript;
-            mTermBug = term;
-        }
-
         @Override
         protected void onPostExecute(Void result) {
             //Hide the container
             mLoadingContainer.setVisibility(View.GONE);
-
-            //Hide th skip button
+            //Hide the skip button
             mSkip.setVisibility(View.GONE);
 
             //Connection successful: home page
             if(mConnectionStatus == ConnectionStatus.OK ||
                     mConnectionStatus == ConnectionStatus.NO_INTERNET){
 
-                Intent intent = new Intent(mContext, MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 //If there's a bug, add it to the intent
                 if(mBugPresent){
-                    intent.putExtra(Constants.BUG, mTranscriptBug ? Constants.TRANSCRIPT : Constants.SCHEDULE)
+                    intent.putExtra(Constants.BUG, mTranscriptBug ?
+                            Constants.TRANSCRIPT : Constants.SCHEDULE)
                         .putExtra(Constants.TERM, mTermBug);
                 }
                 startActivity(intent);
@@ -525,6 +608,18 @@ public class SplashActivity extends BaseActivity {
             else{
                 showLoginScreen(mConnectionStatus);
             }
+        }
+
+        /**
+         * Reports a bug in the parsing of the transcript or schedule
+         *
+         * @param transcript True if it was the transcript, false otherwise
+         * @param term       The term that the bug was in, if applicable
+         */
+        private void reportBug(boolean transcript, String term){
+            mBugPresent = true;
+            mTranscriptBug = transcript;
+            mTermBug = term;
         }
     }
 
