@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
 
 import org.joda.time.DateTime;
@@ -185,63 +184,5 @@ public class Help {
             e.printStackTrace();
             return -1;
         }
-    }
-
-    /**
-     * TODO Delete this
-     */
-    public static void sendBugReport(Context context, String title){
-        //Get the necessary info
-        //App Version Name & Number
-        PackageInfo packageInfo = null;
-        try {
-            packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String appVersionName = "";
-        int appVersionNumber = 0;
-        if (packageInfo != null) {
-            appVersionName = packageInfo.versionName;
-            appVersionNumber = packageInfo.versionCode;
-        }
-
-        //OS Version
-        String osVersion = Build.VERSION.RELEASE;
-        //SDK Version Number
-        int sdkVersionNumber = Build.VERSION.SDK_INT;
-
-        //Manufacturer
-        String manufacturer = Build.MANUFACTURER;
-        //Model
-        String model = Build.MODEL;
-
-        String phoneModel;
-        if (!model.startsWith(manufacturer)) {
-            phoneModel = manufacturer + " " + model;
-        } else {
-            phoneModel = model;
-        }
-
-        //Prepare the email
-        Intent bugEmail = new Intent(Intent.ACTION_SEND);
-        //Recipient
-        bugEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.REPORT_A_BUG_EMAIL});
-        //Title
-        bugEmail.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.help_bug_title,
-                "Android") + " " + title);
-        //Message
-        bugEmail.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.help_bug_summary,
-                "Android",
-                App.getLanguage().getLanguageString(),
-                appVersionName,
-                appVersionNumber,
-                osVersion,
-                sdkVersionNumber,
-                phoneModel,
-                Load.loadFullUsername(context)));
-        //Type(Email)
-        bugEmail.setType("message/rfc822");
-        context.startActivity(Intent.createChooser(bugEmail, context.getString(R.string.about_email_picker_title)));
     }
 }
