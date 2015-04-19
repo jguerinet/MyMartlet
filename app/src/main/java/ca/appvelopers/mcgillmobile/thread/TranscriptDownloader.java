@@ -29,7 +29,7 @@ import ca.appvelopers.mcgillmobile.util.Test;
  * @version 2.0
  * @since 1.0
  */
-public abstract class TranscriptDownloader extends InfoDownloader{
+public class TranscriptDownloader extends InfoDownloader{
     private static final String TAG = "TranscriptDownloader";
     /**
      * The app context
@@ -63,19 +63,22 @@ public abstract class TranscriptDownloader extends InfoDownloader{
 
     @Override
     public void run() {
-        //If we are using the local transcript, don't download the new one
-        if(!Test.LOCAL_TRANSCRIPT){
-            //Figure out the activity instance: if we should show errors and the context is an
-            //  instance of activity, pass it along. Otherwise, pass null
-            Activity activity = (mContext instanceof Activity && mShowErrors) ?
-                    (Activity)mContext : null;
-            String transcript = get(TAG, Connection.TRANSCRIPT_URL, activity);
+        synchronized(this){
+            //If we are using the local transcript, don't download the new one
+            if(!Test.LOCAL_TRANSCRIPT){
+                //Figure out the activity instance: if we should show errors and the context is an
+                //  instance of activity, pass it along. Otherwise, pass null
+                Activity activity = (mContext instanceof Activity && mShowErrors) ?
+                        (Activity)mContext : null;
+                String transcript = get(TAG, Connection.TRANSCRIPT_URL, activity);
 
-            //If there is a String, parse it
-            if(transcript != null){
-                Parser.parseTranscript(transcript);
+                //If there is a String, parse it
+                if(transcript != null){
+                    Parser.parseTranscript(transcript);
+                }
             }
         }
+        notify();
     }
 }
 

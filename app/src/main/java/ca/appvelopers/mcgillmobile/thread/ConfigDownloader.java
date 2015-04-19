@@ -49,7 +49,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.object.Term;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
@@ -97,7 +96,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     @Override
     public Void doInBackground(Void... params){
         //Check if we are connected to the internet
-        if(Connection.isNetworkAvailable(mContext)){
+        if(Help.isConnected()){
             //Load the If-Modified-Since date
             String date = Load.loadIfModifiedSinceDate(mContext);
 

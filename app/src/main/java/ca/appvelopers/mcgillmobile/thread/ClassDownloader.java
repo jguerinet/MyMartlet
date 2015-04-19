@@ -28,7 +28,7 @@ import ca.appvelopers.mcgillmobile.util.Parser;
  * @version 2.0
  * @since 1.0
  */
-public abstract class ClassDownloader extends InfoDownloader{
+public class ClassDownloader extends InfoDownloader{
     private static final String TAG = "ClassDownloader";
     /**
      * The calling activity
@@ -52,11 +52,14 @@ public abstract class ClassDownloader extends InfoDownloader{
 
     @Override
     public void run() {
-        String classes = get(TAG, Connection.getScheduleURL(mTerm), mActivity);
+        synchronized(this){
+            String classes = get(TAG, Connection.getScheduleURL(mTerm), mActivity);
 
-        //If there is a body response, parse it
-        if(classes != null){
-            Parser.parseClassList(mTerm, classes);
+            //If there is a body response, parse it
+            if(classes != null){
+                Parser.parseClassList(mTerm, classes);
+            }
         }
+        notify();
     }
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.fragment;
 
 import android.content.DialogInterface;
@@ -30,12 +46,7 @@ import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.view.ScheduleViewBuilder;
 
-/**
- * Author: Julien Guerinet
- * Date: 2015-01-12 10:39 PM
- * Copyright (c) 2014 Appvelopers Inc. All rights reserved.
- */
-
+@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class ScheduleFragment extends BaseFragment {
     private List<ClassItem> mClassList;
     private Term mTerm;
@@ -113,13 +124,18 @@ public class ScheduleFragment extends BaseFragment {
                                 executeClassDownloader();
                             }
 
-                            //Download the Transcript (if ever the user has new semesters on their transcript)
-                            new TranscriptDownloader(mActivity, false) {
-                                @Override
-                                protected void onPreExecute() {}
-                                @Override
-                                protected void onPostExecute(Boolean loadInfo) {}
-                            }.execute();
+                            //Download the Transcript
+                            //  (if ever the user has new semesters on their transcript)
+                            final TranscriptDownloader downloader =
+                                    new TranscriptDownloader(mActivity, false);
+                            downloader.start();
+
+                            //Wait for the downloader to finish
+                            synchronized(downloader){
+                                try{
+                                    downloader.wait();
+                                } catch(InterruptedException e){}
+                            }
                         }
                     }
                 });
@@ -180,23 +196,24 @@ public class ScheduleFragment extends BaseFragment {
 
     //Downloads the list of classes for the given term
     private void executeClassDownloader(){
-        new ClassDownloader(mActivity, mTerm){
-            @Override
-            protected void onPreExecute(){
-                //Show the user we are refreshing
-                mActivity.showToolbarProgress(true);
-            }
+        //Show the user we are refreshing
+        mActivity.showToolbarProgress(true);
 
-            // onPostExecute displays the results of the AsyncTask.
-            @Override
-            protected void onPostExecute(Boolean loadInfo) {
-                mActivity.showToolbarProgress(false);
+        final ClassDownloader downloader = new ClassDownloader(mActivity, mTerm);
+        downloader.start();
 
-                if(loadInfo){
-                    updateView(mActivity.getResources().getConfiguration().orientation);
-                }
-            }
-        }.execute();
+        //Wait for the downloader to finish
+        synchronized(downloader){
+            try{
+                downloader.wait();
+            } catch(InterruptedException e){}
+        }
+
+        mActivity.showToolbarProgress(false);
+
+        if(downloader.success()){
+            updateView(mActivity.getResources().getConfiguration().orientation);
+        }
     }
 
     //Method that returns a list of courses for a given day
