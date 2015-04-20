@@ -26,8 +26,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 
-import org.joda.time.DateTime;
-
 import java.io.IOException;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -41,19 +39,6 @@ import okio.Okio;
  * @since 1.0
  */
 public class Help {
-    /**
-     * Gets the String for the "If Modified Since" part of the URL
-     *
-     * @param date The date to use
-     * @return The date in the correct String format
-     */
-    public static String getIfModifiedSinceString(DateTime date){
-        return date.dayOfWeek().getAsShortText() + ", " + date.getDayOfMonth() + " " +
-                date.monthOfYear().getAsShortText() + " " + date.getYear() + " " +
-                date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" +
-                date.getSecondOfMinute() + " GMT";
-    }
-
     /* URLS */
 
     /**

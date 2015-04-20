@@ -78,7 +78,7 @@ public class Date {
 	}
 
 	/**
-	 * Returns a String represention of a date depending on the language chosen
+	 * Returns a String representation of a date depending on the language chosen
 	 *
 	 * @param date The date
 	 * @return A locale-dependent String representation of the date
@@ -94,5 +94,19 @@ public class Date {
 		}
 
 		return fmt.print(date);
+	}
+
+	/**
+	 * Gets the DateTime in the RFC 1123 format (for If-Modified-Since)
+	 *  Warning: No timezone changing done
+	 *
+	 * @param date The date to use
+	 * @return The date in the RFC 1123 format
+	 */
+	public static String getRFC1123String(DateTime date){
+		return date.dayOfWeek().getAsShortText() + ", " + date.getDayOfMonth() + " " +
+				date.monthOfYear().getAsShortText() + " " + date.getYear() + " " +
+				date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" +
+				date.getSecondOfMinute() + " UTC";
 	}
 }

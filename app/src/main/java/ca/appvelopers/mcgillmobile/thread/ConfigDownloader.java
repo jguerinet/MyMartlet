@@ -50,6 +50,7 @@ import ca.appvelopers.mcgillmobile.object.Place;
 import ca.appvelopers.mcgillmobile.object.PlaceCategory;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Date;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
@@ -172,7 +173,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                             parsePlaces(gson, parser, response.body().string());
 
                             //Update the If-Modified-Since date
-                            Save.saveIfModifiedSinceDate(mContext, Help.getIfModifiedSinceString(
+                            Save.saveIfModifiedSinceDate(mContext, Date.getRFC1123String(
                                     DateTime.now().withZone(DateTimeZone.forID("UCT"))));
                         }
                     }
