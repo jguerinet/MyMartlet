@@ -27,14 +27,10 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.Language;
 import okio.BufferedSource;
 import okio.Okio;
 
@@ -45,54 +41,10 @@ import okio.Okio;
  * @since 1.0
  */
 public class Help {
-    private static final String TAG = "Help";
-
-    /* DATE STUFF  TODO: Move this to separate class */
-
-    public static boolean timeIsAM(int hour){
-        return hour / 12 == 0;
-    }
-
-    public static String getShortTimeString(Context context, int hour){
-        //This is so that 12 does not become 0
-        String hours = hour == 12 ? "12" : String.valueOf(hour % 12) ;
-
-        if(timeIsAM(hour)){
-            return context.getResources().getString(R.string.am, hours);
-        }
-        return context.getResources().getString(R.string.pm, hours);
-    }
-
-    public static String getLongTimeString(Context context, int hour, int minute){
-        //This is so that 12 does not become 0
-        String hours = (hour == 12) ? "12" : String.valueOf(hour % 12) ;
-
-        //This is so minutes has 2 0's
-        String minutes = String.format("%02d", minute);
-
-        if(timeIsAM(hour)){
-            return context.getResources().getString(R.string.am_long, hours, minutes);
-        }
-        return context.getResources().getString(R.string.pm_long, hours, minutes);
-    }
-
-    public static String getDateString(DateTime date){
-        //Depending on the language chosen
-        DateTimeFormatter fmt;
-        if(App.getLanguage() == Language.ENGLISH){
-            fmt = DateTimeFormat.forPattern("MMMM dd, yyyy");
-        }
-        else{
-            fmt = DateTimeFormat.forPattern("dd MMMM yyyy");
-        }
-
-        return fmt.print(date);
-    }
-
     /**
      * Gets the String for the "If Modified Since" part of the URL
      *
-     *  @param date The date to use
+     * @param date The date to use
      * @return The date in the correct String format
      */
     public static String getIfModifiedSinceString(DateTime date){
@@ -171,7 +123,7 @@ public class Help {
     }
 
     /**
-     * Check if the user is connected to the internet
+     * Checks if the user is connected to the internet
      *
      * @return True if the user is connected to the internet, false otherwise
      */

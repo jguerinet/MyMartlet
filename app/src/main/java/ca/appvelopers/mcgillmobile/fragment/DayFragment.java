@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.fragment;
 
 import android.os.Bundle;
@@ -19,7 +35,7 @@ import ca.appvelopers.mcgillmobile.dialog.CourseDialog;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.Date;
 
 /**
  * Fragment that represents one day in the schedule
@@ -63,7 +79,7 @@ public class DayFragment extends Fragment{
         dayTitle.setText(mDay.getDayString(getActivity()));
 
         TextView dayDate = (TextView)view.findViewById(R.id.day_date);
-        dayDate.setText(Help.getDateString(mDate));
+        dayDate.setText(Date.getDateString(mDate));
 
         //Get the container for the timetable
         LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);
@@ -92,7 +108,7 @@ public class DayFragment extends Fragment{
 
             //Put the correct time
             TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-            time.setText(Help.getShortTimeString(getActivity(), hour));
+            time.setText(Date.getHourString(getActivity(), hour));
 
             //Add it to the right container
             timetableContainer.addView(timetableCell);
