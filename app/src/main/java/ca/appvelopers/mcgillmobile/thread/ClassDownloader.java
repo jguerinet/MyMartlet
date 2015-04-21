@@ -53,7 +53,7 @@ public class ClassDownloader extends InfoDownloader{
     @Override
     public void run() {
         synchronized(this){
-            String classes = get(TAG, Connection.getScheduleURL(mTerm), mActivity);
+            String classes = get(TAG, mActivity, Connection.getScheduleURL(mTerm));
 
             //If there is a body response, parse it
             if(classes != null){

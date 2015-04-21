@@ -23,6 +23,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
+import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 
 /**
@@ -31,6 +34,7 @@ import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
  * @version 2.0
  * @since 1.0
  */
+@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class BaseFragment extends Fragment {
     /**
      * MainActivity reference
@@ -67,5 +71,52 @@ public class BaseFragment extends Fragment {
      */
     protected void lockPortraitMode(){
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    /**
+     * Refreshes the list of courses and possibly the transcript
+     *
+     * @param term       The term to refresh
+     * @return True if the content was refreshed successfully, false otherwise
+     */
+    protected boolean refreshCourses(Term term){
+        //Show the user we are refreshing
+        mActivity.showToolbarProgress(true);
+
+        ClassDownloader downloader = new ClassDownloader(mActivity, term);
+        downloader.start();
+
+        //Wait for the downloader to finish
+        synchronized(downloader){
+            downloader.waitEnd();
+        }
+
+        //Download the Transcript (if ever the user has new semesters on their transcript)
+        refreshTranscript(false);
+
+        return downloader.success();
+    }
+
+    /**
+     * Refreshes the transcript
+     *
+     * @param showErrors True if we should show any eventual errors, false otherwise
+     * @return True if the transcript was refreshed successfully, false otherwise
+     */
+    protected boolean refreshTranscript(boolean showErrors){
+        //Show the user we are refreshing
+        mActivity.showToolbarProgress(true);
+
+        TranscriptDownloader downloader = new TranscriptDownloader(mActivity, showErrors);
+
+        //Wait for the downloader to finish
+        synchronized(downloader){
+            downloader.waitEnd();
+        }
+
+        //Done refreshing
+        mActivity.showToolbarProgress(false);
+
+        return downloader.success();
     }
 }

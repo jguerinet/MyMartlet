@@ -36,8 +36,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
-import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
@@ -128,8 +126,12 @@ public class ScheduleFragment extends BaseFragment {
                             mViewBuilder = new ScheduleViewBuilder(ScheduleFragment.this,
                                     getStartingDate());
 
-                            //Refresh the view
-                            refresh(true);
+                            //Refresh the content
+                            boolean success = refreshCourses(mTerm);
+                            //Update the view if this was a successful refresh
+                            if(success){
+                                updateView(mActivity.getResources().getConfiguration().orientation);
+                            }
                         }
                     }
                 });
@@ -137,42 +139,16 @@ public class ScheduleFragment extends BaseFragment {
 
                 return true;
             case R.id.action_refresh:
-                refresh(false);
+                //Refresh the content
+                boolean success = refreshCourses(mTerm);
+                //Update the view if this was a successful refresh
+                if(success){
+                    updateView(mActivity.getResources().getConfiguration().orientation);
+                }
 
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void refresh(boolean transcript){
-        //Show the user we are refreshing
-        mActivity.showToolbarProgress(true);
-
-        ClassDownloader courseDownloader = new ClassDownloader(mActivity, mTerm);
-        courseDownloader.start();
-
-        //Wait for the downloader to finish
-        synchronized(courseDownloader){
-            courseDownloader.waitEnd();
-        }
-
-        //Update the view if this was a successful download
-        if(courseDownloader.success()){
-            updateView(mActivity.getResources().getConfiguration().orientation);
-        }
-
-        //Download the Transcript (if ever the user has new semesters on their transcript)
-        if(transcript){
-            TranscriptDownloader downloader = new TranscriptDownloader(mActivity, false);
-
-            //Wait for the downloader to finish
-            synchronized(downloader){
-                downloader.waitEnd();
-            }
-        }
-
-        //Stop showing the progress
-        mActivity.showToolbarProgress(false);
     }
 
     /**

@@ -17,7 +17,9 @@
 package ca.appvelopers.mcgillmobile.thread;
 
 import android.app.Activity;
+import android.util.Log;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 
 /**
- * Attempts to register the user to the given classes
+ * Attempts to (un)register the user to the given classes
  * @author Julien Guerinet
  * @version 2.0
  * @since 1.0
@@ -39,17 +41,21 @@ public class RegistrationThread extends InfoDownloader{
      */
     private Activity mActivity;
     /**
-     * The term the user is registering in
+     * The term the user is (un)registering in
      */
     private Term mTerm;
     /**
-     * The list of courses to register for
+     * The list of courses to (un)register for
      */
-    private List<Course> mRegistrationCourses;
+    private List<Course> mCourses;
     /**
-     * A map of the possible registration errors, with the key being the course with the error
+     * True if the user is registering, false if they are unregistering
      */
-    private Map<String, String> mRegistrationErrors = null;
+    private boolean mRegister;
+    /**
+     * A map of the possible (un)registration errors, with the key being the course with the error
+     */
+    private Map<String, String> mErrors;
 
     /**
      * Default Constructor
@@ -57,23 +63,31 @@ public class RegistrationThread extends InfoDownloader{
      * @param activity The calling activity
      * @param term     The term the user is registering in
      * @param courses  The list of courses the user is registering for
+     * @param register True if the user is registering, false if they are unregistering
      */
-    public RegistrationThread(Activity activity, Term term, List<Course> courses){
+    public RegistrationThread(Activity activity, Term term, List<Course> courses, boolean register){
         this.mActivity = activity;
-        this.mRegistrationCourses = courses;
+        this.mCourses = courses;
         this.mTerm = term;
-        this.mRegistrationErrors = null;
+        this.mRegister = register;
+        this.mErrors = new HashMap<>();
     }
 
     @Override
     public void run(){
         synchronized(this){
-            String registrationResult = get(TAG,
-                    Connection.getRegistrationURL(mTerm, mRegistrationCourses, false), mActivity);
+            //Make the request
+            String result =
+                    get(TAG, mActivity, Connection.getRegistrationURL(mTerm, mCourses, mRegister));
 
             //If there is a body response, parse it
-            if(registrationResult != null){
-                mRegistrationErrors = Parser.parseRegistrationErrors(registrationResult);
+            if(result != null){
+                mErrors = Parser.parseRegistrationErrors(result);
+            }
+
+            //Log the errors
+            for(String crn : mErrors.keySet()){
+                Log.e(TAG, "Error for " + crn + ": " + mErrors.get(crn));
             }
         }
         notify();
@@ -84,7 +98,7 @@ public class RegistrationThread extends InfoDownloader{
     /**
      * @return The registration errors
      */
-    public Map<String, String> getRegistrationErrors(){
-        return this.mRegistrationErrors;
+    public Map<String, String> getErrors(){
+        return this.mErrors;
     }
 }

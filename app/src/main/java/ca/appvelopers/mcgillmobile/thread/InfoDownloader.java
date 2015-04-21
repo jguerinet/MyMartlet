@@ -51,11 +51,11 @@ public abstract class InfoDownloader extends Thread {
 	/**
 	 * Makes a request at the given URL and returns the response body if no errors occur
 	 * @param tag      The tag to use for any eventual errors
-	 * @param url      The URL
 	 * @param activity The activity if we need to show any error dialogs
+	 * @param url      The URL
 	 * @return The response body in String format
 	 */
-	protected String get(String tag, String url, final Activity activity){
+	protected String get(String tag, final Activity activity, String url){
 		try{
 			//Make the request
 			return Connection.getInstance().get(url);

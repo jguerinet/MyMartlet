@@ -168,7 +168,7 @@ public class SearchResultsActivity extends BaseActivity {
         }
 
         if(thread.success()) {
-            Map<String, String> registrationErrors = thread.getRegistrationErrors();
+            Map<String, String> registrationErrors = thread.getErrors();
 
             //Display whether the user was successfully registered
             if (registrationErrors.isEmpty()) {

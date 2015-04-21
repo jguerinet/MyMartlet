@@ -18,9 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.courses;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,23 +35,38 @@ import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
-import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
+import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
 import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.Parser;
 
+/**
+ * Shows the user all of the courses the user has taken or is currently registered in
+ * @author Julien Guerinet
+ * @author Joshua David Alfaro
+ * @version 2.0
+ * @since 1.0
+ */
 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class CoursesFragment extends BaseFragment {
+    /**
+     * The ListView for the courses
+     */
     private ListView mListView;
+    /**
+     * The button to unregister from a course
+     */
     private TextView mUnregisterButton;
+    /**
+     * The ListView adapter
+     */
     private CoursesAdapter mAdapter;
+    /**
+     * The current term shown
+     */
     private Term mTerm;
 
     @Override
@@ -65,11 +78,13 @@ public class CoursesFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = View.inflate(mActivity, R.layout.fragment_wishlist, null);
+        View view = View.inflate(mActivity, R.layout.fragment_wishlist, container);
 
+        //Lock the portrait mode for this section
         lockPortraitMode();
 
         Analytics.getInstance().sendScreen("View Courses");
@@ -78,6 +93,7 @@ public class CoursesFragment extends BaseFragment {
         mListView = (ListView)view.findViewById(R.id.courses_list);
         mListView.setEmptyView(view.findViewById(R.id.courses_empty));
 
+        //Term
         mTerm = App.getDefaultTerm();
 
         //Register button
@@ -86,30 +102,32 @@ public class CoursesFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 //Get checked courses from adapter
-                final List<Course> unregisterCoursesList = mAdapter.getCheckedClasses();
+                final List<Course> unregisterCourses = mAdapter.getCheckedClasses();
 
                 //Too many courses
-                if (unregisterCoursesList.size() > 10) {
+                if (unregisterCourses.size() > 10) {
                     Toast.makeText(mActivity, getString(R.string.courses_too_many_courses),
                             Toast.LENGTH_SHORT).show();
-                } else if (unregisterCoursesList.isEmpty()) {
+                }
+                //No courses
+                else if (unregisterCourses.isEmpty()) {
                     Toast.makeText(mActivity, getString(R.string.courses_none_selected),
                             Toast.LENGTH_SHORT).show();
-                } else if (unregisterCoursesList.size() > 0) {
-
+                }
+                else if (unregisterCourses.size() > 0) {
                     //Ask for confirmation before unregistering
                     new AlertDialog.Builder(mActivity)
                             .setTitle(getString(R.string.unregister_dialog_title))
                             .setMessage(getString(R.string.unregister_dialog_message))
-                            .setPositiveButton(getString(R.string.unregister_dialog_positive),
-                            new DialogInterface.OnClickListener(){
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //Execute unregistration of checked classes in a new thread
-                                    new UnregistrationThread(unregisterCoursesList).execute();
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.logout_dialog_negative), null)
+                            .setPositiveButton(getString(android.R.string.yes),
+                                new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //Execute unregistration of checked classes in a new thread
+                                        unregister(unregisterCourses);
+                                    }
+                                })
+                            .setNegativeButton(getString(android.R.string.cancel), null)
                             .create()
                             .show();
                 }
@@ -117,10 +135,9 @@ public class CoursesFragment extends BaseFragment {
         });
 
         //Remove this button
-        TextView wishlist = (TextView)view.findViewById(R.id.course_wishlist);
-        wishlist.setVisibility(View.GONE);
+        view.findViewById(R.id.course_wishlist).setVisibility(View.GONE);
 
-        //Hide the loading indicator
+        //Done loading the view
         hideLoadingIndicator();
 
         return view;
@@ -132,17 +149,22 @@ public class CoursesFragment extends BaseFragment {
         loadInfo();
     }
 
+    /**
+     * Reloads all of the info in the view
+     */
     private void loadInfo(){
         //Set the title
         mActivity.setTitle(mTerm.toString(mActivity));
 
+        //User can unregister if the current term is in the list of terms to register for
         boolean canUnregister = App.getRegisterTerms().contains(mTerm);
 
         //Change the text and the visibility if we are in the list of currently registered courses
         if(canUnregister){
             mUnregisterButton.setVisibility(View.VISIBLE);
             mUnregisterButton.setText(getString(R.string.courses_unregister));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             mUnregisterButton.setLayoutParams(params);
         }
@@ -154,7 +176,6 @@ public class CoursesFragment extends BaseFragment {
         mListView.setAdapter(mAdapter);
     }
 
-    // JDAlfaro
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         inflater.inflate(R.menu.refresh_change_semester, menu);
@@ -162,6 +183,7 @@ public class CoursesFragment extends BaseFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Change Semester
         if(item.getItemId() == R.id.action_change_semester){
             final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, false, mTerm);
             dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -172,130 +194,77 @@ public class CoursesFragment extends BaseFragment {
                     //Term selected: download the classes for the selected term
                     if(term != null){
                         mTerm = term;
-                        executeClassDownloader();
+                        boolean success = refreshCourses(mTerm);
+                        if(success){
+                            loadInfo();
+                        }
                     }
                 }
             });
             dialog.show();
             return true;
         }
+        //Refresh
         else if(item.getItemId() == R.id.action_refresh){
-            //Execute the class downloader
-            executeClassDownloader();
-
-            //Download the Transcript (if ever the user has new semesters on their transcript)
-            final TranscriptDownloader downloader = new TranscriptDownloader(mActivity, false);
-            downloader.start();
-
-            //Wait for the downloader to finish
-            synchronized(downloader){
-                try{
-                    downloader.wait();
-                } catch(InterruptedException e){}
+            boolean success = refreshCourses(mTerm);
+            if(success){
+                loadInfo();
             }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void executeClassDownloader(){
-        //Show the user we are refreshing
+    /**
+     * Tries to unregister from the given courses
+     *
+     * @param courses The list of courses to unregister from
+     */
+    private void unregister(List<Course> courses){
+        //Show the user we are loading
         mActivity.showToolbarProgress(true);
 
-        final ClassDownloader downloader = new ClassDownloader(mActivity, mTerm);
-        downloader.start();
+        //Run the registration thread
+        RegistrationThread thread = new RegistrationThread(mActivity, mTerm, courses, false);
+        thread.start();
 
-        //Wait for the downloader to finish
-        synchronized(downloader){
-            try{
-                downloader.wait();
-            } catch(InterruptedException e){}
+        //Wait until it's finished
+        synchronized(thread){
+            thread.waitEnd();
         }
 
-        mActivity.showToolbarProgress(false);
+        //Successful call
+        if(thread.success()){
+            //Get the errors from the thread
+            Map<String, String> errors = thread.getErrors();
 
-        if(downloader.success()){
-            loadInfo();
-        }
-    }
-
-    //Connects to Minerva in a new thread to register for courses
-    private class UnregistrationThread extends AsyncTask<Void, Void, Boolean> {
-        private Map<String, String> mRegistrationErrors;
-        private List<Course> mClasses;
-
-        public UnregistrationThread(List<Course> classItems){
-            this.mClasses = classItems;
-        }
-
-        @Override
-        protected void onPreExecute(){
-            //Show the user we are downloading new info
-            mActivity.showToolbarProgress(true);
-        }
-
-        //Retrieve page that contains registration status from Minerva
-        @Override
-        protected Boolean doInBackground(Void... params){
-            try{
-                String resultString = Connection.getInstance().get(Connection.getRegistrationURL(
-                        mTerm, mClasses, true));
-                mRegistrationErrors = Parser.parseRegistrationErrors(resultString);
-                return true;
-            } catch(MinervaLoggedOutException e){
-                e.printStackTrace();
-                //TODO Receiver stuff
-                return false;
-            } catch(Exception e){
-                return false;
+            //Success
+            if(errors.isEmpty()){
+                Toast.makeText(mActivity, R.string.unregistration_success, Toast.LENGTH_LONG)
+                        .show();
             }
-        }
-
-        //Update or create transcript object and display data
-        @Override
-        protected void onPostExecute(Boolean success){
-            mActivity.showToolbarProgress(false);
-
-            if(success){
-                //Display whether the user was successfully registered
-                for(String CRN : mRegistrationErrors.keySet()){
-                    Log.e("REGERR", CRN);
-                }
-                for(String error : mRegistrationErrors.values()){
-                    Log.e("REGERR", error);
-                }
-
-                if(mRegistrationErrors == null || mRegistrationErrors.isEmpty()){
-                    Toast.makeText(mActivity, R.string.unregistration_success, Toast.LENGTH_LONG).show();
-                }
-
-                //Display a message if a registration error has occurred
-                else{
-                    String errorMessage = "";
-                    for(String crn : mRegistrationErrors.keySet()){
-                        //Find the corresponding course
-                        for(Course classItem : mClasses){
-                            if(classItem.getCRN() == Integer.valueOf(crn)){
-                                //Add this class to the error message
-                                errorMessage += classItem.getCode() +  " ("
-                                        + classItem.getType() + ") - " + mRegistrationErrors.get(crn) + "\n";
-
-                                break;
-                            }
+            //Display a message if a registration error has occurred
+            else{
+                String errorMessage = "";
+                for(String crn : errors.keySet()){
+                    //Find the corresponding course
+                    for(Course course : courses){
+                        if(course.getCRN() == Integer.valueOf(crn)){
+                            //Add this class to the error message
+                            errorMessage += course.getCode() +  " (" + course.getType() + ") - " +
+                                    errors.get(crn) + "\n";
+                            break;
                         }
                     }
-
-                    //Show an alert dialog with the errors
-                    DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.unregistration_error),
-                            errorMessage);
                 }
-            }
-            else{
-                DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.error),
-                        getString(R.string.error_other));
-            }
 
-            executeClassDownloader();
+                //Show an alert dialog with the errors
+                DialogHelper.showNeutralAlertDialog(mActivity,
+                        getString(R.string.unregistration_error), errorMessage);
+            }
         }
+
+        //Refresh the courses
+        refreshCourses(mTerm);
     }
 }

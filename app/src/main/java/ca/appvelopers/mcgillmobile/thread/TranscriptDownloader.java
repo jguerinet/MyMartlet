@@ -70,7 +70,7 @@ public class TranscriptDownloader extends InfoDownloader{
                 //  instance of activity, pass it along. Otherwise, pass null
                 Activity activity = (mContext instanceof Activity && mShowErrors) ?
                         (Activity)mContext : null;
-                String transcript = get(TAG, Connection.TRANSCRIPT_URL, activity);
+                String transcript = get(TAG, activity, Connection.TRANSCRIPT_URL);
 
                 //If there is a String, parse it
                 if(transcript != null){
