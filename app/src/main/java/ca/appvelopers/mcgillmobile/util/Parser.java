@@ -867,17 +867,18 @@ public class Parser {
 
     /**
      * Parses the Minerva Quick Add/Drop page after registering to check if any errors have occurred
-     * @param resultHTML The HTML string
-     * @return CRNs with registration errors and the associated error
+     *
+     * @param html    The HTML string
+     * @param courses The list of courses the user was trying to register or unregister for/from
+     * @return The error String, null if no errors
      */
-    public static Map<String, String> parseRegistrationErrors(String resultHTML){
-        Map<String, String> registrationErrors = new HashMap<String, String>();
+    public static String parseRegistrationErrors(String html, List<Course> courses){
+        Map<String, String> errors = new HashMap<>();
 
-        Document document = Jsoup.parse(resultHTML, "UTF-8");
+        Document document = Jsoup.parse(html, "UTF-8");
         Elements dataRows = document.getElementsByClass("plaintable");
 
         for(Element row : dataRows){
-
             //Check if an error exists
             if(row.toString().contains("errortext")){
 
@@ -886,16 +887,39 @@ public class Parser {
 
                 //Insert list of CRNs and errors into a map
                 for(Element link : links){
-
                     if(link.toString().contains(Connection.REGISTRATION_ERROR_URL)){
                         String CRN = link.parent().parent().child(1).text();
                         String error = link.text();
-                        registrationErrors.put(CRN, error);
+                        errors.put(CRN, error);
                     }
                 }
             }
         }
-        return registrationErrors;
+
+        //There are errors: set up the error message
+        String error = null;
+        if(!errors.isEmpty()){
+            error = "";
+            for(String crn : errors.keySet()){
+                Log.e("(Un)registration", "Error for " + crn + ": " + errors.get(crn));
+
+                //Find the corresponding course
+                List<Course> errorCourses = new ArrayList<>();
+                for(Course course : courses){
+                    if(course.getCRN() == Integer.valueOf(crn)){
+                        //Remove the course from the list of courses
+                        errorCourses.add(course);
+                        //Add this class to the error message
+                        error += course.getCode() +  " (" + course.getType() + ") - " +
+                                errors.get(crn) + "\n";
+                        break;
+                    }
+                }
+                courses.removeAll(errorCourses);
+            }
+        }
+
+        return error;
     }
 
     /**

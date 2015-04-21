@@ -24,18 +24,19 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
+import ca.appvelopers.mcgillmobile.thread.DownloaderThread;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistSearchCourseAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Parser;
 
 /**
  * Shows the results of the search from the CourseSearchFragment
@@ -43,7 +44,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings({"unchecked", "SynchronizationOnLocalVariableOrMethodParameter"})
 public class SearchResultsActivity extends BaseActivity {
     /**
      * The adapter for the list of results
@@ -53,11 +53,8 @@ public class SearchResultsActivity extends BaseActivity {
      * The current term
      */
     private Term mTerm;
-    /**
-     * The list of classes
-     */
-    private List<Course> mClasses;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,18 +63,18 @@ public class SearchResultsActivity extends BaseActivity {
         Analytics.getInstance().sendScreen("Search Results");
 
         //Set up the toolbar
-        setUpToolbar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setUpToolbar(true);
 
         //Get the info from the intent
         mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
-        mClasses = (ArrayList<Course>)getIntent().getSerializableExtra(Constants.CLASSES);
+        List<Course> courses =
+                (ArrayList<Course>)getIntent().getSerializableExtra(Constants.CLASSES);
 
         //Set the title
         setTitle(mTerm.toString(this));
 
         //ListView
-        mAdapter = new WishlistSearchCourseAdapter(this, mTerm, mClasses);
+        mAdapter = new WishlistSearchCourseAdapter(this, mTerm, courses);
         ListView listView = (ListView) findViewById(R.id.courses_list);
         listView.setEmptyView(findViewById(R.id.courses_empty));
         listView.setAdapter(mAdapter);
@@ -86,40 +83,78 @@ public class SearchResultsActivity extends BaseActivity {
         TextView registerButton = (TextView) findViewById(R.id.course_register);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view){
                 //Get checked courses from adapter
-                List<Course> registerCoursesList = mAdapter.getCheckedClasses();
+                List<Course> courses = mAdapter.getCheckedClasses();
 
                 //Too many courses
-                if (registerCoursesList.size() > 10) {
-                    Toast.makeText(SearchResultsActivity.this, getString(R.string.courses_too_many_courses),
+                if(courses.size() > 10){
+                    Toast.makeText(SearchResultsActivity.this,
+                            getString(R.string.courses_too_many_courses),
                             Toast.LENGTH_SHORT).show();
                 }
                 //No Courses
-                else if (registerCoursesList.isEmpty()) {
-                    Toast.makeText(SearchResultsActivity.this, getString(R.string.courses_none_selected),
+                else if(courses.isEmpty()){
+                    Toast.makeText(SearchResultsActivity.this,
+                            getString(R.string.courses_none_selected),
                             Toast.LENGTH_SHORT).show();
                 }
                 //Execute registration of checked classes in a new thread
-                else if (registerCoursesList.size() > 0) {
-                    executeRegistrationThread(registerCoursesList);
+                else if(courses.size() > 0){
+                    //Show the user we are refreshing
+                    showToolbarProgress(true);
+
+                    String html = new DownloaderThread(SearchResultsActivity.this, "Registration",
+                            Connection.getRegistrationURL(mTerm, courses, false)).execute();
+
+                    if(html != null){
+                        String error = Parser.parseRegistrationErrors(html, courses);
+
+                        //If there are no errors, show the success message
+                        if(error == null){
+                            Toast.makeText(SearchResultsActivity.this,
+                                    R.string.registration_success, Toast.LENGTH_LONG).show();
+                        }
+                        //If not, show the error message
+                        else{
+                            //Show success messages for the correctly registered courses
+                            for(Course course : courses){
+                                error += course.getCode() + " (" +  course.getType() + ") - " +
+                                        getString(R.string.registration_success) + "\n";
+                            }
+
+                            //Show an alert dialog with the errors
+                            DialogHelper.showNeutralAlertDialog(SearchResultsActivity.this,
+                                    getString(R.string.registration_error), error);
+                        }
+
+                        //Remove the courses from the wishlist if they were there
+                        List<Course> wishlist = App.getClassWishlist();
+                        wishlist.removeAll(courses);
+
+                        //Set the new wishlist
+                        App.setClassWishlist(wishlist);
+                    }
+
+                    //Stop the refreshing
+                    showToolbarProgress(false);
                 }
             }
         });
 
         //Add to Wishlist Button
         TextView wishlistButton = (TextView)findViewById(R.id.course_wishlist);
-        wishlistButton.setText(getResources().getString(R.string.courses_add_wishlist));
+        wishlistButton.setText(getString(R.string.courses_add_wishlist));
         wishlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Get the checked list of courses from the adapter
-                List<Course> checkedClasses = mAdapter.getCheckedClasses();
+                List<Course> checkedCourses = mAdapter.getCheckedClasses();
 
                 String toastMessage;
                 //If there are none, display error message
-                if (checkedClasses.isEmpty()) {
-                    toastMessage = getResources().getString(R.string.courses_none_selected);
+                if (checkedCourses.isEmpty()) {
+                    toastMessage = getString(R.string.courses_none_selected);
                 }
                 //If not, it's to add a course to the wishlist
                 else {
@@ -128,9 +163,9 @@ public class SearchResultsActivity extends BaseActivity {
 
                     //Only add it if it's not already part of the wishlist
                     int coursesAdded = 0;
-                    for (Course classItem : checkedClasses) {
-                        if (!wishlist.contains(classItem)) {
-                            wishlist.add(classItem);
+                    for (Course course : checkedCourses) {
+                        if (!wishlist.contains(course)) {
+                            wishlist.add(course);
                             coursesAdded++;
                         }
                     }
@@ -141,85 +176,12 @@ public class SearchResultsActivity extends BaseActivity {
                     Analytics.getInstance().sendEvent("Search Results", "Add to Wishlist",
                             String.valueOf(coursesAdded));
 
-                    toastMessage = getResources().getString(R.string.wishlist_add, coursesAdded);
+                    toastMessage = getString(R.string.wishlist_add, coursesAdded);
                 }
 
                 //Visual feedback of what was just done
                 Toast.makeText(SearchResultsActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    //Registers to the given courses
-    private void executeRegistrationThread(List<Course> courses){
-        //Show the user we are refreshing
-        showToolbarProgress(true);
-
-        final RegistrationThread thread = new RegistrationThread(this, mTerm, courses);
-        thread.start();
-
-        synchronized(thread){
-            //Wait for the thread to finish
-            try{
-                thread.wait();
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-
-        if(thread.success()) {
-            Map<String, String> registrationErrors = thread.getErrors();
-
-            //Display whether the user was successfully registered
-            if (registrationErrors.isEmpty()) {
-                Toast.makeText(this, R.string.registration_success, Toast.LENGTH_LONG).show();
-            }
-            //Display a message if a registration error has occurred
-            else {
-                List<Course> unregisteredCourses = new ArrayList<>();
-                String errorMessage = "";
-
-                //Go through the list of errors and create the error message
-                for (String crn : registrationErrors.keySet()) {
-                    //Find the right class
-                    for (Course classItem : mClasses) {
-                        if (classItem.getCRN() == Integer.valueOf(crn)) {
-                            //Add it to the list of registered courses
-                            unregisteredCourses.add(classItem);
-
-                            //Add this class to the error message
-                            errorMessage += classItem.getCode() + " ("
-                                    + classItem.getType() + ") - "
-                                    + registrationErrors.get(crn) + "\n";
-
-                            break;
-                        }
-                    }
-                }
-
-                //Remove all of the unregistered courses from the list of registered courses
-                mClasses.removeAll(unregisteredCourses);
-
-                //Show success messages for the correctly registered courses
-                for (Course classItem : mClasses) {
-                    errorMessage += classItem.getCode() + " (" +
-                            classItem.getType() + ") - " + getString(R.string.registration_success) + "\n";
-                }
-
-                //Show an alert dialog with the errors
-                DialogHelper.showNeutralAlertDialog(this, getString(R.string.registration_error),
-                        errorMessage);
-            }
-
-            //Remove the courses from the wishlist if they were there
-            List<Course> wishlist = App.getClassWishlist();
-            wishlist.removeAll(mClasses);
-
-            //Set the new wishlist
-            App.setClassWishlist(mClasses);
-        }
-
-        //Stop the refreshing
-        showToolbarProgress(false);
     }
 }

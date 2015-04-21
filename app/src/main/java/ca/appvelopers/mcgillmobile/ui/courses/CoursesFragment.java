@@ -19,7 +19,6 @@ package ca.appvelopers.mcgillmobile.ui.courses;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
-import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -229,36 +227,20 @@ public class CoursesFragment extends BaseFragment {
 
         //Run the registration thread
         String html = new DownloaderThread(mActivity, "Unregistration",
-                Connection.getRegistrationURL(mTerm, courses, false)).execute();
+                Connection.getRegistrationURL(mTerm, courses, true)).execute();
 
         if(html != null){
-            Map<String, String> errors = Parser.parseRegistrationErrors(html);
+            String error = Parser.parseRegistrationErrors(html, courses);
 
-            //Success
-            if(errors.isEmpty()){
+            //If there are no errors, show the success message
+            if(error == null){
                 Toast.makeText(mActivity, R.string.unregistration_success, Toast.LENGTH_LONG)
                         .show();
             }
-            //Display a message if a registration error has occurred
+            //If not, show the error message
             else{
-                String errorMessage = "";
-                for(String crn : errors.keySet()){
-                    Log.e("Unregistration", "Error for " + crn + ": " + errors.get(crn));
-
-                    //Find the corresponding course
-                    for(Course course : courses){
-                        if(course.getCRN() == Integer.valueOf(crn)){
-                            //Add this class to the error message
-                            errorMessage += course.getCode() +  " (" + course.getType() + ") - " +
-                                    errors.get(crn) + "\n";
-                            break;
-                        }
-                    }
-                }
-
-                //Show an alert dialog with the errors
                 DialogHelper.showNeutralAlertDialog(mActivity,
-                        getString(R.string.unregistration_error), errorMessage);
+                        getString(R.string.unregistration_error), error);
             }
 
             //Refresh the courses

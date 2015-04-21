@@ -71,9 +71,10 @@ public class BaseActivity extends ActionBarActivity {
      * Sets up the toolbar as the activity's action bar.
      *  Must be declared in the activity's layout file
      *
+     * @param homeAsUp True if the home button should be displayed as up, false otherwise
      * @return The toolbar
      */
-    public Toolbar setUpToolbar(){
+    public Toolbar setUpToolbar(boolean homeAsUp){
         //Get the toolbar
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         //Set is as the action bar
@@ -81,6 +82,8 @@ public class BaseActivity extends ActionBarActivity {
 
         //Set up the progress bar
         mToolbarProgressBar = (ProgressBar)toolbar.findViewById(R.id.toolbar_progress);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
 
         return toolbar;
     }
