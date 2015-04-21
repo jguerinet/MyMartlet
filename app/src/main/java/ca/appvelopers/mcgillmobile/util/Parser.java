@@ -37,16 +37,16 @@ import java.util.Locale;
 import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.object.ClassItem;
-import ca.appvelopers.mcgillmobile.object.Course;
-import ca.appvelopers.mcgillmobile.object.Day;
-import ca.appvelopers.mcgillmobile.object.EbillItem;
-import ca.appvelopers.mcgillmobile.object.Season;
-import ca.appvelopers.mcgillmobile.object.Semester;
-import ca.appvelopers.mcgillmobile.object.Term;
-import ca.appvelopers.mcgillmobile.object.Token;
-import ca.appvelopers.mcgillmobile.object.Transcript;
-import ca.appvelopers.mcgillmobile.object.UserInfo;
+import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.model.EbillItem;
+import ca.appvelopers.mcgillmobile.model.Season;
+import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.Token;
+import ca.appvelopers.mcgillmobile.model.Transcript;
+import ca.appvelopers.mcgillmobile.model.UserInfo;
 
 /**
  * Parses the given HTML Strings to get the necessary objects

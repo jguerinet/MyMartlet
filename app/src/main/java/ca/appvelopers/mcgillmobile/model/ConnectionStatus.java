@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.object;
+package ca.appvelopers.mcgillmobile.model;
 
 import android.content.Context;
 

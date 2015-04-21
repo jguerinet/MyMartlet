@@ -18,8 +18,8 @@ package ca.appvelopers.mcgillmobile.util;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.Season;
-import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.model.Season;
+import ca.appvelopers.mcgillmobile.model.Term;
 
 public class Test {
     /**

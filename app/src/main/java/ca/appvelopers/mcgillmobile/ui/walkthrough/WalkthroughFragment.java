@@ -27,8 +27,8 @@ import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.DrawerItem;
-import ca.appvelopers.mcgillmobile.object.Faculty;
+import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.Faculty;
 import ca.appvelopers.mcgillmobile.ui.view.FacultyAdapter;
 import ca.appvelopers.mcgillmobile.ui.view.HomePageAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;

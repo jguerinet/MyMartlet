@@ -23,7 +23,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.object.Language;
+import ca.appvelopers.mcgillmobile.model.Language;
 
 /**
  * Contains useful static methods relating to dates

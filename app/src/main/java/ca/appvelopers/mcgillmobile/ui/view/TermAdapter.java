@@ -27,7 +27,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.model.Term;
 
 public class TermAdapter extends BaseAdapter implements SpinnerAdapter{
     private Context mContext;

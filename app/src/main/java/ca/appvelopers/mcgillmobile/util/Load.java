@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.util;
 
 import android.content.Context;
@@ -15,15 +31,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.ClassItem;
-import ca.appvelopers.mcgillmobile.object.DrawerItem;
-import ca.appvelopers.mcgillmobile.object.EbillItem;
-import ca.appvelopers.mcgillmobile.object.Language;
-import ca.appvelopers.mcgillmobile.object.Place;
-import ca.appvelopers.mcgillmobile.object.PlaceCategory;
-import ca.appvelopers.mcgillmobile.object.Term;
-import ca.appvelopers.mcgillmobile.object.Transcript;
-import ca.appvelopers.mcgillmobile.object.UserInfo;
+import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.EbillItem;
+import ca.appvelopers.mcgillmobile.model.Language;
+import ca.appvelopers.mcgillmobile.model.Place;
+import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.Transcript;
+import ca.appvelopers.mcgillmobile.model.UserInfo;
 
 /**
  * Author: Julien

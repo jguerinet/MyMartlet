@@ -30,7 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.Faculty;
+import ca.appvelopers.mcgillmobile.model.Faculty;
 
 public class FacultyAdapter extends BaseAdapter {
     private Context mContext;

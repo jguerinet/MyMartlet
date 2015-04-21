@@ -46,9 +46,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.object.Place;
-import ca.appvelopers.mcgillmobile.object.PlaceCategory;
-import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.model.Place;
+import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Date;
 import ca.appvelopers.mcgillmobile.util.Help;

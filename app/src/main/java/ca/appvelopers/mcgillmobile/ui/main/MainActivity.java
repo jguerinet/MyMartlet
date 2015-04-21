@@ -59,7 +59,7 @@ import ca.appvelopers.mcgillmobile.fragment.ebill.EbillFragment;
 import ca.appvelopers.mcgillmobile.fragment.map.MapFragment;
 import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistFragment;
-import ca.appvelopers.mcgillmobile.object.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;

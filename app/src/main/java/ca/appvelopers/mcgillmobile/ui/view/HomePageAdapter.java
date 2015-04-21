@@ -28,7 +28,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.DrawerItem;
 
 public class HomePageAdapter extends BaseAdapter {
     private Context mContext;

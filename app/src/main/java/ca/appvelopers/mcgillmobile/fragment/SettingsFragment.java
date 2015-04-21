@@ -41,8 +41,8 @@ import java.util.Locale;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.DrawerItem;
-import ca.appvelopers.mcgillmobile.object.Language;
+import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.ui.AboutActivity;
 import ca.appvelopers.mcgillmobile.ui.HelpActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;

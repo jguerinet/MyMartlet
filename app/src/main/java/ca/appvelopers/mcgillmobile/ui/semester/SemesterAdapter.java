@@ -26,8 +26,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.object.Course;
-import ca.appvelopers.mcgillmobile.object.Semester;
+import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Semester;
 
 /**
  * List Adapter that will populate the courses list in SemesterActivity

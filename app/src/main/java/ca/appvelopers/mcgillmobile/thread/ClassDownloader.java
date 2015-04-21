@@ -18,7 +18,7 @@ package ca.appvelopers.mcgillmobile.thread;
 
 import android.app.Activity;
 
-import ca.appvelopers.mcgillmobile.object.Term;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 
