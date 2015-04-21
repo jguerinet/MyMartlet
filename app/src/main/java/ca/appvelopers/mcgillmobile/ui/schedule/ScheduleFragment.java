@@ -27,7 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
@@ -42,21 +41,38 @@ import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
-import ca.appvelopers.mcgillmobile.ui.view.ScheduleViewBuilder;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
 
+/**
+ * Represents the user's schedule
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class ScheduleFragment extends BaseFragment {
-    private List<Course> mClassList;
+    /**
+     * The list of courses
+     */
+    private List<Course> mCourses;
+    /**
+     * The current term
+     */
     private Term mTerm;
-    private ScheduleViewBuilder mScheduleViewBuilder;
+    /**
+     * The ScheduleViewBuilder
+     */
+    private ScheduleViewBuilder mViewBuilder;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        mTerm = App.getDefaultTerm();
+        mCourses = new ArrayList<>();
 
         //Fragment has a menu
         setHasOptionsMenu(true);
@@ -67,15 +83,8 @@ public class ScheduleFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        //If there is no term set, use the default one
-        if(mTerm == null){
-            mTerm = App.getDefaultTerm();
-        }
-
-        mClassList = new ArrayList<Course>();
-
         //Set up the ScheduleViewBuilder
-        mScheduleViewBuilder = new ScheduleViewBuilder(this, getStartingDate());
+        mViewBuilder = new ScheduleViewBuilder(this, getStartingDate());
 
         //Load the right view
         View view = loadView(getResources().getConfiguration().orientation);
@@ -105,10 +114,9 @@ public class ScheduleFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Opens the context menu
             case R.id.action_change_semester:
-                final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity,
-                        false, mTerm);
+                final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, false,
+                        mTerm);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
@@ -118,7 +126,7 @@ public class ScheduleFragment extends BaseFragment {
                             mTerm = term;
 
                             //Restart the schedule view builder with the right date
-                            mScheduleViewBuilder = new ScheduleViewBuilder(ScheduleFragment.this,
+                            mViewBuilder = new ScheduleViewBuilder(ScheduleFragment.this,
                                     getStartingDate());
 
                             //If we aren't in test mode, reload the classes
@@ -136,7 +144,7 @@ public class ScheduleFragment extends BaseFragment {
                             synchronized(downloader){
                                 try{
                                     downloader.wait();
-                                } catch(InterruptedException e){}
+                                } catch(InterruptedException ignored){}
                             }
                         }
                     }
@@ -152,28 +160,34 @@ public class ScheduleFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public View loadView(int orientation){
+    /**
+     * Reloads the view
+     *
+     * @param orientation The current orientation
+     * @return The view to load
+     */
+    private View loadView(int orientation){
         //Title
         mActivity.setTitle(mTerm.toString(mActivity));
 
         //Return the view
-        return mScheduleViewBuilder.renderView(orientation);
+        return mViewBuilder.renderView(orientation);
     }
 
     /**
-     * Get the starting date based on the term and get the concerned classes
+     * Gets the starting date based on the term and get the concerned classes
      *
      * @return The starting date
      */
-    private DateTime getStartingDate(){
+    private LocalDate getStartingDate(){
         fillClassList();
 
         //Date is by default set to today
-        DateTime date = DateTime.now();
+        LocalDate date = LocalDate.now();
         //Check if we are in the current semester
         if(!mTerm.equals(Term.getCurrentTerm())){
             //If not, find the starting date of this semester instead of using today
-            for(Course classItem : mClassList){
+            for(Course classItem : mCourses){
                 if(classItem.getStartDate().isBefore(date)){
                     date = classItem.getStartDate();
                 }
@@ -188,15 +202,17 @@ public class ScheduleFragment extends BaseFragment {
      */
     private void fillClassList(){
         //Clear the current course list, add the courses that are for this semester
-        mClassList.clear();
+        mCourses.clear();
         for(Course classItem : App.getClasses()){
             if(classItem.getTerm().equals(mTerm)){
-                mClassList.add(classItem);
+                mCourses.add(classItem);
             }
         }
     }
 
-    //Downloads the list of classes for the given term
+    /**
+     * Downloads the list of classes for the current term
+     */
     private void executeClassDownloader(){
         //Show the user we are refreshing
         mActivity.showToolbarProgress(true);
@@ -208,28 +224,31 @@ public class ScheduleFragment extends BaseFragment {
         synchronized(downloader){
             try{
                 downloader.wait();
-            } catch(InterruptedException e){}
+            } catch(InterruptedException ignored){}
         }
 
-        mActivity.showToolbarProgress(false);
-
+        //Update the view if this was a successful download
         if(downloader.success()){
             updateView(mActivity.getResources().getConfiguration().orientation);
         }
+
+        //Stop showing the progress
+        mActivity.showToolbarProgress(false);
     }
 
-    //Method that returns a list of courses for a given day
+    /**
+     * Returns the list of courses for a given day and date
+     *
+     * @param day  The day
+     * @param date The date
+     * @return The list of courses
+     */
     public List<Course> getCourses(Day day, LocalDate date){
-        List<Course> courses = new ArrayList<Course>();
+        List<Course> courses = new ArrayList<>();
 
-        //Make sure the class list is initialized
-        if(mClassList == null){
-            mClassList = new ArrayList<Course>();
-            fillClassList();
-        }
-
-        //Go through the list of courses, find which ones have the same day and are for the given date
-        for(Course course : mClassList){
+        //Go through the list of courses, find which ones have the same day and
+        //  are for the given date
+        for(Course course : mCourses){
             if(course.isForDate(date) && course.getDays().contains(day)){
                 courses.add(course);
             }
@@ -237,14 +256,21 @@ public class ScheduleFragment extends BaseFragment {
         return courses;
     }
 
+    /**
+     * Updates the view
+     *
+     * @param orientation The current orientation
+     */
     public void updateView(int orientation){
         //Get the root view
         ViewGroup rootView = (ViewGroup) getView();
 
-        // Remove all the existing views from the root view.
-        rootView.removeAllViews();
+        if(rootView != null){
+            // Remove all the existing views from the root view.
+            rootView.removeAllViews();
 
-        //Reload a new view
-        rootView.addView(loadView(orientation));
+            //Reload a new view
+            rootView.addView(loadView(orientation));
+        }
     }
 }

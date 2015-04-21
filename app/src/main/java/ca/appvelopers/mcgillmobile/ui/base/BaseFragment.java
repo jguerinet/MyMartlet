@@ -25,14 +25,23 @@ import android.view.ViewGroup;
 
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 
+/**
+ * The base fragment for all fragments involved in the main view
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class BaseFragment extends Fragment {
-    //The reference to MainActivity
+    /**
+     * MainActivity reference
+     */
     protected MainActivity mActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        //Set the activity reference
         this.mActivity = (MainActivity)getActivity();
     }
 
@@ -46,14 +55,17 @@ public class BaseFragment extends Fragment {
         return null;
     }
 
-    public void hideLoadingIndicator(){
+    /**
+     * Hides the loading indicator. To be called by each fragment after the view is loaded
+     */
+    protected void hideLoadingIndicator(){
         mActivity.showFragmentSwitcherProgress(false);
     }
 
     /**
      * Locks the fragment in portrait mode
      */
-    public void lockPortraitMode(){
+    protected void lockPortraitMode(){
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }

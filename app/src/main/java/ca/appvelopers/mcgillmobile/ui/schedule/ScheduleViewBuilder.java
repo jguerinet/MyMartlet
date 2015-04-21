@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.ui.view;
+package ca.appvelopers.mcgillmobile.ui.schedule;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
@@ -36,16 +37,14 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
-import ca.appvelopers.mcgillmobile.ui.schedule.DayFragment;
-import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.util.Date;
 
 public class ScheduleViewBuilder {
     private ScheduleFragment mFragment;
     private Context mContext;
-    private DateTime mDate;
+    private LocalDate mDate;
 
-    public ScheduleViewBuilder(ScheduleFragment fragment, DateTime startingDate){
+    public ScheduleViewBuilder(ScheduleFragment fragment, LocalDate startingDate){
         this.mFragment = fragment;
         this.mContext = fragment.getActivity();
         this.mDate = startingDate;
