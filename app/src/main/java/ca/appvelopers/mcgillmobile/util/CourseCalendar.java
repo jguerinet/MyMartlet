@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.util;
 
 import org.joda.time.DateTime;
@@ -132,11 +148,11 @@ public class CourseCalendar {
 		DateTime firstClassBegin, firstClassEnd, lastDay, startDate;
 		LocalTime startTime, endTime;
 		if (mRounded) {
+			startTime = item.getRoundedStartTime();
+			endTime = item.getRoundedEndTime();
+		} else {
 			startTime = item.getStartTime();
 			endTime = item.getEndTime();
-		} else {
-			startTime = item.getActualStartTime();
-			endTime = item.getActualEndTime();
 		}
 		startDate = item.getStartDate();
 		firstClassBegin = startDate.withTime(startTime.getHourOfDay(),
@@ -250,10 +266,10 @@ public class CourseCalendar {
     			attributes.append(" - ");
     		}
 			switch (symbol) {
-			case 'c': attributes.append(item.getCourseCode()); break;
-			case 't': attributes.append(item.getCourseTitle()); break;
+			case 'c': attributes.append(item.getCode()); break;
+			case 't': attributes.append(item.getTitle()); break;
 			case 's': attributes.append(item.getSection()); break;
-			case 'y': attributes.append(item.getSectionType()); break;
+			case 'y': attributes.append(item.getType()); break;
 			}
 		}
     	
@@ -359,9 +375,9 @@ public class CourseCalendar {
 		LocalTime startTime;
 		DateTime startDate;
 		if (mRounded) {
-			startTime = item.getStartTime();
+			startTime = item.getRoundedStartTime();
 		} else {
-			startTime = item.getActualStartTime();
+			startTime = item.getStartTime();
 		}
 		startDate = item.getStartDate().withTime(startTime.getHourOfDay(),
 				                             	 startTime.getMinuteOfHour(),
@@ -390,9 +406,9 @@ public class CourseCalendar {
 		LocalTime endTime;
 		DateTime endDate;
 		if (mRounded) {
-			endTime = item.getEndTime();
+			endTime = item.getRoundedEndTime();
 		} else {
-			endTime = item.getActualEndTime();
+			endTime = item.getEndTime();
 		}
 		endDate = item.getEndDate().withTime(endTime.getHourOfDay(),
                 							 endTime.getMinuteOfHour(),

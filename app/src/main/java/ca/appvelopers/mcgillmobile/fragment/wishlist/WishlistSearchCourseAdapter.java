@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ca.appvelopers.mcgillmobile.fragment.wishlist;
 
 import android.content.Context;
@@ -17,11 +33,6 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
 
-/**
- * Author : Julien
- * Date :  2014-05-26 7:14 PM
- * Copyright (c) 2014 Julien Guerinet. All rights reserved.
- */
 public class WishlistSearchCourseAdapter extends BaseAdapter {
     private Context mContext;
     private List<ClassItem> mClassItems;
@@ -67,7 +78,7 @@ public class WishlistSearchCourseAdapter extends BaseAdapter {
 
         //Code
         TextView courseCode = (TextView)view.findViewById(R.id.course_code);
-        courseCode.setText(classItem.getCourseCode());
+        courseCode.setText(classItem.getCode());
 
         //Credits
         TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
@@ -75,7 +86,7 @@ public class WishlistSearchCourseAdapter extends BaseAdapter {
 
         //Title
         TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
-        courseTitle.setText(classItem.getCourseTitle());
+        courseTitle.setText(classItem.getTitle());
 
         //Spots Remaining
         TextView spots = (TextView)view.findViewById(R.id.course_spots);
@@ -84,7 +95,7 @@ public class WishlistSearchCourseAdapter extends BaseAdapter {
 
         //Type
         TextView courseType = (TextView)view.findViewById(R.id.course_type);
-        courseType.setText(classItem.getSectionType());
+        courseType.setText(classItem.getType());
 
         //Waitlist Remaining
         TextView waitlistRemaining = (TextView)view.findViewById(R.id.course_waitlist);
@@ -101,7 +112,7 @@ public class WishlistSearchCourseAdapter extends BaseAdapter {
 
         //Dates
         TextView courseDates = (TextView)view.findViewById(R.id.course_dates);
-        courseDates.setText(classItem.getDates());
+        courseDates.setText(classItem.getDateString());
 
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);

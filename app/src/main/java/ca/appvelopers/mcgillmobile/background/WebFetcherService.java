@@ -188,14 +188,14 @@ public class WebFetcherService extends IntentService {
             boolean courseExists = false;
             //Check if course exists in list
             for(Course addedCourse : coursesList){
-                if(addedCourse.getCourseCode().equals(wishlistClass.getCourseCode())){
+                if(addedCourse.getCourseCode().equals(wishlistClass.getCode())){
                     courseExists = true;
                 }
             }
             //Add course if it has not already been added
             if(!courseExists){
-                coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getCourseTitle(),
-                        wishlistClass.getCourseCode(), wishlistClass.getCredits(), "N/A", "N/A"));
+                coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getTitle(),
+                        wishlistClass.getCode(), wishlistClass.getCredits(), "N/A", "N/A"));
             }
         }
 
@@ -244,9 +244,9 @@ public class WebFetcherService extends IntentService {
 
                     if(wishlistClass.getCRN() == updatedClass.getCRN()){
                         wishlistClass.setDays(updatedClass.getDays());
-                        wishlistClass.setStartTime(updatedClass.getStartTime());
-                        wishlistClass.setEndTime(updatedClass.getEndTime());
-                        wishlistClass.setDates(updatedClass.getDates());
+                        wishlistClass.setStartTime(updatedClass.getRoundedStartTime());
+                        wishlistClass.setEndTime(updatedClass.getRoundedEndTime());
+                        wishlistClass.setDates(updatedClass.getDateString());
                         wishlistClass.setInstructor(updatedClass.getInstructor());
                         wishlistClass.setLocation(updatedClass.getLocation());
                         wishlistClass.setSeatsRemaining(updatedClass.getSeatsRemaining());
@@ -260,7 +260,7 @@ public class WebFetcherService extends IntentService {
 		for(ClassItem wantedClass : wishlistClasses){
 			if(wantedClass.getSeatsRemaining()>0){
 				//show notification
-				LocalToast("A spot has opened up for the class: "+wantedClass.getCourseTitle(), MainActivity.class,NOTIFICATION_ID_CLASSES);
+				LocalToast("A spot has opened up for the class: "+wantedClass.getTitle(), MainActivity.class,NOTIFICATION_ID_CLASSES);
 				return;
 			}
 		}

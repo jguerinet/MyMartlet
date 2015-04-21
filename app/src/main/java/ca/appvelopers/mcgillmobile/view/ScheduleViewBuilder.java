@@ -157,9 +157,9 @@ public class ScheduleViewBuilder {
                     for(ClassItem course : classItems){
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
-                        if(course.getStartTime().equals(currentTime)){
+                        if(course.getRoundedStartTime().equals(currentTime)){
                             currentClass = course;
-                            currentCourseEndTime = course.getEndTime();
+                            currentCourseEndTime = course.getRoundedEndTime();
                             break;
                         }
                     }
@@ -176,10 +176,10 @@ public class ScheduleViewBuilder {
 
                         //Set up all of the info
                         TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
-                        courseName.setText(currentClass.getCourseCode());
+                        courseName.setText(currentClass.getCode());
 
                         TextView courseType = (TextView)scheduleCell.findViewById(R.id.course_type);
-                        courseType.setText(currentClass.getSectionType());
+                        courseType.setText(currentClass.getType());
 
                         TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
                         courseTime.setText(currentClass.getTimeString(mContext));
@@ -188,7 +188,7 @@ public class ScheduleViewBuilder {
                         courseLocation.setText(currentClass.getLocation());
 
                         //Find out how long this course is in terms of blocks of 30 min
-                        int length = Minutes.minutesBetween(currentClass.getStartTime(), currentClass.getEndTime()).getMinutes() / 30;
+                        int length = Minutes.minutesBetween(currentClass.getRoundedStartTime(), currentClass.getRoundedEndTime()).getMinutes() / 30;
 
                         //Set the height of the view depending on this height
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,

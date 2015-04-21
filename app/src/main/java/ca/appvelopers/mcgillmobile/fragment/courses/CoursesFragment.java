@@ -277,8 +277,8 @@ public class CoursesFragment extends BaseFragment {
                         for(ClassItem classItem : mClasses){
                             if(classItem.getCRN() == Integer.valueOf(crn)){
                                 //Add this class to the error message
-                                errorMessage += classItem.getCourseCode() +  " ("
-                                        + classItem.getSectionType() + ") - " + mRegistrationErrors.get(crn) + "\n";
+                                errorMessage += classItem.getCode() +  " ("
+                                        + classItem.getType() + ") - " + mRegistrationErrors.get(crn) + "\n";
 
                                 break;
                             }

@@ -16,15 +16,13 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import android.content.Context;
-
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.Language;
 
 /**
@@ -36,45 +34,42 @@ import ca.appvelopers.mcgillmobile.object.Language;
 public class Date {
 
 	/**
-	 * Checks if the given hour is AM or PM
-	 * @param hour The hour
-	 * @return True if the hour is AM, false if it's PM
-	 */
-	private static boolean isAM(int hour){
-		return hour / 12 == 0;
-	}
-
-	/**
 	 * Returns a String of the hour (ex: 8 AM)
 	 *
-	 * @param context The app context
 	 * @param hour    The hour
 	 * @return The String representation of the hour
 	 */
-	public static String getHourString(Context context, int hour){
-		//Get the right hours
-		String hours = hour == 12 ? "12" : String.valueOf(hour % 12) ;
-
-		return isAM(hour) ? context.getString(R.string.am, hours) :
-				context.getString(R.string.pm, hours);
+	public static String getHourString(int hour){
+		return LocalTime.MIDNIGHT.withHourOfDay(hour).toString(DateTimeFormat.forPattern("h a"));
 	}
 
 	/**
 	 * Returns a String representation of the time (ex: 8:00 AM)
 	 *
-	 * @param context The app context
 	 * @param time    The time
 	 * @return The String representation of the time
 	 */
-	public static String getTimeString(Context context, LocalTime time){
-		//Get the right hours
-		String hours = time.getHourOfDay() == 12 ? "12" : String.valueOf(time.getHourOfDay() % 12);
+	public static String getTimeString(LocalTime time){
+		return time.toString(DateTimeFormat.forPattern("hh:mm a"));
+	}
 
-		//Get the right minutes (with 2 digits)
-		String minutes = String.format("%02d", time.getMinuteOfHour());
+	/**
+	 * Returns a String representation of a date depending on the language chosen (in short format)
+	 *
+	 * @param date The date
+	 * @return A locale-dependent short String representation of the date
+	 */
+	public static String getShortDateString(LocalDate date){
+		//Depending on the language chosen
+		DateTimeFormatter fmt;
+		if(App.getLanguage() == Language.ENGLISH){
+			fmt = DateTimeFormat.forPattern("MMM dd, yyyy");
+		}
+		else{
+			fmt = DateTimeFormat.forPattern("dd MMM yyyy");
+		}
 
-		return (isAM(time.getHourOfDay())) ? context.getString(R.string.am_long, hours, minutes) :
-				context.getString(R.string.pm_long, hours, minutes);
+		return fmt.print(date);
 	}
 
 	/**
@@ -83,7 +78,7 @@ public class Date {
 	 * @param date The date
 	 * @return A locale-dependent String representation of the date
 	 */
-	public static String getDateString(DateTime date){
+	public static String getDateString(LocalDate date){
 		//Depending on the language chosen
 		DateTimeFormatter fmt;
 		if(App.getLanguage() == Language.ENGLISH){

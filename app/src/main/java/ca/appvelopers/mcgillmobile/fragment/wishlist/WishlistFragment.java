@@ -261,8 +261,8 @@ public class WishlistFragment extends BaseFragment {
                             unregisteredCourses.add(classItem);
 
                             //Add this class to the error message
-                            errorMessage += classItem.getCourseCode() + " ("
-                                    + classItem.getSectionType() + ") - "
+                            errorMessage += classItem.getCode() + " ("
+                                    + classItem.getType() + ") - "
                                     + registrationErrors.get(crn) + "\n";
 
                             break;
@@ -275,8 +275,8 @@ public class WishlistFragment extends BaseFragment {
 
                 //Show success messages for the correctly registered courses
                 for (ClassItem classItem : mClasses) {
-                    errorMessage += classItem.getCourseCode() + " (" +
-                            classItem.getSectionType() + ") - " + getString(R.string.registration_success) + "\n";
+                    errorMessage += classItem.getCode() + " (" +
+                            classItem.getType() + ") - " + getString(R.string.registration_success) + "\n";
                 }
 
                 //Show an alert dialog with the errors
@@ -318,14 +318,14 @@ public class WishlistFragment extends BaseFragment {
                 boolean courseExists = false;
                 //Check if course exists in list
                 for(Course addedCourse : coursesList){
-                    if(addedCourse.getCourseCode().equals(wishlistClass.getCourseCode())){
+                    if(addedCourse.getCourseCode().equals(wishlistClass.getCode())){
                         courseExists = true;
                     }
                 }
                 //Add course if it has not already been added
                 if(!courseExists){
-                    coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getCourseTitle(),
-                            wishlistClass.getCourseCode(), wishlistClass.getCredits(), "N/A", "N/A"));
+                    coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getTitle(),
+                            wishlistClass.getCode(), wishlistClass.getCredits(), "N/A", "N/A"));
                 }
             }
 
@@ -373,9 +373,9 @@ public class WishlistFragment extends BaseFragment {
 
                         if(wishlistClass.getCRN() == updatedClass.getCRN()){
                             wishlistClass.setDays(updatedClass.getDays());
-                            wishlistClass.setStartTime(updatedClass.getStartTime());
-                            wishlistClass.setEndTime(updatedClass.getEndTime());
-                            wishlistClass.setDates(updatedClass.getDates());
+                            wishlistClass.setStartTime(updatedClass.getRoundedStartTime());
+                            wishlistClass.setEndTime(updatedClass.getRoundedEndTime());
+                            wishlistClass.setDates(updatedClass.getDateString());
                             wishlistClass.setInstructor(updatedClass.getInstructor());
                             wishlistClass.setLocation(updatedClass.getLocation());
                             wishlistClass.setSeatsRemaining(updatedClass.getSeatsRemaining());

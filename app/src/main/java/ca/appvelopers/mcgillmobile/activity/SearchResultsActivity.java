@@ -188,8 +188,8 @@ public class SearchResultsActivity extends BaseActivity {
                             unregisteredCourses.add(classItem);
 
                             //Add this class to the error message
-                            errorMessage += classItem.getCourseCode() + " ("
-                                    + classItem.getSectionType() + ") - "
+                            errorMessage += classItem.getCode() + " ("
+                                    + classItem.getType() + ") - "
                                     + registrationErrors.get(crn) + "\n";
 
                             break;
@@ -202,8 +202,8 @@ public class SearchResultsActivity extends BaseActivity {
 
                 //Show success messages for the correctly registered courses
                 for (ClassItem classItem : mClasses) {
-                    errorMessage += classItem.getCourseCode() + " (" +
-                            classItem.getSectionType() + ") - " + getString(R.string.registration_success) + "\n";
+                    errorMessage += classItem.getCode() + " (" +
+                            classItem.getType() + ") - " + getString(R.string.registration_success) + "\n";
                 }
 
                 //Show an alert dialog with the errors
