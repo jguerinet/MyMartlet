@@ -19,90 +19,124 @@ package ca.appvelopers.mcgillmobile.ui.schedule;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
+/**
+ * Shows the course details when clicked in the schedule
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class CourseDialog extends AlertDialog {
-    private AlertDialog mDialog;
+    /**
+     * The activity instance
+     */
+    private Activity mActivity;
+    /**
+     * The course
+     */
+    private Course mCourse;
 
-    public CourseDialog(final Activity activity, final Course classItem) {
+    /**
+     * Default Constructor
+     *
+     * @param activity The calling activity
+     * @param course   The course
+     */
+    public CourseDialog(final Activity activity, final Course course){
         super(activity);
+
+        this.mActivity = activity;
+        this.mCourse = course;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_course);
 
         Analytics.getInstance().sendScreen("Schedule - Course");
 
         //Inflate the title
-        View title = View.inflate(activity, R.layout.dialog_course_title, null);
+        View title = View.inflate(mActivity, R.layout.dialog_course_title, null);
 
-        //Fill in the info
+        //Course Code
         TextView courseCode = (TextView)title.findViewById(R.id.course_code);
-        courseCode.setText(classItem.getCode());
+        courseCode.setText(mCourse.getCode());
 
+        //Course Title
         TextView courseTitle = (TextView)title.findViewById(R.id.course_title);
-        courseTitle.setText(classItem.getTitle());
+        courseTitle.setText(mCourse.getTitle());
 
-        //Inflate the right view
-        View layout = View.inflate(activity, R.layout.dialog_course, null);
+        //Set it
+        setCustomTitle(title);
 
-        //Set up the info
+        //Inflate the body
+        View layout = View.inflate(mActivity, R.layout.dialog_course, null);
+
+        //Course Time
         TextView courseTime = (TextView)layout.findViewById(R.id.course_time);
-        courseTime.setText(classItem.getTimeString(activity));
+        courseTime.setText(mCourse.getTimeString());
 
+        //Course Location
         TextView courseLocation = (TextView)layout.findViewById(R.id.course_location);
-        courseLocation.setText(classItem.getLocation());
+        courseLocation.setText(mCourse.getLocation());
 
-        TextView scheduleType = (TextView)layout.findViewById(R.id.schedule_type);
-        scheduleType.setText(classItem.getType());
+        //Type
+        TextView type = (TextView)layout.findViewById(R.id.course_type);
+        type.setText(mCourse.getType());
 
-        TextView courseProfessor = (TextView)layout.findViewById(R.id.course_professor);
-        courseProfessor.setText(classItem.getInstructor());
+        //Instructor
+        TextView instructor = (TextView)layout.findViewById(R.id.course_instructor);
+        instructor.setText(mCourse.getInstructor());
 
-        TextView courseSection = (TextView)layout.findViewById(R.id.course_section);
-        courseSection.setText(classItem.getSection());
+        //Section
+        TextView section = (TextView)layout.findViewById(R.id.course_section);
+        section.setText(mCourse.getSection());
 
-        TextView courseCredits = (TextView)layout.findViewById(R.id.course_credits);
-        courseCredits.setText(String.valueOf(classItem.getCredits()));
+        //Credits
+        TextView credits = (TextView)layout.findViewById(R.id.course_credits);
+        credits.setText(String.valueOf(mCourse.getCredits()));
 
-        TextView courseCRN = (TextView)layout.findViewById(R.id.course_crn);
-        courseCRN.setText(String.valueOf(classItem.getCRN()));
+        //CRN
+        TextView crn = (TextView)layout.findViewById(R.id.course_crn);
+        crn.setText(String.valueOf(mCourse.getCRN()));
 
-        TextView courseDocuum = (TextView)layout.findViewById(R.id.course_docuum);
-        courseDocuum.setOnClickListener(new View.OnClickListener() {
+        //Docuum Link
+        TextView docuum = (TextView)layout.findViewById(R.id.course_docuum);
+        docuum.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Help.openURL(activity, Help.getDocuumLink(classItem.getSubject(), classItem.getNumber()));
+            public void onClick(View v){
+                Help.openURL(mActivity, Help.getDocuumLink(mCourse.getSubject(),
+                        mCourse.getNumber()));
             }
         });
 
-        TextView courseMap = (TextView)layout.findViewById(R.id.course_map);
-        courseMap.setOnClickListener(new View.OnClickListener() {
+        TextView map = (TextView)layout.findViewById(R.id.course_map);
+        map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 //TODO
-                Toast.makeText(activity, "Not Implemented", Toast.LENGTH_SHORT).show();
             }
         });
 
-        //Build the dialog
-        Builder builder = new Builder(activity);
-        builder.setCancelable(true)
-            .setCustomTitle(title)
-            .setView(layout)
-            .setNeutralButton(activity.getString(R.string.done), new OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-        mDialog = builder.create();
-    }
+        //Dismiss button
+        setButton(DialogInterface.BUTTON_NEUTRAL, mActivity.getString(R.string.done),
+                new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        dialog.dismiss();
+                    }
+                });
 
-    @Override
-    public void show(){
-        mDialog.show();
+        //Cancelable
+        setCancelable(true);
     }
 }
