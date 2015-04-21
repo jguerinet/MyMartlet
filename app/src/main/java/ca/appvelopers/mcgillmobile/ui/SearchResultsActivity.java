@@ -33,9 +33,9 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
 import ca.appvelopers.mcgillmobile.ui.main.BaseActivity;
+import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Shows the results of the search from the CourseSearchFragment

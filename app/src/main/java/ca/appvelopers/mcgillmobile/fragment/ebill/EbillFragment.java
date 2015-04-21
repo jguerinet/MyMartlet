@@ -38,10 +38,10 @@ import ca.appvelopers.mcgillmobile.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.object.EbillItem;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
+import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 public class EbillFragment extends BaseFragment {
     private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();

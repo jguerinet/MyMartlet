@@ -40,11 +40,11 @@ import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.ui.dialog.ChangeSemesterDialog;
+import ca.appvelopers.mcgillmobile.ui.view.ScheduleViewBuilder;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
-import ca.appvelopers.mcgillmobile.view.ScheduleViewBuilder;
 
 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class ScheduleFragment extends BaseFragment {

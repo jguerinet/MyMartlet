@@ -46,12 +46,12 @@ import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Day;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.ui.SearchResultsActivity;
+import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.view.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
-import ca.appvelopers.mcgillmobile.view.TermAdapter;
 
 public class CourseSearchFragment extends BaseFragment {
     private Spinner mTermSpinner;

@@ -46,11 +46,11 @@ import ca.appvelopers.mcgillmobile.object.Language;
 import ca.appvelopers.mcgillmobile.ui.AboutActivity;
 import ca.appvelopers.mcgillmobile.ui.HelpActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
+import ca.appvelopers.mcgillmobile.ui.view.HomePageAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
-import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
 
 public class SettingsFragment extends BaseFragment {
     @Override

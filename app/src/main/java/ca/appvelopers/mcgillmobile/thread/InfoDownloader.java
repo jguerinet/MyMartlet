@@ -22,8 +22,8 @@ import android.util.Log;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.exception.NoInternetException;
+import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * Base class for all of the user info downloaders.

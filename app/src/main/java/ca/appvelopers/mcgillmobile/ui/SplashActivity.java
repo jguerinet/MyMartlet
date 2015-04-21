@@ -50,6 +50,7 @@ import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.ui.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
+import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -59,7 +60,6 @@ import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Test;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * First activity that is opened when the app is started

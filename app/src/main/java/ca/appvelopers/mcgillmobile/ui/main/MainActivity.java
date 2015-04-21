@@ -61,10 +61,10 @@ import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
+import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 /**
  * The MainActivity the contains the side drawer and the main views for the fragments

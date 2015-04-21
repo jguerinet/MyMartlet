@@ -26,10 +26,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 public class DesktopFragment extends BaseFragment {
     private WebView mWebView;

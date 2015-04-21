@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.view;
+package ca.appvelopers.mcgillmobile.ui.view;
 
 import android.content.Context;
 import android.content.res.Configuration;

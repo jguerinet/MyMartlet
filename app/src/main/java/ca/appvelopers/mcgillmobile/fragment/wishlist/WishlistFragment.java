@@ -43,10 +43,10 @@ import ca.appvelopers.mcgillmobile.object.Course;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
 import ca.appvelopers.mcgillmobile.ui.dialog.ChangeSemesterDialog;
+import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.view.DialogHelper;
 
 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class WishlistFragment extends BaseFragment {

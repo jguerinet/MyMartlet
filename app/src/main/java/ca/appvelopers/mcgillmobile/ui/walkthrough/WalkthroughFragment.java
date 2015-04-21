@@ -29,10 +29,10 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Faculty;
+import ca.appvelopers.mcgillmobile.ui.view.FacultyAdapter;
+import ca.appvelopers.mcgillmobile.ui.view.HomePageAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.view.FacultyAdapter;
-import ca.appvelopers.mcgillmobile.view.HomePageAdapter;
 
 /**
  * Author : Julien
