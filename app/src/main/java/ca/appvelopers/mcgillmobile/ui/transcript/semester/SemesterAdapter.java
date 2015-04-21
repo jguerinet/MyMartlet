@@ -26,8 +26,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 
 /**
  * List Adapter that will populate the courses list in SemesterActivity
@@ -36,7 +36,7 @@ import ca.appvelopers.mcgillmobile.model.Semester;
  */
 public class SemesterAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Course> mCourses;
+    private List<TranscriptCourse> mCourses;
 
     public SemesterAdapter(Context context, Semester semester){
         this.mContext = context;
@@ -49,7 +49,7 @@ public class SemesterAdapter extends BaseAdapter {
     }
 
     @Override
-    public Course getItem(int position) {
+    public TranscriptCourse getItem(int position) {
         return mCourses.get(position);
     }
 
@@ -72,7 +72,7 @@ public class SemesterAdapter extends BaseAdapter {
         }
 
         //Get the current course
-        Course currentCourse = getItem(position);
+        TranscriptCourse currentCourse = getItem(position);
 
         //Set up the info for the course
         TextView courseCode = (TextView)view.findViewById(R.id.course_code);

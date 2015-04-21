@@ -38,7 +38,6 @@ import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.ClassItem;
-import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Season;
@@ -46,6 +45,7 @@ import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Token;
 import ca.appvelopers.mcgillmobile.model.Transcript;
+import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.UserInfo;
 
 /**
@@ -182,7 +182,7 @@ public class Parser {
                 double termGPA = 0.0;
                 boolean fullTime = false;
                 boolean satisfactory = false;
-                List<Course> courses = new ArrayList<Course>();
+                List<TranscriptCourse> courses = new ArrayList<TranscriptCourse>();
 
                 //Search rows until the end of the semester is reached
                 //Conditions for end of semester:
@@ -341,7 +341,7 @@ public class Parser {
                             //String not found
                             //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBounds" + e.getMessage());
                         }
-                        courses.add(new Course(new Term(season, year), courseTitle, courseCode, credits,
+                        courses.add(new TranscriptCourse(new Term(season, year), courseTitle, courseCode, credits,
                                 userGrade, averageGrade));
                     }
 
@@ -368,7 +368,7 @@ public class Parser {
                                 credits = 99;
                             }
 
-                            Course course = new Course(new Term(season, year), "", courseCode, credits, userGrade,
+                            TranscriptCourse course = new TranscriptCourse(new Term(season, year), "", courseCode, credits, userGrade,
                                     averageGrade);
                             courses.add(course);
                         }
@@ -381,7 +381,7 @@ public class Parser {
                                 courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
                                 credits = Double.parseDouble(rows.get(semesterIndex + 5).text());
 
-                                Course course = new Course(new Term(season, year), courseTitle, courseCode, credits,
+                                TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseTitle, courseCode, credits,
                                         userGrade, averageGrade);
                                 courses.add(course);
                             }
@@ -406,7 +406,7 @@ public class Parser {
                                         first = false;
                                     }
 
-                                    Course course = new Course(new Term(season, year), courseTitle, courseCode, credits,
+                                    TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseTitle, courseCode, credits,
                                             userGrade, averageGrade);
                                     courses.add(course);
 

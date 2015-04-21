@@ -38,11 +38,11 @@ public class Semester implements Serializable{
     private double termGPA;
     private boolean fullTime;
     private boolean mSatisfactory;
-    private List<Course> courses;
+    private List<TranscriptCourse> courses;
 
 
     public Semester(Term term, String program, String bachelor, int programYear, double termCredits, double termGPA,
-                        boolean fullTime, boolean satisfactory, List<Course> courses) {
+                        boolean fullTime, boolean satisfactory, List<TranscriptCourse> courses) {
         this.mTerm = term;
         this.mProgram = program;
         this.mBachelor = bachelor;
@@ -89,7 +89,7 @@ public class Semester implements Serializable{
     }
 
     //Getter for the semester's courses
-    public List<Course> getCourses(){
+    public List<TranscriptCourse> getCourses(){
         return courses;
     }
 

@@ -31,9 +31,9 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.ClassItem;
-import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Transcript;
+import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -142,8 +142,8 @@ public class WebFetcherService extends IntentService {
 			int newCourseIndex=0;
 			int oldCourseSize= oldSem.getCourses().size();
 			int newCourseSize= newSem.getCourses().size();
-			Course oldCourse = oldSem.getCourses().get(oldCourseIndex);
-			Course newCourse = newSem.getCourses().get(newCourseIndex);
+			TranscriptCourse oldCourse = oldSem.getCourses().get(oldCourseIndex);
+			TranscriptCourse newCourse = newSem.getCourses().get(newCourseIndex);
 			
 			while(oldCourseIndex<oldCourseSize && newCourseIndex  < newCourseSize){
 				oldCourse = oldSem.getCourses().get(oldCourseIndex);
@@ -182,25 +182,25 @@ public class WebFetcherService extends IntentService {
 		
 		//refresh wishlist
 		//Sort ClassItems into Courses
-        List<Course> coursesList = new ArrayList<Course>();
+        List<TranscriptCourse> coursesList = new ArrayList<TranscriptCourse>();
         for(ClassItem wishlistClass : wishlistClasses){
 
             boolean courseExists = false;
             //Check if course exists in list
-            for(Course addedCourse : coursesList){
+            for(TranscriptCourse addedCourse : coursesList){
                 if(addedCourse.getCourseCode().equals(wishlistClass.getCode())){
                     courseExists = true;
                 }
             }
             //Add course if it has not already been added
             if(!courseExists){
-                coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getTitle(),
+                coursesList.add(new TranscriptCourse(wishlistClass.getTerm(), wishlistClass.getTitle(),
                         wishlistClass.getCode(), wishlistClass.getCredits(), "N/A", "N/A"));
             }
         }
 
         //For each course, obtain its Minerva registration page
-        for(Course course : coursesList){
+        for(TranscriptCourse course : coursesList){
 
             //Get the course registration URL
             String courseCode[] = course.getCourseCode().split(" ");

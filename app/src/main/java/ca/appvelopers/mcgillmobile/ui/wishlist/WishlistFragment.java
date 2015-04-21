@@ -38,8 +38,8 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.model.ClassItem;
-import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
 import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
@@ -313,24 +313,24 @@ public class WishlistFragment extends BaseFragment {
         @Override
         protected Boolean doInBackground(Void... params){
             //Sort ClassItems into Courses
-            List<Course> coursesList = new ArrayList<Course>();
+            List<TranscriptCourse> coursesList = new ArrayList<TranscriptCourse>();
             for(ClassItem wishlistClass : mClasses){
                 boolean courseExists = false;
                 //Check if course exists in list
-                for(Course addedCourse : coursesList){
+                for(TranscriptCourse addedCourse : coursesList){
                     if(addedCourse.getCourseCode().equals(wishlistClass.getCode())){
                         courseExists = true;
                     }
                 }
                 //Add course if it has not already been added
                 if(!courseExists){
-                    coursesList.add(new Course(wishlistClass.getTerm(), wishlistClass.getTitle(),
+                    coursesList.add(new TranscriptCourse(wishlistClass.getTerm(), wishlistClass.getTitle(),
                             wishlistClass.getCode(), wishlistClass.getCredits(), "N/A", "N/A"));
                 }
             }
 
             //For each course, obtain its Minerva registration page
-            for(Course course : coursesList){
+            for(TranscriptCourse course : coursesList){
                 //Get the course registration URL
                 String courseCode[] = course.getCourseCode().split(" ");
                 String courseSubject;

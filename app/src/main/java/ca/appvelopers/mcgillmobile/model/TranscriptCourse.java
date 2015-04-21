@@ -24,7 +24,7 @@ import java.io.Serializable;
  * This class will contain information pertaining to individual McGill courses that students
  * have taken, such as the grade, credit, and class average
  */
-public class Course implements Serializable{
+public class TranscriptCourse implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private Term mTerm;
@@ -34,8 +34,8 @@ public class Course implements Serializable{
     private String mUserGrade;
     private String mAverageGrade;
 
-    public Course(Term term, String courseTitle, String courseCode, double credits,
-                    String userGrade, String averageGrade){
+    public TranscriptCourse(Term term, String courseTitle, String courseCode, double credits,
+                            String userGrade, String averageGrade){
         this.mTerm = term;
         this.mCourseCode = courseCode;
         this.mCourseTitle = courseTitle;
