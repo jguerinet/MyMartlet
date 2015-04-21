@@ -30,8 +30,10 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
 /**
- * Author: Julien
- * Date: 2014-03-16 11:42
+ * The base class for all activities
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class BaseActivity extends ActionBarActivity {
     /**
@@ -42,27 +44,33 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //Update locale and config
-        Locale locale = new Locale(App.getLanguage().getLanguageString());
-        Locale.setDefault(locale);
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        //Update locale and config (it sometimes get reset in between activities)
+        updateLocale();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
-        //Update locale and config
+        //Update locale and config (it gets reset when a configuration is changed)
+        updateLocale();
+    }
+
+    /**
+     * Updates the locale
+     */
+    private void updateLocale(){
         Locale locale = new Locale(App.getLanguage().getLanguageString());
         Locale.setDefault(locale);
         Configuration config = getBaseContext().getResources().getConfiguration();
         config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
     }
 
     /**
-     * Sets up the toolbar at the top of the activity
+     * Sets up the toolbar as the activity's action bar.
+     *  Must be declared in the activity's layout file
+     *
      * @return The toolbar
      */
     public Toolbar setUpToolbar(){
@@ -79,6 +87,7 @@ public class BaseActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Go back if the home button is clicked
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
