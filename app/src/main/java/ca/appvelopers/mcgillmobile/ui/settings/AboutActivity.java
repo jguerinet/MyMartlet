@@ -30,9 +30,16 @@ import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
- * Created by Adnan2
+ * Displays information about the Appvelopers team
+ * @author Rafi Uddin
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class AboutActivity extends BaseActivity {
+    /**
+     * The container for all of the about sections
+     */
     private LinearLayout mContainer;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +47,7 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Analytics.getInstance().sendScreen("About");
 
-        setUpToolbar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setUpToolbar(true);
         
         //Set up the info for all of the different people
         mContainer = (LinearLayout)findViewById(R.id.about_container);
@@ -89,8 +95,10 @@ public class AboutActivity extends BaseActivity {
 
         //Shabbir
         setUpInfo(R.drawable.about_shabbir, getString(R.string.about_shabbir),
-                getString(R.string.about_shabbir_role), getString(R.string.about_shabbir_description),
-                getString(R.string.about_shabbir_linkedin), getString(R.string.about_shabbir_email));
+                getString(R.string.about_shabbir_role),
+                getString(R.string.about_shabbir_description),
+                getString(R.string.about_shabbir_linkedin),
+                getString(R.string.about_shabbir_email));
 
         //Xavier
         setUpInfo(R.drawable.about_xavier, getString(R.string.about_xavier),
@@ -103,6 +111,16 @@ public class AboutActivity extends BaseActivity {
                 getString(R.string.about_yulric_linkedin), getString(R.string.about_yulric_email));
     }
 
+    /**
+     * Sets up the information for a given person and adds the view to the cntainer
+     *
+     * @param pictureResource The resource Id of the person's picture
+     * @param name            The person's name
+     * @param role            The person's role
+     * @param description     The person's personal description
+     * @param linkedin        The person's LinkedIn URL
+     * @param email           The person's email address
+     */
     private void setUpInfo(int pictureResource, final String name, String role, String description,
                            final String linkedin, final String email){
         View view = View.inflate(this, R.layout.item_person, null);
@@ -148,7 +166,8 @@ public class AboutActivity extends BaseActivity {
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
                 //Type (Email)
                 emailIntent.setType("message/rfc822");
-                startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.about_email_picker_title)));
+                startActivity(Intent.createChooser(emailIntent,
+                        getString(R.string.about_email_picker_title)));
             }
         });
 
