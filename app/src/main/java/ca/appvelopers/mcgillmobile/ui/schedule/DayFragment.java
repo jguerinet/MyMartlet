@@ -25,8 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
 
 import java.util.List;
 
@@ -44,10 +42,6 @@ import ca.appvelopers.mcgillmobile.util.Date;
  */
 public class DayFragment extends Fragment{
     /**
-     * The day this represents
-     */
-    private Day mDay;
-    /**
      * The date this represents
      */
     private LocalDate mDate;
@@ -59,16 +53,14 @@ public class DayFragment extends Fragment{
     /**
      * Creates a new DayFragment instance with bundled arguments
      *
-     * @param day  The day
      * @param date The date
      * @return The DayFragment instance
      */
-    public static DayFragment newInstance(Day day, LocalDate date){
+    public static DayFragment newInstance(LocalDate date){
         DayFragment fragment = new DayFragment();
 
         //Put the arguments in the bundle
         Bundle args = new Bundle();
-        args.putSerializable(Constants.DAY, day);
         args.putSerializable(Constants.DATE, date);
         fragment.setArguments(args);
 
@@ -80,10 +72,9 @@ public class DayFragment extends Fragment{
         super.onCreate(savedInstanceState);
 
         //Get the arguments from the bundle
-        mDay = (Day)getArguments().get(Constants.DAY);
         mDate = (LocalDate)getArguments().get(Constants.DATE);
         //Get the courses from the ScheduleFragment
-        mCourses = ((ScheduleFragment)getParentFragment()).getCourses(mDay, mDate);
+        mCourses = ((ScheduleFragment)getParentFragment()).getCourses(mDate);
     }
 
     @Override
@@ -92,7 +83,7 @@ public class DayFragment extends Fragment{
 
         //Day Title
         TextView dayTitle = (TextView)view.findViewById(R.id.day_title);
-        dayTitle.setText(mDay.getDayString(getActivity()));
+        dayTitle.setText(Day.getDay(mDate).getDayString(getActivity()));
 
         //Date Title
         TextView dayDate = (TextView)view.findViewById(R.id.day_date);
@@ -104,108 +95,9 @@ public class DayFragment extends Fragment{
         LinearLayout scheduleContainer = (LinearLayout)view.findViewById(R.id.schedule_container);
 
         //Fill it up
-        fillSchedule(timetableContainer, scheduleContainer);
+        ScheduleViewBuilder.fillSchedule(getActivity(), timetableContainer, scheduleContainer,
+                mCourses, true);
 
         return view;
-    }
-
-    /**
-     * Fills the schedule based on the courses
-     *
-     * @param timetableContainer The container for the timetable
-     * @param scheduleContainer  The container for the schedule
-     */
-    private void fillSchedule(LinearLayout timetableContainer, LinearLayout scheduleContainer){
-        //This will be used for the end time of a course when it is added to the schedule container
-        LocalTime currentCourseEndTime = null;
-
-        //Cycle through the hours
-        for(int hour = 8; hour < 22; hour++){
-            //Start inflating a timetable cell
-            View timetableCell = View.inflate(getActivity(), R.layout.item_day_timetable, null);
-
-            //Put the correct time
-            TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-            time.setText(Date.getHourString(hour));
-
-            //Add it to the right container
-            timetableContainer.addView(timetableCell);
-
-            //Cycle through the half hours
-            for(int min = 0; min < 31; min += 30){
-                //Initialize the current course to null
-                Course currentCourse = null;
-
-                LocalTime currentTime = new LocalTime(hour, min);
-
-                //if currentCourseEndTime = null (no course is being added) or it is equal to
-                //the current time in min (end of a course being added) we need to add a new view
-                if(currentCourseEndTime == null || currentCourseEndTime.equals(currentTime)){
-                    //Reset currentCourseEndTime to null
-                    currentCourseEndTime = null;
-
-                    //Check if there is a course at this time
-                    for(Course course : mCourses){
-                        //If there is, set the current course to that time,
-                        //  and get the ending time of this course
-                        if(course.getRoundedStartTime().equals(currentTime)){
-                            currentCourse = course;
-                            currentCourseEndTime = course.getRoundedEndTime();
-                            break;
-                        }
-                    }
-
-                    View scheduleCell;
-
-                    //There is a course at this time
-                    if(currentCourse != null){
-                        //Inflate the right view
-                        scheduleCell = View.inflate(getActivity(), R.layout.item_day_class, null);
-
-                        //Set up all of the info
-                        TextView code = (TextView)scheduleCell.findViewById(R.id.course_code);
-                        code.setText(currentCourse.getCode());
-
-                        TextView type = (TextView)scheduleCell.findViewById(R.id.course_type);
-                        type.setText(currentCourse.getType());
-
-                        TextView courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
-                        courseTime.setText(currentCourse.getTimeString());
-
-                        TextView location =
-                                (TextView)scheduleCell.findViewById(R.id.course_location);
-                        location.setText(currentCourse.getLocation());
-
-                        //Find out how long this course is in terms of blocks of 30 min
-                        int length = Minutes.minutesBetween(currentCourse.getRoundedStartTime(),
-                                currentCourse.getRoundedEndTime()).getMinutes() / 30;
-
-                        //Set the height of the view depending on this height
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                (int) getActivity().getResources()
-                                        .getDimension(R.dimen.cell_30min_height) * length);
-                        scheduleCell.setLayoutParams(lp);
-
-                        //We need a final variable for the onClick listener
-                        final Course course = currentCourse;
-                        //OnClick: CourseActivity (for a detailed description of the course)
-                        scheduleCell.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                new CourseDialog(getActivity(), course).show();
-                            }
-                        });
-                    }
-                    else{
-                        //Inflate the empty view
-                        scheduleCell = View.inflate(getActivity(), R.layout.item_day_empty, null);
-                    }
-
-                    //Add the given view to the schedule container
-                    scheduleContainer.addView(scheduleCell);
-                }
-            }
-        }
     }
 }

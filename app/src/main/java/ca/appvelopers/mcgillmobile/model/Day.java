@@ -18,6 +18,8 @@ package ca.appvelopers.mcgillmobile.model;
 
 import android.content.Context;
 
+import org.joda.time.LocalDate;
+
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
@@ -56,6 +58,17 @@ public enum Day {
             default:
                 return Day.TBA;
         }
+    }
+
+    /**
+     * Gets the day based on a passed date
+     *
+     * @param date The date
+     * @return The corresponding day
+     */
+    public static Day getDay(LocalDate date){
+        //Offset by 1 since Jodatime starts counting at 1
+        return getDay(date.getDayOfWeek() - 1);
     }
 
     //Get the day based on a character (M,T,W,R,F,S,N)

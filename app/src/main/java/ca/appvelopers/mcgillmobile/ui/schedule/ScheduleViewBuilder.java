@@ -16,7 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.ui.schedule;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
@@ -39,20 +38,44 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.util.Date;
 
+/**
+ * Builds the schedule view based on the orientation and the current date
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class ScheduleViewBuilder {
+    /**
+     * The ScheduleFragment instance
+     */
     private ScheduleFragment mFragment;
-    private Context mContext;
+    /**
+     * The starting date
+     */
     private LocalDate mDate;
 
+    /**
+     * Default Constructor
+     *
+     * @param fragment     The ScheduleFragment instance
+     * @param startingDate The starting date
+     */
     public ScheduleViewBuilder(ScheduleFragment fragment, LocalDate startingDate){
         this.mFragment = fragment;
-        this.mContext = fragment.getActivity();
         this.mDate = startingDate;
     }
 
+    /**
+     * Loads, fills and returns the view to use given the orientation
+     *
+     * @param orientation The current screen orientation
+     * @return The view to use
+     */
     public View renderView(int orientation){
-        View view = View.inflate(mContext, R.layout.fragment_schedule, null);
+        //Inflate the view
+        View view = View.inflate(mFragment.getActivity(), R.layout.fragment_schedule, null);
 
+        //Render the right view based on the orientation
         if(orientation == Configuration.ORIENTATION_LANDSCAPE){
             renderLandscapeView(view);
         }
@@ -63,85 +86,98 @@ public class ScheduleViewBuilder {
         return view;
     }
 
-    public void renderLandscapeView(View view){
-        //Fill out the timetable container
-        fillTimetable(view);
+    /**
+     * Renders the landscape view
+     *
+     * @param view The base view
+     */
+    private void renderLandscapeView(View view){
+        //Get the timetable container
+        LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);
+
+        //Leave space at the top for the day names
+        View dayView = View.inflate(mFragment.getActivity(), R.layout.fragment_day_name, null);
+        //Black line to separate the timetable from the schedule
+        View dayViewLine = dayView.findViewById(R.id.day_line);
+        dayViewLine.setVisibility(View.VISIBLE);
+
+        //Add the day view to the top of the timetable
+        timetableContainer.addView(dayView);
 
         //Get the schedule container
-        LinearLayout scheduleContainer = (LinearLayout) view.findViewById(R.id.schedule_container);
+        LinearLayout dayContainer = (LinearLayout)view.findViewById(R.id.schedule_container);
 
         //Find the index of the given date (days are offset by 1 in Jodatime)
         int currentDayIndex = mDate.getDayOfWeek() - 1;
 
-        //Fill out the schedule
+        //Go through the 7 days of the week
         for(int i = 0; i < 7; i ++){
-            LinearLayout coursesLayout = new LinearLayout(mContext);
-            coursesLayout.setOrientation(LinearLayout.VERTICAL);
-            coursesLayout.setLayoutParams(new LinearLayout.LayoutParams(
+            Day day = Day.getDay(i);
+
+            //Set up the day name
+            dayView = View.inflate(mFragment.getActivity(), R.layout.fragment_day_name, null);
+            TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
+            dayViewTitle.setText(day.getDayString(mFragment.getActivity()));
+            dayContainer.addView(dayView);
+
+            //Set up the schedule container for that one day
+            LinearLayout scheduleContainer = new LinearLayout(mFragment.getActivity());
+            scheduleContainer.setOrientation(LinearLayout.VERTICAL);
+            scheduleContainer.setLayoutParams(new LinearLayout.LayoutParams(
                     mFragment.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
-            fillSchedule(Day.getDay(i), mDate.plusDays(i - currentDayIndex), coursesLayout);
-            scheduleContainer.addView(coursesLayout);
+
+            //Get the classes for today
+            List<Course> courses = mFragment.getCourses(mDate.plusDays(i - currentDayIndex));
+
+            //Fill the schedule for the current day
+            fillSchedule(mFragment.getActivity(), timetableContainer, scheduleContainer, courses,
+                    false);
+
+            //Add the current day to the schedule container
+            dayContainer.addView(scheduleContainer);
 
             //Line
-            View line = new View(mContext);
-            line.setBackgroundColor(mContext.getResources().getColor(R.color.black));
-            line.setLayoutParams(new ViewGroup.LayoutParams(mFragment.getResources().getDimensionPixelSize(R.dimen.line),
+            View line = new View(mFragment.getActivity());
+            line.setBackgroundColor(mFragment.getResources().getColor(android.R.color.black));
+            line.setLayoutParams(new ViewGroup.LayoutParams(
+                    mFragment.getResources().getDimensionPixelSize(R.dimen.line),
                     ViewGroup.LayoutParams.MATCH_PARENT));
-            scheduleContainer.addView(line);
+            dayContainer.addView(line);
         }
     }
 
-    //Fills the timetable without the classes
-    private void fillTimetable(View view){
-        //Get the timetable container
-        LinearLayout timetableContainer = (LinearLayout) view.findViewById(R.id.timetable_container);
-
-        //Empty view for the days
-        //Day name
-        View dayView = View.inflate(mContext, R.layout.fragment_day_name, null);
-
-        //Black line
-        View dayViewLine = dayView.findViewById(R.id.day_line);
-        dayViewLine.setVisibility(View.VISIBLE);
-
-        timetableContainer.addView(dayView);
+    /**
+     * Fills the schedule based on given data
+     * @param activity           The calling activity
+     * @param timetableContainer The container for the timetable
+     * @param scheduleContainer  The container for the schedule
+     * @param courses            The list of courses
+     * @param clickableCourses   True if the user can click on the courses (portrait,
+     *                              false otherwise (landscape)
+     */
+    public static void fillSchedule(final Activity activity, LinearLayout timetableContainer,
+                                    LinearLayout scheduleContainer, List<Course> courses,
+                                    boolean clickableCourses){
+        //This will be used of an end time of a course when it is added to the schedule container
+        LocalTime currentCourseEndTime = null;
 
         //Cycle through the hours
         for(int hour = 8; hour < 22; hour++){
             //Start inflating a timetable cell
-            View timetableCell = View.inflate(mContext, R.layout.item_day_timetable, null);
+            View timetableCell = View.inflate(activity, R.layout.item_day_timetable, null);
 
             //Put the correct time
             TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-            time.setText(Date.getHourString(mContext, hour));
+            time.setText(Date.getHourString(hour));
 
             //Add it to the right container
             timetableContainer.addView(timetableCell);
-        }
-    }
 
-    //Method that fills the schedule based on given data
-    private void fillSchedule(Day currentDay, DateTime date, LinearLayout scheduleContainer){
-        //This will be used of an end time of a course when it is added to the schedule container
-        LocalTime currentCourseEndTime = null;
-
-        //Get the classes for today
-        List<Course> classItems = mFragment.getCourses(currentDay, date);
-
-        //Day name
-        View dayView = View.inflate(mContext, R.layout.fragment_day_name, null);
-        TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
-        dayViewTitle.setText(currentDay.getDayString(mContext));
-
-        scheduleContainer.addView(dayView);
-
-        //Cycle through the hours
-        for(int hour = 8; hour < 22; hour++){
             //Cycle through the half hours
             for(int min = 0; min < 31; min+= 30){
                 //Initialize the current course to null
-                Course currentClass = null;
+                Course currentCourse = null;
 
                 //Get the current time
                 LocalTime currentTime = new LocalTime(hour, min);
@@ -153,11 +189,11 @@ public class ScheduleViewBuilder {
                     currentCourseEndTime = null;
 
                     //Check if there is a course at this time
-                    for(Course course : classItems){
+                    for(Course course : courses){
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
                         if(course.getRoundedStartTime().equals(currentTime)){
-                            currentClass = course;
+                            currentCourse = course;
                             currentCourseEndTime = course.getRoundedEndTime();
                             break;
                         }
@@ -166,43 +202,58 @@ public class ScheduleViewBuilder {
                     View scheduleCell;
 
                     //There is a course at this time
-                    if(currentClass != null){
+                    if(currentCourse != null){
                         //Inflate the right view
-                        scheduleCell = View.inflate(mContext, R.layout.item_day_class, null);
+                        scheduleCell = View.inflate(activity, R.layout.item_day_class, null);
 
                         //Quick check
                         assert(scheduleCell != null);
 
                         //Set up all of the info
-                        TextView courseName = (TextView)scheduleCell.findViewById(R.id.course_code);
-                        courseName.setText(currentClass.getCode());
+                        TextView code = (TextView)scheduleCell.findViewById(R.id.course_code);
+                        code.setText(currentCourse.getCode());
 
-                        TextView courseType = (TextView)scheduleCell.findViewById(R.id.course_type);
-                        courseType.setText(currentClass.getType());
+                        TextView type = (TextView)scheduleCell.findViewById(R.id.course_type);
+                        type.setText(currentCourse.getType());
 
-                        TextView  courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
-                        courseTime.setText(currentClass.getTimeString(mContext));
+                        TextView courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
+                        courseTime.setText(currentCourse.getTimeString());
 
-                        TextView courseLocation = (TextView)scheduleCell.findViewById(R.id.course_location);
-                        courseLocation.setText(currentClass.getLocation());
+                        TextView location =
+                                (TextView)scheduleCell.findViewById(R.id.course_location);
+                        location.setText(currentCourse.getLocation());
 
                         //Find out how long this course is in terms of blocks of 30 min
-                        int length = Minutes.minutesBetween(currentClass.getRoundedStartTime(), currentClass.getRoundedEndTime()).getMinutes() / 30;
+                        int length = Minutes.minutesBetween(currentCourse.getRoundedStartTime(),
+                                currentCourse.getRoundedEndTime()).getMinutes() / 30;
 
                         //Set the height of the view depending on this height
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                (int) mFragment.getResources().getDimension(R.dimen.cell_30min_height) * length);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                (int) activity.getResources()
+                                        .getDimension(R.dimen.cell_30min_height) * length);
                         scheduleCell.setLayoutParams(lp);
 
-                        //OnClick: CourseActivity (for                                                                                                                                                                                                  b                                                                                                                                               a detailed description of the course)
-                        scheduleCell.setClickable(false);
+                        //Check if we need to make the course clickable
+                        if(clickableCourses){
+                            //We need a final variable for the onClick listener
+                            final Course course = currentCourse;
+                            //OnClick: CourseActivity (for a detailed description of the course)
+                            scheduleCell.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    new CourseDialog(activity, course).show();
+                                }
+                            });
+                        }
+                        else{
+                            scheduleCell.setClickable(false);
+                        }
+
                     }
                     else{
                         //Inflate the empty view
-                        scheduleCell = View.inflate(mContext, R.layout.item_day_empty, null);
-
-                        //Quick check
-                        assert(scheduleCell != null);
+                        scheduleCell = View.inflate(activity, R.layout.item_day_empty, null);
                     }
 
                     //Add the given view to the schedule container
@@ -212,23 +263,27 @@ public class ScheduleViewBuilder {
         }
     }
 
-    public void renderPortraitView(View view){
-        //Get the first day (offset of 500002 to get the right day)
-        int firstDayIndex = 500002 + mDate.getDayOfWeek();
-
+    /**
+     * Renders the portrait view
+     *
+     * @param view The base view
+     */
+    private void renderPortraitView(View view){
         //Set up the adapter
-        final SchedulePagerAdapter adapter = new SchedulePagerAdapter(mFragment.getChildFragmentManager(),
-                mDate, firstDayIndex);
+        final SchedulePagerAdapter adapter =
+                new SchedulePagerAdapter(mFragment.getChildFragmentManager(), mDate);
 
         //Set up the ViewPager
         ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
-        pager.setCurrentItem(firstDayIndex);
+        pager.setCurrentItem(adapter.getFirstDayIndex());
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {}
             @Override
             public void onPageSelected(int i) {
+                //Update the view builder's date every time the page is turned to have the right
+                //  week if ever the user rotates his device
                 mDate = adapter.getDate(i);
             }
             @Override
@@ -236,21 +291,36 @@ public class ScheduleViewBuilder {
         });
     }
 
+    /**
+     * The adapter used for the ViewPager in the portrait view of the schedule
+     */
     private class SchedulePagerAdapter extends FragmentStatePagerAdapter {
-        private DateTime mDate;
+        /**
+         * The starting date
+         */
+        private LocalDate mStartingDate;
+        /**
+         * The index of the first day
+         */
         private int mFirstDayIndex;
 
-        public SchedulePagerAdapter(FragmentManager fm, DateTime date, int firstDayIndex){
+        /**
+         * Default Constructor
+         *
+         * @param fm   The fragment manager
+         * @param date The starting date
+         */
+        public SchedulePagerAdapter(FragmentManager fm, LocalDate date){
             super(fm);
-            this.mDate = date;
-            this.mFirstDayIndex = firstDayIndex;
+            this.mStartingDate = date;
+            //Get the first day (offset of 500002 to get the right day)
+            this.mFirstDayIndex = 500002 + mDate.getDayOfWeek();
         }
 
         @Override
         public Fragment getItem(int i) {
-            Day currentDay = Day.getDay(i%7);
-            DateTime date = mDate.plusDays(i - mFirstDayIndex);
-            return DayFragment.newInstance(currentDay, date);
+            LocalDate date = getDate(i);
+            return DayFragment.newInstance(date);
         }
 
         @Override
@@ -260,11 +330,25 @@ public class ScheduleViewBuilder {
 
         @Override
         public int getItemPosition(Object object) {
+            //This is to force the refreshing of all of the views when the view is reloaded
             return POSITION_NONE;
         }
 
-        public DateTime getDate(int i){
-            return mDate.plusDays(i - mFirstDayIndex);
+        /**
+         * @return The first day index
+         */
+        public int getFirstDayIndex(){
+            return this.mFirstDayIndex;
+        }
+
+        /**
+         * Gets the date at index i
+         *
+         * @param i The index
+         * @return The corresponding date
+         */
+        public LocalDate getDate(int i){
+            return mStartingDate.plusDays(i - mFirstDayIndex);
         }
     }
 }

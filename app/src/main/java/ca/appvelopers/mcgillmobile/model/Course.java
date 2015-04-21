@@ -435,7 +435,9 @@ public class Course implements Serializable{
      * @return True if it is, false otherwise
      */
     public boolean isForDate(LocalDate date){
-        return !date.isBefore(mStartDate) && !date.isAfter(mEndDate);
+        //Check if the date is within the date range and the course is offered on that day
+        return !date.isBefore(mStartDate) && !date.isAfter(mEndDate) &&
+                mDays.contains(Day.getDay(date));
     }
 
     /**

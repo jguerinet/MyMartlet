@@ -35,7 +35,6 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
@@ -239,17 +238,16 @@ public class ScheduleFragment extends BaseFragment {
     /**
      * Returns the list of courses for a given day and date
      *
-     * @param day  The day
      * @param date The date
      * @return The list of courses
      */
-    public List<Course> getCourses(Day day, LocalDate date){
+    public List<Course> getCourses(LocalDate date){
         List<Course> courses = new ArrayList<>();
 
         //Go through the list of courses, find which ones have the same day and
         //  are for the given date
         for(Course course : mCourses){
-            if(course.isForDate(date) && course.getDays().contains(day)){
+            if(course.isForDate(date)){
                 courses.add(course);
             }
         }
