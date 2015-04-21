@@ -46,7 +46,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Token;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
-import ca.appvelopers.mcgillmobile.model.UserInfo;
+import ca.appvelopers.mcgillmobile.model.User;
 
 /**
  * Parses the given HTML Strings to get the necessary objects
@@ -958,7 +958,7 @@ public class Parser {
         String id = userInfo.get(0).text().replace("Statements for ", "");
         String[] userInfoItems = id.split(" - ");
 
-        App.setUserInfo(new UserInfo(userInfoItems[1].trim(), userInfoItems[0].trim()));
+        App.setUserInfo(new User(userInfoItems[1].trim(), userInfoItems[0].trim()));
     }
 
     /* HELPERS */

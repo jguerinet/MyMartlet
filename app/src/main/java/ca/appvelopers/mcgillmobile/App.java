@@ -37,7 +37,7 @@ import ca.appvelopers.mcgillmobile.model.PlaceCategory;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.UserInfo;
+import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
@@ -65,7 +65,7 @@ public class App extends Application {
     private static List<Course> classes;
     private static Term defaultTerm;
     private static List<Statement> ebill;
-    private static UserInfo userInfo;
+    private static User userInfo;
     private static List<Course> wishlist;
     private static List<Place> places;
     private static List<Place> favoritePlaces;
@@ -167,7 +167,7 @@ public class App extends Application {
         return ebill;
     }
 
-    public static UserInfo getUserInfo(){
+    public static User getUserInfo(){
         return userInfo;
     }
 
@@ -227,7 +227,7 @@ public class App extends Application {
         Save.saveEbill(context);
     }
 
-    public static void setUserInfo(UserInfo userInfo){
+    public static void setUserInfo(User userInfo){
         App.userInfo = userInfo;
 
         //Save it to internal storage when this is set

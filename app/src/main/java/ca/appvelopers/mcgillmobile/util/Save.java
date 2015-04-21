@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.model.PlaceCategory;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.UserInfo;
+import ca.appvelopers.mcgillmobile.model.User;
 
 /**
  * Author: Julien
@@ -178,7 +178,7 @@ public class Save {
     }
 
     public static void saveUserInfo(Context context){
-        UserInfo userInfo = App.getUserInfo();
+        User userInfo = App.getUserInfo();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.USER_INFO_FILE, Context.MODE_PRIVATE);

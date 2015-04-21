@@ -39,7 +39,7 @@ import ca.appvelopers.mcgillmobile.model.PlaceCategory;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.UserInfo;
+import ca.appvelopers.mcgillmobile.model.User;
 
 /**
  * Author: Julien
@@ -210,13 +210,13 @@ public class Load {
         return ebill;
     }
 
-    public static UserInfo loadUserInfo(Context context){
-        UserInfo userInfo = null;
+    public static User loadUserInfo(Context context){
+        User userInfo = null;
 
         try{
             FileInputStream fis = context.openFileInput(Constants.USER_INFO_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
-            userInfo = (UserInfo) in.readObject();
+            userInfo = (User) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();

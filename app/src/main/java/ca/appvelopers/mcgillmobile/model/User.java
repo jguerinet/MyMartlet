@@ -19,24 +19,45 @@ package ca.appvelopers.mcgillmobile.model;
 import java.io.Serializable;
 
 /**
- * Author: Julien
- * Date: 16/02/14, 4:34 PM
+ * The user's basic information
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
-public class UserInfo implements Serializable{
+public class User implements Serializable{
     private static final long serialVersionUID = 1L;
-    
+    /**
+     * The user's name
+     */
     private String mName;
+    /**
+     * The user's McGill Id
+     */
     private String mId;
 
-    public UserInfo(String name, String id){
+    /**
+     * Default Constructor
+     *
+     * @param name The user's name
+     * @param id   The user's McGill Id
+     */
+    public User(String name, String id){
         this.mName = name;
         this.mId = id;
     }
 
+    /* GETTERS */
+
+    /**
+     * @return The user's name
+     */
     public String getName(){
         return mName;
     }
 
+    /**
+     * @return The user's Id
+     */
     public String getId(){
         return mId;
     }
