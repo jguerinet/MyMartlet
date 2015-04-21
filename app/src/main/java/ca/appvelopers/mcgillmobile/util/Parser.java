@@ -899,24 +899,46 @@ public class Parser {
     }
 
     /**
-     * Parses an HTML String into a list of eBill Items
-     * @param ebillHTML The HTML String
+     * Parses an HTML String into a list of statements
+     *
+     * @param html The HTML String
      */
-    public static void parseEbill(String ebillHTML){
-        List<Statement> statements = new ArrayList<Statement>();
+    public static void parseEbill(String html){
+        List<Statement> statements = new ArrayList<>();
 
-        //Parse the string to get the relevant info
-        Document doc = Jsoup.parse(ebillHTML);
+        //Convert the String into a document
+        Document doc = Jsoup.parse(html);
+
+        //Get the relevant rows
         Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
         Elements rows = ebillTable.getElementsByTag("tr");
 
+        //Go through the rows and extract the necessary information
         for (int i = 2; i < rows.size(); i+=2) {
             Element row = rows.get(i);
             Elements cells = row.getElementsByTag("td");
-            String statementDate = cells.get(0).text();
-            String dueDate = cells.get(3).text();
-            String amountDue = cells.get(5).text();
-            statements.add(new Statement(statementDate, dueDate, amountDue));
+            LocalDate date = parseDate(cells.get(0).text().trim());
+            LocalDate dueDate = parseDate(cells.get(3).text().trim());
+            String amountString = cells.get(5).text().trim();
+
+            //Remove the $ sign at the beginning
+            amountString = amountString.substring(1);
+
+            //Check if the String ends with a dash (McGill owes the student)
+            double amount;
+            if(amountString.endsWith("-")){
+                //Remove it and parse the resulting amount
+                amount = Double.parseDouble(amountString.substring(0, amountString.length() - 1));
+                //Negate the amount
+                amount *= -1;
+            }
+            //If not, just parse the amount
+            else{
+                amount = Double.parseDouble(amountString);
+            }
+
+            //Add the new statement
+            statements.add(new Statement(date, dueDate, amount));
         }
 
         App.setEbill(statements);
@@ -956,6 +978,19 @@ public class Parser {
     }
 
     /**
+     * Parses a String into a LocalDate object
+     *
+     * @param date The date String
+     * @return The corresponding local date
+     */
+    private static LocalDate parseDate(String date){
+        //Set up the formatter we're going to use to parse these Strings
+        DateTimeFormatter dtf =  DateTimeFormat.forPattern("MMM dd, yyyy").withLocale(Locale.US);
+
+        return dtf.parseLocalDate(date);
+    }
+
+    /**
      * Parses the date range String into 2 dates
      *
      * @param dateRange The date range String
@@ -964,13 +999,10 @@ public class Parser {
     private static Pair<LocalDate, LocalDate> parseDateRange(String dateRange)
             throws IllegalArgumentException{
         //Split the range into the 2 date Strings
-        String startDateString = dateRange.split(" - ")[0];
-        String endDateString = dateRange.split(" - ")[1];
-
-        //Set up the formatter we're going to use to parse these Strings
-        DateTimeFormatter dtf =  DateTimeFormat.forPattern("MMM dd, yyyy").withLocale(Locale.US);
+        String startDate = dateRange.split(" - ")[0];
+        String endDate = dateRange.split(" - ")[1];
 
         //Parse the dates, return them as a pair
-        return new Pair<>(dtf.parseLocalDate(startDateString), dtf.parseLocalDate(endDateString));
+        return new Pair<>(parseDate(startDate), parseDate(endDate));
     }
 }
