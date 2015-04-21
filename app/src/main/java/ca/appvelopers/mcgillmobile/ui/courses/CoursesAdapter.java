@@ -101,7 +101,7 @@ public class CoursesAdapter extends BaseAdapter {
 
         //Hours
         TextView courseHours = (TextView)view.findViewById(R.id.course_hours);
-        courseHours.setText(currentClassItem.getTimeString(mContext));
+        courseHours.setText(currentClassItem.getTimeString());
 
         //Set up the checkbox
         CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
