@@ -128,7 +128,7 @@ public class ScheduleViewBuilder {
         LocalTime currentCourseEndTime = null;
 
         //Get the classes for today
-        List<Course> classItems = mFragment.getClassesForDate(currentDay, date);
+        List<Course> classItems = mFragment.getCourses(currentDay, date);
 
         //Day name
         View dayView = View.inflate(mContext, R.layout.fragment_day_name, null);

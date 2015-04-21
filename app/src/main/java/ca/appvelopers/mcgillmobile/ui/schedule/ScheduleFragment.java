@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -218,7 +219,7 @@ public class ScheduleFragment extends BaseFragment {
     }
 
     //Method that returns a list of courses for a given day
-    public List<Course> getClassesForDate(Day day, DateTime date){
+    public List<Course> getCourses(Day day, LocalDate date){
         List<Course> courses = new ArrayList<Course>();
 
         //Make sure the class list is initialized
