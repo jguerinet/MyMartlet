@@ -549,7 +549,7 @@ public class SplashActivity extends BaseActivity {
                             //User Info
                             publishNewProgress(getString(mDownloadEverything ?
                                     R.string.downloading_user : R.string.updating_user));
-                            Parser.parseUserInfo(ebillString);
+                            Parser.parseUser(ebillString);
                         } catch(MinervaLoggedOutException e){
                             //Set the connection status and break the loop
                             mConnectionStatus = ConnectionStatus.WRONG_INFO;

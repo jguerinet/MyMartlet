@@ -945,20 +945,21 @@ public class Parser {
     }
 
     /**
-     * Parsed an HTML String into the user info
-     * @param ebillHTML The HTML String
+     * Parses an HTML String into the user object
+     *
+     * @param html The HTML String
      */
-    public static void parseUserInfo(String ebillHTML){
-        //Parse the string to get the relevant info
-        Document doc = Jsoup.parse(ebillHTML);
-        Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
+    public static void parseUser(String html){
+        //Get the necessary table
+        Document doc = Jsoup.parse(html);
+        Element table = doc.getElementsByClass("datadisplaytable").first();
 
         //Parse the user info
-        Elements userInfo = ebillTable.getElementsByTag("caption");
-        String id = userInfo.get(0).text().replace("Statements for ", "");
-        String[] userInfoItems = id.split(" - ");
+        Elements userElement = table.getElementsByTag("caption");
+        String userInfo = userElement.get(0).text().replace("Statements for ", "");
+        String[] userItems = userInfo.split(" - ");
 
-        App.setUserInfo(new User(userInfoItems[1].trim(), userInfoItems[0].trim()));
+        App.setUserInfo(new User(userItems[1].trim(), userItems[0].trim()));
     }
 
     /* HELPERS */
