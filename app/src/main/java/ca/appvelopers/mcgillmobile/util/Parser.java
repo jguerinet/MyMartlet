@@ -39,9 +39,9 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
-import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Season;
 import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Token;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -903,7 +903,7 @@ public class Parser {
      * @param ebillHTML The HTML String
      */
     public static void parseEbill(String ebillHTML){
-        List<EbillItem> ebillItems = new ArrayList<EbillItem>();
+        List<Statement> statements = new ArrayList<Statement>();
 
         //Parse the string to get the relevant info
         Document doc = Jsoup.parse(ebillHTML);
@@ -916,10 +916,10 @@ public class Parser {
             String statementDate = cells.get(0).text();
             String dueDate = cells.get(3).text();
             String amountDue = cells.get(5).text();
-            ebillItems.add(new EbillItem(statementDate, dueDate, amountDue));
+            statements.add(new Statement(statementDate, dueDate, amountDue));
         }
 
-        App.setEbill(ebillItems);
+        App.setEbill(statements);
     }
 
     /**

@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
-import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Place;
+import ca.appvelopers.mcgillmobile.model.Statement;
 
 /**
  * Author: Julien
@@ -73,7 +73,7 @@ public class Clear {
 
     private static void clearEbill(){
         //Reset the static instance in Application Class
-        App.setEbill(new ArrayList<EbillItem>());
+        App.setEbill(new ArrayList<Statement>());
     }
 
     private static void clearUserInfo(){

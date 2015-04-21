@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.exception.NoInternetException;
-import ca.appvelopers.mcgillmobile.model.EbillItem;
+import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.UserInfo;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
@@ -43,8 +43,9 @@ import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 
+
 public class EbillFragment extends BaseFragment {
-    private List<EbillItem> mEbillItems = new ArrayList<EbillItem>();
+    private List<Statement> mStatements = new ArrayList<Statement>();
     private UserInfo mUserInfo;
     private TextView mUserName, mUserId;
     private ListView mListView;
@@ -71,7 +72,7 @@ public class EbillFragment extends BaseFragment {
         Analytics.getInstance().sendScreen("Ebill");
 
         //Get the initial info from the App
-        mEbillItems = App.getEbill();
+        mStatements = App.getEbill();
         mUserInfo = App.getUserInfo();
 
         //Get the views
@@ -92,7 +93,7 @@ public class EbillFragment extends BaseFragment {
             mUserName.setText(mUserInfo.getName());
             mUserId.setText(mUserInfo.getId());
         }
-        EbillAdapter adapter = new EbillAdapter(mActivity, mEbillItems);
+        EbillAdapter adapter = new EbillAdapter(mActivity, mStatements);
         mListView.setAdapter(adapter);
     }
 
@@ -108,14 +109,14 @@ public class EbillFragment extends BaseFragment {
         protected Boolean doInBackground(Void... params){
             try{
                 String ebillString = Connection.getInstance().get(Connection.EBILL_URL);
-                mEbillItems.clear();
+                mStatements.clear();
 
                 //Parse the ebill and the user info
                 Parser.parseEbill(ebillString);
                 Parser.parseUserInfo(ebillString);
 
                 //Save it to the instance variable
-                mEbillItems = App.getEbill();
+                mStatements = App.getEbill();
                 mUserInfo = App.getUserInfo();
 
                 return true;

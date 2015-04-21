@@ -30,9 +30,9 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.UserInfo;
@@ -160,7 +160,7 @@ public class Save {
     }
 
     public static void saveEbill(Context context){
-        List<EbillItem> ebill = App.getEbill();
+        List<Statement> ebill = App.getEbill();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.EBILL_FILE, Context.MODE_PRIVATE);

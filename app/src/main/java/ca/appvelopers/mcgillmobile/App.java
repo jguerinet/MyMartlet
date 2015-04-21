@@ -31,10 +31,10 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
-import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.UserInfo;
@@ -64,7 +64,7 @@ public class App extends Application {
     private static Transcript transcript;
     private static List<Course> classes;
     private static Term defaultTerm;
-    private static List<EbillItem> ebill;
+    private static List<Statement> ebill;
     private static UserInfo userInfo;
     private static List<Course> wishlist;
     private static List<Place> places;
@@ -163,7 +163,7 @@ public class App extends Application {
     	return webFetcherReceiver.isActive();
     }
 
-    public static List<EbillItem> getEbill(){
+    public static List<Statement> getEbill(){
         return ebill;
     }
 
@@ -220,7 +220,7 @@ public class App extends Application {
         Save.saveClasses(context);
     }
 
-    public static void setEbill(List<EbillItem> ebill){
+    public static void setEbill(List<Statement> ebill){
         App.ebill = ebill;
 
         //Save it to internal storage when this is set

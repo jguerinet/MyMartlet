@@ -18,14 +18,21 @@ package ca.appvelopers.mcgillmobile.model;
 
 import java.io.Serializable;
 
-public class EbillItem implements Serializable{
+/**
+ * One statement in the user's ebill
+ * @author Quang Dao
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
+public class Statement implements Serializable{
     private static final long serialVersionUID = 1L;
 
 	private String statementDate;
 	private String dueDate;
 	private String amountDue;
 	
-	public EbillItem(String statementDate, String dueDate, String amountDue){
+	public Statement(String statementDate, String dueDate, String amountDue){
 		this.statementDate = statementDate;
 		this.dueDate = dueDate;
 		this.amountDue = amountDue;

@@ -33,10 +33,10 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
-import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.UserInfo;
@@ -178,13 +178,13 @@ public class Load {
         return courses;
     }
 
-    public static List<EbillItem> loadEbill(Context context){
-        List<EbillItem> ebill = new ArrayList<EbillItem>();
+    public static List<Statement> loadEbill(Context context){
+        List<Statement> ebill = new ArrayList<Statement>();
 
         try{
             FileInputStream fis = context.openFileInput(Constants.EBILL_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
-            ebill = (List<EbillItem>) in.readObject();
+            ebill = (List<Statement>) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();

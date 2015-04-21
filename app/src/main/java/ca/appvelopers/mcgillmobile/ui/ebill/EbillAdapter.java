@@ -26,17 +26,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.EbillItem;
+import ca.appvelopers.mcgillmobile.model.Statement;
 
 /**
  * Author: Julien
  * Date: 16/02/14, 3:30 PM
  */
 public class EbillAdapter extends BaseAdapter {
-    private List<EbillItem> mEbills;
+    private List<Statement> mEbills;
     private Context mContext;
 
-    public EbillAdapter(Context context, List<EbillItem> eBills){
+    public EbillAdapter(Context context, List<Statement> eBills){
         this.mContext = context;
         this.mEbills = eBills;
     }
@@ -47,7 +47,7 @@ public class EbillAdapter extends BaseAdapter {
     }
 
     @Override
-    public EbillItem getItem(int position) {
+    public Statement getItem(int position) {
         return mEbills.get(position);
     }
 
@@ -73,17 +73,17 @@ public class EbillAdapter extends BaseAdapter {
         assert (view != null);
 
         //Get the current ebill item
-        EbillItem ebillItem = getItem(position);
+        Statement statement = getItem(position);
 
         //Fill out the info
         TextView statementDate = (TextView)view.findViewById(R.id.ebill_statement_date);
-        statementDate.setText(" " + ebillItem.getStatementDate());
+        statementDate.setText(" " + statement.getStatementDate());
 
         TextView dueDate = (TextView)view.findViewById(R.id.ebill_due_date);
-        dueDate.setText(" " + ebillItem.getDueDate());
+        dueDate.setText(" " + statement.getDueDate());
 
         TextView amountDue = (TextView)view.findViewById(R.id.ebill_amount);
-        amountDue.setText(" " + ebillItem.getAmountDue());
+        amountDue.setText(" " + statement.getAmountDue());
 
         return view;
     }
