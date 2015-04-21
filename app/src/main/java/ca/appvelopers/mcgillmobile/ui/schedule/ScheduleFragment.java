@@ -79,7 +79,8 @@ public class ScheduleFragment extends BaseFragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
 
         //Set up the ScheduleViewBuilder

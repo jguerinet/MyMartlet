@@ -149,6 +149,7 @@ public class ScheduleViewBuilder {
 
     /**
      * Fills the schedule based on given data
+     *
      * @param activity           The calling activity
      * @param timetableContainer The container for the timetable
      * @param scheduleContainer  The container for the schedule
