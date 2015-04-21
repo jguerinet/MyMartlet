@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers Inc.
+ * Copyright 2014-2015 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.activity.main;
+package ca.appvelopers.mcgillmobile.ui.main;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -48,7 +48,6 @@ import java.net.URL;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.SplashActivity;
 import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.fragment.DesktopFragment;
@@ -61,6 +60,7 @@ import ca.appvelopers.mcgillmobile.fragment.map.MapFragment;
 import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
+import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Constants;

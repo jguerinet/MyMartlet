@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.activity.main;
+package ca.appvelopers.mcgillmobile.ui.main;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

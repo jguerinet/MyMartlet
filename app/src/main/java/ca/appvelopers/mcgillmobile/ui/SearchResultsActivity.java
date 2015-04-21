@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.activity;
+package ca.appvelopers.mcgillmobile.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -28,11 +28,11 @@ import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistSearchCourseAdapter;
 import ca.appvelopers.mcgillmobile.object.ClassItem;
 import ca.appvelopers.mcgillmobile.object.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
+import ca.appvelopers.mcgillmobile.ui.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.view.DialogHelper;

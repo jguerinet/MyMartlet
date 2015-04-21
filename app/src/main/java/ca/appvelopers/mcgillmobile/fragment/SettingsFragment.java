@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers Inc.
+ * Copyright 2014-2015 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,11 +41,11 @@ import java.util.Locale;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.AboutActivity;
-import ca.appvelopers.mcgillmobile.activity.HelpActivity;
-import ca.appvelopers.mcgillmobile.activity.main.MainActivity;
 import ca.appvelopers.mcgillmobile.object.DrawerItem;
 import ca.appvelopers.mcgillmobile.object.Language;
+import ca.appvelopers.mcgillmobile.ui.AboutActivity;
+import ca.appvelopers.mcgillmobile.ui.HelpActivity;
+import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;

@@ -39,7 +39,7 @@
         android:theme="@style/Theme.MyMartlet"
         android:vmSafeMode="true">
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".ui.SplashActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -48,16 +48,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.semester.SemesterActivity"/>
+            android:name=".ui.semester.SemesterActivity"/>
 
         <activity
-            android:name=".activity.walkthrough.WalkthroughActivity"
+            android:name=".ui.walkthrough.WalkthroughActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.AboutActivity"
+            android:name=".ui.AboutActivity"
             android:label="@string/title_about" />
 
-        <activity android:name=".activity.HelpActivity" />
+        <activity android:name=".ui.HelpActivity" />
         
         <receiver android:name=".background.AlarmReceiver"/>
         
@@ -77,7 +77,7 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyARrfyIRGoPZjbmatLu8XyBS4JW8xjOfak" />
 
-        <activity android:name=".activity.main.MainActivity"
+        <activity android:name=".ui.main.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -91,10 +91,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.SearchResultsActivity"
+        <activity android:name=".ui.SearchResultsActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".activity.AgreementActivity"
+        <activity android:name=".ui.AgreementActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_agreement"/>
 

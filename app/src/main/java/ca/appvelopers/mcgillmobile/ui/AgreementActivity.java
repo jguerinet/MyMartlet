@@ -1,4 +1,20 @@
-package ca.appvelopers.mcgillmobile.activity;
+/*
+ * Copyright 2014-2015 Appvelopers
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package ca.appvelopers.mcgillmobile.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,16 +22,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.activity.main.BaseActivity;
+import ca.appvelopers.mcgillmobile.ui.main.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Save;
 
-/**
- * Author: Julien Guerinet
- * Date: 2015-02-08 11:47
- * Copyright (c) 2015 Sigvaria Mobile Technologies Inc. All rights reserved.
- * Contains the EULA that the user has to first accept before using the app
- */
 public class AgreementActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
