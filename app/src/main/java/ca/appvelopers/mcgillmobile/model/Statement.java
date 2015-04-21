@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import org.joda.time.LocalDate;
+
 import java.io.Serializable;
 
 /**
@@ -27,28 +29,52 @@ import java.io.Serializable;
  */
 public class Statement implements Serializable{
     private static final long serialVersionUID = 1L;
+	/**
+	 * The statement date
+	 */
+	private LocalDate mDate;
+	/**
+	 * The due date
+	 */
+	private LocalDate mDueDate;
+	/**
+	 * The total amount due or owed
+	 */
+	private double mAmount;
 
-	private String statementDate;
-	private String dueDate;
-	private String amountDue;
-	
-	public Statement(String statementDate, String dueDate, String amountDue){
-		this.statementDate = statementDate;
-		this.dueDate = dueDate;
-		this.amountDue = amountDue;
+	/**
+	 * Default Constructor
+	 *
+	 * @param date    The statement date
+	 * @param dueDate The due date
+	 * @param amount  The amount due or owed
+	 */
+	public Statement(LocalDate date, LocalDate dueDate, double amount){
+		this.mDate = date;
+		this.mDueDate = dueDate;
+		this.mAmount = amount;
 	}
 
-	public String getStatementDate() {
-		return statementDate;
+	/* GETTERS */
+
+	/**
+	 * @return The statement date
+	 */
+	public LocalDate getDate() {
+		return this.mDate;
 	}
 
-	public String getDueDate() {
-		return dueDate;
+	/**
+	 * @return The statement due date
+	 */
+	public LocalDate getDueDate() {
+		return this.mDueDate;
 	}
 
-	public String getAmountDue() {
-		return amountDue;
+	/**
+	 * @return The amount owed or due
+	 */
+	public double getAmount() {
+		return this.mAmount;
 	}
-
-	
 }

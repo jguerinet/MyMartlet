@@ -77,13 +77,13 @@ public class EbillAdapter extends BaseAdapter {
 
         //Fill out the info
         TextView statementDate = (TextView)view.findViewById(R.id.ebill_statement_date);
-        statementDate.setText(" " + statement.getStatementDate());
+        statementDate.setText(" " + statement.getDate());
 
         TextView dueDate = (TextView)view.findViewById(R.id.ebill_due_date);
         dueDate.setText(" " + statement.getDueDate());
 
         TextView amountDue = (TextView)view.findViewById(R.id.ebill_amount);
-        amountDue.setText(" " + statement.getAmountDue());
+        amountDue.setText(" " + statement.getAmount());
 
         return view;
     }
