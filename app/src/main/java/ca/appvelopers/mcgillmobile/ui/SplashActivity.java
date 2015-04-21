@@ -512,7 +512,7 @@ public class SplashActivity extends BaseActivity {
 
                                     //Download the schedule
                                     try{
-                                        scheduleBug = Parser.parseClassList(term,
+                                        scheduleBug = Parser.parseCourses(term,
                                                 connection.get(Connection.getScheduleURL(term)));
                                     } catch(MinervaLoggedOutException e){
                                         //Set the connection status and break the loop
@@ -545,11 +545,6 @@ public class SplashActivity extends BaseActivity {
                         try{
                             String ebillString = connection.get(Connection.EBILL_URL);
                             Parser.parseEbill(ebillString);
-
-                            //User Info
-                            publishNewProgress(getString(mDownloadEverything ?
-                                    R.string.downloading_user : R.string.updating_user));
-                            Parser.parseUser(ebillString);
                         } catch(MinervaLoggedOutException e){
                             //Set the connection status and break the loop
                             mConnectionStatus = ConnectionStatus.WRONG_INFO;

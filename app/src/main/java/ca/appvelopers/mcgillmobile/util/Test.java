@@ -51,6 +51,6 @@ public class Test {
         //Choose term that this schedule is for here
         Term term = new Term(Season.FALL, 2014);
 
-        return Parser.parseClassList(term, scheduleString);
+        return Parser.parseCourses(term, scheduleString);
     }
 }

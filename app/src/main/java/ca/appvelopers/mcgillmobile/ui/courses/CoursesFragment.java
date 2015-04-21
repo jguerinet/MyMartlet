@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.ui.courses;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,11 +38,13 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
+import ca.appvelopers.mcgillmobile.thread.DownloaderThread;
 import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.Parser;
 
 /**
  * Shows the user all of the courses the user has taken or is currently registered in
@@ -225,18 +228,11 @@ public class CoursesFragment extends BaseFragment {
         mActivity.showToolbarProgress(true);
 
         //Run the registration thread
-        RegistrationThread thread = new RegistrationThread(mActivity, mTerm, courses, false);
-        thread.start();
+        String html = new DownloaderThread(mActivity, "Unregistration",
+                Connection.getRegistrationURL(mTerm, courses, false)).execute();
 
-        //Wait until it's finished
-        synchronized(thread){
-            thread.waitEnd();
-        }
-
-        //Successful call
-        if(thread.success()){
-            //Get the errors from the thread
-            Map<String, String> errors = thread.getErrors();
+        if(html != null){
+            Map<String, String> errors = Parser.parseRegistrationErrors(html);
 
             //Success
             if(errors.isEmpty()){
@@ -247,6 +243,8 @@ public class CoursesFragment extends BaseFragment {
             else{
                 String errorMessage = "";
                 for(String crn : errors.keySet()){
+                    Log.e("Unregistration", "Error for " + crn + ": " + errors.get(crn));
+
                     //Find the corresponding course
                     for(Course course : courses){
                         if(course.getCRN() == Integer.valueOf(crn)){
@@ -262,9 +260,9 @@ public class CoursesFragment extends BaseFragment {
                 DialogHelper.showNeutralAlertDialog(mActivity,
                         getString(R.string.unregistration_error), errorMessage);
             }
-        }
 
-        //Refresh the courses
-        refreshCourses(mTerm);
+            //Refresh the courses
+            refreshCourses(mTerm);
+        }
     }
 }

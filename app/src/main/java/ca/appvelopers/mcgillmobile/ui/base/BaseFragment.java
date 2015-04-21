@@ -24,9 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
-import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
+import ca.appvelopers.mcgillmobile.thread.DownloaderThread;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
+import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.Parser;
 
 /**
  * The base fragment for all fragments involved in the main view
@@ -83,18 +84,17 @@ public class BaseFragment extends Fragment {
         //Show the user we are refreshing
         mActivity.showToolbarProgress(true);
 
-        ClassDownloader downloader = new ClassDownloader(mActivity, term);
-        downloader.start();
+        String html = new DownloaderThread(mActivity, "Course Download",
+                Connection.getScheduleURL(term)).execute();
 
-        //Wait for the downloader to finish
-        synchronized(downloader){
-            downloader.waitEnd();
+        if(html != null){
+            Parser.parseCourses(term, html);
         }
 
         //Download the Transcript (if ever the user has new semesters on their transcript)
         refreshTranscript(false);
 
-        return downloader.success();
+        return html != null;
     }
 
     /**
@@ -107,16 +107,16 @@ public class BaseFragment extends Fragment {
         //Show the user we are refreshing
         mActivity.showToolbarProgress(true);
 
-        TranscriptDownloader downloader = new TranscriptDownloader(mActivity, showErrors);
+        String html = new DownloaderThread(showErrors ? mActivity : null, "Transcript Download",
+                Connection.TRANSCRIPT_URL).execute();
 
-        //Wait for the downloader to finish
-        synchronized(downloader){
-            downloader.waitEnd();
+        if(html != null){
+            Parser.parseTranscript(html);
         }
 
         //Done refreshing
         mActivity.showToolbarProgress(false);
 
-        return downloader.success();
+        return html != null;
     }
 }

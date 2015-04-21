@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui.ebill;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,27 +26,34 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
-import ca.appvelopers.mcgillmobile.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.model.Statement;
-import ca.appvelopers.mcgillmobile.model.UserInfo;
+import ca.appvelopers.mcgillmobile.model.User;
+import ca.appvelopers.mcgillmobile.thread.DownloaderThread;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
-import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 
-
+/**
+ * Displays the user's ebill statements
+ * @author Rafi Uddin
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
+@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class EbillFragment extends BaseFragment {
-    private List<Statement> mStatements = new ArrayList<Statement>();
-    private UserInfo mUserInfo;
+    /**
+     * The user-related TextViews
+     */
     private TextView mUserName, mUserId;
+    /**
+     * The statements ListView
+     */
     private ListView mListView;
 
     @Override
@@ -59,10 +65,11 @@ public class EbillFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = View.inflate(mActivity, R.layout.fragment_ebill, null);
+        View view = View.inflate(mActivity, R.layout.fragment_ebill, container);
 
         lockPortraitMode();
 
@@ -70,10 +77,6 @@ public class EbillFragment extends BaseFragment {
         mActivity.setTitle(getString(R.string.title_ebill));
 
         Analytics.getInstance().sendScreen("Ebill");
-
-        //Get the initial info from the App
-        mStatements = App.getEbill();
-        mUserInfo = App.getUserInfo();
 
         //Get the views
         mUserName = (TextView)view.findViewById(R.id.ebill_user_name);
@@ -89,59 +92,18 @@ public class EbillFragment extends BaseFragment {
     }
 
     private void loadInfo(){
-        if(mUserInfo != null){
-            mUserName.setText(mUserInfo.getName());
-            mUserId.setText(mUserInfo.getId());
+        User user = App.getUserInfo();
+        List<Statement> statements = App.getEbill();
+
+        //Set the user info
+        if(user != null){
+            mUserName.setText(user.getName());
+            mUserId.setText(user.getId());
         }
-        EbillAdapter adapter = new EbillAdapter(mActivity, mStatements);
+
+        //Statements Adapter
+        EbillAdapter adapter = new EbillAdapter(mActivity, statements);
         mListView.setAdapter(adapter);
-    }
-
-    private class EbillGetter extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected void onPreExecute(){
-            //Show the user we are refreshing his content
-            mActivity.showToolbarProgress(true);
-        }
-
-        //Retrieve content from transcript page
-        @Override
-        protected Boolean doInBackground(Void... params){
-            try{
-                String ebillString = Connection.getInstance().get(Connection.EBILL_URL);
-                mStatements.clear();
-
-                //Parse the ebill and the user info
-                Parser.parseEbill(ebillString);
-                Parser.parseUserInfo(ebillString);
-
-                //Save it to the instance variable
-                mStatements = App.getEbill();
-                mUserInfo = App.getUserInfo();
-
-                return true;
-            } catch(MinervaLoggedOutException e){
-                //TODO
-                e.printStackTrace();
-            } catch(IOException e){
-                DialogHelper.showNeutralAlertDialog(mActivity, mActivity.getString(R.string.error),
-                        mActivity.getString(R.string.error_other));
-            } catch(NoInternetException e){
-                e.printStackTrace();
-            }
-            return false;
-        }
-
-        //Update or create transcript object and display data
-        @Override
-        protected void onPostExecute(Boolean loadInfo){
-            if(loadInfo){
-                //Reload the info in the views
-                loadInfo();
-            }
-
-            mActivity.showToolbarProgress(false);
-        }
     }
 
     @Override
@@ -153,10 +115,25 @@ public class EbillFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                //Start thread to retrieve inbox
-                new EbillGetter().execute();
+                refreshView();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshView(){
+        //Show the user we are reloading
+        mActivity.showToolbarProgress(true);
+
+        String html = new DownloaderThread(mActivity, "Ebill Download", Connection.EBILL_URL)
+                .execute();
+
+        //If the download was successful, parse and reload the info
+        if(html != null){
+            Parser.parseEbill(html);
+            loadInfo();
+        }
+
+        mActivity.showToolbarProgress(false);
     }
 }

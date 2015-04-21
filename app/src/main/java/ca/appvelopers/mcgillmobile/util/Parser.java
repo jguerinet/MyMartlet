@@ -490,7 +490,7 @@ public class Parser {
      * @param html The HTML String to parse
      * @return The Term String if there were any errors, null if none
      */
-    public static String parseClassList(Term term, String html){
+    public static String parseCourses(Term term, String html){
         String classError = null;
 
         //Get the list of classes
@@ -904,16 +904,22 @@ public class Parser {
      * @param html The HTML String
      */
     public static void parseEbill(String html){
+        Document doc = Jsoup.parse(html);
+        Element table = doc.getElementsByClass("datadisplaytable").first();
+
+        /* USER INFO */
+        //Parse the user info
+        Elements header = table.getElementsByTag("caption");
+        String userInfo = header.get(0).text().replace("Statements for ", "");
+        String[] userItems = userInfo.split(" - ");
+
+        App.setUserInfo(new User(userItems[1].trim(), userItems[0].trim()));
+
+        /* EBILL */
         List<Statement> statements = new ArrayList<>();
 
-        //Convert the String into a document
-        Document doc = Jsoup.parse(html);
-
-        //Get the relevant rows
-        Element ebillTable = doc.getElementsByClass("datadisplaytable").first();
-        Elements rows = ebillTable.getElementsByTag("tr");
-
         //Go through the rows and extract the necessary information
+        Elements rows = table.getElementsByTag("tr");
         for (int i = 2; i < rows.size(); i+=2) {
             Element row = rows.get(i);
             Elements cells = row.getElementsByTag("td");
@@ -942,24 +948,6 @@ public class Parser {
         }
 
         App.setEbill(statements);
-    }
-
-    /**
-     * Parses an HTML String into the user object
-     *
-     * @param html The HTML String
-     */
-    public static void parseUser(String html){
-        //Get the necessary table
-        Document doc = Jsoup.parse(html);
-        Element table = doc.getElementsByClass("datadisplaytable").first();
-
-        //Parse the user info
-        Elements userElement = table.getElementsByTag("caption");
-        String userInfo = userElement.get(0).text().replace("Statements for ", "");
-        String[] userItems = userInfo.split(" - ");
-
-        App.setUserInfo(new User(userItems[1].trim(), userItems[0].trim()));
     }
 
     /* HELPERS */
