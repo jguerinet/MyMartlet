@@ -43,7 +43,6 @@ import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
-import ca.appvelopers.mcgillmobile.util.Test;
 
 /**
  * Represents the user's schedule
@@ -129,23 +128,8 @@ public class ScheduleFragment extends BaseFragment {
                             mViewBuilder = new ScheduleViewBuilder(ScheduleFragment.this,
                                     getStartingDate());
 
-                            //If we aren't in test mode, reload the classes
-                            if (!Test.LOCAL_SCHEDULE) {
-                                executeClassDownloader();
-                            }
-
-                            //Download the Transcript
-                            //  (if ever the user has new semesters on their transcript)
-                            final TranscriptDownloader downloader =
-                                    new TranscriptDownloader(mActivity, false);
-                            downloader.start();
-
-                            //Wait for the downloader to finish
-                            synchronized(downloader){
-                                try{
-                                    downloader.wait();
-                                } catch(InterruptedException ignored){}
-                            }
+                            //Refresh the view
+                            refresh(true);
                         }
                     }
                 });
@@ -153,11 +137,42 @@ public class ScheduleFragment extends BaseFragment {
 
                 return true;
             case R.id.action_refresh:
-                //Start thread to retrieve schedule
-                executeClassDownloader();
+                refresh(false);
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refresh(boolean transcript){
+        //Show the user we are refreshing
+        mActivity.showToolbarProgress(true);
+
+        ClassDownloader courseDownloader = new ClassDownloader(mActivity, mTerm);
+        courseDownloader.start();
+
+        //Wait for the downloader to finish
+        synchronized(courseDownloader){
+            courseDownloader.waitEnd();
+        }
+
+        //Update the view if this was a successful download
+        if(courseDownloader.success()){
+            updateView(mActivity.getResources().getConfiguration().orientation);
+        }
+
+        //Download the Transcript (if ever the user has new semesters on their transcript)
+        if(transcript){
+            TranscriptDownloader downloader = new TranscriptDownloader(mActivity, false);
+
+            //Wait for the downloader to finish
+            synchronized(downloader){
+                downloader.waitEnd();
+            }
+        }
+
+        //Stop showing the progress
+        mActivity.showToolbarProgress(false);
     }
 
     /**
@@ -180,7 +195,7 @@ public class ScheduleFragment extends BaseFragment {
      * @return The starting date
      */
     private LocalDate getStartingDate(){
-        fillClassList();
+        fillCourses();
 
         //Date is by default set to today
         LocalDate date = LocalDate.now();
@@ -200,7 +215,7 @@ public class ScheduleFragment extends BaseFragment {
     /**
      * Fills the class list with the current term's classes
      */
-    private void fillClassList(){
+    private void fillCourses(){
         //Clear the current course list, add the courses that are for this semester
         mCourses.clear();
         for(Course classItem : App.getClasses()){
@@ -208,32 +223,6 @@ public class ScheduleFragment extends BaseFragment {
                 mCourses.add(classItem);
             }
         }
-    }
-
-    /**
-     * Downloads the list of classes for the current term
-     */
-    private void executeClassDownloader(){
-        //Show the user we are refreshing
-        mActivity.showToolbarProgress(true);
-
-        final ClassDownloader downloader = new ClassDownloader(mActivity, mTerm);
-        downloader.start();
-
-        //Wait for the downloader to finish
-        synchronized(downloader){
-            try{
-                downloader.wait();
-            } catch(InterruptedException ignored){}
-        }
-
-        //Update the view if this was a successful download
-        if(downloader.success()){
-            updateView(mActivity.getResources().getConfiguration().orientation);
-        }
-
-        //Stop showing the progress
-        mActivity.showToolbarProgress(false);
     }
 
     /**

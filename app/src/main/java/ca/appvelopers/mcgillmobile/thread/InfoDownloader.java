@@ -83,4 +83,12 @@ public abstract class InfoDownloader extends Thread {
 		return null;
 	}
 
+	/**
+	 * Waits for the thread to be finished
+	 */
+	public void waitEnd(){
+		try{
+			wait();
+		} catch(InterruptedException ignored){}
+	}
 }
