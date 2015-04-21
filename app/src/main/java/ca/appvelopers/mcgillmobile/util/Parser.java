@@ -16,7 +16,11 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import org.joda.time.DateTime;
+import android.support.v4.util.Pair;
+import android.util.Log;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
@@ -44,16 +48,29 @@ import ca.appvelopers.mcgillmobile.object.Token;
 import ca.appvelopers.mcgillmobile.object.Transcript;
 import ca.appvelopers.mcgillmobile.object.UserInfo;
 
+/**
+ * Parses the given HTML Strings to get the necessary objects
+ * @author Ryan Singzon
+ * @author Quang Dao
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class Parser {
+    private static final String TAG = "Parser";
 
     /**
      * Parses the HTML String to form a transcript
-     * @param stringHTML The String to parse
+     *
+     * @param html The String to parse
      */
-    public static String parseTranscript(String stringHTML){
+    public static String parseTranscript(String html){
+        //TODO Refactor this
         String transcriptError = null;
 
-        Document transcriptDocument = Jsoup.parse(stringHTML);
+        //Parse the String into a document
+        Document transcriptDocument = Jsoup.parse(html);
+
         //Extract program, scholarships, total credits, and CGPA
         Elements rows = transcriptDocument.getElementsByClass("fieldmediumtext");
 
@@ -467,22 +484,24 @@ public class Parser {
     }
 
     /**
-     * Parses an HTML String to generate a list of classes
+     * Parses an HTML String to generate a list of classes (from a schedule)
+     *
      * @param term The term for these classes
-     * @param classHTML The HTML String to parse
+     * @param html The HTML String to parse
+     * @return The Term String if there were any errors, null if none
      */
-    public static String parseClassList(Term term, String classHTML){
+    public static String parseClassList(Term term, String html){
         String classError = null;
 
-        //Get the list of classes already parsed for that year
+        //Get the list of classes
         List<ClassItem> classItems = App.getClasses();
-
+        //If there are none, just use an empty list
         if(classItems == null){
-            classItems = new ArrayList<ClassItem>();
+            classItems = new ArrayList<>();
         }
 
         //Remove all of the classes for this semester
-        List<ClassItem> classesToRemove = new ArrayList<ClassItem>();
+        List<ClassItem> classesToRemove = new ArrayList<>();
         for(ClassItem classItem : classItems){
             if(classItem.getTerm().equals(term)){
                 classesToRemove.add(classItem);
@@ -490,19 +509,42 @@ public class Parser {
         }
         classItems.removeAll(classesToRemove);
 
-        Document doc = Jsoup.parse(classHTML);
+        //Parse the String into a Document
+        Document doc = Jsoup.parse(html);
         Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
-        if (!scheduleTable.isEmpty()) {
+        if(!scheduleTable.isEmpty()){
+            //Go through the schedule table
             for (int i = 0; i < scheduleTable.size(); i += 2) {
                 Element row;
                 Element currentElement = scheduleTable.get(i);
 
-                //Course name, code, and section
+                //Course title, code, and section
                 row = currentElement.getElementsByTag("caption").first();
                 String[] texts = row.text().split(" - ");
-                String courseTitle = texts[0].substring(0, texts[0].length() - 1);
-                String courseCode = texts[1];
+                String title = texts[0].substring(0, texts[0].length() - 1);
+                String code = texts[1];
                 String section = texts[2];
+
+                //Parse the subject from the code
+                String subject = "";
+                try {
+                    subject = code.substring(0, 4);
+                } catch (StringIndexOutOfBoundsException e) {
+                    Log.e(TAG, "Exception in Subject parsing in Class Parser", e);
+                    Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
+                            "Course subject Substring");
+                    classError = term.toString();
+                }
+
+                String number = "";
+                try {
+                    number = code.substring(5, 8);
+                } catch (StringIndexOutOfBoundsException e) {
+                    Log.e(TAG, "Exception in Number parsing in Class Parser", e);
+                    Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
+                            "Course Number Substring");
+                    classError = term.toString();
+                }
 
                 //CRN
                 row = currentElement.getElementsByTag("tr").get(1);
@@ -512,10 +554,9 @@ public class Parser {
                     crn = Integer.parseInt(crnString);
                 }
                 catch (NumberFormatException e){
-                    //GA
+                    Log.e(TAG, "CRN Exception in Class Parser", e);
                     Analytics.getInstance().sendEvent("Parsing Bug", "Class List", "crn");
                     classError = term.toString();
-                    e.printStackTrace();
                 }
 
                 //Credits
@@ -526,25 +567,26 @@ public class Parser {
                     credits = Double.parseDouble(creditString);
                 }
                 catch (NumberFormatException e){
+                    Log.e(TAG, "Credits Exception in Class Parser", e);
                     Analytics.getInstance().sendEvent("Parsing Bug", "Class List", "credits");
                     classError = term.toString();
-                    e.printStackTrace();
                 }
 
-                //Check if there is any data to parse
-                if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary").equals("This table lists the scheduled meeting times and assigned instructors for this class..")) {
+                //Time, Days, Location, Type, Instructor
+                if (i + 1 < scheduleTable.size() && scheduleTable.get(i + 1).attr("summary")
+                        .equals("This table lists the scheduled meeting times and assigned " +
+                                "instructors for this class..")) {
+
                     Elements scheduledTimesRows = scheduleTable.get(i+1).getElementsByTag("tr");
                     for (int j = 1; j < scheduledTimesRows.size(); j++) {
-
-                        //Time, Days, Location, Section Type, Instructor
                         row = scheduledTimesRows.get(j);
                         Elements cells = row.getElementsByTag("td");
 
-                        String[]times = {};
+                        String[] times = {};
                         char[] dayCharacters = {};
                         String location = "";
                         String dateRange = "";
-                        String sectionType = "";
+                        String type = "";
                         String instructor = "";
 
                         try{
@@ -552,23 +594,25 @@ public class Parser {
                             dayCharacters = cells.get(1).text().toCharArray();
                             location = cells.get(2).text();
                             dateRange = cells.get(3).text();
-                            sectionType = cells.get(4).text();
+                            type = cells.get(4).text();
                             instructor = cells.get(5).text();
-
                         }
                         catch(IndexOutOfBoundsException e){
+                            Log.e(TAG, "Time/Days/Location/Type/Instructor Exception in " +
+                                    "Class Parser", e);
                             Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
                                     "IndexOutOfBounds on Info");
                             classError = term.toString();
                         }
 
                         //Time parsing
-                        int startHour, startMinute, endHour, endMinute;
-                        try {
-                            startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-                            startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-                            endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-                            endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+                        LocalTime startTime, endTime;
+                        try{
+                            int startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+                            int startMinute =
+                                    Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+                            int endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+                            int endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
                             String startPM = times[0].split(" ")[1];
                             String endPM = times[1].split(" ")[1];
 
@@ -580,64 +624,40 @@ public class Parser {
                             if (endPM.equals("PM") && endHour != 12) {
                                 endHour += 12;
                             }
+
+                            startTime = new LocalTime(startHour, startMinute);
+                            endTime = new LocalTime(endHour, endMinute);
                         }
                         //Try/Catch for classes with no assigned times
                         catch (NumberFormatException e) {
-                            startHour = 0;
-                            //So that the the time will be 0
-                            startMinute = 5;
-                            endHour = 0;
-                            //So that the time will be 0
-                            endMinute = 55;
+                            startTime = getDefaultStartTime();
+                            endTime = getDefaultEndTime();
                         }
 
                         //Day Parsing
-                        List<Day> days = new ArrayList<Day>();
+                        List<Day> days = new ArrayList<>();
                         for (char dayCharacter : dayCharacters) {
                             days.add(Day.getDay(dayCharacter));
                         }
 
                         //Date Range parsing
-                        DateTime startDate = DateTime.now();
-                        DateTime endDate = DateTime.now();
-
+                        LocalDate startDate = LocalDate.now();
+                        LocalDate endDate = LocalDate.now();
                         try{
-                            String startDateString = dateRange.split(" - ")[0];
-                            String endDateString = dateRange.split(" - ")[1];
-                            DateTimeFormatter dateFormatter =
-                                    DateTimeFormat.forPattern("MMM dd, yyyy").withLocale(Locale.US);
-                            startDate = dateFormatter.parseDateTime(startDateString);
-                            endDate = dateFormatter.parseDateTime(endDateString);
+                            Pair<LocalDate, LocalDate> dates = parseDateRange(dateRange);
+                            startDate = dates.first;
+                            endDate = dates.second;
                         } catch (IllegalArgumentException e){
+                            Log.e(TAG, "Date Range Parsing Exception in Class Parser", e);
                             Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
                                     "Start/End Date Parsing");
                             classError = term.toString();
                         }
 
-
-                        String subject = "";
-                        try {
-                            subject = courseCode.substring(0, 4);
-                        } catch (StringIndexOutOfBoundsException e) {
-                            Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
-                                    "Course subject Substring");
-                            classError = term.toString();
-                        }
-
-                        String code = "";
-                        try {
-                            code = courseCode.substring(5, 8);
-                        } catch (StringIndexOutOfBoundsException e) {
-                            Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
-                                    "Course Code Substring");
-                             classError = term.toString();
-                        }
-
-                        //Find the concerned course
-                        classItems.add(new ClassItem(term, courseCode, subject,
-                                code, courseTitle, crn, section, startHour, startMinute, endHour,
-                                endMinute, days, sectionType, location, instructor, credits,
-                                dateRange, startDate, endDate));
+                        //Add the course
+                        classItems.add(new ClassItem(term, subject, number, title, crn, section,
+                                startTime, endTime, days, type, location, instructor,  credits,
+                                startDate, endDate));
                     }
                 }
                 //If there is no data to parse, reset i and continue
@@ -654,48 +674,45 @@ public class Parser {
     }
 
     /**
-     * Parses the HTML retrieved from Minerva and returns a list of classes
+     * Parses the HTML String to return a list of classes (from a class search result)
+     *
      * @param term The term for these classes
-     * @param classHTML The HTML String to parse
+     * @param html The HTML String to parse
      * @return The list of resulting classes
      */
-    public static List<ClassItem> parseClassResults(Term term, String classHTML){
-        List<ClassItem> classItems = new ArrayList<ClassItem>();
+    public static List<ClassItem> parseClassResults(Term term, String html){
+        List<ClassItem> classItems = new ArrayList<>();
 
-        Document document = Jsoup.parse(classHTML, "UTF-8");
+        //Parse the String into a document
+        Document document = Jsoup.parse(html, "UTF-8");
         //Find rows of HTML by class
         Elements dataRows = document.getElementsByClass("dddefault");
 
         int rowNumber = 0;
         int rowsSoFar = 0;
         boolean loop = true;
-
         while (loop) {
-            // Create a new course object
+            // Create a new course object with the default valued
             double credits = 99;
-            String courseCode = "ERROR";
-            String courseSubject = "ERROR";
-            String courseNumber = "999";
-            String courseTitle = "ERROR";
-            String sectionType = "";
-            List<Day> days = new ArrayList<Day>();
+            String subject = "ERROR";
+            String number = "ERROR";
+            String title = "";
+            String type = "";
+            List<Day> days = new ArrayList<>();
             int crn = 0;
             String instructor = "";
             String location = "";
-            int startHour = 0;
-            //So that the time will be 0
-            int startMinute = 5;
-            int endHour = 0;
-            //So that the time will be 0
-            int endMinute = 55;
-            String dates = "";
+            //So that the rounded start time will be 0
+            LocalTime startTime = getDefaultStartTime();
+            LocalTime endTime = getDefaultEndTime();
             int capacity = 0;
             int seatsAvailable = 0;
             int seatsRemaining = 0;
             int waitlistCapacity = 0;
             int waitlistAvailable = 0;
             int waitlistRemaining = 0;
-
+            LocalDate startDate = LocalDate.now();
+            LocalDate endDate = LocalDate.now();
 
             int i = 0;
             while (true) {
@@ -717,18 +734,17 @@ public class Parser {
                         case 1:
                             crn = Integer.parseInt(row.text());
                             break;
-                        // Course code
+                        //Subject
                         case 2:
-                            courseCode = row.text();
-                            courseSubject = row.text();
+                            subject = row.text();
                             break;
+                        //Number
                         case 3:
-                            courseCode += " " + row.text();
-                            courseNumber = row.text();
+                            number = row.text();
                             break;
-                        // Section type
+                        //Type
                         case 5:
-                            sectionType = row.text();
+                            type = row.text();
                             break;
                         // Number of credits
                         case 6:
@@ -737,7 +753,7 @@ public class Parser {
                         // Course title
                         case 7:
                             //Remove the extra period at the end of the course title
-                            courseTitle = row.text().substring(0, row.text().length() - 1);
+                            title = row.text().substring(0, row.text().length() - 1);
                             break;
                         // Days of the week
                         case 8:
@@ -759,10 +775,14 @@ public class Parser {
                         case 9:
                             String[] times = row.text().split("-");
                             try {
-                                startHour = Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
-                                startMinute = Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
-                                endHour = Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
-                                endMinute = Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
+                                int startHour =
+                                        Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
+                                int startMinute =
+                                        Integer.parseInt(times[0].split(" ")[0].split(":")[1]);
+                                int endHour =
+                                        Integer.parseInt(times[1].split(" ")[0].split(":")[0]);
+                                int endMinute =
+                                        Integer.parseInt(times[1].split(" ")[0].split(":")[1]);
                                 String startPM = times[0].split(" ")[1];
                                 String endPM = times[1].split(" ")[1];
 
@@ -774,42 +794,36 @@ public class Parser {
                                 if (endPM.equals("PM") && endHour != 12) {
                                     endHour += 12;
                                 }
+
+                                startTime = new LocalTime(startHour, startMinute);
+                                endTime = new LocalTime(endHour, endMinute);
                             }
                             //Try/Catch for classes with no assigned times
                             catch (NumberFormatException e) {
-                                startHour = 0;
-                                //So that the time will be 0
-                                startMinute = 5;
-                                endHour = 0;
-                                //So that the time will be 0
-                                endMinute = 55;
+                                startTime = getDefaultStartTime();
+                                endTime = getDefaultEndTime();
                             }
                             break;
                         // Capacity
                         case 10:
                             capacity = Integer.parseInt(row.text());
                             break;
-
                         // Seats available
                         case 11:
                             seatsAvailable = Integer.parseInt(row.text());
                             break;
-
                         // Seats remaining
                         case 12:
                             seatsRemaining = Integer.parseInt(row.text());
                             break;
-
                         // Waitlist capacity
                         case 13:
                             waitlistCapacity = Integer.parseInt(row.text());
                             break;
-
                         // Waitlist available
                         case 14:
                             waitlistAvailable = Integer.parseInt(row.text());
                             break;
-
                         // Waitlist remaining
                         case 15:
                             waitlistRemaining = Integer.parseInt(row.text());
@@ -820,7 +834,9 @@ public class Parser {
                             break;
                         // Start/end date
                         case 17:
-                            dates = row.text();
+                            Pair<LocalDate, LocalDate> dates = parseDateRange(row.text());
+                            startDate = dates.first;
+                            endDate = dates.second;
                             break;
                         // Location
                         case 18:
@@ -834,16 +850,16 @@ public class Parser {
                     break;
                 }
                 catch (Exception e){
-                    e.printStackTrace();
+                    Log.e(TAG, "Error in Class Results Parser", e);
                 }
             }
             rowsSoFar = 0;
-            if( !courseCode.equals("ERROR")){
+            if( !subject.equals("ERROR") && !number.equals("ERROR")){
                 //Create a new course object and add it to list
-                classItems.add(new ClassItem(term, courseCode, courseSubject, courseNumber, courseTitle, crn, "", startHour,
-                        startMinute, endHour, endMinute, days, sectionType, location, instructor,
-                        capacity, seatsAvailable, seatsRemaining, waitlistCapacity, waitlistAvailable, waitlistRemaining,
-                        credits, dates));
+                classItems.add(new ClassItem(term, subject, number, title, crn, "", startTime,
+                        endTime, days, type, location, instructor, credits, startDate, endDate,
+                        capacity, seatsAvailable, seatsRemaining, waitlistCapacity,
+                        waitlistAvailable, waitlistRemaining));
             }
         }
         return classItems;
@@ -854,7 +870,6 @@ public class Parser {
      * @param resultHTML The HTML string
      * @return CRNs with registration errors and the associated error
      */
-
     public static Map<String, String> parseRegistrationErrors(String resultHTML){
         Map<String, String> registrationErrors = new HashMap<String, String>();
 
@@ -922,5 +937,40 @@ public class Parser {
         String[] userInfoItems = id.split(" - ");
 
         App.setUserInfo(new UserInfo(userInfoItems[1].trim(), userInfoItems[0].trim()));
+    }
+
+    /* HELPERS */
+
+    /**
+     * @return A start time that will yield 0 for the rounded start time
+     */
+    private static LocalTime getDefaultStartTime(){
+        return new LocalTime(0, 5);
+    }
+
+    /**
+     * @return An end time that will yield 0 for the rounded end time
+     */
+    private static LocalTime getDefaultEndTime(){
+        return new LocalTime(0, 55);
+    }
+
+    /**
+     * Parses the date range String into 2 dates
+     *
+     * @param dateRange The date range String
+     * @return A pair representing the starting and ending dates of the range
+     */
+    private static Pair<LocalDate, LocalDate> parseDateRange(String dateRange)
+            throws IllegalArgumentException{
+        //Split the range into the 2 date Strings
+        String startDateString = dateRange.split(" - ")[0];
+        String endDateString = dateRange.split(" - ")[1];
+
+        //Set up the formatter we're going to use to parse these Strings
+        DateTimeFormatter dtf =  DateTimeFormat.forPattern("MMM dd, yyyy").withLocale(Locale.US);
+
+        //Parse the dates, return them as a pair
+        return new Pair<>(dtf.parseLocalDate(startDateString), dtf.parseLocalDate(endDateString));
     }
 }
