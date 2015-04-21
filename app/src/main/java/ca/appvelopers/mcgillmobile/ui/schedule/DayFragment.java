@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.fragment;
+package ca.appvelopers.mcgillmobile.ui.schedule;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,7 +33,6 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.ClassItem;
 import ca.appvelopers.mcgillmobile.model.Day;
-import ca.appvelopers.mcgillmobile.ui.dialog.CourseDialog;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Date;
 

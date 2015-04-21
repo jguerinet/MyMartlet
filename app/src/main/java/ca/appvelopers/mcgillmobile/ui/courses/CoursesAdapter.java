@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.fragment.courses;
+package ca.appvelopers.mcgillmobile.ui.courses;
 
 import android.content.Context;
 import android.view.LayoutInflater;

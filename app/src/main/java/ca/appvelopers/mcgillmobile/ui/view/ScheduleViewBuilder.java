@@ -34,10 +34,10 @@ import org.joda.time.Minutes;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.fragment.DayFragment;
-import ca.appvelopers.mcgillmobile.fragment.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.model.ClassItem;
 import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.ui.schedule.DayFragment;
+import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.util.Date;
 
 public class ScheduleViewBuilder {

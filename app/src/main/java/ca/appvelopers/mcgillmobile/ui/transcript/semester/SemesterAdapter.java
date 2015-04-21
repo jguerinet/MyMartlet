@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.ui.semester;
+package ca.appvelopers.mcgillmobile.ui.transcript.semester;
 
 import android.content.Context;
 import android.view.LayoutInflater;

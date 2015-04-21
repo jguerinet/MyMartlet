@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.fragment.wishlist;
+package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -41,8 +41,8 @@ import ca.appvelopers.mcgillmobile.model.ClassItem;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
+import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
-import ca.appvelopers.mcgillmobile.ui.dialog.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;

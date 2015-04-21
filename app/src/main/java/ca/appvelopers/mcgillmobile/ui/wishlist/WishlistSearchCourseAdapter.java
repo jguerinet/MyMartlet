@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.fragment.wishlist;
+package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.Context;
 import android.view.LayoutInflater;

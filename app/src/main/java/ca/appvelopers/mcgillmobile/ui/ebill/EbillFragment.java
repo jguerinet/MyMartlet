@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.fragment.ebill;
+package ca.appvelopers.mcgillmobile.ui.ebill;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.fragment.transcript;
+package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

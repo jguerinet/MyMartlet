@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.ui;
+package ca.appvelopers.mcgillmobile.ui.settings;
 
 import android.content.Context;
 import android.content.Intent;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.fragment.map;
+package ca.appvelopers.mcgillmobile.ui.map;
 
 import android.content.Context;
 import android.view.LayoutInflater;

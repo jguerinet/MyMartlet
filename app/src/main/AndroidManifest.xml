@@ -48,16 +48,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.semester.SemesterActivity"/>
+            android:name=".ui.transcript.semester.SemesterActivity"/>
 
         <activity
             android:name=".ui.walkthrough.WalkthroughActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.AboutActivity"
+            android:name=".ui.settings.AboutActivity"
             android:label="@string/title_about" />
 
-        <activity android:name=".ui.HelpActivity" />
+        <activity android:name=".ui.settings.HelpActivity" />
         
         <receiver android:name=".background.AlarmReceiver"/>
         
@@ -91,10 +91,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.SearchResultsActivity"
+        <activity android:name=".ui.search.SearchResultsActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.AgreementActivity"
+        <activity android:name=".ui.settings.AgreementActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_agreement"/>
 
