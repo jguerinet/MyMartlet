@@ -25,7 +25,7 @@ import android.widget.Button;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.ui.main.BaseActivity;
+import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 

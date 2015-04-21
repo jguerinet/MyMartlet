@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.fragment;
+package ca.appvelopers.mcgillmobile.ui.base;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;

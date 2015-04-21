@@ -39,6 +39,7 @@ import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
+import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.dialog.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.view.ScheduleViewBuilder;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;

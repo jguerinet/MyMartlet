@@ -48,7 +48,6 @@ import java.net.URL;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.fragment.BaseFragment;
 import ca.appvelopers.mcgillmobile.fragment.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.fragment.DesktopFragment;
 import ca.appvelopers.mcgillmobile.fragment.MyCoursesFragment;
@@ -61,6 +60,8 @@ import ca.appvelopers.mcgillmobile.fragment.transcript.TranscriptFragment;
 import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
+import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
+import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Clear;

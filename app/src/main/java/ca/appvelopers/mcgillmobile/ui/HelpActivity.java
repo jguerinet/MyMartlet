@@ -32,7 +32,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.HelpItem;
-import ca.appvelopers.mcgillmobile.ui.main.BaseActivity;
+import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 

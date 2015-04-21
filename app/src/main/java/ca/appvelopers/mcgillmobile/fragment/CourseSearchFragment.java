@@ -46,6 +46,7 @@ import ca.appvelopers.mcgillmobile.model.ClassItem;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.SearchResultsActivity;
+import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.view.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;

@@ -32,7 +32,7 @@ import ca.appvelopers.mcgillmobile.fragment.wishlist.WishlistSearchCourseAdapter
 import ca.appvelopers.mcgillmobile.model.ClassItem;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
-import ca.appvelopers.mcgillmobile.ui.main.BaseActivity;
+import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
