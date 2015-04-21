@@ -42,7 +42,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
@@ -280,7 +280,7 @@ public class CourseSearchFragment extends BaseFragment {
     private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
         private Term mTerm;
         private String mClassSearchURL;
-        private List<ClassItem> mClasses;
+        private List<Course> mClasses;
         private ProgressDialog mDialog;
 
         public CoursesGetter(Term term, String classSearchURL){
@@ -331,7 +331,7 @@ public class CourseSearchFragment extends BaseFragment {
             else{
                 Intent intent = new Intent(mActivity, SearchResultsActivity.class)
                         .putExtra(Constants.TERM, mTerm)
-                        .putExtra(Constants.CLASSES, (ArrayList<ClassItem>)mClasses);
+                        .putExtra(Constants.CLASSES, (ArrayList<Course>)mClasses);
                 startActivity(intent);
             }
         }

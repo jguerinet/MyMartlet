@@ -34,7 +34,7 @@ import org.joda.time.Minutes;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.ui.schedule.DayFragment;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleFragment;
@@ -128,7 +128,7 @@ public class ScheduleViewBuilder {
         LocalTime currentCourseEndTime = null;
 
         //Get the classes for today
-        List<ClassItem> classItems = mFragment.getClassesForDate(currentDay, date);
+        List<Course> classItems = mFragment.getClassesForDate(currentDay, date);
 
         //Day name
         View dayView = View.inflate(mContext, R.layout.fragment_day_name, null);
@@ -142,7 +142,7 @@ public class ScheduleViewBuilder {
             //Cycle through the half hours
             for(int min = 0; min < 31; min+= 30){
                 //Initialize the current course to null
-                ClassItem currentClass = null;
+                Course currentClass = null;
 
                 //Get the current time
                 LocalTime currentTime = new LocalTime(hour, min);
@@ -154,7 +154,7 @@ public class ScheduleViewBuilder {
                     currentCourseEndTime = null;
 
                     //Check if there is a course at this time
-                    for(ClassItem course : classItems){
+                    for(Course course : classItems){
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
                         if(course.getRoundedStartTime().equals(currentTime)){

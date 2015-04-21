@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Language;
@@ -146,13 +146,13 @@ public class Load {
         return transcript;
     }
 
-    public static List<ClassItem> loadClasses(Context context){
-        List<ClassItem> courses = new ArrayList<ClassItem>();
+    public static List<Course> loadClasses(Context context){
+        List<Course> courses = new ArrayList<Course>();
 
         try{
             FileInputStream fis = context.openFileInput(Constants.CLASSES_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
-            courses = (List<ClassItem>) in.readObject();
+            courses = (List<Course>) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();
@@ -264,13 +264,13 @@ public class Load {
         return defaultTerm;
     }
 
-    public static List<ClassItem> loadClassWishlist(Context context){
-        List<ClassItem> classWishlist = new ArrayList<ClassItem>();
+    public static List<Course> loadClassWishlist(Context context){
+        List<Course> classWishlist = new ArrayList<Course>();
 
         try{
             FileInputStream fis = context.openFileInput(Constants.CLASS_WISHLIST_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
-            classWishlist = (List<ClassItem>) in.readObject();
+            classWishlist = (List<Course>) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();

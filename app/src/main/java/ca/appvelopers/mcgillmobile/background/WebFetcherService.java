@@ -30,7 +30,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
@@ -178,12 +178,12 @@ public class WebFetcherService extends IntentService {
 	 */
     //TODO Rework this with new activity/fragment structure
 	protected void CheckSeats(){
-		List<ClassItem> wishlistClasses = App.getClassWishlist();
+		List<Course> wishlistClasses = App.getClassWishlist();
 		
 		//refresh wishlist
 		//Sort ClassItems into Courses
         List<TranscriptCourse> coursesList = new ArrayList<TranscriptCourse>();
-        for(ClassItem wishlistClass : wishlistClasses){
+        for(Course wishlistClass : wishlistClasses){
 
             boolean courseExists = false;
             //Check if course exists in list
@@ -235,12 +235,12 @@ public class WebFetcherService extends IntentService {
 
 	        //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
             //This parses all ClassItems for a given course
-            List<ClassItem> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
+            List<Course> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
 
             //Update the course object with an updated class size
-            for(ClassItem updatedClass : updatedClassList){
+            for(Course updatedClass : updatedClassList){
 
-                for(ClassItem wishlistClass : wishlistClasses){
+                for(Course wishlistClass : wishlistClasses){
 
                     if(wishlistClass.getCRN() == updatedClass.getCRN()){
                         wishlistClass.setDays(updatedClass.getDays());
@@ -257,7 +257,7 @@ public class WebFetcherService extends IntentService {
         }
 		
 		//check if any classes have open spots
-		for(ClassItem wantedClass : wishlistClasses){
+		for(Course wantedClass : wishlistClasses){
 			if(wantedClass.getSeatsRemaining()>0){
 				//show notification
 				LocalToast("A spot has opened up for the class: "+wantedClass.getTitle(), MainActivity.class,NOTIFICATION_ID_CLASSES);

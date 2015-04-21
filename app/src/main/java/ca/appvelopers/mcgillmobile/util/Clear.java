@@ -23,7 +23,7 @@ import android.preference.PreferenceManager;
 import java.util.ArrayList;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Place;
@@ -68,7 +68,7 @@ public class Clear {
     }
 
     private static void clearSchedule(){
-        App.setClasses(new ArrayList<ClassItem>());
+        App.setClasses(new ArrayList<Course>());
     }
 
     private static void clearEbill(){
@@ -90,7 +90,7 @@ public class Clear {
     }
 
     private static void clearWishlist(){
-        App.setClassWishlist(new ArrayList<ClassItem>());
+        App.setClassWishlist(new ArrayList<Course>());
     }
 
     private static void clearFavoritePlaces(){

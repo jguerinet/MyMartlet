@@ -45,8 +45,8 @@ import javax.net.ssl.HttpsURLConnection;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.exception.NoInternetException;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 import okio.BufferedSink;
@@ -453,7 +453,7 @@ public class Connection {
      * @param dropCourse True if the user is dropping courses, false otherwise
      * @return The proper registration URL
      */
-    public static String getRegistrationURL(Term term, List<ClassItem> classes, boolean dropCourse){
+    public static String getRegistrationURL(Term term, List<Course> classes, boolean dropCourse){
         String registrationURL = COURSE_REGISTRATION_URL + term.getYear() +
 		        term.getSeason().getSeasonNumber();
 
@@ -463,7 +463,7 @@ public class Connection {
                 "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY";
 
         if(dropCourse){
-            for(ClassItem classItem : classes){
+            for(Course classItem : classes){
                 registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.getYear() +
 		                term.getSeason().getSeasonNumber() + "&CRN_IN=" + classItem.getCRN() +
                         "&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
@@ -490,7 +490,7 @@ public class Connection {
 		        "GMOD=DUMMY&TITLE=DUMMY";
 
         //Insert the CRNs into the URL
-        for(ClassItem classItem : classes){
+        for(Course classItem : classes){
             //Use a different URL if courses are being dropped
             if(!dropCourse){
                 registrationURL += "&RSTS_IN=RW&CRN_IN=" + classItem.getCRN();

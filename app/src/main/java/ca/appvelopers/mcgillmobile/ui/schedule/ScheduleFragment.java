@@ -34,7 +34,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
@@ -49,7 +49,7 @@ import ca.appvelopers.mcgillmobile.util.Test;
 
 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class ScheduleFragment extends BaseFragment {
-    private List<ClassItem> mClassList;
+    private List<Course> mClassList;
     private Term mTerm;
     private ScheduleViewBuilder mScheduleViewBuilder;
 
@@ -71,7 +71,7 @@ public class ScheduleFragment extends BaseFragment {
             mTerm = App.getDefaultTerm();
         }
 
-        mClassList = new ArrayList<ClassItem>();
+        mClassList = new ArrayList<Course>();
 
         //Set up the ScheduleViewBuilder
         mScheduleViewBuilder = new ScheduleViewBuilder(this, getStartingDate());
@@ -172,7 +172,7 @@ public class ScheduleFragment extends BaseFragment {
         //Check if we are in the current semester
         if(!mTerm.equals(Term.getCurrentTerm())){
             //If not, find the starting date of this semester instead of using today
-            for(ClassItem classItem : mClassList){
+            for(Course classItem : mClassList){
                 if(classItem.getStartDate().isBefore(date)){
                     date = classItem.getStartDate();
                 }
@@ -188,7 +188,7 @@ public class ScheduleFragment extends BaseFragment {
     private void fillClassList(){
         //Clear the current course list, add the courses that are for this semester
         mClassList.clear();
-        for(ClassItem classItem : App.getClasses()){
+        for(Course classItem : App.getClasses()){
             if(classItem.getTerm().equals(mTerm)){
                 mClassList.add(classItem);
             }
@@ -218,17 +218,17 @@ public class ScheduleFragment extends BaseFragment {
     }
 
     //Method that returns a list of courses for a given day
-    public List<ClassItem> getClassesForDate(Day day, DateTime date){
-        List<ClassItem> courses = new ArrayList<ClassItem>();
+    public List<Course> getClassesForDate(Day day, DateTime date){
+        List<Course> courses = new ArrayList<Course>();
 
         //Make sure the class list is initialized
         if(mClassList == null){
-            mClassList = new ArrayList<ClassItem>();
+            mClassList = new ArrayList<Course>();
             fillClassList();
         }
 
         //Go through the list of courses, find which ones have the same day and are for the given date
-        for(ClassItem course : mClassList){
+        for(Course course : mClassList){
             if(course.isForDate(date) && course.getDays().contains(day)){
                 courses.add(course);
             }

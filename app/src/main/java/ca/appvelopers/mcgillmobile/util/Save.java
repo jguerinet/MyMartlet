@@ -29,7 +29,7 @@ import java.io.StreamCorruptedException;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceCategory;
@@ -142,7 +142,7 @@ public class Save {
     }
 
     public static void saveClasses(Context context){
-        List<ClassItem> courses = App.getClasses();
+        List<Course> courses = App.getClasses();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.CLASSES_FILE, Context.MODE_PRIVATE);
@@ -214,7 +214,7 @@ public class Save {
     }
 
     public static void saveClassWishlist(Context context) {
-        List<ClassItem> classWishlist = App.getClassWishlist();
+        List<Course> classWishlist = App.getClassWishlist();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.CLASS_WISHLIST_FILE, Context.MODE_PRIVATE);

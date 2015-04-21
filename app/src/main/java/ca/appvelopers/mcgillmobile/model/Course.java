@@ -27,14 +27,14 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.util.Date;
 
 /**
- * Represents one class item in the user's schedule or one that a user can register for
+ * Represents one course in the user's schedule or one that a user can register for
  * @author Quang Dao
  * @author Julien Guerinet
  * @version 2.0
  * @since 1.0
  */
-public class ClassItem implements Serializable{
-    private static final String TAG = "ClassItem";
+public class Course implements Serializable{
+    private static final String TAG = "Course";
     private static final long serialVersionUID = 1L;
     /**
      * The term this class is for
@@ -140,10 +140,10 @@ public class ClassItem implements Serializable{
      * @param startDate  The starting date for this course
      * @param endDate    The ending date for this course
      */
-    public ClassItem(Term term, String subject, String number, String title, int crn,
-                     String section, LocalTime startTime, LocalTime endTime, List<Day> days,
-                     String type, String location, String instructor, double credits,
-                     LocalDate startDate, LocalDate endDate){
+    public Course(Term term, String subject, String number, String title, int crn,
+                  String section, LocalTime startTime, LocalTime endTime, List<Day> days,
+                  String type, String location, String instructor, double credits,
+                  LocalDate startDate, LocalDate endDate){
         this.mTerm = term;
         this.mNumber = number;
         this.mSubject = subject;
@@ -195,12 +195,12 @@ public class ClassItem implements Serializable{
      * @param waitlistAvailable The number of waitlist seats available
      * @param waitlistRemaining The number of waitlist seats remaining
      */
-    public ClassItem(Term term, String subject, String number, String title, int crn,
-                     String section, LocalTime startTime, LocalTime endTime, List<Day> days,
-                     String type, String location, String instructor, double credits,
-                     LocalDate startDate, LocalDate endDate, int capacity, int seatsAvailable,
-                     int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
-                     int waitlistRemaining){
+    public Course(Term term, String subject, String number, String title, int crn,
+                  String section, LocalTime startTime, LocalTime endTime, List<Day> days,
+                  String type, String location, String instructor, double credits,
+                  LocalDate startDate, LocalDate endDate, int capacity, int seatsAvailable,
+                  int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
+                  int waitlistRemaining){
         this(term, subject, number, title, crn, section, startTime, endTime, days, type, location,
                 instructor, credits, startDate, endDate);
 
@@ -470,10 +470,10 @@ public class ClassItem implements Serializable{
      */
     @Override
     public boolean equals(Object object){
-        if(!(object instanceof ClassItem)){
+        if(!(object instanceof Course)){
             return false;
         }
-        ClassItem classItem = (ClassItem)object;
+        Course classItem = (Course)object;
 
         //Check if they have the same season, year, and CRN
         return this.mCRN == classItem.getCRN() && this.mTerm.equals(classItem.getTerm());

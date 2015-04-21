@@ -24,14 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 
 public class CourseDialog extends AlertDialog {
     private AlertDialog mDialog;
 
-    public CourseDialog(final Activity activity, final ClassItem classItem) {
+    public CourseDialog(final Activity activity, final Course classItem) {
         super(activity);
 
         Analytics.getInstance().sendScreen("Schedule - Course");

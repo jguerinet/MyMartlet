@@ -29,22 +29,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 
 public class WishlistSearchCourseAdapter extends BaseAdapter {
     private Context mContext;
-    private List<ClassItem> mClassItems;
-    private List<ClassItem> mCheckedClassItems;
+    private List<Course> mClassItems;
+    private List<Course> mCheckedClassItems;
 
-    public WishlistSearchCourseAdapter(Context context, Term term, List<ClassItem> classItems){
+    public WishlistSearchCourseAdapter(Context context, Term term, List<Course> classItems){
         this.mContext = context;
-        this.mClassItems = new ArrayList<ClassItem>();
-        this.mCheckedClassItems = new ArrayList<ClassItem>();
+        this.mClassItems = new ArrayList<Course>();
+        this.mCheckedClassItems = new ArrayList<Course>();
 
         //Add only the courses for this term
-        for(ClassItem classItem : classItems){
+        for(Course classItem : classItems){
             if(classItem.getTerm().equals(term)){
                 mClassItems.add(classItem);
             }
@@ -57,7 +57,7 @@ public class WishlistSearchCourseAdapter extends BaseAdapter {
     }
 
     @Override
-    public ClassItem getItem(int i) {
+    public Course getItem(int i) {
         return mClassItems.get(i);
     }
 
@@ -74,7 +74,7 @@ public class WishlistSearchCourseAdapter extends BaseAdapter {
         }
 
         //Get the concerned course
-        final ClassItem classItem = getItem(i);
+        final Course classItem = getItem(i);
 
         //Code
         TextView courseCode = (TextView)view.findViewById(R.id.course_code);
@@ -141,7 +141,7 @@ public class WishlistSearchCourseAdapter extends BaseAdapter {
      * Get the list of checked classes
      * @return The checked classes
      */
-    public List<ClassItem> getCheckedClasses(){
+    public List<Course> getCheckedClasses(){
         return mCheckedClassItems;
     }
 }

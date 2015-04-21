@@ -21,7 +21,7 @@ import android.app.Activity;
 import java.util.List;
 import java.util.Map;
 
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
@@ -45,7 +45,7 @@ public class RegistrationThread extends InfoDownloader{
     /**
      * The list of courses to register for
      */
-    private List<ClassItem> mRegistrationCourses;
+    private List<Course> mRegistrationCourses;
     /**
      * A map of the possible registration errors, with the key being the course with the error
      */
@@ -58,7 +58,7 @@ public class RegistrationThread extends InfoDownloader{
      * @param term     The term the user is registering in
      * @param courses  The list of courses the user is registering for
      */
-    public RegistrationThread(Activity activity, Term term, List<ClassItem> courses){
+    public RegistrationThread(Activity activity, Term term, List<Course> courses){
         this.mActivity = activity;
         this.mRegistrationCourses = courses;
         this.mTerm = term;

@@ -38,7 +38,7 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.thread.ClassDownloader;
 import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
@@ -86,7 +86,7 @@ public class CoursesFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 //Get checked courses from adapter
-                final List<ClassItem> unregisterCoursesList = mAdapter.getCheckedClasses();
+                final List<Course> unregisterCoursesList = mAdapter.getCheckedClasses();
 
                 //Too many courses
                 if (unregisterCoursesList.size() > 10) {
@@ -222,9 +222,9 @@ public class CoursesFragment extends BaseFragment {
     //Connects to Minerva in a new thread to register for courses
     private class UnregistrationThread extends AsyncTask<Void, Void, Boolean> {
         private Map<String, String> mRegistrationErrors;
-        private List<ClassItem> mClasses;
+        private List<Course> mClasses;
 
-        public UnregistrationThread(List<ClassItem> classItems){
+        public UnregistrationThread(List<Course> classItems){
             this.mClasses = classItems;
         }
 
@@ -274,7 +274,7 @@ public class CoursesFragment extends BaseFragment {
                     String errorMessage = "";
                     for(String crn : mRegistrationErrors.keySet()){
                         //Find the corresponding course
-                        for(ClassItem classItem : mClasses){
+                        for(Course classItem : mClasses){
                             if(classItem.getCRN() == Integer.valueOf(crn)){
                                 //Add this class to the error message
                                 errorMessage += classItem.getCode() +  " ("

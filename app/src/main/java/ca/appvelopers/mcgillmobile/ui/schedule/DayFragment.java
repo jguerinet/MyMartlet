@@ -31,7 +31,7 @@ import org.joda.time.Minutes;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Date;
@@ -44,7 +44,7 @@ import ca.appvelopers.mcgillmobile.util.Date;
 public class DayFragment extends Fragment{
     private Day mDay;
     private DateTime mDate;
-    private List<ClassItem> mClassItems;
+    private List<Course> mClassItems;
 
     public static DayFragment newInstance(Day day, DateTime date){
         DayFragment fragment = new DayFragment();
@@ -115,7 +115,7 @@ public class DayFragment extends Fragment{
             //Cycle through the half hours
             for(int min = 0; min < 31; min+= 30){
                 //Initialize the current course to null
-                ClassItem currentClass = null;
+                Course currentClass = null;
 
                 LocalTime currentTime = new LocalTime(hour, min);
 
@@ -126,7 +126,7 @@ public class DayFragment extends Fragment{
                     currentCourseEndTime = null;
 
                     //Check if there is a course at this time
-                    for(ClassItem classItem : mClassItems){
+                    for(Course classItem : mClassItems){
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
                         if(classItem.getRoundedStartTime().equals(currentTime)){
@@ -165,7 +165,7 @@ public class DayFragment extends Fragment{
                         scheduleCell.setLayoutParams(lp);
 
                         //We need a final variable for the onClick listener
-                        final ClassItem course = currentClass;
+                        final Course course = currentClass;
                         //OnClick: CourseActivity (for a detailed description of the course)
                         scheduleCell.setOnClickListener(new View.OnClickListener() {
                             @Override

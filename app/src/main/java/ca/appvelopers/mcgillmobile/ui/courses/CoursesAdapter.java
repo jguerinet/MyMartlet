@@ -30,24 +30,24 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 
 public class CoursesAdapter extends BaseAdapter {
     private Context mContext;
-    private List<ClassItem> mClassItems;
-    private List<ClassItem> mCheckedClassItems;
+    private List<Course> mClassItems;
+    private List<Course> mCheckedClassItems;
     private boolean mCanUnregister;
 
     public CoursesAdapter(Context context, Term term, boolean canUnregister){
         this.mContext = context;
-        this.mClassItems = new ArrayList<ClassItem>();
-        this.mCheckedClassItems = new ArrayList<ClassItem>();
+        this.mClassItems = new ArrayList<Course>();
+        this.mCheckedClassItems = new ArrayList<Course>();
         this.mCanUnregister = canUnregister;
 
         //Add only the courses for this term
-        for(ClassItem classItem : App.getClasses()){
+        for(Course classItem : App.getClasses()){
             if(classItem.getTerm().equals(term)){
                 mClassItems.add(classItem);
             }
@@ -60,7 +60,7 @@ public class CoursesAdapter extends BaseAdapter {
     }
 
     @Override
-    public ClassItem getItem(int i) {
+    public Course getItem(int i) {
         return mClassItems.get(i);
     }
 
@@ -77,7 +77,7 @@ public class CoursesAdapter extends BaseAdapter {
         }
 
         //Get the concerned course
-        final ClassItem currentClassItem = getItem(i);
+        final Course currentClassItem = getItem(i);
 
         //Code
         TextView courseCode = (TextView)view.findViewById(R.id.course_code);
@@ -138,7 +138,7 @@ public class CoursesAdapter extends BaseAdapter {
      * Get the list of checked classes
      * @return The checked classes
      */
-    public List<ClassItem> getCheckedClasses(){
+    public List<Course> getCheckedClasses(){
         return mCheckedClassItems;
     }
 }

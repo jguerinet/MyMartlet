@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Season;
@@ -494,15 +494,15 @@ public class Parser {
         String classError = null;
 
         //Get the list of classes
-        List<ClassItem> classItems = App.getClasses();
+        List<Course> classItems = App.getClasses();
         //If there are none, just use an empty list
         if(classItems == null){
             classItems = new ArrayList<>();
         }
 
         //Remove all of the classes for this semester
-        List<ClassItem> classesToRemove = new ArrayList<>();
-        for(ClassItem classItem : classItems){
+        List<Course> classesToRemove = new ArrayList<>();
+        for(Course classItem : classItems){
             if(classItem.getTerm().equals(term)){
                 classesToRemove.add(classItem);
             }
@@ -655,7 +655,7 @@ public class Parser {
                         }
 
                         //Add the course
-                        classItems.add(new ClassItem(term, subject, number, title, crn, section,
+                        classItems.add(new Course(term, subject, number, title, crn, section,
                                 startTime, endTime, days, type, location, instructor,  credits,
                                 startDate, endDate));
                     }
@@ -680,8 +680,8 @@ public class Parser {
      * @param html The HTML String to parse
      * @return The list of resulting classes
      */
-    public static List<ClassItem> parseClassResults(Term term, String html){
-        List<ClassItem> classItems = new ArrayList<>();
+    public static List<Course> parseClassResults(Term term, String html){
+        List<Course> classItems = new ArrayList<>();
 
         //Parse the String into a document
         Document document = Jsoup.parse(html, "UTF-8");
@@ -856,7 +856,7 @@ public class Parser {
             rowsSoFar = 0;
             if( !subject.equals("ERROR") && !number.equals("ERROR")){
                 //Create a new course object and add it to list
-                classItems.add(new ClassItem(term, subject, number, title, crn, "", startTime,
+                classItems.add(new Course(term, subject, number, title, crn, "", startTime,
                         endTime, days, type, location, instructor, credits, startDate, endDate,
                         capacity, seatsAvailable, seatsRemaining, waitlistCapacity,
                         waitlistAvailable, waitlistRemaining));

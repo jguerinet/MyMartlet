@@ -25,7 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 
 /**
  * iCalendar exporter, may be used with ClassItems.
@@ -58,7 +58,7 @@ public class CourseCalendar {
 	private String mPattern;
 	private boolean mRecurring;
 	private boolean mRounded;
-	private List<ClassItem> mClasses;
+	private List<Course> mClasses;
 	
     /**
      * Constructor for the CourseCalendar class
@@ -70,7 +70,7 @@ public class CourseCalendar {
 	 * @param recurring Whether to set the event as recurring over the semester
 	 * @param rounded Whether to use rounded times
      */
-	public CourseCalendar(List<ClassItem> classes, String pattern, 
+	public CourseCalendar(List<Course> classes, String pattern,
 			              boolean recurring, boolean rounded) {
 		mClasses = classes;
 		mPattern = pattern;
@@ -86,7 +86,7 @@ public class CourseCalendar {
 	 * Rounded   : False
 	 * @param classes The list of classes to be exported
 	 */
-	public CourseCalendar(List<ClassItem> classes) {
+	public CourseCalendar(List<Course> classes) {
 		mClasses = classes;
 		mPattern = "C-TY";
 		mRecurring = true;
@@ -104,7 +104,7 @@ public class CourseCalendar {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(prefix);
-			for (ClassItem item : mClasses) {
+			for (Course item : mClasses) {
 				bw.write(makeEvent(item));
 			}
 			bw.write(suffix);
@@ -115,11 +115,11 @@ public class CourseCalendar {
 		}
 	}
 	/**
-	 * Write entire EVENT to String from ClassItem
+	 * Write entire EVENT to String from Course
 	 * @param item Event to be written
 	 * @return EVENT as String
 	 */
-	public String makeEvent(ClassItem item) {
+	public String makeEvent(Course item) {
 		// TODO: Make recurrence and rounding handling more elegant 
 		//       (use lambda?)
 		
@@ -258,7 +258,7 @@ public class CourseCalendar {
 	 * @param item Item from which to get code, title, section and/or type  
 	 * @return Requested course attributes
  	 */
-    public String parsePattern(ClassItem item, String pattern) {
+    public String parsePattern(Course item, String pattern) {
     	StringBuilder attributes = new StringBuilder();
     	pattern = pattern.toLowerCase();
     	for (char symbol : pattern.toCharArray()) {
@@ -288,8 +288,8 @@ public class CourseCalendar {
      *  
      * There are two declarations for each property maker: 
      *  o One for a general DateTime or String
-     *  o One for a ClassItem where the appropriate parameter is fetched from
-     *    the ClassItem object and passed to the general method. These are not
+     *  o One for a Course where the appropriate parameter is fetched from
+     *    the Course object and passed to the general method. These are not
      *    necessary for now, but might be helpful if the code needs to be 
      *    refactored. 
      */
@@ -304,13 +304,13 @@ public class CourseCalendar {
 	}
 	
 	/**
-	 * Write SUMMARY property of ClassItem
-	 * @param item The ClassItem
+	 * Write SUMMARY property of Course
+	 * @param item The Course
 	 * @param pattern Contents of summary (see parsePattern())
 	 * @return SUMMARY property as String
 	 */
 	@SuppressWarnings("unused")
-	private String makeEventSummmary(ClassItem item, String pattern){
+	private String makeEventSummmary(Course item, String pattern){
 		String summary = parsePattern(item, pattern);
 		return makeEventSummary(summary);
 	}
@@ -325,13 +325,13 @@ public class CourseCalendar {
 	}
 	
 	/**
-	 * Write DESCRIPTION property of ClassItem
-	 * @param item The ClassItem
+	 * Write DESCRIPTION property of Course
+	 * @param item The Course
 	 * @param pattern Contents of description (see parsePattern())
 	 * @return DESCRIPTION property as String
 	 */
 	@SuppressWarnings("unused")
-	private String makeEventDescription(ClassItem item, String pattern){
+	private String makeEventDescription(Course item, String pattern){
 		String description = parsePattern(item, pattern);
 		return makeEventDescription(description);
 	}
@@ -346,12 +346,12 @@ public class CourseCalendar {
 	}
 	
 	/**
-	 * Write LOCATION property of ClassItem
-	 * @param item The ClassItem
+	 * Write LOCATION property of Course
+	 * @param item The Course
 	 * @return LOCATION property as String
 	 */
 	@SuppressWarnings("unused")
-	private String makeEventLocation(ClassItem item){
+	private String makeEventLocation(Course item){
 		String location = item.getLocation();
 		return makeEventLocation(location);
 	}
@@ -366,12 +366,12 @@ public class CourseCalendar {
 		return formatTimeProperty(date, name) + "\n" ;
 	}
 	/**
-	 * Write DTSTART property of ClassItem
-	 * @param item The ClassItem
+	 * Write DTSTART property of Course
+	 * @param item The Course
 	 * @return DTSTART property as String
 	 */
 	@SuppressWarnings("unused")
-	private String makeEventStart(ClassItem item){
+	private String makeEventStart(Course item){
 		LocalTime startTime;
 		DateTime startDate;
 		if (mRounded) {
@@ -397,12 +397,12 @@ public class CourseCalendar {
 	}
 	
 	/**
-	 * Write DTEND property of ClassItem
-	 * @param item The ClassItem
+	 * Write DTEND property of Course
+	 * @param item The Course
 	 * @return DTEND property as String
 	 */
 	@SuppressWarnings("unused")
-	private String makeEventEnd(ClassItem item){
+	private String makeEventEnd(Course item){
 		LocalTime endTime;
 		DateTime endDate;
 		if (mRounded) {
@@ -429,12 +429,12 @@ public class CourseCalendar {
 	}
 	
 	/**
-	 * Write DTSTAMP property given ClassItem
-	 * @param item The ClassItem
+	 * Write DTSTAMP property given Course
+	 * @param item The Course
 	 * @return DTSTAMP property as String
 	 */
 	@SuppressWarnings("unused")
-	private String makeEventStamp(ClassItem item){
+	private String makeEventStamp(Course item){
 		return makeEventStamp();
 	}
 	
@@ -449,12 +449,12 @@ public class CourseCalendar {
 	}
 	
 	/**
-	 * Write RRULE property of event given ClassItem using getEndDate()
-	 * @param item The ClassItem
+	 * Write RRULE property of event given Course using getEndDate()
+	 * @param item The Course
 	 * @return RRULE property as String
 	 */
 	@SuppressWarnings("unused")
-	private String makeEventRecurrence(ClassItem item){
+	private String makeEventRecurrence(Course item){
 		DateTime lastDay = item.getEndDate().withTime(23,0,0,0);
 		return makeEventRecurrence(lastDay);
 	}
@@ -512,7 +512,7 @@ public class CourseCalendar {
 	 * @param rounded Whether to use rounded times
 	 * @param file File to write iCal to
      */
-    public static void example(List<ClassItem> classes, String pattern, 
+    public static void example(List<Course> classes, String pattern,
     		                   boolean recurring, boolean rounded, File file) {
     	CourseCalendar courseCal = new CourseCalendar(classes, pattern, 
     			                                      recurring, rounded);
@@ -525,7 +525,7 @@ public class CourseCalendar {
      * @param classes The list of classes to be exported
      * @param file    File to write iCal to
      */
-    public static void createICalFile(List<ClassItem> classes, File file) {
+    public static void createICalFile(List<Course> classes, File file) {
     	CourseCalendar courseCal = new CourseCalendar(classes);
     	courseCal.writeCalendar(file);
     }

@@ -29,7 +29,7 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.EbillItem;
 import ca.appvelopers.mcgillmobile.model.Language;
@@ -62,11 +62,11 @@ public class App extends Application {
     private static Language language;
     private static DrawerItem homePage;
     private static Transcript transcript;
-    private static List<ClassItem> classes;
+    private static List<Course> classes;
     private static Term defaultTerm;
     private static List<EbillItem> ebill;
     private static UserInfo userInfo;
-    private static List<ClassItem> wishlist;
+    private static List<Course> wishlist;
     private static List<Place> places;
     private static List<Place> favoritePlaces;
     private static List<PlaceCategory> placeCategories;
@@ -155,7 +155,7 @@ public class App extends Application {
         }
     }
 
-    public static List<ClassItem> getClasses(){
+    public static List<Course> getClasses(){
         return classes;
     }
 
@@ -183,7 +183,7 @@ public class App extends Application {
         return defaultTerm;
     }
 
-    public static List<ClassItem> getClassWishlist() {
+    public static List<Course> getClassWishlist() {
         return wishlist;
     }
 
@@ -213,7 +213,7 @@ public class App extends Application {
         }
     }
 
-    public static void setClasses(List<ClassItem> classes){
+    public static void setClasses(List<Course> classes){
         App.classes = classes;
 
         //Save it to internal storage when this is set
@@ -255,7 +255,7 @@ public class App extends Application {
         Save.saveDefaultTerm(context);
     }
 
-    public static void setClassWishlist(List<ClassItem> list) {
+    public static void setClassWishlist(List<Course> list) {
         App.wishlist = list;
         //Save it to internal storage when this is set
         Save.saveClassWishlist(context);

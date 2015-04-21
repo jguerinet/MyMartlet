@@ -37,7 +37,7 @@ import java.util.Map;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
@@ -53,7 +53,7 @@ public class WishlistFragment extends BaseFragment {
     private ListView mListView;
     private WishlistSearchCourseAdapter mAdapter;
 
-    private List<ClassItem> mClasses;
+    private List<Course> mClasses;
     private Term mTerm;
 
     @Override
@@ -105,7 +105,7 @@ public class WishlistFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 //Get checked courses from adapter
-                List<ClassItem> registerCoursesList = mAdapter.getCheckedClasses();
+                List<Course> registerCoursesList = mAdapter.getCheckedClasses();
 
                 //Too many courses
                 if (registerCoursesList.size() > 10) {
@@ -131,7 +131,7 @@ public class WishlistFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 //Get the checked list of courses from the adapter
-                List<ClassItem> checkedClasses = mAdapter.getCheckedClasses();
+                List<Course> checkedClasses = mAdapter.getCheckedClasses();
 
                 String toastMessage;
                 //If there are none, display error message
@@ -224,7 +224,7 @@ public class WishlistFragment extends BaseFragment {
     }
 
     //Registers to the given courses
-    private void executeRegistrationThread(List<ClassItem> courses){
+    private void executeRegistrationThread(List<Course> courses){
         //Show the user we are refreshing
         mActivity.showToolbarProgress(true);
 
@@ -249,13 +249,13 @@ public class WishlistFragment extends BaseFragment {
             }
             //Display a message if a registration error has occurred
             else {
-                List<ClassItem> unregisteredCourses = new ArrayList<>();
+                List<Course> unregisteredCourses = new ArrayList<>();
                 String errorMessage = "";
 
                 //Go through the list of errors and create the error message
                 for (String crn : registrationErrors.keySet()) {
                     //Find the right class
-                    for (ClassItem classItem : mClasses) {
+                    for (Course classItem : mClasses) {
                         if (classItem.getCRN() == Integer.valueOf(crn)) {
                             //Add it to the list of registered courses
                             unregisteredCourses.add(classItem);
@@ -274,7 +274,7 @@ public class WishlistFragment extends BaseFragment {
                 mClasses.removeAll(unregisteredCourses);
 
                 //Show success messages for the correctly registered courses
-                for (ClassItem classItem : mClasses) {
+                for (Course classItem : mClasses) {
                     errorMessage += classItem.getCode() + " (" +
                             classItem.getType() + ") - " + getString(R.string.registration_success) + "\n";
                 }
@@ -285,7 +285,7 @@ public class WishlistFragment extends BaseFragment {
             }
 
             //Remove the courses from the wishlist if they were there
-            List<ClassItem> wishlist = App.getClassWishlist();
+            List<Course> wishlist = App.getClassWishlist();
             wishlist.removeAll(mClasses);
 
             //Set the new wishlist
@@ -314,7 +314,7 @@ public class WishlistFragment extends BaseFragment {
         protected Boolean doInBackground(Void... params){
             //Sort ClassItems into Courses
             List<TranscriptCourse> coursesList = new ArrayList<TranscriptCourse>();
-            for(ClassItem wishlistClass : mClasses){
+            for(Course wishlistClass : mClasses){
                 boolean courseExists = false;
                 //Check if course exists in list
                 for(TranscriptCourse addedCourse : coursesList){
@@ -364,12 +364,12 @@ public class WishlistFragment extends BaseFragment {
 
                 //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
                 //This parses all ClassItems for a given course
-                List<ClassItem> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
+                List<Course> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
 
                 //Update the course object with an updated class size
-                for(ClassItem updatedClass : updatedClassList){
+                for(Course updatedClass : updatedClassList){
 
-                    for(ClassItem wishlistClass : mClasses){
+                    for(Course wishlistClass : mClasses){
 
                         if(wishlistClass.getCRN() == updatedClass.getCRN()){
                             wishlistClass.setDays(updatedClass.getDays());

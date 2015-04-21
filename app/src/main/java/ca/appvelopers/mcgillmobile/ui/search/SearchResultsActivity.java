@@ -28,7 +28,7 @@ import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ClassItem;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
@@ -56,7 +56,7 @@ public class SearchResultsActivity extends BaseActivity {
     /**
      * The list of classes
      */
-    private List<ClassItem> mClasses;
+    private List<Course> mClasses;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class SearchResultsActivity extends BaseActivity {
 
         //Get the info from the intent
         mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
-        mClasses = (ArrayList<ClassItem>)getIntent().getSerializableExtra(Constants.CLASSES);
+        mClasses = (ArrayList<Course>)getIntent().getSerializableExtra(Constants.CLASSES);
 
         //Set the title
         setTitle(mTerm.toString(this));
@@ -88,7 +88,7 @@ public class SearchResultsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //Get checked courses from adapter
-                List<ClassItem> registerCoursesList = mAdapter.getCheckedClasses();
+                List<Course> registerCoursesList = mAdapter.getCheckedClasses();
 
                 //Too many courses
                 if (registerCoursesList.size() > 10) {
@@ -114,7 +114,7 @@ public class SearchResultsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //Get the checked list of courses from the adapter
-                List<ClassItem> checkedClasses = mAdapter.getCheckedClasses();
+                List<Course> checkedClasses = mAdapter.getCheckedClasses();
 
                 String toastMessage;
                 //If there are none, display error message
@@ -124,11 +124,11 @@ public class SearchResultsActivity extends BaseActivity {
                 //If not, it's to add a course to the wishlist
                 else {
                     //Get the wishlist courses
-                    List<ClassItem> wishlist = App.getClassWishlist();
+                    List<Course> wishlist = App.getClassWishlist();
 
                     //Only add it if it's not already part of the wishlist
                     int coursesAdded = 0;
-                    for (ClassItem classItem : checkedClasses) {
+                    for (Course classItem : checkedClasses) {
                         if (!wishlist.contains(classItem)) {
                             wishlist.add(classItem);
                             coursesAdded++;
@@ -151,7 +151,7 @@ public class SearchResultsActivity extends BaseActivity {
     }
 
     //Registers to the given courses
-    private void executeRegistrationThread(List<ClassItem> courses){
+    private void executeRegistrationThread(List<Course> courses){
         //Show the user we are refreshing
         showToolbarProgress(true);
 
@@ -176,13 +176,13 @@ public class SearchResultsActivity extends BaseActivity {
             }
             //Display a message if a registration error has occurred
             else {
-                List<ClassItem> unregisteredCourses = new ArrayList<>();
+                List<Course> unregisteredCourses = new ArrayList<>();
                 String errorMessage = "";
 
                 //Go through the list of errors and create the error message
                 for (String crn : registrationErrors.keySet()) {
                     //Find the right class
-                    for (ClassItem classItem : mClasses) {
+                    for (Course classItem : mClasses) {
                         if (classItem.getCRN() == Integer.valueOf(crn)) {
                             //Add it to the list of registered courses
                             unregisteredCourses.add(classItem);
@@ -201,7 +201,7 @@ public class SearchResultsActivity extends BaseActivity {
                 mClasses.removeAll(unregisteredCourses);
 
                 //Show success messages for the correctly registered courses
-                for (ClassItem classItem : mClasses) {
+                for (Course classItem : mClasses) {
                     errorMessage += classItem.getCode() + " (" +
                             classItem.getType() + ") - " + getString(R.string.registration_success) + "\n";
                 }
@@ -212,7 +212,7 @@ public class SearchResultsActivity extends BaseActivity {
             }
 
             //Remove the courses from the wishlist if they were there
-            List<ClassItem> wishlist = App.getClassWishlist();
+            List<Course> wishlist = App.getClassWishlist();
             wishlist.removeAll(mClasses);
 
             //Set the new wishlist
