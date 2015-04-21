@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.dialog;
+package ca.appvelopers.mcgillmobile.ui.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
