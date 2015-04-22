@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.exception;
+package ca.appvelopers.mcgillmobile.model.exception;
 
 /**
  * Exception thrown when the user is not connected to the internet

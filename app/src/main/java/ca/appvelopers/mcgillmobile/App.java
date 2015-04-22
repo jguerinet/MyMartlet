@@ -28,7 +28,6 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.background.AlarmReceiver;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Language;
@@ -42,6 +41,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Update;
+import ca.appvelopers.mcgillmobile.util.background.AlarmReceiver;
 import io.fabric.sdk.android.Fabric;
 
 /**

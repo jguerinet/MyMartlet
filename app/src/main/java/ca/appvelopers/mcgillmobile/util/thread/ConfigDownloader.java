@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.thread;
+package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.content.Context;
 import android.os.AsyncTask;

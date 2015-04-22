@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.thread;
+package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.exception.NoInternetException;
+import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
+import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Connection;
 

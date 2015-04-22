@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.exception;
+package ca.appvelopers.mcgillmobile.util.background;
 
-/**
- * Exception caused when the user was logged out of Minerva
- * @author Shabbir Hussain
- * @author Julien Guerinet
- * @version 2.0
- * @since 1.0
- */
-public class MinervaException extends Exception {
+public class SeatCheckerService {
 
-	public MinervaException() {
-		super("User is Logged out from Minerva");
-	}
 }

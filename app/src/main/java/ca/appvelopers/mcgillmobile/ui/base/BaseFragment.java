@@ -24,10 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.thread.DownloaderThread;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
  * The base fragment for all fragments involved in the main view
