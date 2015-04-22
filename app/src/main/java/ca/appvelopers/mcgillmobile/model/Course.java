@@ -27,7 +27,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.util.Date;
 
 /**
- * Represents one course in the user's schedule or one that a user can register for
+ * A course in the user's schedule or one that a user can register for
  * @author Quang Dao
  * @author Julien Guerinet
  * @version 2.0
