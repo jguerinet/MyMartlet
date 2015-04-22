@@ -84,61 +84,7 @@ public class SearchResultsActivity extends BaseActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                //Get checked courses from adapter
-                List<Course> courses = mAdapter.getCheckedClasses();
-
-                //Too many courses
-                if(courses.size() > 10){
-                    Toast.makeText(SearchResultsActivity.this,
-                            getString(R.string.courses_too_many_courses),
-                            Toast.LENGTH_SHORT).show();
-                }
-                //No Courses
-                else if(courses.isEmpty()){
-                    Toast.makeText(SearchResultsActivity.this,
-                            getString(R.string.courses_none_selected),
-                            Toast.LENGTH_SHORT).show();
-                }
-                //Execute registration of checked classes in a new thread
-                else if(courses.size() > 0){
-                    //Show the user we are refreshing
-                    showToolbarProgress(true);
-
-                    String html = new DownloaderThread(SearchResultsActivity.this, "Registration",
-                            Connection.getRegistrationURL(mTerm, courses, false)).execute();
-
-                    if(html != null){
-                        String error = Parser.parseRegistrationErrors(html, courses);
-
-                        //If there are no errors, show the success message
-                        if(error == null){
-                            Toast.makeText(SearchResultsActivity.this,
-                                    R.string.registration_success, Toast.LENGTH_LONG).show();
-                        }
-                        //If not, show the error message
-                        else{
-                            //Show success messages for the correctly registered courses
-                            for(Course course : courses){
-                                error += course.getCode() + " (" +  course.getType() + ") - " +
-                                        getString(R.string.registration_success) + "\n";
-                            }
-
-                            //Show an alert dialog with the errors
-                            DialogHelper.showNeutralDialog(SearchResultsActivity.this,
-                                    getString(R.string.registration_error), error);
-                        }
-
-                        //Remove the courses from the wishlist if they were there
-                        List<Course> wishlist = App.getClassWishlist();
-                        wishlist.removeAll(courses);
-
-                        //Set the new wishlist
-                        App.setClassWishlist(wishlist);
-                    }
-
-                    //Stop the refreshing
-                    showToolbarProgress(false);
-                }
+                register(SearchResultsActivity.this, mTerm, mAdapter.getCheckedClasses());
             }
         });
 
@@ -148,40 +94,117 @@ public class SearchResultsActivity extends BaseActivity {
         wishlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Get the checked list of courses from the adapter
-                List<Course> checkedCourses = mAdapter.getCheckedClasses();
-
-                String toastMessage;
-                //If there are none, display error message
-                if (checkedCourses.isEmpty()) {
-                    toastMessage = getString(R.string.courses_none_selected);
-                }
-                //If not, it's to add a course to the wishlist
-                else {
-                    //Get the wishlist courses
-                    List<Course> wishlist = App.getClassWishlist();
-
-                    //Only add it if it's not already part of the wishlist
-                    int coursesAdded = 0;
-                    for (Course course : checkedCourses) {
-                        if (!wishlist.contains(course)) {
-                            wishlist.add(course);
-                            coursesAdded++;
-                        }
-                    }
-
-                    //Save the courses to the App context
-                    App.setClassWishlist(wishlist);
-
-                    Analytics.getInstance().sendEvent("Search Results", "Add to Wishlist",
-                            String.valueOf(coursesAdded));
-
-                    toastMessage = getString(R.string.wishlist_add, coursesAdded);
-                }
-
-                //Visual feedback of what was just done
-                Toast.makeText(SearchResultsActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                addToWishlist(SearchResultsActivity.this, mAdapter.getCheckedClasses(), true);
             }
         });
+    }
+
+    /**
+     * Tries to register the users to the given courses
+     *
+     * @param activity The calling activity
+     * @param term     The concerned term
+     * @param courses  The list of courses
+     */
+    public static void register(BaseActivity activity, Term term, List<Course> courses){
+        //Too many courses
+        if(courses.size() > 10){
+            Toast.makeText(activity, activity.getString(R.string.courses_too_many_courses),
+                    Toast.LENGTH_SHORT).show();
+        }
+        //No Courses
+        else if(courses.isEmpty()){
+            Toast.makeText(activity, activity.getString(R.string.courses_none_selected),
+                    Toast.LENGTH_SHORT).show();
+        }
+        //Execute registration of checked classes in a new thread
+        else if(courses.size() > 0){
+            //Show the user we are refreshing
+            activity.showToolbarProgress(true);
+
+            String html = new DownloaderThread(activity, "Registration",
+                    Connection.getRegistrationURL(term, courses, false)).execute();
+
+            if(html != null){
+                String error = Parser.parseRegistrationErrors(html, courses);
+
+                //If there are no errors, show the success message
+                if(error == null){
+                    Toast.makeText(activity, R.string.registration_success, Toast.LENGTH_LONG)
+                            .show();
+                }
+                //If not, show the error message
+                else{
+                    //Show success messages for the correctly registered courses
+                    for(Course course : courses){
+                        error += course.getCode() + " (" +  course.getType() + ") - " +
+                                activity.getString(R.string.registration_success) + "\n";
+                    }
+
+                    //Show an alert dialog with the errors
+                    DialogHelper.showNeutralDialog(activity,
+                            activity.getString(R.string.registration_error), error);
+                }
+
+                //Remove the courses from the wishlist if they were there
+                List<Course> wishlist = App.getClassWishlist();
+                wishlist.removeAll(courses);
+
+                //Set the new wishlist
+                App.setClassWishlist(wishlist);
+            }
+
+            //Stop the refreshing
+            activity.showToolbarProgress(false);
+        }
+    }
+
+    /**
+     * Adds/removes the given courses to/from the wishlist
+     *
+     * @param activity The calling activity
+     * @param courses  The courses to add/remove
+     * @param add      True if we are adding courses, false if we're removing
+     */
+    public static void addToWishlist(BaseActivity activity, List<Course> courses, boolean add){
+        String toastMessage;
+        //If there are none, display error message
+        if (courses.isEmpty()) {
+            toastMessage = activity.getString(R.string.courses_none_selected);
+        }
+        //If not, it's to add a course to the wishlist
+        else {
+            //Get the wishlist courses
+            List<Course> wishlist = App.getClassWishlist();
+
+            if(add){
+                //Only add it if it's not already part of the wishlist
+                int coursesAdded = 0;
+                for (Course course : courses) {
+                    if (!wishlist.contains(course)) {
+                        wishlist.add(course);
+                        coursesAdded++;
+                    }
+                }
+
+                Analytics.getInstance().sendEvent("Search Results", "Add to Wishlist",
+                        String.valueOf(coursesAdded));
+
+                toastMessage = activity.getString(R.string.wishlist_add, coursesAdded);
+            }
+            else{
+                toastMessage = activity.getString(R.string.wishlist_remove, courses.size());
+                wishlist.removeAll(courses);
+
+                Analytics.getInstance().sendEvent("Wishlist", "Remove",
+                        String.valueOf(courses.size()));
+            }
+
+            //Save the courses to the App context
+            App.setClassWishlist(wishlist);
+        }
+
+        //Visual feedback of what was just done
+        Toast.makeText(activity, toastMessage, Toast.LENGTH_SHORT).show();
     }
 }

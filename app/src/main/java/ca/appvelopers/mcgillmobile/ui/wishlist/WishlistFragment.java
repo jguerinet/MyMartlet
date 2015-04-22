@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,28 +31,43 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
-import ca.appvelopers.mcgillmobile.thread.RegistrationThread;
+import ca.appvelopers.mcgillmobile.thread.DownloaderThread;
 import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
-import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
+import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 
-@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
+/**
+ * Displays the user's wishlist
+ * @author Ryan Singzon
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class WishlistFragment extends BaseFragment {
+    /**
+     * The wishlist
+     */
     private ListView mListView;
+    /**
+     * The ListView adapter
+     */
     private WishlistSearchCourseAdapter mAdapter;
-
+    /**
+     * The list of classes to display
+     */
     private List<Course> mClasses;
+    /**
+     * The current term
+     */
     private Term mTerm;
 
     @Override
@@ -65,10 +79,10 @@ public class WishlistFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View view = View.inflate(mActivity, R.layout.fragment_wishlist, null);
-
         lockPortraitMode();
 
         Analytics.getInstance().sendScreen("Wishlist");
@@ -89,7 +103,7 @@ public class WishlistFragment extends BaseFragment {
             return view;
         }
 
-        // Views
+        //Views
         mListView = (ListView)view.findViewById(R.id.courses_list);
         mListView.setEmptyView(view.findViewById(R.id.courses_empty));
 
@@ -104,23 +118,10 @@ public class WishlistFragment extends BaseFragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Get checked courses from adapter
-                List<Course> registerCoursesList = mAdapter.getCheckedClasses();
+                SearchResultsActivity.register(mActivity, mTerm, mAdapter.getCheckedClasses());
 
-                //Too many courses
-                if (registerCoursesList.size() > 10) {
-                    Toast.makeText(mActivity, getString(R.string.courses_too_many_courses),
-                            Toast.LENGTH_SHORT).show();
-                }
-                //No Courses
-                else if (registerCoursesList.isEmpty()) {
-                    Toast.makeText(mActivity, getString(R.string.courses_none_selected),
-                            Toast.LENGTH_SHORT).show();
-                }
-                //Execute registration of checked classes in a new thread
-                else if (registerCoursesList.size() > 0) {
-                    executeRegistrationThread(registerCoursesList);
-                }
+                //Reload the adapter
+                loadInfo();
             }
         });
 
@@ -130,35 +131,15 @@ public class WishlistFragment extends BaseFragment {
         wishlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Get the checked list of courses from the adapter
-                List<Course> checkedClasses = mAdapter.getCheckedClasses();
+                SearchResultsActivity.addToWishlist(mActivity, mAdapter.getCheckedClasses(), false);
 
-                String toastMessage;
-                //If there are none, display error message
-                if (checkedClasses.isEmpty()) {
-                    toastMessage = getResources().getString(R.string.courses_none_selected);
-                }
-                else {
-                    toastMessage = getResources().getString(R.string.wishlist_remove, checkedClasses.size());
-                    mClasses.removeAll(checkedClasses);
-
-                    //Save the courses to the App context
-                    App.setClassWishlist(mClasses);
-
-                    Analytics.getInstance().sendEvent("Wishlist", "Remove",
-                            String.valueOf(checkedClasses.size()));
-
-                    //Reload the adapter
-                    loadInfo();
-                }
-
-                //Visual feedback of what was just done
-                Toast.makeText(mActivity, toastMessage, Toast.LENGTH_SHORT).show();
+                //Reload the adapter
+                loadInfo();
             }
         });
 
         //Update the wishlist
-        new WishlistThread().execute();
+        updateWishlist();
 
         //Hide the loading indicator
         hideLoadingIndicator();
@@ -184,7 +165,6 @@ public class WishlistFragment extends BaseFragment {
         }
     }
 
-    // JDAlfaro
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         //Only inflate the menu with the change semester if there is more than 1 semester to
@@ -218,187 +198,76 @@ public class WishlistFragment extends BaseFragment {
             return true;
         }
         else if(item.getItemId() == R.id.action_refresh){
-            new WishlistThread().execute();
+            updateWishlist();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    //Registers to the given courses
-    private void executeRegistrationThread(List<Course> courses){
-        //Show the user we are refreshing
+    /**
+     * Updates the information of the courses on the current wishlist
+     */
+    private void updateWishlist(){
         mActivity.showToolbarProgress(true);
 
-        final RegistrationThread thread = new RegistrationThread(mActivity, mTerm, courses);
-        thread.start();
-
-        synchronized(thread){
-            //Wait for the thread to finish
-            try{
-                thread.wait();
-            } catch(InterruptedException e){
-                e.printStackTrace();
+        //Sort Courses into TranscriptCourses
+        List<TranscriptCourse> coursesList = new ArrayList<>();
+        for(Course course : mClasses){
+            boolean courseExists = false;
+            //Check if course exists in list
+            for(TranscriptCourse addedCourse : coursesList){
+                if(addedCourse.getCourseCode().equals(course.getCode())){
+                    courseExists = true;
+                }
+            }
+            //Add course if it has not already been added
+            if(!courseExists){
+                coursesList.add(new TranscriptCourse(course.getTerm(), course.getTitle(),
+                        course.getCode(), course.getCredits(), "N/A", "N/A"));
             }
         }
 
-        if(thread.success()) {
-            Map<String, String> registrationErrors = thread.getErrors();
-
-            //Display whether the user was successfully registered
-            if (registrationErrors.isEmpty()) {
-                Toast.makeText(mActivity, R.string.registration_success, Toast.LENGTH_LONG).show();
-            }
-            //Display a message if a registration error has occurred
-            else {
-                List<Course> unregisteredCourses = new ArrayList<>();
-                String errorMessage = "";
-
-                //Go through the list of errors and create the error message
-                for (String crn : registrationErrors.keySet()) {
-                    //Find the right class
-                    for (Course classItem : mClasses) {
-                        if (classItem.getCRN() == Integer.valueOf(crn)) {
-                            //Add it to the list of registered courses
-                            unregisteredCourses.add(classItem);
-
-                            //Add this class to the error message
-                            errorMessage += classItem.getCode() + " ("
-                                    + classItem.getType() + ") - "
-                                    + registrationErrors.get(crn) + "\n";
-
-                            break;
-                        }
-                    }
-                }
-
-                //Remove all of the unregistered courses from the list of registered courses
-                mClasses.removeAll(unregisteredCourses);
-
-                //Show success messages for the correctly registered courses
-                for (Course classItem : mClasses) {
-                    errorMessage += classItem.getCode() + " (" +
-                            classItem.getType() + ") - " + getString(R.string.registration_success) + "\n";
-                }
-
-                //Show an alert dialog with the errors
-                DialogHelper.showNeutralDialog(mActivity,
-                        getString(R.string.registration_error), errorMessage);
+        //For each course, obtain its Minerva registration page
+        for(TranscriptCourse course : coursesList){
+            //Get the course registration URL
+            String code[] = course.getCourseCode().split(" ");
+            if(code.length < 2){
+                //TODO: Get a String for this
+                Toast.makeText(mActivity, "Cannot update " + course.getCourseCode(),
+                        Toast.LENGTH_SHORT).show();
+                continue;
             }
 
-            //Remove the courses from the wishlist if they were there
-            List<Course> wishlist = App.getClassWishlist();
-            wishlist.removeAll(mClasses);
-
-            //Set the new wishlist
-            App.setClassWishlist(mClasses);
-
-            //Reload the adapter
-            loadInfo();
-        }
-
-        //Stop the refreshing
-        mActivity.showToolbarProgress(false);
-    }
-
-    //Update the wishlist
-    private class WishlistThread extends AsyncTask<Void, Void, Boolean> {
-        public WishlistThread(){}
-
-        @Override
-        protected void onPreExecute(){
-            //Show the user we are downloading new info
-            mActivity.showToolbarProgress(true);
-        }
-
-        //Retrieve page that contains registration status from Minerva
-        @Override
-        protected Boolean doInBackground(Void... params){
-            //Sort ClassItems into Courses
-            List<TranscriptCourse> coursesList = new ArrayList<TranscriptCourse>();
-            for(Course wishlistClass : mClasses){
-                boolean courseExists = false;
-                //Check if course exists in list
-                for(TranscriptCourse addedCourse : coursesList){
-                    if(addedCourse.getCourseCode().equals(wishlistClass.getCode())){
-                        courseExists = true;
-                    }
-                }
-                //Add course if it has not already been added
-                if(!courseExists){
-                    coursesList.add(new TranscriptCourse(wishlistClass.getTerm(), wishlistClass.getTitle(),
-                            wishlistClass.getCode(), wishlistClass.getCredits(), "N/A", "N/A"));
-                }
-            }
-
-            //For each course, obtain its Minerva registration page
-            for(TranscriptCourse course : coursesList){
-                //Get the course registration URL
-                String courseCode[] = course.getCourseCode().split(" ");
-                String courseSubject;
-                String courseNumber;
-
-                //Check that the course code has been split successfully
-                if(courseCode.length > 1){
-                    courseSubject = courseCode[0];
-                    courseNumber = courseCode[1];
-                } else{
-                    //TODO: Return indication of failure
-                    return false;
-                }
-
-                String registrationUrl =
-                        new Connection.SearchURLBuilder(course.getTerm(), courseSubject)
-                            .courseNumber(courseNumber)
+            String subject = code[0];
+            String number = code[1];
+            String url = new Connection.SearchURLBuilder(course.getTerm(), subject)
+                            .courseNumber(number)
                             .build();
 
-                String classesString;
-                try{
-                    classesString = Connection.getInstance().get(registrationUrl);
-                } catch(MinervaLoggedOutException e){
-                    //TODO
-                    e.printStackTrace();
-                    return true;
-                } catch(Exception e){
-                    e.printStackTrace();
-                    return true;
-                }
+            String html = new DownloaderThread(mActivity, "Wishlist Download", url).execute();
 
+            if(html != null){
                 //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
                 //This parses all ClassItems for a given course
-                List<Course> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
+                List<Course> updatedCourses = Parser.parseClassResults(course.getTerm(), html);
 
                 //Update the course object with an updated class size
-                for(Course updatedClass : updatedClassList){
-
+                for(Course updatedClass : updatedCourses){
                     for(Course wishlistClass : mClasses){
-
-                        if(wishlistClass.getCRN() == updatedClass.getCRN()){
-                            wishlistClass.setDays(updatedClass.getDays());
-                            wishlistClass.setStartTime(updatedClass.getRoundedStartTime());
-                            wishlistClass.setEndTime(updatedClass.getRoundedEndTime());
-                            wishlistClass.setDates(updatedClass.getDateString());
-                            wishlistClass.setInstructor(updatedClass.getInstructor());
-                            wishlistClass.setLocation(updatedClass.getLocation());
-                            wishlistClass.setSeatsRemaining(updatedClass.getSeatsRemaining());
-                            wishlistClass.setWaitlistRemaining(updatedClass.getWaitlistRemaining());
+                        if(wishlistClass.equals(updatedClass)){
+                            int i = mClasses.indexOf(wishlistClass);
+                            mClasses.remove(wishlistClass);
+                            mClasses.add(i, updatedClass);
                         }
                     }
                 }
             }
-
-            return true;
         }
 
-        //Update or create transcript object and display data
-        @Override
-        protected void onPostExecute(Boolean success){
-            mActivity.showToolbarProgress(false);
+        //Set the new wishlist
+        App.setClassWishlist(mClasses);
+        //Reload the adapter
+        loadInfo();
 
-            if(success){
-                //Set the new wishlist
-                App.setClassWishlist(mClasses);
-                //Reload the adapter
-                loadInfo();
-            }
-        }
+        mActivity.showToolbarProgress(false);
     }
 }
