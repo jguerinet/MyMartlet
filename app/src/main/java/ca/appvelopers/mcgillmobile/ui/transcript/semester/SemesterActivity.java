@@ -46,7 +46,7 @@ public class SemesterActivity extends BaseActivity {
         Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);
 
         //Set the title as this current semester
-        setTitle(semester.getSemesterName(this));
+        setTitle(semester.getSemesterName());
 
         //Set the info up
         TextView semesterBachelor = (TextView)findViewById(R.id.semester_bachelor);
@@ -57,11 +57,11 @@ public class SemesterActivity extends BaseActivity {
 
         TextView semesterGPA = (TextView)findViewById(R.id.semester_GPA);
         semesterGPA.setText(getString(R.string.transcript_termGPA,
-                String.valueOf(semester.getTermGPA())));
+                String.valueOf(semester.getGPA())));
 
         TextView semesterCredits = (TextView)findViewById(R.id.semester_credits);
         semesterCredits.setText(getString(R.string.semester_termCredits,
-                semester.getTermCredits()));
+                semester.getCredits()));
 
         TextView semesterFullTime = (TextView)findViewById(R.id.semester_fullTime);
         semesterFullTime.setText(semester.isFullTime() ? getString(R.string.semester_fullTime) :

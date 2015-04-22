@@ -76,10 +76,10 @@ public class TranscriptAdapter extends BaseAdapter {
 
         //Set up the info
         TextView semesterName = (TextView)view.findViewById(R.id.semester_name);
-        semesterName.setText(semester.getSemesterName(mContext));
+        semesterName.setText(semester.getSemesterName());
 
         TextView semesterGPA = (TextView)view.findViewById(R.id.semester_termGPA);
-        semesterGPA.setText(mContext.getResources().getString(R.string.transcript_termGPA, String.valueOf(semester.getTermGPA())));
+        semesterGPA.setText(mContext.getResources().getString(R.string.transcript_termGPA, String.valueOf(semester.getGPA())));
 
 
         //Set up the chevron

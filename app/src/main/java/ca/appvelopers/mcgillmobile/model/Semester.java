@@ -16,88 +16,140 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import android.content.Context;
-
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by Ryan Singzon on 30/01/14.
- *
- * This class will contain information pertaining to each semester such as current program,
- * term credits, term GPA, and full time status
+ * Contains information pertaining to each semester such as current program, term credits,
+ *  term GPA, and full time status
+ * @author Ryan Singzon
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class Semester implements Serializable{
     private static final long serialVersionUID = 1L;
-
+    /**
+     * The semester term
+     */
     private Term mTerm;
-    private String mProgram;
+    /**
+     * The user's program name for this semester
+     */
+    private String mProgramYear;
+    /**
+     * The user's bachelor name for this semester
+     */
     private String mBachelor;
-    private int programYear;
-    private double termCredits;
-    private double termGPA;
-    private boolean fullTime;
+    /**
+     * The year in the user's program that this semester is for
+     */
+    private int mYear;
+    /**
+     * The number of credits for this semester
+     */
+    private double mCredits;
+    /**
+     * The semester GPA
+     */
+    private double mGPA;
+    /**
+     * True if the user was a full-time student during this semester, false otherwise
+     */
+    private boolean mFullTime;
+    /**
+     * True if the user's standing was satisfactory during this semester, false otherwise
+     */
     private boolean mSatisfactory;
-    private List<TranscriptCourse> courses;
-
-
-    public Semester(Term term, String program, String bachelor, int programYear, double termCredits, double termGPA,
-                        boolean fullTime, boolean satisfactory, List<TranscriptCourse> courses) {
-        this.mTerm = term;
-        this.mProgram = program;
-        this.mBachelor = bachelor;
-        this.termCredits = termCredits;
-        this.termGPA = termGPA;
-        this.programYear = programYear;
-        this.fullTime = fullTime;
-        this.mSatisfactory = satisfactory;
-        this.courses = courses;
-    }
-
-    //Getter for the semester name
-    public String getSemesterName(Context context){
-        return mTerm.toString(context);
-    }
-
-    //Getter for program
-    public String getProgram() {
-        return mProgram;
-    }
-
-    //Getter for the bachelor
-    public String getBachelor(){
-        return mBachelor;
-    }
-
-    //Getter for term credits
-    public double getTermCredits() {
-        return termCredits;
-    }
-
-    //Getter for term GPA
-    public double getTermGPA() {
-        return termGPA;
-    }
-
-    //Getter for program year
-    public int getProgramYear() {
-        return programYear;
-    }
-
-    public boolean isFullTime() {
-        return fullTime;
-    }
-
-    //Getter for the semester's courses
-    public List<TranscriptCourse> getCourses(){
-        return courses;
-    }
+    /**
+     * The list of courses taken during this semester
+     */
+    private List<TranscriptCourse> mCourses;
 
     /**
-     * Get the semester term
+     * Default Constructor
+     *
+     * @param term         The semester term
+     * @param program      The semester's program name
+     * @param bachelor     The semester's bachelor name
+     * @param programYear  The program year
+     * @param credits      The semester credits
+     * @param gpa          The semester GPA
+     * @param fullTime     True if the user was a full-time student during this semester,
+     *                      false otherwise
+     * @param satisfactory True if the user's standing was satisfactory during this semester,
+     *                      false otherwise
+     * @param courses      The list of mCourses taken during this semester
+     */
+    public Semester(Term term, String program, String bachelor, int programYear, double credits,
+                    double gpa, boolean fullTime, boolean satisfactory,
+                    List<TranscriptCourse> courses) {
+        this.mTerm = term;
+        this.mProgramYear = program;
+        this.mBachelor = bachelor;
+        this.mCredits = credits;
+        this.mGPA = gpa;
+        this.mYear = programYear;
+        this.mFullTime = fullTime;
+        this.mSatisfactory = satisfactory;
+        this.mCourses = courses;
+    }
+
+    /* GETTERS */
+
+    /**
      * @return The semester term
      */
     public Term getTerm(){
-        return mTerm;
+        return this.mTerm;
+    }
+
+    /**
+     * @return The semester name
+     */
+    public String getSemesterName(){
+        return this.mTerm.toString();
+    }
+
+    /**
+     * @return The program name
+     */
+    public String getProgram() {
+        return this.mProgramYear;
+    }
+
+    /**
+     * @return The bachelor name
+     */
+    public String getBachelor(){
+        return this.mBachelor;
+    }
+
+    /**
+     * @return The semester credits
+     */
+    public double getCredits() {
+        return this.mCredits;
+    }
+
+    /**
+     * @return The semester GPA
+     */
+    public double getGPA() {
+        return this.mGPA;
+    }
+
+    /**
+     * @return True if the user was full time during this semester, false otherwise
+     */
+    public boolean isFullTime() {
+        return this.mFullTime;
+    }
+
+    /**
+     * @return The semester's courses
+     */
+    public List<TranscriptCourse> getCourses(){
+        return this.mCourses;
     }
 }
