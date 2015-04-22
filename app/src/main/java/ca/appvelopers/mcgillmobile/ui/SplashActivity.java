@@ -37,8 +37,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.joda.time.DateTime;
-
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -486,7 +484,7 @@ public class SplashActivity extends BaseActivity {
                             //List of semesters
                             List<Semester> semesters = App.getTranscript().getSemesters();
                             //The current term
-                            Term currentTerm = Term.dateConverter(DateTime.now());
+                            Term currentTerm = Term.getCurrentTerm();
 
                             //Go through the semesters
                             for(Semester semester: semesters){
@@ -505,7 +503,7 @@ public class SplashActivity extends BaseActivity {
                                     publishNewProgress(getString(mDownloadEverything ?
                                                     R.string.downloading_semester :
                                                     R.string.updating_semester,
-                                            term.toString(SplashActivity.this)));
+                                            term.toString()));
 
                                     //Download the schedule
                                     try{

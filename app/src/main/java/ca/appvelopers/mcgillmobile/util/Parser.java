@@ -533,7 +533,7 @@ public class Parser {
                     Log.e(TAG, "Exception in Subject parsing in Class Parser", e);
                     Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
                             "Course subject Substring");
-                    classError = term.toString();
+                    classError = term.getId();
                 }
 
                 String number = "";
@@ -543,7 +543,7 @@ public class Parser {
                     Log.e(TAG, "Exception in Number parsing in Class Parser", e);
                     Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
                             "Course Number Substring");
-                    classError = term.toString();
+                    classError = term.getId();
                 }
 
                 //CRN
@@ -556,7 +556,7 @@ public class Parser {
                 catch (NumberFormatException e){
                     Log.e(TAG, "CRN Exception in Class Parser", e);
                     Analytics.getInstance().sendEvent("Parsing Bug", "Class List", "crn");
-                    classError = term.toString();
+                    classError = term.getId();
                 }
 
                 //Credits
@@ -569,7 +569,7 @@ public class Parser {
                 catch (NumberFormatException e){
                     Log.e(TAG, "Credits Exception in Class Parser", e);
                     Analytics.getInstance().sendEvent("Parsing Bug", "Class List", "credits");
-                    classError = term.toString();
+                    classError = term.getId();
                 }
 
                 //Time, Days, Location, Type, Instructor
@@ -602,7 +602,7 @@ public class Parser {
                                     "Class Parser", e);
                             Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
                                     "IndexOutOfBounds on Info");
-                            classError = term.toString();
+                            classError = term.getId();
                         }
 
                         //Time parsing
@@ -651,7 +651,7 @@ public class Parser {
                             Log.e(TAG, "Date Range Parsing Exception in Class Parser", e);
                             Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
                                     "Start/End Date Parsing");
-                            classError = term.toString();
+                            classError = term.getId();
                         }
 
                         //Add the course

@@ -117,7 +117,7 @@ public class CoursesFragment extends BaseFragment {
      */
     private void loadInfo(){
         //Set the title
-        mActivity.setTitle(mTerm.toString(mActivity));
+        mActivity.setTitle(mTerm.toString());
 
         //User can unregister if the current term is in the list of terms to register for
         boolean canUnregister = App.getRegisterTerms().contains(mTerm);

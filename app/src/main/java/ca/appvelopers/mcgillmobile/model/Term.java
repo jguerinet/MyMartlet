@@ -16,18 +16,33 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import android.content.Context;
-
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.io.Serializable;
 
+/**
+ * One class term, consisting of a season and a year
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class Term implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    /**
+     * The term season
+     */
     private Season mSeason;
+    /**
+     * The term year
+     */
     private int mYear;
 
+    /**
+     * Default Constructor
+     *
+     * @param season The term season
+     * @param year   The term year
+     */
     public Term(Season season, int year){
         this.mSeason = season;
         this.mYear = year;
@@ -36,36 +51,26 @@ public class Term implements Serializable {
     /* GETTERS */
 
     /**
-     * Get the term's season
-     * @return The season
+     * @return The term season
      */
     public Season getSeason(){
         return mSeason;
     }
 
     /**
-     * Get the term's year
-     * @return The year
+     * @return The term year
      */
     public int getYear(){
         return mYear;
     }
 
     /* HELPERS */
-    @Override
-    public boolean equals(Object object){
-        if(!(object instanceof Term)){
-            return false;
-        }
-
-        Term term = (Term)object;
-        return mSeason == term.getSeason() && mYear == term.getYear();
-    }
 
     /**
-     * Check if the current term is after the given term
-     * @param term The semester to compare
-     * @return True if the current term is after, false, otherwise
+     * Checks if the current term is after the given term
+     *
+     * @param term The term to compare
+     * @return True if the current term is after the given term, false otherwise
      */
     public boolean isAfter(Term term){
         //Year after
@@ -84,46 +89,56 @@ public class Term implements Serializable {
         }
     }
 
-    public String toString(Context context){
-        return mSeason.toString() + " " + mYear;
+    public String getId(){
+        return mSeason.getId() + " " + mYear;
     }
 
     @Override
     public String toString(){
-        return mSeason.getId() + " " + mYear;
+        return mSeason.toString() + " " + mYear;
     }
 
+    @Override
+    public boolean equals(Object object){
+        if(!(object instanceof Term)){
+            return false;
+        }
+
+        Term term = (Term)object;
+        return mSeason == term.getSeason() && mYear == term.getYear();
+    }
+
+    /* STATIC HELPERS */
+
     /**
-     * Parse a term from a String
-     * @param termString The term String
+     * Parses a term from a String
+     *
+     * @param term The term String
      * @return The parsed term
      */
-    public static Term parseTerm(String termString){
-        String[] termParts = termString.split(" ");
+    public static Term parseTerm(String term){
+        String[] termParts = term.split(" ");
         return new Term(Season.findSeason(termParts[0]), Integer.valueOf(termParts[1]));
     }
 
     /**
-     * Convert a DateTime object to the Term that date falls in
-     * @param date
-     * @return term date is in
+     * Gets the Term today falls in
+     *
+     * @return Today's corresponding term
      */
-    public static Term dateConverter(DateTime date) {
-        int month = date.monthOfYear().get();
-        int year = date.year().get();
-        if (month >= 9 && month <= 12) {
-            Term term = new Term(Season.FALL, year);
-            return term;
-        } else if (month >= 1 && month <= 4) {
-            Term term = new Term(Season.WINTER, year);
-            return term;
-        } else {
-            Term term = new Term(Season.SUMMER, year);
-            return term;
-        }
-    }
-
     public static Term getCurrentTerm(){
-        return dateConverter(DateTime.now());
+        LocalDate today = LocalDate.now();
+        int month = today.getMonthOfYear();
+        int year = today.getYear();
+
+        if (month >= 9 && month <= 12){
+            return new Term(Season.FALL, year);
+        }
+        else if (month >= 1 && month <= 4){
+            return new Term(Season.WINTER, year);
+        }
+        else{
+            return new Term(Season.SUMMER, year);
+        }
     }
 }

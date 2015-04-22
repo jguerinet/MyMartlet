@@ -159,7 +159,7 @@ public class ScheduleFragment extends BaseFragment {
      */
     private View loadView(int orientation){
         //Title
-        mActivity.setTitle(mTerm.toString(mActivity));
+        mActivity.setTitle(mTerm.toString());
 
         //Return the view
         return mViewBuilder.renderView(orientation);
