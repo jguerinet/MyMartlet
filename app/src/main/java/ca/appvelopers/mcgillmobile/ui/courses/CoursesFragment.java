@@ -32,6 +32,9 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -51,15 +54,16 @@ import ca.appvelopers.mcgillmobile.util.Parser;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class CoursesFragment extends BaseFragment {
     /**
      * The ListView for the courses
      */
+    @InjectView(R.id.courses_list)
     private ListView mListView;
     /**
      * The button to unregister from a course
      */
+    @InjectView(R.id.course_register)
     private TextView mUnregisterButton;
     /**
      * The ListView adapter
@@ -82,58 +86,16 @@ public class CoursesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-
         View view = View.inflate(mActivity, R.layout.fragment_wishlist, container);
-
-        //Lock the portrait mode for this section
+        ButterKnife.inject(this, view);
         lockPortraitMode();
-
         Analytics.getInstance().sendScreen("View Courses");
 
-        // Views
-        mListView = (ListView)view.findViewById(R.id.courses_list);
+        //Set the empty view
         mListView.setEmptyView(view.findViewById(R.id.courses_empty));
 
         //Term
         mTerm = App.getDefaultTerm();
-
-        //Register button
-        mUnregisterButton = (TextView)view.findViewById(R.id.course_register);
-        mUnregisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Get checked courses from adapter
-                final List<Course> unregisterCourses = mAdapter.getCheckedClasses();
-
-                //Too many courses
-                if (unregisterCourses.size() > 10) {
-                    Toast.makeText(mActivity, getString(R.string.courses_too_many_courses),
-                            Toast.LENGTH_SHORT).show();
-                }
-                //No courses
-                else if (unregisterCourses.isEmpty()) {
-                    Toast.makeText(mActivity, getString(R.string.courses_none_selected),
-                            Toast.LENGTH_SHORT).show();
-                }
-                else if (unregisterCourses.size() > 0) {
-                    //Ask for confirmation before unregistering
-                    new AlertDialog.Builder(mActivity)
-                            .setTitle(getString(R.string.unregister_dialog_title))
-                            .setMessage(getString(R.string.unregister_dialog_message))
-                            .setPositiveButton(getString(android.R.string.yes),
-                                new DialogInterface.OnClickListener(){
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //Execute unregistration of checked classes in a new thread
-                                        unregister(unregisterCourses);
-                                    }
-                                })
-                            .setNegativeButton(getString(android.R.string.cancel), null)
-                            .create()
-                            .show();
-                }
-            }
-        });
 
         //Remove this button
         view.findViewById(R.id.course_wishlist).setVisibility(View.GONE);
@@ -218,33 +180,64 @@ public class CoursesFragment extends BaseFragment {
 
     /**
      * Tries to unregister from the given courses
-     *
-     * @param courses The list of courses to unregister from
      */
-    private void unregister(List<Course> courses){
-        //Show the user we are loading
-        mActivity.showToolbarProgress(true);
+    @OnClick(R.id.course_register)
+    public void unregister(){
+        //Get checked courses from adapter
+        final List<Course> courses = mAdapter.getCheckedClasses();
 
-        //Run the registration thread
-        String html = new DownloaderThread(mActivity, "Unregistration",
-                Connection.getRegistrationURL(mTerm, courses, true)).execute();
+        //Too many courses
+        if (courses.size() > 10) {
+            Toast.makeText(mActivity, getString(R.string.courses_too_many_courses),
+                    Toast.LENGTH_SHORT).show();
+        }
+        //No courses
+        else if (courses.isEmpty()) {
+            Toast.makeText(mActivity, getString(R.string.courses_none_selected),
+                    Toast.LENGTH_SHORT).show();
+        }
+        else if (courses.size() > 0) {
+            //Ask for confirmation before unregistering
+            new AlertDialog.Builder(mActivity)
+                    .setTitle(getString(R.string.unregister_dialog_title))
+                    .setMessage(getString(R.string.unregister_dialog_message))
+                    .setPositiveButton(getString(android.R.string.yes),
+                            new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Show the user we are loading
+                                    mActivity.showToolbarProgress(true);
 
-        if(html != null){
-            String error = Parser.parseRegistrationErrors(html, courses);
+                                    //Run the registration thread
+                                    String html = new DownloaderThread(mActivity, "Unregistration",
+                                            Connection.getRegistrationURL(mTerm, courses, true))
+                                            .execute();
 
-            //If there are no errors, show the success message
-            if(error == null){
-                Toast.makeText(mActivity, R.string.unregistration_success, Toast.LENGTH_LONG)
-                        .show();
-            }
-            //If not, show the error message
-            else{
-                DialogHelper.showNeutralDialog(mActivity,
-                        getString(R.string.unregistration_error), error);
-            }
+                                    if(html != null){
+                                        String error =
+                                                Parser.parseRegistrationErrors(html, courses);
 
-            //Refresh the courses
-            refreshCourses(mTerm);
+                                        //If there are no errors, show the success message
+                                        if(error == null){
+                                            Toast.makeText(mActivity,
+                                                    R.string.unregistration_success,
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                        //If not, show the error message
+                                        else{
+                                            DialogHelper.showNeutralDialog(mActivity,
+                                                    getString(R.string.unregistration_error),
+                                                    error);
+                                        }
+
+                                        //Refresh the courses
+                                        refreshCourses(mTerm);
+                                    }
+                                }
+                            })
+                    .setNegativeButton(getString(android.R.string.cancel), null)
+                    .create()
+                    .show();
         }
     }
 }
