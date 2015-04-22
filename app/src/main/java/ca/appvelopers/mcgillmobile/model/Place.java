@@ -60,7 +60,7 @@ public class Place implements Serializable{
     public Place(String name, String[] types, String address, double latitude,
                  double longitude){
         this.mName = name;
-        this.mTypes = PlaceType.getCategories(types);
+        this.mTypes = PlaceType.getTypes(types);
         this.mAddress = address;
         this.mLatitude = latitude;
         this.mLongitude = longitude;

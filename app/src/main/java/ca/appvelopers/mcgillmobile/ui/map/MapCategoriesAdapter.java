@@ -39,7 +39,7 @@ public class MapCategoriesAdapter extends BaseAdapter {
     public MapCategoriesAdapter(Context context){
         this.mContext = context;
         this.mCategories = new ArrayList<PlaceType>();
-        mCategories.addAll(App.getPlaceCategories());
+        mCategories.addAll(App.getPlaceTypes());
 
         //Sort them
         Collections.sort(mCategories, new Comparator<PlaceType>() {

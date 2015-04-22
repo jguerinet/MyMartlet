@@ -195,7 +195,7 @@ public class App extends Application {
         return favoritePlaces;
     }
 
-    public static List<PlaceType> getPlaceCategories(){
+    public static List<PlaceType> getPlaceTypes(){
         return placeCategories;
     }
 

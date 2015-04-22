@@ -23,38 +23,92 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
+/**
+ * A type of place that the user can filter by
+ */
 public class PlaceType implements Serializable{
     private static final long serialVersionUID = 1L;
-
+    /**
+     * The user's saved favorite places
+     */
     public static final String FAVORITES = "Favorites";
+    /**
+     * All of the places
+     */
     public static final String ALL = "All";
-
+    /**
+     * The type name
+     */
     private String mName;
+    /**
+     * The type English String
+     */
     private String mEnglishString;
+    /**
+     * The type French String
+     */
     private String mFrenchString;
 
+    /**
+     * Default Constructor
+     *
+     * @param name          The type name
+     * @param englishString The type English String
+     * @param frenchString  The type French String
+     */
     public PlaceType(String name, String englishString, String frenchString){
         this.mName = name;
         this.mEnglishString = englishString;
         this.mFrenchString = frenchString;
     }
 
-    //For the Favorites and All Categories
-    public PlaceType(boolean favorite){
-        this.mName = favorite ? FAVORITES : ALL;
+    /**
+     * Constructor used to create the Favorites and All types
+     *
+     * @param favorites True if this is the favorites type, false if this is the all type
+     */
+    public PlaceType(boolean favorites){
+        this.mName = favorites ? FAVORITES : ALL;
         this.mEnglishString = null;
         this.mFrenchString = null;
     }
 
     /* GETTERS */
+
+    /**
+     * @return The type name
+     */
     public String getName(){
         return this.mName;
     }
 
     /* HELPERS */
+
+    /**
+     * Get the list of types based on a list of Strings
+     *
+     * @param typeStrings The list of Strings
+     * @return The corresponding list of types
+     */
+    public static List<PlaceType> getTypes(String[] typeStrings){
+        List<PlaceType> types = new ArrayList<>();
+        //Go through the type Strings
+        for(String type : typeStrings){
+            //Go through the place types
+            for(PlaceType placeType : App.getPlaceTypes()){
+                //If a type String equals the place type's name, then add it and break the loop
+                if(type.equals(placeType.getName())){
+                    types.add(placeType);
+                    break;
+                }
+            }
+        }
+
+        return types;
+    }
+
     @Override
     public String toString(){
-        //If it's Favorites, then get the String from the Strings document
         if(mName.equals(FAVORITES)){
             return App.getContext().getString(R.string.map_favorites);
         }
@@ -68,31 +122,13 @@ public class PlaceType implements Serializable{
         return mEnglishString;
     }
 
-    public static List<PlaceType> getCategories(String[] categoryStrings){
-        List<PlaceType> categories = new ArrayList<PlaceType>();
-        //Go through the category Strings
-        for(String category : categoryStrings){
-            //Go through the place categories
-            for(PlaceType placeType : App.getPlaceCategories()){
-                //If a category String equals the place category's name, then add it and break the loop
-                if(category.equals(placeType.getName())){
-                    categories.add(placeType);
-                    break;
-                }
-            }
-        }
 
-        return categories;
-    }
-
+    /**
+     * @param object The object to compare
+     * @return True if they have the same name, false otherwise
+     */
     @Override
     public boolean equals(Object object){
-        if(!(object instanceof PlaceType)){
-            return false;
-        }
-
-        PlaceType placeType = (PlaceType)object;
-
-        return this.mName.equals(placeType.getName());
+        return object instanceof PlaceType && ((PlaceType)object).getName().equals(this.mName);
     }
 }

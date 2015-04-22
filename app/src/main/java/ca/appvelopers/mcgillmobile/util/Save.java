@@ -268,7 +268,7 @@ public class Save {
     }
 
     public static void savePlaceCategories(Context context) {
-        List<PlaceType> places = App.getPlaceCategories();
+        List<PlaceType> places = App.getPlaceTypes();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.PLACE_CATEGORIES_FILE, Context.MODE_PRIVATE);
