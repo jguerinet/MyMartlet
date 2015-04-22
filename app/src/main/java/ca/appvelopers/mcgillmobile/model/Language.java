@@ -16,11 +16,18 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+/**
+ * The languages that this app is offered in
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public enum Language {
     ENGLISH,
     FRENCH;
 
-    public String getLanguageString(){
+    @Override
+    public String toString(){
         switch (this){
             case FRENCH:
                 return "fr";

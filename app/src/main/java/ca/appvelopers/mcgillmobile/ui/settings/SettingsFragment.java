@@ -126,14 +126,14 @@ public class SettingsFragment extends BaseFragment {
                 Language chosenLanguage = Language.values()[position];
 
                 Analytics.getInstance().sendEvent("Settings", "Language",
-                        chosenLanguage.getLanguageString());
+                        chosenLanguage.toString());
 
                 //If it's different than the previously selected language, update it and reload
                 if(App.getLanguage() != chosenLanguage){
                     App.setLanguage(chosenLanguage);
 
                     //Update locale and config
-                    Locale locale = new Locale(chosenLanguage.getLanguageString());
+                    Locale locale = new Locale(chosenLanguage.toString());
                     Locale.setDefault(locale);
                     Configuration config = mActivity.getBaseContext().getResources().getConfiguration();
                     config.locale = locale;

@@ -133,7 +133,7 @@ public class App extends Application {
                 .setPostFeedbackMessage(getString(R.string.success))
                 .setWillShowFeedbackSentAlert(true)
                 .setUserData("Email: " + Load.loadFullUsername(this) + "\n" +
-                        "App Language: " + App.getLanguage().getLanguageString());
+                        "App Language: " + App.getLanguage().toString());
     }
 
     /* GETTER METHODS */
