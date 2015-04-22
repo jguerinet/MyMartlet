@@ -17,46 +17,66 @@
 package ca.appvelopers.mcgillmobile.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Ryan Singzon on 30/01/14.
- *
- * This class will retrieve and parse transcript data from Minerva and hold all the information
- * that is shown on the transcript
- *
+ * The user's unofficial transcript
+ * @author Ryan Singzon
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class Transcript implements Serializable{
     private static final long serialVersionUID = 1L;
-
+    /**
+     * The user's cumulative GPA
+     */
     private double mCGPA;
+    /**
+     * The user's total number of credits
+     */
     private double mTotalCredits;
+    /**
+     * The list of semesters
+     */
     private List<Semester> mSemesters;
 
-    //Constructor for the Transcript object
+    /**
+     * Default Constructo
+     *
+     * @param cgpa         The CGPA
+     * @param totalCredits The total number of credits
+     * @param semesters    The semesters
+     */
     public Transcript(double cgpa, double totalCredits, List<Semester> semesters){
         this.mCGPA = cgpa;
         this.mTotalCredits = totalCredits;
         this.mSemesters = semesters;
+        //Store the semesters in reverse chronological order
+        Collections.reverse(this.mSemesters);
     }
 
-    //Getter for CGPA
+    /* GETTERS */
+
+    /**
+     * @return The CGPA
+     */
     public double getCgpa(){
-        return mCGPA;
+        return this.mCGPA;
     }
 
-    //Getter for totalCredits
+    /**
+     * @return The total number of credits
+     */
     public double getTotalCredits(){
-        return mTotalCredits;
+        return this.mTotalCredits;
     }
 
-    //Getter for semesters
+    /**
+     * @return The semesters (in reverse chronological order)
+     */
     public List<Semester> getSemesters(){
-        //Return semesters in reverse chronological order
-        ArrayList<Semester> reversedSemesters = new ArrayList<Semester>(mSemesters);
-        Collections.reverse(reversedSemesters);
-        return reversedSemesters;
+        return this.mSemesters;
     }
 }
