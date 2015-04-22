@@ -194,8 +194,8 @@ public class WebFetcherService extends IntentService {
             }
             //Add course if it has not already been added
             if(!courseExists){
-                coursesList.add(new TranscriptCourse(wishlistClass.getTerm(), wishlistClass.getTitle(),
-                        wishlistClass.getCode(), wishlistClass.getCredits(), "N/A", "N/A"));
+                coursesList.add(new TranscriptCourse(wishlistClass.getTerm(), wishlistClass.getCode(),
+                        wishlistClass.getTitle(), wishlistClass.getCredits(), "N/A", "N/A"));
             }
         }
 

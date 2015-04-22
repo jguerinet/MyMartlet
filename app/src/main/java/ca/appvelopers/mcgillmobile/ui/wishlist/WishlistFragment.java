@@ -221,8 +221,8 @@ public class WishlistFragment extends BaseFragment {
             }
             //Add course if it has not already been added
             if(!courseExists){
-                coursesList.add(new TranscriptCourse(course.getTerm(), course.getTitle(),
-                        course.getCode(), course.getCredits(), "N/A", "N/A"));
+                coursesList.add(new TranscriptCourse(course.getTerm(), course.getCode(),
+                        course.getTitle(), course.getCredits(), "N/A", "N/A"));
             }
         }
 

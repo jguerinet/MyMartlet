@@ -340,7 +340,7 @@ public class Parser {
                             //String not found
                             //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBounds" + e.getMessage());
                         }
-                        courses.add(new TranscriptCourse(new Term(season, year), courseTitle, courseCode, credits,
+                        courses.add(new TranscriptCourse(new Term(season, year), courseCode, courseTitle, credits,
                                 userGrade, averageGrade));
                     }
 
@@ -367,7 +367,7 @@ public class Parser {
                                 credits = 99;
                             }
 
-                            TranscriptCourse course = new TranscriptCourse(new Term(season, year), "", courseCode, credits, userGrade,
+                            TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseCode, "", credits, userGrade,
                                     averageGrade);
                             courses.add(course);
                         }
@@ -380,7 +380,7 @@ public class Parser {
                                 courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
                                 credits = Double.parseDouble(rows.get(semesterIndex + 5).text());
 
-                                TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseTitle, courseCode, credits,
+                                TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseCode, courseTitle, credits,
                                         userGrade, averageGrade);
                                 courses.add(course);
                             }
@@ -405,7 +405,7 @@ public class Parser {
                                         first = false;
                                     }
 
-                                    TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseTitle, courseCode, credits,
+                                    TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseCode, courseTitle, credits,
                                             userGrade, averageGrade);
                                     courses.add(course);
 

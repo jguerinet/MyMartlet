@@ -19,77 +19,100 @@ package ca.appvelopers.mcgillmobile.model;
 import java.io.Serializable;
 
 /**
- * Created by Ryan Singzon on 30/01/14.
- *
- * This class will contain information pertaining to individual McGill courses that students
- * have taken, such as the grade, credit, and class average
+ * A course that is part of the transcript
+ * @author Ryan Singzon
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class TranscriptCourse implements Serializable{
     private static final long serialVersionUID = 1L;
-
+    /**
+     * The course term
+     */
     private Term mTerm;
-    private String mCourseCode;
-    private String mCourseTitle;
+    /**
+     * The course code (e.g. ECSE 428)
+     */
+    private String mCode;
+    /**
+     * The course title
+     */
+    private String mTitle;
+    /**
+     * The course credits
+     */
     private double mCredits;
+    /**
+     * The user's grade in this course
+     */
     private String mUserGrade;
+    /**
+     * The average grade in this course
+     */
     private String mAverageGrade;
 
-    public TranscriptCourse(Term term, String courseTitle, String courseCode, double credits,
+    /**
+     * Default Constructor
+     *
+     * @param term         The course term
+     * @param code         The course code
+     * @param title        The course title
+     * @param credits      The course credits
+     * @param userGrade    The user's grade
+     * @param averageGrade The course average grade
+     */
+    public TranscriptCourse(Term term, String code, String title, double credits,
                             String userGrade, String averageGrade){
         this.mTerm = term;
-        this.mCourseCode = courseCode;
-        this.mCourseTitle = courseTitle;
+        this.mCode = code;
+        this.mTitle = title;
         this.mCredits = credits;
         this.mUserGrade = userGrade;
         this.mAverageGrade = averageGrade;
     }
 
     /* GETTERS */
-    /**
-     * Get the course code
-     * @return The course code
-     */
-    public String getCourseCode(){
-        return mCourseCode;
-    }
 
     /**
-     * Get the course title
-     * @return The course title
-     */
-    public String getCourseTitle(){
-        return mCourseTitle;
-    }
-
-    /**
-     * Get the course credits
-     * @return The course credits
-     */
-    public double getCredits(){
-        return mCredits;
-    }
-
-    /**
-     * Get the grade the user got in this course
-     * @return The user's grade
-     */
-    public String getUserGrade(){
-        return mUserGrade;
-    }
-
-    /**
-     * Get the average grade for this course
-     * @return The average grade
-     */
-    public String getAverageGrade(){
-        return mAverageGrade;
-    }
-
-    /**
-     * Get the term for this course
      * @return The course term
      */
     public Term getTerm(){
-        return mTerm;
+        return this.mTerm;
+    }
+
+    /**
+     * @return The course code
+     */
+    public String getCourseCode(){
+        return this.mCode;
+    }
+
+    /**
+     * @return The course title
+     */
+    public String getCourseTitle(){
+        return this.mTitle;
+    }
+
+    /**
+     * @return The course credits
+     */
+    public double getCredits(){
+        return this.mCredits;
+    }
+
+    /**
+     * @return The user's grade
+     */
+    public String getUserGrade(){
+        return this.mUserGrade;
+    }
+
+    /**
+     * @return The average grade
+     */
+    public String getAverageGrade(){
+        return this.mAverageGrade;
     }
 }
