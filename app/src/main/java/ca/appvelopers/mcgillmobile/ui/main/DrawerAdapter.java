@@ -108,10 +108,10 @@ public class DrawerAdapter extends BaseAdapter {
             //Set the info up
             TextView icon = (TextView)view.findViewById(R.id.drawerItem_icon);
             icon.setTypeface(App.getIconFont());
-            icon.setText(currentItem.getIcon(mActivity));
+            icon.setText(currentItem.getIcon());
 
             TextView title = (TextView)view.findViewById(R.id.drawerItem_title);
-            title.setText(currentItem.getTitle(mActivity));
+            title.setText(currentItem.toString());
         }
 
         return view;

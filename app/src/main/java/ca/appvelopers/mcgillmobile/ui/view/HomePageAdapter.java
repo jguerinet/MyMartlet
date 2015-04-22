@@ -42,7 +42,7 @@ public class HomePageAdapter extends BaseAdapter {
         Collections.sort(mHomePageItems, new Comparator<DrawerItem>() {
             @Override
             public int compare(DrawerItem drawerItem, DrawerItem drawerItem2) {
-                return drawerItem.toString(mContext).compareToIgnoreCase(drawerItem2.toString(mContext));
+                return drawerItem.toString().compareToIgnoreCase(drawerItem2.toString());
             }
         });
     }
@@ -69,7 +69,7 @@ public class HomePageAdapter extends BaseAdapter {
         }
 
         DrawerItem drawerItem = getItem(position);
-        ((TextView)view).setText(drawerItem.toString(mContext));
+        ((TextView)view).setText(drawerItem.toString());
 
         return view;
     }
@@ -81,7 +81,7 @@ public class HomePageAdapter extends BaseAdapter {
         }
 
         DrawerItem drawerItem = getItem(position);
-        ((TextView)view).setText(drawerItem.toString(mContext));
+        ((TextView)view).setText(drawerItem.toString());
 
         return view;
     }
