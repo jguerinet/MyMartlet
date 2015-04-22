@@ -45,7 +45,7 @@ public class FacultyAdapter extends BaseAdapter {
         Collections.sort(mFaculties, new Comparator<Faculty>() {
             @Override
             public int compare(Faculty faculty, Faculty faculty2) {
-                return faculty.toString(mContext).compareToIgnoreCase(faculty2.toString(mContext));
+                return faculty.toString().compareToIgnoreCase(faculty2.toString());
             }
         });
 
@@ -78,7 +78,7 @@ public class FacultyAdapter extends BaseAdapter {
 
         Faculty faculty = getItem(position);
         if(faculty != null){
-            ((TextView)view).setText(faculty.toString(mContext));
+            ((TextView)view).setText(faculty.toString());
         }
         else{
             ((TextView)view).setText(" ");
@@ -95,7 +95,7 @@ public class FacultyAdapter extends BaseAdapter {
 
         Faculty faculty = getItem(position);
         if(faculty != null){
-            ((TextView)view).setText(faculty.toString(mContext));
+            ((TextView)view).setText(faculty.toString());
         }
         else{
             ((TextView)view).setText(" ");

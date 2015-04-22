@@ -16,10 +16,15 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import android.content.Context;
-
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
+/**
+ * The faculties present at McGill
+ * @author Julien Guerinet 
+ * @version 2.0
+ * @since 1.0
+ */
 public enum Faculty {
     ENVIRONMENTAL_SCIENCES,
     ARTS,
@@ -35,34 +40,35 @@ public enum Faculty {
     RELIGIOUS_STUDIES,
     SCIENCE;
 
-    public String toString(Context context) {
+    @Override
+    public String toString() {
         switch (this) {
             case ENVIRONMENTAL_SCIENCES:
-                return context.getResources().getString(R.string.faculty_enviro);
+                return App.getContext().getString(R.string.faculty_enviro);
             case ARTS:
-                return context.getResources().getString(R.string.faculty_arts);
+                return App.getContext().getString(R.string.faculty_arts);
             case CONTINUING_STUDIES:
-                return context.getResources().getString(R.string.faculty_continuing_studies);
+                return App.getContext().getString(R.string.faculty_continuing_studies);
             case DENTISTRY:
-                return context.getResources().getString(R.string.faculty_dentistry);
+                return App.getContext().getString(R.string.faculty_dentistry);
             case EDUCATION:
-                return context.getResources().getString(R.string.faculty_education);
+                return App.getContext().getString(R.string.faculty_education);
             case ENGINEERING:
-                return context.getResources().getString(R.string.faculty_engineering);
+                return App.getContext().getString(R.string.faculty_engineering);
             case GRADUATE:
-                return context.getResources().getString(R.string.faculty_graduate);
+                return App.getContext().getString(R.string.faculty_graduate);
             case LAW:
-                return context.getResources().getString(R.string.faculty_law);
+                return App.getContext().getString(R.string.faculty_law);
             case MANAGEMENT:
-                return context.getResources().getString(R.string.faculty_management);
+                return App.getContext().getString(R.string.faculty_management);
             case MEDICINE:
-                return context.getResources().getString(R.string.faculty_medecine);
+                return App.getContext().getString(R.string.faculty_medecine);
             case MUSIC:
-                return context.getResources().getString(R.string.faculty_music);
+                return App.getContext().getString(R.string.faculty_music);
             case RELIGIOUS_STUDIES:
-                return context.getResources().getString(R.string.faculty_religion);
+                return App.getContext().getString(R.string.faculty_religion);
             case SCIENCE:
-                return context.getResources().getString(R.string.faculty_science);
+                return App.getContext().getString(R.string.faculty_science);
             default:
                 return "";
         }
