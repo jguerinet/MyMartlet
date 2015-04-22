@@ -197,8 +197,7 @@ public class SplashActivity extends BaseActivity {
 
         //Check if an error message needs to be displayed, display it if so
         if(error != null){
-            DialogHelper.showNeutralDialog(this, getString(R.string.error),
-                    error.getErrorString(this));
+            DialogHelper.showNeutralDialog(this, getString(R.string.error), error.getErrorString());
         }
 
         //Fill out username text if it is present
@@ -284,8 +283,7 @@ public class SplashActivity extends BaseActivity {
                                             status.getGAString());
                                     progressDialog.dismiss();
                                     DialogHelper.showNeutralDialog(SplashActivity.this,
-                                            getString(R.string.error),
-                                            status.getErrorString(SplashActivity.this));
+                                            getString(R.string.error), status.getErrorString());
                                 }
                             });
                         }

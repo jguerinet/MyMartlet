@@ -16,34 +16,56 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import android.content.Context;
-
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
 /**
- * Author: Julien
- * Date: 09/02/14, 3:02 PM
+ * Represents the status of a connection
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public enum ConnectionStatus {
+    /**
+     * Connection was successful
+     */
     OK,
+    /**
+     * The credentials were wrong
+     */
     WRONG_INFO,
+    /**
+     * An unknown error occurred
+     */
     ERROR_UNKNOWN,
+    /**
+     * The user is not connected to internet
+     */
     NO_INTERNET,
+    /**
+     * The user has been logged out of Minerva
+     */
     MINERVA_LOGOUT;
 
-    public String getErrorString(Context context){
+    /**
+     * @return The status' associated error String
+     */
+    public String getErrorString(){
         switch(this){
             case OK:
                 return null;
             case WRONG_INFO:
-                return context.getResources().getString(R.string.login_error_wrong_data);
+                return App.getContext().getString(R.string.login_error_wrong_data);
             case NO_INTERNET:
-                return context.getResources().getString(R.string.error_no_internet);
+                return App.getContext().getString(R.string.error_no_internet);
             default:
-                return context.getResources().getString(R.string.error_other);
+                return App.getContext().getString(R.string.error_other);
         }
     }
 
+    /**
+     * @return The String to use as the GA Label
+     */
     public String getGAString(){
         switch (this){
             case WRONG_INFO:
