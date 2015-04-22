@@ -32,21 +32,20 @@ import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 
+/**
+ * Shows the desktop page of MyMcGill
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 2.0
+ */
 public class DesktopFragment extends BaseFragment {
-    private WebView mWebView;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     @SuppressLint("SetJavaScriptEnabled")
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = View.inflate(mActivity, R.layout.fragment_web, null);
-
         lockPortraitMode();
 
         //Title
@@ -61,21 +60,21 @@ public class DesktopFragment extends BaseFragment {
         }
 
         //Get the WebView
-        mWebView = (WebView)view.findViewById(R.id.desktop_webview);
-        mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setBuiltInZoomControls(true);
-        mWebView.getSettings().setDisplayZoomControls(false);
+        WebView webView = (WebView)view.findViewById(R.id.desktop_webview);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
 
-        mWebView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
-        mWebView.setWebViewClient(new WebViewClient() {
-
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                //view.loadUrl("javascript:(function(){document.write( '<style class=\"hideStuff\" type=\"text/css\">body {display:none;}</style>')});");
+        webView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
+        webView.setWebViewClient(new WebViewClient() {
+            public void onPageStarted(WebView view, String url, Bitmap favicon){
+                //view.loadUrl("javascript:(function(){document.write( '<style
+                // class=\"hideStuff\" type=\"text/css\">body {display:none;}</style>')});");
                 view.setVisibility(View.INVISIBLE);
             }
 
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(WebView view, String url){
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
                         Load.loadFullUsername(mActivity) + "';" +
                         "document.getElementById('password').value='" +
