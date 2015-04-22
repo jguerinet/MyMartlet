@@ -16,48 +16,52 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import android.content.Context;
-
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
 /**
- * Author: Julien
- * Date: 2014-03-22 17:39
+ * The different seasons a term can be in
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public enum Season {
+    /**
+     * September - December
+     */
     FALL,
+    /**
+     * January - April
+     */
     WINTER,
-    SUMMER,
-    ERROR;
+    /**
+     * May, June, July
+     */
+    SUMMER;
 
+    /**
+     * Finds a season based on a String
+     *
+     * @param season The String
+     * @return The corresponding season
+     */
     public static Season findSeason(String season){
-        if(season.equalsIgnoreCase(Token.FALL.getString())){
+        if(season.equalsIgnoreCase(FALL.getId())){
             return FALL;
         }
-        else if(season.equalsIgnoreCase(Token.WINTER.getString())){
+        else if(season.equalsIgnoreCase(WINTER.getId())){
             return WINTER;
         }
-        else if(season.equalsIgnoreCase(Token.SUMMER.getString())){
+        else if(season.equalsIgnoreCase(SUMMER.getId())){
             return SUMMER;
         }
-        return ERROR;
+        return null;
     }
 
-    public String toString(Context context){
-        switch(this){
-            case FALL:
-                return context.getResources().getString(R.string.fall);
-            case WINTER:
-                return context.getResources().getString(R.string.winter);
-            case SUMMER:
-                return context.getResources().getString(R.string.summer);
-            default:
-                return context.getString(R.string.error);
-        }
-    }
-
-    @Override
-    public String toString(){
+    /**
+     * @return The language independent Id of this season
+     */
+    public String getId(){
         switch (this){
             case FALL:
                 return "Fall";
@@ -70,6 +74,9 @@ public enum Season {
         }
     }
 
+    /**
+     * @return The McGill season number for the given season
+     */
     public String getSeasonNumber(){
         switch(this){
             case FALL:
@@ -80,6 +87,20 @@ public enum Season {
                 return "05";
             default:
                 return "-1";
+        }
+    }
+
+    @Override
+    public String toString(){
+        switch(this){
+            case FALL:
+                return App.getContext().getString(R.string.fall);
+            case WINTER:
+                return App.getContext().getString(R.string.winter);
+            case SUMMER:
+                return App.getContext().getString(R.string.summer);
+            default:
+                return App.getContext().getString(R.string.error);
         }
     }
 }

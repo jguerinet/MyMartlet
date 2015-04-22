@@ -85,12 +85,12 @@ public class Term implements Serializable {
     }
 
     public String toString(Context context){
-        return mSeason.toString(context) + " " + mYear;
+        return mSeason.toString() + " " + mYear;
     }
 
     @Override
     public String toString(){
-        return mSeason.toString() + " " + mYear;
+        return mSeason.getId() + " " + mYear;
     }
 
     /**

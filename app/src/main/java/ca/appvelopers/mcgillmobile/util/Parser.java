@@ -145,7 +145,7 @@ public class Parser {
                     catch(NumberFormatException e){
                         Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                 "Semester Year");
-                        transcriptError = season.toString();
+                        transcriptError = season.getId();
                         year = 2000;
                     }
                 }
@@ -157,7 +157,7 @@ public class Parser {
                     catch(NumberFormatException e){
                         Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                 "Semester Year");
-                        transcriptError = season.toString();
+                        transcriptError = season.getId();
                         year = 2000;
                     }
                 }
@@ -169,7 +169,7 @@ public class Parser {
                     catch(NumberFormatException e){
                         Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                 "Semester Year");
-                        transcriptError = season.toString();
+                        transcriptError = season.getId();
                         year = 2000;
                     }
                 }
@@ -256,7 +256,7 @@ public class Parser {
                         catch (NumberFormatException e){
                             Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                     "Term GPA");
-                            transcriptError = season.toString() + year;
+                            transcriptError = season.getId() + year;
                         }
                     }
                     //Term Credits
@@ -267,7 +267,7 @@ public class Parser {
                         catch (NumberFormatException e){
                             Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                     "Term Credits");
-                            transcriptError = season.toString() + year;
+                            transcriptError = season.getId() + year;
                         }
                     }
 
@@ -293,7 +293,7 @@ public class Parser {
                             catch(Exception e){
                                 Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                         "Course Code");
-                                transcriptError = season.toString() + year;
+                                transcriptError = season.getId() + year;
                                 e.printStackTrace();
                             }
                         }
@@ -311,10 +311,10 @@ public class Parser {
                             //Course failed -> Earned credit = 0
                             StringWriter sw = new StringWriter();
                             e.printStackTrace(new PrintWriter(sw));
-                            //Log.e("TRANSCRIPT_URL PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.toString());
+                            //Log.e("TRANSCRIPT_URL PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.getId());
                         }
                         catch(IndexOutOfBoundsException e){
-                            //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBoundsException" + e.toString());
+                            //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBoundsException" + e.getId());
                         }
 
                         //Obtain user's grade
@@ -364,7 +364,7 @@ public class Parser {
                             catch(Exception e){
                                 Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                         "Credits");
-                                transcriptError = season.toString() + year;
+                                transcriptError = season.getId() + year;
                                 credits = 99;
                             }
 
@@ -420,7 +420,7 @@ public class Parser {
                                     e.printStackTrace();
                                     Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
                                             "Credits");
-                                    transcriptError = season.toString() + year;
+                                    transcriptError = season.getId() + year;
                                     credits = 99;
                                 }
                             }
