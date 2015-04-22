@@ -84,7 +84,7 @@ public class DayFragment extends Fragment{
 
         //Day Title
         TextView dayTitle = (TextView)view.findViewById(R.id.day_title);
-        dayTitle.setText(Day.getDay(mDate).getDayString(getActivity()));
+        dayTitle.setText(Day.getDay(mDate).toString());
 
         //Date Title
         TextView dayDate = (TextView)view.findViewById(R.id.day_date);

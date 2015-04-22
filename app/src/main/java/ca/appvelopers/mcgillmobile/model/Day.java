@@ -16,17 +16,18 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import android.content.Context;
-
 import org.joda.time.LocalDate;
 
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
 /**
- * Author: Julien
- * Date: 01/02/14, 6:54 PM
+ * The days of the week
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public enum Day {
     MONDAY,
@@ -36,11 +37,19 @@ public enum Day {
     FRIDAY,
     SATURDAY,
     SUNDAY,
+    /**
+     * Used when no date has been set on the course
+     */
     TBA;
 
-    //Get the day based on the number from 1-7
-    public static Day getDay(int dayNumber){
-        switch (dayNumber) {
+    /**
+     * Gets the day based on a number between 0 and 6
+     *
+     * @param dayIndex The day index
+     * @return The corresponding day, TBA if not found
+     */
+    public static Day getDay(int dayIndex){
+        switch (dayIndex) {
             case 0:
                 return Day.MONDAY;
             case 1:
@@ -71,9 +80,14 @@ public enum Day {
         return getDay(date.getDayOfWeek() - 1);
     }
 
-    //Get the day based on a character (M,T,W,R,F,S,N)
-    public static Day getDay(char dayLetter){
-        switch (dayLetter) {
+    /**
+     * Gets the day based on a character (M,T,W,R,F,S,N). Characters taken from Minerva
+     *
+     * @param dayChar The day character
+     * @return The corresponding day, TBA if not found
+     */
+    public static Day getDay(char dayChar){
+        switch (dayChar) {
             case 'M':
                 return Day.MONDAY;
             case 'T':
@@ -93,30 +107,9 @@ public enum Day {
         }
     }
 
-    //Get the string for a given day
-    public String getDayString(Context context){
-        switch(this){
-            case MONDAY:
-                return context.getResources().getString(R.string.monday);
-            case TUESDAY:
-                return context.getResources().getString(R.string.tuesday);
-            case WEDNESDAY:
-                return context.getResources().getString(R.string.wednesday);
-            case THURSDAY:
-                return context.getResources().getString(R.string.thursday);
-            case FRIDAY:
-                return context.getResources().getString(R.string.friday);
-            case SATURDAY:
-                return context.getResources().getString(R.string.saturday);
-            case SUNDAY:
-                return context.getResources().getString(R.string.sunday);
-            default:
-                return null;
-        }
-    }
-
     /**
-     * Get the character for a day
+     * Gets the character for a day
+     *
      * @return The day character
      */
     public String getDayChar(){
@@ -140,8 +133,31 @@ public enum Day {
         }
     }
 
+    @Override
+    public String toString(){
+        switch(this){
+            case MONDAY:
+                return App.getContext().getString(R.string.monday);
+            case TUESDAY:
+                return App.getContext().getString(R.string.tuesday);
+            case WEDNESDAY:
+                return App.getContext().getString(R.string.wednesday);
+            case THURSDAY:
+                return App.getContext().getString(R.string.thursday);
+            case FRIDAY:
+                return App.getContext().getString(R.string.friday);
+            case SATURDAY:
+                return App.getContext().getString(R.string.saturday);
+            case SUNDAY:
+                return App.getContext().getString(R.string.sunday);
+            default:
+                return null;
+        }
+    }
+
     /**
-     * Get the strings for all of the days
+     * Gets A String representing all of the given days by their character
+     *
      * @param days The days
      * @return The String representing the days
      */

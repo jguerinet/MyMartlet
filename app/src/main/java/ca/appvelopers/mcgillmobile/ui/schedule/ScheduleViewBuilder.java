@@ -117,7 +117,7 @@ public class ScheduleViewBuilder {
             //Set up the day name
             dayView = View.inflate(mFragment.getActivity(), R.layout.fragment_day_name, null);
             TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
-            dayViewTitle.setText(day.getDayString(mFragment.getActivity()));
+            dayViewTitle.setText(day.toString());
             dayContainer.addView(dayView);
 
             //Set up the schedule container for that one day
