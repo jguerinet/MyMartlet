@@ -39,6 +39,11 @@ import ca.appvelopers.mcgillmobile.util.Load;
  * @since 2.0
  */
 public class DesktopFragment extends BaseFragment {
+    /**
+     * The WebView
+     */
+    private WebView mWebView;
+
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,14 +65,14 @@ public class DesktopFragment extends BaseFragment {
         }
 
         //Get the WebView
-        WebView webView = (WebView)view.findViewById(R.id.desktop_webview);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(false);
+        mWebView = (WebView)view.findViewById(R.id.desktop_webview);
+        mWebView.getSettings().setUseWideViewPort(true);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setBuiltInZoomControls(true);
+        mWebView.getSettings().setDisplayZoomControls(false);
 
-        webView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
-        webView.setWebViewClient(new WebViewClient() {
+        mWebView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
+        mWebView.setWebViewClient(new WebViewClient() {
             public void onPageStarted(WebView view, String url, Bitmap favicon){
                 //view.loadUrl("javascript:(function(){document.write( '<style
                 // class=\"hideStuff\" type=\"text/css\">body {display:none;}</style>')});");
@@ -87,5 +92,12 @@ public class DesktopFragment extends BaseFragment {
         });
 
         return view;
+    }
+
+    /**
+     * @return The Desktop WebView
+     */
+    public WebView getWebView(){
+        return mWebView;
     }
 }

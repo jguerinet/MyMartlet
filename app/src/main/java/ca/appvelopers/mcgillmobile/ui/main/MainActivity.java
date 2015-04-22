@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity {
         mCallbackManager = CallbackManager.Factory.create();
 
         //Set up the toolbar
-        Toolbar toolbar = setUpToolbar();
+        Toolbar toolbar = setUpToolbar(false);
 
         //Get the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -232,7 +232,6 @@ public class MainActivity extends BaseActivity {
                                             //Go back to SplashActivity
                                             startActivity(new Intent(MainActivity.this,
                                                     SplashActivity.class));
-                                            MyCoursesFragment.deleteCookies();
                                         }
 
                                     })
@@ -270,9 +269,14 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed(){
         //If we are on a web page, check if we can go back in the web page itself
-        if((mCurrentDrawerItem == DrawerItem.MY_COURSES || mCurrentDrawerItem == DrawerItem.DESKTOP)
+        if(mCurrentDrawerItem == DrawerItem.MY_COURSES
                 && mMyCoursesFragment.getWebView().canGoBack()){
             mMyCoursesFragment.getWebView().goBack();
+            return;
+        }
+        else if(mCurrentDrawerItem == DrawerItem.DESKTOP
+                && mDesktopFragment.getWebView().canGoBack()){
+            mDesktopFragment.getWebView().goBack();
             return;
         }
         //Open the menu if it is not open

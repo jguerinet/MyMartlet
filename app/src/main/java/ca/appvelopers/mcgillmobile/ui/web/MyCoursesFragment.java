@@ -39,8 +39,17 @@ import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 
+/**
+ * Displays the user's MyCourses page
+ * @author Shabbir Hussain
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class MyCoursesFragment extends BaseFragment {
-    protected static CookieManager cookieManager;
+    /**
+     * The main view
+     */
     private WebView mWebView;
 
     @Override
@@ -50,11 +59,11 @@ public class MyCoursesFragment extends BaseFragment {
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = View.inflate(mActivity, R.layout.fragment_web, null);
-
         lockPortraitMode();
 
         //Title
@@ -68,14 +77,16 @@ public class MyCoursesFragment extends BaseFragment {
             return view;
         }
 
-        cookieManager = CookieManager.getInstance();
-        if(cookieManager.hasCookies())
-            if(Build.VERSION.SDK_INT >= 21){
+        //Clear any existing cookies
+        CookieManager cookieManager = CookieManager.getInstance();
+        if(cookieManager.hasCookies()){
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                 CookieManager.getInstance().removeAllCookies(null);
             }
             else{
                 CookieManager.getInstance().removeAllCookie();
             }
+        }
 
         //Get the WebView
         mWebView = (WebView)view.findViewById(R.id.desktop_webview);
@@ -92,30 +103,37 @@ public class MyCoursesFragment extends BaseFragment {
                 Uri source = Uri.parse(url);
                 // Make a new request pointing to the url
                 DownloadManager.Request request = new DownloadManager.Request(source);
-                // appears the same in Notification bar while downloading
+                // Appears the same in Notification bar while downloading
                 String cookie = cookieManager.getCookie(url);
                 request.addRequestHeader("Cookie", cookie);
+                //TODO Real String here
                 request.setDescription("Description for the DownloadManager Bar");
                 request.setTitle(fileName);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     request.allowScanningByMediaScanner();
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    request.setNotificationVisibility(
+                            DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 }
                 // save the file in the "Downloads" folder of SDCARD
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
                 // get download service and enqueue file
-                DownloadManager manager = (DownloadManager) mActivity.getSystemService(Context.DOWNLOAD_SERVICE);
+                DownloadManager manager =
+                        (DownloadManager) mActivity.getSystemService(Context.DOWNLOAD_SERVICE);
                 manager.enqueue(request);
             }
         });
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
+        mWebView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; " +
+                "LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) " +
+                "Version/4.0 Mobile Safari/534.30");
         mWebView.getSettings().setSaveFormData(false);
-
-        mWebView.loadUrl("https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=https://shibboleth.mcgill.ca/idp/shibboleth&target=https%3A%2F%2Fmycourses2.mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l");
+        mWebView.loadUrl("https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=" +
+                "https://shibboleth.mcgill.ca/idp/shibboleth&target=https%3A%2F%2Fmycourses2" +
+                ".mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l");
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
+                //Preload the user's information
                 view.loadUrl("javascript:(function f(){" +
                         "(document.getElementsByName('j_username')[0]).value='" +
                         Load.loadFullUsername(mActivity) + "';" +
@@ -132,16 +150,9 @@ public class MyCoursesFragment extends BaseFragment {
         return view;
     }
 
-    public static void deleteCookies(){
-        if(cookieManager != null && cookieManager.hasCookies())
-            if(Build.VERSION.SDK_INT >= 21){
-                CookieManager.getInstance().removeAllCookies(null);
-            }
-            else{
-                CookieManager.getInstance().removeAllCookie();
-            }
-    }
-
+    /**
+     * @return The MyCourses WebView
+     */
     public WebView getWebView(){
         return mWebView;
     }
