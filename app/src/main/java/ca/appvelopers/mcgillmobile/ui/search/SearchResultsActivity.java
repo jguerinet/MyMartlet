@@ -30,8 +30,8 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.thread.DownloaderThread;
+import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
-import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistSearchCourseAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -124,7 +124,7 @@ public class SearchResultsActivity extends BaseActivity {
                             }
 
                             //Show an alert dialog with the errors
-                            DialogHelper.showNeutralAlertDialog(SearchResultsActivity.this,
+                            DialogHelper.showNeutralDialog(SearchResultsActivity.this,
                                     getString(R.string.registration_error), error);
                         }
 

@@ -51,7 +51,6 @@ import ca.appvelopers.mcgillmobile.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
-import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -198,7 +197,7 @@ public class SplashActivity extends BaseActivity {
 
         //Check if an error message needs to be displayed, display it if so
         if(error != null){
-            DialogHelper.showNeutralAlertDialog(this, getString(R.string.error),
+            DialogHelper.showNeutralDialog(this, getString(R.string.error),
                     error.getErrorString(this));
         }
 
@@ -223,12 +222,12 @@ public class SplashActivity extends BaseActivity {
 
                 //Check that both of them are not empty, create appropriate error messages if so
                 if (TextUtils.isEmpty(username)) {
-                    DialogHelper.showNeutralAlertDialog(SplashActivity.this,
+                    DialogHelper.showNeutralDialog(SplashActivity.this,
                             getString(R.string.error),
                             getString(R.string.login_error_username_empty));
                     return;
                 } else if (TextUtils.isEmpty(password)) {
-                    DialogHelper.showNeutralAlertDialog(SplashActivity.this,
+                    DialogHelper.showNeutralDialog(SplashActivity.this,
                             getString(R.string.error),
                             getString(R.string.login_error_password_empty));
                     return;
@@ -284,7 +283,7 @@ public class SplashActivity extends BaseActivity {
                                     Analytics.getInstance().sendEvent("Login", "Login Error",
                                             status.getGAString());
                                     progressDialog.dismiss();
-                                    DialogHelper.showNeutralAlertDialog(SplashActivity.this,
+                                    DialogHelper.showNeutralDialog(SplashActivity.this,
                                             getString(R.string.error),
                                             status.getErrorString(SplashActivity.this));
                                 }

@@ -26,8 +26,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
-import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
@@ -55,7 +55,7 @@ public class DesktopFragment extends BaseFragment {
         Analytics.getInstance().sendScreen("Desktop Site");
 
         if(!Help.isConnected()){
-            DialogHelper.showNeutralAlertDialog(mActivity, getString(R.string.error),
+            DialogHelper.showNeutralDialog(mActivity, getString(R.string.error),
                     getString(R.string.error_no_internet));
             return view;
         }

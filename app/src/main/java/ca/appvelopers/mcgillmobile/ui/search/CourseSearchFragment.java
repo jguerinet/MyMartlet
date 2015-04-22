@@ -45,8 +45,8 @@ import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
-import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.view.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -321,7 +321,8 @@ public class CourseSearchFragment extends BaseFragment {
             //There was an error
             if(!coursesParsed){
                 try {
-                    DialogHelper.showNeutralAlertDialog(mActivity, getResources().getString(R.string.error),
+                    DialogHelper.showNeutralDialog(mActivity, getResources().getString(R.string
+                                    .error),
                             getResources().getString(R.string.error_other));
                 } catch (Exception e) {
                     e.printStackTrace();

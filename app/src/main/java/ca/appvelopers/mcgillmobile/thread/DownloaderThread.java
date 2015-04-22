@@ -23,7 +23,7 @@ import android.util.Log;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
 import ca.appvelopers.mcgillmobile.exception.NoInternetException;
-import ca.appvelopers.mcgillmobile.ui.view.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Connection;
 
 /**
@@ -86,7 +86,7 @@ public class DownloaderThread extends Thread {
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
 						public void run(){
-							DialogHelper.showNeutralAlertDialog(mActivity,
+							DialogHelper.showNeutralDialog(mActivity,
 									mActivity.getString(R.string.error),
 									noInternet ? mActivity.getString(R.string.error_no_internet) :
 											mActivity.getString(R.string.error_other));
