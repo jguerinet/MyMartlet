@@ -23,7 +23,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
-public class PlaceCategory implements Serializable{
+public class PlaceType implements Serializable{
     private static final long serialVersionUID = 1L;
 
     public static final String FAVORITES = "Favorites";
@@ -33,14 +33,14 @@ public class PlaceCategory implements Serializable{
     private String mEnglishString;
     private String mFrenchString;
 
-    public PlaceCategory(String name, String englishString, String frenchString){
+    public PlaceType(String name, String englishString, String frenchString){
         this.mName = name;
         this.mEnglishString = englishString;
         this.mFrenchString = frenchString;
     }
 
     //For the Favorites and All Categories
-    public PlaceCategory(boolean favorite){
+    public PlaceType(boolean favorite){
         this.mName = favorite ? FAVORITES : ALL;
         this.mEnglishString = null;
         this.mFrenchString = null;
@@ -68,15 +68,15 @@ public class PlaceCategory implements Serializable{
         return mEnglishString;
     }
 
-    public static List<PlaceCategory> getCategories(String[] categoryStrings){
-        List<PlaceCategory> categories = new ArrayList<PlaceCategory>();
+    public static List<PlaceType> getCategories(String[] categoryStrings){
+        List<PlaceType> categories = new ArrayList<PlaceType>();
         //Go through the category Strings
         for(String category : categoryStrings){
             //Go through the place categories
-            for(PlaceCategory placeCategory : App.getPlaceCategories()){
+            for(PlaceType placeType : App.getPlaceCategories()){
                 //If a category String equals the place category's name, then add it and break the loop
-                if(category.equals(placeCategory.getName())){
-                    categories.add(placeCategory);
+                if(category.equals(placeType.getName())){
+                    categories.add(placeType);
                     break;
                 }
             }
@@ -87,12 +87,12 @@ public class PlaceCategory implements Serializable{
 
     @Override
     public boolean equals(Object object){
-        if(!(object instanceof PlaceCategory)){
+        if(!(object instanceof PlaceType)){
             return false;
         }
 
-        PlaceCategory placeCategory = (PlaceCategory)object;
+        PlaceType placeType = (PlaceType)object;
 
-        return this.mName.equals(placeCategory.getName());
+        return this.mName.equals(placeType.getName());
     }
 }

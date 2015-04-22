@@ -33,7 +33,7 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -69,7 +69,7 @@ public class App extends Application {
     private static List<Course> wishlist;
     private static List<Place> places;
     private static List<Place> favoritePlaces;
-    private static List<PlaceCategory> placeCategories;
+    private static List<PlaceType> placeCategories;
     //List of semesters you can currently register in
     private static List<Term> registerTerms;
 
@@ -195,7 +195,7 @@ public class App extends Application {
         return favoritePlaces;
     }
 
-    public static List<PlaceCategory> getPlaceCategories(){
+    public static List<PlaceType> getPlaceCategories(){
         return placeCategories;
     }
 
@@ -273,7 +273,7 @@ public class App extends Application {
         Save.saveFavoritePlaces(context);
     }
 
-    public static void setPlaceCategories(List<PlaceCategory> placeCategories){
+    public static void setPlaceCategories(List<PlaceType> placeCategories){
         App.placeCategories = placeCategories;
         //Save it to internal storage
         Save.savePlaceCategories(context);

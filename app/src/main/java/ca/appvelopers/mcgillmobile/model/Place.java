@@ -19,42 +19,91 @@ package ca.appvelopers.mcgillmobile.model;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * A place on the campus map
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class Place implements Serializable{
     private static final long serialVersionUID = 1L;
-
+    /**
+     * The place name
+     */
     private String mName;
-    private List<PlaceCategory> mCategories;
+    /**
+     * The place types
+     */
+    private List<PlaceType> mTypes;
+    /**
+     * The address of this place
+     */
     private String mAddress;
+    /**
+     * The latitude coordinate of this place
+     */
     private double mLatitude;
+    /**
+     * The longitude coordinate of this place
+     */
     private double mLongitude;
 
-    public Place(String name, String[] categories, String address, double latitude, double longitude){
+    /**
+     * Default Constructor
+     *
+     * @param name      The name of this place
+     * @param types     The place types
+     * @param address   The address of this place
+     * @param latitude  The latitude coordinate of this place
+     * @param longitude The longitude coordinate of this place
+     */
+    public Place(String name, String[] types, String address, double latitude,
+                 double longitude){
         this.mName = name;
-        this.mCategories = PlaceCategory.getCategories(categories);
+        this.mTypes = PlaceType.getCategories(types);
         this.mAddress = address;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
     }
 
     /* GETTERS */
+
+    /**
+     * @return The name of this place
+     */
     public String getName(){
-        return mName;
+        return this.mName;
     }
 
-    public boolean hasCategory(PlaceCategory category){
-        return mCategories.contains(category);
-    }
-
+    /**
+     * @return The address of this place
+     */
     public String getAddress(){
-        return mAddress;
+        return this.mAddress;
     }
 
+    /**
+     * @return The latitude coordinate of this place
+     */
     public double getLatitude(){
-        return mLatitude;
+        return this.mLatitude;
     }
 
+    /**
+     * @return The longitude coordinate of this place
+     */
     public double getLongitude(){
-        return mLongitude;
+        return this.mLongitude;
+    }
+
+    /**
+     * Checks if this place is of the given type
+     *
+     * @param type The type
+     * @return True if it is part of the type, false otherwise
+     */
+    public boolean isOfType(PlaceType type){
+        return mTypes.contains(type);
     }
 
     @Override
@@ -64,8 +113,9 @@ public class Place implements Serializable{
         }
 
         Place place = (Place)object;
-
-        return mName.equalsIgnoreCase(place.getName()) && mAddress.equalsIgnoreCase(place.getAddress()) &&
-                mLatitude == place.getLatitude() && mLongitude == place.getLongitude();
+        return mName.equalsIgnoreCase(place.getName()) &&
+                mAddress.equalsIgnoreCase(place.getAddress()) &&
+                mLatitude == place.getLatitude() &&
+                mLongitude == place.getLongitude();
     }
 }

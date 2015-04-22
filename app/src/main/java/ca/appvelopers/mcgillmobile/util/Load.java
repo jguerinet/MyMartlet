@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -360,13 +360,13 @@ public class Load {
         return places;
     }
 
-    public static List<PlaceCategory> loadPlaceCategories(Context context){
-        List<PlaceCategory> placeCategories = new ArrayList<PlaceCategory>();
+    public static List<PlaceType> loadPlaceCategories(Context context){
+        List<PlaceType> placeCategories = new ArrayList<PlaceType>();
 
         try{
             FileInputStream fis = context.openFileInput(Constants.PLACE_CATEGORIES_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
-            placeCategories = (List<PlaceCategory>) in.readObject();
+            placeCategories = (List<PlaceType>) in.readObject();
         } catch (ClassNotFoundException e) {
             Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
             e.printStackTrace();

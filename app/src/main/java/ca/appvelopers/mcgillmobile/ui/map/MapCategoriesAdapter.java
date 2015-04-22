@@ -30,30 +30,30 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.PlaceType;
 
 public class MapCategoriesAdapter extends BaseAdapter {
     private Context mContext;
-    private List<PlaceCategory> mCategories;
+    private List<PlaceType> mCategories;
 
     public MapCategoriesAdapter(Context context){
         this.mContext = context;
-        this.mCategories = new ArrayList<PlaceCategory>();
+        this.mCategories = new ArrayList<PlaceType>();
         mCategories.addAll(App.getPlaceCategories());
 
         //Sort them
-        Collections.sort(mCategories, new Comparator<PlaceCategory>() {
+        Collections.sort(mCategories, new Comparator<PlaceType>() {
             @Override
-            public int compare(PlaceCategory category, PlaceCategory category2) {
+            public int compare(PlaceType category, PlaceType category2) {
                 return category.toString().compareToIgnoreCase(category2.toString());
             }
         });
 
         //Add the favorites option
-        mCategories.add(0, new PlaceCategory(true));
+        mCategories.add(0, new PlaceType(true));
 
         //Add the All option
-        mCategories.add(0, new PlaceCategory(false));
+        mCategories.add(0, new PlaceType(false));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class MapCategoriesAdapter extends BaseAdapter {
     }
 
     @Override
-    public PlaceCategory getItem(int i) {
+    public PlaceType getItem(int i) {
         return mCategories.get(i);
     }
 
@@ -78,7 +78,7 @@ public class MapCategoriesAdapter extends BaseAdapter {
         }
 
         //Set the category name
-        PlaceCategory category = getItem(position);
+        PlaceType category = getItem(position);
         ((TextView)view).setText(category.toString());
 
         return view;
@@ -91,7 +91,7 @@ public class MapCategoriesAdapter extends BaseAdapter {
         }
 
         //Set the category name
-        PlaceCategory category = getItem(position);
+        PlaceType category = getItem(position);
         ((TextView)view).setText(category.toString());
 
         return view;

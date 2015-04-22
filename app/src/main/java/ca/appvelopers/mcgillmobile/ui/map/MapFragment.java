@@ -51,7 +51,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -67,7 +67,7 @@ public class MapFragment extends BaseFragment {
     private TextView mFavorite;
     private MapPlace mPlaceMarker;
     private LinearLayout mInfoContainer;
-    private PlaceCategory mCategory;
+    private PlaceType mCategory;
     private GoogleMap mMap;
     private SupportMapFragment mFragment;
     private List<MapPlace> mCurrentMapPlaces;
@@ -154,7 +154,7 @@ public class MapFragment extends BaseFragment {
                         mFavorite.setText(getString(R.string.map_favorites_add));
 
                         //If we are in the favorites category, we need to hide this pin
-                        if(mCategory.getName().equals(PlaceCategory.FAVORITES)){
+                        if(mCategory.getName().equals(PlaceType.FAVORITES)){
                             mPlaceMarker.mMarker.setVisible(false);
                         }
                     } else {
@@ -258,12 +258,12 @@ public class MapFragment extends BaseFragment {
         //Go through the places
         for(MapPlace place : mPlaces){
             //If it's all, add everything
-            if(categoryName.equals(PlaceCategory.ALL)){
+            if(categoryName.equals(PlaceType.ALL)){
                 mCurrentMapPlaces.add(place);
                 place.mMarker.setVisible(true);
             }
             //If it's favorites, check if it's part of favorites
-            else if(categoryName.equals(PlaceCategory.FAVORITES)){
+            else if(categoryName.equals(PlaceType.FAVORITES)){
                 boolean partOfFavorites = mFavoritePlaces.contains(place.mPlace);
                 place.mMarker.setVisible(partOfFavorites);
                 if(partOfFavorites){
@@ -272,7 +272,7 @@ public class MapFragment extends BaseFragment {
             }
             //If not, show the ones pertaining to the current category
             else{
-                boolean partOfCategory = place.mPlace.hasCategory(mCategory);
+                boolean partOfCategory = place.mPlace.isOfType(mCategory);
                 place.mMarker.setVisible(partOfCategory);
                 if(partOfCategory){
                     mCurrentMapPlaces.add(place);

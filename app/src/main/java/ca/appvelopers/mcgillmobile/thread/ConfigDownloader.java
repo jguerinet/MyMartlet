@@ -47,7 +47,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Date;
@@ -148,7 +148,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                     //Set up the Gson parser by adding our custom deserializers
                     GsonBuilder builder = new GsonBuilder();
                     builder.registerTypeAdapter(Place.class, new PlaceDeserializer());
-                    builder.registerTypeAdapter(PlaceCategory.class,
+                    builder.registerTypeAdapter(PlaceType.class,
                             new PlaceCategoryDeserializer());
                     Gson gson = builder.create();
                     JsonParser parser = new JsonParser();
@@ -231,10 +231,10 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         App.setRegisterTerms(registrationTerms);
 
         //Get the place categories
-        List<PlaceCategory> categories = new ArrayList<>();
+        List<PlaceType> categories = new ArrayList<>();
         JsonArray categoriesJSON = configJSON.getAsJsonArray("Place Categories");
         for(int i = 0; i < categoriesJSON.size(); i ++){
-            categories.add(gson.fromJson(categoriesJSON.get(i), PlaceCategory.class));
+            categories.add(gson.fromJson(categoriesJSON.get(i), PlaceType.class));
         }
 
         //Save the place categories
@@ -265,14 +265,14 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     /* DESERIALIZERS */
 
     /**
-     * Deserializer used to deserialize the PlaceCategory object
+     * Deserializer used to deserialize the PlaceType object
      */
-    private static class PlaceCategoryDeserializer implements JsonDeserializer<PlaceCategory>{
+    private static class PlaceCategoryDeserializer implements JsonDeserializer<PlaceType>{
         @Override
-        public PlaceCategory deserialize(JsonElement json, Type type,
+        public PlaceType deserialize(JsonElement json, Type type,
                                      JsonDeserializationContext context) throws JsonParseException{
             JsonObject object = json.getAsJsonObject();
-            return new PlaceCategory(object.get("Name").getAsString(),
+            return new PlaceType(object.get("Name").getAsString(),
                     object.get("En").getAsString(),
                     object.get("Fr").getAsString());
         }

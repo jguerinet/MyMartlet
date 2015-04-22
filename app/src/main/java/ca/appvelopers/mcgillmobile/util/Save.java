@@ -31,7 +31,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceCategory;
+import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -268,7 +268,7 @@ public class Save {
     }
 
     public static void savePlaceCategories(Context context) {
-        List<PlaceCategory> places = App.getPlaceCategories();
+        List<PlaceType> places = App.getPlaceCategories();
 
         try{
             FileOutputStream fos = context.openFileOutput(Constants.PLACE_CATEGORIES_FILE, Context.MODE_PRIVATE);
