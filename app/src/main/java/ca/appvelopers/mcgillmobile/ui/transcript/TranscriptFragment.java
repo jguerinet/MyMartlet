@@ -29,13 +29,16 @@ import android.widget.TextView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.thread.TranscriptDownloader;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 
-@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
+/**
+ * Shows the user's transcript
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class TranscriptFragment extends BaseFragment{
-    private Transcript mTranscript;
     private TextView mCGPA, mTotalCredits;
     private ListView mListView;
 
@@ -47,7 +50,8 @@ public class TranscriptFragment extends BaseFragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
 
         lockPortraitMode();
@@ -58,9 +62,6 @@ public class TranscriptFragment extends BaseFragment{
         mActivity.setTitle(getString(R.string.title_transcript));
 
         Analytics.getInstance().sendScreen("Transcript");
-
-        //Get the stored transcript from the App
-        mTranscript = App.getTranscript();
 
         //Get the views
         mCGPA = (TextView)view.findViewById(R.id.transcript_cgpa);
@@ -77,12 +78,14 @@ public class TranscriptFragment extends BaseFragment{
     }
 
     private void loadInfo(){
+        Transcript transcript = App.getTranscript();
+
         //Fill out the transcript info
-        mCGPA.setText(getResources().getString(R.string.transcript_CGPA, mTranscript.getCgpa()));
-        mTotalCredits.setText(getResources().getString(R.string.transcript_credits, mTranscript.getTotalCredits()));
+        mCGPA.setText(getString(R.string.transcript_CGPA, transcript.getCgpa()));
+        mTotalCredits.setText(getString(R.string.transcript_credits, transcript.getTotalCredits()));
 
         //Reload the adapter
-        TranscriptAdapter adapter = new TranscriptAdapter(mActivity, mTranscript);
+        TranscriptAdapter adapter = new TranscriptAdapter(mActivity, transcript);
         mListView.setAdapter(adapter);
     }
 
@@ -95,34 +98,14 @@ public class TranscriptFragment extends BaseFragment{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                //Start thread to retrieve inbox
-                executeTranscriptDownloader();
+                boolean success = refreshTranscript(true);
+
+                if(success){
+                    loadInfo();
+                }
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void executeTranscriptDownloader(){
-        final TranscriptDownloader downloader = new TranscriptDownloader(mActivity, false);
-        downloader.start();
-
-        //Show the user we are downloading new info
-        mActivity.showToolbarProgress(true);
-
-        //Wait for the downloader to finish
-        synchronized(downloader){
-            try{
-                downloader.wait();
-            } catch(InterruptedException e){}
-        }
-
-        mTranscript = App.getTranscript();
-
-        if(downloader.success()){
-            //Reload the info in the views
-            loadInfo();
-        }
-
-        mActivity.showToolbarProgress(false);
     }
 }
