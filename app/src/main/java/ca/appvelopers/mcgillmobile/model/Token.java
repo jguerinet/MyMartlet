@@ -25,9 +25,6 @@ package ca.appvelopers.mcgillmobile.model;
 public enum Token {
 
     //Semester names
-    FALL,
-    WINTER,
-    SUMMER,
     READMITTED_FALL,
     READMITTED_WINTER,
     READMITTED_SUMMER,
@@ -54,13 +51,6 @@ public enum Token {
     //Get the string for a given token
     public String getString(){
         switch(this){
-
-            case FALL:
-                return "Fall";
-            case WINTER:
-                return "Winter";
-            case SUMMER:
-                return "Summer";
             case READMITTED_FALL:
                 return "Readmitted Fall";
             case READMITTED_WINTER:

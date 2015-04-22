@@ -118,9 +118,9 @@ public class Parser {
                 }
             }
             //Semester Information
-            if(row.text().startsWith(Token.FALL.getString()) ||
-                    row.text().startsWith(Token.WINTER.getString()) ||
-                    row.text().startsWith(Token.SUMMER.getString()) ||
+            if(row.text().startsWith(Season.FALL.getId()) ||
+                    row.text().startsWith(Season.WINTER.getId()) ||
+                    row.text().startsWith(Season.SUMMER.getId()) ||
                     row.text().startsWith(Token.READMITTED_FALL.getString()) ||
                     row.text().startsWith(Token.READMITTED_WINTER.getString()) ||
                     row.text().startsWith(Token.READMITTED_SUMMER.getString()) ||
@@ -134,9 +134,9 @@ public class Parser {
                 Season season;
                 int year;
 
-                if(row.text().startsWith(Token.FALL.getString()) ||
-                        row.text().startsWith(Token.WINTER.getString()) ||
-                        row.text().startsWith(Token.SUMMER.getString()) ){
+                if(row.text().startsWith(Season.FALL.getId()) ||
+                        row.text().startsWith(Season.WINTER.getId()) ||
+                        row.text().startsWith(Season.SUMMER.getId()) ){
 
                     season = Season.findSeason(scheduleSemesterItems[0]);
                     try{
@@ -432,9 +432,9 @@ public class Parser {
                     /**
                      * Breaks the loop if the next semester is reached
                      */
-                    if(dataRow.text().startsWith(Token.FALL.getString()) ||
-                            dataRow.text().startsWith(Token.WINTER.getString()) ||
-                            dataRow.text().startsWith(Token.SUMMER.getString()) ||
+                    if(dataRow.text().startsWith(Season.FALL.getId()) ||
+                            dataRow.text().startsWith(Season.WINTER.getId()) ||
+                            dataRow.text().startsWith(Season.SUMMER.getId()) ||
                             dataRow.text().startsWith(Token.READMITTED_FALL.getString()) ||
                             dataRow.text().startsWith(Token.READMITTED_WINTER.getString()) ||
                             dataRow.text().startsWith(Token.READMITTED_SUMMER.getString()) ||
