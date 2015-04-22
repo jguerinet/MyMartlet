@@ -41,7 +41,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
@@ -464,7 +464,7 @@ public class SplashActivity extends BaseActivity {
                                 reportBug(true, transcriptBug);
                             }
 
-                        } catch(MinervaLoggedOutException e){
+                        } catch(MinervaException e){
                             //Set the connection status and break the loop
                             mConnectionStatus = ConnectionStatus.WRONG_INFO;
                             break downloadLoop;
@@ -509,7 +509,7 @@ public class SplashActivity extends BaseActivity {
                                     try{
                                         scheduleBug = Parser.parseCourses(term,
                                                 connection.get(Connection.getScheduleURL(term)));
-                                    } catch(MinervaLoggedOutException e){
+                                    } catch(MinervaException e){
                                         //Set the connection status and break the loop
                                         mConnectionStatus = ConnectionStatus.WRONG_INFO;
                                         break downloadLoop;
@@ -540,7 +540,7 @@ public class SplashActivity extends BaseActivity {
                         try{
                             String ebillString = connection.get(Connection.EBILL_URL);
                             Parser.parseEbill(ebillString);
-                        } catch(MinervaLoggedOutException e){
+                        } catch(MinervaException e){
                             //Set the connection status and break the loop
                             mConnectionStatus = ConnectionStatus.WRONG_INFO;
                             break downloadLoop;

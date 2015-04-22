@@ -21,7 +21,7 @@ import android.content.Context;
 import android.util.Log;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -75,7 +75,7 @@ public class DownloaderThread extends Thread {
 			try{
 				//Make the request
 				this.mResults = Connection.getInstance().get(mURL);
-			} catch(MinervaLoggedOutException e){
+			} catch(MinervaException e){
 				//TODO Broadcast this
 			} catch(Exception e){
 				final boolean noInternet = e instanceof NoInternetException;

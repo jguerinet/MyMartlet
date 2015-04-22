@@ -41,7 +41,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
@@ -305,7 +305,7 @@ public class CourseSearchFragment extends BaseFragment {
                 String classesString = Connection.getInstance().get(mClassSearchURL);
                 this.mClasses = Parser.parseClassResults(mTerm, classesString);
                 return true;
-            } catch(MinervaLoggedOutException e){
+            } catch(MinervaException e){
                 //TODO Broadcast message here
                 return false;
             } catch(Exception e){

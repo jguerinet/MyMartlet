@@ -43,7 +43,7 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.exception.MinervaLoggedOutException;
+import ca.appvelopers.mcgillmobile.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -172,11 +172,11 @@ public class Connection {
 	 * @param url       The URL
 	 * @param autoLogin True if we should try reconnecting the user automatically, false otherwise
 	 * @return The page contents in String format
-	 * @throws MinervaLoggedOutException
+	 * @throws MinervaException
 	 * @throws IOException
 	 * @throws NoInternetException
 	 */
-	public String get(String url, boolean autoLogin) throws MinervaLoggedOutException, IOException,
+	public String get(String url, boolean autoLogin) throws MinervaException, IOException,
 			NoInternetException{
 		//Check if the user is connected to the internet
 		if(!Help.isConnected()){
@@ -228,12 +228,12 @@ public class Connection {
 				}
 				//Wrong credentials: back to login screen
 				else if(status == ConnectionStatus.WRONG_INFO){
-					throw new MinervaLoggedOutException();
+					throw new MinervaException();
 				}
 			}
 			//If not, throw the exception
 			else{
-				throw new MinervaLoggedOutException();
+				throw new MinervaException();
 			}
 		}
 
@@ -249,11 +249,11 @@ public class Connection {
 	 *
 	 * @param url The URL
 	 * @return The page contents in String format
-	 * @throws MinervaLoggedOutException
+	 * @throws MinervaException
 	 * @throws IOException
 	 * @throws NoInternetException
 	 */
-	public String get(String url) throws MinervaLoggedOutException, IOException,
+	public String get(String url) throws MinervaException, IOException,
 			NoInternetException{
 		return get(url, true);
 	}
@@ -325,9 +325,9 @@ public class Connection {
 			if (!response.contains("WELCOME")){
 				return ConnectionStatus.WRONG_INFO;
 			}
-		} catch (MinervaLoggedOutException e) {
+		} catch (MinervaException e) {
 			//This should never happen
-			Log.e(TAG, "MinervaLoggedOutException during login", e);
+			Log.e(TAG, "MinervaException during login", e);
 			return ConnectionStatus.MINERVA_LOGOUT;
 		} catch (IOException e) {
 			Log.e(TAG, "IOException during login", e);
