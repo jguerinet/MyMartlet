@@ -18,55 +18,54 @@ package ca.appvelopers.mcgillmobile.ui.settings;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Save;
 
+/**
+ * Displays the EULA
+ * @author Julien Guerinet
+ * @author Joshua David Alfaro
+ * @version 2.0
+ * @since 1.0
+ */
 public class AgreementActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement);
+        ButterKnife.inject(this);
 
-        setUpToolbar();
+        boolean required = getIntent().getBooleanExtra(Constants.EULA_REQUIRED, false);
+        setUpToolbar(!required);
 
         //Check if we need to display the buttons
-        if(getIntent().getBooleanExtra(Constants.EULA_REQUIRED, false)){
+        if(required){
             LinearLayout layout = (LinearLayout)findViewById(R.id.buttons_container);
             layout.setVisibility(View.VISIBLE);
-
-            //Accept
-            Button agree = (Button)findViewById(R.id.button_agree);
-            agree.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Save the fact that they accepted
-                    Save.saveUserAgreement(AgreementActivity.this, true);
-
-                    setResult(RESULT_OK);
-                    finish();
-                }
-            });
-
-            Button decline = (Button)findViewById(R.id.button_decline);
-            decline.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Save the fact that they declined
-                    Save.saveUserAgreement(AgreementActivity.this, false);
-
-                    setResult(RESULT_CANCELED);
-                    finish();
-                }
-            });
         }
-        //Show the back button if not
-        else{
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+    }
+
+    @OnClick(R.id.button_agree)
+    public void agree(){
+        //Save the fact that they accepted
+        Save.saveUserAgreement(AgreementActivity.this, true);
+
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @OnClick(R.id.button_decline)
+    public void decline(){
+        //Save the fact that they declined
+        Save.saveUserAgreement(AgreementActivity.this, false);
+
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }
