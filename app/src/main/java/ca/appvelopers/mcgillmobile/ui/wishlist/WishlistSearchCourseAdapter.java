@@ -70,7 +70,7 @@ public class WishlistSearchCourseAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         //Inflate the view if it is null
         if(view == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_class, null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_course, null);
         }
 
         //Get the concerned course

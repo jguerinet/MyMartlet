@@ -19,6 +19,8 @@ package ca.appvelopers.mcgillmobile.ui.courses;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,10 +28,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -59,12 +61,17 @@ public class CoursesFragment extends BaseFragment {
      * The ListView for the courses
      */
     @InjectView(R.id.courses_list)
-    private ListView mListView;
+    private RecyclerView mListView;
     /**
      * The button to unregister from a course
      */
     @InjectView(R.id.course_register)
     private TextView mUnregisterButton;
+    /**
+     * The empty list view
+     */
+    @InjectView(R.id.courses_empty)
+    private TextView mEmptyView;
     /**
      * The ListView adapter
      */
@@ -91,11 +98,9 @@ public class CoursesFragment extends BaseFragment {
         lockPortraitMode();
         Analytics.getInstance().sendScreen("View Courses");
 
-        //Set the empty view
-        mListView.setEmptyView(view.findViewById(R.id.courses_empty));
-
-        //Term
         mTerm = App.getDefaultTerm();
+
+        mListView.setLayoutManager(new LinearLayoutManager(mActivity));
 
         //Remove this button
         view.findViewById(R.id.course_wishlist).setVisibility(View.GONE);
@@ -109,13 +114,13 @@ public class CoursesFragment extends BaseFragment {
     @Override
     public void onResume(){
         super.onResume();
-        loadInfo();
+        update();
     }
 
     /**
-     * Reloads all of the info in the view
+     * Updates all of the info in the view
      */
-    private void loadInfo(){
+    private void update(){
         //Set the title
         mActivity.setTitle(mTerm.toString());
 
@@ -135,8 +140,21 @@ public class CoursesFragment extends BaseFragment {
             mUnregisterButton.setVisibility(View.GONE);
         }
 
-        mAdapter = new CoursesAdapter(mActivity, mTerm, canUnregister);
+        //Get the list of courses for this term
+        List<Course> courses = new ArrayList<>();
+        for(Course course : App.getClasses()){
+            if(course.getTerm().equals(mTerm)){
+                courses.add(course);
+            }
+        }
+
+        //Set up the list
+        mAdapter = new CoursesAdapter(mActivity, courses, canUnregister);
         mListView.setAdapter(mAdapter);
+
+        //Show the empty view if needed
+        mListView.setVisibility(courses.isEmpty() ? View.GONE : View.VISIBLE);
+        mEmptyView.setVisibility(courses.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -159,7 +177,7 @@ public class CoursesFragment extends BaseFragment {
                         mTerm = term;
                         boolean success = refreshCourses(mTerm);
                         if(success){
-                            loadInfo();
+                            update();
                         }
                     }
                 }
@@ -171,7 +189,7 @@ public class CoursesFragment extends BaseFragment {
         else if(item.getItemId() == R.id.action_refresh){
             boolean success = refreshCourses(mTerm);
             if(success){
-                loadInfo();
+                update();
             }
             return true;
         }
@@ -184,7 +202,7 @@ public class CoursesFragment extends BaseFragment {
     @OnClick(R.id.course_register)
     public void unregister(){
         //Get checked courses from adapter
-        final List<Course> courses = mAdapter.getCheckedClasses();
+        final List<Course> courses = mAdapter.getCheckedCourses();
 
         //Too many courses
         if (courses.size() > 10) {
