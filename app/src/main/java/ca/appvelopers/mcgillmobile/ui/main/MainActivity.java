@@ -46,6 +46,8 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
@@ -78,14 +80,17 @@ public class MainActivity extends BaseActivity {
     /**
      * Progress bar shown when the user is switching fragments
      */
+    @InjectView(R.id.fragment_switcher)
     private LinearLayout mFragmentSwitcherProgress;
     /**
      * The drawer layout
      */
+    @InjectView(R.id.drawer_layout)
     private DrawerLayout mDrawerLayout;
     /**
      * The ListView inside the drawer
      */
+    @InjectView(R.id.drawer_list)
     private ListView mDrawerList;
     /**
      * The toggle for the drawer inside the action bar
@@ -151,15 +156,13 @@ public class MainActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         //Get the page from the intent. If not, use the home page
         mCurrentDrawerItem = (DrawerItem)getIntent().getSerializableExtra(Constants.HOMEPAGE);
         if(mCurrentDrawerItem == null){
             mCurrentDrawerItem = App.getHomePage();
         }
-
-        //Bind the necessary views
-        mFragmentSwitcherProgress = (LinearLayout)findViewById(R.id.fragment_switcher);
 
         //Create the fragments
         mScheduleFragment = new ScheduleFragment();
@@ -181,10 +184,6 @@ public class MainActivity extends BaseActivity {
         //Set up the toolbar
         Toolbar toolbar = setUpToolbar(false);
 
-        //Get the drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setFocusableInTouchMode(false);
-
         //Set up the drawer
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0){
             @Override
@@ -196,12 +195,12 @@ public class MainActivity extends BaseActivity {
                 }
             }
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setFocusableInTouchMode(false);
 
         //Set up the drawer list
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mAdapter = new DrawerAdapter(this);
+        mAdapter = new DrawerAdapter();
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
@@ -218,26 +217,7 @@ public class MainActivity extends BaseActivity {
                     shareOnTwitter();
                 }
                 else if(drawerItem == DrawerItem.LOGOUT){
-                    //Confirm with the user
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(getString(R.string.logout_dialog_title))
-                            .setMessage(getString(R.string.logout_dialog_message))
-                            .setPositiveButton(getString(R.string.logout_dialog_positive),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Analytics.getInstance().sendEvent("Logout", "Clicked",
-                                                    null);
-                                            Clear.clearAllInfo(MainActivity.this);
-                                            //Go back to SplashActivity
-                                            startActivity(new Intent(MainActivity.this,
-                                                    SplashActivity.class));
-                                        }
-
-                                    })
-                            .setNegativeButton(getString(R.string.logout_dialog_negative), null)
-                            .create()
-                            .show();
+                    logout();
                 }
                 else{
                     mChangeFragment = mCurrentDrawerItem != drawerItem;
@@ -413,6 +393,30 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
+     * Logs the user out
+     */
+    private void logout(){
+        //Confirm with the user
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(getString(R.string.logout_dialog_title))
+                .setMessage(getString(R.string.logout_dialog_message))
+                .setPositiveButton(getString(R.string.logout_dialog_positive),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Analytics.getInstance().sendEvent("Logout", "Clicked", null);
+                                Clear.clearAllInfo(MainActivity.this);
+                                //Go back to SplashActivity
+                                startActivity(new Intent(MainActivity.this, SplashActivity.class));
+                            }
+
+                        })
+                .setNegativeButton(getString(R.string.logout_dialog_negative), null)
+                .create()
+                .show();
+    }
+
+    /**
      * Shares the app on Facebook
      */
     private void shareOnFacebook(){
@@ -461,7 +465,7 @@ public class MainActivity extends BaseActivity {
     /**
      * Shares the app on Twitter
      */
-    public void shareOnTwitter(){
+    private void shareOnTwitter(){
         try{
             //Set up the Tweet Composer
             TweetComposer.Builder builder = new TweetComposer.Builder(this)

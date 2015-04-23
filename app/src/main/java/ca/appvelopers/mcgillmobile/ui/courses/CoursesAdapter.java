@@ -140,6 +140,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
         public CourseHolder(View itemView){
             super(itemView);
             ButterKnife.inject(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
         /**

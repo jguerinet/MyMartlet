@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui.main;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,21 +25,30 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.util.Load;
 
 /**
- * Author: Shabbir
- * Date: 24/02/14, 11:46 PM
+ * The adapter for the main navigation drawer
+ * @author Shabbir Hussain
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class DrawerAdapter extends BaseAdapter {
-    private Activity mActivity;
+    /**
+     * List of drawer items
+     */
     private List<DrawerItem> mDrawerItems;
 
-    public DrawerAdapter(Activity activity){
-        this.mActivity = activity;
+    /**
+     * Default Constructor
+     */
+    public DrawerAdapter(){
         this.mDrawerItems = Arrays.asList(DrawerItem.values());
     }
 
@@ -77,24 +85,29 @@ public class DrawerAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup viewGroup) {
         int itemViewType = getItemViewType(position);
 
+        Object holder;
         if(view == null){
-            LayoutInflater inflater = LayoutInflater.from(mActivity);
+            //If the view is not inflated yet, inflate the right one and set the holder as the tag
+            LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
             if(itemViewType == 0){
-                view = inflater.inflate(R.layout.item_drawer_header, null);
+                view = inflater.inflate(R.layout.item_drawer_header, viewGroup, false);
+                holder = new HeaderHolder(view);
             }
             else{
-                view = inflater.inflate(R.layout.item_drawer, null);
+                view = inflater.inflate(R.layout.item_drawer, viewGroup, false);
+                holder = new DrawerHolder(view);
             }
+            view.setTag(holder);
+        }
+        else{
+            //Get the holder from the view's tag
+            holder = view.getTag();
         }
 
         //The header
         if(itemViewType == 0){
-            //Set the user's name and email in the drawer
-            TextView name = (TextView)view.findViewById(R.id.drawer_name);
-            name.setText(App.getUserInfo().getName());
-
-            TextView email = (TextView)view.findViewById(R.id.drawer_email);
-            email.setText(Load.loadFullUsername(mActivity));
+            ((HeaderHolder)holder).name.setText(App.getUserInfo().getName());
+            ((HeaderHolder)holder).email.setText(Load.loadFullUsername(viewGroup.getContext()));
 
             //Not clickable
             view.setEnabled(false);
@@ -103,21 +116,64 @@ public class DrawerAdapter extends BaseAdapter {
         //A list object
         else {
             //Get the current object
-            DrawerItem currentItem = getItem(position);
+            DrawerItem item = getItem(position);
 
-            //Set the info up
-            TextView icon = (TextView)view.findViewById(R.id.drawerItem_icon);
-            icon.setTypeface(App.getIconFont());
-            icon.setText(currentItem.getIcon());
-
-            TextView title = (TextView)view.findViewById(R.id.drawerItem_title);
-            title.setText(currentItem.toString());
+            ((DrawerHolder)holder).icon.setText(item.getIcon());
+            ((DrawerHolder)holder).title.setText(item.toString());
         }
 
         return view;
     }
 
+    /**
+     * @return The list of drawer items
+     */
     public List<DrawerItem> getItems(){
         return this.mDrawerItems;
+    }
+
+    class HeaderHolder {
+        /**
+         * The user's name
+         */
+        @InjectView(R.id.drawer_name)
+        public TextView name;
+        /**
+         * The user's email
+         */
+        @InjectView(R.id.drawer_email)
+        public TextView email;
+
+        /**
+         * Default Constructor
+         *
+         * @param view The base view
+         */
+        public HeaderHolder(View view){
+            ButterKnife.inject(this, view);
+        }
+    }
+
+    class DrawerHolder {
+        /**
+         * The drawer item icon
+         */
+        @InjectView(R.id.drawer_icon)
+        public TextView icon;
+        /**
+         * The drawer item title
+         */
+        @InjectView(R.id.drawer_title)
+        public TextView title;
+
+        /**
+         * Default Constructor
+         *
+         * @param view The base view
+         */
+        public DrawerHolder(View view){
+            ButterKnife.inject(this, view);
+            icon.setTypeface(App.getIconFont());
+        }
     }
 }
