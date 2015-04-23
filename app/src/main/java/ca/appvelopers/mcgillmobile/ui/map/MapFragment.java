@@ -139,6 +139,7 @@ public class MapFragment extends BaseFragment {
         mCurrentPlaces = new ArrayList<>();
         mFavoritePlaces = App.getFavoritePlaces();
         mSearchString = "";
+        mType = new PlaceType(false);
     }
 
     @Override
@@ -151,7 +152,7 @@ public class MapFragment extends BaseFragment {
 
         //Set up the spinner
         final Spinner filter = (Spinner) view.findViewById(R.id.map_filter);
-        final MapCategoriesAdapter adapter = new MapCategoriesAdapter(mActivity);
+        final TypesAdapter adapter = new TypesAdapter();
         filter.setAdapter(adapter);
         filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -166,9 +167,6 @@ public class MapFragment extends BaseFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-
-        //Initially show all of the places
-        mType = adapter.getItem(0);
 
         //Directions
         Button directions = (Button)view.findViewById(R.id.map_directions);

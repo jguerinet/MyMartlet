@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui.map;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,38 +31,48 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 
-public class MapCategoriesAdapter extends BaseAdapter {
-    private Context mContext;
-    private List<PlaceType> mCategories;
+/**
+ * Adapter for the place types in the type chooser
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
+public class TypesAdapter extends BaseAdapter {
+    /**
+     * The list of types
+     */
+    private List<PlaceType> mTypes;
 
-    public MapCategoriesAdapter(Context context){
-        this.mContext = context;
-        this.mCategories = new ArrayList<PlaceType>();
-        mCategories.addAll(App.getPlaceTypes());
+    /**
+     * Default Constructor
+     */
+    public TypesAdapter(){
+        this.mTypes = new ArrayList<>();
+        mTypes.addAll(App.getPlaceTypes());
 
         //Sort them
-        Collections.sort(mCategories, new Comparator<PlaceType>() {
+        Collections.sort(mTypes, new Comparator<PlaceType>() {
             @Override
-            public int compare(PlaceType category, PlaceType category2) {
-                return category.toString().compareToIgnoreCase(category2.toString());
+            public int compare(PlaceType type, PlaceType type2) {
+                return type.toString().compareToIgnoreCase(type2.toString());
             }
         });
 
         //Add the favorites option
-        mCategories.add(0, new PlaceType(true));
+        mTypes.add(0, new PlaceType(true));
 
         //Add the All option
-        mCategories.add(0, new PlaceType(false));
+        mTypes.add(0, new PlaceType(false));
     }
 
     @Override
     public int getCount() {
-        return mCategories.size();
+        return mTypes.size();
     }
 
     @Override
     public PlaceType getItem(int i) {
-        return mCategories.get(i);
+        return mTypes.get(i);
     }
 
     @Override
@@ -74,12 +83,12 @@ public class MapCategoriesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         if(view == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.spinner_item, viewGroup, false);
         }
 
-        //Set the category name
-        PlaceType category = getItem(position);
-        ((TextView)view).setText(category.toString());
+        //Set the type name
+        ((TextView)view).setText(getItem(position).toString());
 
         return view;
     }
@@ -87,12 +96,12 @@ public class MapCategoriesAdapter extends BaseAdapter {
     @Override
     public View getDropDownView(int position, View view, ViewGroup viewGroup){
         if(view == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.spinner_dropdown, null);
+            view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.spinner_dropdown, viewGroup, false);
         }
 
-        //Set the category name
-        PlaceType category = getItem(position);
-        ((TextView)view).setText(category.toString());
+        //Set the type name
+        ((TextView)view).setText(getItem(position).toString());
 
         return view;
     }
