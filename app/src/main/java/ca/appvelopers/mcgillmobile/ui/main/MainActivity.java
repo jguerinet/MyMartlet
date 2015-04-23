@@ -81,17 +81,17 @@ public class MainActivity extends BaseActivity {
      * Progress bar shown when the user is switching fragments
      */
     @InjectView(R.id.fragment_switcher)
-    private LinearLayout mFragmentSwitcherProgress;
+    LinearLayout mFragmentSwitcherProgress;
     /**
      * The drawer layout
      */
     @InjectView(R.id.drawer_layout)
-    private DrawerLayout mDrawerLayout;
+    DrawerLayout mDrawerLayout;
     /**
      * The ListView inside the drawer
      */
     @InjectView(R.id.drawer_list)
-    private ListView mDrawerList;
+    ListView mDrawerList;
     /**
      * The toggle for the drawer inside the action bar
      */

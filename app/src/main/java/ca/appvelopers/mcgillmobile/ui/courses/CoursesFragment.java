@@ -61,17 +61,17 @@ public class CoursesFragment extends BaseFragment {
      * The ListView for the courses
      */
     @InjectView(android.R.id.list)
-    private RecyclerView mListView;
+    RecyclerView mListView;
     /**
      * The button to unregister from a course
      */
     @InjectView(R.id.course_register)
-    private TextView mUnregisterButton;
+    TextView mUnregisterButton;
     /**
      * The empty list view
      */
     @InjectView(R.id.courses_empty)
-    private TextView mEmptyView;
+    TextView mEmptyView;
     /**
      * The ListView adapter
      */

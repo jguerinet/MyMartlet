@@ -68,77 +68,77 @@ public class CourseSearchFragment extends BaseFragment {
      * Spinner to choose the term
      */
     @InjectView(R.id.search_term)
-    private Spinner mTermSpinner;
+    Spinner mTermSpinner;
     /**
      * Course start time
      */
     @InjectView(R.id.search_start)
-    private TimePicker mStartTime;
+    TimePicker mStartTime;
     /**
      * Course end time
      */
     @InjectView(R.id.search_end)
-    private TimePicker mEndTime;
+    TimePicker mEndTime;
     /**
      * Course subject
      */
     @InjectView(R.id.search_subject)
-    private EditText mSubject;
+    EditText mSubject;
     /**
      * Course number
      */
     @InjectView(R.id.search_number)
-    private EditText mNumber;
+    EditText mNumber;
     /**
      * Course title
      */
     @InjectView(R.id.search_title)
-    private EditText mTitle;
+    EditText mTitle;
     /**
      * Course min credits
      */
     @InjectView(R.id.search_min)
-    private EditText mMinCredits;
+    EditText mMinCredits;
     /**
      * Course max credits
      */
     @InjectView(R.id.search_max)
-    private EditText mMaxCredits;
+    EditText mMaxCredits;
     /**
      * Course on Monday
      */
     @InjectView(R.id.search_monday)
-    private CheckBox mMonday;
+    CheckBox mMonday;
     /**
      * Course on Tuesday
      */
     @InjectView(R.id.search_tuesday)
-    private CheckBox mTuesday;
+    CheckBox mTuesday;
     /**
      * Course on Wednesday
      */
     @InjectView(R.id.search_wednesday)
-    private CheckBox mWednesday;
+    CheckBox mWednesday;
     /**
      * Course on Thursday
      */
     @InjectView(R.id.search_thursday)
-    private CheckBox mThursday;
+    CheckBox mThursday;
     /**
      * Course on Friday
      */
     @InjectView(R.id.search_friday)
-    private CheckBox mFriday;
+    CheckBox mFriday;
     /**
      * Course on Saturday
      */
     @InjectView(R.id.search_saturday)
-    private CheckBox mSaturday;
+    CheckBox mSaturday;
     /**
      * Course on Sunday
      */
     @InjectView(R.id.search_sunday)
-    private CheckBox mSunday;
+    CheckBox mSunday;
     /**
      * True if the user sees al of the options, false otherwise
      */

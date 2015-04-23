@@ -53,17 +53,17 @@ public class EbillFragment extends BaseFragment {
      * The user name
      */
     @InjectView(R.id.user_name)
-    private TextView mUserName;
+    TextView mUserName;
     /**
      * The user Id
      */
     @InjectView(R.id.user_id)
-    private TextView mUserId;
+    TextView mUserId;
     /**
      * The statements ListView
      */
     @InjectView(android.R.id.list)
-    private RecyclerView mListView;
+    RecyclerView mListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

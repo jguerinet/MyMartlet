@@ -45,17 +45,17 @@ public class TranscriptFragment extends BaseFragment{
      * The user's CGPA
      */
     @InjectView(R.id.transcript_cgpa)
-    private TextView mCGPA;
+    TextView mCGPA;
     /**
      * The user's total credits
      */
     @InjectView(R.id.transcript_credits)
-    private TextView mTotalCredits;
+    TextView mTotalCredits;
     /**
      * The list of semesters
      */
     @InjectView(android.R.id.list)
-    private ListView mListView;
+    ListView mListView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

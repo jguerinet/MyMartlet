@@ -100,37 +100,37 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
          * The course code
          */
         @InjectView(R.id.course_code)
-        private TextView mCode;
+        TextView mCode;
         /**
          * The course title
          */
         @InjectView(R.id.course_title)
-        private TextView mTitle;
+        TextView mTitle;
         /**
          * The course type
          */
         @InjectView(R.id.course_type)
-        private TextView mType;
+        TextView mType;
         /**
          * The course credits
          */
         @InjectView(R.id.course_credits)
-        private TextView mCredits;
+        TextView mCredits;
         /**
          * The course days
          */
         @InjectView(R.id.course_days)
-        private TextView mDays;
+        TextView mDays;
         /**
          * The course hours
          */
         @InjectView(R.id.course_hours)
-        private TextView mHours;
+        TextView mHours;
         /**
          * The course unregistration check box
          */
         @InjectView(R.id.course_checkbox)
-        private CheckBox mCheckBox;
+        CheckBox mCheckBox;
 
         /**
          * Default Constructor

@@ -117,12 +117,12 @@ public class HelpActivity extends BaseActivity{
              * The FAQ question
              */
             @InjectView(R.id.faq_question)
-            private TextView mQuestion;
+            TextView mQuestion;
             /**
              * The FAQ answer
              */
             @InjectView(R.id.faq_answer)
-            private TextView mAnswer;
+            TextView mAnswer;
 
             /**
              * Default Constructor

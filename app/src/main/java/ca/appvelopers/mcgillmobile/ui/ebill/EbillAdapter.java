@@ -78,17 +78,17 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
          * The statement date
          */
         @InjectView(R.id.statement_date)
-        private TextView mDate;
+        TextView mDate;
         /**
          * The statement due date
          */
         @InjectView(R.id.statement_due_date)
-        private TextView mDueDate;
+        TextView mDueDate;
         /**
          * The statement amount
          */
         @InjectView(R.id.statement_amount)
-        private TextView mAmount;
+        TextView mAmount;
 
         /**
          * Default Constructor

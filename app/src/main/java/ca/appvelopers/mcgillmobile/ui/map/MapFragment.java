@@ -110,22 +110,22 @@ public class MapFragment extends BaseFragment {
      * The info container used to show the current place's detail
      */
     @InjectView(R.id.info_container)
-    private LinearLayout mInfoContainer;
+    LinearLayout mInfoContainer;
     /**
      * The current place's title
      */
     @InjectView(R.id.place_title)
-    private TextView mTitle;
+    TextView mTitle;
     /**
      * The current place's address
      */
     @InjectView(R.id.place_address)
-    private TextView mAddress;
+    TextView mAddress;
     /**
      * Button to add or remove a place from the user's favorites
      */
     @InjectView(R.id.map_favorite)
-    private Button mFavorite;
+    Button mFavorite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
