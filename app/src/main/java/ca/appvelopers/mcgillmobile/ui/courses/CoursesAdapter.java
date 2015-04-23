@@ -74,7 +74,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
 
     @Override
     public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i){
-        return new CourseHolder(LayoutInflater.from(viewGroup.getContext())
+        return new CourseHolder(LayoutInflater.from(mContext)
                 .inflate(R.layout.item_course, viewGroup, false));
     }
 

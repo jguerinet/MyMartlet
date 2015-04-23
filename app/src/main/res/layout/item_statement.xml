@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/ebill_statement_date"
+            android:id="@+id/statement_date"
             android:textSize="@dimen/text_medium"/>
 
     </LinearLayout>
@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/ebill_due_date"
+            android:id="@+id/statement_due_date"
             android:textSize="@dimen/text_medium"/>
 
     </LinearLayout>
@@ -64,7 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/ebill_amount"
+            android:id="@+id/statement_amount"
             android:textSize="@dimen/text_medium"/>
 
     </LinearLayout>

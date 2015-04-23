@@ -7,26 +7,24 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ebill_user_name"
-        android:textSize="@dimen/text_large"
+        android:id="@+id/user_name"
+        android:textSize="@dimen/text_medium"
         android:gravity="center"
         android:textColor="@color/red"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ebill_user_id"
-        android:textSize="@dimen/text_medium"
+        android:id="@+id/user_id"
         android:textStyle="italic"
         android:gravity="center"
         android:paddingBottom="@dimen/padding_micro"/>
 
-    <ListView
+    <RecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:clickable="false" >
-    </ListView>
+        android:clickable="false" />
 </LinearLayout>
 

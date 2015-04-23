@@ -17,17 +17,20 @@
 package ca.appvelopers.mcgillmobile.ui.ebill;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -45,16 +48,22 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class EbillFragment extends BaseFragment {
     /**
-     * The user-related TextViews
+     * The user name
      */
-    private TextView mUserName, mUserId;
+    @InjectView(R.id.user_name)
+    private TextView mUserName;
+    /**
+     * The user Id
+     */
+    @InjectView(R.id.user_id)
+    private TextView mUserId;
     /**
      * The statements ListView
      */
-    private ListView mListView;
+    @InjectView(android.R.id.list)
+    private RecyclerView mListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,42 +77,36 @@ public class EbillFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-
         View view = View.inflate(mActivity, R.layout.fragment_ebill, container);
-
+        ButterKnife.inject(this, view);
         lockPortraitMode();
+        Analytics.getInstance().sendScreen("Ebill");
 
         //Title
         mActivity.setTitle(getString(R.string.title_ebill));
 
-        Analytics.getInstance().sendScreen("Ebill");
+        mListView.setLayoutManager(new LinearLayoutManager(mActivity));
 
-        //Get the views
-        mUserName = (TextView)view.findViewById(R.id.ebill_user_name);
-        mUserId = (TextView)view.findViewById(R.id.ebill_user_id);
-        mListView = (ListView)view.findViewById(android.R.id.list);
-
-        //Load the stored info
-        loadInfo();
+        update();
 
         hideLoadingIndicator();
 
         return view;
     }
 
-    private void loadInfo(){
+    /**
+     * Updates the view
+     */
+    private void update(){
         User user = App.getUserInfo();
         List<Statement> statements = App.getEbill();
 
-        //Set the user info
         if(user != null){
             mUserName.setText(user.getName());
             mUserId.setText(user.getId());
         }
 
-        //Statements Adapter
-        EbillAdapter adapter = new EbillAdapter(mActivity, statements);
-        mListView.setAdapter(adapter);
+        mListView.setAdapter(new EbillAdapter(mActivity, statements));
     }
 
     @Override
@@ -131,7 +134,7 @@ public class EbillFragment extends BaseFragment {
         //If the download was successful, parse and reload the info
         if(html != null){
             Parser.parseEbill(html);
-            loadInfo();
+            update();
         }
 
         mActivity.showToolbarProgress(false);

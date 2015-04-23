@@ -21,7 +21,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/courses_list"
+        android:id="@android:id/list"
         android:layout_below="@id/toolbar"
         android:layout_above="@+id/courses_button_container" />
 

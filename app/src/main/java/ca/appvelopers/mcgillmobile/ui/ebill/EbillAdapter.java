@@ -17,74 +17,102 @@
 package ca.appvelopers.mcgillmobile.ui.ebill;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
+import ca.appvelopers.mcgillmobile.util.Date;
 
 /**
- * Author: Julien
- * Date: 16/02/14, 3:30 PM
+ * Adapter used for the ebill page
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
-public class EbillAdapter extends BaseAdapter {
-    private List<Statement> mEbills;
+public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHolder> {
+    /**
+     * The application context
+     */
     private Context mContext;
+    /**
+     * The list of statements
+     */
+    private List<Statement> mStatements;
 
-    public EbillAdapter(Context context, List<Statement> eBills){
+    /**
+     * Default Constructor
+     *
+     * @param statements The list of statements
+     */
+    public EbillAdapter(Context context, List<Statement> statements){
         this.mContext = context;
-        this.mEbills = eBills;
+        this.mStatements = statements;
     }
 
     @Override
-    public int getCount() {
-        return mEbills.size();
+    public StatementHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+        return new StatementHolder(LayoutInflater.from(mContext)
+                .inflate(R.layout.item_statement, viewGroup, false));
     }
 
     @Override
-    public Statement getItem(int position) {
-        return mEbills.get(position);
+    public void onBindViewHolder(StatementHolder statementHolder, int i){
+        statementHolder.bindStatement(mStatements.get(i));
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public int getItemCount(){
+        return mStatements.size();
     }
 
-    @Override
-    public boolean isEnabled(int position) {
-        //Items are not clickable
-        return false;
-    }
+    class StatementHolder extends RecyclerView.ViewHolder {
+        /**
+         * The statement date
+         */
+        @InjectView(R.id.statement_date)
+        private TextView mDate;
+        /**
+         * The statement due date
+         */
+        @InjectView(R.id.statement_due_date)
+        private TextView mDueDate;
+        /**
+         * The statement amount
+         */
+        @InjectView(R.id.statement_amount)
+        private TextView mAmount;
 
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        if(view == null){
-            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.item_ebill, null);
+        /**
+         * Default Constructor
+         *
+         * @param itemView The item view
+         */
+        public StatementHolder(View itemView){
+            super(itemView);
+            ButterKnife.inject(this, itemView);
         }
 
-        //Quick Check
-        assert (view != null);
-
-        //Get the current ebill item
-        Statement statement = getItem(position);
-
-        //Fill out the info
-        TextView statementDate = (TextView)view.findViewById(R.id.ebill_statement_date);
-        statementDate.setText(" " + statement.getDate());
-
-        TextView dueDate = (TextView)view.findViewById(R.id.ebill_due_date);
-        dueDate.setText(" " + statement.getDueDate());
-
-        TextView amountDue = (TextView)view.findViewById(R.id.ebill_amount);
-        amountDue.setText(" " + statement.getAmount());
-
-        return view;
+        /**
+         * Binds the statement to the current view
+         *
+         * @param statement The statement
+         */
+        public void bindStatement(Statement statement){
+            mDate.setText(Date.getDateString(statement.getDate()));
+            mDueDate.setText(Date.getDateString(statement.getDueDate()));
+            double amount = statement.getAmount();
+            mAmount.setText(String.valueOf(amount));
+            //TODO Change the color to green or red depending on if the user owes money or not
+            int color = 0;
+            mAmount.setTextColor(color);
+        }
     }
 }

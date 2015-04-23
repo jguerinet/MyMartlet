@@ -104,7 +104,7 @@ public class WishlistFragment extends BaseFragment {
         }
 
         //Views
-        mListView = (ListView)view.findViewById(R.id.courses_list);
+        mListView = (ListView)view.findViewById(R.id.list);
         mListView.setEmptyView(view.findViewById(R.id.courses_empty));
 
         //Load the first registration term

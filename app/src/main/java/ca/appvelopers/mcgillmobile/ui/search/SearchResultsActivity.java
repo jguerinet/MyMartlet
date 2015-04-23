@@ -75,7 +75,7 @@ public class SearchResultsActivity extends BaseActivity {
 
         //ListView
         mAdapter = new WishlistSearchCourseAdapter(this, mTerm, courses);
-        ListView listView = (ListView) findViewById(R.id.courses_list);
+        ListView listView = (ListView) findViewById(R.id.list);
         listView.setEmptyView(findViewById(R.id.courses_empty));
         listView.setAdapter(mAdapter);
 
