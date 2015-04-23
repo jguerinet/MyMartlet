@@ -26,6 +26,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -39,7 +41,20 @@ import ca.appvelopers.mcgillmobile.util.Analytics;
  * @since 1.0
  */
 public class TranscriptFragment extends BaseFragment{
-    private TextView mCGPA, mTotalCredits;
+    /**
+     * The user's CGPA
+     */
+    @InjectView(R.id.transcript_cgpa)
+    private TextView mCGPA;
+    /**
+     * The user's total credits
+     */
+    @InjectView(R.id.transcript_credits)
+    private TextView mTotalCredits;
+    /**
+     * The list of semesters
+     */
+    @InjectView(android.R.id.list)
     private ListView mListView;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -53,20 +68,11 @@ public class TranscriptFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-
-        lockPortraitMode();
-
         View view = View.inflate(mActivity, R.layout.fragment_transcript, null);
-
-        //Title
-        mActivity.setTitle(getString(R.string.title_transcript));
-
+        ButterKnife.inject(this, view);
+        lockPortraitMode();
         Analytics.getInstance().sendScreen("Transcript");
-
-        //Get the views
-        mCGPA = (TextView)view.findViewById(R.id.transcript_cgpa);
-        mTotalCredits = (TextView)view.findViewById(R.id.transcript_credits);
-        mListView = (ListView)view.findViewById(android.R.id.list);
+        mActivity.setTitle(getString(R.string.title_transcript));
 
         //Load the info stored on the device
         loadInfo();
