@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/registration_no_semesters"
-                android:id="@+id/registration_no_semesters"
+                android:id="@+id/search_empty"
                 android:gravity="center"
                 android:textSize="@dimen/text_medium"
                 android:visibility="gone"/>
@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:id="@+id/registration_search">
+                android:id="@+id/search_container">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -53,14 +53,14 @@
                         android:textSize="@dimen/text_medium" />
 
                     <Spinner
-                        android:id="@+id/registration_semester"
+                        android:id="@+id/search_term"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/registration_subject"
+                    android:id="@+id/search_subject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -72,7 +72,7 @@
                     tools:ignore="RtlHardcoded" />
 
                 <EditText
-                    android:id="@+id/registration_course_number"
+                    android:id="@+id/search_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -90,7 +90,7 @@
                     android:visibility="gone">
 
                     <EditText
-                        android:id="@+id/registration_course_title"
+                        android:id="@+id/search_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/registration_title"
@@ -116,7 +116,7 @@
                         <EditText
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/registration_credits_min"
+                            android:id="@+id/search_min"
                             android:hint="0"
                             android:inputType="number"/>
 
@@ -130,7 +130,7 @@
                         <EditText
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/registration_credits_max"
+                            android:id="@+id/search_max"
                             android:hint="0"
                             android:inputType="number"/>
 
@@ -162,7 +162,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:timePickerMode="spinner"
-                            android:id="@+id/registration_start_time"/>
+                            android:id="@+id/search_start"/>
 
                     </LinearLayout>
 
@@ -183,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:timePickerMode="spinner"
-                            android:id="@+id/registration_end_time"/>
+                            android:id="@+id/search_end"/>
 
                     </LinearLayout>
 
@@ -210,43 +210,43 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/monday"
-                                android:id="@+id/registration_monday"/>
+                                android:id="@+id/search_monday"/>
 
                             <CheckBox
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/tuesday"
-                                android:id="@+id/registration_tuesday"/>
+                                android:id="@+id/search_tuesday"/>
 
                             <CheckBox
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/wednesday"
-                                android:id="@+id/registration_wednesday"/>
+                                android:id="@+id/search_wednesday"/>
 
                             <CheckBox
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/thursday"
-                                android:id="@+id/registration_thursday"/>
+                                android:id="@+id/search_thursday"/>
 
                             <CheckBox
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/friday"
-                                android:id="@+id/registration_friday"/>
+                                android:id="@+id/search_friday"/>
 
                             <CheckBox
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/saturday"
-                                android:id="@+id/registration_saturday"/>
+                                android:id="@+id/search_saturday"/>
 
                             <CheckBox
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/sunday"
-                                android:id="@+id/registration_sunday"/>
+                                android:id="@+id/search_sunday"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

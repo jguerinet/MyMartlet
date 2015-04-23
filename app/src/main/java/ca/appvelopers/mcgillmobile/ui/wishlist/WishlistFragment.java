@@ -90,7 +90,7 @@ public class WishlistFragment extends BaseFragment {
         //Check if there are any terms to register for
         if(App.getRegisterTerms().isEmpty()){
             //Hide all of the main content, show explanatory text, and return the view
-            TextView noSemesters = (TextView)view.findViewById(R.id.registration_no_semesters);
+            TextView noSemesters = (TextView)view.findViewById(R.id.search_empty);
             noSemesters.setVisibility(View.VISIBLE);
 
             RelativeLayout registrationContainer = (RelativeLayout)view.findViewById(

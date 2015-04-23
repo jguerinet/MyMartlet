@@ -16,9 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.ui.search;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,27 +37,111 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.view.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
+/**
+ * Allows a user to search for courses that they can register for
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class CourseSearchFragment extends BaseFragment {
-    private Spinner mTermSpinner;
+    private static final String TAG = "Course Search";
+    /**
+     * Adapter for the term spinner
+     */
     private TermAdapter mTermAdapter;
-    private TimePicker mStartTime, mEndTime;
-    private EditText mCourseSubject, mCourseNumber, mCourseTitle, mMinCredits, mMaxCredits;
-    private CheckBox mMonday, mTuesday, mWednesday, mThursday, mFriday, mSaturday, mSunday;
-
+    /**
+     * Spinner to choose the term
+     */
+    @InjectView(R.id.search_term)
+    private Spinner mTermSpinner;
+    /**
+     * Course start time
+     */
+    @InjectView(R.id.search_start)
+    private TimePicker mStartTime;
+    /**
+     * Course end time
+     */
+    @InjectView(R.id.search_end)
+    private TimePicker mEndTime;
+    /**
+     * Course subject
+     */
+    @InjectView(R.id.search_subject)
+    private EditText mSubject;
+    /**
+     * Course number
+     */
+    @InjectView(R.id.search_number)
+    private EditText mNumber;
+    /**
+     * Course title
+     */
+    @InjectView(R.id.search_title)
+    private EditText mTitle;
+    /**
+     * Course min credits
+     */
+    @InjectView(R.id.search_min)
+    private EditText mMinCredits;
+    /**
+     * Course max credits
+     */
+    @InjectView(R.id.search_max)
+    private EditText mMaxCredits;
+    /**
+     * Course on Monday
+     */
+    @InjectView(R.id.search_monday)
+    private CheckBox mMonday;
+    /**
+     * Course on Tuesday
+     */
+    @InjectView(R.id.search_tuesday)
+    private CheckBox mTuesday;
+    /**
+     * Course on Wednesday
+     */
+    @InjectView(R.id.search_wednesday)
+    private CheckBox mWednesday;
+    /**
+     * Course on Thursday
+     */
+    @InjectView(R.id.search_thursday)
+    private CheckBox mThursday;
+    /**
+     * Course on Friday
+     */
+    @InjectView(R.id.search_friday)
+    private CheckBox mFriday;
+    /**
+     * Course on Saturday
+     */
+    @InjectView(R.id.search_saturday)
+    private CheckBox mSaturday;
+    /**
+     * Course on Sunday
+     */
+    @InjectView(R.id.search_sunday)
+    private CheckBox mSunday;
+    /**
+     * True if the user sees al of the options, false otherwise
+     */
     private boolean mMoreOptions = false;
 
     public void onCreate(Bundle savedInstanceState){
@@ -70,16 +152,13 @@ public class CourseSearchFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup,
+                             Bundle savedInstanceState){
+        super.onCreateView(inflater, viewGroup, savedInstanceState);
         View view = View.inflate(mActivity, R.layout.fragment_course_search, null);
-
+        ButterKnife.inject(this, view);
         lockPortraitMode();
-
         Analytics.getInstance().sendScreen("Registration");
-
-        //Title
         mActivity.setTitle(getString(R.string.title_registration));
 
         //Set up the search button
@@ -95,13 +174,11 @@ public class CourseSearchFragment extends BaseFragment {
         List<Term> registerTerms = App.getRegisterTerms();
         if(registerTerms.isEmpty()){
             //Hide all of the search related stuff, show explanatory text, and return the view
-            TextView noSemesters = (TextView)view.findViewById(R.id.registration_no_semesters);
+            TextView noSemesters = (TextView)view.findViewById(R.id.search_empty);
             noSemesters.setVisibility(View.VISIBLE);
 
-            LinearLayout registrationContainer = (LinearLayout)view.findViewById(
-                    R.id.registration_search);
-            registrationContainer.setVisibility(View.GONE);
-
+            LinearLayout container = (LinearLayout)view.findViewById(R.id.search_container);
+            container.setVisibility(View.GONE);
             searchButton.setVisibility(View.GONE);
 
             //Hide the loading indicator
@@ -110,37 +187,20 @@ public class CourseSearchFragment extends BaseFragment {
             return view;
         }
 
-        //Set up the term spinner
-        mTermSpinner = (Spinner) view.findViewById(R.id.registration_semester);
         mTermAdapter = new TermAdapter(mActivity, registerTerms);
         mTermSpinner.setAdapter(mTermAdapter);
 
-        mStartTime = (TimePicker)view.findViewById(R.id.registration_start_time);
         mStartTime.setIs24HourView(false);
         mStartTime.setCurrentHour(0);
         mStartTime.setCurrentMinute(0);
 
-        mEndTime = (TimePicker)view.findViewById(R.id.registration_end_time);
         mEndTime.setIs24HourView(false);
         mEndTime.setCurrentHour(0);
         mEndTime.setCurrentMinute(0);
 
-        //Get the other views
-        mCourseSubject = (EditText)view.findViewById(R.id.registration_subject);
-        mCourseNumber = (EditText)view.findViewById(R.id.registration_course_number);
-        mCourseTitle = (EditText)view.findViewById(R.id.registration_course_title);
-        mMinCredits = (EditText)view.findViewById(R.id.registration_credits_min);
-        mMaxCredits = (EditText)view.findViewById(R.id.registration_credits_max);
-        mMonday = (CheckBox)view.findViewById(R.id.registration_monday);
-        mTuesday = (CheckBox)view.findViewById(R.id.registration_tuesday);
-        mWednesday = (CheckBox)view.findViewById(R.id.registration_wednesday);
-        mThursday = (CheckBox)view.findViewById(R.id.registration_thursday);
-        mFriday = (CheckBox)view.findViewById(R.id.registration_friday);
-        mSaturday = (CheckBox)view.findViewById(R.id.registration_saturday);
-        mSunday = (CheckBox)view.findViewById(R.id.registration_sunday);
-
         //Set up the more options button
-        final LinearLayout moreOptionsContainer = (LinearLayout)view.findViewById(R.id.more_options_container);
+        final LinearLayout moreOptionsContainer =
+                (LinearLayout)view.findViewById(R.id.more_options_container);
         final TextView moreOptions = (TextView)view.findViewById(R.id.more_options);
         moreOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,16 +208,9 @@ public class CourseSearchFragment extends BaseFragment {
                 //Inverse the more options boolean
                 mMoreOptions = !mMoreOptions;
 
-                //If it is false, hide the options and set the show options text
-                if(!mMoreOptions){
-                    moreOptionsContainer.setVisibility(View.GONE);
-                    moreOptions.setText(getString(R.string.registration_show_options));
-                }
-                //Do the inverse if true
-                else{
-                    moreOptionsContainer.setVisibility(View.VISIBLE);
-                    moreOptions.setText(getString(R.string.registration_hide_options));
-                }
+                moreOptionsContainer.setVisibility(mMoreOptions ? View.VISIBLE : View.GONE);
+                moreOptions.setText(mMoreOptions ? getString(R.string.registration_hide_options) :
+                    getString(R.string.registration_show_options));
             }
         });
 
@@ -167,20 +220,24 @@ public class CourseSearchFragment extends BaseFragment {
         return view;
     }
 
-    //Searches for the selected courses
-    public void searchCourses(){
+    /**
+     * Searches for courses based on the given information
+     */
+    private void searchCourses(){
         //Get the selected term
         Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
 
         //Subject Input
-        String courseSubject = mCourseSubject.getText().toString().toUpperCase().trim();
+        String subject = mSubject.getText().toString().toUpperCase().trim();
 
-        if(courseSubject.isEmpty()){
-            Toast.makeText(mActivity, getString(R.string.registration_error_no_faculty), Toast.LENGTH_SHORT).show();
+        if(subject.isEmpty()){
+            Toast.makeText(mActivity, getString(R.string.registration_error_no_faculty),
+                    Toast.LENGTH_SHORT).show();
             return;
         }
-        else if(!courseSubject.matches("[A-Za-z]{4}")){
-            Toast.makeText(mActivity, getString(R.string.registration_invalid_subject), Toast.LENGTH_SHORT).show();
+        else if(!subject.matches("[A-Za-z]{4}")){
+            Toast.makeText(mActivity, getString(R.string.registration_invalid_subject),
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -198,14 +255,17 @@ public class CourseSearchFragment extends BaseFragment {
         }
 
         if(maxCredits < minCredits){
-            Toast.makeText(mActivity, getString(R.string.registration_error_credits), Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(mActivity, getString(R.string.registration_error_credits),
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Connection.SearchURLBuilder builder = new Connection.SearchURLBuilder(term, courseSubject)
-                .courseNumber(mCourseNumber.getText().toString())
-                .title(mCourseTitle.getText().toString())
+        //Show the user we are downloading new information
+        mActivity.showToolbarProgress(true);
+
+        Connection.SearchURLBuilder builder = new Connection.SearchURLBuilder(term, subject)
+                .courseNumber(mNumber.getText().toString())
+                .title(mTitle.getText().toString())
                 .minCredits(minCredits)
                 .maxCredits(maxCredits)
                 .startHour(mStartTime.getCurrentHour() % 12)
@@ -238,8 +298,25 @@ public class CourseSearchFragment extends BaseFragment {
             builder.addDay(Day.SUNDAY);
         }
 
-        //Obtain courses
-        new CoursesGetter(term, builder.build());
+        String searchURL = builder.build();
+
+        //Retrieve courses obtained from Minerva
+        Log.d(TAG, "URL: " +  searchURL);
+
+        //Execute the request
+        String html = new DownloaderThread(mActivity, TAG, searchURL).execute();
+
+        //If there is a result, parse it
+        if(html != null){
+            List<Course> courses = Parser.parseClassResults(term, html);
+            Intent intent = new Intent(mActivity, SearchResultsActivity.class)
+                    .putExtra(Constants.TERM, term)
+                    .putExtra(Constants.CLASSES, (ArrayList<Course>)courses);
+            startActivity(intent);
+        }
+
+        //Show the user we are downloading new information
+        mActivity.showToolbarProgress(false);
     }
 
     @Override
@@ -258,9 +335,9 @@ public class CourseSearchFragment extends BaseFragment {
             mStartTime.setCurrentMinute(0);
             mEndTime.setCurrentHour(0);
             mEndTime.setCurrentMinute(0);
-            mCourseSubject.setText("");
-            mCourseNumber.setText("");
-            mCourseTitle.setText("");
+            mSubject.setText("");
+            mNumber.setText("");
+            mTitle.setText("");
             mMinCredits.setText("");
             mMaxCredits.setText("");
             mMonday.setChecked(false);
@@ -274,67 +351,5 @@ public class CourseSearchFragment extends BaseFragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    //Connects to Minerva in a new thread
-    private class CoursesGetter extends AsyncTask<Void, Void, Boolean> {
-        private Term mTerm;
-        private String mClassSearchURL;
-        private List<Course> mClasses;
-        private ProgressDialog mDialog;
-
-        public CoursesGetter(Term term, String classSearchURL){
-            this.mTerm = term;
-            this.mClassSearchURL = classSearchURL;
-        }
-
-        @Override
-        protected void onPreExecute(){
-            //Show the user we are downloading new info
-            mDialog = new ProgressDialog(mActivity);
-            mDialog.setMessage(getResources().getString(R.string.please_wait));
-            mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mDialog.show();
-        }
-
-        //Retrieve courses obtained from Minerva
-        @Override
-        protected Boolean doInBackground(Void... params){
-            Log.e("Class search URL",  mClassSearchURL);
-            try{
-                String classesString = Connection.getInstance().get(mClassSearchURL);
-                this.mClasses = Parser.parseClassResults(mTerm, classesString);
-                return true;
-            } catch(MinervaException e){
-                //TODO Broadcast message here
-                return false;
-            } catch(Exception e){
-                return false;
-            }
-        }
-
-        //Update or create transcript object and display data
-        @Override
-        protected void onPostExecute(Boolean coursesParsed){
-            mDialog.dismiss();
-
-            //There was an error
-            if(!coursesParsed){
-                try {
-                    DialogHelper.showNeutralDialog(mActivity, getResources().getString(R.string
-                                    .error),
-                            getResources().getString(R.string.error_other));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            //Go to the CoursesListActivity with the parsed courses
-            else{
-                Intent intent = new Intent(mActivity, SearchResultsActivity.class)
-                        .putExtra(Constants.TERM, mTerm)
-                        .putExtra(Constants.CLASSES, (ArrayList<Course>)mClasses);
-                startActivity(intent);
-            }
-        }
     }
 }
