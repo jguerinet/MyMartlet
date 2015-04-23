@@ -17,26 +17,49 @@
 package ca.appvelopers.mcgillmobile.model;
 
 /**
- * Created by Adnan on 6/29/2014.
+ * An FAQ shown in the Help section
+ * @author Rafi Uddin
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
-public class HelpItem {
-    private String question;
-    private String answer;
+public class FAQItem {
+    /**
+     * The FAQ question
+     */
+    private String mQuestion;
+    /**
+     * The FAQ answer
+     */
+    private String mAnswer;
 
-    public HelpItem (String question,String answer)
-    {
-        this.question = question;
-        this.answer  = answer;
+    /**
+     * Default Constructor
+     *
+     * @param question The FAQ question
+     * @param answer   The FAQ answer
+     */
+    public FAQItem(String question, String answer){
+        this.mQuestion = question;
+        this.mAnswer = answer;
     }
 
+    /* GETTERS */
+
+    /**
+     * @return The FAQ question
+     */
     public String getQuestion()
     {
-        return question;
+        return this.mQuestion;
     }
 
+    /**
+     * @return The FAQ answer
+     */
     public String getAnswer()
     {
-        return answer;
+        return this.mAnswer;
     }
 
 }

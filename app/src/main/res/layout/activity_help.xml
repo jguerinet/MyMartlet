@@ -68,11 +68,11 @@
         android:textSize="@dimen/text_medium"
         android:textStyle="bold|italic"/>
 
-    <ListView
+    <RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:listSelector="@android:color/transparent"
-        android:id="@+id/helpListView" />
+        android:id="@+id/help_faq" />
 
 </LinearLayout>

@@ -16,22 +16,24 @@
 
 package ca.appvelopers.mcgillmobile.ui.settings;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.HelpItem;
+import ca.appvelopers.mcgillmobile.model.FAQItem;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -42,102 +44,106 @@ public class HelpActivity extends BaseActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
-
-        setUpToolbar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //EULA buttons
-        TextView eula = (TextView)findViewById(R.id.help_eula);
-        eula.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HelpActivity.this, AgreementActivity.class));
-            }
-        });
-
-        //Set up the email walkthrough and walkthrough buttons
-        TextView emailWalkthrough = (TextView)findViewById(R.id.help_email);
-        emailWalkthrough.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class);
-                intent.putExtra(Constants.EMAIL, true);
-                startActivity(intent);
-            }
-        });
-
-        TextView walkthrough = (TextView)findViewById(R.id.help_walkthrough);
-        walkthrough.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //Official McGill App download button
-        TextView download = (TextView)findViewById(R.id.help_download);
-        download.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.mcgill")));
-            }
-        });
+        setUpToolbar(true);
         
         //FAQ ListView
-        ListView helpListView = (ListView) findViewById(R.id.helpListView);
-        HelpAdapter adapter = new HelpAdapter(this);
-        helpListView.setAdapter(adapter);
+        RecyclerView faq = (RecyclerView) findViewById(R.id.help_faq);
+        faq.setLayoutManager(new LinearLayoutManager(this));
+        faq.setAdapter(new FAQAdapter());
     }
 
-    public class HelpAdapter extends BaseAdapter {
-        private List<HelpItem> mHelpList;
-        private Context mContext;
+    @OnClick(R.id.help_eula)
+    public void seeEULA(){
+        startActivity(new Intent(this, AgreementActivity.class));
+    }
 
-        public HelpAdapter (Context context){
-            this.mContext = context;
-            populateList();
-        }
-        @Override
-        public int getCount() {
-            return mHelpList.size();
+    @OnClick(R.id.help_email)
+    public void seeEmailWalkthrough(){
+        Intent intent = new Intent(this, WalkthroughActivity.class)
+                .putExtra(Constants.EMAIL, true);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.help_walkthrough)
+    public void seeWalkthrough(){
+        startActivity(new Intent(this, WalkthroughActivity.class));
+    }
+
+    @OnClick(R.id.help_download)
+    public void downloadOfficialApp(){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.mcgill")));
+    }
+
+    /**
+     * Adapter used to display the FAQs
+     */
+    class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.FAQHolder> {
+        /**
+         * The list of FAQs
+         */
+        private List<FAQItem> mFAQs;
+
+        /**
+         * Default Constructor
+         */
+        public FAQAdapter(){
+            mFAQs = new ArrayList<>();
+            mFAQs.add(new FAQItem(getString(R.string.help_question1),
+                    getString(R.string.help_answer1)));
+            mFAQs.add(new FAQItem(getString(R.string.help_question2),
+                    getString(R.string.help_answer2)));
+            mFAQs.add(new FAQItem(getString(R.string.help_question3),
+                    getString(R.string.help_answer3)));
         }
 
         @Override
-        public HelpItem getItem(int i) {
-            return mHelpList.get(i);
+        public int getItemCount(){
+            return mFAQs.size();
         }
 
         @Override
-        public long getItemId(int i) {
-            return i;
+        public FAQHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+            return new FAQHolder(LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.item_faq, viewGroup, false));
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            if (view == null){
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.item_faq,null);
+        public void onBindViewHolder(FAQHolder faqHolder, int i){
+            faqHolder.bindFAQ(mFAQs.get(i));
+        }
+
+        class FAQHolder extends RecyclerView.ViewHolder {
+            /**
+             * The FAQ question
+             */
+            @InjectView(R.id.faq_question)
+            private TextView mQuestion;
+            /**
+             * The FAQ answer
+             */
+            @InjectView(R.id.faq_answer)
+            private TextView mAnswer;
+
+            /**
+             * Default Constructor
+             *
+             * @param itemView The item view
+             */
+            public FAQHolder(View itemView){
+                super(itemView);
+                ButterKnife.inject(this, itemView);
+                itemView.setClickable(false);
             }
 
-            assert (view != null);
-
-            HelpItem helpItem = getItem(i);
-
-            TextView question = (TextView) view.findViewById(R.id.about_question);
-            question.setText(helpItem.getQuestion());
-
-            TextView answer = (TextView) view.findViewById(R.id.about_answer);
-            answer.setText(helpItem.getAnswer());
-
-            return view;
-        }
-
-        private void populateList(){
-            mHelpList = new ArrayList<HelpItem>();
-            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question1),getResources().getString(R.string.help_answer1)));
-            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question2), getResources().getString(R.string.help_answer2)));
-            mHelpList.add(new HelpItem(getResources().getString(R.string.help_question3), getResources().getString(R.string.help_answer3)));
+            /**
+             * Binds the given FAQ item to the view
+             *
+             * @param item The FAQ item
+             */
+            public void bindFAQ(FAQItem item){
+                mQuestion.setText(item.getQuestion());
+                mAnswer.setText(item.getAnswer());
+            }
         }
     }
 }
