@@ -18,18 +18,19 @@ package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.transcript.semester.SemesterActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
@@ -38,64 +39,81 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * Author: Julien
  * Date: 31/01/14, 6:06 PM
  */
-public class TranscriptAdapter extends BaseAdapter {
+public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterHolder> {
+    /**
+     * The app context
+     */
     private Context mContext;
+    /**
+     * The list of semesters
+     */
     private List<Semester> mSemesters;
 
-    public TranscriptAdapter(Context context, Transcript transcript){
+    /**
+     * Default Constructor
+     *
+     * @param context   The app context
+     * @param semesters The list of semesters
+     */
+    public TranscriptAdapter(Context context, List<Semester> semesters){
         this.mContext = context;
-        this.mSemesters = transcript.getSemesters();
+        this.mSemesters = semesters;
     }
 
     @Override
-    public int getCount() {
+    public SemesterHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        return new SemesterHolder(LayoutInflater.from(mContext)
+                .inflate(R.layout.item_semester, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(SemesterHolder holder, int position){
+        holder.bind(mSemesters.get(position));
+    }
+
+    @Override
+    public int getItemCount(){
         return mSemesters.size();
     }
 
-    @Override
-    public Semester getItem(int position) {
-        return mSemesters.get(position);
-    }
+    class SemesterHolder extends RecyclerView.ViewHolder{
+        /**
+         * The semester name
+         */
+        @InjectView(R.id.semester_name)
+        TextView mName;
+        /**
+         * The user's GPA for this semester
+         */
+        @InjectView(R.id.semester_gpa)
+        TextView mGPA;
+        /**
+         * The chevron (we need to apply the icon typeface
+         */
+        @InjectView(R.id.chevron)
+        TextView mChevron;
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        //Reuse the view if it's already been used
-        if(view == null){
-            //Get the inflater
-            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.item_semester, null);
+        public SemesterHolder(View itemView){
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+            mChevron.setTypeface(App.getIconFont());
         }
 
-        //Get the current semester we are inflating
-        final Semester semester = getItem(position);
+        public void bind(Semester semester){
+            mName.setText(semester.getSemesterName());
+            mGPA.setText(mContext.getString(R.string.transcript_termGPA,
+                    String.valueOf(semester.getGPA())));
 
-        //Set up the info
-        TextView semesterName = (TextView)view.findViewById(R.id.semester_name);
-        semesterName.setText(semester.getSemesterName());
+            //OnClickListener
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, SemesterActivity.class);
+                    intent.putExtra(Constants.SEMESTER, semester);
+                    mContext.startActivity(intent);
+                }
+            });
 
-        TextView semesterGPA = (TextView)view.findViewById(R.id.semester_termGPA);
-        semesterGPA.setText(mContext.getResources().getString(R.string.transcript_termGPA, String.valueOf(semester.getGPA())));
-
-
-        //Set up the chevron
-        TextView chevron = (TextView)view.findViewById(R.id.semester_chevron);
-        chevron.setTypeface(App.getIconFont());
-
-        //Set up the onClicklistener for the view
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, SemesterActivity.class);
-                intent.putExtra(Constants.SEMESTER, semester);
-                mContext.startActivity(intent);
-            }
-        });
-
-        return view;
+        }
     }
 }

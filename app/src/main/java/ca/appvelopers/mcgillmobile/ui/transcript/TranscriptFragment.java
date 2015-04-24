@@ -17,13 +17,13 @@
 package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -55,7 +55,7 @@ public class TranscriptFragment extends BaseFragment{
      * The list of semesters
      */
     @InjectView(android.R.id.list)
-    ListView mListView;
+    RecyclerView mListView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,13 +86,10 @@ public class TranscriptFragment extends BaseFragment{
     private void loadInfo(){
         Transcript transcript = App.getTranscript();
 
-        //Fill out the transcript info
+        //Reload all of the info
         mCGPA.setText(getString(R.string.transcript_CGPA, transcript.getCgpa()));
         mTotalCredits.setText(getString(R.string.transcript_credits, transcript.getTotalCredits()));
-
-        //Reload the adapter
-        TranscriptAdapter adapter = new TranscriptAdapter(mActivity, transcript);
-        mListView.setAdapter(adapter);
+        mListView.setAdapter(new TranscriptAdapter(mActivity, transcript.getSemesters()));
     }
 
     @Override
