@@ -17,9 +17,12 @@
 package ca.appvelopers.mcgillmobile.ui.transcript.semester;
 
 import android.os.Bundle;
-import android.widget.ListView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
@@ -33,13 +36,43 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * @since 1.0
  */
 public class SemesterActivity extends BaseActivity {
+    /**
+     * The semeseter's bachelor degree
+     */
+    @InjectView(R.id.semester_bachelor)
+    TextView mBachelor;
+    /**
+     * The semester program
+     */
+    @InjectView(R.id.semester_program)
+    TextView mProgram;
+    /**
+     * The semester GPA
+     */
+    @InjectView(R.id.semester_GPA)
+    TextView mGPA;
+    /**
+     * The semester credits
+     */
+    @InjectView(R.id.semester_credits)
+    TextView mCredits;
+    /**
+     * The user's status during this semester
+     */
+    @InjectView(R.id.semester_fullTime)
+    TextView mFullTime;
+    /**
+     * The courses taken during this semester
+     */
+    @InjectView(android.R.id.list)
+    RecyclerView mCourses;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_semester);
-
+        ButterKnife.inject(this);
         setUpToolbar(true);
-
         Analytics.getInstance().sendScreen("Transcript - Semester");
 
         //Get the semester from the intent
@@ -49,27 +82,15 @@ public class SemesterActivity extends BaseActivity {
         setTitle(semester.getSemesterName());
 
         //Set the info up
-        TextView semesterBachelor = (TextView)findViewById(R.id.semester_bachelor);
-        semesterBachelor.setText(semester.getBachelor());
-
-        TextView semesterProgram = (TextView)findViewById(R.id.semester_program);
-        semesterProgram.setText(semester.getProgram());
-
-        TextView semesterGPA = (TextView)findViewById(R.id.semester_GPA);
-        semesterGPA.setText(getString(R.string.transcript_termGPA,
-                String.valueOf(semester.getGPA())));
-
-        TextView semesterCredits = (TextView)findViewById(R.id.semester_credits);
-        semesterCredits.setText(getString(R.string.semester_termCredits,
-                semester.getCredits()));
-
-        TextView semesterFullTime = (TextView)findViewById(R.id.semester_fullTime);
-        semesterFullTime.setText(semester.isFullTime() ? getString(R.string.semester_fullTime) :
+        mBachelor.setText(semester.getBachelor());
+        mProgram.setText(semester.getProgram());
+        mGPA.setText(getString(R.string.transcript_termGPA, String.valueOf(semester.getGPA())));
+        mCredits.setText(getString(R.string.semester_termCredits, semester.getCredits()));
+        mFullTime.setText(semester.isFullTime() ? getString(R.string.semester_fullTime) :
                 getString(R.string.semester_partTime));
 
         //Set up the courses list
-        SemesterAdapter adapter = new SemesterAdapter(this, semester);
-        ListView semesterList = (ListView)findViewById(R.id.semester_list);
-        semesterList.setAdapter(adapter);
+        mCourses.setLayoutManager(new LinearLayoutManager(this));
+        mCourses.setAdapter(new SemesterAdapter(this, semester.getCourses()));
     }
 }

@@ -17,83 +17,104 @@
 package ca.appvelopers.mcgillmobile.ui.transcript.semester;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 
 /**
- * List Adapter that will populate the courses list in SemesterActivity
- * Author: Julien
- * Date: 01/02/14, 10:27 AM
+ * Populates the courses list in SemesterActivity
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
-public class SemesterAdapter extends BaseAdapter {
+public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.CourseHolder> {
+    /**
+     * The app context
+     */
     private Context mContext;
+    /**
+     * The list of courses
+     */
     private List<TranscriptCourse> mCourses;
 
-    public SemesterAdapter(Context context, Semester semester){
+    /**
+     * Default Constructor
+     *
+     * @param context The app context
+     * @param courses The courses to display
+     */
+    public SemesterAdapter(Context context, List<TranscriptCourse> courses){
         this.mContext = context;
-        this.mCourses = semester.getCourses();
+        this.mCourses = courses;
     }
 
     @Override
-    public int getCount() {
+    public CourseHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        return new CourseHolder(LayoutInflater.from(mContext)
+                .inflate(R.layout.item_transcript_course, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(CourseHolder holder, int position){
+        holder.bind(mCourses.get(position));
+    }
+
+    @Override
+    public int getItemCount(){
         return mCourses.size();
     }
 
-    @Override
-    public TranscriptCourse getItem(int position) {
-        return mCourses.get(position);
-    }
+    class CourseHolder extends RecyclerView.ViewHolder {
+        /**
+         * Course Code
+         */
+        @InjectView(R.id.course_code)
+        TextView mCode;
+        /**
+         * User grade
+         */
+        @InjectView(R.id.course_grade)
+        TextView mGrade;
+        /**
+         * Course title
+         */
+        @InjectView(R.id.course_title)
+        TextView mTitle;
+        /**
+         * Course credits
+         */
+        @InjectView(R.id.course_credits)
+        TextView mCredits;
+        /**
+         * Course average grade
+         */
+        @InjectView(R.id.course_average)
+        TextView mAverageGrade;
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public boolean isEnabled(int position) {
-        //Items are not clickable
-        return false;
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        if(view == null){
-            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.item_transcript_course, null);
+        public CourseHolder(View itemView){
+            super(itemView);
+            ButterKnife.inject(this, itemView);
         }
 
-        //Get the current course
-        TranscriptCourse currentCourse = getItem(position);
-
-        //Set up the info for the course
-        TextView courseCode = (TextView)view.findViewById(R.id.course_code);
-        courseCode.setText(currentCourse.getCourseCode());
-
-        TextView courseGrade = (TextView)view.findViewById(R.id.course_grade);
-        courseGrade.setText(currentCourse.getUserGrade());
-
-        TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
-        courseTitle.setText(currentCourse.getCourseTitle());
-
-        TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
-        courseCredits.setText(mContext.getString(R.string.course_credits, currentCourse.getCredits()));
-
-        TextView courseAverage = (TextView)view.findViewById(R.id.course_average);
-        //Don't display average if it does not exist
-        if(!currentCourse.getAverageGrade().equals("")){
-            courseAverage.setText(mContext.getString(R.string.course_average, currentCourse.getAverageGrade()));
+        public void bind(TranscriptCourse course){
+            mCode.setText(course.getCourseCode());
+            mGrade.setText(course.getUserGrade());
+            mTitle.setText(course.getCourseTitle());
+            mCredits.setText(mContext.getString(R.string.course_credits, course.getCredits()));
+            //Don't display average if it does not exist
+            if(!course.getAverageGrade().equals("")){
+                mAverageGrade.setText(mContext.getString(R.string.course_average,
+                        course.getAverageGrade()));
+            }
         }
-
-
-        return view;
     }
 }
