@@ -114,7 +114,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             protected void onPostExecute(Void param) {
                 //Check if we have the minimum required version
-                if(this.getMinVersion() > Help.getVersionNumber(SplashActivity.this)){
+                if(this.getMinVersion() > Help.getVersionCode()){
                     //If not, show the right container
                     LinearLayout minVersionContainer =
                             (LinearLayout) findViewById(R.id.version_container);

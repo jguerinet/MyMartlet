@@ -92,23 +92,26 @@ public class Help {
     }
 
     /**
-     * Gets the app version number
-     *
-     * @param context The app context
-     * @return The version number
+     * @return The app version code
      */
-    public static int getVersionNumber(Context context){
+    public static int getVersionCode(){
         PackageInfo packageInfo = getPackageInfo();
 
         return packageInfo != null ? packageInfo.versionCode : -1;
     }
 
+    /**
+     * @return The app version name
+     */
     public static String getVersionName(){
         PackageInfo packageInfo = getPackageInfo();
 
         return packageInfo != null ? packageInfo.versionName : "";
     }
 
+    /**
+     * @return The app package info
+     */
     private static PackageInfo getPackageInfo(){
         try{
             return App.getContext().getPackageManager().getPackageInfo(
