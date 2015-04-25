@@ -39,7 +39,6 @@ import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
-import ca.appvelopers.mcgillmobile.ui.view.HomepageAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Help;
@@ -115,7 +114,7 @@ public class SettingsFragment extends BaseFragment {
         mLanguageSpinner.setSelection(App.getLanguage().ordinal());
 
         //Homepage
-        mHomepageAdapter = new HomepageAdapter(mActivity);
+        mHomepageAdapter = new HomepageAdapter();
         mHomepageSpinner.setAdapter(mHomepageAdapter);
         mHomepageSpinner.setSelection(mHomepageAdapter.getPosition(App.getHomePage()));
 
