@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -25,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -39,6 +39,7 @@ import okio.Okio;
  * @since 1.0
  */
 public class Help {
+    private static final String TAG = "Help";
     /* URLS */
 
     /**
@@ -97,13 +98,24 @@ public class Help {
      * @return The version number
      */
     public static int getVersionNumber(Context context){
-        try {
-            ComponentName comp = new ComponentName(context, context.getClass());
-            PackageInfo info = context.getPackageManager().getPackageInfo(comp.getPackageName(), 0);
-            return info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return -1;
+        PackageInfo packageInfo = getPackageInfo();
+
+        return packageInfo != null ? packageInfo.versionCode : -1;
+    }
+
+    public static String getVersionName(){
+        PackageInfo packageInfo = getPackageInfo();
+
+        return packageInfo != null ? packageInfo.versionName : "";
+    }
+
+    private static PackageInfo getPackageInfo(){
+        try{
+            return App.getContext().getPackageManager().getPackageInfo(
+                    App.getContext().getPackageName(), 0);
+        } catch(PackageManager.NameNotFoundException e){
+            Log.e(TAG, "Name not found on PackageInfo", e);
+            return null;
         }
     }
 

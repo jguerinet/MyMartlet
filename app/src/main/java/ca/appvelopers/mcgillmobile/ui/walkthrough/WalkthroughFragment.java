@@ -30,7 +30,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Faculty;
 import ca.appvelopers.mcgillmobile.ui.view.FacultyAdapter;
-import ca.appvelopers.mcgillmobile.ui.view.HomePageAdapter;
+import ca.appvelopers.mcgillmobile.ui.view.HomepageAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
@@ -119,13 +119,13 @@ public class WalkthroughFragment extends Fragment {
                     pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_6, null);
 
                     Spinner homepage = (Spinner)pageView.findViewById(R.id.homepage);
-                    final HomePageAdapter homePageAdapter = new HomePageAdapter(getActivity());
-                    homepage.setAdapter(homePageAdapter);
-                    homepage.setSelection(homePageAdapter.getPosition(App.getHomePage()));
+                    final HomepageAdapter homepageAdapter = new HomepageAdapter(getActivity());
+                    homepage.setAdapter(homepageAdapter);
+                    homepage.setSelection(homepageAdapter.getPosition(App.getHomePage()));
                     homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                            DrawerItem chosenDrawerItem = homePageAdapter.getItem(position);
+                            DrawerItem chosenDrawerItem = homepageAdapter.getItem(position);
 
                             Analytics.getInstance().sendEvent("Walkthrough", "Homepage",
                                     chosenDrawerItem.toString());

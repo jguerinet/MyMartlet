@@ -17,186 +17,169 @@
 package ca.appvelopers.mcgillmobile.ui.settings;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.instabug.library.Instabug;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
-import ca.appvelopers.mcgillmobile.ui.view.HomePageAdapter;
+import ca.appvelopers.mcgillmobile.ui.view.HomepageAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 
+/**
+ * Allows the user to change the app settings
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class SettingsFragment extends BaseFragment {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    /**
+     * The help page icon
+     */
+    @InjectView(R.id.help_icon)
+    TextView mHelpIcon;
+    /**
+     * The about page icon
+     */
+    @InjectView(R.id.about_icon)
+    TextView mAboutIcon;
+    /**
+     * The Report a Bug icon
+     */
+    @InjectView(R.id.bug_icon)
+    TextView mBugIcon;
+    /**
+     * The language spinner
+     */
+    @InjectView(R.id.settings_language)
+    Spinner mLanguageSpinner;
+    /**
+     * The homepage spinner
+     */
+    @InjectView(R.id.settings_homepage)
+    Spinner mHomepageSpinner;
+    /**
+     * The statistics switch
+     */
+    @InjectView(R.id.settings_statistics)
+    Switch mStatistics;
+    /**
+     * The version number
+     */
+    @InjectView(R.id.settings_version)
+    TextView mVersion;
+    /**
+     * The adapter used for the homepage spinner
+     */
+    private HomepageAdapter mHomepageAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         View view = View.inflate(mActivity, R.layout.fragment_settings, null);
-
+        ButterKnife.inject(this, view);
         lockPortraitMode();
-
-        //Title
+        Analytics.getInstance().sendScreen("Settings");
         mActivity.setTitle(getString(R.string.title_settings));
 
-        Analytics.getInstance().sendScreen("Settings");
+        //Icons
+        mHelpIcon.setTypeface(App.getIconFont());
+        mAboutIcon.setTypeface(App.getIconFont());
+        mBugIcon.setTypeface(App.getIconFont());
 
-        //Help
-        TextView helpIcon = (TextView)view.findViewById(R.id.help_icon);
-        helpIcon.setTypeface(App.getIconFont());
-        LinearLayout helpContainer = (LinearLayout)view.findViewById(R.id.settings_help);
-        helpContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mActivity, HelpActivity.class));
-            }
-        });
-
-        //About
-        TextView aboutIcon = (TextView)view.findViewById(R.id.about_icon);
-        aboutIcon.setTypeface(App.getIconFont());
-        LinearLayout aboutContainer = (LinearLayout)view.findViewById(R.id.settings_about);
-        aboutContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mActivity, AboutActivity.class));
-            }
-        });
-
-        //Report a Bug
-        TextView bugIcon = (TextView)view.findViewById(R.id.bug_icon);
-        bugIcon.setTypeface(App.getIconFont());
-        LinearLayout bugContainer = (LinearLayout)view.findViewById(R.id.settings_bug);
-        bugContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Analytics.getInstance().sendEvent("About", "Report a Bug", null);
-                Instabug.getInstance().invokeFeedbackSender();
-            }
-        });
-
-        //Set up the info
-        Spinner languages = (Spinner)view.findViewById(R.id.settings_language);
-        //Set up the array of languages
-        List<String> languageStrings = new ArrayList<String>();
-        languageStrings.add(getResources().getString(R.string.english));
-        languageStrings.add(getResources().getString(R.string.french));
-        Collections.sort(languageStrings);
-        //Standard ArrayAdapter
-        ArrayAdapter<String> languageAdapter = new ArrayAdapter<String>(mActivity,
-                R.layout.spinner_item, languageStrings);
+        //Language
+        ArrayAdapter<String> languageAdapter =
+                new ArrayAdapter<>(mActivity, R.layout.spinner_item, Language.getStrings());
         languageAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
-        //Apply the adapter to the spinner
-        languages.setAdapter(languageAdapter);
-        //Set the default selected to the user's chosen language
-        languages.setSelection(App.getLanguage().ordinal());
-        languages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                //Get the chosen language
-                Language chosenLanguage = Language.values()[position];
+        mLanguageSpinner.setAdapter(languageAdapter);
+        mLanguageSpinner.setSelection(App.getLanguage().ordinal());
 
-                Analytics.getInstance().sendEvent("Settings", "Language",
-                        chosenLanguage.toString());
-
-                //If it's different than the previously selected language, update it and reload
-                if(App.getLanguage() != chosenLanguage){
-                    App.setLanguage(chosenLanguage);
-
-                    //Update locale and config
-                    Locale locale = new Locale(chosenLanguage.toString());
-                    Locale.setDefault(locale);
-                    Configuration config = mActivity.getBaseContext().getResources().getConfiguration();
-                    config.locale = locale;
-                    mActivity.getBaseContext().getResources().updateConfiguration(config,
-                            mActivity.getBaseContext().getResources().getDisplayMetrics());
-
-                    //Reload MainActivity
-                    Intent intent = new Intent(mActivity, MainActivity.class);
-                    intent.putExtra(Constants.HOMEPAGE, DrawerItem.SETTINGS);
-                    startActivity(intent);
-                    mActivity.finish();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        Spinner homepages = (Spinner)view.findViewById(R.id.settings_homepage);
-        final HomePageAdapter homePageAdapter = new HomePageAdapter(mActivity);
-        homepages.setAdapter(homePageAdapter);
-        homepages.setSelection(homePageAdapter.getPosition(App.getHomePage()));
-        homepages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                //Get the chosen homepage
-                DrawerItem chosenHomePage = homePageAdapter.getItem(position);
-
-                Analytics.getInstance().sendEvent("Settings", "Homepage",
-                        chosenHomePage.toString());
-
-                //Update it in App
-                App.setHomePage(chosenHomePage);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
+        //Homepage
+        mHomepageAdapter = new HomepageAdapter(mActivity);
+        mHomepageSpinner.setAdapter(mHomepageAdapter);
+        mHomepageSpinner.setSelection(mHomepageAdapter.getPosition(App.getHomePage()));
 
         //Statistics
-        Switch statistics = (Switch)view.findViewById(R.id.settings_statistics);
-        statistics.setChecked(Load.loadStatistics(mActivity));
-        statistics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Save.saveStatistics(mActivity, b);
-            }
-        });
+        mStatistics.setChecked(Load.loadStatistics(mActivity));
 
         //Version Number
-        try {
-            PackageInfo packageInfo = mActivity.getPackageManager().getPackageInfo(mActivity.getPackageName(), 0);
-            String appVersionName = packageInfo.versionName;
-
-            TextView versionNumber = (TextView)view.findViewById(R.id.settings_version);
-            versionNumber.setText(getResources().getString(R.string.settings_version, appVersionName));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        mVersion.setText(getString(R.string.settings_version, Help.getVersionName()));
 
         //Hide the loading indicator
         hideLoadingIndicator();
 
         return view;
+    }
+
+    @OnClick(R.id.settings_help)
+    public void help(){
+        startActivity(new Intent(mActivity, HelpActivity.class));
+    }
+
+    @OnClick(R.id.settings_about)
+    public void about(){
+        startActivity(new Intent(mActivity, AboutActivity.class));
+    }
+
+    @OnClick(R.id.settings_bug)
+    public void reportBug(){
+        Analytics.getInstance().sendEvent("About", "Report a Bug", null);
+        Instabug.getInstance().invokeFeedbackSender();
+    }
+
+    @OnItemSelected(R.id.settings_language)
+    public void chooseLanguage(int position){
+        //Get the chosen language
+        Language chosenLanguage = Language.values()[position];
+
+        Analytics.getInstance().sendEvent("Settings", "Language", chosenLanguage.toString());
+
+        //If it's different than the previously selected language, update it and reload
+        if(App.getLanguage() != chosenLanguage){
+            App.setLanguage(chosenLanguage);
+            mActivity.updateLocale();
+
+            //Reload MainActivity
+            Intent intent = new Intent(mActivity, MainActivity.class)
+                    .putExtra(Constants.HOMEPAGE, DrawerItem.SETTINGS);
+            startActivity(intent);
+            mActivity.finish();
+        }
+    }
+
+    @OnItemSelected(R.id.settings_homepage)
+    public void chooseHomepage(int position){
+        //Get the chosen homepage
+        DrawerItem chosenHomePage = mHomepageAdapter.getItem(position);
+
+        Analytics.getInstance().sendEvent("Settings", "Homepage", chosenHomePage.toString());
+
+        //Update it in App
+        App.setHomePage(chosenHomePage);
+    }
+
+    @OnCheckedChanged(R.id.settings_statistics)
+    public void enableStatistics(boolean enabled){
+        Save.saveStatistics(mActivity, enabled);
     }
 }

@@ -58,7 +58,7 @@ public class BaseActivity extends ActionBarActivity {
     /**
      * Updates the locale
      */
-    private void updateLocale(){
+    public void updateLocale(){
         Locale locale = new Locale(App.getLanguage().toString());
         Locale.setDefault(locale);
         Configuration config = getBaseContext().getResources().getConfiguration();

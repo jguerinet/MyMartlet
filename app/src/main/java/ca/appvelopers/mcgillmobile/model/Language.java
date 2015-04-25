@@ -16,6 +16,13 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.R;
+
 /**
  * The languages that this app is offered in
  * @author Julien Guerinet
@@ -25,6 +32,36 @@ package ca.appvelopers.mcgillmobile.model;
 public enum Language {
     ENGLISH,
     FRENCH;
+
+    /**
+     * @return The language String
+     */
+    public String getString(){
+        switch(this){
+            case ENGLISH:
+                return App.getContext().getString(R.string.english);
+            case FRENCH:
+                return App.getContext().getString(R.string.french);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * @return The Strings of all of the languages available
+     */
+    public static List<String> getStrings(){
+        List<String> languages = new ArrayList<>();
+
+        for(Language language : values()){
+            languages.add(language.getString());
+        }
+
+        //Sort them alphabetically
+        Collections.sort(languages);
+
+        return languages;
+    }
 
     @Override
     public String toString(){
