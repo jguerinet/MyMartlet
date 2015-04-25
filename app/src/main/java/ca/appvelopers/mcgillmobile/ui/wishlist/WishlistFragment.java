@@ -61,11 +61,6 @@ public class WishlistFragment extends BaseFragment {
     @InjectView(R.id.courses_empty)
     TextView mEmptyView;
     /**
-     * The wishlist button
-     */
-    @InjectView(R.id.course_wishlist)
-    TextView mWishlistButton;
-    /**
      * The wishlist
      */
     @InjectView(android.R.id.list)
@@ -111,9 +106,6 @@ public class WishlistFragment extends BaseFragment {
 
             return view;
         }
-
-        //Change the text on the wishlist button
-        mWishlistButton.setText(getResources().getString(R.string.courses_remove_wishlist));
 
         //Load the first registration term
         mTerm = App.getRegisterTerms().get(0);

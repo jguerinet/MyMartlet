@@ -41,7 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/courses_add_wishlist"
+            android:text="@string/courses_remove_wishlist"
             android:padding="@dimen/padding_micro"
             android:textSize="@dimen/text_medium"
             android:gravity="center"

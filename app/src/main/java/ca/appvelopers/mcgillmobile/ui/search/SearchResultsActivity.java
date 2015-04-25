@@ -17,14 +17,17 @@
 package ca.appvelopers.mcgillmobile.ui.search;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -46,6 +49,16 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  */
 public class SearchResultsActivity extends BaseActivity {
     /**
+     * The courses list
+     */
+    @InjectView(android.R.id.list)
+    RecyclerView mListView;
+    /**
+     * The empty view
+     */
+    @InjectView(R.id.courses_empty)
+    TextView mEmptyView;
+    /**
      * The adapter for the list of results
      */
     private WishlistSearchCourseAdapter mAdapter;
@@ -59,10 +72,8 @@ public class SearchResultsActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchresults);
-
+        ButterKnife.inject(this);
         Analytics.getInstance().sendScreen("Search Results");
-
-        //Set up the toolbar
         setUpToolbar(true);
 
         //Get the info from the intent
@@ -75,28 +86,21 @@ public class SearchResultsActivity extends BaseActivity {
 
         //ListView
         mAdapter = new WishlistSearchCourseAdapter(this, mTerm, courses);
-        ListView listView = (ListView) findViewById(R.id.list);
-        listView.setEmptyView(findViewById(R.id.courses_empty));
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
+        if(mAdapter.isEmpty()){
+            mListView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+    }
 
-        //Register Button
-        TextView registerButton = (TextView) findViewById(R.id.course_register);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                register(SearchResultsActivity.this, mTerm, mAdapter.getCheckedCourses());
-            }
-        });
+    @OnClick(R.id.course_register)
+    void registerButton(){
+        register(this, mTerm, mAdapter.getCheckedCourses());
+    }
 
-        //Add to Wishlist Button
-        TextView wishlistButton = (TextView)findViewById(R.id.course_wishlist);
-        wishlistButton.setText(getString(R.string.courses_add_wishlist));
-        wishlistButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addToWishlist(SearchResultsActivity.this, mAdapter.getCheckedCourses(), true);
-            }
-        });
+    @OnClick(R.id.course_wishlist)
+    void wishlistButton(){
+        addToWishlist(this, mAdapter.getCheckedCourses(), true);
     }
 
     /**

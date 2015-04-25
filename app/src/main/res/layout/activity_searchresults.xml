@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"/>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@+id/courses_empty"
         android:padding="@dimen/padding_medium"
         android:text="@string/courses_empty"
         android:gravity="center"
         android:textStyle="italic"
+        android:visibility="gone"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_medium"
-        android:layout_below="@id/toolbar"/>
+        android:textSize="@dimen/text_medium"/>
 
-    <ListView
+    <RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@android:id/list"
-        android:layout_below="@id/toolbar"
-        android:layout_above="@+id/courses_button_container" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@android:id/list"/>
 
     <LinearLayout
         android:id="@+id/courses_button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:orientation="horizontal">
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -43,6 +44,7 @@
             android:id="@+id/course_register"/>
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -54,4 +56,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
