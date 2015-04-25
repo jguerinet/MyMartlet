@@ -32,13 +32,23 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Faculty;
 
+/**
+ * Displays the list of faculties that the user can choose from
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class FacultyAdapter extends BaseAdapter {
-    private Context mContext;
+    /**
+     * The list of faculties
+     */
     private List<Faculty> mFaculties;
 
-    public FacultyAdapter(Context context, boolean emptyFaculty){
-        this.mContext = context;
-        this.mFaculties = new ArrayList<Faculty>();
+    /**
+     * Default Constructor
+     */
+    public FacultyAdapter(Context context){
+        this.mFaculties = new ArrayList<>();
         mFaculties.addAll(Arrays.asList(Faculty.values()));
 
         //Sort them
@@ -49,10 +59,8 @@ public class FacultyAdapter extends BaseAdapter {
             }
         });
 
-        //See if we need to add an empty faculty
-        if(emptyFaculty){
-            mFaculties.add(0, null);
-        }
+        //Add the empty faculty at the front
+        mFaculties.add(0, null);
     }
 
     @Override
@@ -73,7 +81,8 @@ public class FacultyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         if(view == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, null);
+            view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.spinner_item, viewGroup, false);
         }
 
         Faculty faculty = getItem(position);
@@ -90,7 +99,8 @@ public class FacultyAdapter extends BaseAdapter {
     @Override
     public View getDropDownView(int position, View view, ViewGroup viewGroup){
         if(view == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.spinner_dropdown, null);
+            view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.spinner_dropdown, viewGroup, false);
         }
 
         Faculty faculty = getItem(position);
