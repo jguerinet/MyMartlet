@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui.walkthrough;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,7 @@ public class FacultyAdapter extends BaseAdapter {
     /**
      * Default Constructor
      */
-    public FacultyAdapter(Context context){
+    public FacultyAdapter(){
         this.mFaculties = new ArrayList<>();
         mFaculties.addAll(Arrays.asList(Faculty.values()));
 

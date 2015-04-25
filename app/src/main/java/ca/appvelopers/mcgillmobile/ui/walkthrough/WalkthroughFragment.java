@@ -34,14 +34,30 @@ import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
- * Author : Julien
+ * One page in the walkthrough
+ * @author Julien Guerinet
+ * @author Rafi Uddin
+ * @version 2.0
+ * @since 1.0
  */
 public class WalkthroughFragment extends Fragment {
     private static final String PAGE_NUMBER = "page_number";
+    /**
+     * The page number this fragment represents
+     */
     private int mPageNumber;
+    /**
+     * True if this is the email walkthrough, false otherwise
+     */
     private boolean mEmail;
 
-    //Create the fragment with the page number in the arguments.
+    /**
+     * Creates an instance of the WalkthroughFragment with the arguments bundled
+     *
+     * @param pageNumber The page number
+     * @param email      True if this is the email walkthrough, false otherwise
+     * @return A WalkthroughFragment instance
+     */
     public static WalkthroughFragment createInstance(int pageNumber, boolean email){
         WalkthroughFragment fragment = new WalkthroughFragment();
 
@@ -62,68 +78,61 @@ public class WalkthroughFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View pageView;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
+        View view;
 
         //Normal Walkthrough
         if(!mEmail){
             switch(mPageNumber){
                 //Welcome to the MyMcGill App
                 case 0:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_0, null);
-                    break;
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_0, container);
                 //Access all of your MyMcGill essentials easily
                 case 1:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_1, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_1, container);
                 //Main Menu Explanation
                 case 2:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_2, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_2, container);
                 //Horizontal Schedule
                 case 3:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_3, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_3, container);
                 //Offline Access / Security
                 case 4:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_4, null);
+                    view = View.inflate(getActivity(), R.layout.fragment_walkthrough_4, container);
 
                     //Set the typeface for icons
-                    TextView securityIcon = (TextView)pageView.findViewById(R.id.security_icon);
+                    TextView securityIcon = (TextView)view.findViewById(R.id.security_icon);
                     securityIcon.setTypeface(App.getIconFont());
-                    TextView settingsIcon = (TextView)pageView.findViewById(R.id.settings_icon);
+                    TextView settingsIcon = (TextView)view.findViewById(R.id.settings_icon);
                     settingsIcon.setTypeface(App.getIconFont());
-                    TextView emailIcon = (TextView)pageView.findViewById(R.id.email_icon);
+                    TextView emailIcon = (TextView)view.findViewById(R.id.email_icon);
                     emailIcon.setTypeface(App.getIconFont());
 
-                    break;
-
+                    return view;
                 //Help/About/Bugs
                 case 5:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, null);
+                    view = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, container);
 
                     //Set the typeface for the icon
-                    TextView bugIcon = (TextView)pageView.findViewById(R.id.bug_icon);
+                    TextView bugIcon = (TextView)view.findViewById(R.id.bug_icon);
                     bugIcon.setTypeface(App.getIconFont());
-                    TextView helpIcon = (TextView)pageView.findViewById(R.id.help_icon);
+                    TextView helpIcon = (TextView)view.findViewById(R.id.help_icon);
                     helpIcon.setTypeface(App.getIconFont());
 
-                    break;
-
+                    return view;
                 //Default Homepage / Faculty
                 case 6:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_6, null);
+                    view = View.inflate(getActivity(), R.layout.fragment_walkthrough_6, container);
 
-                    Spinner homepage = (Spinner)pageView.findViewById(R.id.homepage);
+                    Spinner homepage = (Spinner)view.findViewById(R.id.homepage);
                     final HomepageAdapter homepageAdapter = new HomepageAdapter();
                     homepage.setAdapter(homepageAdapter);
                     homepage.setSelection(homepageAdapter.getPosition(App.getHomePage()));
                     homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        public void onItemSelected(AdapterView<?> adapterView, View view,
+                                                   int position, long l){
                             DrawerItem chosenDrawerItem = homepageAdapter.getItem(position);
 
                             Analytics.getInstance().sendEvent("Walkthrough", "Homepage",
@@ -136,15 +145,14 @@ public class WalkthroughFragment extends Fragment {
                         public void onNothingSelected(AdapterView<?> adapterView) {}
                     });
 
-                    Spinner faculty = (Spinner)pageView.findViewById(R.id.faculty);
-                    //Standard ArrayAdapter
-                    final FacultyAdapter facultyAdapter = new FacultyAdapter(getActivity(), true);
+                    Spinner faculty = (Spinner)view.findViewById(R.id.faculty);
+                    final FacultyAdapter facultyAdapter = new FacultyAdapter();
                     faculty.setAdapter(facultyAdapter);
-                    //Default selection is empty
                     faculty.setSelection(0);
                     faculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        public void onItemSelected(AdapterView<?> adapterView, View view,
+                                                   int position, long l) {
                             //Get the chosen language
                             Faculty faculty = facultyAdapter.getItem(position);
 
@@ -157,8 +165,8 @@ public class WalkthroughFragment extends Fragment {
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {}
                     });
-                    break;
 
+                    return view;
                 default:
                     return null;
             }
@@ -167,38 +175,29 @@ public class WalkthroughFragment extends Fragment {
         else{
             switch(mPageNumber){
                 case 0:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_0, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_0,
+                            container);
                 case 1:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_1, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_1,
+                            container);
                 case 2:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_2, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_2,
+                            container);
                 case 3:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_3, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_3,
+                            container);
                 case 4:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_4, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_4,
+                            container);
                 case 5:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_5, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_5,
+                            container);
                 case 6:
-                    pageView = View.inflate(getActivity(), R.layout.fragment_walkthrough_email_6, null);
-                    break;
-
+                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_6,
+                            container);
                 default:
                     return null;
             }
         }
-
-        return pageView;
     }
 }
