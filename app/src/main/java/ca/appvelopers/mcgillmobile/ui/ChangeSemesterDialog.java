@@ -33,7 +33,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.ui.view.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 
 public class ChangeSemesterDialog extends AlertDialog {
