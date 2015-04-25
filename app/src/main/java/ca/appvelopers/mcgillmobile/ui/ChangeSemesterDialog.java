@@ -19,109 +19,128 @@ package ca.appvelopers.mcgillmobile.ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnItemSelected;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 
+/**
+ * Allows the user to change their currently viewed semester in some sections of the app
+ * @author Joshua David Alfaro
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class ChangeSemesterDialog extends AlertDialog {
-    private AlertDialog mDialog;
-
+    /**
+     * The current term
+     */
     private Term mTerm;
+    /**
+     * True if we should show the terms that the user can currently register in, false otherwise
+     */
+    private boolean mRegisterTerms;
+    /**
+     * The checkbox to set the default term
+     */
+    @InjectView(R.id.change_semester_default)
     private CheckBox mDefaultCheckbox;
+    /**
+     * The spinner used to choose a term
+     */
+    @InjectView(R.id.change_semester_term)
+    private Spinner mTermSpinner;
+    /**
+     * The adapter used for the term spinner
+     */
+    private TermAdapter mAdapter;
 
-    public ChangeSemesterDialog(Context context, boolean registerTerms, Term term) {
+    public ChangeSemesterDialog(Context context, Term term, boolean registerTerms){
         super(context);
+        this.mTerm = term;
+        this.mRegisterTerms = registerTerms;
+    }
 
-        Analytics.getInstance().sendScreen("Schedule - Change Semester");
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_change_semester);
+        ButterKnife.inject(this);
+        Analytics.getInstance().sendScreen("Change Semester");
 
-        //Inflate the right view
-        View layout = View.inflate(context, R.layout.dialog_change_semester, null);
-
-        //Set up the default checkbox
-        mDefaultCheckbox = (CheckBox)layout.findViewById(R.id.change_semester_default);
-        //Don't show it if we are doing the register terms only
-        if(registerTerms){
+        //Don't show the checkbox if we are doing the register terms only
+        if(mRegisterTerms){
             mDefaultCheckbox.setVisibility(View.GONE);
         }
 
-        //Check if there was a term sent, use the default one if none was sent
-        mTerm = term == null ? App.getDefaultTerm() : term;
+        //Use the default term if no term was sent
+        if(mTerm == null){
+            mTerm = App.getDefaultTerm();
+        }
 
-        List<Term> terms = new ArrayList<Term>();
+        List<Term> terms = new ArrayList<>();
         //We are using the user's existing terms
-        if(!registerTerms){
+        if(!mRegisterTerms){
             for (Semester semester : App.getTranscript().getSemesters()) {
                 terms.add(semester.getTerm());
             }
         }
         //We are using the registration terms
         else{
-            for(Term term1 : App.getRegisterTerms()){
-                terms.add(term1);
-            }
+            terms.addAll(App.getRegisterTerms());
         }
 
         //Set up the spinner
-        Spinner spinner = (Spinner)layout.findViewById(R.id.change_semester_term);
-        final TermAdapter adapter = new TermAdapter(terms);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(terms.indexOf(mTerm));
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                //Get the selected term
-                mTerm = adapter.getItem(position);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
+        mAdapter = new TermAdapter(terms);
+        mTermSpinner.setAdapter(mAdapter);
+        mTermSpinner.setSelection(terms.indexOf(mTerm));
 
-        //Build the dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false)
-            .setView(layout)
-            .setCustomTitle(View.inflate(context, R.layout.dialog_change_semester_title, null))
-            .setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    //Check if the default checkbox is checked
-                    if (mDefaultCheckbox.isChecked()) {
-                        //Store this semester as the default semester if it is
-                        App.setDefaultTerm(mTerm);
+        //Set up some other parts of the dialog
+        setCancelable(false);
+        setCustomTitle(View.inflate(getContext(), R.layout.dialog_change_semester_title, null));
+        setButton(DialogInterface.BUTTON_POSITIVE, getContext().getString(android.R.string.ok),
+                new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        //Check if the default checkbox is checked
+                        if(mDefaultCheckbox.isChecked()){
+                            //Store this semester as the default semester if it is
+                            App.setDefaultTerm(mTerm);
+                        }
+
+                        dialog.dismiss();
                     }
-
-                    dialog.dismiss();
-                }
-            })
-            .setNegativeButton(context.getString(android.R.string.no), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    //Dismiss with the term set to null
-                    mTerm = null;
-                    dialog.dismiss();
-                }
-            });
-        mDialog = builder.create();
+                });
+        setButton(DialogInterface.BUTTON_NEGATIVE, getContext().getString(android.R.string.cancel),
+                new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        //Dismiss with the term set to null
+                        mTerm = null;
+                        dialog.dismiss();
+                    }
+                });
     }
 
-    @Override
-    public void show(){
-        mDialog.show();
+    @OnItemSelected(R.id.change_semester_term)
+    void termSelected(int position){
+        mTerm = mAdapter.getItem(position);
     }
 
-    @Override
-    public void setOnDismissListener(OnDismissListener onDismissListener){
-        mDialog.setOnDismissListener(onDismissListener);
-    }
-
+    /**
+     * @return The term selected, if any
+     */
     public Term getTerm(){
         return mTerm;
     }

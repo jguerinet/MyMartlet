@@ -181,7 +181,7 @@ public class WishlistFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_change_semester){
-            final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, true, mTerm);
+            final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, mTerm, true);
             dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialogInterface) {

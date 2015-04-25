@@ -112,8 +112,8 @@ public class ScheduleFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, false,
-                        mTerm);
+                final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, mTerm,
+                        false);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {

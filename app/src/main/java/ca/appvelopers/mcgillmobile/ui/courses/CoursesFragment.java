@@ -166,7 +166,7 @@ public class CoursesFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //Change Semester
         if(item.getItemId() == R.id.action_change_semester){
-            final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, false, mTerm);
+            final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, mTerm, false);
             dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialogInterface) {
