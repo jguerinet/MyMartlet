@@ -18,6 +18,9 @@ package ca.appvelopers.mcgillmobile.ui.walkthrough;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
@@ -121,5 +124,27 @@ public class WalkthroughActivity extends BaseActivity {
     void close(){
         Analytics.getInstance().sendEvent("Walkthrough", "Skip", null);
         finish();
+    }
+
+    /**
+     * Adapter used for the walkthroughs
+     */
+    class WalkthroughAdapter extends FragmentPagerAdapter {
+        private boolean mEmail;
+
+        public WalkthroughAdapter(FragmentManager fm, boolean email){
+            super(fm);
+            mEmail = email;
+        }
+
+        @Override
+        public Fragment getItem(int position){
+            return WalkthroughFragment.createInstance(position, mEmail);
+        }
+
+        @Override
+        public int getCount(){
+            return 7;
+        }
     }
 }
