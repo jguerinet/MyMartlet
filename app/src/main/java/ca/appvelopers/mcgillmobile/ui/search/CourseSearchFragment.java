@@ -30,7 +30,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,6 +38,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -140,6 +140,16 @@ public class CourseSearchFragment extends BaseFragment {
     @InjectView(R.id.search_sunday)
     CheckBox mSunday;
     /**
+     * The more options container
+     */
+    @InjectView(R.id.more_options_container)
+    LinearLayout mMoreOptionsContainer;
+    /**
+     * The more options button
+     */
+    @InjectView(R.id.more_options)
+    Button mMoreOptionsButton;
+    /**
      * True if the user sees al of the options, false otherwise
      */
     private boolean mMoreOptions = false;
@@ -161,25 +171,13 @@ public class CourseSearchFragment extends BaseFragment {
         Analytics.getInstance().sendScreen("Registration");
         mActivity.setTitle(getString(R.string.title_registration));
 
-        //Set up the search button
-        Button searchButton = (Button)view.findViewById(R.id.search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchCourses();
-            }
-        });
-
         //Check if there are any terms to register for
         List<Term> registerTerms = App.getRegisterTerms();
         if(registerTerms.isEmpty()){
             //Hide all of the search related stuff, show explanatory text, and return the view
-            TextView noSemesters = (TextView)view.findViewById(R.id.search_empty);
-            noSemesters.setVisibility(View.VISIBLE);
-
-            LinearLayout container = (LinearLayout)view.findViewById(R.id.search_container);
-            container.setVisibility(View.GONE);
-            searchButton.setVisibility(View.GONE);
+            view.findViewById(R.id.search_empty).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.search_container).setVisibility(View.GONE);
+            view.findViewById(R.id.search_button).setVisibility(View.GONE);
 
             //Hide the loading indicator
             hideLoadingIndicator();
@@ -198,22 +196,6 @@ public class CourseSearchFragment extends BaseFragment {
         mEndTime.setCurrentHour(0);
         mEndTime.setCurrentMinute(0);
 
-        //Set up the more options button
-        final LinearLayout moreOptionsContainer =
-                (LinearLayout)view.findViewById(R.id.more_options_container);
-        final TextView moreOptions = (TextView)view.findViewById(R.id.more_options);
-        moreOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Inverse the more options boolean
-                mMoreOptions = !mMoreOptions;
-
-                moreOptionsContainer.setVisibility(mMoreOptions ? View.VISIBLE : View.GONE);
-                moreOptions.setText(mMoreOptions ? getString(R.string.registration_hide_options) :
-                    getString(R.string.registration_show_options));
-            }
-        });
-
         //Hide the loading indicator
         hideLoadingIndicator();
 
@@ -221,9 +203,23 @@ public class CourseSearchFragment extends BaseFragment {
     }
 
     /**
+     * Shows or hides more search options
+     */
+    @OnClick(R.id.more_options)
+    void showMoreOptions(){
+        //Inverse the more options boolean
+        mMoreOptions = !mMoreOptions;
+
+        mMoreOptionsContainer.setVisibility(mMoreOptions ? View.VISIBLE : View.GONE);
+        mMoreOptionsButton.setText(mMoreOptions ? getString(R.string.registration_hide_options) :
+                getString(R.string.registration_show_options));
+    }
+
+    /**
      * Searches for courses based on the given information
      */
-    private void searchCourses(){
+    @OnClick(R.id.search_button)
+    void searchCourses(){
         //Get the selected term
         Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
 
