@@ -187,7 +187,7 @@ public class CourseSearchFragment extends BaseFragment {
             return view;
         }
 
-        mTermAdapter = new TermAdapter(mActivity, registerTerms);
+        mTermAdapter = new TermAdapter(registerTerms);
         mTermSpinner.setAdapter(mTermAdapter);
 
         mStartTime.setIs24HourView(false);

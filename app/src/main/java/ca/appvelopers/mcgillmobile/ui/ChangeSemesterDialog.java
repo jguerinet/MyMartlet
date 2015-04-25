@@ -25,8 +25,6 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -73,17 +71,9 @@ public class ChangeSemesterDialog extends AlertDialog {
             }
         }
 
-        //Order them chronologically
-        Collections.sort(terms, new Comparator<Term>() {
-            @Override
-            public int compare(Term term, Term term2) {
-                return term.isAfter(term2) ? -1 : 1;
-            }
-        });
-
         //Set up the spinner
         Spinner spinner = (Spinner)layout.findViewById(R.id.change_semester_term);
-        final TermAdapter adapter = new TermAdapter(context, terms);
+        final TermAdapter adapter = new TermAdapter(terms);
         spinner.setAdapter(adapter);
         spinner.setSelection(terms.indexOf(mTerm));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

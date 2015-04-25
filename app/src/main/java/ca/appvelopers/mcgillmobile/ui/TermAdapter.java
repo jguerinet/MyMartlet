@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +23,40 @@ import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Term;
 
+/**
+ * Used for the term spinners
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class TermAdapter extends BaseAdapter implements SpinnerAdapter{
-    private Context mContext;
+    /**
+     * The list of terms
+     */
     private List<Term> mTerms;
 
-    public TermAdapter(Context context, List<Term> terms){
-        this.mContext = context;
+    /**
+     * Default Constructor
+     *
+     * @param terms The list of terms
+     */
+    public TermAdapter(List<Term> terms){
         this.mTerms = terms;
+
+        //Sort them chronologically
+        Collections.sort(mTerms, new Comparator<Term>() {
+            @Override
+            public int compare(Term term, Term term2){
+                return term.isAfter(term2) ? -1 : 1;
+            }
+        });
     }
 
     @Override
@@ -56,12 +77,12 @@ public class TermAdapter extends BaseAdapter implements SpinnerAdapter{
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         if(view == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.spinner_item, null);
+            view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.spinner_item, viewGroup, false);
         }
 
         //Semester name
-        Term term = getItem(position);
-        ((TextView)view).setText(term.toString());
+        ((TextView)view).setText(getItem(position).toString());
 
         return view;
     }
@@ -69,12 +90,12 @@ public class TermAdapter extends BaseAdapter implements SpinnerAdapter{
     @Override
     public View getDropDownView(int position, View view, ViewGroup viewGroup){
         if(view == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.spinner_dropdown, null);
+            view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.spinner_dropdown, viewGroup, false);
         }
 
         //Semester name
-        Term term = getItem(position);
-        ((TextView)view).setText(term.toString());
+        ((TextView)view).setText(getItem(position).toString());
 
         return view;
     }
