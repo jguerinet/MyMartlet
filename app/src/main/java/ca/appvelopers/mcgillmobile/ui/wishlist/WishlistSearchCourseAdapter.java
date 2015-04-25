@@ -17,10 +17,10 @@
 package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -28,120 +28,151 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 
-public class WishlistSearchCourseAdapter extends BaseAdapter {
+public class WishlistSearchCourseAdapter
+        extends RecyclerView.Adapter<WishlistSearchCourseAdapter.CourseHolder> {
     private Context mContext;
-    private List<Course> mClassItems;
-    private List<Course> mCheckedClassItems;
+    private List<Course> mCourses;
+    private List<Course> mCheckedCourses;
 
     public WishlistSearchCourseAdapter(Context context, Term term, List<Course> classItems){
         this.mContext = context;
-        this.mClassItems = new ArrayList<Course>();
-        this.mCheckedClassItems = new ArrayList<Course>();
+        this.mCourses = new ArrayList<>();
+        this.mCheckedCourses = new ArrayList<>();
 
         //Add only the courses for this term
         for(Course classItem : classItems){
             if(classItem.getTerm().equals(term)){
-                mClassItems.add(classItem);
+                mCourses.add(classItem);
             }
         }
     }
 
     @Override
-    public int getCount() {
-        return mClassItems.size();
+    public CourseHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        return new CourseHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_course, parent, false));
     }
 
     @Override
-    public Course getItem(int i) {
-        return mClassItems.get(i);
+    public void onBindViewHolder(CourseHolder holder, int position){
+        holder.bind(mCourses.get(position));
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        //Inflate the view if it is null
-        if(view == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_course, null);
-        }
-
-        //Get the concerned course
-        final Course classItem = getItem(i);
-
-        //Code
-        TextView courseCode = (TextView)view.findViewById(R.id.course_code);
-        courseCode.setText(classItem.getCode());
-
-        //Credits
-        TextView courseCredits = (TextView)view.findViewById(R.id.course_credits);
-        courseCredits.setText(mContext.getString(R.string.course_credits, classItem.getCredits()));
-
-        //Title
-        TextView courseTitle = (TextView)view.findViewById(R.id.course_title);
-        courseTitle.setText(classItem.getTitle());
-
-        //Spots Remaining
-        TextView spots = (TextView)view.findViewById(R.id.course_spots);
-        spots.setVisibility(View.VISIBLE);
-        spots.setText(mContext.getString(R.string.registration_spots, classItem.getSeatsRemaining()));
-
-        //Type
-        TextView courseType = (TextView)view.findViewById(R.id.course_type);
-        courseType.setText(classItem.getType());
-
-        //Waitlist Remaining
-        TextView waitlistRemaining = (TextView)view.findViewById(R.id.course_waitlist);
-        waitlistRemaining.setVisibility(View.VISIBLE);
-        waitlistRemaining.setText(mContext.getString(R.string.registration_waitlist, classItem.getWaitlistRemaining()));
-
-        //Days
-        TextView courseDays = (TextView)view.findViewById(R.id.course_days);
-        courseDays.setText(Day.getDayStrings(classItem.getDays()));
-
-        //Hours
-        TextView courseHours = (TextView)view.findViewById(R.id.course_hours);
-        courseHours.setText(classItem.getTimeString(mContext));
-
-        //Dates
-        TextView courseDates = (TextView)view.findViewById(R.id.course_dates);
-        courseDates.setText(classItem.getDateString());
-
-        //Set up the checkbox
-        CheckBox checkBox = (CheckBox)view.findViewById(R.id.course_checkbox);
-        checkBox.setVisibility(View.VISIBLE);
-        //Remove any other listeners
-        checkBox.setOnCheckedChangeListener(null);
-        //Initially unchecked
-        checkBox.setChecked(mCheckedClassItems.contains(classItem));
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //If it becomes checked, add it to the list. If not, remove it
-                if(b){
-                    mCheckedClassItems.add(classItem);
-                }
-                else {
-                    mCheckedClassItems.remove(classItem);
-                }
-            }
-        });
-
-        return view;
+    public int getItemCount(){
+        return mCourses.size();
     }
 
     /**
-     * Get the list of checked classes
-     * @return The checked classes
+     * @return True if there are no courses to display, false otherwise
      */
-    public List<Course> getCheckedClasses(){
-        return mCheckedClassItems;
+    public boolean isEmpty(){
+        return mCourses.isEmpty();
+    }
+
+    /**
+     * @return The list of checked classes
+     */
+    public List<Course> getCheckedCourses(){
+        return mCheckedCourses;
+    }
+
+    class CourseHolder extends RecyclerView.ViewHolder {
+        /**
+         * The course code
+         */
+        @InjectView(R.id.course_code)
+        TextView mCode;
+        /**
+         * The course credits
+         */
+        @InjectView(R.id.course_credits)
+        TextView mCredits;
+        /**
+         * The course title
+         */
+        @InjectView(R.id.course_title)
+        TextView mTitle;
+        /**
+         * The course spots
+         */
+        @InjectView(R.id.course_spots)
+        TextView mSpots;
+        /**
+         * The course type
+         */
+        @InjectView(R.id.course_type)
+        TextView mType;
+        /**
+         * The number of remaining waitlist spots
+         */
+        @InjectView(R.id.course_waitlist)
+        TextView mWaitlistRemaining;
+        /**
+         * The course days
+         */
+        @InjectView(R.id.course_days)
+        TextView mDays;
+        /**
+         * The course hours
+         */
+        @InjectView(R.id.course_hours)
+        TextView mHours;
+        /**
+         * The course dates
+         */
+        @InjectView(R.id.course_dates)
+        TextView mDates;
+        /**
+         * The checkbox to (un)select the course for various operations
+         */
+        @InjectView(R.id.course_checkbox)
+        CheckBox mCheckbox;
+
+        public CourseHolder(View itemView){
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+        }
+
+        public void bind(Course course){
+            mCode.setText(course.getCode());
+            mCredits.setText(mContext.getString(R.string.course_credits, course.getCredits()));
+            mTitle.setText(course.getTitle());
+            mSpots.setVisibility(View.VISIBLE);
+            mSpots.setText(mContext.getString(R.string.registration_spots,
+                    course.getSeatsRemaining()));
+            mType.setText(course.getType());
+            mWaitlistRemaining.setVisibility(View.VISIBLE);
+            mWaitlistRemaining.setText(mContext.getString(R.string.registration_waitlist,
+                    course.getWaitlistRemaining()));
+            mDays.setText(Day.getDayStrings(course.getDays()));
+            mHours.setText(course.getTimeString());
+            mDates.setText(course.getDateString());
+
+            mCheckbox.setVisibility(View.VISIBLE);
+            //Remove any other listeners
+            mCheckbox.setOnCheckedChangeListener(null);
+            //Initial state
+            mCheckbox.setChecked(mCheckedCourses.contains(course));
+            mCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked){
+                    //If it becomes checked, add it to the list. If not, remove it
+                    if(checked){
+                        mCheckedCourses.add(course);
+                    }
+                    else{
+                        mCheckedCourses.remove(course);
+                    }
+                }
+            });
+        }
     }
 }

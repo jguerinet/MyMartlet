@@ -84,7 +84,7 @@ public class SearchResultsActivity extends BaseActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                register(SearchResultsActivity.this, mTerm, mAdapter.getCheckedClasses());
+                register(SearchResultsActivity.this, mTerm, mAdapter.getCheckedCourses());
             }
         });
 
@@ -94,7 +94,7 @@ public class SearchResultsActivity extends BaseActivity {
         wishlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addToWishlist(SearchResultsActivity.this, mAdapter.getCheckedClasses(), true);
+                addToWishlist(SearchResultsActivity.this, mAdapter.getCheckedCourses(), true);
             }
         });
     }

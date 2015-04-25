@@ -18,20 +18,22 @@ package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -54,9 +56,20 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  */
 public class WishlistFragment extends BaseFragment {
     /**
+     * The empty view
+     */
+    @InjectView(R.id.courses_empty)
+    TextView mEmptyView;
+    /**
+     * The wishlist button
+     */
+    @InjectView(R.id.course_wishlist)
+    TextView mWishlistButton;
+    /**
      * The wishlist
      */
-    private ListView mListView;
+    @InjectView(android.R.id.list)
+    RecyclerView mListView;
     /**
      * The ListView adapter
      */
@@ -64,7 +77,7 @@ public class WishlistFragment extends BaseFragment {
     /**
      * The list of classes to display
      */
-    private List<Course> mClasses;
+    private List<Course> mCourses;
     /**
      * The current term
      */
@@ -82,61 +95,31 @@ public class WishlistFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = View.inflate(mActivity, R.layout.fragment_wishlist, null);
+        View view = View.inflate(mActivity, R.layout.fragment_wishlist, container);
+        ButterKnife.inject(this, view);
         lockPortraitMode();
-
         Analytics.getInstance().sendScreen("Wishlist");
 
         //Check if there are any terms to register for
         if(App.getRegisterTerms().isEmpty()){
             //Hide all of the main content, show explanatory text, and return the view
-            TextView noSemesters = (TextView)view.findViewById(R.id.search_empty);
-            noSemesters.setVisibility(View.VISIBLE);
+            mEmptyView.setText(getString(R.string.registration_no_semesters));
+            mEmptyView.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.GONE);
 
-            RelativeLayout registrationContainer = (RelativeLayout)view.findViewById(
-                    R.id.main_container);
-            registrationContainer.setVisibility(View.GONE);
-
-            //Hide the loading indicator
             hideLoadingIndicator();
 
             return view;
         }
 
-        //Views
-        mListView = (ListView)view.findViewById(R.id.list);
-        mListView.setEmptyView(view.findViewById(R.id.courses_empty));
+        //Change the text on the wishlist button
+        mWishlistButton.setText(getResources().getString(R.string.courses_remove_wishlist));
 
         //Load the first registration term
         mTerm = App.getRegisterTerms().get(0);
 
         //Load the wishlist
-        mClasses = App.getClassWishlist();
-
-        //Register button
-        TextView registerButton = (TextView) view.findViewById(R.id.course_register);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchResultsActivity.register(mActivity, mTerm, mAdapter.getCheckedClasses());
-
-                //Reload the adapter
-                loadInfo();
-            }
-        });
-
-        //Remove from Wishlist Button
-        TextView wishlistButton = (TextView)view.findViewById(R.id.course_wishlist);
-        wishlistButton.setText(getResources().getString(R.string.courses_remove_wishlist));
-        wishlistButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchResultsActivity.addToWishlist(mActivity, mAdapter.getCheckedClasses(), false);
-
-                //Reload the adapter
-                loadInfo();
-            }
-        });
+        mCourses = App.getClassWishlist();
 
         //Update the wishlist
         updateWishlist();
@@ -153,6 +136,22 @@ public class WishlistFragment extends BaseFragment {
         loadInfo();
     }
 
+    @OnClick(R.id.course_register)
+    void register(){
+        SearchResultsActivity.register(mActivity, mTerm, mAdapter.getCheckedCourses());
+
+        //Reload the adapter
+        loadInfo();
+    }
+
+    @OnClick(R.id.course_wishlist)
+    void removeFromWishlist(){
+        SearchResultsActivity.addToWishlist(mActivity, mAdapter.getCheckedCourses(), false);
+
+        //Reload the adapter
+        loadInfo();
+    }
+
     private void loadInfo(){
         //Only load the info if there is info to load
         if(!App.getRegisterTerms().isEmpty()){
@@ -160,8 +159,14 @@ public class WishlistFragment extends BaseFragment {
             mActivity.setTitle(mTerm.toString());
 
             //Reload the adapter
-            mAdapter = new WishlistSearchCourseAdapter(mActivity, mTerm, mClasses);
+            mAdapter = new WishlistSearchCourseAdapter(mActivity, mTerm, mCourses);
             mListView.setAdapter(mAdapter);
+
+            //If there are no classes, show the empty view
+            if(mAdapter.isEmpty()){
+                mListView.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -211,7 +216,7 @@ public class WishlistFragment extends BaseFragment {
 
         //Sort Courses into TranscriptCourses
         List<TranscriptCourse> coursesList = new ArrayList<>();
-        for(Course course : mClasses){
+        for(Course course : mCourses){
             boolean courseExists = false;
             //Check if course exists in list
             for(TranscriptCourse addedCourse : coursesList){
@@ -252,11 +257,11 @@ public class WishlistFragment extends BaseFragment {
 
                 //Update the course object with an updated class size
                 for(Course updatedClass : updatedCourses){
-                    for(Course wishlistClass : mClasses){
+                    for(Course wishlistClass : mCourses){
                         if(wishlistClass.equals(updatedClass)){
-                            int i = mClasses.indexOf(wishlistClass);
-                            mClasses.remove(wishlistClass);
-                            mClasses.add(i, updatedClass);
+                            int i = mCourses.indexOf(wishlistClass);
+                            mCourses.remove(wishlistClass);
+                            mCourses.add(i, updatedClass);
                         }
                     }
                 }
@@ -264,7 +269,7 @@ public class WishlistFragment extends BaseFragment {
         }
 
         //Set the new wishlist
-        App.setClassWishlist(mClasses);
+        App.setClassWishlist(mCourses);
         //Reload the adapter
         loadInfo();
 
