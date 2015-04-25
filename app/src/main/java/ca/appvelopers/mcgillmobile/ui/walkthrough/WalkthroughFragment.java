@@ -30,7 +30,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Faculty;
 import ca.appvelopers.mcgillmobile.ui.settings.HomepageAdapter;
-import ca.appvelopers.mcgillmobile.ui.view.FacultyAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 

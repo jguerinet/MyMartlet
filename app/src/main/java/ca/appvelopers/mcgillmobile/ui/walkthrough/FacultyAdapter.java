@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.ui.view;
+package ca.appvelopers.mcgillmobile.ui.walkthrough;
 
 import android.content.Context;
 import android.view.LayoutInflater;
