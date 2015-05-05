@@ -62,14 +62,12 @@ public class MyCoursesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-
         View view = View.inflate(mActivity, R.layout.fragment_web, null);
         lockPortraitMode();
+        Analytics.getInstance().sendScreen("MyCourses");
 
         //Title
         mActivity.setTitle(getString(R.string.title_mycourses));
-
-        Analytics.getInstance().sendScreen("MyCourses");
 
         if(!Help.isConnected()){
             DialogHelper.showNeutralDialog(mActivity, getString(R.string.error),
@@ -78,7 +76,7 @@ public class MyCoursesFragment extends BaseFragment {
         }
 
         //Clear any existing cookies
-        CookieManager cookieManager = CookieManager.getInstance();
+        final CookieManager cookieManager = CookieManager.getInstance();
         if(cookieManager.hasCookies()){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                 CookieManager.getInstance().removeAllCookies(null);
@@ -89,14 +87,13 @@ public class MyCoursesFragment extends BaseFragment {
         }
 
         //Get the WebView
-        mWebView = (WebView)view.findViewById(R.id.desktop_webview);
+        mWebView = (WebView)view.findViewById(R.id.webview);
 
         //allows download any file
         mWebView.setDownloadListener(new DownloadListener() {
             @Override
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimeType,
-                                        long contentLength) {
+            public void onDownloadStart(String url, String userAgent, String contentDisposition,
+                                        String mimeType, long contentLength) {
                 String[] urlSplit = url.split("/");
                 String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
                 String fileName = urlSplit[urlSplit.length - 1].concat("" + extension);

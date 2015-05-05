@@ -49,14 +49,12 @@ public class DesktopFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-
         View view = View.inflate(mActivity, R.layout.fragment_web, null);
         lockPortraitMode();
+        Analytics.getInstance().sendScreen("Desktop Site");
 
         //Title
         mActivity.setTitle(getString(R.string.title_desktop));
-
-        Analytics.getInstance().sendScreen("Desktop Site");
 
         if(!Help.isConnected()){
             DialogHelper.showNeutralDialog(mActivity, getString(R.string.error),
@@ -65,7 +63,7 @@ public class DesktopFragment extends BaseFragment {
         }
 
         //Get the WebView
-        mWebView = (WebView)view.findViewById(R.id.desktop_webview);
+        mWebView = (WebView)view.findViewById(R.id.webview);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setBuiltInZoomControls(true);
