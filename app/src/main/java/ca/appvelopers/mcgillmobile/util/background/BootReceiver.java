@@ -16,30 +16,80 @@
 
 package ca.appvelopers.mcgillmobile.util.background;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.Calendar;
+
+import ca.appvelopers.mcgillmobile.util.Load;
+
 /**
- * This BroadcastReceiver automatically (re)starts the alarm when the device is
- * rebooted. This receiver is set to be disabled (android:enabled="false") in the
- * application's manifest file. When the user sets the alarm, the receiver is enabled.
- * When the user cancels the alarm, the receiver is disabled, so that rebooting the
- * device will not trigger this receiver.
+ * Automatically (re)starts the alarm if needed when the device is rebooted or the user opts in.
+ * @author Shabbir Hussain
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 2.0
  */
-//BEGIN_INCLUDE(autostart)
 public class BootReceiver extends BroadcastReceiver {
 
-	AlarmReceiver alarm = new AlarmReceiver();
-	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
-		if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
-        {
-            alarm.setAlarm(context);
-        }
+		setAlarm(context);
 	}
 
+	/**
+	 * Starts the alarm receiver if needed
+	 *
+	 * @param context The app context
+	 */
+	public static void setAlarm(Context context){
+		//If we don't need it, don't start it
+		if(Load.loadUsername(context) == null || Load.loadPassword(context) == null ||
+				(!Load.loadSeatChecker(context) && !Load.loadGradeChecker(context))){
+			//Make sure it's cancelled
+			cancelAlarm(context);
+
+			return;
+		}
+
+		//Get the alarm manager
+		AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
+		//Set the alarm to fire at approximately 8:30 AM  according to the device's clock,
+		//  and to repeat once a day.
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.set(Calendar.HOUR_OF_DAY, 8);
+		calendar.set(Calendar.MINUTE, 30);
+
+		manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+				AlarmManager.INTERVAL_DAY, getPendingIntent(context));
+	}
+
+	/**
+	 * Cancels the alarm
+	 *
+	 * @param context The app context
+	 */
+	public static void cancelAlarm(Context context) {
+		//Get the alarm manager
+		AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
+		//Cancel the pending intent
+		manager.cancel(getPendingIntent(context));
+	}
+
+	/**
+	 * Gets the pending intent for the checker alarm
+	 *
+	 * @param context The app context
+	 * @return The pending intent
+	 */
+	private static PendingIntent getPendingIntent(Context context){
+		Intent intent = new Intent(context, CheckerService.class);
+		return PendingIntent.getService(context, 0, intent, 0);
+	}
 }
-//END_INCLUDE(autostart)

@@ -41,7 +41,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 import ca.appvelopers.mcgillmobile.util.Update;
-import ca.appvelopers.mcgillmobile.util.background.AlarmReceiver;
+import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -72,9 +72,6 @@ public class App extends Application {
     private static List<PlaceType> placeCategories;
     //List of semesters you can currently register in
     private static List<Term> registerTerms;
-
-    //object to catch event starting background activity
-    private static AlarmReceiver webFetcherReceiver = new AlarmReceiver();
     
     @Override
     public void onCreate(){
@@ -157,10 +154,6 @@ public class App extends Application {
 
     public static List<Course> getClasses(){
         return classes;
-    }
-
-    public static boolean isAlarmActive(){
-    	return webFetcherReceiver.isActive();
     }
 
     public static List<Statement> getEbill(){
@@ -289,11 +282,9 @@ public class App extends Application {
     
     //to be set after successful login
     public static void SetAlarm(Context context){
-    	
-        webFetcherReceiver.setAlarm(context);
+        BootReceiver.setAlarm(context);
     }
     public static void UnsetAlarm(Context context){
-
-        webFetcherReceiver.cancelAlarm(context);
+        BootReceiver.cancelAlarm(context);
     }
 }

@@ -58,16 +58,14 @@
             android:label="@string/title_about" />
 
         <activity android:name=".ui.settings.HelpActivity" />
-        
-        <receiver android:name=".util.background.AlarmReceiver"/>
-        
+
         <receiver android:name=".util.background.BootReceiver"
                 android:enabled="false">
             <intent-filter>
             	<action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <service android:name=".util.background.WebFetcherService" />
+        <service android:name=".util.background.CheckerService" />
 
         <meta-data
             android:name="com.google.android.gms.version"

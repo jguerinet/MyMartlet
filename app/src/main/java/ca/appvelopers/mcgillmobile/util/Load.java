@@ -120,6 +120,16 @@ public class Load {
         return sharedPrefs.getBoolean(Constants.REMEMBER_USERNAME, true);
     }
 
+    public static boolean loadSeatChecker(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.SEAT_CHECKER, false);
+    }
+
+    public static boolean loadGradeChecker(Context context){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(Constants.GRADE_CHECKER, false);
+    }
+
     public static Transcript loadTranscript(Context context){
         Transcript transcript = null;
 
