@@ -33,6 +33,9 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
  * Shows the user's transcript
@@ -101,12 +104,20 @@ public class TranscriptFragment extends BaseFragment{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                boolean success = refreshTranscript(true);
+                mActivity.showToolbarProgress(true);
+                new DownloaderThread(mActivity, "Transcript Downloader", Connection.TRANSCRIPT_URL)
+                        .execute(new DownloaderThread.Callback() {
+                            @Override
+                            public void onDownloadFinished(String result){
+                                //Parse the transcript if possible
+                                if(result != null){
+                                    Parser.parseTranscript(result);
+                                    loadInfo();
+                                }
 
-                if(success){
-                    loadInfo();
-                }
-
+                                mActivity.showToolbarProgress(false);
+                            }
+                        });
                 return true;
         }
         return super.onOptionsItemSelected(item);

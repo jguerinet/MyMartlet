@@ -46,13 +46,13 @@ public class DownloaderThread extends Thread {
 	 */
 	private String mURL;
 	/**
-	 * True if we should be showing errors, false otherwise
+	 * The body response, in String format
 	 */
-	private boolean mShowErrors;
+	private String mResult;
 	/**
-	 * The results of the downloading, null if there was an error
+	 * The callback to use, if any
 	 */
-	private String mResults;
+	private Callback mCallback;
 
 	/**
 	 * Default Constructor
@@ -66,15 +66,14 @@ public class DownloaderThread extends Thread {
 		this.mActivity = context instanceof Activity ? (Activity)context : null;
 		this.mTag = tag;
 		this.mURL = url;
-		this.mResults = null;
 	}
 
 	@Override
 	public void run() {
 		synchronized(this){
+			mResult = null;
 			try{
-				//Make the request
-				this.mResults = Connection.getInstance().get(mURL);
+				mResult = Connection.getInstance().get(mURL);
 			} catch(MinervaException e){
 				//TODO Broadcast this
 			} catch(Exception e){
@@ -93,6 +92,11 @@ public class DownloaderThread extends Thread {
 						}
 					});
 				}
+			} finally {
+				//Call the callback if necessary
+				if(mCallback != null){
+					mCallback.onDownloadFinished(mResult);
+				}
 			}
 		}
 		notify();
@@ -101,9 +105,9 @@ public class DownloaderThread extends Thread {
 	/* HELPERS */
 
 	/**
-	 * Synchronously runs the thread until it is finished
+	 * Executes the thread synchronously
 	 *
-	 * @return The html result
+	 * @return The response body in String format
 	 */
 	public String execute(){
 		start();
@@ -114,6 +118,28 @@ public class DownloaderThread extends Thread {
 			} catch(InterruptedException ignored){}
 		}
 
-		return this.mResults;
+		return this.mResult;
+	}
+
+	/**
+	 * Executes the thread asynchronously and calls the callback when it is finished
+	 *
+	 * @param callback The callback to use after execution
+	 */
+	public void execute(Callback callback){
+		this.mCallback = callback;
+		start();
+	}
+
+	/**
+	 * The callback to use when the thread has finished executing
+	 */
+	public static abstract class Callback {
+		/**
+		 * Method that is called when the thread has finished
+		 *
+		 * @param result The result of the downloader thread
+		 */
+		public abstract void onDownloadFinished(String result);
 	}
 }

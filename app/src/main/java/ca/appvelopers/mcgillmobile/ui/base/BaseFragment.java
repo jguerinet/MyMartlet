@@ -23,11 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
-import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
  * The base fragment for all fragments involved in the main view
@@ -72,51 +68,5 @@ public class BaseFragment extends Fragment {
      */
     protected void lockPortraitMode(){
         mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
-
-    /**
-     * Refreshes the list of courses and possibly the transcript
-     *
-     * @param term       The term to refresh
-     * @return True if the content was refreshed successfully, false otherwise
-     */
-    protected boolean refreshCourses(Term term){
-        //Show the user we are refreshing
-        mActivity.showToolbarProgress(true);
-
-        String html = new DownloaderThread(mActivity, "Course Download",
-                Connection.getScheduleURL(term)).execute();
-
-        if(html != null){
-            Parser.parseCourses(term, html);
-        }
-
-        //Download the Transcript (if ever the user has new semesters on their transcript)
-        refreshTranscript(false);
-
-        return html != null;
-    }
-
-    /**
-     * Refreshes the transcript
-     *
-     * @param showErrors True if we should show any eventual errors, false otherwise
-     * @return True if the transcript was refreshed successfully, false otherwise
-     */
-    protected boolean refreshTranscript(boolean showErrors){
-        //Show the user we are refreshing
-        mActivity.showToolbarProgress(true);
-
-        String html = new DownloaderThread(showErrors ? mActivity : null, "Transcript Download",
-                Connection.TRANSCRIPT_URL).execute();
-
-        if(html != null){
-            Parser.parseTranscript(html);
-        }
-
-        //Done refreshing
-        mActivity.showToolbarProgress(false);
-
-        return html != null;
     }
 }

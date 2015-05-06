@@ -175,10 +175,7 @@ public class CoursesFragment extends BaseFragment {
                     //Term selected: download the classes for the selected term
                     if(term != null){
                         mTerm = term;
-                        boolean success = refreshCourses(mTerm);
-                        if(success){
-                            update();
-                        }
+                        refreshCourses();
                     }
                 }
             });
@@ -187,14 +184,53 @@ public class CoursesFragment extends BaseFragment {
         }
         //Refresh
         else if(item.getItemId() == R.id.action_refresh){
-            boolean success = refreshCourses(mTerm);
-            if(success){
-                update();
-            }
+            refreshCourses();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Refreshes the list of courses for the given term and the user's transcript
+     */
+    private void refreshCourses(){
+        //Show the user we are refreshing
+        mActivity.showToolbarProgress(true);
+
+        //Download the courses for this term
+        new DownloaderThread(mActivity, "Course Download", Connection.getScheduleURL(mTerm))
+                            .execute(new DownloaderThread.Callback() {
+                        @Override
+                        public void onDownloadFinished(String result){
+                            //Parse the courses if there are any
+                            if(result != null){
+                                Parser.parseCourses(mTerm, result);
+
+                                //Download the Transcript
+                                //  (if ever the user has new semesters on their transcript)
+                                new DownloaderThread(null, "Transcript Download",
+                                        Connection.TRANSCRIPT_URL)
+                                        .execute(new DownloaderThread.Callback() {
+                                            @Override
+                                            public void onDownloadFinished(String result){
+                                                //Parse the transcript if possible
+                                                if(result != null){
+                                                    Parser.parseTranscript(result);
+                                                }
+
+                                                //Update the view
+                                                update();
+
+                                                //Done refreshing
+                                                mActivity.showToolbarProgress(false);
+                                            }
+                                        });
+                            }
+                        }
+                });
+    }
+
+
 
     /**
      * Tries to unregister from the given courses
@@ -227,30 +263,36 @@ public class CoursesFragment extends BaseFragment {
                                     mActivity.showToolbarProgress(true);
 
                                     //Run the registration thread
-                                    String html = new DownloaderThread(mActivity, "Unregistration",
+                                    new DownloaderThread(mActivity, "Unregistration",
                                             Connection.getRegistrationURL(mTerm, courses, true))
-                                            .execute();
+                                            .execute(new DownloaderThread.Callback() {
+                                                @Override
+                                                public void onDownloadFinished(String result){
+                                                    if(result != null){
+                                                        String error =
+                                                                Parser.parseRegistrationErrors(
+                                                                        result, courses);
 
-                                    if(html != null){
-                                        String error =
-                                                Parser.parseRegistrationErrors(html, courses);
+                                                        //If there are no errors,
+                                                        //  show the success message
+                                                        if(error == null){
+                                                            Toast.makeText(mActivity,
+                                                                    R.string.unregistration_success,
+                                                                    Toast.LENGTH_LONG).show();
+                                                        }
+                                                        //If not, show the error message
+                                                        else{
+                                                            DialogHelper.showNeutralDialog(mActivity,
+                                                                    getString(R.string.
+                                                                            unregistration_error),
+                                                                    error);
+                                                        }
 
-                                        //If there are no errors, show the success message
-                                        if(error == null){
-                                            Toast.makeText(mActivity,
-                                                    R.string.unregistration_success,
-                                                    Toast.LENGTH_LONG).show();
-                                        }
-                                        //If not, show the error message
-                                        else{
-                                            DialogHelper.showNeutralDialog(mActivity,
-                                                    getString(R.string.unregistration_error),
-                                                    error);
-                                        }
-
-                                        //Refresh the courses
-                                        refreshCourses(mTerm);
-                                    }
+                                                        //Refresh the courses
+                                                        refreshCourses();
+                                                    }
+                                                }
+                                            });
                                 }
                             })
                     .setNegativeButton(getString(android.R.string.cancel), null)

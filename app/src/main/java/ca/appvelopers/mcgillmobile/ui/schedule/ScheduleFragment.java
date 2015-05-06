@@ -39,8 +39,11 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
+import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Load;
+import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
  * Represents the user's schedule
@@ -127,11 +130,7 @@ public class ScheduleFragment extends BaseFragment {
                                     getStartingDate());
 
                             //Refresh the content
-                            boolean success = refreshCourses(mTerm);
-                            //Update the view if this was a successful refresh
-                            if(success){
-                                updateView(mActivity.getResources().getConfiguration().orientation);
-                            }
+                            refreshCourses();
                         }
                     }
                 });
@@ -139,13 +138,7 @@ public class ScheduleFragment extends BaseFragment {
 
                 return true;
             case R.id.action_refresh:
-                //Refresh the content
-                boolean success = refreshCourses(mTerm);
-                //Update the view if this was a successful refresh
-                if(success){
-                    updateView(mActivity.getResources().getConfiguration().orientation);
-                }
-
+                refreshCourses();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -186,6 +179,47 @@ public class ScheduleFragment extends BaseFragment {
         }
 
         return date;
+    }
+
+    /**
+     * Refreshes the list of courses for the given term and the user's transcript
+     */
+    private void refreshCourses(){
+        //Show the user we are refreshing
+        mActivity.showToolbarProgress(true);
+
+        //Download the courses for this term
+        new DownloaderThread(mActivity, "Course Download", Connection.getScheduleURL(mTerm))
+                .execute(new DownloaderThread.Callback() {
+                    @Override
+                    public void onDownloadFinished(String result){
+                        //Parse the courses if there are any
+                        if(result != null){
+                            Parser.parseCourses(mTerm, result);
+
+                            //Download the Transcript
+                            //  (if ever the user has new semesters on their transcript)
+                            new DownloaderThread(null, "Transcript Download",
+                                    Connection.TRANSCRIPT_URL)
+                                    .execute(new DownloaderThread.Callback() {
+                                        @Override
+                                        public void onDownloadFinished(String result){
+                                            //Parse the transcript if possible
+                                            if(result != null){
+                                                Parser.parseTranscript(result);
+                                            }
+
+                                            //Update the view
+                                            updateView(
+                                                    getResources().getConfiguration().orientation);
+
+                                            //Done refreshing
+                                            mActivity.showToolbarProgress(false);
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
 
     /**

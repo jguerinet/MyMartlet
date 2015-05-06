@@ -221,7 +221,7 @@ public class CourseSearchFragment extends BaseFragment {
     @OnClick(R.id.search_button)
     void searchCourses(){
         //Get the selected term
-        Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
+        final Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
 
         //Subject Input
         String subject = mSubject.getText().toString().toUpperCase().trim();
@@ -300,19 +300,22 @@ public class CourseSearchFragment extends BaseFragment {
         Log.d(TAG, "URL: " +  searchURL);
 
         //Execute the request
-        String html = new DownloaderThread(mActivity, TAG, searchURL).execute();
+        new DownloaderThread(mActivity, TAG, searchURL).execute(new DownloaderThread.Callback() {
+            @Override
+            public void onDownloadFinished(String result){
+                //If there is a result, parse it
+                if(result != null){
+                    List<Course> courses = Parser.parseClassResults(term, result);
+                    Intent intent = new Intent(mActivity, SearchResultsActivity.class)
+                            .putExtra(Constants.TERM, term)
+                            .putExtra(Constants.CLASSES, (ArrayList<Course>)courses);
+                    startActivity(intent);
+                }
 
-        //If there is a result, parse it
-        if(html != null){
-            List<Course> courses = Parser.parseClassResults(term, html);
-            Intent intent = new Intent(mActivity, SearchResultsActivity.class)
-                    .putExtra(Constants.TERM, term)
-                    .putExtra(Constants.CLASSES, (ArrayList<Course>)courses);
-            startActivity(intent);
-        }
-
-        //Show the user we are downloading new information
-        mActivity.showToolbarProgress(false);
+                //Show the user we are downloading new information
+                mActivity.showToolbarProgress(false);
+            }
+        });
     }
 
     @Override

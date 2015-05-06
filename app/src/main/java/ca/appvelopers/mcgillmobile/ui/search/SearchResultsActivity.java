@@ -110,7 +110,7 @@ public class SearchResultsActivity extends BaseActivity {
      * @param term     The concerned term
      * @param courses  The list of courses
      */
-    public static void register(BaseActivity activity, Term term, List<Course> courses){
+    public static void register(final BaseActivity activity, Term term, final List<Course> courses){
         //Too many courses
         if(courses.size() > 10){
             Toast.makeText(activity, activity.getString(R.string.courses_too_many_courses),
@@ -126,40 +126,47 @@ public class SearchResultsActivity extends BaseActivity {
             //Show the user we are refreshing
             activity.showToolbarProgress(true);
 
-            String html = new DownloaderThread(activity, "Registration",
-                    Connection.getRegistrationURL(term, courses, false)).execute();
+            new DownloaderThread(activity, "Registration",
+                    Connection.getRegistrationURL(term, courses, false))
+                    .execute(new DownloaderThread.Callback() {
+                        @Override
+                        public void onDownloadFinished(String result){
+                            if(result != null){
+                                String error = Parser.parseRegistrationErrors(result, courses);
 
-            if(html != null){
-                String error = Parser.parseRegistrationErrors(html, courses);
+                                //If there are no errors, show the success message
+                                if(error == null){
+                                    Toast.makeText(activity, R.string.registration_success, Toast
+                                            .LENGTH_LONG)
+                                            .show();
+                                }
+                                //If not, show the error message
+                                else{
+                                    //Show success messages for the correctly registered courses
+                                    for(Course course : courses){
+                                        error += course.getCode() + " (" + course.getType() + ") " +
+                                                "- " +
+                                                activity.getString(R.string.registration_success)
+                                                + "\n";
+                                    }
 
-                //If there are no errors, show the success message
-                if(error == null){
-                    Toast.makeText(activity, R.string.registration_success, Toast.LENGTH_LONG)
-                            .show();
-                }
-                //If not, show the error message
-                else{
-                    //Show success messages for the correctly registered courses
-                    for(Course course : courses){
-                        error += course.getCode() + " (" +  course.getType() + ") - " +
-                                activity.getString(R.string.registration_success) + "\n";
-                    }
+                                    //Show an alert dialog with the errors
+                                    DialogHelper.showNeutralDialog(activity,
+                                            activity.getString(R.string.registration_error), error);
+                                }
 
-                    //Show an alert dialog with the errors
-                    DialogHelper.showNeutralDialog(activity,
-                            activity.getString(R.string.registration_error), error);
-                }
+                                //Remove the courses from the wishlist if they were there
+                                List<Course> wishlist = App.getClassWishlist();
+                                wishlist.removeAll(courses);
 
-                //Remove the courses from the wishlist if they were there
-                List<Course> wishlist = App.getClassWishlist();
-                wishlist.removeAll(courses);
+                                //Set the new wishlist
+                                App.setClassWishlist(wishlist);
+                            }
 
-                //Set the new wishlist
-                App.setClassWishlist(wishlist);
-            }
-
-            //Stop the refreshing
-            activity.showToolbarProgress(false);
+                            //Stop the refreshing
+                            activity.showToolbarProgress(false);
+                        }
+                    });
         }
     }
 

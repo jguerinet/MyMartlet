@@ -128,15 +128,16 @@ public class EbillFragment extends BaseFragment {
         //Show the user we are reloading
         mActivity.showToolbarProgress(true);
 
-        String html = new DownloaderThread(mActivity, "Ebill Download", Connection.EBILL_URL)
-                .execute();
-
-        //If the download was successful, parse and reload the info
-        if(html != null){
-            Parser.parseEbill(html);
-            update();
-        }
-
-        mActivity.showToolbarProgress(false);
+        new DownloaderThread(mActivity, "Ebill Download", Connection.EBILL_URL)
+                .execute(new DownloaderThread.Callback() {
+                    @Override
+                    public void onDownloadFinished(String result){
+                        if(result != null){
+                            Parser.parseEbill(result);
+                            update();
+                        }
+                        mActivity.showToolbarProgress(false);
+                    }
+                });
     }
 }
