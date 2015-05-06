@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -204,67 +205,85 @@ public class WishlistFragment extends BaseFragment {
      * Updates the information of the courses on the current wishlist
      */
     private void updateWishlist(){
-        mActivity.showToolbarProgress(true);
+        new AsyncTask<Void, Void, Void>() {
+            private List<TranscriptCourse> mTranscriptCourses;
 
-        //Sort Courses into TranscriptCourses
-        List<TranscriptCourse> coursesList = new ArrayList<>();
-        for(Course course : mCourses){
-            boolean courseExists = false;
-            //Check if course exists in list
-            for(TranscriptCourse addedCourse : coursesList){
-                if(addedCourse.getCourseCode().equals(course.getCode())){
-                    courseExists = true;
-                }
-            }
-            //Add course if it has not already been added
-            if(!courseExists){
-                coursesList.add(new TranscriptCourse(course.getTerm(), course.getCode(),
-                        course.getTitle(), course.getCredits(), "N/A", "N/A"));
-            }
-        }
+            @Override
+            protected void onPreExecute(){
+                mActivity.showToolbarProgress(true);
 
-        //For each course, obtain its Minerva registration page
-        for(TranscriptCourse course : coursesList){
-            //Get the course registration URL
-            String code[] = course.getCourseCode().split(" ");
-            if(code.length < 2){
-                //TODO: Get a String for this
-                Toast.makeText(mActivity, "Cannot update " + course.getCourseCode(),
-                        Toast.LENGTH_SHORT).show();
-                continue;
-            }
-
-            String subject = code[0];
-            String number = code[1];
-            String url = new Connection.SearchURLBuilder(course.getTerm(), subject)
-                            .courseNumber(number)
-                            .build();
-
-            String html = new DownloaderThread(mActivity, "Wishlist Download", url).execute();
-
-            if(html != null){
-                //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
-                //This parses all ClassItems for a given course
-                List<Course> updatedCourses = Parser.parseClassResults(course.getTerm(), html);
-
-                //Update the course object with an updated class size
-                for(Course updatedClass : updatedCourses){
-                    for(Course wishlistClass : mCourses){
-                        if(wishlistClass.equals(updatedClass)){
-                            int i = mCourses.indexOf(wishlistClass);
-                            mCourses.remove(wishlistClass);
-                            mCourses.add(i, updatedClass);
+                //Sort Courses into TranscriptCourses
+                mTranscriptCourses = new ArrayList<>();
+                for(Course course : mCourses){
+                    boolean courseExists = false;
+                    //Check if course exists in list
+                    for(TranscriptCourse addedCourse : mTranscriptCourses){
+                        if(addedCourse.getCourseCode().equals(course.getCode())){
+                            courseExists = true;
                         }
+                    }
+                    //Add course if it has not already been added
+                    if(!courseExists){
+                        mTranscriptCourses.add(new TranscriptCourse(course.getTerm(),
+                                course.getCode(), course.getTitle(), course.getCredits(), "N/A",
+                                "N/A"));
                     }
                 }
             }
-        }
 
-        //Set the new wishlist
-        App.setClassWishlist(mCourses);
-        //Reload the adapter
-        loadInfo();
+            @Override
+            protected Void doInBackground(Void... params){
+                //For each course, obtain its Minerva registration page
+                for(TranscriptCourse course : mTranscriptCourses){
+                    //Get the course registration URL
+                    String code[] = course.getCourseCode().split(" ");
+                    if(code.length < 2){
+                        //TODO: Get a String for this
+                        Toast.makeText(mActivity, "Cannot update " + course.getCourseCode(),
+                                Toast.LENGTH_SHORT).show();
+                        continue;
+                    }
 
-        mActivity.showToolbarProgress(false);
+                    String subject = code[0];
+                    String number = code[1];
+                    String url = new Connection.SearchURLBuilder(course.getTerm(), subject)
+                            .courseNumber(number)
+                            .build();
+
+                    String html = new DownloaderThread(mActivity, "Wishlist Download", url)
+                            .execute();
+
+                    if(html != null){
+                        //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
+                        //This parses all ClassItems for a given course
+                        List<Course> updatedCourses =
+                                Parser.parseClassResults(course.getTerm(), html);
+
+                        //Update the course object with an updated class size
+                        for(Course updatedClass : updatedCourses){
+                            for(Course wishlistClass : mCourses){
+                                if(wishlistClass.equals(updatedClass)){
+                                    int i = mCourses.indexOf(wishlistClass);
+                                    mCourses.remove(wishlistClass);
+                                    mCourses.add(i, updatedClass);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result){
+                //Set the new wishlist
+                App.setClassWishlist(mCourses);
+                //Reload the adapter
+                loadInfo();
+
+                mActivity.showToolbarProgress(false);
+            }
+        }.execute();
     }
 }
