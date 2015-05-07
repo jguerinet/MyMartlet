@@ -43,7 +43,7 @@
         android:paddingLeft="@dimen/padding_micro"
         android:paddingTop="@dimen/padding_small"/>
 
-    <RecyclerView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
