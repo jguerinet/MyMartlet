@@ -35,15 +35,12 @@ import ca.appvelopers.mcgillmobile.ui.transcript.semester.SemesterActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
- * List Adapter that will populate the list of adapters in TranscriptActivity
- * Author: Julien
- * Date: 31/01/14, 6:06 PM
+ * Populates the list of semesters on the transcript page
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterHolder> {
-    /**
-     * The app context
-     */
-    private Context mContext;
     /**
      * The list of semesters
      */
@@ -52,17 +49,15 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
     /**
      * Default Constructor
      *
-     * @param context   The app context
      * @param semesters The list of semesters
      */
-    public TranscriptAdapter(Context context, List<Semester> semesters){
-        this.mContext = context;
+    public TranscriptAdapter(List<Semester> semesters){
         this.mSemesters = semesters;
     }
 
     @Override
     public SemesterHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        return new SemesterHolder(LayoutInflater.from(mContext)
+        return new SemesterHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_semester, parent, false));
     }
 
@@ -100,17 +95,19 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
         }
 
         public void bind(Semester semester){
+            final Context context = itemView.getContext();
+
             mName.setText(semester.getSemesterName());
-            mGPA.setText(mContext.getString(R.string.transcript_termGPA,
+            mGPA.setText(context.getString(R.string.transcript_termGPA,
                     String.valueOf(semester.getGPA())));
 
             //OnClickListener
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, SemesterActivity.class);
+                    Intent intent = new Intent(context, SemesterActivity.class);
                     intent.putExtra(Constants.SEMESTER, semester);
-                    mContext.startActivity(intent);
+                    context.startActivity(intent);
                 }
             });
 
