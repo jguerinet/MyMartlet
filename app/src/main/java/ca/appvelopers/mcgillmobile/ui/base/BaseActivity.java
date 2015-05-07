@@ -18,7 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.base;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.R;
  * @version 2.0
  * @since 1.0
  */
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
     /**
      * The progress bar shown in the toolbar
      */
