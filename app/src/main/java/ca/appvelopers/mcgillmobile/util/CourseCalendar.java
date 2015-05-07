@@ -17,6 +17,8 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
 import java.io.BufferedWriter;
@@ -28,8 +30,11 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.model.Course;
 
 /**
- * iCalendar exporter, may be used with ClassItems.
+ * iCalendar exporter, may be used with the course object.
  * @author Selim Belhaouane
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
  */
 public class CourseCalendar {
 	private static final long serialVersionUID = 1L;
@@ -37,8 +42,8 @@ public class CourseCalendar {
 	//The following is from Outlook. 
 	//Using a timezone is necessary for recurrence rules, as per 
 	//	RFC5445 (page 122).
-	private final String mTZName = "Eastern Standard Time";
-	private final String mTZInfo = "BEGIN:VTIMEZONE\n"
+	private static final String mTZName = "Eastern Standard Time";
+	private static final String mTZInfo = "BEGIN:VTIMEZONE\n"
 			   + "TZID:" + mTZName + "\n"
 			   + "BEGIN:STANDARD\n"
 			   + "DTSTART:16011104T020000\n"
@@ -53,7 +58,7 @@ public class CourseCalendar {
 			   + "TZOFFSETTO:-0400\n"
 			   + "END:DAYLIGHT\n"
 			   + "END:VTIMEZONE";
-	private final String mTZID = String.format("TZID=\"%s\"", mTZName);
+	private static final String mTZID = String.format("TZID=\"%s\"", mTZName);
 	
 	private String mPattern;
 	private boolean mRecurring;
@@ -62,37 +67,42 @@ public class CourseCalendar {
 	
     /**
      * Constructor for the CourseCalendar class
-     * @param classes The list of classes to be exported
-     * @param pattern Course contents for summary and description separated by 
-	 * 				  "-" (see parsePattern()). 
-	 * 		    e.g. CS-T will write Code and Section to Summary 
-	 * 				 and Title to Description
+     *
+     * @param courses   The list of courses to be exported
+     * @param pattern   Course contents for summary and description separated by
+     *                      "-" (see parsePattern()).
+	 * 		             e.g. CS-T will write Code and Section to Summary
+     * 		                and Title to Description
 	 * @param recurring Whether to set the event as recurring over the semester
-	 * @param rounded Whether to use rounded times
+	 * @param rounded   Whether to use rounded times
      */
-	public CourseCalendar(List<Course> classes, String pattern,
-			              boolean recurring, boolean rounded) {
-		mClasses = classes;
-		mPattern = pattern;
-		mRecurring = recurring;
-		mRounded = rounded;
+	public CourseCalendar(List<Course> courses, String pattern, boolean recurring, boolean rounded){
+		this.mClasses = courses;
+		this.mPattern = pattern;
+		this.mRecurring = recurring;
+		this.mRounded = rounded;
 	}
 	
 	/**
-	 * Default constructor for the CourseCalendar class. 
+	 * Default constructor for the CourseCalendar class.
 	 * Pattern   : SUMMARY contains course code
 	 *             DESCRIPTION contains course title and section type
 	 * Recurring : True
 	 * Rounded   : False
-	 * @param classes The list of classes to be exported
+	 *
+	 * @param courses The list of courses to be exported
 	 */
-	public CourseCalendar(List<Course> classes) {
-		mClasses = classes;
-		mPattern = "C-TY";
-		mRecurring = true;
-		mRounded = false;
+	public CourseCalendar(List<Course> courses) {
+		this(courses, "C-TY", true, false);
 	}
-	
+
+	/* HELPERS */
+
+	/**
+	 * Writes the calendar to a file
+	 *
+	 * @param file The file to write the calendar to
+	 */
 	public void writeCalendar(File file) {
 		String prefix = "BEGIN:VCALENDAR" + "\n"
 			          + "VERSION:2.0" + "\n"
@@ -116,6 +126,7 @@ public class CourseCalendar {
 	}
 	/**
 	 * Write entire EVENT to String from Course
+	 *
 	 * @param item Event to be written
 	 * @return EVENT as String
 	 */
@@ -145,8 +156,9 @@ public class CourseCalendar {
 		// 	 object for the beginning and end of the first lecture of 
 		//	 the course. 
 		// o lastDay is the last day of the semester (used for recurrence)
-		DateTime firstClassBegin, firstClassEnd, lastDay, startDate;
+		LocalDate startDate;
 		LocalTime startTime, endTime;
+		LocalDateTime firstClassBegin, firstClassEnd, lastDay;
 		if (mRounded) {
 			startTime = item.getRoundedStartTime();
 			endTime = item.getRoundedEndTime();
@@ -155,15 +167,9 @@ public class CourseCalendar {
 			endTime = item.getEndTime();
 		}
 		startDate = item.getStartDate();
-		firstClassBegin = startDate.withTime(startTime.getHourOfDay(),
-				                             startTime.getMinuteOfHour(),
-				                             0,
-				                             0);
-		firstClassEnd   = startDate.withTime(endTime.getHourOfDay(),
-				                             endTime.getMinuteOfHour(),
-				                             0,
-				                             0);
-		lastDay = item.getEndDate().withTime(23,0,0,0);
+		firstClassBegin = startDate.toLocalDateTime(startTime);
+		firstClassEnd   = startDate.toLocalDateTime(endTime);
+		lastDay = item.getEndDate().toLocalDateTime(new LocalTime(23, 0));
 		if (mRecurring) {
 			event = makeEvent(summary, description, location, firstClassBegin, 
 							   firstClassEnd, lastDay);
@@ -176,18 +182,18 @@ public class CourseCalendar {
 	
 	/**
 	 * General EVENT writer WITH weekly recurrence.
-	 * All String parameters may be blank. 
-	 * @param summary Summary of event (this is what appears on calendar)
+	 * All String parameters may be blank.
+	 *
+	 * @param summary     Summary of event (this is what appears on calendar)
 	 * @param description Description of event -- Can be a blank string
-	 * @param location Location of event
-	 * @param start Start time of event
-	 * @param end End time of event
-	 * @param lastDay Date corresponding to end of recurrence
+	 * @param location    Location of event
+	 * @param start       Start time of event
+	 * @param end         End time of event
+	 * @param lastDay     Date corresponding to end of recurrence
 	 * @return EVENT as iCal-ready String
 	 */
-	public String makeEvent(String summary, String description, 
-							 String location, DateTime start, DateTime end,
-							 DateTime lastDay) {
+	public String makeEvent(String summary, String description, String location,
+	                        LocalDateTime start, LocalDateTime end, LocalDateTime lastDay) {
 		String prefix = "BEGIN:VEVENT\n";
 		String suffix = "END:VEVENT\n";
 		StringBuilder event = new StringBuilder();
@@ -207,20 +213,21 @@ public class CourseCalendar {
 	
 	/**
 	 * General EVENT writer WITHOUT recurrence.
-	 * All String parameters may be blank. 
-	 * @param summary Summary of event (this is what appears on calendar)
+	 * All String parameters may be blank.
+	 *
+	 * @param summary     Summary of event (this is what appears on calendar)
 	 * @param description Description of event -- Can be a blank string
-	 * @param location Location of event
-	 * @param start Start time of event
-	 * @param end End time of event
+	 * @param location    Location of event
+	 * @param start       Start time of event
+	 * @param end         End time of event
 	 * @return EVENT as iCal-ready String
 	 */
-	public String makeEvent(String summary, String description, 
-							 String location, DateTime start, DateTime end) {
+	public String makeEvent(String summary, String description, String location,
+	                        LocalDateTime start, LocalDateTime end) {
 		String prefix = "BEGIN:VEVENT\n";
 		String suffix = "END:VEVENT\n";
 		StringBuilder event = new StringBuilder();
-		
+
 		event.append(prefix);
 		event.append(makeEventSummary(summary));
 		event.append(makeEventDescription(description));
@@ -229,7 +236,7 @@ public class CourseCalendar {
 		event.append(makeEventStart(start));
 		event.append(makeEventEnd(end));
 		event.append(suffix);
-		
+
 		return event.toString();
 	}
 	
@@ -255,7 +262,7 @@ public class CourseCalendar {
 	 * 	   o Lower and upper case are accepted
 	 * 
 	 * @param pattern Pattern (see above)
-	 * @param item Item from which to get code, title, section and/or type  
+	 * @param item    Item from which to get code, title, section and/or type
 	 * @return Requested course attributes
  	 */
     public String parsePattern(Course item, String pattern) {
@@ -296,6 +303,7 @@ public class CourseCalendar {
 
 	/**
 	 * Write SUMMARY property of event
+	 *
 	 * @param name Name/Summary of event 
 	 * @return SUMMARY property as String
 	 */
@@ -305,7 +313,8 @@ public class CourseCalendar {
 	
 	/**
 	 * Write SUMMARY property of Course
-	 * @param item The Course
+	 *
+	 * @param item    The Course
 	 * @param pattern Contents of summary (see parsePattern())
 	 * @return SUMMARY property as String
 	 */
@@ -317,6 +326,7 @@ public class CourseCalendar {
 
 	/**
 	 * Write DESCRIPTION property of event
+	 *
 	 * @param description Description of event
 	 * @return DESCRIPTION property as String
 	 */
@@ -326,7 +336,8 @@ public class CourseCalendar {
 	
 	/**
 	 * Write DESCRIPTION property of Course
-	 * @param item The Course
+	 *
+	 * @param item    The Course
 	 * @param pattern Contents of description (see parsePattern())
 	 * @return DESCRIPTION property as String
 	 */
@@ -338,6 +349,7 @@ public class CourseCalendar {
 
 	/**
 	 * Write LOCATION property of event
+	 *
 	 * @param location Location of event
 	 * @return LOCATION property as String
 	 */
@@ -347,6 +359,7 @@ public class CourseCalendar {
 	
 	/**
 	 * Write LOCATION property of Course
+	 *
 	 * @param item The Course
 	 * @return LOCATION property as String
 	 */
@@ -358,78 +371,75 @@ public class CourseCalendar {
 	
 	/**
 	 * Write DTSTART property of event
+	 *
 	 * @param date Start date-time
 	 * @return DTSTART property as String
 	 */
-	private String makeEventStart(DateTime date){
+	private String makeEventStart(LocalDateTime date){
 		String name = "DTSTART";
 		return formatTimeProperty(date, name) + "\n" ;
 	}
 	/**
 	 * Write DTSTART property of Course
+	 *
 	 * @param item The Course
 	 * @return DTSTART property as String
 	 */
 	@SuppressWarnings("unused")
 	private String makeEventStart(Course item){
 		LocalTime startTime;
-		DateTime startDate;
+		LocalDateTime startDate;
 		if (mRounded) {
 			startTime = item.getRoundedStartTime();
 		} else {
 			startTime = item.getStartTime();
 		}
-		startDate = item.getStartDate().withTime(startTime.getHourOfDay(),
-				                             	 startTime.getMinuteOfHour(),
-				                             	 0,
-				                             	 0);
-		return makeEventStart(startDate);
+		return makeEventStart(item.getStartDate().toLocalDateTime(startTime));
 	}
 	
 	/**
 	 * Write DTEND property of event
+	 *
 	 * @param date End date-time of event
 	 * @return DTEND property as String
 	 */
-	private String makeEventEnd(DateTime date){
+	private String makeEventEnd(LocalDateTime date){
 		String name = "DTEND";
 		return formatTimeProperty(date,name) + "\n" ;
 	}
 	
 	/**
 	 * Write DTEND property of Course
+	 *
 	 * @param item The Course
 	 * @return DTEND property as String
 	 */
 	@SuppressWarnings("unused")
 	private String makeEventEnd(Course item){
 		LocalTime endTime;
-		DateTime endDate;
+		LocalDateTime endDate;
 		if (mRounded) {
 			endTime = item.getRoundedEndTime();
 		} else {
 			endTime = item.getEndTime();
 		}
-		endDate = item.getEndDate().withTime(endTime.getHourOfDay(),
-                							 endTime.getMinuteOfHour(),
-                							 0,
-                							 0);
-		return makeEventEnd(endDate);
+		return makeEventEnd(item.getEndDate().toLocalDateTime(endTime));
 	}
 	
 	/**
 	 * Write DTSTAMP property of event
 	 * Stamp should be date created. DateTime constructor returns today's date.
+	 *
 	 * @return DTSTAMP property as String
 	 */
 	private String makeEventStamp(){
 		String name = "DTSTAMP";
-		DateTime date = new DateTime();
-		return formatTimeProperty(date,name) + "\n";
+		return formatTimeProperty(LocalDateTime.now(), name) + "\n";
 	}
 	
 	/**
 	 * Write DTSTAMP property given Course
+	 *
 	 * @param item The Course
 	 * @return DTSTAMP property as String
 	 */
@@ -441,33 +451,35 @@ public class CourseCalendar {
 	/**
 	 * Write RRULE property of event given an UNTIL date
 	 * The frequency of the recurrence is hard-coded to WEEKLY
+	 *
 	 * @param lastDay End of recurrence
 	 * @return RRULE property as String
 	 */
-	private String makeEventRecurrence(DateTime lastDay){
+	private String makeEventRecurrence(LocalDateTime lastDay){
 		return "RRULE:FREQ=WEEKLY;UNTIL=" + formatTimeToICS(lastDay)+"Z"+"\n";
 	}
 	
 	/**
 	 * Write RRULE property of event given Course using getEndDate()
+	 *
 	 * @param item The Course
 	 * @return RRULE property as String
 	 */
 	@SuppressWarnings("unused")
 	private String makeEventRecurrence(Course item){
-		DateTime lastDay = item.getEndDate().withTime(23,0,0,0);
-		return makeEventRecurrence(lastDay);
+		return makeEventRecurrence(item.getEndDate().toLocalDateTime(new LocalTime(23, 0)));
 	}
 	
-	/* ICS FORMATTING MEHODS */
+	/* ICS FORMATTING METHODS */
 	
 	/**
 	 * Write general date-time property of event such as DTSTART
+	 *
 	 * @param date Date-time of property
 	 * @param name Property name
 	 * @return Property as String 
 	 */
-	private String formatTimeProperty(DateTime date, String name){
+	private String formatTimeProperty(LocalDateTime date, String name){
 		String property;
 		String time = formatTimeToICS(date);
 		property = name + ";" + mTZID + ":" + time;
@@ -479,7 +491,7 @@ public class CourseCalendar {
 	 * @param date Event to make date out of
 	 * @return Formatted time
 	 */
-	private String formatTimeToICS(DateTime date){
+	private String formatTimeToICS(LocalDateTime date){
 		String time;
 		time = date.toString("YYYYMMdd")+"T"+date.toString("HHmmss");
 		return time;
@@ -497,25 +509,21 @@ public class CourseCalendar {
         return iCalDays[date.getDayOfWeek()];
     }
     
-    public static void main(String[] args) {
-    	
-	}
-    
     /**
      * This is an example usage for this class.
-     * @param classes The list of classes to be exported
-     * @param pattern Course contents for summary and description separated by 
+     *
+     * @param classes   The list of classes to be exported
+     * @param pattern   Course contents for summary and description separated by
 	 * 				  "-" (see parsePattern()). 
 	 * 		    e.g. CS-T will write Code and Section to Summary 
 	 * 				 and Title to Description
 	 * @param recurring Whether to set the event as recurring over the semester
-	 * @param rounded Whether to use rounded times
-	 * @param file File to write iCal to
+	 * @param rounded   Whether to use rounded times
+	 * @param file      File to write iCal to
      */
-    public static void example(List<Course> classes, String pattern,
-    		                   boolean recurring, boolean rounded, File file) {
-    	CourseCalendar courseCal = new CourseCalendar(classes, pattern, 
-    			                                      recurring, rounded);
+    public static void example(List<Course> classes, String pattern, boolean recurring,
+                               boolean rounded, File file) {
+    	CourseCalendar courseCal = new CourseCalendar(classes, pattern, recurring, rounded);
     	courseCal.writeCalendar(file);
     }
     
