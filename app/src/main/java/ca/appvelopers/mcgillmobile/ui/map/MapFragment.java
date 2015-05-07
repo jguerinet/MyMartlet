@@ -58,7 +58,6 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
  * Displays a campus map
@@ -74,6 +73,14 @@ public class MapFragment extends BaseFragment {
      * The coordinates used to center the map initially
      */
     private static final LatLng MCGILL = new LatLng(45.504435, -73.576006);
+    /**
+     * The default zoom to use when they first open the map
+     */
+    private static final int DEFAULT_ZOOM = 14;
+    /**
+     * The default bearing to use when they first open the map
+     */
+    private static final int DEFAULT_BEARING = -54;
     /**
      * The fragment containing the map
      */
@@ -248,8 +255,8 @@ public class MapFragment extends BaseFragment {
             //Set the camera's center position
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(MCGILL)
-                    .zoom(Constants.DEFAULT_ZOOM)
-                    .bearing(Constants.DEFAULT_BEARING)
+                    .zoom(DEFAULT_ZOOM)
+                    .bearing(DEFAULT_BEARING)
                     .tilt(0)
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

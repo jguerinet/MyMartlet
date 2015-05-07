@@ -79,7 +79,7 @@ public class SearchResultsActivity extends BaseActivity {
         //Get the info from the intent
         mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
         List<Course> courses =
-                (ArrayList<Course>)getIntent().getSerializableExtra(Constants.CLASSES);
+                (ArrayList<Course>)getIntent().getSerializableExtra(Constants.COURSES);
 
         //Set the title
         setTitle(mTerm.toString());

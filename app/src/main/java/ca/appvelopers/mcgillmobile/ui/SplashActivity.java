@@ -588,8 +588,7 @@ public class SplashActivity extends BaseActivity {
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 //If there's a bug, add it to the intent
                 if(mBugPresent){
-                    intent.putExtra(Constants.BUG, mTranscriptBug ?
-                            Constants.TRANSCRIPT : Constants.SCHEDULE)
+                    intent.putExtra(Constants.BUG, mTranscriptBug ? Constants.TRANSCRIPT : "")
                         .putExtra(Constants.TERM, mTermBug);
                 }
                 startActivity(intent);

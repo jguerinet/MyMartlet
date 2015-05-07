@@ -56,12 +56,12 @@ public class ChangeSemesterDialog extends AlertDialog {
      * The checkbox to set the default term
      */
     @InjectView(R.id.change_semester_default)
-    private CheckBox mDefaultCheckbox;
+    CheckBox mDefaultCheckbox;
     /**
      * The spinner used to choose a term
      */
     @InjectView(R.id.change_semester_term)
-    private Spinner mTermSpinner;
+    Spinner mTermSpinner;
     /**
      * The adapter used for the term spinner
      */

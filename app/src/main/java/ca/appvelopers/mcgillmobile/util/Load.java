@@ -160,7 +160,7 @@ public class Load {
         List<Course> courses = new ArrayList<Course>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.CLASSES_FILE);
+            FileInputStream fis = context.openFileInput(Constants.COURSES_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             courses = (List<Course>) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -278,7 +278,7 @@ public class Load {
         List<Course> classWishlist = new ArrayList<Course>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.CLASS_WISHLIST_FILE);
+            FileInputStream fis = context.openFileInput(Constants.WISHLIST_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             classWishlist = (List<Course>) in.readObject();
         } catch (ClassNotFoundException e) {
@@ -374,7 +374,7 @@ public class Load {
         List<PlaceType> placeCategories = new ArrayList<PlaceType>();
 
         try{
-            FileInputStream fis = context.openFileInput(Constants.PLACE_CATEGORIES_FILE);
+            FileInputStream fis = context.openFileInput(Constants.PLACE_TYPES_FILE);
             ObjectInputStream in = new ObjectInputStream(fis);
             placeCategories = (List<PlaceType>) in.readObject();
         } catch (ClassNotFoundException e) {

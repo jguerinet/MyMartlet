@@ -308,7 +308,7 @@ public class CourseSearchFragment extends BaseFragment {
                     List<Course> courses = Parser.parseClassResults(term, result);
                     Intent intent = new Intent(mActivity, SearchResultsActivity.class)
                             .putExtra(Constants.TERM, term)
-                            .putExtra(Constants.CLASSES, (ArrayList<Course>)courses);
+                            .putExtra(Constants.COURSES, (ArrayList<Course>)courses);
                     startActivity(intent);
                 }
 

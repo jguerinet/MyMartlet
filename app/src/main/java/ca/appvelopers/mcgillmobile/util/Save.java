@@ -145,7 +145,7 @@ public class Save {
         List<Course> courses = App.getClasses();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.CLASSES_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.COURSES_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(courses);
         } catch (OptionalDataException e) {
@@ -217,7 +217,7 @@ public class Save {
         List<Course> classWishlist = App.getClassWishlist();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.CLASS_WISHLIST_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.WISHLIST_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(classWishlist);
         } catch (OptionalDataException e) {
@@ -271,7 +271,7 @@ public class Save {
         List<PlaceType> places = App.getPlaceTypes();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.PLACE_CATEGORIES_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.PLACE_TYPES_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(places);
         } catch (OptionalDataException e) {
