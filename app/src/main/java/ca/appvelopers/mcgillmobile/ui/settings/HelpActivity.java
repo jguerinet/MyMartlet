@@ -38,8 +38,14 @@ import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
+/**
+ * Displays useful information to the user
+ * @author Rafi Uddin
+ * @author Julien Guerinet
+ * @version 2.0
+ * @since 1.0
+ */
 public class HelpActivity extends BaseActivity{
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
