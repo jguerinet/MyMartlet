@@ -94,7 +94,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
             mChevron.setTypeface(App.getIconFont());
         }
 
-        public void bind(Semester semester){
+        public void bind(final Semester semester){
             final Context context = itemView.getContext();
 
             mName.setText(semester.getSemesterName());

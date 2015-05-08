@@ -92,7 +92,7 @@ public class TranscriptFragment extends BaseFragment{
         //Reload all of the info
         mCGPA.setText(getString(R.string.transcript_CGPA, transcript.getCgpa()));
         mTotalCredits.setText(getString(R.string.transcript_credits, transcript.getTotalCredits()));
-        mListView.setAdapter(new TranscriptAdapter(mActivity, transcript.getSemesters()));
+        mListView.setAdapter(new TranscriptAdapter(transcript.getSemesters()));
     }
 
     @Override

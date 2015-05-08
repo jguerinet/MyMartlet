@@ -141,7 +141,7 @@ public class WishlistSearchCourseAdapter
             ButterKnife.inject(this, itemView);
         }
 
-        public void bind(Course course){
+        public void bind(final Course course){
             mCode.setText(course.getCode());
             mCredits.setText(mContext.getString(R.string.course_credits, course.getCredits()));
             mTitle.setText(course.getTitle());
