@@ -253,8 +253,7 @@ public class Connection {
 	 * @throws IOException
 	 * @throws NoInternetException
 	 */
-	public String get(String url) throws MinervaException, IOException,
-			NoInternetException{
+	public String get(String url) throws MinervaException, IOException, NoInternetException{
 		return get(url, true);
 	}
 
@@ -310,8 +309,14 @@ public class Connection {
 	 */
 	public ConnectionStatus login(){
 		try {
+			if(!Help.isConnected()){
+				return ConnectionStatus.NO_INTERNET;
+			}
+
 			//1. Get Minerva's login page and determine the login parameters
-			String postParams = getLoginParameters(get(LOGIN_PAGE_URL, false));
+			Request request = new Request.Builder().get().url(LOGIN_PAGE_URL).build();
+			String html = mClient.newCall(request).execute().body().string();
+			String postParams = getLoginParameters(html);
 			
 			//Search for "Authorization Failure"
 			if(postParams.contains("WRONG_INFO")){
@@ -325,15 +330,9 @@ public class Connection {
 			if (!response.contains("WELCOME")){
 				return ConnectionStatus.WRONG_INFO;
 			}
-		} catch (MinervaException e) {
-			//This should never happen
-			Log.e(TAG, "MinervaException during login", e);
-			return ConnectionStatus.MINERVA_LOGOUT;
 		} catch (IOException e) {
 			Log.e(TAG, "IOException during login", e);
 			return ConnectionStatus.ERROR_UNKNOWN;
-		} catch(NoInternetException e){
-			return ConnectionStatus.NO_INTERNET;
 		}
 
         return ConnectionStatus.OK;
