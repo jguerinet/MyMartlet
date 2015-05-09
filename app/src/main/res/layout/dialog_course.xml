@@ -13,7 +13,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
             android:textColor="@android:color/black"
             android:textStyle="italic"
             android:text="@string/course_time_title"/>
@@ -23,7 +22,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_time"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/text_medium"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
@@ -39,14 +37,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/course_location"
-            android:textSize="@dimen/text_medium"
             android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
             android:textStyle="italic"
             android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
@@ -56,14 +52,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/course_type"
-            android:textSize="@dimen/text_medium"
             android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
             android:textStyle="italic"
             android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
@@ -73,14 +67,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/course_instructor"
-            android:textSize="@dimen/text_medium"
             android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
             android:textStyle="italic"
             android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
@@ -90,14 +82,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/course_section"
-            android:textSize="@dimen/text_medium"
             android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
             android:textStyle="italic"
             android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
@@ -107,14 +97,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/course_credits"
-            android:textSize="@dimen/text_medium"
             android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
             android:textStyle="italic"
             android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
@@ -124,14 +112,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/course_crn"
-            android:textSize="@dimen/text_medium"
             android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/schedule_line"
-            android:background="@color/grey_light"/>
+            android:background="@color/grey_light"
+            android:layout_marginTop="@dimen/padding_micro"/>
 
         <TextView
             android:layout_width="match_parent"
