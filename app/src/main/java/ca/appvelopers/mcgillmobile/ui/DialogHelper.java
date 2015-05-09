@@ -117,7 +117,7 @@ public class DialogHelper {
         new AlertDialog.Builder(context)
                 .setCustomTitle(View.inflate(context, R.layout.dialog_change_semester_title, null))
                 .setView(dialogView)
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which){
