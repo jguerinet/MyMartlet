@@ -141,7 +141,7 @@ public class ScheduleViewBuilder {
             View line = new View(mFragment.getActivity());
             line.setBackgroundColor(mFragment.getResources().getColor(android.R.color.black));
             line.setLayoutParams(new ViewGroup.LayoutParams(
-                    mFragment.getResources().getDimensionPixelSize(R.dimen.line),
+                    mFragment.getResources().getDimensionPixelSize(R.dimen.schedule_line),
                     ViewGroup.LayoutParams.MATCH_PARENT));
             dayContainer.addView(line);
         }

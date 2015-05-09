@@ -16,7 +16,7 @@
         android:gravity="center"/>
 
     <View
-        android:layout_width="@dimen/line"
+        android:layout_width="@dimen/schedule_line"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@color/black"

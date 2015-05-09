@@ -130,7 +130,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
+            android:layout_height="@dimen/schedule_line"
             android:background="@color/grey_light"/>
 
         <TextView
@@ -145,7 +145,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
+            android:layout_height="@dimen/schedule_line"
             android:background="@color/grey_light"/>
 
         <TextView
