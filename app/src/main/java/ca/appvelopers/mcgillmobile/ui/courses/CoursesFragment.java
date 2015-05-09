@@ -148,7 +148,7 @@ public class CoursesFragment extends BaseFragment {
         }
 
         //Set up the list
-        mAdapter = new CoursesAdapter(mActivity, courses, canUnregister);
+        mAdapter = new CoursesAdapter(courses, canUnregister);
         mListView.setAdapter(mAdapter);
 
         //Show the empty view if needed

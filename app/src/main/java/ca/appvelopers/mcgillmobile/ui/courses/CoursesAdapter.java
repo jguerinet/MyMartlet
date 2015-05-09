@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui.courses;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,60 +40,6 @@ import ca.appvelopers.mcgillmobile.model.Day;
  * @since 1.0
  */
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHolder> {
-    /**
-     * The application context
-     */
-    private Context mContext;
-    /**
-     * The list of courses
-     */
-    private List<Course> mCourses;
-    /**
-     * The list of checked courses
-     */
-    private List<Course> mCheckedCourses;
-    /**
-     * True if the user can unregister from these courses, false otherwise
-     */
-    private boolean mCanUnregister;
-
-    /**
-     * Default Constructor
-     *
-     * @param context       The app context
-     * @param courses       The list of courses
-     * @param canUnregister True if the user can unregister from these courses, false otherwise
-     */
-    public CoursesAdapter(Context context, List<Course> courses, boolean canUnregister){
-        this.mContext = context;
-        this.mCourses = courses;
-        this.mCheckedCourses = new ArrayList<>();
-        this.mCanUnregister = canUnregister;
-    }
-
-    @Override
-    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i){
-        return new CourseHolder(LayoutInflater.from(mContext)
-                .inflate(R.layout.item_course, viewGroup, false));
-    }
-
-    @Override
-    public void onBindViewHolder(CourseHolder courseHolder, int i){
-        courseHolder.bindCourse(mCourses.get(i));
-    }
-
-    @Override
-    public int getItemCount(){
-        return mCourses.size();
-    }
-
-    /**
-     * @return The list of checked classes
-     */
-    public List<Course> getCheckedCourses(){
-        return this.mCheckedCourses;
-    }
-
     class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         /**
          * The course code
@@ -132,27 +77,18 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
         @InjectView(R.id.course_checkbox)
         CheckBox mCheckBox;
 
-        /**
-         * Default Constructor
-         *
-         * @param itemView The item view
-         */
         public CourseHolder(View itemView){
             super(itemView);
             ButterKnife.inject(this, itemView);
             itemView.setOnClickListener(this);
         }
 
-        /**
-         * Binds the views to the given course
-         *
-         * @param course The course
-         */
-        public void bindCourse(final Course course){
+        public void bind(final Course course){
             mCode.setText(course.getCode());
             mTitle.setText(course.getTitle());
             mType.setText(course.getType());
-            mCredits.setText(mContext.getString(R.string.course_credits, course.getCredits()));
+            mCredits.setText(itemView.getContext().getString(
+                    R.string.course_credits, course.getCredits()));
             mDays.setText(Day.getDayStrings(course.getDays()));
             mHours.setText(course.getTimeString());
 
@@ -183,5 +119,52 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
         public void onClick(View v){
             mCheckBox.setChecked(!mCheckBox.isChecked());
         }
+    }
+    /**
+     * The list of courses
+     */
+    private List<Course> mCourses;
+    /**
+     * The list of checked courses
+     */
+    private List<Course> mCheckedCourses;
+    /**
+     * True if the user can unregister from these courses, false otherwise
+     */
+    private boolean mCanUnregister;
+
+    /**
+     * Default Constructor
+     *
+     * @param courses       The list of courses
+     * @param canUnregister True if the user can unregister from these courses, false otherwise
+     */
+    public CoursesAdapter(List<Course> courses, boolean canUnregister){
+        this.mCourses = courses;
+        this.mCheckedCourses = new ArrayList<>();
+        this.mCanUnregister = canUnregister;
+    }
+
+    @Override
+    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+        return new CourseHolder(LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.item_course, viewGroup, false));
+    }
+
+    @Override
+    public void onBindViewHolder(CourseHolder courseHolder, int i){
+        courseHolder.bind(mCourses.get(i));
+    }
+
+    @Override
+    public int getItemCount(){
+        return mCourses.size();
+    }
+
+    /**
+     * @return The list of checked classes
+     */
+    public List<Course> getCheckedCourses(){
+        return this.mCheckedCourses;
     }
 }
