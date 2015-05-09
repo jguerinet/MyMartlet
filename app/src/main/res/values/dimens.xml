@@ -9,7 +9,6 @@
     <dimen name="padding_drawer">8dp</dimen>
 
     <!-- Padding Sizes -->
-    <dimen name="padding_list">5dp</dimen>
     <dimen name="padding_micro">10dp</dimen>
     <dimen name="padding_small">14dp</dimen>
     <dimen name="padding_medium">18dp</dimen>

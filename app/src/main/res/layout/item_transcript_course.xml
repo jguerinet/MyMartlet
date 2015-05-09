@@ -1,77 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/default_margin"
-    android:paddingRight="@dimen/default_margin"
-    android:paddingTop="@dimen/padding_micro"
-    android:paddingBottom="@dimen/padding_micro">
+    android:orientation="vertical">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/padding_micro">
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:layout_marginTop="@dimen/padding_micro">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course_code"
+                    android:textSize="@dimen/text_medium"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course_title"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/black"
+                    android:textStyle="italic"/>
+
+                </LinearLayout>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/course_code"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@color/black"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/course_title"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/black"
-                android:textStyle="italic"/>
-
-            </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/course_grade"
-            android:textSize="@dimen/text_large"
-            android:paddingLeft="@dimen/padding_micro"
-            android:paddingRight="@dimen/padding_micro"
-            android:gravity="center"
-            android:textColor="@color/red"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_credits"
-            android:textSize="@dimen/text_small"
-            android:textColor="@color/black"/>
-        
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/course_average"
-            android:gravity="right"
-            android:textSize="@dimen/text_small"
-            android:textColor="@color/black"/>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/course_grade"
+                android:textSize="@dimen/text_large"
+                android:paddingLeft="@dimen/padding_micro"
+                android:paddingRight="@dimen/padding_micro"
+                android:gravity="center"
+                android:textColor="@color/red"/>
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/course_credits"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/course_average"
+                android:gravity="right"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/black"/>
+
+            </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/item_divider"/>
 </LinearLayout>
