@@ -479,20 +479,18 @@ public class Parser {
                 String subject = "";
                 try {
                     subject = code.substring(0, 4);
-                } catch (StringIndexOutOfBoundsException e) {
-                    Log.e(TAG, "Exception in Subject parsing in Class Parser", e);
-                    Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
-                            "Course subject Substring");
+                } catch(StringIndexOutOfBoundsException e){
+                    Crashlytics.log(Log.ERROR, TAG, "Course Subject Parsing Bug");
+                    Crashlytics.logException(e);
                     classError = term.getId();
                 }
 
                 String number = "";
                 try {
                     number = code.substring(5, 8);
-                } catch (StringIndexOutOfBoundsException e) {
-                    Log.e(TAG, "Exception in Number parsing in Class Parser", e);
-                    Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
-                            "Course Number Substring");
+                } catch(StringIndexOutOfBoundsException e){
+                    Crashlytics.log(Log.ERROR, TAG, "Course Number Parsing Bug");
+                    Crashlytics.logException(e);
                     classError = term.getId();
                 }
 
@@ -504,8 +502,8 @@ public class Parser {
                     crn = Integer.parseInt(crnString);
                 }
                 catch (NumberFormatException e){
-                    Log.e(TAG, "CRN Exception in Class Parser", e);
-                    Analytics.getInstance().sendEvent("Parsing Bug", "Class List", "crn");
+                    Crashlytics.log(Log.ERROR, TAG, "Course CRN Parsing Bug");
+                    Crashlytics.logException(e);
                     classError = term.getId();
                 }
 
@@ -517,8 +515,8 @@ public class Parser {
                     credits = Double.parseDouble(creditString);
                 }
                 catch (NumberFormatException e){
-                    Log.e(TAG, "Credits Exception in Class Parser", e);
-                    Analytics.getInstance().sendEvent("Parsing Bug", "Class List", "credits");
+                    Crashlytics.log(Log.ERROR, TAG, "Course Credits Parsing Bug");
+                    Crashlytics.logException(e);
                     classError = term.getId();
                 }
 
@@ -548,10 +546,8 @@ public class Parser {
                             instructor = cells.get(5).text();
                         }
                         catch(IndexOutOfBoundsException e){
-                            Log.e(TAG, "Time/Days/Location/Type/Instructor Exception in " +
-                                    "Class Parser", e);
-                            Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
-                                    "IndexOutOfBounds on Info");
+                            Crashlytics.log(Log.ERROR, TAG, "Course Info Parsing Bug");
+                            Crashlytics.logException(e);
                             classError = term.getId();
                         }
 
@@ -598,9 +594,8 @@ public class Parser {
                             startDate = dates.first;
                             endDate = dates.second;
                         } catch (IllegalArgumentException e){
-                            Log.e(TAG, "Date Range Parsing Exception in Class Parser", e);
-                            Analytics.getInstance().sendEvent("Parsing Bug", "Class List",
-                                    "Start/End Date Parsing");
+                            Crashlytics.log(Log.ERROR, TAG, "Course Date Range Parsing Bug");
+                            Crashlytics.logException(e);
                             classError = term.getId();
                         }
 
