@@ -106,13 +106,18 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
          * @param statement The statement
          */
         public void bindStatement(Statement statement){
-            mDate.setText(Date.getDateString(statement.getDate()));
-            mDueDate.setText(Date.getDateString(statement.getDueDate()));
+            Context context = itemView.getContext();
+
+            mDate.setText(context.getString(R.string.ebill_statement_date,
+                    Date.getDateString(statement.getDate())));
+            mDueDate.setText(context.getString(R.string.ebill_due_date,
+                    Date.getDateString(statement.getDueDate())));
+
             double amount = statement.getAmount();
-            mAmount.setText(String.valueOf(amount));
-            //TODO Change the color to green or red depending on if the user owes money or not
-//            int color = ;
-//            mAmount.setTextColor(color);
+            mAmount.setText("$" + String.valueOf(amount));
+            //Change the color to green or red depending on if the user owes money or not
+            int colorId = amount < 0 ? R.color.red : R.color.green;
+            mAmount.setTextColor(context.getResources().getColor(colorId));
         }
     }
 }

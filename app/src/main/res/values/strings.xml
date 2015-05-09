@@ -147,9 +147,8 @@
     <string name="course_map">Show on Map</string>
 
     <!-- eBill Screen -->
-    <string name="ebill_statement_date">Statement Date:</string>
-    <string name="ebill_due_date">Due Date:</string>
-    <string name="ebill_amount">Amount Due: </string>
+    <string name="ebill_statement_date">Statement Date: %s</string>
+    <string name="ebill_due_date">Due Date: %s</string>
 
     <!-- Settings Screen -->
     <string name="settings_language">Language</string>

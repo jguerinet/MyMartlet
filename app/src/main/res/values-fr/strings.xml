@@ -145,7 +145,6 @@
     <!-- eBill Screen -->
     <string name="ebill_statement_date">Date de DÃ©claration:</string>
     <string name="ebill_due_date">Date d\'EchÃ©ance:</string>
-    <string name="ebill_amount">Montant DÃ»:</string>
 
     <!-- Settings Screen -->
     <string name="settings_language">Langue</string>

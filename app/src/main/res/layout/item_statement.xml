@@ -4,69 +4,40 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding_micro">
+    android:paddingLeft="@dimen/padding_micro"
+    android:paddingRight="@dimen/padding_micro"
+    android:layout_marginTop="@dimen/padding_small">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ebill_statement_date"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="italic"/>
-
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/statement_date"
-            android:textSize="@dimen/text_medium"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/statement_date"
+                android:paddingBottom="@dimen/padding_micro"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ebill_due_date"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="italic"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/statement_due_date"
-            android:textSize="@dimen/text_medium"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/statement_due_date"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ebill_amount"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="italic"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:id="@+id/statement_amount"
-            android:textSize="@dimen/text_medium"/>
-
+            android:gravity="center"
+            android:padding="@dimen/padding_micro"/>
     </LinearLayout>
 
+    <include layout="@layout/item_divider"/>
 </LinearLayout>
