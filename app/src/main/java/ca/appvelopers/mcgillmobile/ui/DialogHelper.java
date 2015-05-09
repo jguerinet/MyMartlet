@@ -21,10 +21,18 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 
 import com.instabug.library.Instabug;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Load;
 import ca.appvelopers.mcgillmobile.util.Save;
 
@@ -54,7 +62,79 @@ public class DialogHelper {
                                 dialog.dismiss();
                             }
                         })
-                .create()
+                .show();
+    }
+
+    /**
+     * Shows an alert dialog allowing the user to change their shown semester
+     *
+     * @param context       The app context
+     * @param term          The term currently selected
+     * @param registerTerms True if we should be using the registration terms, false otherwise
+     * @param callback      Callback to use when a new term has been selected
+     */
+    public static void showChangeSemesterDialog(Context context, Term term, boolean registerTerms,
+                                                final TermCallback callback){
+        Analytics.getInstance().sendScreen("Change Semester");
+
+        //Use the default term if no term was sent
+        if(term == null){
+            term = App.getDefaultTerm();
+        }
+
+        List<Term> terms = new ArrayList<>();
+        //We are using the user's existing terms
+        if(!registerTerms){
+            for (Semester semester : App.getTranscript().getSemesters()) {
+                terms.add(semester.getTerm());
+            }
+        }
+        //We are using the registration terms
+        else{
+            terms.addAll(App.getRegisterTerms());
+        }
+
+        View dialogView = View.inflate(context, R.layout.dialog_change_semester, null);
+
+        final CheckBox defaultCheckBox =
+                (CheckBox)dialogView.findViewById(R.id.change_semester_default);
+        final Spinner termSpinner = (Spinner)dialogView.findViewById(R.id.change_semester_term);
+
+        //Don't show the checkbox if we are doing the register terms only
+        if(registerTerms){
+            defaultCheckBox.setVisibility(View.GONE);
+        }
+
+        //Set up the spinner
+        TermAdapter adapter = new TermAdapter(terms);
+        termSpinner.setAdapter(adapter);
+        termSpinner.setSelection(terms.indexOf(term));
+
+        new AlertDialog.Builder(context)
+                .setCustomTitle(View.inflate(context, R.layout.dialog_change_semester_title, null))
+                .setView(dialogView)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        //Get the selected term
+                        Term term = (Term)termSpinner.getSelectedItem();
+
+                        //Check if the default checkbox is checked
+                        if(defaultCheckBox.isChecked()){
+                            //Store this semester as the default semester if it is
+                            App.setDefaultTerm(term);
+                        }
+                        dialog.dismiss();
+                        callback.onTermSelected(term);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        dialog.dismiss();
+                    }
+                })
                 .show();
     }
 
@@ -108,5 +188,17 @@ public class DialogHelper {
                             }
                         })
                 .show();
+    }
+
+    /**
+     * Callback used for the ChangeTermDialog
+     */
+    public static abstract class TermCallback {
+        /**
+         * Called when a new term has been selected by the user
+         *
+         * @param term The term selected
+         */
+        public abstract void onTermSelected(Term term);
     }
 }

@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui.wishlist;
 
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -40,7 +39,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
-import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
+import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
@@ -179,20 +178,14 @@ public class WishlistFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_change_semester){
-            final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, mTerm, true);
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    Term term = dialog.getTerm();
-
-                    //If there is a term selected, refresh the view
-                    if(term != null){
-                        mTerm = term;
-                        loadInfo();
-                    }
-                }
-            });
-            dialog.show();
+            DialogHelper.showChangeSemesterDialog(mActivity, mTerm, true,
+                    new DialogHelper.TermCallback() {
+                        @Override
+                        public void onTermSelected(Term term){
+                            mTerm = term;
+                            loadInfo();
+                        }
+                    });
             return true;
         }
         else if(item.getItemId() == R.id.action_refresh){

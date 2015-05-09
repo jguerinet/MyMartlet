@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui.schedule;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -36,7 +35,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
+import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -115,27 +114,20 @@ public class ScheduleFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, mTerm,
-                        false);
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        //Get the chosen term
-                        Term term = dialog.getTerm();
-                        if (term != null) {
-                            mTerm = term;
+                DialogHelper.showChangeSemesterDialog(mActivity, mTerm, false,
+                        new DialogHelper.TermCallback() {
+                            @Override
+                            public void onTermSelected(Term term){
+                                mTerm = term;
 
-                            //Restart the schedule view builder with the right date
-                            mViewBuilder = new ScheduleViewBuilder(ScheduleFragment.this,
-                                    getStartingDate());
+                                //Restart the schedule view builder with the right date
+                                mViewBuilder = new ScheduleViewBuilder(ScheduleFragment.this,
+                                        getStartingDate());
 
-                            //Refresh the content
-                            refreshCourses();
-                        }
-                    }
-                });
-                dialog.show();
-
+                                //Refresh the content
+                                refreshCourses();
+                            }
+                        });
                 return true;
             case R.id.action_refresh:
                 refreshCourses();

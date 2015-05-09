@@ -41,7 +41,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.ui.ChangeSemesterDialog;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
@@ -166,20 +165,14 @@ public class CoursesFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //Change Semester
         if(item.getItemId() == R.id.action_change_semester){
-            final ChangeSemesterDialog dialog = new ChangeSemesterDialog(mActivity, mTerm, false);
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    Term term = dialog.getTerm();
-
-                    //Term selected: download the classes for the selected term
-                    if(term != null){
-                        mTerm = term;
-                        refreshCourses();
-                    }
-                }
-            });
-            dialog.show();
+            DialogHelper.showChangeSemesterDialog(mActivity, mTerm, false,
+                    new DialogHelper.TermCallback() {
+                        @Override
+                        public void onTermSelected(Term term){
+                            mTerm = term;
+                            refreshCourses();
+                        }
+                    });
             return true;
         }
         //Refresh
