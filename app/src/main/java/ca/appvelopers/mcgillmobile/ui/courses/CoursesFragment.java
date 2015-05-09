@@ -170,6 +170,7 @@ public class CoursesFragment extends BaseFragment {
                         @Override
                         public void onTermSelected(Term term){
                             mTerm = term;
+                            update();
                             refreshCourses();
                         }
                     });
