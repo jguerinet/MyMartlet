@@ -111,8 +111,8 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
             double amount = statement.getAmount();
             mAmount.setText(String.valueOf(amount));
             //TODO Change the color to green or red depending on if the user owes money or not
-            int color = 0;
-            mAmount.setTextColor(color);
+//            int color = ;
+//            mAmount.setTextColor(color);
         }
     }
 }

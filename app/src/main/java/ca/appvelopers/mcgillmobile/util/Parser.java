@@ -19,6 +19,8 @@ package ca.appvelopers.mcgillmobile.util;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
@@ -30,6 +32,8 @@ import org.jsoup.select.Elements;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -954,16 +958,23 @@ public class Parser {
             amountString = amountString.substring(1);
 
             //Check if the String ends with a dash (McGill owes the student)
-            double amount;
-            if(amountString.endsWith("-")){
-                //Remove it and parse the resulting amount
-                amount = Double.parseDouble(amountString.substring(0, amountString.length() - 1));
-                //Negate the amount
-                amount *= -1;
-            }
-            //If not, just parse the amount
-            else{
-                amount = Double.parseDouble(amountString);
+            double amount = -1;
+            try{
+                if(amountString.endsWith("-")){
+                    //Remove it and parse the resulting amount
+                    amount = NumberFormat.getNumberInstance(java.util.Locale.US)
+                            .parse(amountString.substring(0, amountString.length() - 1))
+                            .doubleValue();
+                    //Negate the amount
+                    amount *= -1;
+                }
+                //If not, just parse the amount
+                else{
+                    amount = NumberFormat.getNumberInstance(java.util.Locale.US)
+                            .parse(amountString).doubleValue();
+                }
+            } catch(ParseException e){
+                Crashlytics.logException(e);
             }
 
             //Add the new statement
