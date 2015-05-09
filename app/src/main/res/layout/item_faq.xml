@@ -20,7 +20,7 @@
             android:textStyle="bold"
             android:id="@+id/faq_question"
             android:paddingTop="5dp"
-            android:textColor="@color/black"/>
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
             android:text="@string/about_answer"
             android:paddingLeft="@dimen/padding_small"
             android:id="@+id/faq_answer"
-            android:textColor="@color/black"/>
+            android:textColor="@android:color/black"/>
 
     </LinearLayout>
 

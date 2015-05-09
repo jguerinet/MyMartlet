@@ -21,7 +21,7 @@
         android:id="@+id/day_date"
         android:textSize="@dimen/text_medium"
         android:textStyle="italic"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:paddingBottom="@dimen/padding_micro"
         android:gravity="center"/>
 

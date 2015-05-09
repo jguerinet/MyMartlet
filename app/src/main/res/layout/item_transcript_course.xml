@@ -28,14 +28,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/course_code"
                     android:textSize="@dimen/text_medium"
-                    android:textColor="@color/black"/>
+                    android:textColor="@android:color/black"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/course_title"
                     android:textSize="@dimen/text_small"
-                    android:textColor="@color/black"
+                    android:textColor="@android:color/black"
                     android:textStyle="italic"/>
 
                 </LinearLayout>
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/course_credits"
                 android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -71,7 +71,7 @@
                 android:id="@+id/course_average"
                 android:gravity="right"
                 android:textSize="@dimen/text_small"
-                android:textColor="@color/black"/>
+                android:textColor="@android:color/black"/>
 
             </LinearLayout>
     </LinearLayout>

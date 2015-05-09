@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_small"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/text_medium"
         android:text="@string/walkthrough_homepage"
         android:gravity="center"/>
@@ -29,7 +29,7 @@
         android:paddingRight="@dimen/padding_small"
         android:paddingLeft="@dimen/padding_small"
         android:paddingTop="@dimen/padding_medium"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/text_medium"
         android:text="@string/walkthrough_faculty"
         android:gravity="center"/>

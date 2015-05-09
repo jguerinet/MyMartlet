@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:text="@string/settings_language"/>
 
             <Spinner
@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/settings_homepage"
-                android:textColor="@color/black"/>
+                android:textColor="@android:color/black"/>
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/settings_statistics"
-                android:textColor="@color/black"/>
+                android:textColor="@android:color/black"/>
 
             <Switch
                 android:layout_width="wrap_content"
@@ -175,7 +175,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/settings_version"
-            android:background="@color/transparent"
+            android:background="@android:color/transparent"
             android:textSize="@dimen/text_medium"
             android:textColor="@color/grey"
             android:gravity="center"

@@ -5,5 +5,5 @@
         <item android:state_pressed="true"
             android:color="@color/red"/>
 
-        <item android:color="@color/black"/>
+        <item android:color="@android:color/black"/>
 </selector>

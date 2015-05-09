@@ -35,7 +35,7 @@
                 android:id="@+id/course_code"
                 android:text="Course Code"
                 android:textSize="@dimen/text_medium"
-                android:textColor="@color/black"/>
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
                 android:paddingLeft="@dimen/padding_micro"
                 android:gravity="center"
                 android:text="3 Credits"
-                android:textColor="@color/black"/>
+                android:textColor="@android:color/black"/>
 
         </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:id="@+id/course_type"
                 android:textSize="@dimen/text_small"
                 android:text="Lecture"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:textStyle="bold"/>
 
             <TextView
@@ -80,7 +80,7 @@
             android:id="@+id/course_title"
             android:textSize="@dimen/text_small"
             android:text="Course Title"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textStyle="italic"
             android:paddingBottom="@dimen/padding_micro"/>
 
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/course_days"
                 android:textSize="@dimen/text_small"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:text="Days"/>
 
             <TextView
@@ -104,7 +104,7 @@
                 android:id="@+id/course_hours"
                 android:gravity="right"
                 android:textSize="@dimen/text_small"
-                android:textColor="@color/black"
+                android:textColor="@android:color/black"
                 android:text="Hours"/>
 
         </LinearLayout>
@@ -123,7 +123,7 @@
                 android:paddingRight="@dimen/padding_micro"
                 android:text="%s Spot(s) Left"
                 android:visibility="gone"
-                android:textColor="@color/black"/>
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -134,7 +134,7 @@
                 android:gravity="right"
                 android:text="Waitlist Spots : %s"
                 android:visibility="gone"
-                android:textColor="@color/black"/>
+                android:textColor="@android:color/black"/>
 
             </LinearLayout>
 

@@ -13,7 +13,7 @@
         android:paddingRight="@dimen/default_margin"
         android:id="@+id/drawer_name"
         android:paddingTop="@dimen/padding_drawer"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:textStyle="bold"
         android:textSize="@dimen/text_medium"/>
 
@@ -24,7 +24,7 @@
         android:paddingRight="@dimen/default_margin"
         android:id="@+id/drawer_email"
         android:paddingBottom="@dimen/padding_drawer"
-        android:textColor="@color/white"/>
+        android:textColor="@android:color/white"/>
 
     <View
         android:layout_width="match_parent"

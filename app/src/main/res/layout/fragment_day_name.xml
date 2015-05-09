@@ -19,7 +19,7 @@
         android:layout_width="@dimen/schedule_line"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@color/black"
+        android:background="@android:color/black"
         android:id="@+id/day_line"
         android:visibility="gone"/>
 

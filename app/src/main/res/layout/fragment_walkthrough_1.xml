@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_medium"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:text="@string/walkthrough_essentials"
         android:textSize="@dimen/text_medium"
         android:gravity="center"/>

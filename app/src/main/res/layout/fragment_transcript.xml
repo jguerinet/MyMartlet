@@ -38,7 +38,7 @@
         android:id="@+id/semester_title"
         android:textSize="@dimen/text_large"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:text="@string/transcript_semesters"
         android:paddingLeft="@dimen/padding_micro"
         android:paddingTop="@dimen/padding_small"/>

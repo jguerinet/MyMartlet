@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_small"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textStyle="italic"
             android:text="@string/course_time_title"/>
 
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/course_time"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/text_medium"
             android:paddingLeft="@dimen/padding_small"/>
 
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_small"
             android:textStyle="italic"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
             android:text="@string/course_location"/>
 
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_location"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_small"
             android:textStyle="italic"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
             android:text="@string/schedule_type"/>
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_type"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_small"
             android:textStyle="italic"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
             android:text="@string/course_prof"/>
 
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_instructor"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_small"
             android:textStyle="italic"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
             android:text="@string/course_section"/>
 
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_section"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_small"
             android:textStyle="italic"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
             android:text="@string/course_credits_title"/>
 
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_credits"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <TextView
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_small"
             android:textStyle="italic"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingTop="@dimen/padding_micro"
             android:text="@string/course_crn"/>
 
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_crn"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:paddingLeft="@dimen/padding_small"/>
 
         <View
