@@ -152,7 +152,7 @@ public class MapFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = View.inflate(mActivity, R.layout.fragment_map, null);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, view);
         mActivity.setTitle(getString(R.string.title_map));
         Analytics.getInstance().sendScreen("Map");

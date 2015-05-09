@@ -91,7 +91,7 @@ public class WishlistFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = View.inflate(mActivity, R.layout.fragment_wishlist, container);
+        View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
         ButterKnife.inject(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Wishlist");

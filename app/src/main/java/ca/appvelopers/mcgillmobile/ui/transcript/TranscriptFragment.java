@@ -72,7 +72,7 @@ public class TranscriptFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = View.inflate(mActivity, R.layout.fragment_transcript, null);
+        View view = inflater.inflate(R.layout.fragment_transcript, container, false);
         ButterKnife.inject(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Transcript");

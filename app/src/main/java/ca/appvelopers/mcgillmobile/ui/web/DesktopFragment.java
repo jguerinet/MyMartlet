@@ -49,7 +49,7 @@ public class DesktopFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = View.inflate(mActivity, R.layout.fragment_web, null);
+        View view = inflater.inflate(R.layout.fragment_web, container, false);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Desktop Site");
 

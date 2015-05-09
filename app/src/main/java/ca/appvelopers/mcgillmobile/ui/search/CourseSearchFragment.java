@@ -165,7 +165,7 @@ public class CourseSearchFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup,
                              Bundle savedInstanceState){
         super.onCreateView(inflater, viewGroup, savedInstanceState);
-        View view = View.inflate(mActivity, R.layout.fragment_course_search, null);
+        View view = inflater.inflate(R.layout.fragment_course_search, viewGroup, false);
         ButterKnife.inject(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Registration");

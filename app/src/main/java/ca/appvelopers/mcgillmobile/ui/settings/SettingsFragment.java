@@ -93,9 +93,10 @@ public class SettingsFragment extends BaseFragment {
     private HomepageAdapter mHomepageAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = View.inflate(mActivity, R.layout.fragment_settings, null);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.inject(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Settings");
