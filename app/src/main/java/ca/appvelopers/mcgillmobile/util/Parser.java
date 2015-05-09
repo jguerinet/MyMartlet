@@ -30,8 +30,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -68,13 +66,10 @@ public class Parser {
      * @param html The String to parse
      */
     public static String parseTranscript(String html){
-        //TODO Refactor this
-        String transcriptError = null;
+        String error = null;
 
         //Parse the String into a document
         Document transcriptDocument = Jsoup.parse(html);
-
-        //Extract program, scholarships, total credits, and CGPA
         Elements rows = transcriptDocument.getElementsByClass("fieldmediumtext");
 
         /*
@@ -85,10 +80,9 @@ public class Parser {
         // row iterates through all of the rows in the transcript searching for tokens
         // dataRow finds the rows containing the data once a token is found
         Element dataRow;
-
-        List<Semester> semesters = new ArrayList<Semester>();
-        double cgpa = 0;
-        double totalCredits = 0;
+        List<Semester> semesters = new ArrayList<>();
+        double cgpa = -1;
+        double totalCredits = -1;
 
         int index = 0;
         for (Element row : rows){
@@ -98,14 +92,13 @@ public class Parser {
 
             //CGPA
             if(row.text().startsWith(Token.CUM_GPA.getString())){
-                dataRow = rows.get(index+1);
+                dataRow = rows.get(index + 1);
                 try{
                     cgpa = Double.parseDouble(dataRow.text());
-                }
-                catch (NumberFormatException e){
-                    cgpa = -1;
-                    Analytics.getInstance().sendEvent("Parsing Bug", "Transcript", "CGPA");
-                    transcriptError = "CGPA";
+                } catch (NumberFormatException e){
+                    Crashlytics.log(Log.ERROR, TAG, "CGPA Transcript Parsing Bug");
+                    Crashlytics.logException(e);
+                    error = "CGPA";
                 }
             }
             //Credits
@@ -115,9 +108,9 @@ public class Parser {
                     totalCredits = Double.parseDouble(dataRow.text());
                 }
                 catch (NumberFormatException e){
-                    totalCredits = -1;
-                    Analytics.getInstance().sendEvent("Parsing Bug", "Transcript", "Total Credits");
-                    transcriptError = "Total Credits";
+                    Crashlytics.log(Log.ERROR, TAG, "Total Credits Transcript Parsing Bug");
+                    Crashlytics.logException(e);
+                    error = "Total Credits";
                 }
             }
             //Semester Information
@@ -135,49 +128,33 @@ public class Parser {
 
                 //Find the right season and year, making sure to get the right array index
                 Season season;
-                int year;
+                String yearString;
+                int year = -1;
 
                 if(row.text().startsWith(Season.FALL.getId()) ||
                         row.text().startsWith(Season.WINTER.getId()) ||
                         row.text().startsWith(Season.SUMMER.getId()) ){
 
                     season = Season.findSeason(scheduleSemesterItems[0]);
-                    try{
-                        year = Integer.valueOf(scheduleSemesterItems[1]);
-                    }
-                    catch(NumberFormatException e){
-                        Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
-                                "Semester Year");
-                        transcriptError = season.getId();
-                        year = 2000;
-                    }
+                    yearString = scheduleSemesterItems[1];
                 }
                 else if(row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
                     season = Season.findSeason(scheduleSemesterItems[3]);
-                    try{
-                        year = Integer.valueOf(scheduleSemesterItems[4]);
-                    }
-                    catch(NumberFormatException e){
-                        Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
-                                "Semester Year");
-                        transcriptError = season.getId();
-                        year = 2000;
-                    }
+                    yearString = scheduleSemesterItems[4];
                 }
                 else{
                     season = Season.findSeason(scheduleSemesterItems[1]);
-                    try{
-                        year = Integer.valueOf(scheduleSemesterItems[2]);
-                    }
-                    catch(NumberFormatException e){
-                        Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
-                                "Semester Year");
-                        transcriptError = season.getId();
-                        year = 2000;
-                    }
+                    yearString = scheduleSemesterItems[2];
                 }
 
-                //Log.e("TRANSCRIPT PARSER", season + " " + year);
+                try{
+                    year = Integer.valueOf(yearString);
+                } catch(NumberFormatException e){
+                    Crashlytics.log(Log.ERROR, TAG, "Semester Year Transcript Parsing Bug");
+                    Crashlytics.logException(e);
+                    error = season.getId();
+                }
+
                 String program = "";
                 String bachelor = "";
                 int programYear = 99;
@@ -185,7 +162,7 @@ public class Parser {
                 double termGPA = 0.0;
                 boolean fullTime = false;
                 boolean satisfactory = false;
-                List<TranscriptCourse> courses = new ArrayList<TranscriptCourse>();
+                List<TranscriptCourse> courses = new ArrayList<>();
 
                 //Search rows until the end of the semester is reached
                 //Conditions for end of semester:
@@ -195,7 +172,6 @@ public class Parser {
                 dataRow = rows.get(semesterIndex);
 
                 while(true){
-
                     //Student has graduated
                     if(dataRow.text().contains(Token.GRANTED.getString())){
                         break;
@@ -219,7 +195,6 @@ public class Parser {
                         if(degreeDetails[1].startsWith("Full-time")){
                             fullTime = true;
                         }
-
                         else if(degreeDetails[1].contains("0")){
                             programYear = 0;
                         }
@@ -257,9 +232,9 @@ public class Parser {
                             termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
                         }
                         catch (NumberFormatException e){
-                            Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
-                                    "Term GPA");
-                            transcriptError = season.getId() + year;
+                            Crashlytics.log(Log.ERROR, TAG, "Term GPA Transcript Parsing Bug");
+                            Crashlytics.logException(e);
+                            error = season.getId() + year;
                         }
                     }
                     //Term Credits
@@ -268,170 +243,141 @@ public class Parser {
                             termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                         }
                         catch (NumberFormatException e){
-                            Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
-                                    "Term Credits");
-                            transcriptError = season.getId() + year;
+                            Crashlytics.log(Log.ERROR, TAG, "Term Credits Transcript Parsing Bug");
+                            Crashlytics.logException(e);
+                            error = season.getId() + year;
                         }
                     }
-
-                    //Extract course information if row contains a course code
-                    //Regex looks for a string in the form "ABCD ###"
+                    //Course Info
                     else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*") ||
-                            dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}")){
-                        String courseCode = "";
-                        //One semester courses are in the form ABCD ###
-                        if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
-                            courseCode = dataRow.text();
-                        }
-                        //Some courses have the form ABC#
-                        else if(dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}")){
-                            courseCode = dataRow.text();
-                        }
-                        //Multi semester courses are in the form ABCD ###D#
-                        else{
-                            //Extract first seven characters from string
-                            try{
-                                courseCode = dataRow.text().substring(0, 10);
-                            }
-                            catch(Exception e){
-                                Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
-                                        "Course Code");
-                                transcriptError = season.getId() + year;
-                                e.printStackTrace();
-                            }
-                        }
-
-                        String courseTitle = rows.get(semesterIndex + 2).text();
-
-                        //Failed courses are missing the earned credits row
-                        double credits = 0;
-
-                        //Check row to see if earned credit exists
-                        try{
-                            credits = Double.parseDouble(rows.get(semesterIndex + 6).text());
-                        }
-                        catch(NumberFormatException e){
-                            //Course failed -> Earned credit = 0
-                            StringWriter sw = new StringWriter();
-                            e.printStackTrace(new PrintWriter(sw));
-                            //Log.e("TRANSCRIPT_URL PARSER", "Semester: " + season + " " + year + " NumberFormatException" + sw.getId());
-                        }
-                        catch(IndexOutOfBoundsException e){
-                            //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBoundsException" + e.getId());
-                        }
-
-                        //Obtain user's grade
-                        String userGrade = rows.get(semesterIndex+4).text();
-
-                        //Check for deferred classes
-                        if(userGrade.equals("L")){
-                            userGrade = rows.get(semesterIndex + 13).text();
-                        }
-
-                        //If average grades haven't been released on minerva, index will be null
-                        String averageGrade = "";
-                        try{
-                            //Regex looks for a letter grade
-                            if(rows.get(semesterIndex+7).text().matches("[ABCDF].|[ABCDF]")){
-                                averageGrade = rows.get(semesterIndex+7).text();
-                            }
-                            //Failed course, average grade appears one row earlier
-                            else if(rows.get(semesterIndex+6).text().matches("[ABCDF].|[ABCDF]")){
-                                averageGrade = rows.get(semesterIndex+6).text();
-                            }
-                        }
-                        catch(IndexOutOfBoundsException e){
-                            //String not found
-                            //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBounds" + e.getMessage());
-                        }
-                        courses.add(new TranscriptCourse(new Term(season, year), courseCode, courseTitle, credits,
-                                userGrade, averageGrade));
-                    }
-
-                    //Extract transfer credit information
-                    else if(dataRow.text().startsWith(Token.CREDIT_EXEMPTION.getString())){
-                        String courseTitle;
-                        String courseCode;
-                        String userGrade = "N/A";
+                            dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}") ||
+                            dataRow.text().startsWith(Token.CREDIT_EXEMPTION.getString())){
+                        String title = "";
+                        String code = "";
+                        String grade = "N/A";
                         String averageGrade = "";
                         double credits = 0;
 
-                        //Individual transferred courses not listed
-                        if(!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")){
-                            courseCode = rows.get(semesterIndex + 2).text();
-
-                            //Extract the number of credits granted
-                            try{
-                                credits = extractCredits(courseCode);
+                        //Extract course information if row contains a course code
+                        //Regex looks for a string in the form "ABCD ###"
+                        if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*") ||
+                                dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}")){
+                            //One semester courses are in the form ABCD ###
+                            if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}")){
+                                code = dataRow.text();
                             }
-                            catch(Exception e){
-                                Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
-                                        "Credits");
-                                transcriptError = season.getId() + year;
-                                credits = 99;
+                            //Some courses have the form ABC#
+                            else if(dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}")){
+                                code = dataRow.text();
                             }
-
-                            TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseCode, "", credits, userGrade,
-                                    averageGrade);
-                            courses.add(course);
-                        }
-
-                        //Individual transferred courses listed
-                        else{
-                            //Try checking for the number of credits transferred per course
-                            try{
-                                courseCode = rows.get(semesterIndex + 2).text();
-                                courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
-                                credits = Double.parseDouble(rows.get(semesterIndex + 5).text());
-
-                                TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseCode, courseTitle, credits,
-                                        userGrade, averageGrade);
-                                courses.add(course);
-                            }
-
-                            //Number of credits per course not listed
-                            catch(NumberFormatException e){
+                            //Multi semester courses are in the form ABCD ###D#
+                            else{
+                                //Extract first seven characters from string
                                 try{
-                                    courseCode = rows.get(semesterIndex + 2).text();
-                                    courseTitle = "";
-
-                                    credits = extractCredits(courseCode);
-
-                                    //Add the course codes for transferred courses
-                                    int addedIndex = 3;
-                                    boolean first = true;
-                                    while(rows.get(semesterIndex + addedIndex).text().matches("[A-Za-z]{4}.*")){
-                                        if(!first){
-                                            courseTitle += "\n";
-                                        }
-                                        courseTitle = courseTitle + rows.get(semesterIndex + addedIndex).text() + " " + rows.get(semesterIndex+addedIndex+1).text();
-                                        addedIndex = addedIndex + 2;
-                                        first = false;
-                                    }
-
-                                    TranscriptCourse course = new TranscriptCourse(new Term(season, year), courseCode, courseTitle, credits,
-                                            userGrade, averageGrade);
-                                    courses.add(course);
-
-                                }
-                                catch(IndexOutOfBoundsException e2){
-                                    //Log.e("TRANSCRIPT_URL PARSER", "IndexOutOfBounds" + e2.getMessage());
-                                    e.printStackTrace();
-                                }
-                                catch(Exception e3){
-                                    //Log.e("TRANSCRIPT_URL PARSER", "Generic error" + e3.getMessage());
-                                    e.printStackTrace();
-                                    Analytics.getInstance().sendEvent("Parsing Bug", "Transcript",
-                                            "Credits");
-                                    transcriptError = season.getId() + year;
-                                    credits = 99;
+                                    code = dataRow.text().substring(0, 10);
+                                } catch(Exception e){
+                                    Crashlytics.log(Log.ERROR, TAG,
+                                            "Course Code Transcript Parsing Bug");
+                                    Crashlytics.logException(e);
+                                    error = season.getId() + year;
                                 }
                             }
+
+                            title = rows.get(semesterIndex + 2).text();
+
+                            //Failed courses are missing the earned credits row
+                            //Check row to see if earned credit exists
+                            try{
+                                credits = Double.parseDouble(rows.get(semesterIndex + 6).text());
+                            } catch(Exception ignored){}
+
+                            //Obtain user's grade
+                            grade = rows.get(semesterIndex+4).text();
+
+                            //Check for deferred classes
+                            if(grade.equals("L")){
+                                grade = rows.get(semesterIndex + 13).text();
+                            }
+
+                            //If average grades haven't been released on minerva, index will be null
+                            averageGrade = "";
+                            try{
+                                //Regex looks for a letter grade
+                                if(rows.get(semesterIndex+7).text().matches("[ABCDF].|[ABCDF]")){
+                                    averageGrade = rows.get(semesterIndex+7).text();
+                                }
+                                //Failed course, average grade appears one row earlier
+                                else if(rows.get(semesterIndex+6).text()
+                                        .matches("[ABCDF].|[ABCDF]")){
+                                    averageGrade = rows.get(semesterIndex+6).text();
+                                }
+                            } catch(IndexOutOfBoundsException ignored){}
                         }
+                        //Extract transfer credit information
+                        else{
+                            //Individual transferred courses not listed
+                            if(!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")){
+                                code = rows.get(semesterIndex + 2).text();
 
-                        termCredits = credits;
+                                //Extract the number of credits granted
+                                try{
+                                    credits = extractCredits(code);
+                                } catch(Exception e){
+                                    Crashlytics.log(Log.ERROR, TAG,
+                                            "Credits Transcript Parsing Bug");
+                                    Crashlytics.logException(e);
+                                    error = season.getId() + year;
+                                    credits = -1;
+                                }
+                            }
+                            //Individual transferred courses listed
+                            else{
+                                //Try checking for the number of credits transferred per course
+                                try{
+                                    code = rows.get(semesterIndex + 2).text();
+                                    title = rows.get(semesterIndex + 3).text() + " " +
+                                            rows.get(semesterIndex+4).text();
+                                    credits =
+                                            Double.parseDouble(rows.get(semesterIndex + 5).text());
+                                } catch(NumberFormatException e){
+                                    //Number of credits per course not listed
+                                    try{
+                                        code = rows.get(semesterIndex + 2).text();
+                                        title = "";
+
+                                        credits = extractCredits(code);
+
+                                        //Add the course codes for transferred courses
+                                        int addedIndex = 3;
+                                        boolean first = true;
+                                        while(rows.get(semesterIndex +
+                                                addedIndex).text().matches("[A-Za-z]{4}.*")){
+                                            if(!first){
+                                                title += "\n";
+                                            }
+                                            title = title +
+                                                    rows.get(semesterIndex + addedIndex).text() +
+                                                    " " +
+                                                    rows.get(semesterIndex+addedIndex+1).text();
+                                            addedIndex = addedIndex + 2;
+                                            first = false;
+                                        }
+                                    } catch(IndexOutOfBoundsException e2){
+                                        e.printStackTrace();
+                                    } catch(Exception e3){
+                                        Crashlytics.log(Log.ERROR, TAG,
+                                                "Credits Transcript Parsing Bug");
+                                        Crashlytics.logException(e);
+                                        error = season.getId() + year;
+                                        credits = 99;
+                                    }
+                                }
+                            }
+                            termCredits = credits;
+                        }
+                        courses.add(new TranscriptCourse(new Term(season, year), code,
+                                title, credits, grade, averageGrade));
                     }
-
                     /**
                      * Breaks the loop if the next semester is reached
                      */
@@ -451,8 +397,7 @@ public class Parser {
                     //Reached the end of the transcript, break loop
                     try{
                         dataRow = rows.get(semesterIndex);
-                    }
-                    catch(IndexOutOfBoundsException e){
+                    } catch(IndexOutOfBoundsException e){
                         break;
                     }
                 }
@@ -460,8 +405,8 @@ public class Parser {
                 //Check if there are any courses associated with the semester
                 //If not, don't add the semester to the list of semesters
                 if(!courses.isEmpty()){
-                    Semester semester = new Semester(new Term(season, year), program, bachelor, programYear,
-                            termCredits, termGPA, fullTime, satisfactory, courses);
+                    Semester semester = new Semester(new Term(season, year), program, bachelor,
+                            programYear, termCredits, termGPA, fullTime, satisfactory, courses);
 
                     semesters.add(semester);
                 }
@@ -469,21 +414,23 @@ public class Parser {
             }
             index++;
         }
-        //Log.e("Log", "Setting transcript, CGPA: "+cgpa+" credits: "+totalCredits);
         App.setTranscript(new Transcript(cgpa, totalCredits, semesters));
 
-        return transcriptError;
+        return error;
     }
 
-    //Extracts the number of credits
+    /**
+     * Extracts the number of credits
+     *
+     * @param creditString The String to extract the credits from
+     * @return The credits
+     * @throws Exception
+     */
     private static double extractCredits(String creditString) throws Exception{
-        double numCredits;
-
         creditString = creditString.replaceAll("\\s", "");
         String[] creditArray = creditString.split("-");
         creditArray = creditArray[1].split("credits");
-        numCredits = Double.parseDouble(creditArray[0]);
-        return numCredits;
+        return Double.parseDouble(creditArray[0]);
     }
 
     /**
