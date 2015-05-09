@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui.search;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -86,6 +87,7 @@ public class SearchResultsActivity extends BaseActivity {
 
         //ListView
         mAdapter = new WishlistSearchCourseAdapter(this, mTerm, courses);
+        mListView.setLayoutManager(new LinearLayoutManager(this));
         mListView.setAdapter(mAdapter);
         if(mAdapter.isEmpty()){
             mListView.setVisibility(View.GONE);

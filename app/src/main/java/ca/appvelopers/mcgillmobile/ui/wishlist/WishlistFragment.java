@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -106,6 +107,8 @@ public class WishlistFragment extends BaseFragment {
 
             return view;
         }
+
+        mListView.setLayoutManager(new LinearLayoutManager(mActivity));
 
         //Load the first registration term
         mTerm = App.getRegisterTerms().get(0);

@@ -37,7 +37,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  */
 public class SemesterActivity extends BaseActivity {
     /**
-     * The semeseter's bachelor degree
+     * The semester's bachelor degree
      */
     @InjectView(R.id.semester_bachelor)
     TextView mBachelor;

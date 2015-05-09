@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -76,6 +77,8 @@ public class TranscriptFragment extends BaseFragment{
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Transcript");
         mActivity.setTitle(getString(R.string.title_transcript));
+
+        mListView.setLayoutManager(new LinearLayoutManager(mActivity));
 
         //Load the info stored on the device
         loadInfo();
