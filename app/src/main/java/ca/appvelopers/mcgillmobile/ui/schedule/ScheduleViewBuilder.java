@@ -36,6 +36,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Date;
 
 /**
@@ -243,7 +244,7 @@ public class ScheduleViewBuilder {
                             scheduleCell.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    new CourseDialog(activity, course).show();
+                                    DialogHelper.showCourseDialog(activity, course);
                                 }
                             });
                         }
