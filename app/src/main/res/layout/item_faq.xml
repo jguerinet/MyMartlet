@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/padding_micro" >
+        android:layout_marginTop="@dimen/padding_small">
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,5 +31,7 @@
             android:textColor="@android:color/black"/>
 
     </LinearLayout>
+
+    <include layout="@layout/item_divider"/>
 
 </LinearLayout>

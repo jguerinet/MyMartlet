@@ -7,7 +7,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title_agreement"
@@ -19,7 +19,7 @@
         android:textColor="@color/black_whitepressed"
         android:id="@+id/help_eula"/>
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/help_email_walkthrough"
@@ -31,7 +31,7 @@
         android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"/>
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/help_walkthrough"
@@ -43,7 +43,7 @@
         android:paddingBottom="@dimen/padding_micro"
         android:background="@drawable/transparent_redpressed"/>
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/help_download"
@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:listSelector="@android:color/transparent"
+        android:clickable="false"
         android:id="@+id/help_faq" />
 
 </LinearLayout>

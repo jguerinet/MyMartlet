@@ -50,6 +50,7 @@ public class HelpActivity extends BaseActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+        ButterKnife.inject(this);
         setUpToolbar(true);
         
         //FAQ ListView
@@ -115,7 +116,7 @@ public class HelpActivity extends BaseActivity{
 
         @Override
         public void onBindViewHolder(FAQHolder faqHolder, int i){
-            faqHolder.bindFAQ(mFAQs.get(i));
+            faqHolder.bind(mFAQs.get(i));
         }
 
         class FAQHolder extends RecyclerView.ViewHolder {
@@ -130,23 +131,13 @@ public class HelpActivity extends BaseActivity{
             @InjectView(R.id.faq_answer)
             TextView mAnswer;
 
-            /**
-             * Default Constructor
-             *
-             * @param itemView The item view
-             */
             public FAQHolder(View itemView){
                 super(itemView);
                 ButterKnife.inject(this, itemView);
                 itemView.setClickable(false);
             }
 
-            /**
-             * Binds the given FAQ item to the view
-             *
-             * @param item The FAQ item
-             */
-            public void bindFAQ(FAQItem item){
+            public void bind(FAQItem item){
                 mQuestion.setText(item.getQuestion());
                 mAnswer.setText(item.getAnswer());
             }
