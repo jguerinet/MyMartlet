@@ -106,7 +106,7 @@ public class EbillFragment extends BaseFragment {
             mUserId.setText(user.getId());
         }
 
-        mListView.setAdapter(new EbillAdapter(mActivity, statements));
+        mListView.setAdapter(new EbillAdapter(statements));
     }
 
     @Override

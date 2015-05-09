@@ -39,10 +39,6 @@ import ca.appvelopers.mcgillmobile.util.Date;
  */
 public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHolder> {
     /**
-     * The application context
-     */
-    private Context mContext;
-    /**
      * The list of statements
      */
     private List<Statement> mStatements;
@@ -52,14 +48,13 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
      *
      * @param statements The list of statements
      */
-    public EbillAdapter(Context context, List<Statement> statements){
-        this.mContext = context;
+    public EbillAdapter(List<Statement> statements){
         this.mStatements = statements;
     }
 
     @Override
     public StatementHolder onCreateViewHolder(ViewGroup viewGroup, int i){
-        return new StatementHolder(LayoutInflater.from(mContext)
+        return new StatementHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_statement, viewGroup, false));
     }
 
