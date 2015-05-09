@@ -302,18 +302,26 @@ public class CourseSearchFragment extends BaseFragment {
         //Execute the request
         new DownloaderThread(mActivity, TAG, searchURL).execute(new DownloaderThread.Callback() {
             @Override
-            public void onDownloadFinished(String result){
+            public void onDownloadFinished(final String result){
                 //If there is a result, parse it
+                final Intent intent = new Intent(mActivity, SearchResultsActivity.class);
                 if(result != null){
                     List<Course> courses = Parser.parseClassResults(term, result);
-                    Intent intent = new Intent(mActivity, SearchResultsActivity.class)
-                            .putExtra(Constants.TERM, term)
+                    intent.putExtra(Constants.TERM, term)
                             .putExtra(Constants.COURSES, (ArrayList<Course>)courses);
-                    startActivity(intent);
                 }
 
-                //Show the user we are downloading new information
-                mActivity.showToolbarProgress(false);
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run(){
+                        if(result != null){
+                            startActivity(intent);
+                        }
+
+                        //Show the user we are downloading new information
+                        mActivity.showToolbarProgress(false);
+                    }
+                });
             }
         });
     }

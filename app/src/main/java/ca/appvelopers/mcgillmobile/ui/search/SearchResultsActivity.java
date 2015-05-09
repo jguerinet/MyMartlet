@@ -130,41 +130,47 @@ public class SearchResultsActivity extends BaseActivity {
                     Connection.getRegistrationURL(term, courses, false))
                     .execute(new DownloaderThread.Callback() {
                         @Override
-                        public void onDownloadFinished(String result){
-                            if(result != null){
-                                String error = Parser.parseRegistrationErrors(result, courses);
+                        public void onDownloadFinished(final String result){
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run(){
+                                    if(result != null){
+                                        String error =
+                                                Parser.parseRegistrationErrors(result, courses);
 
-                                //If there are no errors, show the success message
-                                if(error == null){
-                                    Toast.makeText(activity, R.string.registration_success, Toast
-                                            .LENGTH_LONG)
-                                            .show();
-                                }
-                                //If not, show the error message
-                                else{
-                                    //Show success messages for the correctly registered courses
-                                    for(Course course : courses){
-                                        error += course.getCode() + " (" + course.getType() + ") " +
-                                                "- " +
-                                                activity.getString(R.string.registration_success)
-                                                + "\n";
+                                        //If there are no errors, show the success message
+                                        if(error == null){
+                                            Toast.makeText(activity, R.string.registration_success,
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                        //If not, show the error message
+                                        else{
+                                            //Show success messages for the correctly registered
+                                            // courses
+                                            for(Course course : courses){
+                                                error += course.getCode() + " (" + course.getType()
+                                                        + ") - " + activity.getString(
+                                                        R.string.registration_success) + "\n";
+                                            }
+
+                                            //Show an alert dialog with the errors
+                                            DialogHelper.showNeutralDialog(activity,
+                                                    activity.getString(R.string.registration_error),
+                                                    error);
+                                        }
+
+                                        //Remove the courses from the wishlist if they were there
+                                        List<Course> wishlist = App.getClassWishlist();
+                                        wishlist.removeAll(courses);
+
+                                        //Set the new wishlist
+                                        App.setClassWishlist(wishlist);
                                     }
 
-                                    //Show an alert dialog with the errors
-                                    DialogHelper.showNeutralDialog(activity,
-                                            activity.getString(R.string.registration_error), error);
+                                    //Stop the refreshing
+                                    activity.showToolbarProgress(false);
                                 }
-
-                                //Remove the courses from the wishlist if they were there
-                                List<Course> wishlist = App.getClassWishlist();
-                                wishlist.removeAll(courses);
-
-                                //Set the new wishlist
-                                App.setClassWishlist(wishlist);
-                            }
-
-                            //Stop the refreshing
-                            activity.showToolbarProgress(false);
+                            });
                         }
                     });
         }

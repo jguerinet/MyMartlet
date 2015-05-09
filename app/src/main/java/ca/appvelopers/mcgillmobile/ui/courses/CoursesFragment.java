@@ -211,11 +211,16 @@ public class CoursesFragment extends BaseFragment {
                                                     Parser.parseTranscript(result);
                                                 }
 
-                                                //Update the view
-                                                update();
+                                                mActivity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run(){
+                                                        //Update the view
+                                                        update();
 
-                                                //Done refreshing
-                                                mActivity.showToolbarProgress(false);
+                                                        //Done refreshing
+                                                        mActivity.showToolbarProgress(false);
+                                                    }
+                                                });
                                             }
                                         });
                             }

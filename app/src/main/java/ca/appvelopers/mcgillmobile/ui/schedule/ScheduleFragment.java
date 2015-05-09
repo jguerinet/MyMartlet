@@ -201,12 +201,17 @@ public class ScheduleFragment extends BaseFragment {
                                                 Parser.parseTranscript(result);
                                             }
 
-                                            //Update the view
-                                            updateView(
-                                                    getResources().getConfiguration().orientation);
+                                            mActivity.runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run(){
+                                                    //Update the view
+                                                    updateView(getResources().
+                                                            getConfiguration().orientation);
 
-                                            //Done refreshing
-                                            mActivity.showToolbarProgress(false);
+                                                    //Done refreshing
+                                                    mActivity.showToolbarProgress(false);
+                                                }
+                                            });
                                         }
                                     });
                         }

@@ -98,8 +98,8 @@ public class DownloaderThread extends Thread {
 					mCallback.onDownloadFinished(mResult);
 				}
 			}
+			notify();
 		}
-		notify();
 	}
 
 	/* HELPERS */

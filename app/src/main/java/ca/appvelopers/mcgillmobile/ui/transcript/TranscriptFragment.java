@@ -108,14 +108,21 @@ public class TranscriptFragment extends BaseFragment{
                 new DownloaderThread(mActivity, "Transcript Downloader", Connection.TRANSCRIPT_URL)
                         .execute(new DownloaderThread.Callback() {
                             @Override
-                            public void onDownloadFinished(String result){
+                            public void onDownloadFinished(final String result){
                                 //Parse the transcript if possible
                                 if(result != null){
                                     Parser.parseTranscript(result);
-                                    loadInfo();
                                 }
 
-                                mActivity.showToolbarProgress(false);
+                                mActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run(){
+                                        if(result != null){
+                                            loadInfo();
+                                        }
+                                        mActivity.showToolbarProgress(false);
+                                    }
+                                });
                             }
                         });
                 return true;

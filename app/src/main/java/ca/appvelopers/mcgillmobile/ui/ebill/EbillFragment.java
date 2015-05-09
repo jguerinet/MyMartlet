@@ -131,12 +131,20 @@ public class EbillFragment extends BaseFragment {
         new DownloaderThread(mActivity, "Ebill Download", Connection.EBILL_URL)
                 .execute(new DownloaderThread.Callback() {
                     @Override
-                    public void onDownloadFinished(String result){
+                    public void onDownloadFinished(final String result){
                         if(result != null){
                             Parser.parseEbill(result);
-                            update();
                         }
-                        mActivity.showToolbarProgress(false);
+
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run(){
+                                if(result != null){
+                                    update();
+                                }
+                                mActivity.showToolbarProgress(false);
+                            }
+                        });
                     }
                 });
     }
