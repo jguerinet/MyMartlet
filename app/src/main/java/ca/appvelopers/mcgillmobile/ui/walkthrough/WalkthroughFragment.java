@@ -87,19 +87,19 @@ public class WalkthroughFragment extends Fragment {
             switch(mPageNumber){
                 //Welcome to the MyMcGill App
                 case 0:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_0, container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_0, container, false);
                 //Access all of your MyMcGill essentials easily
                 case 1:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_1, container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_1, container, false);
                 //Main Menu Explanation
                 case 2:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_2, container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_2, container, false);
                 //Horizontal Schedule
                 case 3:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_3, container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_3, container, false);
                 //Offline Access / Security
                 case 4:
-                    view = View.inflate(getActivity(), R.layout.fragment_walkthrough_4, container);
+                    view = inflater.inflate(R.layout.fragment_walkthrough_4, container, false);
 
                     //Set the typeface for icons
                     TextView securityIcon = (TextView)view.findViewById(R.id.security_icon);
@@ -112,7 +112,7 @@ public class WalkthroughFragment extends Fragment {
                     return view;
                 //Help/About/Bugs
                 case 5:
-                    view = View.inflate(getActivity(), R.layout.fragment_walkthrough_5, container);
+                    view = inflater.inflate(R.layout.fragment_walkthrough_5, container, false);
 
                     //Set the typeface for the icon
                     TextView bugIcon = (TextView)view.findViewById(R.id.bug_icon);
@@ -123,7 +123,7 @@ public class WalkthroughFragment extends Fragment {
                     return view;
                 //Default Homepage / Faculty
                 case 6:
-                    view = View.inflate(getActivity(), R.layout.fragment_walkthrough_6, container);
+                    view = inflater.inflate(R.layout.fragment_walkthrough_6, container, false);
 
                     Spinner homepage = (Spinner)view.findViewById(R.id.homepage);
                     final HomepageAdapter homepageAdapter = new HomepageAdapter();
@@ -175,26 +175,26 @@ public class WalkthroughFragment extends Fragment {
         else{
             switch(mPageNumber){
                 case 0:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_0,
-                            container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_email_0,
+                            container, false);
                 case 1:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_1,
-                            container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_email_1,
+                            container, false);
                 case 2:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_2,
-                            container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_email_2,
+                            container, false);
                 case 3:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_3,
-                            container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_email_3,
+                            container, false);
                 case 4:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_4,
-                            container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_email_4,
+                            container, false);
                 case 5:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_5,
-                            container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_email_5,
+                            container, false);
                 case 6:
-                    return View.inflate(getActivity(), R.layout.fragment_walkthrough_email_6,
-                            container);
+                    return inflater.inflate(R.layout.fragment_walkthrough_email_6,
+                            container, false);
                 default:
                     return null;
             }
