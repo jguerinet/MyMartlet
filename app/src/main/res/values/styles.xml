@@ -35,6 +35,12 @@
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
+    <!-- OverFlow menu Styles -->
+    <style name="Theme.MyMartlet.PopupMenu" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/red</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <!-- Action Bar Tab Text Style -->
     <style name="ActionBarTabTextStyle.MyMartlet" parent="@android:style/Widget.ActionBar.TabText">
         <item name="android:textColor">@android:color/black</item>

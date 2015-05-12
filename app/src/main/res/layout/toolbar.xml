@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:minHeight="?android:attr/actionBarSize"
@@ -7,7 +8,7 @@
     android:background="?attr/colorPrimary"
     android:elevation="4dp"
     android:theme="@style/Theme.MyMartlet.Toolbar"
-    android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    app:popupTheme="@style/Theme.MyMartlet.PopupMenu">
 
     <ProgressBar
         android:id="@+id/toolbar_progress"
