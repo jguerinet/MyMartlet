@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item"
-    android:background="@drawable/drawer_background"
+    android:background="@drawable/grey_redpressed"
     android:paddingTop="@dimen/padding_list"
     android:paddingBottom="@dimen/padding_list"
     android:layout_gravity="center_vertical">
