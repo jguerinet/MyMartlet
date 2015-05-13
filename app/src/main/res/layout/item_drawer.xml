@@ -11,7 +11,7 @@
         android:layout_width="56dp"
         android:layout_height="match_parent"
         android:id="@+id/drawer_icon"
-        android:textSize="@dimen/text_small"
+        android:textSize="@dimen/text_medium"
         android:duplicateParentState="true"
         android:gravity="center"
         android:layout_centerVertical="true"
