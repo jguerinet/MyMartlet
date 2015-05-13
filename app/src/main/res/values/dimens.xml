@@ -8,6 +8,11 @@
     <!-- Drawer -->
     <dimen name="padding_drawer">8dp</dimen>
 
+    <!-- Lists -->
+    <dimen name="padding_list">8dp</dimen>
+    <dimen name="list_item">48dp</dimen>
+    <dimen name="text_list">16sp</dimen>
+
     <!-- Padding Sizes -->
     <dimen name="padding_micro">10dp</dimen>
     <dimen name="padding_small">14dp</dimen>

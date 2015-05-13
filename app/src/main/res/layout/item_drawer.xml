@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/list_item"
     android:background="@drawable/drawer_background"
-    android:paddingTop="@dimen/default_margin"
-    android:paddingBottom="@dimen/default_margin"
+    android:paddingTop="@dimen/padding_list"
+    android:paddingBottom="@dimen/padding_list"
     android:layout_gravity="center_vertical">
 
     <TextView
-        android:layout_width="40dp"
+        android:layout_width="56dp"
         android:layout_height="match_parent"
         android:id="@+id/drawer_icon"
-        android:textSize="@dimen/text_large"
+        android:textSize="@dimen/text_small"
         android:duplicateParentState="true"
         android:gravity="center"
         android:layout_centerVertical="true"
@@ -32,7 +32,7 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:id="@+id/drawer_title"
-        android:textSize="@dimen/text_small"
+        android:textSize="@dimen/text_list"
         android:duplicateParentState="true"
         android:gravity="center_vertical"
         android:textColor="@color/drawer_text"/>
