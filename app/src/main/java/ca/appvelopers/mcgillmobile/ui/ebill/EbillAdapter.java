@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.util.Date;
  * Adapter used for the ebill page
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHolder> {
     /**

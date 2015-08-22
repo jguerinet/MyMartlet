@@ -31,7 +31,7 @@ import ca.appvelopers.mcgillmobile.util.Date;
  * @author Quang Dao
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class Course implements Serializable{
     private static final String TAG = "Course";

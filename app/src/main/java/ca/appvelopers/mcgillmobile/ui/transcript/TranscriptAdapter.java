@@ -38,7 +38,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * Populates the list of semesters on the transcript page
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterHolder> {
     /**

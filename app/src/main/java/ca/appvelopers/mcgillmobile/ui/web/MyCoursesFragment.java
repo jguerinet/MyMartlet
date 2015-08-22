@@ -44,7 +44,7 @@ import ca.appvelopers.mcgillmobile.util.Load;
  * @author Shabbir Hussain
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class MyCoursesFragment extends BaseFragment {
     /**

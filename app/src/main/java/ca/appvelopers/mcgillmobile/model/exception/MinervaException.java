@@ -21,7 +21,7 @@ package ca.appvelopers.mcgillmobile.model.exception;
  * @author Shabbir Hussain
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class MinervaException extends Exception {
 

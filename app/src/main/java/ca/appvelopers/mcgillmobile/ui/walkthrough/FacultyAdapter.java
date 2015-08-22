@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.model.Faculty;
  * Displays the list of faculties that the user can choose from
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class FacultyAdapter extends BaseAdapter {
     /**

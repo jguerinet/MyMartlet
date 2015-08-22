@@ -55,7 +55,7 @@ import ca.appvelopers.mcgillmobile.model.User;
  * @author Quang Dao
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class Parser {
     private static final String TAG = "Parser";

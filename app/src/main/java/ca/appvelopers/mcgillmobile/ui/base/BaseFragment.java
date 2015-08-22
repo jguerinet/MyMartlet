@@ -29,7 +29,7 @@ import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
  * The base fragment for all fragments involved in the main view
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class BaseFragment extends Fragment {

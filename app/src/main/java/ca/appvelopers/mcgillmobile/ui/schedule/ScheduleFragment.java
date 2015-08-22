@@ -48,7 +48,7 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * Represents the user's schedule
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 public class ScheduleFragment extends BaseFragment {

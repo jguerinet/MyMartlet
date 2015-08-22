@@ -73,7 +73,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * The MainActivity the contains the side drawer and the main views for the fragments
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers Inc.
+ * Copyright 2014-2015 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,11 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-
-import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -33,7 +30,7 @@ import ca.appvelopers.mcgillmobile.R;
  * Sends screens and events to the Google Analytics console
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class Analytics {
     private static final String TAG = "Analytics";

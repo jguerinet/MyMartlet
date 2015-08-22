@@ -53,7 +53,7 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @author Julien Guerinet
  * @author Joshua David Alfaro
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class CoursesFragment extends BaseFragment {
     /**

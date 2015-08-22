@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @author Quang Dao
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class Statement implements Serializable{
     private static final long serialVersionUID = 1L;

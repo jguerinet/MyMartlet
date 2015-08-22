@@ -34,7 +34,7 @@ import ca.appvelopers.mcgillmobile.model.Course;
  * @author Selim Belhaouane
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class CourseCalendar {
 	private static final long serialVersionUID = 1L;

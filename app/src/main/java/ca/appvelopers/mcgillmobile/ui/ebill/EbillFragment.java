@@ -46,7 +46,7 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @author Rafi Uddin
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class EbillFragment extends BaseFragment {
     /**

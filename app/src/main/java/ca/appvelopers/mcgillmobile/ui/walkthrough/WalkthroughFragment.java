@@ -38,7 +38,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * @author Julien Guerinet
  * @author Rafi Uddin
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class WalkthroughFragment extends Fragment {
     private static final String PAGE_NUMBER = "page_number";

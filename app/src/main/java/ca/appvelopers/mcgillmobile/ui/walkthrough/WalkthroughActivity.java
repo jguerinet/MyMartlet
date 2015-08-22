@@ -40,7 +40,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  *  (it can also be seen from the settings or be used to show the email walkthrough)
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class WalkthroughActivity extends BaseActivity {
     /**

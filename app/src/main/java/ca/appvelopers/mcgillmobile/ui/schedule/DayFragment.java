@@ -38,7 +38,7 @@ import ca.appvelopers.mcgillmobile.util.Date;
  * Represents one day in the schedule in portrait mode
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class DayFragment extends Fragment{
     /**

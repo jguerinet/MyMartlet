@@ -33,7 +33,7 @@ import ca.appvelopers.mcgillmobile.R;
  * The base class for all activities
  * @author Julien Guerinet
  * @version 2.0
- * @since 1.0
+ * @since 1.0.0
  */
 public class BaseActivity extends AppCompatActivity {
     /**
