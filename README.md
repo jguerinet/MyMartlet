@@ -18,20 +18,20 @@ This is an unofficial McGill app, and is not affiliated with McGill University w
 * AppCompat v7:         Android v7 support library
 * Support v4:           Android v4 support library
 * RecyclerView v7:      Android RecyclerView library
+* Crashlytics:          Crash reporting
 * Facebook:             Used to share the app on Facebook
-* ViewPagerIndicator:   Used to show the current position of a ViewPager
-* GPS - Maps:           Maps library for the campus map section
 * GPS - Analytics:      Anonymous Usage Statistics with Google Analytics
-* Joda Time:            Dates
-* Instabug:             Bug reporting
-* JSoup:                HTML parsing
+* GPS - Maps:           Maps library for the campus map section
 * GSON:                 JSON related operations
+* Instabug:             Bug reporting
+* ButterKnife:          View injection
 * okhttp:               HTTP client
 * okio:                 I/O API
 * Picasso:              Lazy image loading
-* ButterKnife:          View injection
 * Twitter:              Used to share the app on Twitter
-* Crashlytics:          Crash reporting
+* ViewPagerIndicator:   Used to show the current position of a ViewPager
+* Joda Time:            Dates
+* JSoup:                HTML parsing
 
 ## Contributors
 * Joshua David Alfaro - Lead Designer
