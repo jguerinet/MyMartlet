@@ -79,9 +79,9 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.crashlytics.sdk.android/crashlytics/2.2.3/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.digits.sdk.android/digits/1.4.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.0.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.3.0/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.3.0/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.3.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.5.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.5.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.5.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.instabug.library/instabugcore/1.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.instabug.library/instabugsupport/1.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.twitter.cobalt/performance-metrics/0.2.0/jars" />
@@ -108,22 +108,21 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="play-services-maps-7.3.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
-    <orderEntry type="library" exported="" name="library-1.0.18" level="project" />
     <orderEntry type="library" exported="" name="jsoup-1.7.2" level="project" />
+    <orderEntry type="library" exported="" name="library-1.0.18" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="digits-1.4.0" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-analytics-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.6.1" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
+    <orderEntry type="library" exported="" name="play-services-analytics-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="instabugsupport-1.6.1" level="project" />
     <orderEntry type="library" exported="" name="butterknife-6.1.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-base-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.1.4" level="project" />
-    <orderEntry type="library" exported="" name="play-services-base-7.3.0" level="project" />
     <orderEntry type="library" exported="" name="performance-metrics-0.2.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.3.0" level="project" />
     <orderEntry type="library" exported="" name="mimecraft-1.1.1" level="project" />
@@ -139,6 +138,7 @@
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.0.1" level="project" />
     <orderEntry type="library" exported="" name="joda-time-2.7" level="project" />
     <orderEntry type="library" exported="" name="twitter-core-1.3.2" level="project" />
+    <orderEntry type="library" exported="" name="play-services-maps-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="answers-1.1.2" level="project" />
   </component>
 </module>
