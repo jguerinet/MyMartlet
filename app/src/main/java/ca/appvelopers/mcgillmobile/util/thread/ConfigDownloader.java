@@ -58,7 +58,7 @@ import ca.appvelopers.mcgillmobile.util.Save;
 /**
  * Downloads the config variables and the list of places from the web server
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{

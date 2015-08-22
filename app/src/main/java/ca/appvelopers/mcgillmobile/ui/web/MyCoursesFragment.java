@@ -43,7 +43,7 @@ import ca.appvelopers.mcgillmobile.util.Load;
  * Displays the user's MyCourses page
  * @author Shabbir Hussain
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class MyCoursesFragment extends BaseFragment {

@@ -45,12 +45,13 @@ import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import io.fabric.sdk.android.Fabric;
 
 /**
- * Author: Julien
- * Date: 31/01/14, 5:42 PM
- * Class that extends the Android application and is therefore the first thing that is called when app is opened.
- * Will contain relevant objects that were loaded from the storage, and will be updated upon sign-in.
+ * Application implementation
+ * @author Julien Guerinet
+ * @version 2.0.0
+ * @since 1.0.0
  */
 public class App extends Application {
+    //TODO
     //TODO Change these to Shared Prefs
     public static boolean forceReload = false;
     public static boolean forceUserReload = false;

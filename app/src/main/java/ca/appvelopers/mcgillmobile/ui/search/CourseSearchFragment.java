@@ -55,7 +55,7 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 /**
  * Allows a user to search for courses that they can register for
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class CourseSearchFragment extends BaseFragment {

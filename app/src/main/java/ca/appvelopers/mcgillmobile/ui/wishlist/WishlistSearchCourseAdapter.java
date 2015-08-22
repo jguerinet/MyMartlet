@@ -35,6 +35,12 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 
+/**
+ * Displays the list of courses in the user's wish list
+ * @author Julien Guerinet
+ * @version 2.0.0
+ * @since 1.0.0
+ */
 public class WishlistSearchCourseAdapter
         extends RecyclerView.Adapter<WishlistSearchCourseAdapter.CourseHolder> {
     private Context mContext;

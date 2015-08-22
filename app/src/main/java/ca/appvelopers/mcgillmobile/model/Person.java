@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * One person for the About page
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 2.0
  */
 public class Person implements Serializable {

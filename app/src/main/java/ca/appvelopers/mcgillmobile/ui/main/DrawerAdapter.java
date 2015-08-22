@@ -36,7 +36,7 @@ import ca.appvelopers.mcgillmobile.util.Load;
  * The adapter for the main navigation drawer
  * @author Shabbir Hussain
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class DrawerAdapter extends BaseAdapter {

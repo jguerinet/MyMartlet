@@ -30,7 +30,7 @@ import ca.appvelopers.mcgillmobile.util.Date;
  * A course in the user's schedule or one that a user can register for
  * @author Quang Dao
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class Course implements Serializable{

@@ -21,6 +21,13 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Season;
 import ca.appvelopers.mcgillmobile.model.Term;
 
+/**
+ * Various utility methods to test sections of the app
+ * @author Julien Guerinet
+ * @author Ryan Singzon
+ * @version 2.0.0
+ * @since 1.0.0
+ */
 public class Test {
     /**
      * Switch this to true if you want to read the transcript locally

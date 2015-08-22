@@ -26,7 +26,7 @@ import ca.appvelopers.mcgillmobile.R;
 /**
  * The days of the week
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public enum Day {

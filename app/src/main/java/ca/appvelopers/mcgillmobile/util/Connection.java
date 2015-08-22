@@ -57,7 +57,7 @@ import okio.BufferedSink;
  * @author Rafi Uddin
  * @author Joshua David Alfaro
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class Connection {

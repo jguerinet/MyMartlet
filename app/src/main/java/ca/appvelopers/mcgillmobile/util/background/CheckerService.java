@@ -42,7 +42,7 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * Runs the required checker tasks
  * @author Shabbir Hussain
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 2.0
  */
 public class CheckerService extends IntentService {

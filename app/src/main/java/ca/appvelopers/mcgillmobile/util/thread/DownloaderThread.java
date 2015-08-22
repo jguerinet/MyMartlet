@@ -29,7 +29,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 /**
  * Downloads the information at a given URL, shows any errors if necessary and present
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 2.0
  */
 public class DownloaderThread extends Thread {

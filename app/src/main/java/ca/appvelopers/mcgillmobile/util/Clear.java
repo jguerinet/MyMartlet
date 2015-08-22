@@ -29,9 +29,11 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.Statement;
 
 /**
- * Author: Julien
- * Date: 06/02/14, 12:19 PM
+ * TODO
  * Class that clears objects from internal storage or SharedPreferences
+ * @author Julien Guerinet
+ * @version 2.0.0
+ * @since 1.0.0
  */
 public class Clear {
     public static void clearAllInfo(Context context){

@@ -25,6 +25,9 @@ import ca.appvelopers.mcgillmobile.R;
 
 /**
  * A type of place that the user can filter by
+ * @author Julien Guerinet
+ * @version 2.0.0
+ * @since 1.0.0
  */
 public class PlaceType implements Serializable{
     private static final long serialVersionUID = 1L;

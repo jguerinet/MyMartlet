@@ -42,9 +42,11 @@ import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.User;
 
 /**
- * Author: Julien
- * Date: 31/01/14, 5:50 PM
- * Class that loads objects from internal storage or SharedPreferences
+ * TODO
+ * Loads objects from internal storage or SharedPreferences
+ * @author Julien Guerinet
+ * @version 2.0.0
+ * @since 1.0.0
  */
 public class Load {
     /**

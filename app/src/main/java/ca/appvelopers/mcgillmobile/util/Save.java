@@ -38,9 +38,11 @@ import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.User;
 
 /**
- * Author: Julien
- * Date: 04/02/14, 10:06 PM
- * Class that saves objects into internal storage or SharedPreferences
+ * TODO
+ * Saves objects into internal storage or SharedPreferences
+ * @author Julien Guerinet
+ * @version 2.0.0
+ * @since 1.0.0
  */
 public class Save {
     /**

@@ -39,7 +39,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * Displays the walkthrough the first time the user opens the app
  *  (it can also be seen from the settings or be used to show the email walkthrough)
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 public class WalkthroughActivity extends BaseActivity {

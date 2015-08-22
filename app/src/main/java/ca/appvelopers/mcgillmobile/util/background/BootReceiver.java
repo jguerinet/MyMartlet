@@ -30,7 +30,7 @@ import ca.appvelopers.mcgillmobile.util.Load;
  * Automatically (re)starts the alarm if needed when the device is rebooted or the user opts in.
  * @author Shabbir Hussain
  * @author Julien Guerinet
- * @version 2.0
+ * @version 2.0.0
  * @since 2.0
  */
 public class BootReceiver extends BroadcastReceiver {

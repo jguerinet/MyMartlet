@@ -21,9 +21,11 @@ import android.content.Context;
 import ca.appvelopers.mcgillmobile.App;
 
 /**
- * Author : Julien
- * Date :  2014-05-26 8:41 PM
- * This class will have relevant code for each update.
+ * TODO
+ * Runs any update code
+ * @author Julien Guerinet
+ * @version 2.0.0
+ * @since 1.0.0
  */
 public class Update {
     public static void update(Context context){
