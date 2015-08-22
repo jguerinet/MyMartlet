@@ -247,23 +247,28 @@ public class DialogHelper {
                 .setView(checkboxLayout)
                 .setTitle(context.getString(R.string.warning))
                 .setMessage(transcriptBug ? context.getString(R.string.bug_parser_transcript) :
-                context.getString(R.string.bug_parser_semester, term))
+                        context.getString(R.string.bug_parser_semester, term))
                 .setPositiveButton(context.getString(R.string.bug_parser_yes),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //Send the bug report
-                            Instabug.getInstance().sendFeedback(transcriptBug ?
-                                            context.getString(R.string.bug_parser_transcript_title,
-                                                    term) :
-                                            context.getString(R.string.bug_parser_semester_title),
-                                    null, new Instabug.b(){});
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Send the bug report
+                                Instabug.getInstance().sendFeedback(transcriptBug ?
+                                                context.getString(R.string.bug_parser_transcript_title,
+                                                        term) :
+                                                context.getString(R.string.bug_parser_semester_title),
+                                        null, new Instabug.OnSendBugReportListener() {
+                                            @Override
+                                            public void onBugReportSent(boolean b, String s) {
 
-                            //Save the do not show option
-                            Save.saveParserErrorDoNotShow(context, dontShowAgain.isChecked());
+                                            }
+                                        });
 
-                            dialog.dismiss();
-                        }
-                    })
+                                //Save the do not show option
+                                Save.saveParserErrorDoNotShow(context, dontShowAgain.isChecked());
+
+                                dialog.dismiss();
+                            }
+                        })
                 .setNegativeButton(context.getString(R.string.bug_parser_no),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
