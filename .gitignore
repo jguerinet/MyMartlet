@@ -1,12 +1,9 @@
 .gradle
 /local.properties
+/.idea/workspace.xml
+/.idea/libraries
 .DS_Store
+Thumbs.db
 /build
 /captures
-.idea/
-*.iml
-Thumbs.db
-.metadata
-.settings/
-tmp/
-*.apk
+*/signing.properties
