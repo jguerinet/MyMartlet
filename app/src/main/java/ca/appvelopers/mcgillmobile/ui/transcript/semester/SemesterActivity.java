@@ -21,8 +21,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
@@ -39,39 +39,39 @@ public class SemesterActivity extends BaseActivity {
     /**
      * The semester's bachelor degree
      */
-    @InjectView(R.id.semester_bachelor)
+    @Bind(R.id.semester_bachelor)
     TextView mBachelor;
     /**
      * The semester program
      */
-    @InjectView(R.id.semester_program)
+    @Bind(R.id.semester_program)
     TextView mProgram;
     /**
      * The semester GPA
      */
-    @InjectView(R.id.semester_GPA)
+    @Bind(R.id.semester_GPA)
     TextView mGPA;
     /**
      * The semester credits
      */
-    @InjectView(R.id.semester_credits)
+    @Bind(R.id.semester_credits)
     TextView mCredits;
     /**
      * The user's status during this semester
      */
-    @InjectView(R.id.semester_fullTime)
+    @Bind(R.id.semester_fullTime)
     TextView mFullTime;
     /**
      * The courses taken during this semester
      */
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     RecyclerView mCourses;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_semester);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setUpToolbar(true);
         Analytics.getInstance().sendScreen("Transcript - Semester");
 

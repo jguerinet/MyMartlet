@@ -36,8 +36,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -67,87 +67,87 @@ public class CourseSearchFragment extends BaseFragment {
     /**
      * Spinner to choose the term
      */
-    @InjectView(R.id.search_term)
+    @Bind(R.id.search_term)
     Spinner mTermSpinner;
     /**
      * Course start time
      */
-    @InjectView(R.id.search_start)
+    @Bind(R.id.search_start)
     TimePicker mStartTime;
     /**
      * Course end time
      */
-    @InjectView(R.id.search_end)
+    @Bind(R.id.search_end)
     TimePicker mEndTime;
     /**
      * Course subject
      */
-    @InjectView(R.id.search_subject)
+    @Bind(R.id.search_subject)
     EditText mSubject;
     /**
      * Course number
      */
-    @InjectView(R.id.search_number)
+    @Bind(R.id.search_number)
     EditText mNumber;
     /**
      * Course title
      */
-    @InjectView(R.id.search_title)
+    @Bind(R.id.search_title)
     EditText mTitle;
     /**
      * Course min credits
      */
-    @InjectView(R.id.search_min)
+    @Bind(R.id.search_min)
     EditText mMinCredits;
     /**
      * Course max credits
      */
-    @InjectView(R.id.search_max)
+    @Bind(R.id.search_max)
     EditText mMaxCredits;
     /**
      * Course on Monday
      */
-    @InjectView(R.id.search_monday)
+    @Bind(R.id.search_monday)
     CheckBox mMonday;
     /**
      * Course on Tuesday
      */
-    @InjectView(R.id.search_tuesday)
+    @Bind(R.id.search_tuesday)
     CheckBox mTuesday;
     /**
      * Course on Wednesday
      */
-    @InjectView(R.id.search_wednesday)
+    @Bind(R.id.search_wednesday)
     CheckBox mWednesday;
     /**
      * Course on Thursday
      */
-    @InjectView(R.id.search_thursday)
+    @Bind(R.id.search_thursday)
     CheckBox mThursday;
     /**
      * Course on Friday
      */
-    @InjectView(R.id.search_friday)
+    @Bind(R.id.search_friday)
     CheckBox mFriday;
     /**
      * Course on Saturday
      */
-    @InjectView(R.id.search_saturday)
+    @Bind(R.id.search_saturday)
     CheckBox mSaturday;
     /**
      * Course on Sunday
      */
-    @InjectView(R.id.search_sunday)
+    @Bind(R.id.search_sunday)
     CheckBox mSunday;
     /**
      * The more options container
      */
-    @InjectView(R.id.more_options_container)
+    @Bind(R.id.more_options_container)
     LinearLayout mMoreOptionsContainer;
     /**
      * The more options button
      */
-    @InjectView(R.id.more_options)
+    @Bind(R.id.more_options)
     Button mMoreOptionsButton;
     /**
      * True if the user sees al of the options, false otherwise
@@ -166,7 +166,7 @@ public class CourseSearchFragment extends BaseFragment {
                              Bundle savedInstanceState){
         super.onCreateView(inflater, viewGroup, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_course_search, viewGroup, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Registration");
         mActivity.setTitle(getString(R.string.title_registration));

@@ -46,8 +46,8 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
@@ -80,17 +80,17 @@ public class MainActivity extends BaseActivity {
     /**
      * Progress bar shown when the user is switching fragments
      */
-    @InjectView(R.id.fragment_switcher)
+    @Bind(R.id.fragment_switcher)
     LinearLayout mFragmentSwitcherProgress;
     /**
      * The drawer layout
      */
-    @InjectView(R.id.drawer_layout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     /**
      * The ListView inside the drawer
      */
-    @InjectView(R.id.drawer_list)
+    @Bind(R.id.drawer_list)
     ListView mDrawerList;
     /**
      * The toggle for the drawer inside the action bar
@@ -156,7 +156,7 @@ public class MainActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         //Get the page from the intent. If not, use the home page
         mCurrentDrawerItem = (DrawerItem)getIntent().getSerializableExtra(Constants.HOMEPAGE);

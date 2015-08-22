@@ -27,8 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -48,17 +48,17 @@ public class TranscriptFragment extends BaseFragment{
     /**
      * The user's CGPA
      */
-    @InjectView(R.id.transcript_cgpa)
+    @Bind(R.id.transcript_cgpa)
     TextView mCGPA;
     /**
      * The user's total credits
      */
-    @InjectView(R.id.transcript_credits)
+    @Bind(R.id.transcript_credits)
     TextView mTotalCredits;
     /**
      * The list of semesters
      */
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     RecyclerView mListView;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class TranscriptFragment extends BaseFragment{
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_transcript, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Transcript");
         mActivity.setTitle(getString(R.string.title_transcript));

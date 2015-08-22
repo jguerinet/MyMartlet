@@ -50,8 +50,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Place;
@@ -116,22 +116,22 @@ public class MapFragment extends BaseFragment {
     /**
      * The info container used to show the current place's detail
      */
-    @InjectView(R.id.info_container)
+    @Bind(R.id.info_container)
     LinearLayout mInfoContainer;
     /**
      * The current place's title
      */
-    @InjectView(R.id.place_title)
+    @Bind(R.id.place_title)
     TextView mTitle;
     /**
      * The current place's address
      */
-    @InjectView(R.id.place_address)
+    @Bind(R.id.place_address)
     TextView mAddress;
     /**
      * Button to add or remove a place from the user's favorites
      */
-    @InjectView(R.id.map_favorite)
+    @Bind(R.id.map_favorite)
     Button mFavorite;
 
     @Override
@@ -153,7 +153,7 @@ public class MapFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         mActivity.setTitle(getString(R.string.title_map));
         Analytics.getInstance().sendScreen("Map");
 

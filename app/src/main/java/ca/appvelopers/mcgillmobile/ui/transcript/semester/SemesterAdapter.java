@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 
@@ -77,32 +77,32 @@ public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.Course
         /**
          * Course Code
          */
-        @InjectView(R.id.course_code)
+        @Bind(R.id.course_code)
         TextView mCode;
         /**
          * User grade
          */
-        @InjectView(R.id.course_grade)
+        @Bind(R.id.course_grade)
         TextView mGrade;
         /**
          * Course title
          */
-        @InjectView(R.id.course_title)
+        @Bind(R.id.course_title)
         TextView mTitle;
         /**
          * Course credits
          */
-        @InjectView(R.id.course_credits)
+        @Bind(R.id.course_credits)
         TextView mCredits;
         /**
          * Course average grade
          */
-        @InjectView(R.id.course_average)
+        @Bind(R.id.course_average)
         TextView mAverageGrade;
 
         public CourseHolder(View itemView){
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(TranscriptCourse course){

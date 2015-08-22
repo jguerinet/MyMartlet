@@ -31,8 +31,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Person;
@@ -132,37 +132,37 @@ public class AboutActivity extends BaseActivity {
             /**
              * Person's name
              */
-            @InjectView(R.id.person_name)
+            @Bind(R.id.person_name)
             TextView mName;
             /**
              * Person's picture
              */
-            @InjectView(R.id.person_picture)
+            @Bind(R.id.person_picture)
             ImageView mPicture;
             /**
              * Person's role
              */
-            @InjectView(R.id.person_role)
+            @Bind(R.id.person_role)
             TextView mRole;
             /**
              * Person's description
              */
-            @InjectView(R.id.person_description)
+            @Bind(R.id.person_description)
             TextView mDescription;
             /**
              * URL to person's LinkedIn
              */
-            @InjectView(R.id.person_linkedin)
+            @Bind(R.id.person_linkedin)
             TextView mLinkedIn;
             /**
              * Person's email
              */
-            @InjectView(R.id.person_email)
+            @Bind(R.id.person_email)
             TextView mEmail;
 
             public PersonHolder(View itemView){
                 super(itemView);
-                ButterKnife.inject(this, itemView);
+                ButterKnife.bind(this, itemView);
             }
 
             public void bind(final Person person){

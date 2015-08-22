@@ -25,8 +25,8 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
@@ -136,12 +136,12 @@ public class DrawerAdapter extends BaseAdapter {
         /**
          * The user's name
          */
-        @InjectView(R.id.drawer_name)
+        @Bind(R.id.drawer_name)
         public TextView name;
         /**
          * The user's email
          */
-        @InjectView(R.id.drawer_email)
+        @Bind(R.id.drawer_email)
         public TextView email;
 
         /**
@@ -150,7 +150,7 @@ public class DrawerAdapter extends BaseAdapter {
          * @param view The base view
          */
         public HeaderHolder(View view){
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 
@@ -158,12 +158,12 @@ public class DrawerAdapter extends BaseAdapter {
         /**
          * The drawer item icon
          */
-        @InjectView(R.id.drawer_icon)
+        @Bind(R.id.drawer_icon)
         public TextView icon;
         /**
          * The drawer item title
          */
-        @InjectView(R.id.drawer_title)
+        @Bind(R.id.drawer_title)
         public TextView title;
 
         /**
@@ -172,7 +172,7 @@ public class DrawerAdapter extends BaseAdapter {
          * @param view The base view
          */
         public DrawerHolder(View view){
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
             icon.setTypeface(App.getIconFont());
         }
     }

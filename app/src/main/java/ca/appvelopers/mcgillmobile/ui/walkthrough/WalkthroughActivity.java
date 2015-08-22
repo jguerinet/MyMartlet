@@ -27,8 +27,8 @@ import android.widget.Button;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
@@ -46,22 +46,22 @@ public class WalkthroughActivity extends BaseActivity {
     /**
      * The ViewPager
      */
-    @InjectView(R.id.walkthrough_viewpager)
+    @Bind(R.id.walkthrough_viewpager)
     ViewPager mViewPager;
     /**
      * The ViewPagerIndicator
      */
-    @InjectView(R.id.walkthrough_pageindicator)
+    @Bind(R.id.walkthrough_pageindicator)
     CirclePageIndicator mIndicator;
     /**
      * The next button
      */
-    @InjectView(R.id.walkthrough_next)
+    @Bind(R.id.walkthrough_next)
     Button mNext;
     /**
      * The back button
      */
-    @InjectView(R.id.walkthrough_back)
+    @Bind(R.id.walkthrough_back)
     Button mBack;
     /**
      * The adapter used for the walkthrough
@@ -75,7 +75,7 @@ public class WalkthroughActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walkthrough);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         //Check if this is the normal walkthrough or the email one
         boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);

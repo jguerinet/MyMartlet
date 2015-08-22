@@ -32,8 +32,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -59,12 +59,12 @@ public class WishlistFragment extends BaseFragment {
     /**
      * The empty view
      */
-    @InjectView(R.id.courses_empty)
+    @Bind(R.id.courses_empty)
     TextView mEmptyView;
     /**
      * The wishlist
      */
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     RecyclerView mListView;
     /**
      * The ListView adapter
@@ -92,7 +92,7 @@ public class WishlistFragment extends BaseFragment {
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Wishlist");
 

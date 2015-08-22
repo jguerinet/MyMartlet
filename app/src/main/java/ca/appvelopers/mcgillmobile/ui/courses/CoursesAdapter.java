@@ -27,8 +27,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
@@ -44,42 +44,42 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
         /**
          * The course code
          */
-        @InjectView(R.id.course_code)
+        @Bind(R.id.course_code)
         TextView mCode;
         /**
          * The course title
          */
-        @InjectView(R.id.course_title)
+        @Bind(R.id.course_title)
         TextView mTitle;
         /**
          * The course type
          */
-        @InjectView(R.id.course_type)
+        @Bind(R.id.course_type)
         TextView mType;
         /**
          * The course credits
          */
-        @InjectView(R.id.course_credits)
+        @Bind(R.id.course_credits)
         TextView mCredits;
         /**
          * The course days
          */
-        @InjectView(R.id.course_days)
+        @Bind(R.id.course_days)
         TextView mDays;
         /**
          * The course hours
          */
-        @InjectView(R.id.course_hours)
+        @Bind(R.id.course_hours)
         TextView mHours;
         /**
          * The course unregistration check box
          */
-        @InjectView(R.id.course_checkbox)
+        @Bind(R.id.course_checkbox)
         CheckBox mCheckBox;
 
         public CourseHolder(View itemView){
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

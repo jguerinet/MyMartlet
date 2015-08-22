@@ -39,7 +39,7 @@ public class AgreementActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         boolean required = getIntent().getBooleanExtra(Constants.EULA_REQUIRED, false);
         setUpToolbar(!required);

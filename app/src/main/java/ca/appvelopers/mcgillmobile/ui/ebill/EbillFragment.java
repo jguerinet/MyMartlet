@@ -29,8 +29,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -52,17 +52,17 @@ public class EbillFragment extends BaseFragment {
     /**
      * The user name
      */
-    @InjectView(R.id.user_name)
+    @Bind(R.id.user_name)
     TextView mUserName;
     /**
      * The user Id
      */
-    @InjectView(R.id.user_id)
+    @Bind(R.id.user_id)
     TextView mUserId;
     /**
      * The statements ListView
      */
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     RecyclerView mListView;
 
     @Override
@@ -78,7 +78,7 @@ public class EbillFragment extends BaseFragment {
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_ebill, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Ebill");
 

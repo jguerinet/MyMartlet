@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.util.Date;
@@ -72,17 +72,17 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
         /**
          * The statement date
          */
-        @InjectView(R.id.statement_date)
+        @Bind(R.id.statement_date)
         TextView mDate;
         /**
          * The statement due date
          */
-        @InjectView(R.id.statement_due_date)
+        @Bind(R.id.statement_due_date)
         TextView mDueDate;
         /**
          * The statement amount
          */
-        @InjectView(R.id.statement_amount)
+        @Bind(R.id.statement_amount)
         TextView mAmount;
 
         /**
@@ -92,7 +92,7 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
          */
         public StatementHolder(View itemView){
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         /**

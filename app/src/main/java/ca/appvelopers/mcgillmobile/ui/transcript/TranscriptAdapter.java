@@ -26,8 +26,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
@@ -75,22 +75,22 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
         /**
          * The semester name
          */
-        @InjectView(R.id.semester_name)
+        @Bind(R.id.semester_name)
         TextView mName;
         /**
          * The user's GPA for this semester
          */
-        @InjectView(R.id.semester_gpa)
+        @Bind(R.id.semester_gpa)
         TextView mGPA;
         /**
          * The chevron (we need to apply the icon typeface
          */
-        @InjectView(R.id.chevron)
+        @Bind(R.id.chevron)
         TextView mChevron;
 
         public SemesterHolder(View itemView){
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
             mChevron.setTypeface(App.getIconFont());
         }
 

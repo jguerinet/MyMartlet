@@ -26,8 +26,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -52,12 +52,12 @@ public class SearchResultsActivity extends BaseActivity {
     /**
      * The courses list
      */
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     RecyclerView mListView;
     /**
      * The empty view
      */
-    @InjectView(R.id.courses_empty)
+    @Bind(R.id.courses_empty)
     TextView mEmptyView;
     /**
      * The adapter for the list of results
@@ -73,7 +73,7 @@ public class SearchResultsActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchresults);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         Analytics.getInstance().sendScreen("Search Results");
         setUpToolbar(true);
 

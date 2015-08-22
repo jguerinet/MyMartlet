@@ -28,8 +28,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
@@ -88,57 +88,57 @@ public class WishlistSearchCourseAdapter
         /**
          * The course code
          */
-        @InjectView(R.id.course_code)
+        @Bind(R.id.course_code)
         TextView mCode;
         /**
          * The course credits
          */
-        @InjectView(R.id.course_credits)
+        @Bind(R.id.course_credits)
         TextView mCredits;
         /**
          * The course title
          */
-        @InjectView(R.id.course_title)
+        @Bind(R.id.course_title)
         TextView mTitle;
         /**
          * The course spots
          */
-        @InjectView(R.id.course_spots)
+        @Bind(R.id.course_spots)
         TextView mSpots;
         /**
          * The course type
          */
-        @InjectView(R.id.course_type)
+        @Bind(R.id.course_type)
         TextView mType;
         /**
          * The number of remaining waitlist spots
          */
-        @InjectView(R.id.course_waitlist)
+        @Bind(R.id.course_waitlist)
         TextView mWaitlistRemaining;
         /**
          * The course days
          */
-        @InjectView(R.id.course_days)
+        @Bind(R.id.course_days)
         TextView mDays;
         /**
          * The course hours
          */
-        @InjectView(R.id.course_hours)
+        @Bind(R.id.course_hours)
         TextView mHours;
         /**
          * The course dates
          */
-        @InjectView(R.id.course_dates)
+        @Bind(R.id.course_dates)
         TextView mDates;
         /**
          * The checkbox to (un)select the course for various operations
          */
-        @InjectView(R.id.course_checkbox)
+        @Bind(R.id.course_checkbox)
         CheckBox mCheckbox;
 
         public CourseHolder(View itemView){
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(final Course course){

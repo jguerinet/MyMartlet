@@ -29,8 +29,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.FAQItem;
@@ -50,7 +50,7 @@ public class HelpActivity extends BaseActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setUpToolbar(true);
         
         //FAQ ListView
@@ -123,17 +123,17 @@ public class HelpActivity extends BaseActivity{
             /**
              * The FAQ question
              */
-            @InjectView(R.id.faq_question)
+            @Bind(R.id.faq_question)
             TextView mQuestion;
             /**
              * The FAQ answer
              */
-            @InjectView(R.id.faq_answer)
+            @Bind(R.id.faq_answer)
             TextView mAnswer;
 
             public FAQHolder(View itemView){
                 super(itemView);
-                ButterKnife.inject(this, itemView);
+                ButterKnife.bind(this, itemView);
                 itemView.setClickable(false);
             }
 

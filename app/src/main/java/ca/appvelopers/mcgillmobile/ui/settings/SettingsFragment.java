@@ -28,8 +28,8 @@ import android.widget.TextView;
 
 import com.instabug.library.Instabug;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
@@ -55,37 +55,37 @@ public class SettingsFragment extends BaseFragment {
     /**
      * The help page icon
      */
-    @InjectView(R.id.help_icon)
+    @Bind(R.id.help_icon)
     TextView mHelpIcon;
     /**
      * The about page icon
      */
-    @InjectView(R.id.about_icon)
+    @Bind(R.id.about_icon)
     TextView mAboutIcon;
     /**
      * The Report a Bug icon
      */
-    @InjectView(R.id.bug_icon)
+    @Bind(R.id.bug_icon)
     TextView mBugIcon;
     /**
      * The language spinner
      */
-    @InjectView(R.id.settings_language)
+    @Bind(R.id.settings_language)
     Spinner mLanguageSpinner;
     /**
      * The homepage spinner
      */
-    @InjectView(R.id.settings_homepage)
+    @Bind(R.id.settings_homepage)
     Spinner mHomepageSpinner;
     /**
      * The statistics switch
      */
-    @InjectView(R.id.settings_statistics)
+    @Bind(R.id.settings_statistics)
     Switch mStatistics;
     /**
      * The version number
      */
-    @InjectView(R.id.settings_version)
+    @Bind(R.id.settings_version)
     TextView mVersion;
     /**
      * The adapter used for the homepage spinner
@@ -97,7 +97,7 @@ public class SettingsFragment extends BaseFragment {
                              Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Settings");
         mActivity.setTitle(getString(R.string.title_settings));
