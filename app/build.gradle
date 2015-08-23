@@ -32,13 +32,13 @@ repositories {
 
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "ca.appvelopers.mcgillmobile"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 12
         versionName "2.0"
     }
@@ -65,15 +65,15 @@ android {
 
 dependencies{
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:support-v4:23.0.0'
     compile 'com.android.support:recyclerview-v7:+'
     compile('com.crashlytics.sdk.android:crashlytics:2.2.3@aar'){
         transitive = true;
     }
     compile 'com.facebook.android:facebook-android-sdk:4.3.0'
-    compile 'com.google.android.gms:play-services-analytics:7.5.0'
-    compile 'com.google.android.gms:play-services-maps:7.5.0'
+    compile 'com.google.android.gms:play-services-analytics:7.8.0'
+    compile 'com.google.android.gms:play-services-maps:7.8.0'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.instabug.library:instabugsupport:1+'
     compile 'com.jakewharton:butterknife:7.0.1'
