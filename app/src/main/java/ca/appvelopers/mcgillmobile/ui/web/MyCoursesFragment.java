@@ -82,6 +82,7 @@ public class MyCoursesFragment extends BaseFragment {
                 CookieManager.getInstance().removeAllCookies(null);
             }
             else{
+                //noinspection deprecation
                 CookieManager.getInstance().removeAllCookie();
             }
         }
