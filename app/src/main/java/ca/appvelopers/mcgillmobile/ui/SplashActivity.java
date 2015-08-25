@@ -169,7 +169,7 @@ public class SplashActivity extends BaseActivity {
         //Get the username before clearing everything
         String username = Load.loadUsername(this);
         //Make sure to delete anything with the previous user's info
-        Clear.clearAllInfo(this);
+        Clear.all(this);
 
         Analytics.getInstance().sendScreen("Login");
 
