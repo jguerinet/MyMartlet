@@ -103,8 +103,6 @@ public class MyCoursesFragment extends BaseFragment {
                 // Appears the same in Notification bar while downloading
                 String cookie = cookieManager.getCookie(url);
                 request.addRequestHeader("Cookie", cookie);
-                //TODO Real String here
-                request.setDescription("Description for the DownloadManager Bar");
                 request.setTitle(fileName);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     request.allowScanningByMediaScanner();
