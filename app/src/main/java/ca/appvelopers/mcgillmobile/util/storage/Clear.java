@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.util;
+package ca.appvelopers.mcgillmobile.util.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,6 +27,7 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.Statement;
+import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
  * TODO

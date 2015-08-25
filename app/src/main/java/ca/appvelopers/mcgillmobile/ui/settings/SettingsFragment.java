@@ -42,8 +42,8 @@ import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Help;
-import ca.appvelopers.mcgillmobile.util.Load;
-import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.util.storage.Load;
+import ca.appvelopers.mcgillmobile.util.storage.Save;
 
 /**
  * Allows the user to change the app settings

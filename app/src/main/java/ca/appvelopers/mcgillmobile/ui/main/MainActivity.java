@@ -66,8 +66,8 @@ import ca.appvelopers.mcgillmobile.ui.web.DesktopFragment;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesFragment;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Clear;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.storage.Clear;
 
 /**
  * The MainActivity the contains the side drawer and the main views for the fragments

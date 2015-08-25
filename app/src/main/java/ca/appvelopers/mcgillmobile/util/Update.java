@@ -19,6 +19,8 @@ package ca.appvelopers.mcgillmobile.util;
 import android.content.Context;
 
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.util.storage.Load;
+import ca.appvelopers.mcgillmobile.util.storage.Save;
 
 /**
  * TODO

@@ -24,7 +24,7 @@ import android.content.Intent;
 
 import java.util.Calendar;
 
-import ca.appvelopers.mcgillmobile.util.Load;
+import ca.appvelopers.mcgillmobile.util.storage.Load;
 
 /**
  * Automatically (re)starts the alarm if needed when the device is rebooted or the user opts in.

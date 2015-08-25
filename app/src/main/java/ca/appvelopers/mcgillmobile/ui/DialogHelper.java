@@ -37,8 +37,8 @@ import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
-import ca.appvelopers.mcgillmobile.util.Load;
-import ca.appvelopers.mcgillmobile.util.Save;
+import ca.appvelopers.mcgillmobile.util.storage.Load;
+import ca.appvelopers.mcgillmobile.util.storage.Save;
 
 /**
  * Helper methods that create dialogs for various situations

@@ -49,6 +49,7 @@ import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
+import ca.appvelopers.mcgillmobile.util.storage.Load;
 import okio.BufferedSink;
 
 /**
