@@ -48,9 +48,9 @@ public class Encryption {
             return null;
         }
 
-		StringBuffer sb = new StringBuffer(s);
-		StringBuffer binary = new StringBuffer();
-		StringBuffer resultValue = new StringBuffer();
+		StringBuilder sb = new StringBuilder(s);
+		StringBuilder binary = new StringBuilder();
+		StringBuilder resultValue = new StringBuilder();
 		char codes[] = new char[sb.length()];
 		int values[] = new int[sb.length()];
 		
@@ -88,9 +88,9 @@ public class Encryption {
 		
 		//declarations
 		String encodedString;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		int values[];
-		int length = 0, padding = 0;
+		int length, padding = 0;
 		String bits[];
 		char result[], helper[];
 		
@@ -149,7 +149,7 @@ public class Encryption {
 	private static String toBinary(int i, int n){
 		int remainder = i;
 		int result[] = new int[n];
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		
 		for(int j = 0; j < n; j++){
 			result[j] = remainder % 2;
