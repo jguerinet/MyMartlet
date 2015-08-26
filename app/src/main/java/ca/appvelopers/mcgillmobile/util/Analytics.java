@@ -23,6 +23,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.BuildConfig;
 import ca.appvelopers.mcgillmobile.R;
 
 
@@ -71,7 +72,7 @@ public class Analytics {
      * @param label    The event label
      */
     public void sendEvent(String category, String action, String label){
-        if(!Constants.dev){
+        if(!BuildConfig.DEBUG){
             this.mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory(category)
                 .setAction(action)
@@ -88,7 +89,7 @@ public class Analytics {
      * @param screenName The name of the screen
      */
     public void sendScreen(String screenName){
-        if(!Constants.dev){
+        if(!BuildConfig.DEBUG){
             //Set the screen name
             this.mTracker.setScreenName(screenName);
 
