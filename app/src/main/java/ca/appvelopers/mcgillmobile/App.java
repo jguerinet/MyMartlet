@@ -292,8 +292,6 @@ public class App extends Application {
      */
     public static void setLanguage(Language language){
         App.language = language;
-
-        //Save it to internal storage when this is set
         Save.language();
     }
 
@@ -302,7 +300,6 @@ public class App extends Application {
      */
     public static void setPlaces(List<Place> places){
         App.places = places;
-        //Save it to internal storage
         Save.places();
     }
 
@@ -311,7 +308,6 @@ public class App extends Application {
      */
     public static void setPlaceTypes(List<PlaceType> placeTypes){
         App.placeTypes = placeTypes;
-        //Save it to internal storage
         Save.placeTypes();
     }
 
@@ -320,7 +316,6 @@ public class App extends Application {
      */
     public static void setRegisterTerms(List<Term> terms){
         App.registerTerms = terms;
-        //Save it to internal storage
         Save.registerTerms();
     }
 
@@ -330,8 +325,6 @@ public class App extends Application {
     public static void setTranscript(Transcript transcript){
         synchronized (Constants.TRANSCRIPT_LOCK){
             App.transcript = transcript;
-
-            //Save it to internal storage when this is set
             Save.transcript();
         }
     }
@@ -341,8 +334,6 @@ public class App extends Application {
      */
     public static void setCourses(List<Course> courses){
         App.courses = courses;
-
-        //Save it to internal storage when this is set
         Save.courses();
     }
 
@@ -351,8 +342,6 @@ public class App extends Application {
      */
     public static void setEbill(List<Statement> ebill){
         App.ebill = ebill;
-
-        //Save it to internal storage when this is set
         Save.ebill();
     }
 
@@ -361,8 +350,6 @@ public class App extends Application {
      */
     public static void setUser(User user){
         App.user = user;
-
-        //Save it to internal storage when this is set
         Save.user();
     }
 
@@ -371,8 +358,6 @@ public class App extends Application {
      */
     public static void setHomepage(DrawerItem homepage){
         App.homepage = homepage;
-
-        //Save it to internal storage when this is set
         Save.homepage();
     }
 
@@ -381,8 +366,6 @@ public class App extends Application {
      */
     public static void setDefaultTerm(Term term){
         App.defaultTerm = term;
-
-        //Save it to internal storage when this is set
         Save.defaultTerm();
     }
 
@@ -391,7 +374,6 @@ public class App extends Application {
      */
     public static void setWishlist(List<Course> wishlist) {
         App.wishlist = wishlist;
-        //Save it to internal storage when this is set
         Save.wishlist();
     }
 
@@ -400,7 +382,6 @@ public class App extends Application {
      */
     public static void setFavoritePlaces(List<Place> places){
         App.favoritePlaces = places;
-        //Save it to internal storage
         Save.favoritePlaces();
     }
 
