@@ -264,7 +264,7 @@ public class DialogHelper {
                                         });
 
                                 //Save the do not show option
-                                Save.saveParserErrorDoNotShow(context, dontShowAgain.isChecked());
+                                Save.parserErrorDoNotShow(dontShowAgain.isChecked());
 
                                 dialog.dismiss();
                             }
@@ -273,7 +273,7 @@ public class DialogHelper {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //Save the do not show again
-                                Save.saveParserErrorDoNotShow(context, dontShowAgain.isChecked());
+                                Save.parserErrorDoNotShow(dontShowAgain.isChecked());
 
                                 dialog.dismiss();
                             }

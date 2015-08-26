@@ -154,7 +154,7 @@ public class Load {
      * @return True if the user has accepted the EULA, false otherwise
      */
     public static boolean eula(){
-        return Constants.PREFS.getBoolean(Constants.USER_AGREEMENT, false);
+        return Constants.PREFS.getBoolean(Constants.EULA, false);
     }
 
     /* INTERNAL STORAGE */

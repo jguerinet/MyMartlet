@@ -55,7 +55,7 @@ public class Update {
         }
 
         //Store the new version in the SharedPrefs
-        Save.saveVersionNumber(context, versionNumber);
+        Save.versionCode(versionNumber);
     }
 
     /**

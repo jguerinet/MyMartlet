@@ -54,7 +54,7 @@ public class AgreementActivity extends BaseActivity {
     @OnClick(R.id.button_agree)
     public void agree(){
         //Save the fact that they accepted
-        Save.saveUserAgreement(AgreementActivity.this, true);
+        Save.eula(true);
 
         setResult(RESULT_OK);
         finish();
@@ -63,7 +63,7 @@ public class AgreementActivity extends BaseActivity {
     @OnClick(R.id.button_decline)
     public void decline(){
         //Save the fact that they declined
-        Save.saveUserAgreement(AgreementActivity.this, false);
+        Save.eula(false);
 
         setResult(RESULT_CANCELED);
         finish();

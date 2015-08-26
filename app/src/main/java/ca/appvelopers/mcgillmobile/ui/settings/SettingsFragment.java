@@ -180,6 +180,6 @@ public class SettingsFragment extends BaseFragment {
 
     @OnCheckedChanged(R.id.settings_statistics)
     public void enableStatistics(boolean enabled){
-        Save.saveStatistics(mActivity, enabled);
+        Save.statistics(enabled);
     }
 }

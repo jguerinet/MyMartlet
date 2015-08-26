@@ -173,7 +173,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                             parsePlaces(gson, parser, response.body().string());
 
                             //Update the If-Modified-Since date
-                            Save.saveIfModifiedSinceDate(mContext, Date.getRFC1123String(
+                            Save.ifModifiedSince(Date.getRFC1123String(
                                     DateTime.now().withZone(DateTimeZone.forID("UCT"))));
                         }
                     }

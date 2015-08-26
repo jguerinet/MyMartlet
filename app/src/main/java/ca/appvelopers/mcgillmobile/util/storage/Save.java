@@ -18,312 +18,220 @@ package ca.appvelopers.mcgillmobile.util.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.util.Log;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
-import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
-import ca.appvelopers.mcgillmobile.model.Statement;
-import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Encryption;
 
 /**
- * TODO
- * Saves objects into internal storage or SharedPreferences
+ * Saves objects to internal storage or {@link SharedPreferences}
  * @author Julien Guerinet
  * @version 2.0.0
  * @since 1.0.0
  */
 public class Save {
+    private static final String TAG = "Save";
+
+    /* SHARED PREFS */
+
     /**
-     * Save the version number to the Shared prefs
-     * @param context The app context
-     * @param versionNumber The version number to save
+     * @param code The version code to save
      */
-    public static void saveVersionNumber(Context context, int versionNumber){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
-                .putInt(Constants.VERSION, versionNumber)
+    public static void versionCode(int code){
+        Constants.PREFS.edit()
+                .putInt(Constants.VERSION, code)
                 .apply();
     }
 
     /**
-     * Save that the app has been used at least once
-     * @param context The app context
+     * Saves that the walkthrough has been viewed at least once
      */
-    public static void saveFirstOpen(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    public static void firstOpen(){
+        Constants.PREFS.edit()
                 .putBoolean(Constants.FIRST_OPEN, false)
                 .apply();
     }
 
-    public static void saveLanguage(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    /**
+     * Saves the user's chosen language
+     */
+    public static void language(){
+        Constants.PREFS.edit()
                 .putInt(Constants.LANGUAGE, App.getLanguage().ordinal())
                 .apply();
     }
 
-    public static void saveHomePage(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    /**
+     * Saves the user's homepage
+     */
+    public static void homepage(){
+        Constants.PREFS.edit()
                 .putInt(Constants.HOMEPAGE, App.getHomePage().ordinal())
                 .apply();
     }
 
-    public static void saveParserErrorDoNotShow(Context context, boolean doNotShow){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    /**
+     * @param doNotShow True if we should not show parser errors, false otherwise
+     */
+    public static void parserErrorDoNotShow(boolean doNotShow){
+        Constants.PREFS.edit()
                 .putBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, doNotShow)
                 .apply();
     }
 
-    public static void saveLoadingDoNotShow(Context context, boolean doNotShow){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    /**
+     * @param doNotShow True if we should not show the loading screen, false otherwise
+     */
+    public static void loadingDoNotShow(boolean doNotShow){
+        Constants.PREFS.edit()
                 .putBoolean(Constants.LOADING_DO_NOT_SHOW, doNotShow)
                 .apply();
     }
 
-    public static void saveStatistics(Context context, boolean statistics){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    /**
+     * @param statistics True if we can collect anonymous usage statistics, false otherwise
+     */
+    public static void statistics(boolean statistics){
+        Constants.PREFS.edit()
                 .putBoolean(Constants.STATISTICS, statistics)
                 .apply();
     }
 
-    public static void saveUsername(Context context, String username){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    /**
+     * @param username The user's username
+     */
+    public static void username(String username){
+        Constants.PREFS.edit()
                 .putString(Constants.USERNAME, username)
                 .apply();
     }
 
-    public static void savePassword(Context context, String password){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String encryptedPassword = Encryption.encode(password);
-        sharedPrefs.edit()
-                .putString(Constants.PASSWORD, encryptedPassword)
+    /**
+     * @param password The user's password
+     */
+    public static void password(String password){
+        Constants.PREFS.edit()
+                .putString(Constants.PASSWORD, Encryption.encode(password))
                 .apply();
     }
 
-    public static void saveRememberUsername(Context context, boolean rememberUsername){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    /**
+     * @param rememberUsername True if we should remember the user's username, false otherwise
+     */
+    public static void rememberUsername(boolean rememberUsername){
+        Constants.PREFS.edit()
                 .putBoolean(Constants.REMEMBER_USERNAME, rememberUsername)
                 .apply();
     }
 
-    public static void saveTranscript(Context context){
-        Transcript transcript = App.getTranscript();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.TRANSCRIPT_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(transcript);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveClasses(Context context){
-        List<Course> courses = App.getClasses();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.COURSES_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(courses);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveEbill(Context context){
-        List<Statement> ebill = App.getEbill();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.EBILL_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(ebill);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveUserInfo(Context context){
-        User userInfo = App.getUserInfo();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.USER_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(userInfo);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public static void saveDefaultTerm(Context context){
-        Term defaultTerm = App.getDefaultTerm();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.DEFAULT_TERM_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(defaultTerm);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveClassWishlist(Context context) {
-        List<Course> classWishlist = App.getClassWishlist();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.WISHLIST_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(classWishlist);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void savePlaces(Context context) {
-        List<Place> places = App.getPlaces();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.PLACES_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(places);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveFavoritePlaces(Context context) {
-        List<Place> places = App.getFavoritePlaces();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.FAVORITE_PLACES_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(places);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void savePlaceCategories(Context context) {
-        List<PlaceType> places = App.getPlaceTypes();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.PLACE_TYPES_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(places);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveRegisterTerms(Context context){
-        List<Term> terms = App.getRegisterTerms();
-
-        try{
-            FileOutputStream fos = context.openFileOutput(Constants.REGISTER_TERMS_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(terms);
-        } catch (OptionalDataException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void saveIfModifiedSinceDate(Context context, String date){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+    /**
+     * @param date The last date the web service was queries
+     */
+    public static void ifModifiedSince(String date){
+        Constants.PREFS.edit()
                 .putString(Constants.IF_MODIFIED_SINCE, date)
                 .apply();
     }
 
     /**
-     * Save if the user agreement has been accepted or not
-     *
-     * @param context  The app context
-     * @param accepted True if it has been accepted, false otherwise
+     * @param accepted True if the user has accepted the EULA, false otherwise
      */
-    public static void saveUserAgreement(Context context, boolean accepted){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
-                .putBoolean(Constants.USER_AGREEMENT, accepted)
+    public static void eula(boolean accepted){
+        Constants.PREFS.edit()
+                .putBoolean(Constants.EULA, accepted)
                 .apply();
+    }
+
+    /* INTERNAL STORAGE */
+
+    /**
+     * Saves an object to internal storage
+     *
+     * @param tag      The tag to use in case of an error
+     * @param fileName The file name to save the object under
+     * @param object   The object to save
+     */
+    private static void saveObject(String tag, String fileName, Object object){
+        try{
+            FileOutputStream fos = App.getContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(object);
+        } catch(Exception e) {
+            Log.e(TAG, "Failure: " + tag, e);
+        }
+    }
+
+    /**
+     * Saves the user's transcript
+     */
+    public static void transcript(){
+        saveObject("Transcript", Constants.TRANSCRIPT_FILE, App.getTranscript());
+    }
+
+    /**
+     * Saves the user's courses
+     */
+    public static void courses(){
+        saveObject("Courses", Constants.COURSES_FILE, App.getClasses());
+    }
+
+    /**
+     * Saves the user's ebill statements
+     */
+    public static void ebill(){
+        saveObject("Ebill", Constants.EBILL_FILE, App.getEbill());
+    }
+
+    /**
+     * Saves the user's info
+     */
+    public static void user(){
+        saveObject("User", Constants.USER_FILE, App.getUserInfo());
+    }
+
+    /**
+     * Saves the user's default term
+     */
+    public static void defaultTerm(){
+        saveObject("Default Term", Constants.DEFAULT_TERM_FILE, App.getDefaultTerm());
+    }
+
+    /**
+     * Saves the user's wishlist
+     */
+    public static void wishlist(){
+        saveObject("Wishlist", Constants.WISHLIST_FILE, App.getClassWishlist());
+    }
+
+    /**
+     * Saves the places
+     */
+    public static void places(){
+        saveObject("Places", Constants.PLACES_FILE, App.getPlaces());
+    }
+
+    /**
+     * Saves the user's favorite places
+     */
+    public static void favoritePlaces(){
+        saveObject("Favorite Places", Constants.FAVORITE_PLACES_FILE, App.getFavoritePlaces());
+    }
+
+    /**
+     * Saves the place types
+     */
+    public static void placeTypes() {
+        saveObject("Place Types", Constants.PLACE_TYPES_FILE, App.getPlaceTypes());
+    }
+
+    /**
+     * Saves the terms the user can currently register in
+     */
+    public static void registerTerms(){
+        saveObject("Register Terms", Constants.REGISTER_TERMS_FILE, App.getRegisterTerms());
     }
 }

@@ -93,7 +93,7 @@ public class ScheduleFragment extends BaseFragment {
             //Show him the walkthrough if it is
             startActivity(new Intent(mActivity, WalkthroughActivity.class));
             //Save the fact that the walkthrough has been seen at least once
-            Save.saveFirstOpen(mActivity);
+            Save.firstOpen();
         }
 
         //Hide the loading indicator

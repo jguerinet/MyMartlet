@@ -246,10 +246,9 @@ public class SplashActivity extends BaseActivity {
                         // If the connection was successful, start the app initializer
                         if (status == ConnectionStatus.OK) {
                             // Store the login info.
-                            Save.saveUsername(SplashActivity.this, username);
-                            Save.savePassword(SplashActivity.this, password);
-                            Save.saveRememberUsername(SplashActivity.this,
-                                    rememberUsernameView.isChecked());
+                            Save.username(username);
+                            Save.password(password);
+                            Save.rememberUsername(rememberUsernameView.isChecked());
                             Analytics.getInstance().sendEvent("Login", "Remember Username",
                                     String.valueOf(rememberUsernameView.isChecked()));
 
@@ -395,8 +394,7 @@ public class SplashActivity extends BaseActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which){
                                             //Save the do not show option
-                                            Save.saveLoadingDoNotShow(SplashActivity.this,
-                                                    doNotShow.isChecked());
+                                            Save.loadingDoNotShow(doNotShow.isChecked());
 
                                             //Cancel the info downloader
                                             publishNewProgress(getString(R.string.skipping));
@@ -409,8 +407,7 @@ public class SplashActivity extends BaseActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which){
                                             //Save the do not show option
-                                            Save.saveLoadingDoNotShow(SplashActivity.this,
-                                                    doNotShow.isChecked());
+                                            Save.loadingDoNotShow(doNotShow.isChecked());
                                             dialog.dismiss();
                                         }
                                     })

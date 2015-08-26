@@ -203,7 +203,7 @@ public class App extends Application {
             App.transcript = transcript;
 
             //Save it to internal storage when this is set
-            Save.saveTranscript(context);
+            Save.transcript();
         }
     }
 
@@ -211,72 +211,72 @@ public class App extends Application {
         App.classes = classes;
 
         //Save it to internal storage when this is set
-        Save.saveClasses(context);
+        Save.courses();
     }
 
     public static void setEbill(List<Statement> ebill){
         App.ebill = ebill;
 
         //Save it to internal storage when this is set
-        Save.saveEbill(context);
+        Save.ebill();
     }
 
     public static void setUserInfo(User userInfo){
         App.userInfo = userInfo;
 
         //Save it to internal storage when this is set
-        Save.saveUserInfo(context);
+        Save.user();
     }
 
     public static void setLanguage(Language language){
         App.language = language;
 
         //Save it to internal storage when this is set
-        Save.saveLanguage(context);
+        Save.language();
     }
 
     public static void setHomePage(DrawerItem drawerItem){
         App.homePage = drawerItem;
 
         //Save it to internal storage when this is set
-        Save.saveHomePage(context);
+        Save.homepage();
     }
 
     public static void setDefaultTerm(Term term){
         App.defaultTerm = term;
 
         //Save it to internal storage when this is set
-        Save.saveDefaultTerm(context);
+        Save.defaultTerm();
     }
 
     public static void setClassWishlist(List<Course> list) {
         App.wishlist = list;
         //Save it to internal storage when this is set
-        Save.saveClassWishlist(context);
+        Save.wishlist();
     }
 
     public static void setPlaces(List<Place> places){
         App.places = places;
         //Save it to internal storage
-        Save.savePlaces(context);
+        Save.places();
     }
 
     public static void setFavoritePlaces(List<Place> places){
         App.favoritePlaces = places;
         //Save it to internal storage
-        Save.saveFavoritePlaces(context);
+        Save.favoritePlaces();
     }
 
     public static void setPlaceCategories(List<PlaceType> placeCategories){
         App.placeCategories = placeCategories;
         //Save it to internal storage
-        Save.savePlaceCategories(context);
+        Save.placeTypes();
     }
 
     public static void setRegisterTerms(List<Term> terms){
         App.registerTerms = terms;
         //Save it to internal storage
-        Save.saveRegisterTerms(context);
+        Save.registerTerms();
     }
 
     /* HELPER METHODS */
