@@ -120,31 +120,6 @@ public class App extends Application {
         //Run the update code, if any
         Update.update(this);
 
-        //Load the transcript
-        transcript = Load.transcript();
-        //Load the schedule
-        courses = Load.classes();
-        //Load the ebill
-        ebill = Load.ebill();
-        //Load the user info
-        user = Load.user();
-        //Load the user's chosen language and update the locale
-        language = Load.language();
-        //Load the user's chosen homepage
-        homepage = Load.homepage();
-        //Load the default term for the schedule
-        defaultTerm = Load.defaultTerm();
-        //Load the course wishlist
-        wishlist = Load.wishlist();
-        //Load the places
-        places = Load.places();
-        //Load the favorite places
-        favoritePlaces = Load.favoritePlaces();
-        //Load the place categories
-        placeTypes = Load.placeTypes();
-        //Load the register terms
-        registerTerms = Load.registerTerms();
-
         //Set up The Fabric stuff: Twitter, Crashlytics
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
                 Constants.TWITTER_SECRET);
@@ -192,6 +167,9 @@ public class App extends Application {
      * @return The app language
      */
     public static Language getLanguage(){
+        if(language == null){
+            language = Load.language();
+        }
         return language;
     }
 
@@ -199,6 +177,9 @@ public class App extends Application {
      * @return The list of {@link Place}s
      */
     public static List<Place> getPlaces(){
+        if(places == null){
+            places = Load.places();
+        }
         return places;
     }
 
@@ -206,6 +187,9 @@ public class App extends Application {
      * @return The list of {@link PlaceType}s
      */
     public static List<PlaceType> getPlaceTypes(){
+        if(placeTypes == null){
+            placeTypes = Load.placeTypes();
+        }
         return placeTypes;
     }
 
@@ -213,6 +197,9 @@ public class App extends Application {
      * @return The list of {@link Term} the user can currently register in
      */
     public static List<Term> getRegisterTerms(){
+        if(registerTerms == null){
+            registerTerms = Load.registerTerms();
+        }
         return registerTerms;
     }
 
@@ -221,6 +208,9 @@ public class App extends Application {
      */
     public static Transcript getTranscript(){
         synchronized(Constants.TRANSCRIPT_LOCK){
+            if(transcript == null){
+                transcript = Load.transcript();
+            }
             return transcript;
         }
     }
@@ -229,6 +219,9 @@ public class App extends Application {
      * @return The user's list of {@link Course}s
      */
     public static List<Course> getCourses(){
+        if(courses == null){
+            courses = Load.classes();
+        }
         return courses;
     }
 
@@ -236,6 +229,9 @@ public class App extends Application {
      * @return The user's ebill {@link Statement}s
      */
     public static List<Statement> getEbill(){
+        if(ebill == null){
+            ebill = Load.ebill();
+        }
         return ebill;
     }
 
@@ -243,6 +239,9 @@ public class App extends Application {
      * @return The {@link User} info
      */
     public static User getUser(){
+        if(user == null){
+            user = Load.user();
+        }
         return user;
     }
 
@@ -250,6 +249,9 @@ public class App extends Application {
      * @return The user's chosen homepage
      */
     public static DrawerItem getHomepage(){
+        if(homepage == null){
+            homepage = Load.homepage();
+        }
         return homepage;
     }
 
@@ -257,13 +259,19 @@ public class App extends Application {
      * @return The user's chosen default {@link Term}
      */
     public static Term getDefaultTerm(){
+        if(defaultTerm == null){
+            defaultTerm = Load.defaultTerm();
+        }
         return defaultTerm;
     }
 
     /**
      * @return The user's wishlist
      */
-    public static List<Course> getWishlist() {
+    public static List<Course> getWishlist(){
+        if(wishlist == null){
+            wishlist = Load.wishlist();
+        }
         return wishlist;
     }
 
@@ -271,6 +279,9 @@ public class App extends Application {
      * @return The user's list of favorite {@link Place}s
      */
     public static List<Place> getFavoritePlaces(){
+        if(favoritePlaces == null){
+            favoritePlaces = Load.favoritePlaces();
+        }
         return favoritePlaces;
     }
 
