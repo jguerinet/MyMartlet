@@ -55,25 +55,61 @@ public class App extends Application {
     //TODO Change these to Shared Prefs
     public static boolean forceReload = false;
     public static boolean forceUserReload = false;
-
-    private static Context context;
-
     private static Typeface iconFont;
 
+    /**
+     * The app {@link Context}
+     */
+    private static Context context;
+    /**
+     * App language
+     */
     private static Language language;
-    private static DrawerItem homePage;
-    private static Transcript transcript;
-    private static List<Course> classes;
-    private static Term defaultTerm;
-    private static List<Statement> ebill;
-    private static User userInfo;
-    private static List<Course> wishlist;
+    /**
+     * List of {@link Place}s
+     */
     private static List<Place> places;
-    private static List<Place> favoritePlaces;
-    private static List<PlaceType> placeCategories;
-    //List of semesters you can currently register in
+    /**
+     * List of {@link PlaceType}s
+     */
+    private static List<PlaceType> placeTypes;
+    /**
+     * List of {@link Term}s that the user can currently register in
+     */
     private static List<Term> registerTerms;
-    
+    /**
+     * User's {@link Transcript}
+     */
+    private static Transcript transcript;
+    /**
+     * User's {@link Course}s
+     */
+    private static List<Course> courses;
+    /**
+     * User's ebill {@link Statement}s
+     */
+    private static List<Statement> ebill;
+    /**
+     * {@link User} instance
+     */
+    private static User user;
+    /**
+     * User's chosen homepage
+     */
+    private static DrawerItem homepage;
+    /**
+     * User's chosen default {@link Term}
+     */
+    private static Term defaultTerm;
+    /**
+     * User's wishlist
+     */
+    private static List<Course> wishlist;
+    /**
+     * User's list of favorite {@link Place}s
+     */
+    private static List<Place> favoritePlaces;
+
     @Override
     public void onCreate(){
         super.onCreate();
@@ -87,15 +123,15 @@ public class App extends Application {
         //Load the transcript
         transcript = Load.transcript();
         //Load the schedule
-        classes = Load.classes();
+        courses = Load.classes();
         //Load the ebill
         ebill = Load.ebill();
         //Load the user info
-        userInfo = Load.user();
+        user = Load.user();
         //Load the user's chosen language and update the locale
         language = Load.language();
         //Load the user's chosen homepage
-        homePage = Load.homepage();
+        homepage = Load.homepage();
         //Load the default term for the schedule
         defaultTerm = Load.defaultTerm();
         //Load the course wishlist
@@ -105,7 +141,7 @@ public class App extends Application {
         //Load the favorite places
         favoritePlaces = Load.favoritePlaces();
         //Load the place categories
-        placeCategories = Load.placeTypes();
+        placeTypes = Load.placeTypes();
         //Load the register terms
         registerTerms = Load.registerTerms();
 
@@ -170,7 +206,7 @@ public class App extends Application {
      * @return The list of {@link PlaceType}s
      */
     public static List<PlaceType> getPlaceTypes(){
-        return placeCategories;
+        return placeTypes;
     }
 
     /**
@@ -193,7 +229,7 @@ public class App extends Application {
      * @return The user's list of {@link Course}s
      */
     public static List<Course> getCourses(){
-        return classes;
+        return courses;
     }
 
     /**
@@ -207,14 +243,14 @@ public class App extends Application {
      * @return The {@link User} info
      */
     public static User getUser(){
-        return userInfo;
+        return user;
     }
 
     /**
      * @return The user's chosen homepage
      */
     public static DrawerItem getHomepage(){
-        return homePage;
+        return homepage;
     }
 
     /**
@@ -263,7 +299,7 @@ public class App extends Application {
      * @param placeTypes The list of {@link PlaceType}s
      */
     public static void setPlaceTypes(List<PlaceType> placeTypes){
-        App.placeCategories = placeTypes;
+        App.placeTypes = placeTypes;
         //Save it to internal storage
         Save.placeTypes();
     }
@@ -293,7 +329,7 @@ public class App extends Application {
      * @param courses The user's {@link Course}s
      */
     public static void setCourses(List<Course> courses){
-        App.classes = courses;
+        App.courses = courses;
 
         //Save it to internal storage when this is set
         Save.courses();
@@ -313,7 +349,7 @@ public class App extends Application {
      * @param user The {@link User} info
      */
     public static void setUser(User user){
-        App.userInfo = user;
+        App.user = user;
 
         //Save it to internal storage when this is set
         Save.user();
@@ -323,7 +359,7 @@ public class App extends Application {
      * @param homepage The user's chosen homepage
      */
     public static void setHomepage(DrawerItem homepage){
-        App.homePage = homepage;
+        App.homepage = homepage;
 
         //Save it to internal storage when this is set
         Save.homepage();
