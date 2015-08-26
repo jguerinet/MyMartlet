@@ -405,7 +405,7 @@ public class MainActivity extends BaseActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Analytics.getInstance().sendEvent("Logout", "Clicked", null);
-                                Clear.all(MainActivity.this);
+                                Clear.all();
                                 //Go back to SplashActivity
                                 startActivity(new Intent(MainActivity.this, SplashActivity.class));
                             }

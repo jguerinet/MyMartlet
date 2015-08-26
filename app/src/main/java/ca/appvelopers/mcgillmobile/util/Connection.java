@@ -42,7 +42,6 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
@@ -139,8 +138,8 @@ public class Connection {
 	 */
 	private Connection(){
 		//Get the username and password from the SharedPrefs
-		this.mUsername = Load.loadFullUsername(App.getContext());
-		this.mPassword = Load.loadPassword(App.getContext());
+		this.mUsername = Load.fullUsername();
+		this.mPassword = Load.password();
 		//Set up the client
 		this.mClient = new OkHttpClient();
 		//Set up the list of cookies

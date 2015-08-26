@@ -16,20 +16,16 @@
 
 package ca.appvelopers.mcgillmobile.util.storage;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.DrawerItem;
@@ -44,414 +40,222 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Encryption;
 
 /**
- * TODO
- * Loads objects from internal storage or SharedPreferences
+ * Loads objects from internal storage or {@link SharedPreferences}
  * @author Julien Guerinet
  * @version 2.0.0
  * @since 1.0.0
  */
+@SuppressWarnings("unchecked")
 public class Load {
-    /**
-     * Loads the app version number from the shared preferences
-     * @param context The app context
-     * @return the version number stored, -1 if no version stored
-     */
-    public static int loadVersionNumber(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getInt(Constants.VERSION, -1);
-    }
+    private static final String TAG = "Load";
+
+    /* SHARED PREFS */
 
     /**
-     * Checks to see if the app has been previously opened
-     * @param context The app context
-     * @return If the app has been previously opened
+     * @return The app version code stored, -1 if none
      */
-    public static boolean isFirstOpen(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.FIRST_OPEN, true);
+    public static int versionCode(){
+        return Constants.PREFS.getInt(Constants.VERSION, -1);
     }
 
-    public static Language loadLanguage(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return Language.values()[(sharedPrefs.getInt(Constants.LANGUAGE, 0))];
+    /**
+     * @return True if the app has been previously opened, false otherwise
+     */
+    public static boolean firstOpen(){
+        return Constants.PREFS.getBoolean(Constants.FIRST_OPEN, true);
     }
 
-    public static DrawerItem loadHomePage(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int homePage = sharedPrefs.getInt(Constants.HOMEPAGE, -1);
-        //Return schedule by default
-        if(homePage == -1){
-            return DrawerItem.SCHEDULE;
+    /**
+     * @return The user's chosen language, defaults to English
+     */
+    public static Language language(){
+        return Language.values()[(Constants.PREFS.getInt(Constants.LANGUAGE, 0))];
+    }
+
+    /**
+     * @return The chosen home page, defaults to the schedule
+     */
+    public static DrawerItem homepage(){
+        return DrawerItem.values()[
+                Constants.PREFS.getInt(Constants.HOMEPAGE, DrawerItem.SCHEDULE.ordinal())];
+    }
+
+    /**
+     * @return True if the user has opted out of parser errors, false otherwise
+     */
+    public static boolean parserErrorDoNotShow(){
+        return Constants.PREFS.getBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, false);
+    }
+
+    /**
+     * @return True if the user has opted out of the loading screen, false otherwise
+     */
+    public static boolean loadingDoNotShow(){
+        return Constants.PREFS.getBoolean(Constants.LOADING_DO_NOT_SHOW, false);
+    }
+
+    /**
+     * @return True if the user has opted into anonymous usage statistics, false otherwise
+     */
+    public static boolean statistics(){
+        return Constants.PREFS.getBoolean(Constants.STATISTICS, true);
+    }
+
+    /**
+     * @return The user's full username
+     */
+    public static String fullUsername(){
+        return username() + App.getContext().getString(R.string.login_email);
+    }
+
+    /**
+     * @return The user's username (name only, no email suffix)
+     */
+    public static String username(){
+        return Constants.PREFS.getString(Constants.USERNAME, null);
+    }
+
+    /**
+     * @return The user's password
+     */
+    public static String password(){
+        return Encryption.decode(Constants.PREFS.getString(Constants.PASSWORD, null));
+    }
+
+    /**
+     * @return True if the username should be remembered when logging out, false otherwise
+     */
+    public static boolean rememberUsername(){
+        return Constants.PREFS.getBoolean(Constants.REMEMBER_USERNAME, true);
+    }
+
+    /**
+     * @return True if the user has enabled seat checking, false otherwise
+     */
+    public static boolean seatChecker(){
+        return Constants.PREFS.getBoolean(Constants.SEAT_CHECKER, false);
+    }
+
+    /**
+     * @return True if the user has enabled grade checking, false otherwise
+     */
+    public static boolean gradeChecker(){
+        return Constants.PREFS.getBoolean(Constants.GRADE_CHECKER, false);
+    }
+
+    /**
+     * @return The last date the WS was queried
+     */
+    public static String ifModifiedSince(){
+        return Constants.PREFS.getString(Constants.IF_MODIFIED_SINCE, null);
+    }
+
+    /**
+     * @return True if the user has accepted the EULA, false otherwise
+     */
+    public static boolean eula(){
+        return Constants.PREFS.getBoolean(Constants.USER_AGREEMENT, false);
+    }
+
+    /* INTERNAL STORAGE */
+
+    /**
+     * Loads the object at the given file name
+     *
+     * @param tag      The tag to use in case of failure
+     * @param fileName The file name
+     * @return The object loaded, null if none
+     */
+    private static Object loadObject(String tag, String fileName){
+        try{
+            FileInputStream fis = App.getContext().openFileInput(fileName);
+            ObjectInputStream in = new ObjectInputStream(fis);
+            return in.readObject();
+        } catch(FileNotFoundException e){
+            Log.e(TAG, "File not found: " + tag);
+        } catch(Exception e){
+            Log.e(TAG, "Failure: " + tag, e);
         }
-        return DrawerItem.values()[homePage];
-    }
 
-    public static boolean loadParserErrorDoNotShow(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, false);
-    }
-
-    public static boolean loadLoadingDoNotShow(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.LOADING_DO_NOT_SHOW, false);
-    }
-
-    public static boolean loadStatistics(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.STATISTICS, true);
-    }
-
-    public static String loadFullUsername(Context context){
-        return loadUsername(context) + context.getString(R.string.login_email);
-    }
-
-    public static String loadUsername(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getString(Constants.USERNAME, null);
-    }
-
-    public static String loadPassword(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String encryptedPassword = sharedPrefs.getString(Constants.PASSWORD, null);
-        if(encryptedPassword != null){
-            return Encryption.decode(encryptedPassword);
-        }
         return null;
     }
 
-    public static boolean loadRememberUsername(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.REMEMBER_USERNAME, true);
-    }
-
-    public static boolean loadSeatChecker(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.SEAT_CHECKER, false);
-    }
-
-    public static boolean loadGradeChecker(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.GRADE_CHECKER, false);
-    }
-
-    public static Transcript loadTranscript(Context context){
-        Transcript transcript = null;
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.TRANSCRIPT_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            transcript= (Transcript) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Transcript Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (OptionalDataException e) {
-            Log.e("Load Transcript Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            Log.e("Load Transcript Failure", "File not found");
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Transcript Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.e("Load Transcript Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        }
-
-        return transcript;
-    }
-
-    public static List<Course> loadClasses(Context context){
-        List<Course> courses = new ArrayList<Course>();
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.COURSES_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            courses = (List<Course>) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return courses;
-        } catch (OptionalDataException e) {
-            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return courses;
-        } catch (FileNotFoundException e) {
-            Log.e("Load Classes Failure", "File not found");
-            e.printStackTrace();
-            return courses;
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return courses;
-        } catch (IOException e) {
-            Log.e("Load Classes Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return courses;
-        }
-
-        return courses;
-    }
-
-    public static List<Statement> loadEbill(Context context){
-        List<Statement> ebill = new ArrayList<Statement>();
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.EBILL_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            ebill = (List<Statement>) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return ebill;
-        } catch (OptionalDataException e) {
-            Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return ebill;
-        } catch (FileNotFoundException e) {
-            Log.e("Load Ebill Failure", "File not found");
-            e.printStackTrace();
-            return ebill;
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return ebill;
-        } catch (IOException e) {
-            Log.e("Load Ebill Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return ebill;
-        }
-
-        return ebill;
-    }
-
-    public static User loadUserInfo(Context context){
-        User userInfo = null;
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.USER_INFO_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            userInfo = (User) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (OptionalDataException e) {
-            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            Log.e("Load UserInfo Failure", "File not found");
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.e("Load UserInfo Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        }
-
-        return userInfo;
-    }
-
-    public static Term loadDefaultTerm(Context context){
-        Term defaultTerm = null;
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.DEFAULT_TERM_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            defaultTerm = (Term) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Default Term Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (OptionalDataException e) {
-            Log.e("Load Default Term Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            Log.e("Load Default Term Failure", "File not found");
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Default Term Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.e("Load Default Term Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-        }
-
-        return defaultTerm;
-    }
-
-    public static List<Course> loadClassWishlist(Context context){
-        List<Course> classWishlist = new ArrayList<Course>();
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.WISHLIST_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            classWishlist = (List<Course>) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return classWishlist;
-        } catch (OptionalDataException e) {
-            Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return classWishlist;
-        } catch (FileNotFoundException e) {
-            Log.e("Load Class Wishlist Failure", "File not found");
-            e.printStackTrace();
-            return classWishlist;
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return classWishlist;
-        } catch (IOException e) {
-            Log.e("Load Class Wishlist Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return classWishlist;
-        }
-
-        return classWishlist;
-    }
-
-    public static List<Place> loadPlaces(Context context){
-        List<Place> places = new ArrayList<Place>();
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.PLACES_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            places = (List<Place>) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Places Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return places;
-        } catch (OptionalDataException e) {
-            Log.e("Load Places Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return places;
-        } catch (FileNotFoundException e) {
-            Log.e("Load Places Failure", "File not found");
-            e.printStackTrace();
-            return places;
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Places Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return places;
-        } catch (IOException e) {
-            Log.e("Load Places Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return places;
-        }
-
-        return places;
-    }
-
-    public static List<Place> loadFavoritePlaces(Context context){
-        List<Place> places = new ArrayList<Place>();
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.FAVORITE_PLACES_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            places = (List<Place>) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return places;
-        } catch (OptionalDataException e) {
-            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return places;
-        } catch (FileNotFoundException e) {
-            Log.e("Load Favorite Places Failure", "File not found");
-            e.printStackTrace();
-            return places;
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return places;
-        } catch (IOException e) {
-            Log.e("Load Favorite Places Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return places;
-        }
-
-        return places;
-    }
-
-    public static List<PlaceType> loadPlaceCategories(Context context){
-        List<PlaceType> placeCategories = new ArrayList<PlaceType>();
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.PLACE_TYPES_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            placeCategories = (List<PlaceType>) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return placeCategories;
-        } catch (OptionalDataException e) {
-            Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return placeCategories;
-        } catch (FileNotFoundException e) {
-            Log.e("Load Place Categories Failure", "File not found");
-            e.printStackTrace();
-            return placeCategories;
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return placeCategories;
-        } catch (IOException e) {
-            Log.e("Load Place Categories Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return placeCategories;
-        }
-
-        return placeCategories;
-    }
-
-    public static List<Term> loadRegisterTerms(Context context){
-        List<Term> terms = new ArrayList<Term>();
-
-        try{
-            FileInputStream fis = context.openFileInput(Constants.REGISTER_TERMS_FILE);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            terms = (List<Term>) in.readObject();
-        } catch (ClassNotFoundException e) {
-            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return terms;
-        } catch (OptionalDataException e) {
-            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return terms;
-        } catch (FileNotFoundException e) {
-            Log.e("Load Register Terms Failure", "File not found");
-            e.printStackTrace();
-            return terms;
-        } catch (StreamCorruptedException e) {
-            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return terms;
-        } catch (IOException e) {
-            Log.e("Load Register Terms Failure", e.getMessage() == null ? "" : e.getMessage());
-            e.printStackTrace();
-            return terms;
-        }
-
-        return terms;
-    }
-
-    //Last date the webservice was queried
-    public static String loadIfModifiedSinceDate(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getString(Constants.IF_MODIFIED_SINCE, null);
+    /**
+     * @return The user's transcript, null if none
+     */
+    public static Transcript transcript(){
+        return (Transcript)loadObject("Transcript", Constants.TRANSCRIPT_FILE);
     }
 
     /**
-     * Check if the user agreement has already been accepted
-     *
-     * @param context The app context
-     * @return True if it has been accepted, false otherwise
+     * @return The user's classes, an empty list if none
      */
-    public static boolean loadUserAgreement(Context context){
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getBoolean(Constants.USER_AGREEMENT, false);
+    public static List<Course> classes(){
+        List<Course> courses = (List<Course>)loadObject("Classes", Constants.COURSES_FILE);
+        return courses == null ? new ArrayList<Course>() : courses;
+    }
+
+    /**
+     * @return The user's Ebill statements, and empty list if none
+     */
+    public static List<Statement> ebill(){
+        List<Statement> statements = (List<Statement>)loadObject("Ebill", Constants.EBILL_FILE);
+        return statements == null ? new ArrayList<Statement>() : statements;
+    }
+
+    /**
+     * @return The user's info, null if none
+     */
+    public static User user(){
+        return (User)loadObject("User", Constants.USER_FILE);
+    }
+
+    /**
+     * @return The user's chosen default term, null if none
+     */
+    public static Term defaultTerm(){
+        return (Term)loadObject("Default Term", Constants.DEFAULT_TERM_FILE);
+    }
+
+    /**
+     * @return The user's class wishlist, an empty list if none
+     */
+    public static List<Course> wishlist(){
+        List<Course> wishlist = (List<Course>)loadObject("Wishlist", Constants.WISHLIST_FILE);
+        return wishlist == null ? new ArrayList<Course>() : wishlist;
+    }
+
+    /**
+     * @return The list of places, an empty list if none
+     */
+    public static List<Place> places(){
+        List<Place> places = (List<Place>)loadObject("Places", Constants.PLACES_FILE);
+        return places == null ? new ArrayList<Place>() : places;
+    }
+
+    /**
+     * @return The user's favorite places, an empty list if none
+     */
+    public static List<Place> favoritePlaces(){
+        List<Place> places = (List<Place>)loadObject("Favorite Places",
+                Constants.FAVORITE_PLACES_FILE);
+        return places == null ? new ArrayList<Place>() : places;
+    }
+
+    /**
+     * @return The list of place types, an empty list if none
+     */
+    public static List<PlaceType> placeTypes(){
+        List<PlaceType> types = (List<PlaceType>)loadObject("Place Types",
+                Constants.PLACE_TYPES_FILE);
+        return types == null ? new ArrayList<PlaceType>() : types;
+    }
+
+    /**
+     * @return The list of terms that the user can currently register in, an empty list if none
+     */
+    public static List<Term> registerTerms(){
+        List<Term> terms = (List<Term>)loadObject("Register Terms", Constants.REGISTER_TERMS_FILE);
+        return terms == null ? new ArrayList<Term>() : terms;
     }
 }

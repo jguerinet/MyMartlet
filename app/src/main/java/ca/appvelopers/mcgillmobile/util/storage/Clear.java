@@ -40,7 +40,7 @@ public class Clear {
      */
     public static void all(){
         //If the user had not chosen to remember their username, clear it
-        if(!Load.loadRememberUsername()) {
+        if(!Load.rememberUsername()) {
             Constants.PREFS.edit()
                     .remove(Constants.USERNAME)
                     .apply();

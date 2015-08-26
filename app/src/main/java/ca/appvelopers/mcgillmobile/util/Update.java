@@ -35,7 +35,7 @@ public class Update {
         int versionNumber = Help.getVersionCode();
 
         //Load the current version number from the preferences.
-        int storedVersion = Load.loadVersionNumber(context);
+        int storedVersion = Load.versionCode();
 
         //Stored version is smaller than version number
         while(storedVersion < versionNumber){

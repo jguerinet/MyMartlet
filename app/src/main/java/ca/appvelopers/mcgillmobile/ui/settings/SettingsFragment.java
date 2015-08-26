@@ -120,7 +120,7 @@ public class SettingsFragment extends BaseFragment {
         mHomepageSpinner.setSelection(mHomepageAdapter.getPosition(App.getHomePage()));
 
         //Statistics
-        mStatistics.setChecked(Load.loadStatistics(mActivity));
+        mStatistics.setChecked(Load.statistics());
 
         //Version Number
         mVersion.setText(getString(R.string.settings_version, Help.getVersionName()));

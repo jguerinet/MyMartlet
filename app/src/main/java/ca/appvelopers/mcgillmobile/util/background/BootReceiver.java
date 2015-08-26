@@ -47,8 +47,8 @@ public class BootReceiver extends BroadcastReceiver {
 	 */
 	public static void setAlarm(Context context){
 		//If we don't need it, don't start it
-		if(Load.loadUsername(context) == null || Load.loadPassword(context) == null ||
-				(!Load.loadSeatChecker(context) && !Load.loadGradeChecker(context))){
+		if(Load.username() == null || Load.password() == null ||
+				(!Load.seatChecker() && !Load.gradeChecker())){
 			//Make sure it's cancelled
 			cancelAlarm(context);
 

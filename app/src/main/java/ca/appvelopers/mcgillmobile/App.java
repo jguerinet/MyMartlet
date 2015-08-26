@@ -85,29 +85,29 @@ public class App extends Application {
         Update.update(this);
 
         //Load the transcript
-        transcript = Load.loadTranscript(this);
+        transcript = Load.transcript();
         //Load the schedule
-        classes = Load.loadClasses(this);
+        classes = Load.classes();
         //Load the ebill
-        ebill = Load.loadEbill(this);
+        ebill = Load.ebill();
         //Load the user info
-        userInfo = Load.loadUserInfo(this);
+        userInfo = Load.user();
         //Load the user's chosen language and update the locale
-        language = Load.loadLanguage(this);
+        language = Load.language();
         //Load the user's chosen homepage
-        homePage = Load.loadHomePage(this);
+        homePage = Load.homepage();
         //Load the default term for the schedule
-        defaultTerm = Load.loadDefaultTerm(this);
+        defaultTerm = Load.defaultTerm();
         //Load the course wishlist
-        wishlist = Load.loadClassWishlist(this);
+        wishlist = Load.wishlist();
         //Load the places
-        places = Load.loadPlaces(this);
+        places = Load.places();
         //Load the favorite places
-        favoritePlaces = Load.loadFavoritePlaces(this);
+        favoritePlaces = Load.favoritePlaces();
         //Load the place categories
-        placeCategories = Load.loadPlaceCategories(this);
+        placeCategories = Load.placeTypes();
         //Load the register terms
-        registerTerms = Load.loadRegisterTerms(this);
+        registerTerms = Load.registerTerms();
 
         //Set up The Fabric stuff: Twitter, Crashlytics
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
@@ -118,7 +118,7 @@ public class App extends Application {
         Instabug.initialize(this, Constants.INSTABUG_KEY)
                 .enableEmailField(true, false)
                 .setCommentPlaceholder(getString(R.string.bug_prompt))
-                .setDefaultEmail(Load.loadFullUsername(this))
+                .setDefaultEmail(Load.fullUsername())
                 .setEmailPlaceholder(getString(R.string.bug_email_prompt))
                 .setInvalidCommentAlertText(getString(R.string.bug_comment_invalid))
                 .setSubmitButtonText(getString(R.string.submit))
@@ -130,7 +130,7 @@ public class App extends Application {
                 .setShowIntroDialog(false)
                 .setPostFeedbackMessage(getString(R.string.success))
                 .setWillShowFeedbackSentAlert(true)
-                .setUserData("Email: " + Load.loadFullUsername(this) + "\n" +
+                .setUserData("Email: " + Load.fullUsername() + "\n" +
                         "App Language: " + App.getLanguage().toString());
     }
 

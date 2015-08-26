@@ -71,12 +71,12 @@ public class CheckerService extends IntentService {
 		Log.d(TAG,"Service started");
 
 		//Check the grades if needed
-		if(Load.loadGradeChecker(this)){
+		if(Load.gradeChecker()){
 			checkGrades();
 		}
 		
 		//Check the seats if needed
-		if(Load.loadSeatChecker(this)){
+		if(Load.seatChecker()){
 			checkSeats();
 		}
 	}

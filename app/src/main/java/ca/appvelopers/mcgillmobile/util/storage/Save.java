@@ -185,7 +185,7 @@ public class Save {
         User userInfo = App.getUserInfo();
 
         try{
-            FileOutputStream fos = context.openFileOutput(Constants.USER_INFO_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.USER_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(userInfo);
         } catch (OptionalDataException e) {

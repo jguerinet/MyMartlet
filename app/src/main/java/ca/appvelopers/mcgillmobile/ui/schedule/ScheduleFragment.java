@@ -89,7 +89,7 @@ public class ScheduleFragment extends BaseFragment {
         View view = loadView(getResources().getConfiguration().orientation);
 
         //Check if this is the first time the user is using the app
-        if(Load.isFirstOpen(mActivity)){
+        if(Load.firstOpen()){
             //Show him the walkthrough if it is
             startActivity(new Intent(mActivity, WalkthroughActivity.class));
             //Save the fact that the walkthrough has been seen at least once

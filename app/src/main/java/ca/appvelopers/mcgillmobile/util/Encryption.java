@@ -44,6 +44,10 @@ public class Encryption {
 	 * @return The decoded string.
 	 */
 	public static String decode(String s){
+        if(s == null){
+            return null;
+        }
+
 		StringBuffer sb = new StringBuffer(s);
 		StringBuffer binary = new StringBuffer();
 		StringBuffer resultValue = new StringBuffer();

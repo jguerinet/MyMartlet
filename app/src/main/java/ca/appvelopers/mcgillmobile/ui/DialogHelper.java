@@ -235,7 +235,7 @@ public class DialogHelper {
     public static void showBugDialog(final Context context, final boolean transcriptBug,
                                      final String term) {
         //Only show if they have not checked "Do not show again" already
-        if(!Load.loadParserErrorDoNotShow(context)) {
+        if(!Load.parserErrorDoNotShow()) {
             return;
         }
 

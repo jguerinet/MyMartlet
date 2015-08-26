@@ -77,7 +77,7 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
 
         //Check if the user has accepted the user agreement
-        if(Load.loadUserAgreement(this)){
+        if(Load.eula()){
             //Run the config downloader if so
             runConfigDownloader();
         }
@@ -137,8 +137,8 @@ public class SplashActivity extends BaseActivity {
                 }
 
                 //Get the username and password stored
-                String username = Load.loadUsername(SplashActivity.this);
-                String password = Load.loadPassword(SplashActivity.this);
+                String username = Load.username();
+                String password = Load.password();
 
                 //If one of them is null, show the login screen with no error message
                 if(username == null || password == null){
@@ -167,9 +167,9 @@ public class SplashActivity extends BaseActivity {
         loginContainer.setVisibility(View.VISIBLE);
 
         //Get the username before clearing everything
-        String username = Load.loadUsername(this);
+        String username = Load.username();
         //Make sure to delete anything with the previous user's info
-        Clear.all(this);
+        Clear.all();
 
         Analytics.getInstance().sendScreen("Login");
 
@@ -191,7 +191,7 @@ public class SplashActivity extends BaseActivity {
 
         final CheckBox rememberUsernameView = (CheckBox) findViewById(R.id.login_remember_username);
         //Remember Me box checked based on user's previous preference
-        rememberUsernameView.setChecked(Load.loadRememberUsername(this));
+        rememberUsernameView.setChecked(Load.rememberUsername());
 
         //Check if an error message needs to be displayed, display it if so
         if(error != null){
@@ -375,7 +375,7 @@ public class SplashActivity extends BaseActivity {
                     }
 
                     //If the user has checked the "Do Not Show" option previously, skip directly
-                    if(Load.loadLoadingDoNotShow(SplashActivity.this)){
+                    if(Load.loadingDoNotShow()){
                         publishNewProgress(getString(R.string.skipping));
                         cancel(false);
                         return;

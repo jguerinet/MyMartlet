@@ -79,9 +79,9 @@ public class DesktopFragment extends BaseFragment {
 
             public void onPageFinished(WebView view, String url){
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
-                        Load.loadFullUsername(mActivity) + "';" +
+                        Load.fullUsername() + "';" +
                         "document.getElementById('password').value='" +
-                        Load.loadPassword(mActivity) + "'; document.LoginForm.submit(); })()");
+                        Load.password() + "'; document.LoginForm.submit(); })()");
                 view.setVisibility(View.VISIBLE);
 
                 //Hide the loading indicator

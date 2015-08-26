@@ -99,7 +99,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         //Check if we are connected to the internet
         if(Help.isConnected()){
             //Load the If-Modified-Since date
-            String date = Load.loadIfModifiedSinceDate(mContext);
+            String date = Load.ifModifiedSince();
 
             try {
                 /* CONFIG */

@@ -132,9 +132,9 @@ public class MyCoursesFragment extends BaseFragment {
                 //Preload the user's information
                 view.loadUrl("javascript:(function f(){" +
                         "(document.getElementsByName('j_username')[0]).value='" +
-                        Load.loadFullUsername(mActivity) + "';" +
+                        Load.fullUsername() + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
-                        Load.loadPassword(mActivity) + "'; document.forms[0].submit();})()");
+                        Load.password() + "'; document.forms[0].submit();})()");
 
                 view.setVisibility(View.VISIBLE);
 
