@@ -51,7 +51,6 @@ import io.fabric.sdk.android.Fabric;
  * @since 1.0.0
  */
 public class App extends Application {
-    //TODO
     //TODO Change these to Shared Prefs
     public static boolean forceReload = false;
     public static boolean forceUserReload = false;
@@ -116,7 +115,7 @@ public class App extends Application {
 
         //Set the static context
         context = this;
-        
+
         //Run the update code, if any
         Update.update(this);
 

@@ -48,6 +48,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.User;
+import ca.appvelopers.mcgillmobile.util.storage.Load;
 
 /**
  * Parses the given HTML Strings to get the necessary objects
@@ -875,6 +876,13 @@ public class Parser {
     public static void parseEbill(String html){
         Document doc = Jsoup.parse(html);
         Element table = doc.getElementsByClass("datadisplaytable").first();
+
+        //If there is nothing to parse, don't continue
+        if(table == null){
+            //Set the mail name as a placeholder for the user
+            App.setUser(new User(Load.username(), ""));
+            return;
+        }
 
         /* USER INFO */
         //Parse the user info
