@@ -128,7 +128,7 @@ public class WalkthroughFragment extends Fragment {
                     Spinner homepage = (Spinner)view.findViewById(R.id.homepage);
                     final HomepageAdapter homepageAdapter = new HomepageAdapter();
                     homepage.setAdapter(homepageAdapter);
-                    homepage.setSelection(homepageAdapter.getPosition(App.getHomePage()));
+                    homepage.setSelection(homepageAdapter.getPosition(App.getHomepage()));
                     homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view,
@@ -139,7 +139,7 @@ public class WalkthroughFragment extends Fragment {
                                     chosenDrawerItem.toString());
 
                             //Update it in the App
-                            App.setHomePage(chosenDrawerItem);
+                            App.setHomepage(chosenDrawerItem);
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {}

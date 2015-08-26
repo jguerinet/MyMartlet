@@ -106,7 +106,7 @@ public class DrawerAdapter extends BaseAdapter {
 
         //The header
         if(itemViewType == 0){
-            ((HeaderHolder)holder).name.setText(App.getUserInfo().getName());
+            ((HeaderHolder)holder).name.setText(App.getUser().getName());
             ((HeaderHolder)holder).email.setText(Load.fullUsername());
 
             //Not clickable

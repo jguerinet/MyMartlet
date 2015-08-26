@@ -117,7 +117,7 @@ public class SettingsFragment extends BaseFragment {
         //Homepage
         mHomepageAdapter = new HomepageAdapter();
         mHomepageSpinner.setAdapter(mHomepageAdapter);
-        mHomepageSpinner.setSelection(mHomepageAdapter.getPosition(App.getHomePage()));
+        mHomepageSpinner.setSelection(mHomepageAdapter.getPosition(App.getHomepage()));
 
         //Statistics
         mStatistics.setChecked(Load.statistics());
@@ -175,7 +175,7 @@ public class SettingsFragment extends BaseFragment {
         Analytics.getInstance().sendEvent("Settings", "Homepage", chosenHomePage.toString());
 
         //Update it in App
-        App.setHomePage(chosenHomePage);
+        App.setHomepage(chosenHomePage);
     }
 
     @OnCheckedChanged(R.id.settings_statistics)

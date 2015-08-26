@@ -225,7 +225,7 @@ public class ScheduleFragment extends BaseFragment {
     private void fillCourses(){
         //Clear the current course list, add the courses that are for this semester
         mCourses.clear();
-        for(Course classItem : App.getClasses()){
+        for(Course classItem : App.getCourses()){
             if(classItem.getTerm().equals(mTerm)){
                 mCourses.add(classItem);
             }

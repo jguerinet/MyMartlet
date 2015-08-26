@@ -444,7 +444,7 @@ public class Parser {
         String classError = null;
 
         //Get the list of classes
-        List<Course> classItems = App.getClasses();
+        List<Course> classItems = App.getCourses();
         //If there are none, just use an empty list
         if(classItems == null){
             classItems = new ArrayList<>();
@@ -613,7 +613,7 @@ public class Parser {
         }
 
         //Save it to the instance variable in Application class
-        App.setClasses(classItems);
+        App.setCourses(classItems);
 
         return classError;
     }
@@ -882,7 +882,7 @@ public class Parser {
         String userInfo = header.get(0).text().replace("Statements for ", "");
         String[] userItems = userInfo.split(" - ");
 
-        App.setUserInfo(new User(userItems[1].trim(), userItems[0].trim()));
+        App.setUser(new User(userItems[1].trim(), userItems[0].trim()));
 
         /* EBILL */
         List<Statement> statements = new ArrayList<>();

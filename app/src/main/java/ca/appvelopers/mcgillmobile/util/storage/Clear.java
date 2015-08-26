@@ -53,7 +53,7 @@ public class Clear {
                 .apply();
 
         //Schedule
-        App.setClasses(new ArrayList<Course>());
+        App.setCourses(new ArrayList<Course>());
 
         //Transcript
         App.setTranscript(null);
@@ -62,16 +62,16 @@ public class Clear {
         App.setEbill(new ArrayList<Statement>());
 
         //User Info
-        App.setUserInfo(null);
+        App.setUser(null);
 
         //Homepage
-        App.setHomePage(DrawerItem.SCHEDULE);
+        App.setHomepage(DrawerItem.SCHEDULE);
 
         //Default Term
         App.setDefaultTerm(null);
 
         //Wishlist
-        App.setClassWishlist(new ArrayList<Course>());
+        App.setWishlist(new ArrayList<Course>());
 
         //Favorite places
         App.setFavoritePlaces(new ArrayList<Place>());

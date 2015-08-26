@@ -161,7 +161,7 @@ public class MainActivity extends BaseActivity {
         //Get the page from the intent. If not, use the home page
         mCurrentDrawerItem = (DrawerItem)getIntent().getSerializableExtra(Constants.HOMEPAGE);
         if(mCurrentDrawerItem == null){
-            mCurrentDrawerItem = App.getHomePage();
+            mCurrentDrawerItem = App.getHomepage();
         }
 
         //Create the fragments

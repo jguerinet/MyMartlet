@@ -181,6 +181,31 @@ public class Load {
     }
 
     /**
+     * @return The list of places, an empty list if none
+     */
+    public static List<Place> places(){
+        List<Place> places = (List<Place>)loadObject("Places", Constants.PLACES_FILE);
+        return places == null ? new ArrayList<Place>() : places;
+    }
+
+    /**
+     * @return The list of place types, an empty list if none
+     */
+    public static List<PlaceType> placeTypes(){
+        List<PlaceType> types = (List<PlaceType>)loadObject("Place Types",
+                Constants.PLACE_TYPES_FILE);
+        return types == null ? new ArrayList<PlaceType>() : types;
+    }
+
+    /**
+     * @return The list of terms that the user can currently register in, an empty list if none
+     */
+    public static List<Term> registerTerms(){
+        List<Term> terms = (List<Term>)loadObject("Register Terms", Constants.REGISTER_TERMS_FILE);
+        return terms == null ? new ArrayList<Term>() : terms;
+    }
+
+    /**
      * @return The user's transcript, null if none
      */
     public static Transcript transcript(){
@@ -226,36 +251,11 @@ public class Load {
     }
 
     /**
-     * @return The list of places, an empty list if none
-     */
-    public static List<Place> places(){
-        List<Place> places = (List<Place>)loadObject("Places", Constants.PLACES_FILE);
-        return places == null ? new ArrayList<Place>() : places;
-    }
-
-    /**
      * @return The user's favorite places, an empty list if none
      */
     public static List<Place> favoritePlaces(){
         List<Place> places = (List<Place>)loadObject("Favorite Places",
                 Constants.FAVORITE_PLACES_FILE);
         return places == null ? new ArrayList<Place>() : places;
-    }
-
-    /**
-     * @return The list of place types, an empty list if none
-     */
-    public static List<PlaceType> placeTypes(){
-        List<PlaceType> types = (List<PlaceType>)loadObject("Place Types",
-                Constants.PLACE_TYPES_FILE);
-        return types == null ? new ArrayList<PlaceType>() : types;
-    }
-
-    /**
-     * @return The list of terms that the user can currently register in, an empty list if none
-     */
-    public static List<Term> registerTerms(){
-        List<Term> terms = (List<Term>)loadObject("Register Terms", Constants.REGISTER_TERMS_FILE);
-        return terms == null ? new ArrayList<Term>() : terms;
     }
 }

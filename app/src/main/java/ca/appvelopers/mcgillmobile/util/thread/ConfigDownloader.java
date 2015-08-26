@@ -238,7 +238,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         }
 
         //Save the place categories
-        App.setPlaceCategories(categories);
+        App.setPlaceTypes(categories);
     }
 
     /**

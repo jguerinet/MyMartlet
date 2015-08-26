@@ -154,7 +154,7 @@ public class CheckerService extends IntentService {
 	 */
 	private void checkSeats(){
 		//TODO Do this better: merge with WishlistFragment ? When do we send a notification ?
-//		List<Course> wishlistClasses = App.getClassWishlist();
+//		List<Course> wishlistClasses = App.getWishlist();
 //
 //		//Refresh
 //		//Sort ClassItems into Courses

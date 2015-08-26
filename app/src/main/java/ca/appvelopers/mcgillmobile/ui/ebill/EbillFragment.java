@@ -98,7 +98,7 @@ public class EbillFragment extends BaseFragment {
      * Updates the view
      */
     private void update(){
-        User user = App.getUserInfo();
+        User user = App.getUser();
         List<Statement> statements = App.getEbill();
 
         if(user != null){

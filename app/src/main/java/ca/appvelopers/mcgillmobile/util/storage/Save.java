@@ -70,7 +70,7 @@ public class Save {
      */
     public static void homepage(){
         Constants.PREFS.edit()
-                .putInt(Constants.HOMEPAGE, App.getHomePage().ordinal())
+                .putInt(Constants.HOMEPAGE, App.getHomepage().ordinal())
                 .apply();
     }
 
@@ -166,59 +166,10 @@ public class Save {
     }
 
     /**
-     * Saves the user's transcript
-     */
-    public static void transcript(){
-        saveObject("Transcript", Constants.TRANSCRIPT_FILE, App.getTranscript());
-    }
-
-    /**
-     * Saves the user's courses
-     */
-    public static void courses(){
-        saveObject("Courses", Constants.COURSES_FILE, App.getClasses());
-    }
-
-    /**
-     * Saves the user's ebill statements
-     */
-    public static void ebill(){
-        saveObject("Ebill", Constants.EBILL_FILE, App.getEbill());
-    }
-
-    /**
-     * Saves the user's info
-     */
-    public static void user(){
-        saveObject("User", Constants.USER_FILE, App.getUserInfo());
-    }
-
-    /**
-     * Saves the user's default term
-     */
-    public static void defaultTerm(){
-        saveObject("Default Term", Constants.DEFAULT_TERM_FILE, App.getDefaultTerm());
-    }
-
-    /**
-     * Saves the user's wishlist
-     */
-    public static void wishlist(){
-        saveObject("Wishlist", Constants.WISHLIST_FILE, App.getClassWishlist());
-    }
-
-    /**
      * Saves the places
      */
     public static void places(){
         saveObject("Places", Constants.PLACES_FILE, App.getPlaces());
-    }
-
-    /**
-     * Saves the user's favorite places
-     */
-    public static void favoritePlaces(){
-        saveObject("Favorite Places", Constants.FAVORITE_PLACES_FILE, App.getFavoritePlaces());
     }
 
     /**
@@ -233,5 +184,54 @@ public class Save {
      */
     public static void registerTerms(){
         saveObject("Register Terms", Constants.REGISTER_TERMS_FILE, App.getRegisterTerms());
+    }
+
+    /**
+     * Saves the user's transcript
+     */
+    public static void transcript(){
+        saveObject("Transcript", Constants.TRANSCRIPT_FILE, App.getTranscript());
+    }
+
+    /**
+     * Saves the user's courses
+     */
+    public static void courses(){
+        saveObject("Courses", Constants.COURSES_FILE, App.getCourses());
+    }
+
+    /**
+     * Saves the user's ebill statements
+     */
+    public static void ebill(){
+        saveObject("Ebill", Constants.EBILL_FILE, App.getEbill());
+    }
+
+    /**
+     * Saves the user's info
+     */
+    public static void user(){
+        saveObject("User", Constants.USER_FILE, App.getUser());
+    }
+
+    /**
+     * Saves the user's default term
+     */
+    public static void defaultTerm(){
+        saveObject("Default Term", Constants.DEFAULT_TERM_FILE, App.getDefaultTerm());
+    }
+
+    /**
+     * Saves the user's wishlist
+     */
+    public static void wishlist(){
+        saveObject("Wishlist", Constants.WISHLIST_FILE, App.getWishlist());
+    }
+
+    /**
+     * Saves the user's favorite places
+     */
+    public static void favoritePlaces(){
+        saveObject("Favorite Places", Constants.FAVORITE_PLACES_FILE, App.getFavoritePlaces());
     }
 }

@@ -114,7 +114,7 @@ public class WishlistFragment extends BaseFragment {
         mTerm = App.getRegisterTerms().get(0);
 
         //Load the wishlist
-        mCourses = App.getClassWishlist();
+        mCourses = App.getWishlist();
 
         //Update the wishlist
         updateWishlist();
@@ -274,7 +274,7 @@ public class WishlistFragment extends BaseFragment {
             @Override
             protected void onPostExecute(Void result){
                 //Set the new wishlist
-                App.setClassWishlist(mCourses);
+                App.setWishlist(mCourses);
                 //Reload the adapter
                 loadInfo();
 

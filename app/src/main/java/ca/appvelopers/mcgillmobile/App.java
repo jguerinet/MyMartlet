@@ -134,11 +134,16 @@ public class App extends Application {
                         "App Language: " + App.getLanguage().toString());
     }
 
-    /* GETTER METHODS */
+    /* GETTERS */
+
+    /**
+     * @return The app {@link Context}
+     */
     public static Context getContext(){
         return context;
     }
 
+    //TODO Phase this out
     public static Typeface getIconFont(){
         if(iconFont == null){
             iconFont = Typeface.createFromAsset(context.getAssets(), "icon-font.ttf");
@@ -147,57 +152,134 @@ public class App extends Application {
         return iconFont;
     }
 
+    /**
+     * @return The app language
+     */
+    public static Language getLanguage(){
+        return language;
+    }
+
+    /**
+     * @return The list of {@link Place}s
+     */
+    public static List<Place> getPlaces(){
+        return places;
+    }
+
+    /**
+     * @return The list of {@link PlaceType}s
+     */
+    public static List<PlaceType> getPlaceTypes(){
+        return placeCategories;
+    }
+
+    /**
+     * @return The list of {@link Term} the user can currently register in
+     */
+    public static List<Term> getRegisterTerms(){
+        return registerTerms;
+    }
+
+    /**
+     * @return The user's {@link Transcript}
+     */
     public static Transcript getTranscript(){
         synchronized(Constants.TRANSCRIPT_LOCK){
             return transcript;
         }
     }
 
-    public static List<Course> getClasses(){
+    /**
+     * @return The user's list of {@link Course}s
+     */
+    public static List<Course> getCourses(){
         return classes;
     }
 
+    /**
+     * @return The user's ebill {@link Statement}s
+     */
     public static List<Statement> getEbill(){
         return ebill;
     }
 
-    public static User getUserInfo(){
+    /**
+     * @return The {@link User} info
+     */
+    public static User getUser(){
         return userInfo;
     }
 
-    public static Language getLanguage(){
-        return language;
-    }
-
-    public static DrawerItem getHomePage(){
+    /**
+     * @return The user's chosen homepage
+     */
+    public static DrawerItem getHomepage(){
         return homePage;
     }
 
+    /**
+     * @return The user's chosen default {@link Term}
+     */
     public static Term getDefaultTerm(){
         return defaultTerm;
     }
 
-    public static List<Course> getClassWishlist() {
+    /**
+     * @return The user's wishlist
+     */
+    public static List<Course> getWishlist() {
         return wishlist;
     }
 
-    public static List<Place> getPlaces(){
-        return places;
-    }
-
+    /**
+     * @return The user's list of favorite {@link Place}s
+     */
     public static List<Place> getFavoritePlaces(){
         return favoritePlaces;
     }
 
-    public static List<PlaceType> getPlaceTypes(){
-        return placeCategories;
-    }
-
-    public static List<Term> getRegisterTerms(){
-        return registerTerms;
-    }
-
     /* SETTERS */
+
+    /**
+     * @param language The app language
+     */
+    public static void setLanguage(Language language){
+        App.language = language;
+
+        //Save it to internal storage when this is set
+        Save.language();
+    }
+
+    /**
+     * @param places The list of {@link Place}s
+     */
+    public static void setPlaces(List<Place> places){
+        App.places = places;
+        //Save it to internal storage
+        Save.places();
+    }
+
+    /**
+     * @param placeTypes The list of {@link PlaceType}s
+     */
+    public static void setPlaceTypes(List<PlaceType> placeTypes){
+        App.placeCategories = placeTypes;
+        //Save it to internal storage
+        Save.placeTypes();
+    }
+
+    /**
+     * @param terms The list of {@link Term}s the user can currently register in
+     */
+    public static void setRegisterTerms(List<Term> terms){
+        App.registerTerms = terms;
+        //Save it to internal storage
+        Save.registerTerms();
+    }
+
+    /**
+     * @param transcript The user's {@link Transcript}
+     */
     public static void setTranscript(Transcript transcript){
         synchronized (Constants.TRANSCRIPT_LOCK){
             App.transcript = transcript;
@@ -207,13 +289,19 @@ public class App extends Application {
         }
     }
 
-    public static void setClasses(List<Course> classes){
-        App.classes = classes;
+    /**
+     * @param courses The user's {@link Course}s
+     */
+    public static void setCourses(List<Course> courses){
+        App.classes = courses;
 
         //Save it to internal storage when this is set
         Save.courses();
     }
 
+    /**
+     * @param ebill The user's ebill {@link Statement}s
+     */
     public static void setEbill(List<Statement> ebill){
         App.ebill = ebill;
 
@@ -221,27 +309,29 @@ public class App extends Application {
         Save.ebill();
     }
 
-    public static void setUserInfo(User userInfo){
-        App.userInfo = userInfo;
+    /**
+     * @param user The {@link User} info
+     */
+    public static void setUser(User user){
+        App.userInfo = user;
 
         //Save it to internal storage when this is set
         Save.user();
     }
 
-    public static void setLanguage(Language language){
-        App.language = language;
-
-        //Save it to internal storage when this is set
-        Save.language();
-    }
-
-    public static void setHomePage(DrawerItem drawerItem){
-        App.homePage = drawerItem;
+    /**
+     * @param homepage The user's chosen homepage
+     */
+    public static void setHomepage(DrawerItem homepage){
+        App.homePage = homepage;
 
         //Save it to internal storage when this is set
         Save.homepage();
     }
 
+    /**
+     * @param term The user's chosen default {@link Term}
+     */
     public static void setDefaultTerm(Term term){
         App.defaultTerm = term;
 
@@ -249,34 +339,22 @@ public class App extends Application {
         Save.defaultTerm();
     }
 
-    public static void setClassWishlist(List<Course> list) {
-        App.wishlist = list;
+    /**
+     * @param wishlist The user's wishlist
+     */
+    public static void setWishlist(List<Course> wishlist) {
+        App.wishlist = wishlist;
         //Save it to internal storage when this is set
         Save.wishlist();
     }
 
-    public static void setPlaces(List<Place> places){
-        App.places = places;
-        //Save it to internal storage
-        Save.places();
-    }
-
+    /**
+     * @param places The user's list of favorite {@link Place}s
+     */
     public static void setFavoritePlaces(List<Place> places){
         App.favoritePlaces = places;
         //Save it to internal storage
         Save.favoritePlaces();
-    }
-
-    public static void setPlaceCategories(List<PlaceType> placeCategories){
-        App.placeCategories = placeCategories;
-        //Save it to internal storage
-        Save.placeTypes();
-    }
-
-    public static void setRegisterTerms(List<Term> terms){
-        App.registerTerms = terms;
-        //Save it to internal storage
-        Save.registerTerms();
     }
 
     /* HELPER METHODS */

@@ -162,11 +162,11 @@ public class SearchResultsActivity extends BaseActivity {
                                         }
 
                                         //Remove the courses from the wishlist if they were there
-                                        List<Course> wishlist = App.getClassWishlist();
+                                        List<Course> wishlist = App.getWishlist();
                                         wishlist.removeAll(courses);
 
                                         //Set the new wishlist
-                                        App.setClassWishlist(wishlist);
+                                        App.setWishlist(wishlist);
                                     }
 
                                     //Stop the refreshing
@@ -194,7 +194,7 @@ public class SearchResultsActivity extends BaseActivity {
         //If not, it's to add a course to the wishlist
         else {
             //Get the wishlist courses
-            List<Course> wishlist = App.getClassWishlist();
+            List<Course> wishlist = App.getWishlist();
 
             if(add){
                 //Only add it if it's not already part of the wishlist
@@ -220,7 +220,7 @@ public class SearchResultsActivity extends BaseActivity {
             }
 
             //Save the courses to the App context
-            App.setClassWishlist(wishlist);
+            App.setWishlist(wishlist);
         }
 
         //Visual feedback of what was just done

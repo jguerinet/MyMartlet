@@ -141,7 +141,7 @@ public class CoursesFragment extends BaseFragment {
 
         //Get the list of courses for this term
         List<Course> courses = new ArrayList<>();
-        for(Course course : App.getClasses()){
+        for(Course course : App.getCourses()){
             if(course.getTerm().equals(mTerm)){
                 courses.add(course);
             }
