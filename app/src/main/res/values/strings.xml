@@ -96,17 +96,17 @@
 
     <!-- EULA -->
     <string name="eula_title">MyMartlet App End User License Agreement</string>
-    <string name="eula_description">This End User License Agreement (â€œAgreementâ€�) is between you and Appvelopers and governs the use of this app made available through the Play Store. By installing the MyMartlet App, you agree to be bound by this Agreement. If you do not agree with the terms and conditions of this Agreement, you are not entitled to use the MyMartlet App.</string>
+    <string name="eula_description">This End User License Agreement (“Agreement”) is between you and Appvelopers and governs the use of this app made available through the Play Store. By installing the MyMartlet App, you agree to be bound by this Agreement. If you do not agree with the terms and conditions of this Agreement, you are not entitled to use the MyMartlet App.</string>
     <string name="eula_parties">1. Parties</string>
     <string name="eula_parties_decription">This Agreement is between you and Appvelopers only, and not McGill University. McGill University is not affiliated with Appvelopers and McGill University is not responsible for any misuse of the MyMartlet App. Appvelopers, not McGill University, is solely responsible for the MyMartlet App.</string>
     <string name="eula_privacy">2. Privacy</string>
     <string name="eula_privacy_description">MyMartlet may collect and use information about your usage of the MyMartlet App, including certain types of information from and about your device. Appvelopers may use this information, as long as it is in a form that does not personally identify you, to measure the use and performance of the MyMartlet App. </string>
     <string name="eula_content">3. Content</string>
-    <string name="eula_content_description">Appvelopers does not collect nor use personal information that is presented by the MyMartlet App (â€œUser Contentâ€�). User Content is stored only on the user\'s device and the user is solely responsible for upholding the safety of the User Content. Appvelopers is not responsible, nor McGill University, for the misplacement or misuse of the User Content.</string>
+    <string name="eula_content_description">Appvelopers does not collect nor use personal information that is presented by the MyMartlet App (“User Content”). User Content is stored only on the user\'s device and the user is solely responsible for upholding the safety of the User Content. Appvelopers is not responsible, nor McGill University, for the misplacement or misuse of the User Content.</string>
     <string name="eula_license">4. License</string>
     <string name="eula_license_description">Appvelopers grants the ability to use the MyMartlet App for your personal, non-commercial purposes. You may only use the MyMartlet App on devices that you own or control and as permitted by the Play Store Terms of Service.</string>
 
-    <!-- Logout Dialog -->
+    <!-- Logout -->
     <string name="logout_dialog_title">Logout</string>
     <string name="logout_dialog_message">Are you sure you want to logout?</string>
     <string name="logout_dialog_positive">Yes</string>
@@ -208,7 +208,7 @@
     <string name="walkthrough_schedule">See your schedule in landscape mode by tilting your screen horizontally in the Schedule tab.</string>
     <string name="walkthrough_email">Set up your McGill email account on your device by going to Settings -> Help -> Set up your Email</string>
 
-    <!-- CoursesList / Course Wishlist -->
+    <!-- Courses List / Wishlist -->
     <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
     <string name="wishlist_add">Added %s course(s) to the wishlist</string>
     <string name="courses_empty">No Courses Available</string>
@@ -295,7 +295,7 @@
     <string name="help_answer3">This app exists on Android and we are currently developing an iOS.</string>
     <string name="help_walkthrough">User Guide</string>
     <string name="help_email_walkthrough">Set up Your Email on Your Device</string>
-    <string name="help_email_walk0">Warning: steps may vary slightly based on Android version and phone model. \nGo to Settings â†’ + Add account</string>
+    <string name="help_email_walk0">Warning: steps may vary slightly based on Android version and phone model. \nGo to Settings → + Add account</string>
     <string name="help_email_walk1">Select Email</string>
     <string name="help_email_walk2">Enter your McGill email and password and select next</string>
     <string name="help_email_walk3">Select Exchange</string>
@@ -315,7 +315,7 @@
     <string name="map_favorites_removed">Removed %s to Favorites</string>
     <string name="map_search">Search</string>
 
-    <!-- Unregister Dialog -->
+    <!-- Unregistration -->
     <string name="unregister_dialog_title">Drop Classes</string>
     <string name="unregister_dialog_message">Are you sure you want to drop the selected classes?</string>
     <string name="unregister_dialog_positive">Yes</string>
@@ -335,7 +335,7 @@
     <string name="social_post_failure">An error occurred. Please try again.</string>
     <string name="twitter_post_failure_time">An error occurred. Please try again. Are the date and time on your device correctly set?</string>
 
-    <!-- Splash Screen -->
+    <!-- Splash -->
     <string name="logging_in">Logging In&#8230;</string>
     <string name="downloading_transcript">Downloading Transcript&#8230;</string>
     <string name="downloading_semester">Downloading %s Schedule&#8230;</string>

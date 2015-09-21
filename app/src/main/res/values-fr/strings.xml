@@ -10,8 +10,8 @@
     <string name="title_transcript">Mon Bulletin</string>
     <string name="title_mycourses">MyCourses</string>
     <string name="title_ebill">Mon eBill</string>
-    <string name="title_settings">RÃ©glages</string>
-    <string name="title_logout">DÃ©connexion</string>
+    <string name="title_settings">Réglages</string>
+    <string name="title_logout">Déconnexion</string>
     <string name="title_map">Carte du Campus</string>
     <string name="title_change_semester">Changer de Semestre</string>
     <string name="title_registration">Chercher un Cours</string>
@@ -19,35 +19,35 @@
     <string name="title_about">A Propos</string>
     <string name="title_courses">Mes Classes</string>
     <string name="title_help">Aide</string>
-    <string name="title_report_bug">Signaler un ProblÃ¨me</string>
+    <string name="title_report_bug">Signaler un Problème</string>
     <string name="title_facebook">Partager</string>
     <string name="title_twitter">Tweeter</string>
     <string name="title_agreement">CLUF</string>
 
     <!-- General Strings -->
-    <string name="success">SuccÃ¨s!</string>
+    <string name="success">Succès!</string>
     <string name="error">Erreur</string>
     <string name="warning">Avertissement</string>
-    <string name="please_wait">Veuillez attendre s\'il vous plaÃ®tâ€¦</string>
+    <string name="please_wait">Veuillez attendre s\'il vous plaît…</string>
     <string name="done">Terminer</string>
-    <string name="refresh">RafraÃ®chir</string>
+    <string name="refresh">Rafraîchir</string>
     <string name="submit">Soumettre</string>
-    <string name="error_no_internet">Vous n\'Ãªtes pas connectÃ© Ã  l\'internet. Veuillez vous connecter Ã  l\'internet et rÃ©essayer.</string>
-    <string name="error_other">Une erreur est survenue. Veuillez rÃ©essayer plus tard.</string>
+    <string name="error_no_internet">Vous n\'êtes pas connecté à l\'internet. Veuillez vous connecter à l\'internet et réessayer.</string>
+    <string name="error_other">Une erreur est survenue. Veuillez réessayer plus tard.</string>
     <string name="english">Anglais</string>
-    <string name="french">FranÃ§ais</string>
+    <string name="french">Français</string>
     <string name="next">Suivant</string>
     <string name="back">Retour</string>
     <string name="start">Commencer</string>
     <string name="skip">Sauter</string>
     <string name="agree">Accepter</string>
     <string name="decline">Decliner</string>
-    <string name="bug_parser_transcript">Il y avait une erreur en tÃ©lÃ©chargeant votre bulletin. Malheureusement nous ne pouvons pas le rÃ©parer sans voir ce quâ€™est le problÃ¨me. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer? Veuillez noter que si le bug nâ€™est pas rÃ©parÃ©, il y aura une erreur sur votre bulletin. </string>
-    <string name="bug_parser_semester">Il y avait une erreur en tÃ©lÃ©chargeant les cours du semestre suivant de votre calendrier: %s. Malheureusement nous ne pouvons pas le rÃ©parer sans voir ce quâ€™est le problÃ¨me. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer? Veuillez noter que si le bug nâ€™est pas rÃ©parÃ©, il y aura une erreur dans le calendrier pour ce semestre.</string>
-    <string name="bug_parser_yes">BiensÃ»r!</string>
+    <string name="bug_parser_transcript">Il y avait une erreur en téléchargeant votre bulletin. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur sur votre bulletin. </string>
+    <string name="bug_parser_semester">Il y avait une erreur en téléchargeant les cours du semestre suivant de votre calendrier: %s. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur dans le calendrier pour ce semestre.</string>
+    <string name="bug_parser_yes">Biensûr!</string>
     <string name="bug_parser_no">Non Merci</string>
     <string name="bug_parser_no_show">Ne plus afficher</string>
-    <string name="skip_loading">Si vous continuez, votre information la plus rÃ©cente (emploi du temps actuel et bulletin) ne sera pas mise Ã  jour. Continuer ?</string>
+    <string name="skip_loading">Si vous continuez, votre information la plus récente (emploi du temps actuel et bulletin) ne sera pas mise à jour. Continuer ?</string>
 
     <!-- Day Names -->
     <string name="monday">Lundi</string>
@@ -61,49 +61,49 @@
     <!-- Season Names -->
     <string name="fall">Automne</string>
     <string name="winter">Hiver</string>
-    <string name="summer">EtÃ©</string>
+    <string name="summer">Eté</string>
 
     <!-- Faculty Names -->
-    <string name="faculty_enviro">FacultÃ© des Sciences de l\'Agriculture et de l\'Environment</string>
-    <string name="faculty_arts">FacultÃ© des Arts</string>
-    <string name="faculty_continuing_studies">Ã‰cole d\'Ã‰ducation Permanente</string>
-    <string name="faculty_dentistry">FacultÃ© de MÃ©decine Dentaire</string>
-    <string name="faculty_education">FacultÃ© des Sciences de l\'Ã‰ducation</string>
-    <string name="faculty_engineering">FacultÃ© de GÃ©nie</string>
-    <string name="faculty_graduate">Ã‰tudes SupÃ©rieures et Postdoctorales</string>
-    <string name="faculty_law">FacultÃ© de Droit</string>
-    <string name="faculty_management">FacultÃ© de Gestion Desautels</string>
-    <string name="faculty_medecine">FacultÃ© de MÃ©decine</string>
-    <string name="faculty_music">Ã‰cole de Musique Schulich</string>
-    <string name="faculty_religion">FacultÃ© d\'Ã‰tudes Religieuses</string>
-    <string name="faculty_science">FacultÃ© des Sciences</string>
+    <string name="faculty_enviro">Faculté des Sciences de l\'Agriculture et de l\'Environment</string>
+    <string name="faculty_arts">Faculté des Arts</string>
+    <string name="faculty_continuing_studies">École d\'Éducation Permanente</string>
+    <string name="faculty_dentistry">Faculté de Médecine Dentaire</string>
+    <string name="faculty_education">Faculté des Sciences de l\'Éducation</string>
+    <string name="faculty_engineering">Faculté de Génie</string>
+    <string name="faculty_graduate">Études Supérieures et Postdoctorales</string>
+    <string name="faculty_law">Faculté de Droit</string>
+    <string name="faculty_management">Faculté de Gestion Desautels</string>
+    <string name="faculty_medecine">Faculté de Médecine</string>
+    <string name="faculty_music">École de Musique Schulich</string>
+    <string name="faculty_religion">Faculté d\'Études Religieuses</string>
+    <string name="faculty_science">Faculté des Sciences</string>
 
     <!-- Login Screen -->
-    <string name="login_welcome">Bienvenue Ã  MyMartlet. Veuillez s\'il vous plaÃ®t entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
+    <string name="login_welcome">Bienvenue à MyMartlet. Veuillez s\'il vous plaît entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
     <string name="login_username">Nom d\'Utilisateur</string>
     <string name="login_password">Mot de Passe</string>
     <string name="login_button">Connexion</string>
-    <string name="login_error_wrong_data">Le nom d\'utilisateur ou mot de passe est incorrect. Veuillez rÃ©essayer s\'il vous plaÃ®t.</string>
+    <string name="login_error_wrong_data">Le nom d\'utilisateur ou mot de passe est incorrect. Veuillez réessayer s\'il vous plaît.</string>
     <string name="login_error_username_empty">Vous devez entrer un nom d\'utilisateur.</string>
     <string name="login_error_password_empty">Vous devez entrer un mot de passe.</string>
-    <string name="login_remember_username">MÃ©moriser le nom d\'utilisateur</string>
-    <string name="new_version_title">Une nouvelle version de lâ€™application est disponible, et nous avons besoin que vous la tÃ©lÃ©chargiez avant de continuer. Promis, Ã§a vaudra le coup. </string>
-    <string name="new_version_button">TÃ©lÃ©charger Maintenant</string>
+    <string name="login_remember_username">Mémoriser le nom d\'utilisateur</string>
+    <string name="new_version_title">Une nouvelle version de l’application est disponible, et nous avons besoin que vous la téléchargiez avant de continuer. Promis, ça vaudra le coup. </string>
+    <string name="new_version_button">Télécharger Maintenant</string>
 
     <!-- EULA -->
     <string name="eula_title">Contrat de Licence Utilisateur Final de l\'Application MyMartlet</string>
-    <string name="eula_description">Ce Contrat de Licence Utilisateur Final (â€œContrat) est entre vous et Appvelopers et gouverne lâ€™utilisation de cette application disponible par le Play Store. En installant lâ€™application MyMartlet, vous acceptez dâ€™Ãªtre liÃ© par ce Contrat. Si vous nâ€™acceptez pas les termes et conditions de ce Contrat, vous nâ€™avez pas le droit dâ€™utiliser lâ€™application MyMartlet. </string>
+    <string name="eula_description">Ce Contrat de Licence Utilisateur Final (“Contrat) est entre vous et Appvelopers et gouverne l’utilisation de cette application disponible par le Play Store. En installant l’application MyMartlet, vous acceptez d’être lié par ce Contrat. Si vous n’acceptez pas les termes et conditions de ce Contrat, vous n’avez pas le droit d’utiliser l’application MyMartlet. </string>
     <string name="eula_parties">1. Parties</string>
-    <string name="eula_parties_decription">Ce Contrat est seulement entre vous et Appvelopers, et pas lâ€™UniversitÃ© McGill. Lâ€™UniversitÃ© McGill nâ€™est pas affiliÃ©e avec Appvelopers et lâ€™UniversitÃ© McGill nâ€™est pas responsable pour tout abus de lâ€™application MyMartlet.</string>
-    <string name="eula_privacy">2. ConfidentialitÃ©</string>
-    <string name="eula_privacy_description">MyMartlet a le droit de rÃ©colter et utiliser de lâ€™information par rapport Ã  votre utilisation de lâ€™application MyMartlet. Ceci peut inclure quelques types dâ€™informations depuis et par rapport Ã  votre appareil. Appvelopers a le droit dâ€™utiliser cette information, du moment que câ€™est sous une forme qui ne peut pas vous identifier personnellement, pour mesurer lâ€™utilisation et la performance de lâ€™application MyMartlet. </string>
+    <string name="eula_parties_decription">Ce Contrat est seulement entre vous et Appvelopers, et pas l’Université McGill. L’Université McGill n’est pas affiliée avec Appvelopers et l’Université McGill n’est pas responsable pour tout abus de l’application MyMartlet.</string>
+    <string name="eula_privacy">2. Confidentialité</string>
+    <string name="eula_privacy_description">MyMartlet a le droit de récolter et utiliser de l’information par rapport à votre utilisation de l’application MyMartlet. Ceci peut inclure quelques types d’informations depuis et par rapport à votre appareil. Appvelopers a le droit d’utiliser cette information, du moment que c’est sous une forme qui ne peut pas vous identifier personnellement, pour mesurer l’utilisation et la performance de l’application MyMartlet. </string>
     <string name="eula_content">3. Contenu</string>
-    <string name="eula_content_description">Appvelopers ne rÃ©colte et nâ€™utilise pas les informations personnelles qui sont prÃ©sentÃ©es dans lâ€™application MyMartlet (â€œContenu de lâ€™Utilisateurâ€œ). Le Contenu de lâ€™Utilisateur et sauvegardÃ© seulement sur lâ€™appareil de lâ€™utilisateur et lâ€™utilisateur est entiÃ¨rement responsable de la sÃ©curitÃ© du Contenu de lâ€™Utilisateur. Appvelopers nâ€™est pas responsable, ni lâ€™UniversitÃ© McGill, pour tout Ã©garement ou abus du Contenu de lâ€™Utilisateur. </string>
+    <string name="eula_content_description">Appvelopers ne récolte et n’utilise pas les informations personnelles qui sont présentées dans l’application MyMartlet (“Contenu de l’Utilisateur“). Le Contenu de l’Utilisateur et sauvegardé seulement sur l’appareil de l’utilisateur et l’utilisateur est entièrement responsable de la sécurité du Contenu de l’Utilisateur. Appvelopers n’est pas responsable, ni l’Université McGill, pour tout égarement ou abus du Contenu de l’Utilisateur. </string>
     <string name="eula_license">4. Licence </string>
-    <string name="eula_license_description">Appvelopers vous accorde la capacitÃ© dâ€™utiliser lâ€™application MyMartlet pour votre utilisation personnelle et non-commerciale. Vous avez seulement le droit dâ€™utiliser lâ€™application MyMartlet sur les appareils que vous possÃ©dez ou contrÃ´lez, comme permis par les conditions gÃ©nÃ©rales dâ€™utilisation du Play Store.</string>
+    <string name="eula_license_description">Appvelopers vous accorde la capacité d’utiliser l’application MyMartlet pour votre utilisation personnelle et non-commerciale. Vous avez seulement le droit d’utiliser l’application MyMartlet sur les appareils que vous possédez ou contrôlez, comme permis par les conditions générales d’utilisation du Play Store.</string>
 
-    <!-- Logout Dialog -->
-    <string name="logout_dialog_title">DÃ©connexion</string>
+    <!-- Logout -->
+    <string name="logout_dialog_title">Déconnexion</string>
     <string name="logout_dialog_message">Voulez-vous continuer?</string>
     <string name="logout_dialog_positive">Continuer</string>
     <string name="logout_dialog_negative">Annuler</string>
@@ -111,16 +111,16 @@
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">GPA du Semestre: %s</string>
     <string name="transcript_CGPA">CGPA: %s</string>
-    <string name="transcript_credits">Total des CrÃ©dits: %s</string>
+    <string name="transcript_credits">Total des Crédits: %s</string>
     <string name="transcript_semesters">Semestres:</string>
-    <string name="transcript_error">Nous n\'arrivons pas a charger votre bulletin. Veuillez rÃ©essayer plus tard.</string>
+    <string name="transcript_error">Nous n\'arrivons pas a charger votre bulletin. Veuillez réessayer plus tard.</string>
 
     <!-- Semester Screen -->
-    <string name="semester_termCredits">CrÃ©dits: %s</string>
+    <string name="semester_termCredits">Crédits: %s</string>
     <string name="semester_fullTime">Plein Temps</string>
     <string name="semester_partTime">A Temps Partiel</string>
     <string name="semester_courses">Cours:</string>
-    <string name="course_credits">CrÃ©dits: %s</string>
+    <string name="course_credits">Crédits: %s</string>
     <string name="course_average">Moyenne de Classe: %s</string>
 
     <!-- Schedule Screen -->
@@ -137,14 +137,14 @@
     <string name="schedule_type">Type de Cours: </string>
     <string name="course_prof">Professeur: </string>
     <string name="course_section">Section: </string>
-    <string name="course_credits_title">CrÃ©dits: </string>
+    <string name="course_credits_title">Crédits: </string>
     <string name="course_crn">CRN: </string>
     <string name="course_docuum">Voir Cours sur Docuum</string>
     <string name="course_map">Voir sur la Carte</string>
 
     <!-- eBill Screen -->
-    <string name="ebill_statement_date">Date de DÃ©claration:</string>
-    <string name="ebill_due_date">Date d\'EchÃ©ance:</string>
+    <string name="ebill_statement_date">Date de Déclaration:</string>
+    <string name="ebill_due_date">Date d\'Echéance:</string>
 
     <!-- Settings Screen -->
     <string name="settings_language">Langue</string>
@@ -163,145 +163,145 @@
 
     <!-- Change Semester Page -->
     <string name="change_semester_season">Saison: </string>
-    <string name="change_semester_year">AnnÃ©e:</string>
-    <string name="change_semester_default">Mettre par DÃ©faut</string>
+    <string name="change_semester_year">Année:</string>
+    <string name="change_semester_default">Mettre par Défaut</string>
 
     <!-- Register Page -->
     <string name="registration_semester">Semestre:</string>
     <string name="registration_subject">Sujet (ex: MATH)</string>
-    <string name="registration_course_number">NumÃ©ro de Cours</string>
-    <string name="registration_invalid_subject">Sujet Invalide: Veullez entrer un sujet de 4 caractÃ¨res</string>
+    <string name="registration_course_number">Numéro de Cours</string>
+    <string name="registration_invalid_subject">Sujet Invalide: Veullez entrer un sujet de 4 caractères</string>
     <string name="registration_error">Erreur d\'Inscription</string>
-    <string name="registration_success">Inscription RÃ©ussie!</string>
-    <string name="registration_faculty">FacultÃ©:</string>
+    <string name="registration_success">Inscription Réussie!</string>
+    <string name="registration_faculty">Faculté:</string>
     <string name="registration_title">Titre</string>
-    <string name="registration_start_time">Heure de DÃ©but:</string>
+    <string name="registration_start_time">Heure de Début:</string>
     <string name="registration_end_time">Heure de Fin:</string>
     <string name="registration_days">Jours:</string>
-    <string name="registration_credits">Gamme de CrÃ©dits:</string>
+    <string name="registration_credits">Gamme de Crédits:</string>
     <string name="registration_credits_hours">heures</string>
     <string name="registration_spots">%s place(s) restantes</string>
     <string name="registration_waitlist">Places sur Liste d\'Attente: %s</string>
     <string name="registration_reset">Remettre</string>
-    <string name="registration_no_semesters">Il nâ€™y a actuellement aucun semestre auquel vous pouvez vous inscrire!</string>
-    <string name="registration_error_no_faculty">Vous devez sÃ©lectionner une facultÃ© ou entrer un sujet de cours.</string>
-    <string name="registration_error_credits">Le nombre d\'heures maximum doit Ãªtre plus grand que le nombre minimum d\'heures. </string>
+    <string name="registration_no_semesters">Il n’y a actuellement aucun semestre auquel vous pouvez vous inscrire!</string>
+    <string name="registration_error_no_faculty">Vous devez sélectionner une faculté ou entrer un sujet de cours.</string>
+    <string name="registration_error_credits">Le nombre d\'heures maximum doit être plus grand que le nombre minimum d\'heures. </string>
     <string name="registration_show_options">Montrer Plus d\'Options</string>
     <string name="registration_hide_options">Montrer Moins d\'Options</string>
-    <string name="unregistration_success">DÃ©sinscription RÃ©ussie!</string>
-    <string name="unregistration_error">Erreur de DÃ©sinscription</string>
+    <string name="unregistration_success">Désinscription Réussie!</string>
+    <string name="unregistration_error">Erreur de Désinscription</string>
 
     <!-- Walkthrough -->
-    <string name="walkthrough_welcome">Bienvenue a MyMartlet, l\'application non officielle pour les Ã©tudiants de l\'UniversitÃ© McGill!</string>
-    <string name="walkthrough_essentials">Tous vos outils McGill les plus importants sont maintenant au bouts de vos doights: calendrier, bulletin, une carte du campus&#8230; Tout est lÃ !</string>
-    <string name="walkthrough_menu">Toutes ces fonctionnalitÃ©s sont directement accessibles de menu principal. Il faut simplement cliquer sur l\'icÃ´ne en haut Ã  gauche, ou glissez votre doigt du cotÃ© gauche de l\'Ã©cran pour l\'ouvrir.</string>
-    <string name="walkthrough_offline">Cette application vous garde connectÃ©(e) a tout moment, donc pas besoin de se connecter constamment! Vous pouvez utiliser l\'applcation hors ligne aussi!</string>
-    <string name="walkthrough_security">Toutes vos donnÃ©es (mot de passe inclus) sont seulement sauvegardÃ©es localement sur votre tÃ©lÃ©phone. Pour renforcer la sÃ©curitÃ©, votre mot de passe est cryptÃ©. Nous allons rÃ©colter des statistiques anonymes d\'utilisation, masi vous pouvez dÃ©sactiver ceci dans les RÃ©glages.</string>
-    <string name="walkthrough_help">Pour revoir ce guide, veuillez consulter notre section \"Aide\" dans les RÃ©glages. Vous trouverez aussi la section \"A Propos\" qui contient des informations sur l\'Ã©quipe derriÃ¨re cette application, et diffÃ©rentes faÃ§ons de nous contacter</string>
-    <string name="walkthrough_bugs">Si vous trouvez des bugs, n\'hÃ©sitez pas Ã  nous le signaler via la section RÃ©glages.</string>
-    <string name="walkthrough_homepage">Veuillez choisir une page que vous allez voir en premier en ouvrant cette application. Cette page peut Ãªtre changÃ©e a n\'importe quel moment dans les RÃ©glages.</string>
-    <string name="walkthrough_faculty">Pour nous donner une meilleure idÃ©e de qui utilise cette application, nous aimerons savoir de quel facultÃ© vous faites parti(e):</string>
+    <string name="walkthrough_welcome">Bienvenue a MyMartlet, l\'application non officielle pour les étudiants de l\'Université McGill!</string>
+    <string name="walkthrough_essentials">Tous vos outils McGill les plus importants sont maintenant au bouts de vos doights: calendrier, bulletin, une carte du campus&#8230; Tout est là!</string>
+    <string name="walkthrough_menu">Toutes ces fonctionnalités sont directement accessibles de menu principal. Il faut simplement cliquer sur l\'icône en haut à gauche, ou glissez votre doigt du coté gauche de l\'écran pour l\'ouvrir.</string>
+    <string name="walkthrough_offline">Cette application vous garde connecté(e) a tout moment, donc pas besoin de se connecter constamment! Vous pouvez utiliser l\'applcation hors ligne aussi!</string>
+    <string name="walkthrough_security">Toutes vos données (mot de passe inclus) sont seulement sauvegardées localement sur votre téléphone. Pour renforcer la sécurité, votre mot de passe est crypté. Nous allons récolter des statistiques anonymes d\'utilisation, masi vous pouvez désactiver ceci dans les Réglages.</string>
+    <string name="walkthrough_help">Pour revoir ce guide, veuillez consulter notre section \"Aide\" dans les Réglages. Vous trouverez aussi la section \"A Propos\" qui contient des informations sur l\'équipe derrière cette application, et différentes façons de nous contacter</string>
+    <string name="walkthrough_bugs">Si vous trouvez des bugs, n\'hésitez pas à nous le signaler via la section Réglages.</string>
+    <string name="walkthrough_homepage">Veuillez choisir une page que vous allez voir en premier en ouvrant cette application. Cette page peut être changée a n\'importe quel moment dans les Réglages.</string>
+    <string name="walkthrough_faculty">Pour nous donner une meilleure idée de qui utilise cette application, nous aimerons savoir de quel faculté vous faites parti(e):</string>
     <string name="walkthrough_schedule">Vous pouvez voir votre calendrier en mode paysage en tourant votre appareil horizontalement dans la section Calendrier.</string>
-    <string name="walkthrough_email">Ajoutez votre email McGill sur votre appareil en allant dans RÃ©glages -> Aide -> Configurer votre Email</string>
+    <string name="walkthrough_email">Ajoutez votre email McGill sur votre appareil en allant dans Réglages -> Aide -> Configurer votre Email</string>
 
-    <!-- CoursesList / Course Wishlist -->
-    <string name="wishlist_remove">%s cour(s) enlevÃ©s de la liste d\'envies</string>
-    <string name="wishlist_add">%s cour(s) ajoutÃ©s Ã  la liste d\'envies</string>
+    <!-- Courses List / Wishlist -->
+    <string name="wishlist_remove">%s cour(s) enlevés de la liste d\'envies</string>
+    <string name="wishlist_add">%s cour(s) ajoutés à la liste d\'envies</string>
     <string name="courses_empty">Aucun Cours Disponibles</string>
     <string name="courses_register">S\'inscrire</string>
-    <string name="courses_unregister">Se DÃ©sinscrire</string>
-    <string name="courses_add_wishlist">Ajouter Ã  la Liste d\'Envies</string>
+    <string name="courses_unregister">Se Désinscrire</string>
+    <string name="courses_add_wishlist">Ajouter à la Liste d\'Envies</string>
     <string name="courses_remove_wishlist">Enlever</string>
     <string name="courses_too_many_courses">Vous devez choisir moins de 10 cours. </string>
     <string name="courses_none_selected">Vous devez choisir au moins un cours.</string>
 
     <!-- About -->
-    <string name="about_email_picker_title">ComplÃ©ter cette action avec&#8230;</string>
-    <string name="about_adnan_role">DÃ©veloppeur Android</string>
-    <string name="about_adnan_description">Plus connu comme le mec qui connaÃ®t tout le monde sur le campus. En 2014, Adnan a fameusement organisÃ© un Ã©vÃ¨nement de poulet frit qui tient toujours le record du plus petit nombre de cas de salmonelles Ã  un Ã©vÃ¨nement d\'ingÃ©nieur.</string>
-    <string name="about_hernan_role">Chef du DÃ©veloppement iOS</string>
+    <string name="about_email_picker_title">Compléter cette action avec&#8230;</string>
+    <string name="about_adnan_role">Développeur Android</string>
+    <string name="about_adnan_description">Plus connu comme le mec qui connaît tout le monde sur le campus. En 2014, Adnan a fameusement organisé un évènement de poulet frit qui tient toujours le record du plus petit nombre de cas de salmonelles à un évènement d\'ingénieur.</string>
+    <string name="about_hernan_role">Chef du Développement iOS</string>
     <string name="about_hernan_description">Une citation? Je suis COOL! (Plus que Josh.)</string>
-    <string name="about_joshua_role">Graphiste, DÃ©veloppeur Android</string>
-    <string name="about_joshua_description">Josh est un Ã©tudiant en GÃ©nie Ã‰lectrique Ã  l\'universitÃ© de McGill. Il est aussi membre de l\'ECSESS RoboElectronics qui a comme but de prÃ©parer les Ã©tudiants pour des compÃ©titions de design. En prenant son mineur en GÃ©nie Logiciel, Josh a supportÃ© le dÃ©velopment de cette application mobile.</string>
-    <string name="about_julia_role">DÃ©veloppeur iOS</string>
-    <string name="about_julia_description">Julia est une Ã©tudiante dans la facultÃ© des Arts, et fait ses Ã©tudes dans les sciences de lâ€™informatique. Elle est actuellement en train de dÃ©velopper la version iOS. </string>
-    <string name="about_julien_role">Chef de Projet, Chef du DÃ©veloppement Android</string>
-    <string name="about_julien_description">Julien a rÃ©cemment terminÃ© ses Ã©tudes Ã  lâ€™UniversitÃ© McGill en tant quâ€™ingÃ©nieur en informatique, et est actuellement le chef de dÃ©veloppement mobile Ã  Sigvaria Mobile Technologies Inc. </string>
-    <string name="about_quang_role">DÃ©veloppeur Android</string>
-    <string name="about_quang_description">Quang est un Ã©tudiant en GÃ©nie Logiciel avec un bon sens de goÃ»t. Le hackathon pendant lequel il a Ã©tÃ© MaÃ®tre Scrum Ã©tait un des moments les plus mÃ©morables pour tous.</string>
-    <string name="about_ryan_role">DÃ©veloppeur Android</string>
-    <string name="about_ryan_description">Ryan Singzon, ou l\'homme au sourire est connu en Ã©tant le seul rival du gars ridiculement photogÃ©nique.</string>
-    <string name="about_selim_role">DÃ©veloppeur Android</string>
-    <string name="about_selim_description">Selim est un Ã©tudiant en GÃ©nie MÃ©canique. Il a dessinÃ© un diagrame de forces pour vÃ©rifier la rigiditÃ© de l\'application. </string>
-    <string name="about_shabbir_role">MaÃ®tre Scrum, Assistant au MaÃ®tre Scrum, DÃ©veloppeur Android</string>
-    <string name="about_shabbir_description">Shabbir est un Ã©lÃ¨ve en gÃ©nie Ã©lectronique qui prÃ©fÃ¨re le dÃ©veloppement de logiciel. MÃªme s\'il a contribuÃ© Ã  ce projet, l\'Ã©quipe le connaÃ®t exclusivement en tant que Assistant au MaÃ®tre Scrum. Contactez-le si vous voulez jouer au volleyball rÃ©crÃ©atif. </string>
-    <string name="about_xavier_role">DÃ©veloppeur Android</string>
-    <string name="about_xavier_description">Xavier (Chi-Wing) est un Ã©tudiant en GÃ©nie Informatique avec un mineur en Sciences de l\'Informatique.</string>
-    <string name="about_yulric_role">DÃ©veloppeur Web</string>
-    <string name="about_yulric_description">Yulric a rÃ©cemment terminÃ© ses Ã©tudes d\'ingÃ©nieur Ã©lectrique Ã  l\'UniversitÃ© McGill et est actuellement le chef de dÃ©veloppement web Ã  Sigvaria Mobile Technologies Inc. </string>
+    <string name="about_joshua_role">Graphiste, Développeur Android</string>
+    <string name="about_joshua_description">Josh est un étudiant en Génie Électrique à l\'université de McGill. Il est aussi membre de l\'ECSESS RoboElectronics qui a comme but de préparer les étudiants pour des compétitions de design. En prenant son mineur en Génie Logiciel, Josh a supporté le dévelopment de cette application mobile.</string>
+    <string name="about_julia_role">Développeur iOS</string>
+    <string name="about_julia_description">Julia est une étudiante dans la faculté des Arts, et fait ses études dans les sciences de l’informatique. Elle est actuellement en train de développer la version iOS. </string>
+    <string name="about_julien_role">Chef de Projet, Chef du Développement Android</string>
+    <string name="about_julien_description">Julien a récemment terminé ses études à l’Université McGill en tant qu’ingénieur en informatique, et est actuellement le chef de développement mobile à Sigvaria Mobile Technologies Inc. </string>
+    <string name="about_quang_role">Développeur Android</string>
+    <string name="about_quang_description">Quang est un étudiant en Génie Logiciel avec un bon sens de goût. Le hackathon pendant lequel il a été Maître Scrum était un des moments les plus mémorables pour tous.</string>
+    <string name="about_ryan_role">Développeur Android</string>
+    <string name="about_ryan_description">Ryan Singzon, ou l\'homme au sourire est connu en étant le seul rival du gars ridiculement photogénique.</string>
+    <string name="about_selim_role">Développeur Android</string>
+    <string name="about_selim_description">Selim est un étudiant en Génie Mécanique. Il a dessiné un diagrame de forces pour vérifier la rigidité de l\'application. </string>
+    <string name="about_shabbir_role">Maître Scrum, Assistant au Maître Scrum, Développeur Android</string>
+    <string name="about_shabbir_description">Shabbir est un élève en génie électronique qui préfère le développement de logiciel. Même s\'il a contribué à ce projet, l\'équipe le connaît exclusivement en tant que Assistant au Maître Scrum. Contactez-le si vous voulez jouer au volleyball récréatif. </string>
+    <string name="about_xavier_role">Développeur Android</string>
+    <string name="about_xavier_description">Xavier (Chi-Wing) est un étudiant en Génie Informatique avec un mineur en Sciences de l\'Informatique.</string>
+    <string name="about_yulric_role">Développeur Web</string>
+    <string name="about_yulric_description">Yulric a récemment terminé ses études d\'ingénieur électrique à l\'Université McGill et est actuellement le chef de développement web à Sigvaria Mobile Technologies Inc. </string>
 
     <!-- Help -->
     <string name="about_question">Question</string>
-    <string name="about_answer">Je suis une rÃ©ponse</string>
-    <string name="about_FAQ">Question FrÃ©quentes</string>
+    <string name="about_answer">Je suis une réponse</string>
+    <string name="about_FAQ">Question Fréquentes</string>
     <string name="help_bug_title">Bug %s</string>
-    <string name="help_bug_summary">Pour nous aider Ã  trouver le bug, nous avons ajoutÃ© quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
-    <string name="help_bug_prompt">Donnez nous un rÃ©sumÃ© du bug sâ€™il vous plaÃ®t:</string>
+    <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
+    <string name="help_bug_prompt">Donnez nous un résumé du bug s’il vous plaît:</string>
     <string name="help_question1">Qu\'est ce que c\'est MyMartlet?</string>
     <string name="help_question2">Est-ce que cette application est officiellement fait par McGill ?</string>
     <string name="help_question3">Sur quelles platformes pouvons nous trouver cette application ?</string>
-    <string name="help_answer1">MyMartlet est un app qui rend l\'acces du portail des Ã©lÃ¨ves de l\'UniversitÃ© McGill trÃ¨s rapide et pratique sur leurs portables.</string>
-    <string name="help_answer2">Cette application a Ã©tÃ© crÃ©Ã©e par des Ã©lÃ¨ves de lâ€™UniversitÃ© McGill et nâ€™est pas lâ€™application officielle de McGill.</string>
-    <string name="help_answer3">Cette application existe sur Android et nous sommes en train de dÃ©velopper une version iOS.</string>
+    <string name="help_answer1">MyMartlet est un app qui rend l\'acces du portail des élèves de l\'Université McGill très rapide et pratique sur leurs portables.</string>
+    <string name="help_answer2">Cette application a été créée par des élèves de l’Université McGill et n’est pas l’application officielle de McGill.</string>
+    <string name="help_answer3">Cette application existe sur Android et nous sommes en train de développer une version iOS.</string>
     <string name="help_walkthrough">Guide d\'Utilisation</string>
     <string name="help_email_walkthrough">Configurez Votre Email sur Votre Mobile</string>
-    <string name="help_email_walk0">Avertissement: ces Ã©tapes peuvent varier selon votre version dâ€™Android et le modÃ¨le de votre tÃ©lÃ©phone. \nAllez dans RÃ©glages â†’ + Ajouter un Compte</string>
+    <string name="help_email_walk0">Avertissement: ces étapes peuvent varier selon votre version d’Android et le modèle de votre téléphone. \nAllez dans Réglages → + Ajouter un Compte</string>
     <string name="help_email_walk1">Choisissez Email</string>
     <string name="help_email_walk2">Entrez votre email McGill et mot de passe et appuyez sur Suivant.</string>
     <string name="help_email_walk3">Choisissez Exchange</string>
     <string name="help_email_walk4">Appuyez sur OK</string>
     <string name="help_email_walk5">Appuyez sur Suivant</string>
-    <string name="help_email_walk6">Votre email est configurÃ©!</string>
-    <string name="help_download">TÃ©lÃ©charger lâ€™Application Officielle de McGill</string>
+    <string name="help_email_walk6">Votre email est configuré!</string>
+    <string name="help_download">Télécharger l’Application Officielle de McGill</string>
 
     <!-- Maps -->
     <string name="map_filter">Filtrer: </string>
     <string name="map_all">Tous</string>
     <string name="map_favorites">Favoris</string>
     <string name="map_directions">Directions</string>
-    <string name="map_favorites_add">Ajouter Ã  mes Favoris</string>
+    <string name="map_favorites_add">Ajouter à mes Favoris</string>
     <string name="map_favorites_remove">Retirer de mes Favoris</string>
-    <string name="map_favorites_added">%s ajoutÃ©(e) Ã  mes Favoris</string>
-    <string name="map_favorites_removed">%s retirÃ©(e) Ã  mes Favoris</string>
+    <string name="map_favorites_added">%s ajouté(e) à mes Favoris</string>
+    <string name="map_favorites_removed">%s retiré(e) à mes Favoris</string>
     <string name="map_search">Rechercher</string>
 
-    <!-- Unregister Dialog -->
-    <string name="unregister_dialog_title">DÃ©sinscription de Cours</string>
-    <string name="unregister_dialog_message">ÃŠtes-vous sÃ»r de vouloir vous dÃ©sinscrire de ce(s) cours?</string>
+    <!-- Unregistration -->
+    <string name="unregister_dialog_title">Désinscription de Cours</string>
+    <string name="unregister_dialog_message">Êtes-vous sûr de vouloir vous désinscrire de ce(s) cours?</string>
     <string name="unregister_dialog_positive">Continuer</string>
     <string name="unregister_dialog_negative">Annuler</string>
 
     <!-- Drawer -->
-    <string name="drawer_exit">ÃŠtes-vous sÃ»r de vouloir quitter l\'application?</string>
+    <string name="drawer_exit">Êtes-vous sûr de vouloir quitter l\'application?</string>
 
     <!-- Social Networks -->
     <string name="social_facebook_title">MyMartlet pour %s</string>
     <string name="social_facebook_caption">McGill au bout de vos doigts!</string>
-    <string name="social_facebook_description_android">MyMartlet permet aux Ã©tudiants de McGill dâ€™accÃ©der facilement tous les essentiels de McGill tels que leur calendrier, bulletin, liste de cours et plus!</string>
-    <string name="social_twitter_message_android">TÃ©lÃ©charger MyMartlet pour %s!</string>
-    <string name="social_post_success">PostÃ© avec SuccÃ¨s!</string>
-    <string name="social_post_failure">Une erreur est survenue. RÃ©essayez s\'il vous plaÃ®t.</string>
-    <string name="twitter_post_failure_time">Une erreur est survenue. RÃ©essayez s\'il vous plaÃ®t. La date et l\'heure sur votre appareil sont-elles bien configurÃ©es?</string>
+    <string name="social_facebook_description_android">MyMartlet permet aux étudiants de McGill d’accéder facilement tous les essentiels de McGill tels que leur calendrier, bulletin, liste de cours et plus!</string>
+    <string name="social_twitter_message_android">Télécharger MyMartlet pour %s!</string>
+    <string name="social_post_success">Posté avec Succès!</string>
+    <string name="social_post_failure">Une erreur est survenue. Réessayez s\'il vous plaît.</string>
+    <string name="twitter_post_failure_time">Une erreur est survenue. Réessayez s\'il vous plaît. La date et l\'heure sur votre appareil sont-elles bien configurées?</string>
 
-    <!-- Splash Screen -->
+    <!-- Splash -->
     <string name="logging_in">Connexion&#8230;</string>
-    <string name="downloading_transcript">TÃ©lÃ©chargement de votre bulletin&#8230;</string>
-    <string name="downloading_semester">TÃ©lÃ©chargement du semestre: %s&#8230;</string>
-    <string name="downloading_ebill">TÃ©lÃ©chargement de votre eBill&#8230;</string>
-    <string name="downloading_user">TÃ©lÃ©chargement de lâ€™information de lâ€™utilisateur&#8230;</string>
-    <string name="updating_transcript">Mise Ã  jour de votre bulletin&#8230;</string>
-    <string name="updating_semester">Mise Ã  jour du semestre: %s&#8230;</string>
-    <string name="updating_ebill">Mise Ã  jour de votre eBill&#8230;</string>
-    <string name="updating_user">Mise Ã  jour de lâ€™information de lâ€™utilisateur&#8230;</string>
+    <string name="downloading_transcript">Téléchargement de votre bulletin&#8230;</string>
+    <string name="downloading_semester">Téléchargement du semestre: %s&#8230;</string>
+    <string name="downloading_ebill">Téléchargement de votre eBill&#8230;</string>
+    <string name="downloading_user">Téléchargement de l’information de l’utilisateur&#8230;</string>
+    <string name="updating_transcript">Mise à jour de votre bulletin&#8230;</string>
+    <string name="updating_semester">Mise à jour du semestre: %s&#8230;</string>
+    <string name="updating_ebill">Mise à jour de votre eBill&#8230;</string>
+    <string name="updating_user">Mise à jour de l’information de l’utilisateur&#8230;</string>
     <string name="skipping">Un moment&#8230;</string>
 </resources>
