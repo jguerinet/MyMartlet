@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/schedule"
+            android:checked="false"
+            android:title="@string/title_schedule"
+            android:icon="@drawable/ic_schedule"/>
+
+        <item
+            android:id="@+id/transcript"
+            android:checked="false"
+            android:title="@string/title_transcript"
+            android:icon="@drawable/ic_transcript"/>
+
+        <item
+            android:id="@+id/my_courses"
+            android:checked="false"
+            android:title="@string/title_mycourses"
+            android:icon="@drawable/ic_mycourses"/>
+
+        <item
+            android:id="@+id/courses"
+            android:checked="false"
+            android:title="@string/title_courses"
+            android:icon="@drawable/ic_courses"/>
+
+        <item
+            android:id="@+id/wishlist"
+            android:checked="false"
+            android:title="@string/title_wishlist"
+            android:icon="@drawable/ic_star"/>
+
+        <item
+            android:id="@+id/search"
+            android:checked="false"
+            android:title="@string/title_registration"
+            android:icon="@drawable/ic_search"/>
+
+        <item
+            android:id="@+id/ebill"
+            android:checked="false"
+            android:title="@string/title_ebill"
+            android:icon="@drawable/ic_ebill"/>
+
+        <item
+            android:id="@+id/map"
+            android:checked="false"
+            android:title="@string/title_map"
+            android:icon="@drawable/ic_map"/>
+
+        <item
+            android:id="@+id/desktop"
+            android:checked="false"
+            android:title="@string/title_desktop"
+            android:icon="@drawable/ic_desktop"/>
+
+        <item
+            android:id="@+id/settings"
+            android:checked="false"
+            android:title="@string/title_settings"
+            android:icon="@drawable/ic_settings"/>
+
+    </group>
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/facebook"
+            android:checked="false"
+            android:title="@string/title_facebook"
+            android:icon="@drawable/ic_facebook"/>
+
+        <item
+            android:id="@+id/twitter"
+            android:checked="false"
+            android:title="@string/title_twitter"
+            android:icon="@drawable/ic_twitter"/>
+
+        <item
+            android:id="@+id/logout"
+            android:checked="false"
+            android:title="@string/title_logout"
+            android:icon="@drawable/ic_logout"/>
+    </group>
+</menu>
