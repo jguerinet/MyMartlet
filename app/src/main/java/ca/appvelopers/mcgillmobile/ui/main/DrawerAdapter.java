@@ -90,7 +90,7 @@ public class DrawerAdapter extends BaseAdapter {
             //If the view is not inflated yet, inflate the right one and set the holder as the tag
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
             if(itemViewType == 0){
-                view = inflater.inflate(R.layout.item_drawer_header, viewGroup, false);
+                view = inflater.inflate(R.layout.drawer_header, viewGroup, false);
                 holder = new HeaderHolder(view);
             }
             else{
