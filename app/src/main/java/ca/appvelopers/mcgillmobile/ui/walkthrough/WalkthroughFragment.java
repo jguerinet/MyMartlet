@@ -27,8 +27,8 @@ import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.DrawerItem;
 import ca.appvelopers.mcgillmobile.model.Faculty;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.ui.settings.HomepageAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -133,7 +133,7 @@ public class WalkthroughFragment extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view,
                                                    int position, long l){
-                            DrawerItem chosenDrawerItem = homepageAdapter.getItem(position);
+                            Homepage chosenDrawerItem = homepageAdapter.getItem(position);
 
                             Analytics.getInstance().sendEvent("Walkthrough", "Homepage",
                                     chosenDrawerItem.toString());

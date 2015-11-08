@@ -29,7 +29,7 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
@@ -95,7 +95,7 @@ public class App extends Application {
     /**
      * User's chosen homepage
      */
-    private static DrawerItem homepage;
+    private static Homepage homepage;
     /**
      * User's chosen default {@link Term}
      */
@@ -247,7 +247,7 @@ public class App extends Application {
     /**
      * @return The user's chosen homepage
      */
-    public static DrawerItem getHomepage(){
+    public static Homepage getHomepage(){
         if(homepage == null){
             homepage = Load.homepage();
         }
@@ -355,7 +355,7 @@ public class App extends Application {
     /**
      * @param homepage The user's chosen homepage
      */
-    public static void setHomepage(DrawerItem homepage){
+    public static void setHomepage(Homepage homepage){
         App.homepage = homepage;
         Save.homepage();
     }

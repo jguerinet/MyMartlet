@@ -22,12 +22,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 
 /**
  * Displays the different homepages the user can have
@@ -39,31 +38,31 @@ public class HomepageAdapter extends BaseAdapter {
     /**
      * The list of homepage items
      */
-    private List<DrawerItem> mHomepageItems;
+    private Homepage[] mItems;
 
     /**
      * Default Constructor
      */
     public HomepageAdapter(){
-        this.mHomepageItems = DrawerItem.getHomePages();
+        this.mItems = Homepage.values();
 
         //Sort them
-        Collections.sort(mHomepageItems, new Comparator<DrawerItem>() {
+        Arrays.sort(mItems, new Comparator<Homepage>() {
             @Override
-            public int compare(DrawerItem drawerItem, DrawerItem drawerItem2) {
-                return drawerItem.toString().compareToIgnoreCase(drawerItem2.toString());
+            public int compare(Homepage a, Homepage b) {
+                return a.toString().compareToIgnoreCase(b.toString());
             }
         });
     }
 
     @Override
     public int getCount() {
-        return mHomepageItems.size();
+        return mItems.length;
     }
 
     @Override
-    public DrawerItem getItem(int i) {
-        return mHomepageItems.get(i);
+    public Homepage getItem(int i) {
+        return mItems[i];
     }
 
     @Override
@@ -98,10 +97,16 @@ public class HomepageAdapter extends BaseAdapter {
     /**
      * Gets the position of the given drawer item
      *
-     * @param drawerItem The drawer item
+     * @param item The drawer item
      * @return Its position
      */
-    public int getPosition(DrawerItem drawerItem){
-        return mHomepageItems.indexOf(drawerItem);
+    public int getPosition(Homepage item){
+        for(int i = 0; i < mItems.length; i++){
+            if(mItems[i] == item){
+                return i;
+            }
+        }
+
+        throw new IllegalStateException("Homepage " + item + " not found");
     }
 }

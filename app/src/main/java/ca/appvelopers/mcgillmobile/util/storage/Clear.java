@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -65,7 +65,7 @@ public class Clear {
         App.setUser(null);
 
         //Homepage
-        App.setHomepage(DrawerItem.SCHEDULE);
+        App.setHomepage(Homepage.SCHEDULE);
 
         //Default Term
         App.setDefaultTerm(null);

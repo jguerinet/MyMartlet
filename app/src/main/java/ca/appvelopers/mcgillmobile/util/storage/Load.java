@@ -28,7 +28,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
@@ -75,9 +75,9 @@ public class Load {
     /**
      * @return The chosen home page, defaults to the schedule
      */
-    public static DrawerItem homepage(){
-        return DrawerItem.values()[
-                Constants.PREFS.getInt(Constants.HOMEPAGE, DrawerItem.SCHEDULE.ordinal())];
+    public static Homepage homepage(){
+        return Homepage.values()[
+                Constants.PREFS.getInt(Constants.HOMEPAGE, Homepage.SCHEDULE.ordinal())];
     }
 
     /**

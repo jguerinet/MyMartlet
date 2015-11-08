@@ -35,7 +35,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
@@ -161,7 +161,7 @@ public class SettingsFragment extends BaseFragment {
 
             //Reload MainActivity
             Intent intent = new Intent(mActivity, MainActivity.class)
-                    .putExtra(Constants.HOMEPAGE, DrawerItem.SETTINGS);
+                    .putExtra(Constants.HOMEPAGE, Homepage.SETTINGS);
             startActivity(intent);
             mActivity.finish();
         }
@@ -170,7 +170,7 @@ public class SettingsFragment extends BaseFragment {
     @OnItemSelected(R.id.settings_homepage)
     public void chooseHomepage(int position){
         //Get the chosen homepage
-        DrawerItem chosenHomePage = mHomepageAdapter.getItem(position);
+        Homepage chosenHomePage = mHomepageAdapter.getItem(position);
 
         Analytics.getInstance().sendEvent("Settings", "Homepage", chosenHomePage.toString());
 

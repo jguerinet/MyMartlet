@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -29,9 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -50,7 +49,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.DrawerItem;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
@@ -81,29 +80,25 @@ public class MainActivity extends BaseActivity {
      * Progress bar shown when the user is switching fragments
      */
     @Bind(R.id.fragment_switcher)
-    LinearLayout mFragmentSwitcherProgress;
+    protected LinearLayout mFragmentSwitcherProgress;
     /**
      * The drawer layout
      */
     @Bind(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+    protected DrawerLayout mDrawerLayout;
     /**
-     * The ListView inside the drawer
+     * The navigation view
      */
-    @Bind(R.id.drawer_list)
-    ListView mDrawerList;
+    @Bind(R.id.navigation_drawer)
+    protected NavigationView mDrawer;
     /**
      * The toggle for the drawer inside the action bar
      */
     private ActionBarDrawerToggle mDrawerToggle;
     /**
-     * The adapter for the drawer ListView
-     */
-    private DrawerAdapter mAdapter;
-    /**
      * The currently selected drawer item
      */
-    private DrawerItem mCurrentDrawerItem;
+    private Homepage mCurrentItem;
     /**
      * True if we need to change the currently showed fragment, false otherwise
      */
@@ -159,9 +154,9 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         //Get the page from the intent. If not, use the home page
-        mCurrentDrawerItem = (DrawerItem)getIntent().getSerializableExtra(Constants.HOMEPAGE);
-        if(mCurrentDrawerItem == null){
-            mCurrentDrawerItem = App.getHomepage();
+        mCurrentItem = (Homepage)getIntent().getSerializableExtra(Constants.HOMEPAGE);
+        if(mCurrentItem == null){
+            mCurrentItem = App.getHomepage();
         }
 
         //Create the fragments
@@ -199,43 +194,49 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.setFocusableInTouchMode(false);
 
-        //Set up the drawer list
-        mAdapter = new DrawerAdapter();
-        mDrawerList.setAdapter(mAdapter);
-        mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
+        mDrawer.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                //Get the concerned page and save it as the new drawer item
-                DrawerItem drawerItem = mAdapter.getItem(position);
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                //Try to get one of the homepages
+                Homepage page = Homepage.getHomepage(menuItem.getItemId());
 
-                //Share on Facebook
-                if(drawerItem == DrawerItem.FACEBOOK){
-                    shareOnFacebook();
-                }
-                //Share on Twitter
-                else if(drawerItem == DrawerItem.TWITTER){
-                    shareOnTwitter();
-                }
-                else if(drawerItem == DrawerItem.LOGOUT){
-                    logout();
-                }
-                else{
-                    mChangeFragment = mCurrentDrawerItem != drawerItem;
-
-                    //If not, set the current drawer item if needed and close the drawer
-                    if(mChangeFragment){
-                        showFragmentSwitcherProgress(true);
-                        mCurrentDrawerItem = drawerItem;
+                //If the page is null, then it's either Facebook, Twitter, or logout
+                if(page == null){
+                    //Choose the appropriate action based on the menu item selected
+                    switch(menuItem.getItemId()){
+                        case R.id.facebook:
+                            shareOnFacebook();
+                            break;
+                        case R.id.twitter:
+                            shareOnTwitter();
+                            break;
+                        case R.id.logout:
+                            logout();
+                            break;
+                        default:
+                            //Nothing found, do nothing
+                            return false;
                     }
-
-                    mDrawerLayout.closeDrawer(mDrawerList);
+                    return true;
                 }
-                checkItem();
+                //If it isn't null, check if it's the already selected homepage
+                if(page == mCurrentItem){
+                    //If it is, do nothing
+                    return true;
+                }
+
+                //If not, switch the fragment
+                showFragmentSwitcherProgress(true);
+                mCurrentItem = page;
+                mChangeFragment = true;
+                mDrawerLayout.closeDrawer(mDrawer);
+
+                return true;
             }
         });
 
         //Load the initial checked item and fragment
-        checkItem();
         setFragment();
 
         //Show the BugDialog if there is one
@@ -249,19 +250,19 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed(){
         //If we are on a web page, check if we can go back in the web page itself
-        if(mCurrentDrawerItem == DrawerItem.MY_COURSES
+        if(mCurrentItem == Homepage.MY_COURSES
                 && mMyCoursesFragment.getWebView().canGoBack()){
             mMyCoursesFragment.getWebView().goBack();
             return;
         }
-        else if(mCurrentDrawerItem == DrawerItem.DESKTOP
+        else if(mCurrentItem == Homepage.DESKTOP
                 && mDesktopFragment.getWebView().canGoBack()){
             mDesktopFragment.getWebView().goBack();
             return;
         }
         //Open the menu if it is not open
-        if(!mDrawerLayout.isDrawerOpen(mDrawerList)){
-            mDrawerLayout.openDrawer(mDrawerList);
+        if(!mDrawerLayout.isDrawerOpen(mDrawer)){
+            mDrawerLayout.openDrawer(mDrawer);
         }
         //If it is open, ask the user if he wants to exit
         else{
@@ -287,7 +288,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
         //Only show the menu in portrait mode for the schedule
-        if(mCurrentDrawerItem == DrawerItem.SCHEDULE){
+        if(mCurrentItem == Homepage.SCHEDULE){
             return getResources().getConfiguration().orientation !=
                     Configuration.ORIENTATION_LANDSCAPE;
         }
@@ -307,7 +308,7 @@ public class MainActivity extends BaseActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
 
         //Reload the menu and the view if this is the schedule
-        if(mCurrentDrawerItem == DrawerItem.SCHEDULE){
+        if(mCurrentItem == Homepage.SCHEDULE){
             //Reload the menu
             invalidateOptionsMenu();
 
@@ -326,20 +327,11 @@ public class MainActivity extends BaseActivity {
     /* HELPERS */
 
     /**
-     * Sets the current drawer item to checked
-     */
-    private void checkItem(){
-        for(int i = 1; i < mAdapter.getCount(); i++){
-            mDrawerList.setItemChecked(i, mAdapter.getItem(i) == mCurrentDrawerItem);
-        }
-    }
-
-    /**
      * Changes the fragment in the main container
      */
     private void setFragment(){
         BaseFragment fragment = null;
-        switch(mCurrentDrawerItem) {
+        switch(mCurrentItem) {
             case SCHEDULE:
                 fragment = mScheduleFragment;
                 break;
