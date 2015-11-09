@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MSP" type="JarApplication" factoryName="JAR Application" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <option name="JAR_PATH" value="$PROJECT_DIR$/util/mobile-string-parser-2.7.0.jar" />
-    <option name="WORKING_DIRECTORY" value="C:\Users\Julien\Documents\Code\Android\MyMartlet\util" />
+    <option name="JAR_PATH" value="$PROJECT_DIR$/util/mobile-string-parser-2.8.0.jar" />
+    <option name="WORKING_DIRECTORY" value="./util" />
     <envs />
     <method />
   </configuration>
