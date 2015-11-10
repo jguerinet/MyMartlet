@@ -86,7 +86,7 @@ dependencies{
     compile('com.crashlytics.sdk.android:crashlytics:2.2.3@aar'){
         transitive = true;
     }
-    compile 'com.facebook.android:facebook-android-sdk:4.3.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     compile 'com.google.android.gms:play-services-analytics:8.3.0'
     compile 'com.google.android.gms:play-services-maps:8.3.0'
     compile 'com.google.code.gson:gson:2.3.1'
@@ -99,7 +99,7 @@ dependencies{
         transitive = true;
     }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
-    compile 'joda-time:joda-time:2.8.2'
+    compile 'joda-time:joda-time:2.9'
     compile 'org.jsoup:jsoup:1.8.3'
 }
 
