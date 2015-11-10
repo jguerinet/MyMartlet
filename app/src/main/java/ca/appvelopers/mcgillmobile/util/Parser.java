@@ -18,8 +18,6 @@ package ca.appvelopers.mcgillmobile.util;
 
 import android.support.v4.util.Pair;
 
-import com.crashlytics.android.Crashlytics;
-
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
@@ -905,7 +903,7 @@ public class Parser {
                             .parse(amountString).doubleValue();
                 }
             } catch(ParseException e){
-                Crashlytics.logException(e);
+                Timber.e(e, "Ebill amount parse exception");
             }
 
             //Add the new statement
