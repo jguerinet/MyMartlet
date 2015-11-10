@@ -54,12 +54,18 @@ android {
     buildTypes {
         debug{
             signingConfig signingConfigs.debug
+            buildConfigField 'boolean', 'REPORT_CRASHES', 'false'
             versionNameSuffix "." + defaultConfig.versionCode
         }
-        release {
+        beta{
+            initWith debug
+            buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
+        }
+        release{
             signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
     }
 
