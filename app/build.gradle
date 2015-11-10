@@ -83,7 +83,7 @@ dependencies{
     compile 'com.android.support:design:23.1.0'
     compile 'com.android.support:support-v4:23.1.0'
     compile 'com.android.support:recyclerview-v7:+'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.3@aar'){
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar'){
         transitive = true;
     }
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
@@ -96,7 +96,7 @@ dependencies{
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile('com.twitter.sdk.android:twitter:1.4.0@aar'){
+    compile('com.twitter.sdk.android:twitter:1.9.1@aar'){
         transitive = true;
     }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
