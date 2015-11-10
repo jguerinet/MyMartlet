@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.instabug.library.Instabug;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -122,7 +123,9 @@ public class App extends Application {
         //Set up The Fabric stuff: Twitter, Crashlytics
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
                 Constants.TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig), new TweetComposer(), new Crashlytics());
+        Crashlytics crashlytics = new Crashlytics.Builder().core(new CrashlyticsCore.Builder()
+                .disabled(BuildConfig.REPORT_CRASHES).build()).build();
+        Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
 
         //Set up Instabug
         Instabug.initialize(this, Constants.INSTABUG_KEY)
