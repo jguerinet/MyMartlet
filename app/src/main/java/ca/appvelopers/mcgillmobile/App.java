@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -44,6 +45,7 @@ import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 import io.fabric.sdk.android.Fabric;
+import timber.log.Timber;
 
 /**
  * Application implementation
@@ -117,8 +119,11 @@ public class App extends Application {
         //Set the static context
         context = this;
 
-        //Run the update code, if any
-        Update.update(this);
+        //Set up Timber
+        if (BuildConfig.DEBUG) {
+           Timber.plant(new Timber.DebugTree());
+        }
+        Timber.plant(new CrashlyticsTree());
 
         //Set up The Fabric stuff: Twitter, Crashlytics
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
@@ -126,6 +131,9 @@ public class App extends Application {
         Crashlytics crashlytics = new Crashlytics.Builder().core(new CrashlyticsCore.Builder()
                 .disabled(BuildConfig.REPORT_CRASHES).build()).build();
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
+
+        //Run the update code, if any
+        Update.update(this);
 
         //Set up Instabug
         Instabug.initialize(this, Constants.INSTABUG_KEY)
@@ -395,5 +403,24 @@ public class App extends Application {
     }
     public static void UnsetAlarm(Context context){
         BootReceiver.cancelAlarm(context);
+    }
+
+    /**
+     * Timber tree that is used during crash reporting in production
+     */
+    private class CrashlyticsTree extends Timber.Tree {
+        @Override
+        protected void log(int priority, String tag, String message, Throwable t) {
+            //We don't want to log verbose and debug logs
+            if(priority == Log.VERBOSE || priority == Log.DEBUG){
+                return;
+            }
+
+            Crashlytics.log(message);
+            //If there's a crash, log it too
+            if(t != null){
+                Crashlytics.logException(t);
+            }
+        }
     }
 }
