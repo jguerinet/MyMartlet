@@ -28,7 +28,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.transcript.semester.SemesterActivity;
@@ -76,22 +75,16 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
          * The semester name
          */
         @Bind(R.id.semester_name)
-        TextView mName;
+        protected TextView mName;
         /**
          * The user's GPA for this semester
          */
         @Bind(R.id.semester_gpa)
-        TextView mGPA;
-        /**
-         * The chevron (we need to apply the icon typeface
-         */
-        @Bind(R.id.chevron)
-        TextView mChevron;
+        protected TextView mGPA;
 
         public SemesterHolder(View itemView){
             super(itemView);
             ButterKnife.bind(this, itemView);
-            mChevron.setTypeface(App.getIconFont());
         }
 
         public void bind(final Semester semester){

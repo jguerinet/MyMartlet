@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -99,28 +98,10 @@ public class WalkthroughFragment extends Fragment {
                     return inflater.inflate(R.layout.fragment_walkthrough_3, container, false);
                 //Offline Access / Security
                 case 4:
-                    view = inflater.inflate(R.layout.fragment_walkthrough_4, container, false);
-
-                    //Set the typeface for icons
-                    TextView securityIcon = (TextView)view.findViewById(R.id.security_icon);
-                    securityIcon.setTypeface(App.getIconFont());
-                    TextView settingsIcon = (TextView)view.findViewById(R.id.settings_icon);
-                    settingsIcon.setTypeface(App.getIconFont());
-                    TextView emailIcon = (TextView)view.findViewById(R.id.email_icon);
-                    emailIcon.setTypeface(App.getIconFont());
-
-                    return view;
+                    return inflater.inflate(R.layout.fragment_walkthrough_4, container, false);
                 //Help/About/Bugs
                 case 5:
-                    view = inflater.inflate(R.layout.fragment_walkthrough_5, container, false);
-
-                    //Set the typeface for the icon
-                    TextView bugIcon = (TextView)view.findViewById(R.id.bug_icon);
-                    bugIcon.setTypeface(App.getIconFont());
-                    TextView helpIcon = (TextView)view.findViewById(R.id.help_icon);
-                    helpIcon.setTypeface(App.getIconFont());
-
-                    return view;
+                    return inflater.inflate(R.layout.fragment_walkthrough_5, container, false);
                 //Default Homepage / Faculty
                 case 6:
                     view = inflater.inflate(R.layout.fragment_walkthrough_6, container, false);

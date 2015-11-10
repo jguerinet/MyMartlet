@@ -21,9 +21,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -39,6 +44,31 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class Help {
+
+    /**
+     * Tints the given drawable a given color
+     *
+     * @param drawable The {@link Drawable}
+     * @param color    The resource Id of the color to tint the drawable with
+     */
+    public static void setTint(Drawable drawable, @ColorRes int color) {
+        //Wrap the drawable in the DrawableCompat library first to ensure backwards compatibility
+        drawable = DrawableCompat.wrap(drawable);
+        //Tint the drawable with the compat library
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(App.getContext(), color));
+    }
+
+    /**
+     * Sets the tint on the given compound drawable of the TextView
+     *
+     * @param textView         The {@link TextView}
+     * @param drawablePosition The drawable position (0 = left, 1 = top, 2 = right, 3 = bottom)
+     * @param color            The resource Id of the color to tint the drawable with
+     */
+    public static void setTint(TextView textView, int drawablePosition, @ColorRes int color) {
+        setTint(textView.getCompoundDrawables()[drawablePosition], color);
+    }
+
     /* URLS */
 
     /**

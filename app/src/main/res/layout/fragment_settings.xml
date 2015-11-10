@@ -83,100 +83,49 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:id="@+id/settings_help"
+            android:text="@string/title_help"
+            android:textColor="@color/black_whitepressed"
             android:background="@drawable/transparent_redpressed"
-            android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin"
-            android:paddingTop="@dimen/padding_micro"
-            android:paddingBottom="@dimen/padding_micro">
+            android:padding="@dimen/padding_micro"
+            android:drawableLeft="@drawable/ic_help"
+            android:drawableStart="@drawable/ic_help"
+            android:drawablePadding="@dimen/padding_micro"
+            android:gravity="center|start"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/help_icon"
-                android:gravity="center"
-                android:textColor="@color/black_whitepressed"
-                android:text="@string/icon_question"
-                android:duplicateParentState="true"
-                android:paddingRight="@dimen/padding_micro"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_help"
-                android:textColor="@color/black_whitepressed"
-                android:duplicateParentState="true"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:id="@+id/settings_about"
+            android:text="@string/title_about"
+            android:textColor="@color/black_whitepressed"
             android:background="@drawable/transparent_redpressed"
-            android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin"
-            android:paddingTop="@dimen/padding_micro"
-            android:paddingBottom="@dimen/padding_micro">
+            android:padding="@dimen/padding_micro"
+            android:drawableLeft="@drawable/ic_info"
+            android:drawableStart="@drawable/ic_info"
+            android:drawablePadding="@dimen/padding_micro"
+            android:gravity="center|start"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/about_icon"
-                android:gravity="center"
-                android:textColor="@color/black_whitepressed"
-                android:text="@string/icon_info"
-                android:duplicateParentState="true"
-                android:paddingRight="@dimen/padding_micro"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_about"
-                android:textColor="@color/black_whitepressed"
-                android:duplicateParentState="true"/>
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:id="@+id/settings_bug"
+            android:text="@string/title_report_bug"
+            android:textColor="@color/black_whitepressed"
             android:background="@drawable/transparent_redpressed"
-            android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin"
-            android:paddingTop="@dimen/padding_micro"
-            android:paddingBottom="@dimen/padding_micro">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bug_icon"
-                android:gravity="center"
-                android:textColor="@color/black_whitepressed"
-                android:text="@string/icon_bug"
-                android:duplicateParentState="true"
-                android:paddingRight="@dimen/padding_micro"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_report_bug"
-                android:textColor="@color/black_whitepressed"
-                android:duplicateParentState="true"/>
-
-        </LinearLayout>
+            android:padding="@dimen/padding_micro"
+            android:drawableLeft="@drawable/ic_bug_report"
+            android:drawableStart="@drawable/ic_bug_report"
+            android:drawablePadding="@dimen/padding_micro"
+            android:gravity="center|start"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/settings_version"
-            android:background="@android:color/transparent"
             android:textSize="@dimen/text_medium"
             android:textColor="@color/grey"
             android:gravity="center"

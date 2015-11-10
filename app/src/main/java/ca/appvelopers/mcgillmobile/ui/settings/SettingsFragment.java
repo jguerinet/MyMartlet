@@ -53,21 +53,6 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
  */
 public class SettingsFragment extends BaseFragment {
     /**
-     * The help page icon
-     */
-    @Bind(R.id.help_icon)
-    TextView mHelpIcon;
-    /**
-     * The about page icon
-     */
-    @Bind(R.id.about_icon)
-    TextView mAboutIcon;
-    /**
-     * The Report a Bug icon
-     */
-    @Bind(R.id.bug_icon)
-    TextView mBugIcon;
-    /**
      * The language spinner
      */
     @Bind(R.id.settings_language)
@@ -101,11 +86,6 @@ public class SettingsFragment extends BaseFragment {
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Settings");
         mActivity.setTitle(getString(R.string.title_settings));
-
-        //Icons
-        mHelpIcon.setTypeface(App.getIconFont());
-        mAboutIcon.setTypeface(App.getIconFont());
-        mBugIcon.setTypeface(App.getIconFont());
 
         //Language
         ArrayAdapter<String> languageAdapter =

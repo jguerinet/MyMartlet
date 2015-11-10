@@ -33,7 +33,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Person;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
@@ -132,33 +131,33 @@ public class AboutActivity extends BaseActivity {
             /**
              * Person's name
              */
-            @Bind(R.id.person_name)
-            TextView mName;
+            @Bind(R.id.name)
+            protected TextView mName;
             /**
              * Person's picture
              */
-            @Bind(R.id.person_picture)
-            ImageView mPicture;
+            @Bind(R.id.picture)
+            protected ImageView mPicture;
             /**
              * Person's role
              */
-            @Bind(R.id.person_role)
-            TextView mRole;
+            @Bind(R.id.role)
+            protected TextView mRole;
             /**
              * Person's description
              */
-            @Bind(R.id.person_description)
-            TextView mDescription;
+            @Bind(R.id.description)
+            protected TextView mDescription;
             /**
              * URL to person's LinkedIn
              */
-            @Bind(R.id.person_linkedin)
-            TextView mLinkedIn;
+            @Bind(R.id.linkedin)
+            protected ImageView mLinkedIn;
             /**
              * Person's email
              */
-            @Bind(R.id.person_email)
-            TextView mEmail;
+            @Bind(R.id.email)
+            protected ImageView mEmail;
 
             public PersonHolder(View itemView){
                 super(itemView);
@@ -172,7 +171,6 @@ public class AboutActivity extends BaseActivity {
                         .into(mPicture);
                 mRole.setText(person.getRole());
                 mDescription.setText(person.getDescription());
-                mLinkedIn.setTypeface(App.getIconFont());
                 mLinkedIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -180,7 +178,6 @@ public class AboutActivity extends BaseActivity {
                         Help.openURL(AboutActivity.this, person.getLinkedIn());
                     }
                 });
-                mEmail.setTypeface(App.getIconFont());
                 mEmail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

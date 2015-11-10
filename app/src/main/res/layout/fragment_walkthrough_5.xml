@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,16 +16,13 @@
         android:textSize="@dimen/text_medium"
         android:text="@string/walkthrough_help"/>
 
-    <TextView
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_large"
-        android:textColor="@color/red"
-        android:text="@string/icon_question"
-        android:id="@+id/help_icon"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="@dimen/padding_small"/>
+        android:src="@drawable/ic_help"
+        android:tint="@color/red"
+        android:padding="@dimen/padding_small"
+        tools:ignore="contentDescription"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -35,15 +32,12 @@
         android:textSize="@dimen/text_medium"
         android:text="@string/walkthrough_bugs"/>
 
-    <TextView
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_large"
-        android:textColor="@color/red"
-        android:text="@string/icon_bug"
-        android:id="@+id/bug_icon"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="@dimen/padding_small"/>
+        android:src="@drawable/ic_bug_report"
+        android:tint="@color/red"
+        android:padding="@dimen/padding_small"
+        tools:ignore="contentDescription"/>
 
 </LinearLayout>

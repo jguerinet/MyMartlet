@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -57,7 +56,6 @@ public class App extends Application {
     //TODO Change these to Shared Prefs
     public static boolean forceReload = false;
     public static boolean forceUserReload = false;
-    private static Typeface iconFont;
 
     /**
      * The app {@link Context}
@@ -162,15 +160,6 @@ public class App extends Application {
      */
     public static Context getContext(){
         return context;
-    }
-
-    //TODO Phase this out
-    public static Typeface getIconFont(){
-        if(iconFont == null){
-            iconFont = Typeface.createFromAsset(context.getAssets(), "icon-font.ttf");
-        }
-
-        return iconFont;
     }
 
     /**
