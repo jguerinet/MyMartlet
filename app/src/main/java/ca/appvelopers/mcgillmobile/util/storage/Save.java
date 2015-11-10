@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.util.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -26,6 +25,7 @@ import java.io.ObjectOutputStream;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Encryption;
+import timber.log.Timber;
 
 /**
  * Saves objects to internal storage or {@link SharedPreferences}
@@ -34,8 +34,6 @@ import ca.appvelopers.mcgillmobile.util.Encryption;
  * @since 1.0.0
  */
 public class Save {
-    private static final String TAG = "Save";
-
     /* SHARED PREFS */
 
     /**
@@ -161,7 +159,7 @@ public class Save {
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(object);
         } catch(Exception e) {
-            Log.e(TAG, "Failure: " + tag, e);
+            Timber.e(e, "Failure: %s", tag);
         }
     }
 

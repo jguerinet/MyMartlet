@@ -23,7 +23,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -37,6 +36,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import timber.log.Timber;
 
 /**
  * Runs the required checker tasks
@@ -46,7 +46,6 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @since 2.0
  */
 public class CheckerService extends IntentService {
-	private static final String TAG = "CheckerService";
 	/**
 	 * The notification Id used for the grade checker notifications
 	 */
@@ -60,7 +59,7 @@ public class CheckerService extends IntentService {
 	 * Default Constructor
 	 */
 	public CheckerService() {
-		super(TAG);
+		super("CheckerService");
 	}
 
 	/**
@@ -68,7 +67,7 @@ public class CheckerService extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		Log.d(TAG,"Service started");
+		Timber.i("Service started");
 
 		//Check the grades if needed
 		if(Load.gradeChecker()){
@@ -85,7 +84,7 @@ public class CheckerService extends IntentService {
 	 * Downloads the user's transcript to check for new or changed grades
 	 */
 	private void checkGrades(){
-		String html = new DownloaderThread(this, TAG, Connection.TRANSCRIPT_URL).execute();
+		String html = new DownloaderThread(this, Connection.TRANSCRIPT_URL).execute();
 
 		if(html != null){
 			//Get the previous grades

@@ -16,8 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import android.util.Log;
-
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -25,6 +23,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.util.Date;
+import timber.log.Timber;
 
 /**
  * A course in the user's schedule or one that a user can register for
@@ -34,7 +33,6 @@ import ca.appvelopers.mcgillmobile.util.Date;
  * @since 1.0.0
  */
 public class Course implements Serializable{
-    private static final String TAG = "Course";
     private static final long serialVersionUID = 1L;
     /**
      * The term this class is for
@@ -448,7 +446,7 @@ public class Course implements Serializable{
     public String getTimeString(){
         //No time associated, therefore no time string
         if(mStartTime.getHourOfDay() == 0 && mStartTime.getMinuteOfHour() == 0){
-            Log.d(TAG, "No time associated when getting String");
+            Timber.i("No time associated when getting String");
             return "";
         }
 

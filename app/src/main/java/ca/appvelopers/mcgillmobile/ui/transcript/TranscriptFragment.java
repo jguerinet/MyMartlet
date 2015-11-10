@@ -108,7 +108,7 @@ public class TranscriptFragment extends BaseFragment{
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 mActivity.showToolbarProgress(true);
-                new DownloaderThread(mActivity, "Transcript Downloader", Connection.TRANSCRIPT_URL)
+                new DownloaderThread(mActivity, Connection.TRANSCRIPT_URL)
                         .execute(new DownloaderThread.Callback() {
                             @Override
                             public void onDownloadFinished(final String result){

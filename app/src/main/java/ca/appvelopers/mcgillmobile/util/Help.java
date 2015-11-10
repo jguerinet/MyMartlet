@@ -24,13 +24,13 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.IOException;
 
 import ca.appvelopers.mcgillmobile.App;
 import okio.BufferedSource;
 import okio.Okio;
+import timber.log.Timber;
 
 /**
  * Contains various useful static help methods
@@ -39,7 +39,6 @@ import okio.Okio;
  * @since 1.0.0
  */
 public class Help {
-    private static final String TAG = "Help";
     /* URLS */
 
     /**
@@ -117,7 +116,7 @@ public class Help {
             return App.getContext().getPackageManager().getPackageInfo(
                     App.getContext().getPackageName(), 0);
         } catch(PackageManager.NameNotFoundException e){
-            Log.e(TAG, "Name not found on PackageInfo", e);
+            Timber.e(e, "Name not found on PackageInfo");
             return null;
         }
     }

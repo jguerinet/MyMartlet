@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.ui.search;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +50,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import timber.log.Timber;
 
 /**
  * Allows a user to search for courses that they can register for
@@ -59,7 +59,6 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @since 1.0.0
  */
 public class CourseSearchFragment extends BaseFragment {
-    private static final String TAG = "Course Search";
     /**
      * Adapter for the term spinner
      */
@@ -297,10 +296,10 @@ public class CourseSearchFragment extends BaseFragment {
         String searchURL = builder.build();
 
         //Retrieve courses obtained from Minerva
-        Log.d(TAG, "URL: " +  searchURL);
+        Timber.i("URL: %s", searchURL);
 
         //Execute the request
-        new DownloaderThread(mActivity, TAG, searchURL).execute(new DownloaderThread.Callback() {
+        new DownloaderThread(mActivity, searchURL).execute(new DownloaderThread.Callback() {
             @Override
             public void onDownloadFinished(final String result){
                 //If there is a result, parse it

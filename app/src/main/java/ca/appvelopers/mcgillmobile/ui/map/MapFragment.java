@@ -21,7 +21,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,6 +57,7 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import timber.log.Timber;
 
 /**
  * Displays a campus map
@@ -68,7 +68,6 @@ import ca.appvelopers.mcgillmobile.util.Analytics;
  * @since 1.0.0
  */
 public class MapFragment extends BaseFragment {
-    private static final String TAG = "Map";
     /**
      * The coordinates used to center the map initially
      */
@@ -299,7 +298,7 @@ public class MapFragment extends BaseFragment {
                     }
 
                     if(mPlace == null){
-                        Log.e(TAG, "Tapped place marker was not found");
+                        Timber.e("Tapped place marker was not found");
                         return false;
                     }
 
@@ -342,7 +341,7 @@ public class MapFragment extends BaseFragment {
             cursorDrawable.setAccessible(true);
             cursorDrawable.set(searchTextView, 0);
         } catch (Exception e){
-            Log.e(TAG, "Cannot change color of cursor", e);
+            Timber.e(e, "Cannot change color of cursor");
         }
 
         //Set up the query listener

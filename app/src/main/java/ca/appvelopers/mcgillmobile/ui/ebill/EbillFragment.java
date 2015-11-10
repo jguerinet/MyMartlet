@@ -128,7 +128,7 @@ public class EbillFragment extends BaseFragment {
         //Show the user we are reloading
         mActivity.showToolbarProgress(true);
 
-        new DownloaderThread(mActivity, "Ebill Download", Connection.EBILL_URL)
+        new DownloaderThread(mActivity, Connection.EBILL_URL)
                 .execute(new DownloaderThread.Callback() {
                     @Override
                     public void onDownloadFinished(final String result){

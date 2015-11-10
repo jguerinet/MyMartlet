@@ -16,8 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import android.util.Log;
-
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -25,6 +23,7 @@ import com.google.android.gms.analytics.Tracker;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.BuildConfig;
 import ca.appvelopers.mcgillmobile.R;
+import timber.log.Timber;
 
 
 /**
@@ -34,7 +33,6 @@ import ca.appvelopers.mcgillmobile.R;
  * @since 1.0.0
  */
 public class Analytics {
-    private static final String TAG = "Analytics";
     /**
      * The singleton instance of this class
      */
@@ -74,13 +72,12 @@ public class Analytics {
     public void sendEvent(String category, String action, String label){
         if(!BuildConfig.DEBUG){
             this.mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory(category)
-                .setAction(action)
-                .setLabel(label)
-                .build());
-
-            Log.d(TAG, "Event: " + category + ", " + action + ", " + label);
+                    .setCategory(category)
+                    .setAction(action)
+                    .setLabel(label)
+                    .build());
         }
+        Timber.d("Event: %s, %s, %s", category, action, label);
     }
 
     /**
@@ -95,8 +92,7 @@ public class Analytics {
 
             //Send the screen view
             this.mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
-            Log.d(TAG, "Screen: " + screenName);
         }
+        Timber.d("Screen: %s", screenName);
     }
 }

@@ -181,7 +181,7 @@ public class ScheduleFragment extends BaseFragment {
         mActivity.showToolbarProgress(true);
 
         //Download the courses for this term
-        new DownloaderThread(mActivity, "Course Download", Connection.getScheduleURL(mTerm))
+        new DownloaderThread(mActivity, Connection.getScheduleURL(mTerm))
                 .execute(new DownloaderThread.Callback() {
                     @Override
                     public void onDownloadFinished(String result){
@@ -191,8 +191,7 @@ public class ScheduleFragment extends BaseFragment {
 
                             //Download the Transcript
                             //  (if ever the user has new semesters on their transcript)
-                            new DownloaderThread(null, "Transcript Download",
-                                    Connection.TRANSCRIPT_URL)
+                            new DownloaderThread(null, Connection.TRANSCRIPT_URL)
                                     .execute(new DownloaderThread.Callback() {
                                         @Override
                                         public void onDownloadFinished(String result){

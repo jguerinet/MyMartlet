@@ -16,8 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import android.util.Log;
-
 import com.squareup.okhttp.CacheControl;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
@@ -50,6 +48,7 @@ import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import okio.BufferedSink;
+import timber.log.Timber;
 
 /**
  * All of the connection logic
@@ -61,7 +60,6 @@ import okio.BufferedSink;
  * @since 1.0.0
  */
 public class Connection {
-	private static final String TAG = "Connection";
 	/**
 	 * Login URL
 	 */
@@ -191,13 +189,13 @@ public class Connection {
 			builder.addHeader("Cookie", cookie.split(";", 1)[0]);
 		}
 
-		Log.d(TAG, "Sending 'GET' request to: " + url);
+		Timber.i("Sending 'GET' request to: %s", url);
 
 		//Execute the request, get the response
 		Response response = mClient.newCall(builder.build()).execute();
 
 		int responseCode = response.code();
-		Log.d(TAG, "Response Code: " + responseCode);
+		Timber.i("Response Code: %d", responseCode);
 
 		//Check the response code
 		switch(responseCode){
@@ -291,12 +289,12 @@ public class Connection {
 			builder.addHeader("Cookie", cookie.split(";", 1)[0]);
 		}
 
-		Log.d(TAG, "Sending 'POST' request to: " + url);
+		Timber.i("Sending 'POST' request to: %s", url);
 
 		//Execute the request, get the result
 		Response response = mClient.newCall(builder.build()).execute();
 
-		Log.d(TAG, "Response Code: " + String.valueOf(response.code()));
+		Timber.i("Response Code: %d", response.code());
 
 		//Return the response body
 		return response.body().string();
@@ -331,7 +329,7 @@ public class Connection {
 				return ConnectionStatus.WRONG_INFO;
 			}
 		} catch (IOException e) {
-			Log.e(TAG, "IOException during login", e);
+			Timber.e(e, "IOException during login");
 			return ConnectionStatus.ERROR_UNKNOWN;
 		}
 
@@ -347,7 +345,7 @@ public class Connection {
 	 */
 	private String getLoginParameters(String html) throws UnsupportedEncodingException{
 		List<String> params = new ArrayList<>();
-		Log.d(TAG, "Extracting form's data...");
+		Timber.i("Extracting form's data...");
 
 		//Parse the HTML document with JSoup
 		Document doc = Jsoup.parse(html);

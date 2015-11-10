@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import android.support.v4.util.Pair;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -49,6 +48,7 @@ import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
+import timber.log.Timber;
 
 /**
  * Parses the given HTML Strings to get the necessary objects
@@ -59,8 +59,6 @@ import ca.appvelopers.mcgillmobile.util.storage.Load;
  * @since 1.0.0
  */
 public class Parser {
-    private static final String TAG = "Parser";
-
     /**
      * Parses the HTML String to form a transcript
      *
@@ -97,8 +95,7 @@ public class Parser {
                 try{
                     cgpa = Double.parseDouble(dataRow.text());
                 } catch (NumberFormatException e){
-                    Crashlytics.log(Log.ERROR, TAG, "CGPA Transcript Parsing Bug");
-                    Crashlytics.logException(e);
+                    Timber.e(e, "CGPA Transcript Parsing Bug");
                     error = "CGPA";
                 }
             }
@@ -109,8 +106,7 @@ public class Parser {
                     totalCredits = Double.parseDouble(dataRow.text());
                 }
                 catch (NumberFormatException e){
-                    Crashlytics.log(Log.ERROR, TAG, "Total Credits Transcript Parsing Bug");
-                    Crashlytics.logException(e);
+                    Timber.e(e, "Total Credits Transcript Parsing Bug");
                     error = "Total Credits";
                 }
             }
@@ -151,8 +147,7 @@ public class Parser {
                 try{
                     year = Integer.valueOf(yearString);
                 } catch(NumberFormatException e){
-                    Crashlytics.log(Log.ERROR, TAG, "Semester Year Transcript Parsing Bug");
-                    Crashlytics.logException(e);
+                    Timber.e(e, "Semester Year Transcript Parsing Bug");
                     error = season.getId();
                 }
 
@@ -233,8 +228,7 @@ public class Parser {
                             termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
                         }
                         catch (NumberFormatException e){
-                            Crashlytics.log(Log.ERROR, TAG, "Term GPA Transcript Parsing Bug");
-                            Crashlytics.logException(e);
+                            Timber.e(e, "Term GPA Transcript Parsing Bug");
                             error = season.getId() + year;
                         }
                     }
@@ -244,8 +238,7 @@ public class Parser {
                             termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                         }
                         catch (NumberFormatException e){
-                            Crashlytics.log(Log.ERROR, TAG, "Term Credits Transcript Parsing Bug");
-                            Crashlytics.logException(e);
+                            Timber.e(e, "Term Credits Transcript Parsing Bug");
                             error = season.getId() + year;
                         }
                     }
@@ -277,9 +270,7 @@ public class Parser {
                                 try{
                                     code = dataRow.text().substring(0, 10);
                                 } catch(Exception e){
-                                    Crashlytics.log(Log.ERROR, TAG,
-                                            "Course Code Transcript Parsing Bug");
-                                    Crashlytics.logException(e);
+                                    Timber.e(e, "Course Code Transcript Parsing Bug");
                                     error = season.getId() + year;
                                 }
                             }
@@ -324,9 +315,7 @@ public class Parser {
                                 try{
                                     credits = extractCredits(code);
                                 } catch(Exception e){
-                                    Crashlytics.log(Log.ERROR, TAG,
-                                            "Credits Transcript Parsing Bug");
-                                    Crashlytics.logException(e);
+                                    Timber.e(e, "Credits Transcript Parsing Bug");
                                     error = season.getId() + year;
                                     credits = -1;
                                 }
@@ -366,9 +355,7 @@ public class Parser {
                                     } catch(IndexOutOfBoundsException e2){
                                         e.printStackTrace();
                                     } catch(Exception e3){
-                                        Crashlytics.log(Log.ERROR, TAG,
-                                                "Credits Transcript Parsing Bug");
-                                        Crashlytics.logException(e);
+                                        Timber.e(e, "Credits Transcript Parsing Bug");
                                         error = season.getId() + year;
                                         credits = 99;
                                     }
@@ -481,8 +468,7 @@ public class Parser {
                 try {
                     subject = code.substring(0, 4);
                 } catch(StringIndexOutOfBoundsException e){
-                    Crashlytics.log(Log.ERROR, TAG, "Course Subject Parsing Bug");
-                    Crashlytics.logException(e);
+                    Timber.e(e, "Course Subject Parsing Bug");
                     classError = term.getId();
                 }
 
@@ -490,8 +476,7 @@ public class Parser {
                 try {
                     number = code.substring(5, 8);
                 } catch(StringIndexOutOfBoundsException e){
-                    Crashlytics.log(Log.ERROR, TAG, "Course Number Parsing Bug");
-                    Crashlytics.logException(e);
+                    Timber.e(e, "Course Number Parsing Bug");
                     classError = term.getId();
                 }
 
@@ -503,8 +488,7 @@ public class Parser {
                     crn = Integer.parseInt(crnString);
                 }
                 catch (NumberFormatException e){
-                    Crashlytics.log(Log.ERROR, TAG, "Course CRN Parsing Bug");
-                    Crashlytics.logException(e);
+                    Timber.e(e, "Course CRN Parsing Bug");
                     classError = term.getId();
                 }
 
@@ -516,8 +500,7 @@ public class Parser {
                     credits = Double.parseDouble(creditString);
                 }
                 catch (NumberFormatException e){
-                    Crashlytics.log(Log.ERROR, TAG, "Course Credits Parsing Bug");
-                    Crashlytics.logException(e);
+                    Timber.e(e, "Course Credits Parsing Bug");
                     classError = term.getId();
                 }
 
@@ -547,8 +530,7 @@ public class Parser {
                             instructor = cells.get(5).text();
                         }
                         catch(IndexOutOfBoundsException e){
-                            Crashlytics.log(Log.ERROR, TAG, "Course Info Parsing Bug");
-                            Crashlytics.logException(e);
+                            Timber.e(e, "Course Info Parsing Bug");
                             classError = term.getId();
                         }
 
@@ -595,8 +577,7 @@ public class Parser {
                             startDate = dates.first;
                             endDate = dates.second;
                         } catch (IllegalArgumentException e){
-                            Crashlytics.log(Log.ERROR, TAG, "Course Date Range Parsing Bug");
-                            Crashlytics.logException(e);
+                            Timber.e(e, "Course Date Range Parsing Bug");
                             classError = term.getId();
                         }
 
@@ -796,7 +777,7 @@ public class Parser {
                     break;
                 }
                 catch (Exception e){
-                    Log.e(TAG, "Error in Class Results Parser", e);
+                    Timber.e(e, "Error in Class Results Parser");
                 }
             }
             rowsSoFar = 0;
@@ -847,7 +828,7 @@ public class Parser {
         if(!errors.isEmpty()){
             error = "";
             for(String crn : errors.keySet()){
-                Log.e("(Un)registration", "Error for " + crn + ": " + errors.get(crn));
+                Timber.e("(Un)registration error for %s: %s", crn, errors.get(crn));
 
                 //Find the corresponding course
                 List<Course> errorCourses = new ArrayList<>();

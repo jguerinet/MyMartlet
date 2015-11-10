@@ -18,13 +18,13 @@ package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Connection;
+import timber.log.Timber;
 
 /**
  * Downloads the information at a given URL, shows any errors if necessary and present
@@ -37,10 +37,6 @@ public class DownloaderThread extends Thread {
 	 * The calling activity (to show eventual errors)
 	 */
 	private Activity mActivity;
-	/**
-	 * The tag to use for logging errors
-	 */
-	private String mTag;
 	/**
 	 * The URL to query
 	 */
@@ -58,13 +54,11 @@ public class DownloaderThread extends Thread {
 	 * Default Constructor
 	 *
 	 * @param context    The app context
-	 * @param tag        The tag to use for logging eventual errors
 	 * @param url        The URl to make the request to
 	 */
-	public DownloaderThread(Context context, String tag, String url){
+	public DownloaderThread(Context context, String url){
 		//Make sure that the context is an activity before setting it (Service calls this too)
 		this.mActivity = context instanceof Activity ? (Activity)context : null;
-		this.mTag = tag;
 		this.mURL = url;
 	}
 
@@ -78,7 +72,7 @@ public class DownloaderThread extends Thread {
 				//TODO Broadcast this
 			} catch(Exception e){
 				final boolean noInternet = e instanceof NoInternetException;
-				Log.e(mTag, noInternet ? "No Internet" : "IOException", e);
+				Timber.e(e, noInternet ? "No Internet" : "IOException");
 
 				//Show an error message if possible
 				if(mActivity != null){

@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -54,6 +53,7 @@ import ca.appvelopers.mcgillmobile.util.Date;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
+import timber.log.Timber;
 
 /**
  * Downloads the config variables and the list of places from the web server
@@ -62,7 +62,6 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
  * @since 1.0.0
  */
 public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
-    private static final String TAG = "ConfigDownloader";
     /**
      * The app context
      */
@@ -143,7 +142,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
 
                 //Get the response code
                 int responseCode = response.code();
-                Log.d(TAG, "Config Response Code: " + String.valueOf(responseCode));
+                Timber.i("Config Response Code: %d", responseCode);
                 if (responseCode == 200) {
                     //Set up the Gson parser by adding our custom deserializers
                     GsonBuilder builder = new GsonBuilder();
@@ -167,7 +166,7 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                         response = client.newCall(requestBuilder.build()).execute();
 
                         responseCode = response.code();
-                        Log.d(TAG, "Places Response Code: " + String.valueOf(responseCode));
+                        Timber.i("Places Response Code: %d", responseCode);
                         if (responseCode == 200) {
                             //Parse the downloaded String
                             parsePlaces(gson, parser, response.body().string());
@@ -181,11 +180,11 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
             }
             catch (Exception e) {
                 //Catch any possible exceptions
-                Log.e(TAG, "Section Error: " + mCurrentSection, e);
+                Timber.e(e, "Section Error: %s", mCurrentSection);
             }
         }
 
-        Log.d(TAG, "Finished");
+        Timber.i("Finished");
         return null;
     }
 

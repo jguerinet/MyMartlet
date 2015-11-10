@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.util.storage;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,6 +37,7 @@ import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Encryption;
+import timber.log.Timber;
 
 /**
  * Loads objects from internal storage or {@link SharedPreferences}
@@ -47,8 +47,6 @@ import ca.appvelopers.mcgillmobile.util.Encryption;
  */
 @SuppressWarnings("unchecked")
 public class Load {
-    private static final String TAG = "Load";
-
     /* SHARED PREFS */
 
     /**
@@ -172,9 +170,9 @@ public class Load {
             ObjectInputStream in = new ObjectInputStream(fis);
             return in.readObject();
         } catch(FileNotFoundException e){
-            Log.e(TAG, "File not found: " + tag);
+            Timber.e("File not found: %s", tag);
         } catch(Exception e){
-            Log.e(TAG, "Failure: " + tag, e);
+            Timber.e(e, "Failure: %s", tag);
         }
 
         return null;

@@ -246,7 +246,7 @@ public class WishlistFragment extends BaseFragment {
                             .courseNumber(number)
                             .build();
 
-                    String html = new DownloaderThread(mActivity, "Wishlist Download", url)
+                    String html = new DownloaderThread(mActivity, url)
                             .execute();
 
                     if(html != null){

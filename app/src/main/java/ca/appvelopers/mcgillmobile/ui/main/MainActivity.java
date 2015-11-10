@@ -26,7 +26,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,6 +66,7 @@ import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
+import timber.log.Timber;
 
 /**
  * The MainActivity the contains the side drawer and the main views for the fragments
@@ -75,7 +75,6 @@ import ca.appvelopers.mcgillmobile.util.storage.Clear;
  * @since 1.0.0
  */
 public class MainActivity extends BaseActivity {
-    private static final String TAG = "MainActivity";
     /**
      * Progress bar shown when the user is switching fragments
      */
@@ -434,13 +433,13 @@ public class MainActivity extends BaseActivity {
                     Analytics.getInstance().sendEvent("facebook", "successful_post", null);
                 }
                 else{
-                    Log.d(TAG, "Facebook post cancelled");
+                    Timber.i("Facebook post cancelled");
                 }
             }
 
             @Override
             public void onCancel(){
-                Log.d(TAG, "Facebook post cancelled");
+                Timber.i("Facebook post cancelled");
             }
 
             @Override
@@ -467,7 +466,7 @@ public class MainActivity extends BaseActivity {
             //Show the TweetComposer
             builder.show();
         } catch(MalformedURLException e){
-            Log.e(TAG, "Twitter URL malformed");
+            Timber.e("Twitter URL malformed");
         }
     }
 }
