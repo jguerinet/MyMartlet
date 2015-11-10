@@ -5,7 +5,7 @@
             android:id="@+id/schedule"
             android:checked="false"
             android:title="@string/title_schedule"
-            android:icon="@drawable/ic_schedule"/>
+            android:icon="@drawable/ic_event"/>
 
         <item
             android:id="@+id/transcript"
@@ -23,7 +23,7 @@
             android:id="@+id/courses"
             android:checked="false"
             android:title="@string/title_courses"
-            android:icon="@drawable/ic_courses"/>
+            android:icon="@drawable/ic_assignment"/>
 
         <item
             android:id="@+id/wishlist"
@@ -41,13 +41,13 @@
             android:id="@+id/ebill"
             android:checked="false"
             android:title="@string/title_ebill"
-            android:icon="@drawable/ic_ebill"/>
+            android:icon="@drawable/ic_money"/>
 
         <item
             android:id="@+id/map"
             android:checked="false"
             android:title="@string/title_map"
-            android:icon="@drawable/ic_map"/>
+            android:icon="@drawable/ic_location"/>
 
         <item
             android:id="@+id/desktop"

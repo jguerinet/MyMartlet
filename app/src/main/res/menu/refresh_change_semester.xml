@@ -5,7 +5,7 @@
         android:id="@+id/action_refresh"
         app:showAsAction="always"
         android:title="@string/refresh"
-        android:icon="@drawable/ic_menu_refresh"/>
+        android:icon="@drawable/ic_refresh"/>
 
     <item
         android:id="@+id/action_change_semester"
