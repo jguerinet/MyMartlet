@@ -42,8 +42,22 @@ android {
         versionCode 12
         versionName "2.0"
     }
+    signingConfigs{
+        debug{
+            storeFile file('../util/debug.keystore')
+            storePassword  'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        release
+    }
     buildTypes {
+        debug{
+            signingConfig signingConfigs.debug
+            versionNameSuffix "." + defaultConfig.versionCode
+        }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -88,3 +102,11 @@ dependencies{
     compile 'joda-time:joda-time:2.8.2'
     compile 'org.jsoup:jsoup:1.8.3'
 }
+
+//Setting up the release keystore properties
+def props = new Properties()
+props.load(new FileInputStream(rootProject.file("util/signing.properties")))
+android.signingConfigs.release.storeFile rootProject.file(props.keyStore)
+android.signingConfigs.release.storePassword props.keyStorePassword
+android.signingConfigs.release.keyAlias props.keyAlias
+android.signingConfigs.release.keyPassword props.keyAliasPassword
