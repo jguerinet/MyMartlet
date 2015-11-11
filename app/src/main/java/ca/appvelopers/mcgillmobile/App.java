@@ -39,6 +39,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -124,8 +125,8 @@ public class App extends Application {
         Timber.plant(new CrashlyticsTree());
 
         //Set up The Fabric stuff: Twitter, Crashlytics
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY,
-                Constants.TWITTER_SECRET);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(Passwords.TWITTER_KEY,
+                Passwords.TWITTER_SECRET);
         Crashlytics crashlytics = new Crashlytics.Builder().core(new CrashlyticsCore.Builder()
                 .disabled(BuildConfig.REPORT_CRASHES).build()).build();
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
@@ -134,7 +135,7 @@ public class App extends Application {
         Update.update(this);
 
         //Set up Instabug
-        Instabug.initialize(this, Constants.INSTABUG_KEY)
+        Instabug.initialize(this, Passwords.INSTABUG_KEY)
                 .enableEmailField(true, false)
                 .setCommentPlaceholder(getString(R.string.bug_prompt))
                 .setDefaultEmail(Load.fullUsername())

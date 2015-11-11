@@ -51,6 +51,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Date;
 import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 import timber.log.Timber;
@@ -113,8 +114,8 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                     public Request authenticate(Proxy proxy, Response response) throws
                             IOException{
                         //Set up the credentials
-                        String credentials = Credentials.basic(Constants.CONFIG_USERNAME,
-                                Constants.CONFIG_PASSWORD);
+                        String credentials = Credentials.basic(Passwords.CONFIG_USERNAME,
+                                Passwords.CONFIG_PASSWORD);
                         //Add it to the passed response's request object
                         return response.request().newBuilder()
                                 .header("Authorization", credentials)
