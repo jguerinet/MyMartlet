@@ -42,22 +42,29 @@ public class Test {
      * Test the transcript by reading from a local one
      */
     public static String testTranscript(){
-        //Read from the file
-        String transcriptString = Help.readFromFile(App.getContext(), R.raw.test_transcript);
-
-        return Parser.parseTranscript(transcriptString);
+        //TODO Set this up such that it takes the file name as an argument and reads it from
+        //  the assets
+//        //Read from the file
+//        String transcriptString = Help.readFromFile(App.getContext(), R.raw.test_transcript);
+//
+//        return Parser.parseTranscript(transcriptString);
+        return null;
     }
 
     /**
      * Test the schedule by reading from a local one
      */
     public static String testSchedule(){
-        //Choose file to read from here
-        String scheduleString = Help.readFromFile(App.getContext(), R.raw.sched_nursing);
+        //TODO Set this up such that it takes the file name as an argument and reads it from
+        //  the assets
+//        //Choose file to read from here
+//        String scheduleString = Help.readFromFile(App.getContext(), R.raw.sched_nursing);
+//
+//        //Choose term that this schedule is for here
+//        Term term = new Term(Season.FALL, 2014);
+//
+//        return Parser.parseCourses(term, scheduleString);
 
-        //Choose term that this schedule is for here
-        Term term = new Term(Season.FALL, 2014);
-
-        return Parser.parseCourses(term, scheduleString);
+        return null;
     }
 }
