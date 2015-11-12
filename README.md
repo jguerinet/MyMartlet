@@ -4,6 +4,11 @@
 The MyMartlet app provides a mobile portal to McGill University students to McGill's MyMcGill. It gives the user access to all of the essential MyMcGill features, such as schedule, transcript, ebill, adding/dropping courses, a campus map, and more. 
 This is an unofficial McGill app, and is not affiliated with McGill University whatsoever.  
 
+## Contributions
+Have a feature request? Make an issue! If you want to implement it yourself, just fork the repo, make the changes, and submit a PR. 
+If you do fork the repo, make sure to rename signing.properties.sample to signing.properties and PasswordsSample to Passwords or else the project will not build. 
+All contributions are welcome!
+
 ## Branches
 * master: Current development code
 * beta: Current code that the beta testers have
@@ -15,31 +20,33 @@ This is an unofficial McGill app, and is not affiliated with McGill University w
 * util: Utility classes used throughout the app
 
 ## Gradle Dependencies
-* AppCompat v7:         Android v7 support library
-* Support v4:           Android v4 support library
-* RecyclerView v7:      Android RecyclerView library
-* Crashlytics:          Crash reporting
-* Facebook:             Used to share the app on Facebook
-* GPS - Analytics:      Anonymous Usage Statistics with Google Analytics
-* GPS - Maps:           Maps library for the campus map section
-* GSON:                 JSON related operations
-* Instabug:             Bug reporting
-* ButterKnife:          View injection
-* okhttp:               HTTP client
-* okio:                 I/O API
-* Picasso:              Lazy image loading
-* Twitter:              Used to share the app on Twitter
-* ViewPagerIndicator:   Used to show the current position of a ViewPager
-* Joda Time:            Dates
-* JSoup:                HTML parsing
+* Android AppCompat
+* Android Design 
+* Android Support v4
+* Android RecyclerView
+* Crashlytics
+* Facebook
+* GPS - Analytics
+* GPS - Maps
+* GSON
+* Instabug
+* ButterKnife
+* Timber
+* okhttp
+* okio
+* Picasso
+* Twitter
+* ViewPagerIndicator
+* Joda Time
+* JSoup
 
 ## Contributors
-* Joshua David Alfaro - Lead Designer
+* [Joshua David Alfaro](https://github.com/JDAlfaro) - Lead Designer
 * [Julien Guerinet](https://github.com/jguerinet) - Project Leader
-* Rafi Uddin - Android Support
-* Ryan Singzon - Android Developer
-* Shabbir Hussain - Android Developer
-* Quang Dao - Android Developer
+* [Rafi Uddin](https://github.com/AdnanUddin) - Android Support
+* [Ryan Singzon](https://github.com/rsingzon) - Android Developer
+* [Shabbir Hussain](https://github.com/shabbir-hussain) - Android Developer
+* [Quang Dao](https://github.com/nqdao) - Android Developer
 
 ## Version History
 See the [Change Log](CHANGELOG.md).
