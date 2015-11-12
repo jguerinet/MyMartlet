@@ -59,7 +59,8 @@ public class Analytics {
      */
     private Analytics(){
         //Set up the tracker
-        this.mTracker = GoogleAnalytics.getInstance(App.getContext()).newTracker(R.xml.analytics);
+        this.mTracker = GoogleAnalytics.getInstance(App.getContext())
+                .newTracker(R.xml.global_tracker);
     }
 
     /**
