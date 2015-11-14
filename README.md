@@ -20,25 +20,25 @@ All contributions are welcome!
 * util: Utility classes used throughout the app
 
 ## Gradle Dependencies
-* Android AppCompat
-* Android Design 
-* Android Support v4
-* Android RecyclerView
-* Crashlytics
-* Facebook
-* GPS - Analytics
-* GPS - Maps
-* GSON
-* Instabug
-* ButterKnife
-* Timber
-* okhttp
-* okio
-* Picasso
-* Twitter
-* ViewPagerIndicator
-* Joda Time
-* JSoup
+* [Android AppCompat](http://developer.android.com/tools/support-library/features.html#v7-appcompat)
+* [Android Design](http://developer.android.com/tools/support-library/features.html#design)
+* [Android Support v4](http://developer.android.com/tools/support-library/features.html#v4)
+* [Android RecyclerView](http://developer.android.com/tools/support-library/features.html#v7-recyclerview)
+* [Crashlytics](http://try.crashlytics.com/sdk-android/)
+* [Facebook](https://github.com/facebook/facebook-android-sdk)
+* [GPS - Analytics](https://developers.google.com/analytics/devguides/collection/android/v4/)
+* [GPS - Maps](https://developers.google.com/maps/documentation/android-api/)
+* [GSON](https://github.com/google/gson)
+* [Instabug](https://instabug.com/sdk-integration#android)
+* [ButterKnife](https://github.com/JakeWharton/butterknife)
+* [Timber](https://github.com/JakeWharton/timber)
+* [okhttp](https://github.com/square/okhttp)
+* [okio](https://github.com/square/okio)
+* [Picasso](https://github.com/square/picasso)
+* [Twitter](https://dev.twitter.com/mopub/android)
+* [ViewPagerIndicator](https://github.com/JakeWharton/ViewPagerIndicator)
+* [Joda Time](https://github.com/JodaOrg/joda-time)
+* [JSoup](https://github.com/jhy/jsoup)
 
 ## Contributors
 * [Joshua David Alfaro](https://github.com/JDAlfaro) - Lead Designer
