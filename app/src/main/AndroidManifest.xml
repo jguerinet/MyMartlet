@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ca.appvelopers.mcgillmobile" >
+    package="ca.appvelopers.mcgillmobile"
+    xmlns:tools="http://schemas.android.com/tools">
 	
 	<!-- (Normal) -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,12 +17,16 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- (Dangerous) Campus map -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <!-- TODO Remove these -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- (Dangerous) TODO Do we need this for the downloads folder ? -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-	 <!-- Maps Permission -->
+    <!-- Remove this permission needed by Instabug because it's only used to attach logs -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:node="remove"/>
+
+
+    <!-- Maps Permission -->
     <permission
         android:name="com.example.googlemaps.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
