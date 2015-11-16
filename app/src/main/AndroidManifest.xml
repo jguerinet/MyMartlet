@@ -2,22 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.appvelopers.mcgillmobile" >
 	
-	<!-- Internet permission -->
+	<!-- (Normal) -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Save anything that is external to the app -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- To see if the user is connected to the internet -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- Location permissions for the map -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- For the seat and grade checkers -->
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <!-- Instabug -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- (Normal) To see if the user is connected to the internet -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- (Normal) Instabug, to see if the user if connected to the internet -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-	
+    <!-- (Normal) For the seat and grade checkers -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- (Normal) For the seat and grade checkers -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- (Dangerous) Campus map -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- (Dangerous) Campus map -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- TODO Remove these -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 	 <!-- Maps Permission -->
     <permission
         android:name="com.example.googlemaps.permission.MAPS_RECEIVE"
@@ -37,7 +40,9 @@
         android:logo="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/Theme.MyMartlet"
-        android:vmSafeMode="true">
+        android:vmSafeMode="true"
+        android:allowBackup="true">
+
         <activity
             android:name=".ui.SplashActivity"
             android:windowSoftInputMode="adjustResize"
@@ -109,10 +114,12 @@
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"
                   android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
                   android:label="@string/app_name" />
+
+        <!-- Fabric -->
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9ef346d3600f30642b3786c89e29e900fec629ee" />
-    </application>
 
+    </application>
 
 </manifest>
