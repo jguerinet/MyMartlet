@@ -26,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.ColorRes;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.widget.TextView;
@@ -152,8 +153,6 @@ public class Help {
     }
 
     /**
-     * Checks if the user is connected to the internet
-     *
      * @return True if the user is connected to the internet, false otherwise
      */
     public static boolean isConnected() {
@@ -162,4 +161,25 @@ public class Help {
         NetworkInfo info = connectManager.getActiveNetworkInfo();
         return info != null && info.isConnected();
     }
+
+    /**
+     * Checks if the given permission has been granted, and asks for it if it hasn't
+     *
+     * @param activity    The calling activity
+     * @param permission  The permission needed
+     * @param requestCode The request code to use if we need to ask for the permission
+     * @return True if the permission has already been granted, false otherwise
+     */
+    public static boolean checkPermission(Activity activity, String permission, int requestCode){
+        //Check that we have the permission
+        if(ContextCompat.checkSelfPermission(activity, permission) !=
+                PackageManager.PERMISSION_GRANTED) {
+            //Request the permission
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+            return false;
+        }
+        //If we already have the permission, return true
+        return true;
+    }
+
 }
