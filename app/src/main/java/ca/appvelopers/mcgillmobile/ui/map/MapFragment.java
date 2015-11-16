@@ -16,9 +16,12 @@
 
 package ca.appvelopers.mcgillmobile.ui.map;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
@@ -57,6 +60,7 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.Help;
 import timber.log.Timber;
 
 /**
@@ -68,6 +72,7 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class MapFragment extends BaseFragment {
+    private static final int LOCATION_REQUEST = 101;
     /**
      * The coordinates used to center the map initially
      */
@@ -260,8 +265,12 @@ public class MapFragment extends BaseFragment {
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-            //Show the user's location
-            mMap.setMyLocationEnabled(true);
+            //Show the user's location if we have the permission to
+            if (Help.checkPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION,
+                    LOCATION_REQUEST)) {
+                mMap.setMyLocationEnabled(true);
+            }
+            //If we don't, it will be requested
 
             //Go through all of the places
             for (Place place : App.getPlaces()) {
@@ -371,6 +380,25 @@ public class MapFragment extends BaseFragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+            @NonNull int[] grantResults) {
+        switch(requestCode){
+            case LOCATION_REQUEST:
+                //Check if the permission has been granted
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Show the user on the map if that is the case
+                    if (mMap != null) {
+                        mMap.setMyLocationEnabled(true);
+                    }
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     /**

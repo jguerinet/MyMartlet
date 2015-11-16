@@ -14,8 +14,6 @@
     <!-- (Normal) For the seat and grade checkers -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- (Dangerous) Campus map -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- (Dangerous) Campus map -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- (Dangerous) TODO Do we need this for the downloads folder ? -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -24,7 +22,6 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         tools:node="remove"/>
-
 
     <!-- Maps Permission -->
     <permission
