@@ -85,10 +85,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.3@aar') {
         transitive = true;
     }
-    compile('com.twitter.sdk.android:twitter:1.9.1@aar') {
+    compile('com.twitter.sdk.android:twitter:1.10.0@aar') {
         transitive = true;
     }
     compile 'com.android.support:appcompat-v7:23.1.1'
