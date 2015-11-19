@@ -31,7 +31,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-
 android {
     compileSdkVersion 23
     buildToolsVersion "22.0.1"
@@ -43,26 +42,26 @@ android {
         versionCode 12
         versionName "2.0"
     }
-    signingConfigs{
-        debug{
+    signingConfigs {
+        debug {
             storeFile file('../util/debug.keystore')
-            storePassword  'android'
+            storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
         release
     }
     buildTypes {
-        debug{
+        debug {
             signingConfig signingConfigs.debug
             buildConfigField 'boolean', 'REPORT_CRASHES', 'false'
             versionNameSuffix "." + defaultConfig.versionCode
         }
-        beta{
+        beta {
             initWith debug
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
-        release{
+        release {
             signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -78,33 +77,34 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/notice.txt'
     }
-    compileOptions{
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
-dependencies{
+dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:design:23.1.0'
-    compile 'com.android.support:support-v4:23.1.0'
-    compile 'com.android.support:recyclerview-v7:+'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar'){
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+    compile('com.twitter.sdk.android:twitter:1.9.1@aar') {
+        transitive = true;
+    }
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     compile 'com.google.android.gms:play-services-analytics:8.3.0'
+    compile 'com.google.android.gms:play-services-maps:8.3.0'
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.instabug.library:instabugsupport:1+'
+    compile 'com.instabug.library:instabugsupport:1.+'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.timber:timber:4.1.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile('com.twitter.sdk.android:twitter:1.9.1@aar'){
-        transitive = true;
-    }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'joda-time:joda-time:2.9'
     compile 'org.jsoup:jsoup:1.8.3'

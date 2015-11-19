@@ -1,86 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ca.appvelopers.mcgillmobile"
-    xmlns:tools="http://schemas.android.com/tools">
-	
-	<!-- (Normal) -->
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ca.appvelopers.mcgillmobile" >
+
+    <!-- (Normal) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- (Normal) To see if the user is connected to the internet -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- (Normal) Instabug, to see if the user if connected to the internet -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- (Normal) For the seat and grade checkers -->
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- (Normal) For the seat and grade checkers -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- (Dangerous) Campus map -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- (Dangerous) TODO Do we need this for the downloads folder ? -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- Remove this permission needed by Instabug because it's only used to attach logs -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        tools:node="remove"/>
-		
+        tools:node="remove" />
+
     <application
-		android:name=".App"
+        android:name=".App"
+        android:allowBackup="true"
         android:allowClearUserData="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
-        android:logo="@drawable/logo"
         android:label="@string/app_name"
+        android:logo="@drawable/logo"
         android:theme="@style/Theme.MyMartlet"
-        android:vmSafeMode="true"
-        android:allowBackup="true">
-
+        android:vmSafeMode="true" >
         <activity
             android:name=".ui.SplashActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.transcript.semester.SemesterActivity" />
-
+        <activity android:name=".ui.transcript.semester.SemesterActivity" />
         <activity
             android:name=".ui.walkthrough.WalkthroughActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.settings.AboutActivity"
             android:label="@string/title_about" />
-
         <activity android:name=".ui.settings.HelpActivity" />
-
-        <activity android:name=".ui.main.MainActivity"
+        <activity
+            android:name=".ui.main.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
+
                 <!-- Twitter -->
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="mymartlet"
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.search.SearchResultsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.settings.AgreementActivity"
+            android:label="@string/title_agreement"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.search.SearchResultsActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".ui.settings.AgreementActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_agreement"/>
-
-        <receiver android:name=".util.background.BootReceiver"
-            android:enabled="false">
+        <receiver
+            android:name=".util.background.BootReceiver"
+            android:enabled="false" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <service android:name=".util.background.CheckerService" />
 
         <!-- Facebook -->
@@ -88,19 +91,26 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_id" />
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider828093890556007"
-                  android:name="com.facebook.FacebookContentProvider"
-                  android:exported="true"/>
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider828093890556007"
+            android:exported="true" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                  android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-                  android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- Fabric -->
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9ef346d3600f30642b3786c89e29e900fec629ee" />
+
+        <!-- Google Maps -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
     </application>
 
