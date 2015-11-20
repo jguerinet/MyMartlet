@@ -16,58 +16,73 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import android.content.Context;
-
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 
 /**
- * TODO
  * Runs any update code
  * @author Julien Guerinet
  * @version 2.0.0
  * @since 1.0.0
  */
 public class Update {
-    public static void update(Context context){
-        //Get the version number
-        int versionNumber = Help.getVersionCode();
+
+    /**
+     * Checks if the app has been updated and runs any update code needed if so
+     */
+    public static void update(){
+        //Get the version code
+        int code = Help.getVersionCode();
 
         //Load the current version number from the preferences.
         int storedVersion = Load.versionCode();
 
         //Stored version is smaller than version number
-        while(storedVersion < versionNumber){
+        while(storedVersion < code) {
             //First time opening the app
-            if(storedVersion == -1){
+            if (storedVersion == -1) {
                 init();
                 //Break out of the loop
                 break;
             }
-            if(storedVersion == 6){
+            else if (storedVersion == 6) {
                 update7();
             }
-
-            /* This will be where the version updates would go */
+            else if (storedVersion == 12) {
+                update13();
+            }
 
             storedVersion ++;
         }
 
         //Store the new version in the SharedPrefs
-        Save.versionCode(versionNumber);
+        Save.versionCode(code);
+    }
+
+    /**
+     * Object Changes and File location Changes:
+     * - Force the reload of all of the config stuff
+     * - Force the user to reload all of their info
+     */
+    private static void update13() {
+        App.forceReload = true;
+        App.forceUserReload = true;
+    }
+
+    /**
+     * Object changes -> Force the reload of all of the info
+     */
+    private static void update7() {
+        //Force the user to re-update all of the information in the app
+        App.forceUserReload = true;
     }
 
     /**
      * Run anything that needs to be run the first time the app is opened
      */
-    private static void init(){
+    private static void init() {
         //Force the config downloader
         App.forceReload = true;
-    }
-
-    private static void update7(){
-        //Force the user to re-update all of the information in the app
-        App.forceUserReload = true;
     }
 }

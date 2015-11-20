@@ -133,7 +133,7 @@ public class App extends Application {
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
 
         //Run the update code, if any
-        Update.update(this);
+        Update.update();
 
         //Set up Instabug
         Instabug.initialize(this, Passwords.INSTABUG_KEY)

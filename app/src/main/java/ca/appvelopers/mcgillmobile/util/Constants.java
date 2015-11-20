@@ -92,7 +92,6 @@ public class Constants {
     public static final String TRANSCRIPT_FILE = "transcript";
     /**
      * The file name where the user's courses are stored
-     * TODO Make sure to move from old file name
      */
     public static final String COURSES_FILE = "courses";
     /**
@@ -109,7 +108,6 @@ public class Constants {
     public static final String DEFAULT_TERM_FILE = "default_term";
     /**
      * The file name where the user's wishlist is stored
-     * TODO Make sure to move from old file name
      */
     public static final String WISHLIST_FILE = "wishlist";
     /**
@@ -122,7 +120,6 @@ public class Constants {
     public static final String FAVORITE_PLACES_FILE = "favorite_places";
     /**
      * The file name where the different place types are stored
-     * TODO Make sure to move from old file name
      */
     public static final String PLACE_TYPES_FILE = "place_types";
     /**
@@ -174,7 +171,6 @@ public class Constants {
     public static final String STATISTICS = "statistics";
     /**
      * The last If-Modified-Since date used for the config
-     * TODO Move from old location
      */
     public static final String IF_MODIFIED_SINCE = "if_modified_since";
     /**
