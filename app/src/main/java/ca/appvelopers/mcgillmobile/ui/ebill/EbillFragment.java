@@ -38,6 +38,7 @@ import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
@@ -112,6 +113,7 @@ public class EbillFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         inflater.inflate(R.menu.refresh, menu);
+        Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
     }
 
     @Override

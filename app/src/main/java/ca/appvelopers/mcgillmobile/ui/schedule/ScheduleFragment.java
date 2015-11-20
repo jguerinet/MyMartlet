@@ -39,6 +39,7 @@ import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
@@ -107,6 +108,7 @@ public class ScheduleFragment extends BaseFragment {
         //Only load the menu in portrait mode
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             inflater.inflate(R.menu.refresh_change_semester, menu);
+            Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
         }
     }
 

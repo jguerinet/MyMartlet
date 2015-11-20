@@ -45,6 +45,7 @@ import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
@@ -171,10 +172,12 @@ public class WishlistFragment extends BaseFragment {
         //  register for
         if(App.getRegisterTerms().size() > 1){
             inflater.inflate(R.menu.refresh_change_semester, menu);
+            Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
         }
         //If there is at least one semester to register for, show the refresh button
         else if(!App.getRegisterTerms().isEmpty()){
             inflater.inflate(R.menu.refresh, menu);
+            Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
         }
     }
 
