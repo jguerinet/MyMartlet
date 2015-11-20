@@ -127,8 +127,9 @@ public class App extends Application {
         //Set up The Fabric stuff: Twitter, Crashlytics
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Passwords.TWITTER_KEY,
                 Passwords.TWITTER_SECRET);
+        @SuppressWarnings("PointlessBooleanExpression")
         Crashlytics crashlytics = new Crashlytics.Builder().core(new CrashlyticsCore.Builder()
-                .disabled(BuildConfig.REPORT_CRASHES).build()).build();
+                .disabled(!BuildConfig.REPORT_CRASHES).build()).build();
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
 
         //Run the update code, if any
