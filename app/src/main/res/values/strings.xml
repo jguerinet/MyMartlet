@@ -206,7 +206,7 @@
     <string name="walkthrough_homepage">Please choose a page you will see first when opening this app. You can change this at any time in the Settings.</string>
     <string name="walkthrough_faculty">To get a better idea of who is using this app, we would love to know what faculty you are a part of: </string>
     <string name="walkthrough_schedule">See your schedule in landscape mode by tilting your screen horizontally in the Schedule tab.</string>
-    <string name="walkthrough_email">Set up your McGill email account on your device by going to Settings -> Help -> Set up your Email</string>
+    <string name="walkthrough_email">Set up your McGill email account on your device by going to Settings -&gt; Help -&gt; Set up your Email</string>
 
     <!-- Courses List / Wishlist -->
     <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
@@ -346,4 +346,8 @@
     <string name="updating_ebill">Updating eBill&#8230;</string>
     <string name="updating_user">Updating User Info&#8230;</string>
     <string name="skipping">Skipping&#8230;</string>
+
+    <!-- MyCourses -->
+    <string name="storage_permission_granted">You can now start the download again!</string>
+    <string name="storage_permission_refused">Download impossible without granting the permission.</string>
 </resources>

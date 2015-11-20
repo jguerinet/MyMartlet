@@ -27,6 +27,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.widget.TextView;
@@ -163,6 +164,18 @@ public class Help {
     }
 
     /**
+     * Checks if a given permission is granted
+     *
+     * @param context    The app context
+     * @param permission The permission to check
+     * @return True if the permission is granted, false otherwise
+     */
+    private static boolean isPermissionGranted(Context context, String permission) {
+        return ContextCompat.checkSelfPermission(context, permission) ==
+                PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
      * Checks if the given permission has been granted, and asks for it if it hasn't
      *
      * @param activity    The calling activity
@@ -172,13 +185,29 @@ public class Help {
      */
     public static boolean checkPermission(Activity activity, String permission, int requestCode){
         //Check that we have the permission
-        if(ContextCompat.checkSelfPermission(activity, permission) !=
-                PackageManager.PERMISSION_GRANTED) {
+        if(!isPermissionGranted(activity, permission)) {
             //Request the permission
             ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
             return false;
         }
         //If we already have the permission, return true
+        return true;
+    }
+
+    /**
+     * Checks if the given permission has been granted, and asks for it from a fragment if it hasn't
+     *
+     * @param fragment    The calling Fragment
+     * @param permission  The permission needed
+     * @param requestCode The request code to use if we need to ask for the permission
+     * @return True if the permission has already been granted, false otherwise
+     */
+    public static boolean checkPermission(Fragment fragment, String permission, int requestCode) {
+        if(!isPermissionGranted(fragment.getContext(), permission)) {
+            //Request the permission
+            fragment.requestPermissions(new String[]{permission}, requestCode);
+            return false;
+        }
         return true;
     }
 

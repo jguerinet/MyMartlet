@@ -16,13 +16,16 @@
 
 package ca.appvelopers.mcgillmobile.ui.web;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +34,7 @@ import android.webkit.DownloadListener;
 import android.webkit.MimeTypeMap;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
@@ -47,6 +51,10 @@ import ca.appvelopers.mcgillmobile.util.storage.Load;
  * @since 1.0.0
  */
 public class MyCoursesFragment extends BaseFragment {
+    /**
+     * Code used to get the external storage permission for downloads
+     */
+    private static final int EXTERNAL_STORAGE_PERMISSION = 100;
     /**
      * The main view
      */
@@ -95,6 +103,12 @@ public class MyCoursesFragment extends BaseFragment {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition,
                                         String mimeType, long contentLength) {
+                //Check that we have the external storage permission
+                if(!Help.checkPermission(MyCoursesFragment.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, EXTERNAL_STORAGE_PERMISSION)) {
+                    return;
+                }
+
                 String[] urlSplit = url.split("/");
                 String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
                 String fileName = urlSplit[urlSplit.length - 1].concat("" + extension);
@@ -105,13 +119,12 @@ public class MyCoursesFragment extends BaseFragment {
                 String cookie = cookieManager.getCookie(url);
                 request.addRequestHeader("Cookie", cookie);
                 request.setTitle(fileName);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    request.allowScanningByMediaScanner();
-                    request.setNotificationVisibility(
-                            DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                }
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(
+                        DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 // save the file in the "Downloads" folder of SDCARD
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                        fileName);
                 // get download service and enqueue file
                 DownloadManager manager =
                         (DownloadManager) mActivity.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -144,6 +157,26 @@ public class MyCoursesFragment extends BaseFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+            @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case EXTERNAL_STORAGE_PERMISSION: {
+                int stringId;
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    stringId = R.string.storage_permission_granted;
+                }
+                else {
+                    stringId = R.string.storage_permission_refused;
+                }
+                Toast.makeText(mActivity, stringId, Toast.LENGTH_SHORT).show();
+            }
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     /**

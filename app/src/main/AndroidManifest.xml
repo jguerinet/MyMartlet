@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- (Dangerous) Campus map -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- (Dangerous) TODO Do we need this for the downloads folder ? -->
+    <!-- (Dangerous) Downloads from MyCourses -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- Remove this permission needed by Instabug because it's only used to attach logs -->

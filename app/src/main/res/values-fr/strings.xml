@@ -202,7 +202,7 @@
     <string name="walkthrough_homepage">Veuillez choisir une page que vous allez voir en premier en ouvrant cette application. Cette page peut être changée a n\'importe quel moment dans les Réglages.</string>
     <string name="walkthrough_faculty">Pour nous donner une meilleure idée de qui utilise cette application, nous aimerons savoir de quel faculté vous faites parti(e):</string>
     <string name="walkthrough_schedule">Vous pouvez voir votre calendrier en mode paysage en tourant votre appareil horizontalement dans la section Calendrier.</string>
-    <string name="walkthrough_email">Ajoutez votre email McGill sur votre appareil en allant dans Réglages -> Aide -> Configurer votre Email</string>
+    <string name="walkthrough_email">Ajoutez votre email McGill sur votre appareil en allant dans Réglages -&gt; Aide -&gt; Configurer votre Email</string>
 
     <!-- Courses List / Wishlist -->
     <string name="wishlist_remove">%s cour(s) enlevés de la liste d\'envies</string>
@@ -304,4 +304,8 @@
     <string name="updating_ebill">Mise à jour de votre eBill&#8230;</string>
     <string name="updating_user">Mise à jour de l’information de l’utilisateur&#8230;</string>
     <string name="skipping">Un moment&#8230;</string>
+
+    <!-- MyCourses -->
+    <string name="storage_permission_granted">Vous pouvez maintenant recommencer le téléchargement!</string>
+    <string name="storage_permission_refused">Téléchargement impossible sans cette permission.</string>
 </resources>
