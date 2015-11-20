@@ -144,7 +144,7 @@ public class App extends Application {
                 .setInvalidCommentAlertText(getString(R.string.bug_comment_invalid))
                 .setSubmitButtonText(getString(R.string.submit))
                 .setCommentIsRequired(true)
-                .setDebugEnabled(BuildConfig.DEBUG)
+                .setDebugEnabled(false)
                 .setInvocationEvent(Instabug.IBGInvocationEvent.IBGInvocationEventNone)
                 .setIsTrackingCrashes(false)
                 .setIsTrackingUserSteps(false)
