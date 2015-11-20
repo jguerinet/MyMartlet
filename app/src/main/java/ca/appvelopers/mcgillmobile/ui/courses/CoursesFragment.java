@@ -53,7 +53,7 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * Shows the user all of the courses the user has taken or is currently registered in
  * @author Julien Guerinet
  * @author Joshua David Alfaro
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class CoursesFragment extends BaseFragment {

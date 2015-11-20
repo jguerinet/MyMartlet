@@ -48,7 +48,7 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 /**
  * Represents the user's schedule
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")

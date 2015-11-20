@@ -24,7 +24,7 @@ import java.util.List;
  *  term GPA, and full time status
  * @author Ryan Singzon
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class Semester implements Serializable{

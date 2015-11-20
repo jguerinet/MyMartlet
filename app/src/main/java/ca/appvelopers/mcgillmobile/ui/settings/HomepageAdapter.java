@@ -31,7 +31,7 @@ import ca.appvelopers.mcgillmobile.model.Homepage;
 /**
  * Displays the different homepages the user can have
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class HomepageAdapter extends BaseAdapter {

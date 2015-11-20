@@ -16,16 +16,11 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Season;
-import ca.appvelopers.mcgillmobile.model.Term;
-
 /**
  * Various utility methods to test sections of the app
  * @author Julien Guerinet
  * @author Ryan Singzon
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class Test {

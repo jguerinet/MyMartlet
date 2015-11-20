@@ -36,7 +36,7 @@ import ca.appvelopers.mcgillmobile.model.Day;
 /**
  * The adapter used for the list of courses
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHolder> {

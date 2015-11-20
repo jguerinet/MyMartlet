@@ -29,7 +29,7 @@ import timber.log.Timber;
 /**
  * Sends screens and events to the Google Analytics console
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class Analytics {

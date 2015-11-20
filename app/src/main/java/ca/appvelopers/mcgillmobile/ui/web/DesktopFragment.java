@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.util.storage.Load;
 /**
  * Shows the desktop page of MyMcGill
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 2.0
  */
 public class DesktopFragment extends BaseFragment {

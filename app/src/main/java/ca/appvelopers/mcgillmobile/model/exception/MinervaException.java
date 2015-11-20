@@ -20,7 +20,7 @@ package ca.appvelopers.mcgillmobile.model.exception;
  * Exception caused when the user was logged out of Minerva
  * @author Shabbir Hussain
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class MinervaException extends Exception {

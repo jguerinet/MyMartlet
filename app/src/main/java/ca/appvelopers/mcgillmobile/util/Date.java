@@ -28,7 +28,7 @@ import ca.appvelopers.mcgillmobile.model.Language;
 /**
  * Contains useful static methods relating to dates
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 2.0
  */
 public class Date {

@@ -24,7 +24,7 @@ import java.io.Serializable;
  * One statement in the user's ebill
  * @author Quang Dao
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class Statement implements Serializable{

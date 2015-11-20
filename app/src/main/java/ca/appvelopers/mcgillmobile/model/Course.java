@@ -29,7 +29,7 @@ import timber.log.Timber;
  * A course in the user's schedule or one that a user can register for
  * @author Quang Dao
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class Course implements Serializable{

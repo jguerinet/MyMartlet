@@ -29,7 +29,7 @@ import timber.log.Timber;
 /**
  * Downloads the information at a given URL, shows any errors if necessary and present
  * @author Julien Guerinet
- * @version 2.0.0
+ * @version 2.0.1
  * @since 2.0
  */
 public class DownloaderThread extends Thread {

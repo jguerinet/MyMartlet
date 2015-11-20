@@ -31,7 +31,7 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
  * Displays the EULA
  * @author Julien Guerinet
  * @author Joshua David Alfaro
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class AgreementActivity extends BaseActivity {
