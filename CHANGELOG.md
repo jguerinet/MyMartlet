@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 2.0.1 (2015-11-20)
+* Open sourced the whole project
+* Switched to min SDK 15
+* Switched to Gradle
+* Removed FontAwesome and switched to material design VectorDrawables
+* Fixed Facebook sharing
+* Fixed Twitter sharing
+* Added Crashlytics
+* Added Instabug
+* Significantly optimized the Connection class 
+* Fixed bug where app would crash if ebill was empty
+* Set up the Marshmallow permissions
+* Refactored the whole code base
+* Minor UI tweaks
+
 ## Version 2.0.0 (2015-02-10)
 * Fixed dev mode
 
