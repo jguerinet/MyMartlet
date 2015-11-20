@@ -66,6 +66,9 @@ public class Update {
      * - Force the user to reload all of their info
      */
     private static void update13() {
+        //Delete old transcript to avoid all of the crash reports
+        App.getContext().deleteFile(Constants.TRANSCRIPT);
+
         App.forceReload = true;
         App.forceUserReload = true;
     }
