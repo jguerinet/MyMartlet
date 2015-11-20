@@ -466,7 +466,7 @@ public class MainActivity extends BaseActivity {
             //Show the TweetComposer
             builder.show();
         } catch(MalformedURLException e){
-            Timber.e("Twitter URL malformed");
+            Timber.e(e, "Twitter URL malformed");
         }
     }
 }
