@@ -2,6 +2,9 @@
 <resources>
     <!-- Theme for API 21+ -->
     <style name="Theme.MyMartlet" parent="Theme.MyMartlet.Base">
+        <item name="android:colorPrimary">@color/red</item>
+        <item name="android:colorPrimaryDark">@color/red_dark</item>
+        <item name="android:colorAccent">@color/red</item>
         <item name="android:statusBarColor">@color/red_dark</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
