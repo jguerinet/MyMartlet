@@ -35,7 +35,8 @@
                 android:id="@+id/semester_gpa"
                 android:duplicateParentState="true"
                 android:textSize="@dimen/text_small"
-                android:paddingLeft="@dimen/padding_micro"
+                android:layout_marginLeft="@dimen/padding_micro"
+                android:layout_marginStart="@dimen/padding_micro"
                 android:textColor="@color/black_whitepressed"/>
 
         </LinearLayout>

@@ -39,7 +39,8 @@
         android:textStyle="bold"
         android:textColor="@android:color/black"
         android:text="@string/transcript_semesters"
-        android:paddingLeft="@dimen/padding_micro"
+        android:layout_marginLeft="@dimen/padding_micro"
+        android:layout_marginStart="@dimen/padding_micro"
         android:paddingTop="@dimen/padding_small"/>
 
     <android.support.v7.widget.RecyclerView

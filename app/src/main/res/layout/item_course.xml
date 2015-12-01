@@ -18,7 +18,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:id="@+id/course_checkbox"
-            android:paddingLeft="@dimen/padding_small"/>
+            android:layout_marginLeft="@dimen/padding_small"
+            android:layout_marginStart="@dimen/padding_small"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -42,7 +43,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:id="@+id/course_credits"
-                    android:paddingLeft="@dimen/padding_micro"
+                    android:layout_marginLeft="@dimen/padding_micro"
+                    android:layout_marginStart="@dimen/padding_micro"
                     android:gravity="center"/>
 
             </LinearLayout>
@@ -63,7 +65,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:id="@+id/course_dates"/>
 
             </LinearLayout>
@@ -90,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/course_hours"
-                    android:gravity="right"/>
+                    android:gravity="end"/>
 
             </LinearLayout>
 
@@ -105,7 +107,8 @@
                     android:layout_weight="0.5"
                     android:id="@+id/course_spots"
                     android:textSize="@dimen/text_small"
-                    android:paddingRight="@dimen/padding_micro"
+                    android:layout_marginRight="@dimen/padding_micro"
+                    android:layout_marginEnd="@dimen/padding_micro"
                     android:visibility="gone"/>
 
                 <TextView
@@ -114,7 +117,7 @@
                     android:layout_weight="0.5"
                     android:id="@+id/course_waitlist"
                     android:textSize="@dimen/text_small"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:visibility="gone"/>
 
                 </LinearLayout>

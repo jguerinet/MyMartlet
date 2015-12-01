@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/cell_time"
             android:textSize="@dimen/text_small"
-            android:paddingLeft="@dimen/padding_micro"
+            android:layout_marginLeft="@dimen/padding_micro"
+            android:layout_marginStart="@dimen/padding_micro"
             android:gravity="center_horizontal"/>
 
         </LinearLayout>

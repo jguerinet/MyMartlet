@@ -16,6 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.ui.base;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import junit.framework.Assert;
 
 import java.util.Locale;
 
@@ -35,6 +38,7 @@ import ca.appvelopers.mcgillmobile.R;
  * @version 2.0.1
  * @since 1.0.0
  */
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
     /**
      * The progress bar shown in the toolbar
@@ -83,6 +87,7 @@ public class BaseActivity extends AppCompatActivity {
         //Set up the progress bar
         mToolbarProgressBar = (ProgressBar)toolbar.findViewById(R.id.toolbar_progress);
 
+        Assert.assertNotNull(getSupportActionBar());
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
 
         return toolbar;

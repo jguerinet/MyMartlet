@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginTop="@dimen/padding_double"
             android:src="@drawable/transcript"
             tools:ignore="ContentDescription" />

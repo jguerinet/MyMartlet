@@ -28,7 +28,7 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
+                android:gravity="end|center_vertical"
                 android:id="@+id/settings_language"/>
 
         </LinearLayout>
@@ -53,7 +53,7 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
+                android:gravity="end|center_vertical"
                 android:dropDownWidth="wrap_content"
                 android:id="@+id/settings_homepage"/>
 

@@ -412,7 +412,7 @@ public class Parser {
      * @return The credits
      * @throws Exception
      */
-    private static double extractCredits(String creditString) throws Exception{
+    private static double extractCredits(String creditString) throws Exception {
         creditString = creditString.replaceAll("\\s", "");
         String[] creditArray = creditString.split("-");
         creditArray = creditArray[1].split("credits");

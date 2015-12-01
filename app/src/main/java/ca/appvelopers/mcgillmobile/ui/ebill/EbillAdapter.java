@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui.ebill;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,10 +110,10 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
                     Date.getDateString(statement.getDueDate())));
 
             double amount = statement.getAmount();
-            mAmount.setText("$" + String.valueOf(amount));
+            mAmount.setText(String.format("$%s", String.valueOf(amount)));
             //Change the color to green or red depending on if the user owes money or not
             int colorId = amount < 0 ?  R.color.green : R.color.red;
-            mAmount.setTextColor(context.getResources().getColor(colorId));
+            mAmount.setTextColor(ContextCompat.getColor(context, colorId));
         }
     }
 }

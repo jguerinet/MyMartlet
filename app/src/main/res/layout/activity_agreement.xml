@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/eula_parties_decription"/>
+                android:text="@string/eula_parties_description"/>
 
             <TextView
                 android:layout_width="match_parent"

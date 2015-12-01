@@ -21,7 +21,8 @@
         android:textSize="@dimen/text_medium"
         android:textColor="@color/white_greypressed"
         android:duplicateParentState="true"
-        android:paddingLeft="@dimen/padding_micro"/>
+        android:layout_marginLeft="@dimen/padding_micro"
+        android:layout_marginStart="@dimen/padding_micro"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -29,7 +30,8 @@
         android:id="@+id/course_time"
         android:textColor="@color/white_greypressed"
         android:duplicateParentState="true"
-        android:paddingLeft="@dimen/padding_micro"/>
+        android:layout_marginLeft="@dimen/padding_micro"
+        android:layout_marginStart="@dimen/padding_micro"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -37,7 +39,8 @@
         android:id="@+id/course_location"
         android:textColor="@color/white_greypressed"
         android:duplicateParentState="true"
-        android:paddingLeft="@dimen/padding_micro"/>
+        android:layout_marginLeft="@dimen/padding_micro"
+        android:layout_marginStart="@dimen/padding_micro"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -46,5 +49,6 @@
         android:textStyle="italic"
         android:textColor="@color/white_greypressed"
         android:duplicateParentState="true"
-        android:paddingLeft="@dimen/padding_micro"/>
+        android:layout_marginLeft="@dimen/padding_micro"
+        android:layout_marginStart="@dimen/padding_micro"/>
     </LinearLayout>

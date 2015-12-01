@@ -20,13 +20,14 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/registration_semester"
-            android:paddingRight="@dimen/padding_micro"/>
+            android:layout_marginRight="@dimen/padding_micro"
+            android:layout_marginEnd="@dimen/padding_micro"/>
 
         <Spinner
             android:id="@+id/change_semester_term"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="right|center_vertical" />
+            android:gravity="end|center_vertical" />
     </LinearLayout>
 
     <CheckBox

@@ -3,8 +3,6 @@
 
     <!-- Titles -->
     <string name="app_name">MyMartlet</string>
-    <string name="team_name">Appvelopers</string>
-    <string name="title_login">Connexion</string>
     <string name="title_desktop">Version Bureau</string>
     <string name="title_schedule">Mon Calendrier</string>
     <string name="title_transcript">Mon Bulletin</string>
@@ -124,11 +122,6 @@
     <string name="course_average">Moyenne de Classe: %s</string>
 
     <!-- Schedule Screen -->
-    <string name="am">%s A.M.</string>
-    <string name="pm">%s P.M.</string>
-    <string name="am_long">%1$s:%2$s A.M.</string>
-    <string name="pm_long">%1$s:%2$s P.M.</string>
-    <string name="course_time">%1$s - %2$s</string>
     <string name="schedule_change_semester">Changer de Semestre</string>
 
     <!-- Course Screen -->
@@ -162,8 +155,6 @@
     <string name="settings_version">Version %s</string>
 
     <!-- Change Semester Page -->
-    <string name="change_semester_season">Saison: </string>
-    <string name="change_semester_year">Année:</string>
     <string name="change_semester_default">Mettre par Défaut</string>
 
     <!-- Register Page -->
@@ -173,7 +164,6 @@
     <string name="registration_invalid_subject">Sujet Invalide: Veullez entrer un sujet de 4 caractères</string>
     <string name="registration_error">Erreur d\'Inscription</string>
     <string name="registration_success">Inscription Réussie!</string>
-    <string name="registration_faculty">Faculté:</string>
     <string name="registration_title">Titre</string>
     <string name="registration_start_time">Heure de Début:</string>
     <string name="registration_end_time">Heure de Fin:</string>
@@ -244,9 +234,6 @@
     <string name="about_question">Question</string>
     <string name="about_answer">Je suis une réponse</string>
     <string name="about_FAQ">Question Fréquentes</string>
-    <string name="help_bug_title">Bug %s</string>
-    <string name="help_bug_summary">Pour nous aider à trouver le bug, nous avons ajouté quelques informations sur votre appareil : \nOS : %1$s \nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
-    <string name="help_bug_prompt">Donnez nous un résumé du bug s’il vous plaît:</string>
     <string name="help_question1">Qu\'est ce que c\'est MyMartlet?</string>
     <string name="help_question2">Est-ce que cette application est officiellement fait par McGill ?</string>
     <string name="help_question3">Sur quelles platformes pouvons nous trouver cette application ?</string>
@@ -278,20 +265,16 @@
     <!-- Unregistration -->
     <string name="unregister_dialog_title">Désinscription de Cours</string>
     <string name="unregister_dialog_message">Êtes-vous sûr de vouloir vous désinscrire de ce(s) cours?</string>
-    <string name="unregister_dialog_positive">Continuer</string>
-    <string name="unregister_dialog_negative">Annuler</string>
 
     <!-- Drawer -->
     <string name="drawer_exit">Êtes-vous sûr de vouloir quitter l\'application?</string>
 
     <!-- Social Networks -->
     <string name="social_facebook_title">MyMartlet pour %s</string>
-    <string name="social_facebook_caption">McGill au bout de vos doigts!</string>
     <string name="social_facebook_description_android">MyMartlet permet aux étudiants de McGill d’accéder facilement tous les essentiels de McGill tels que leur calendrier, bulletin, liste de cours et plus!</string>
     <string name="social_twitter_message_android">Télécharger MyMartlet pour %s!</string>
     <string name="social_post_success">Posté avec Succès!</string>
     <string name="social_post_failure">Une erreur est survenue. Réessayez s\'il vous plaît.</string>
-    <string name="twitter_post_failure_time">Une erreur est survenue. Réessayez s\'il vous plaît. La date et l\'heure sur votre appareil sont-elles bien configurées?</string>
 
     <!-- Splash -->
     <string name="logging_in">Connexion&#8230;</string>

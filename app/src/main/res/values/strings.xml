@@ -3,8 +3,6 @@
 
     <!-- Titles -->
     <string name="app_name">MyMartlet</string>
-    <string name="team_name">Appvelopers</string>
-    <string name="title_login">Login</string>
     <string name="title_desktop">Desktop Site</string>
     <string name="title_schedule">My Schedule</string>
     <string name="title_transcript">My Transcript</string>
@@ -98,7 +96,7 @@
     <string name="eula_title">MyMartlet App End User License Agreement</string>
     <string name="eula_description">This End User License Agreement (“Agreement”) is between you and Appvelopers and governs the use of this app made available through the Play Store. By installing the MyMartlet App, you agree to be bound by this Agreement. If you do not agree with the terms and conditions of this Agreement, you are not entitled to use the MyMartlet App.</string>
     <string name="eula_parties">1. Parties</string>
-    <string name="eula_parties_decription">This Agreement is between you and Appvelopers only, and not McGill University. McGill University is not affiliated with Appvelopers and McGill University is not responsible for any misuse of the MyMartlet App. Appvelopers, not McGill University, is solely responsible for the MyMartlet App.</string>
+    <string name="eula_parties_description">This Agreement is between you and Appvelopers only, and not McGill University. McGill University is not affiliated with Appvelopers and McGill University is not responsible for any misuse of the MyMartlet App. Appvelopers, not McGill University, is solely responsible for the MyMartlet App.</string>
     <string name="eula_privacy">2. Privacy</string>
     <string name="eula_privacy_description">MyMartlet may collect and use information about your usage of the MyMartlet App, including certain types of information from and about your device. Appvelopers may use this information, as long as it is in a form that does not personally identify you, to measure the use and performance of the MyMartlet App. </string>
     <string name="eula_content">3. Content</string>
@@ -128,11 +126,6 @@
     <string name="course_average">Class Average: %s</string>
 
     <!-- Schedule Screen -->
-    <string name="am">%s A.M.</string>
-    <string name="pm">%s P.M.</string>
-    <string name="am_long">%1$s:%2$s A.M.</string>
-    <string name="pm_long">%1$s:%2$s P.M.</string>
-    <string name="course_time">%1$s - %2$s</string>
     <string name="schedule_change_semester">Change Semester</string>
 
     <!-- Course Screen -->
@@ -166,8 +159,6 @@
     <string name="settings_version">Version %s</string>
 
     <!-- Change Semester Page -->
-    <string name="change_semester_season">Season: </string>
-    <string name="change_semester_year">Year:</string>
     <string name="change_semester_default">Set as Default</string>
 
     <!-- Register Page -->
@@ -177,7 +168,6 @@
     <string name="registration_invalid_subject">Invalid subject: Please a enter four character subject.</string>
     <string name="registration_error">Registration Error</string>
     <string name="registration_success">Registration Successful!</string>
-    <string name="registration_faculty">Faculty:</string>
     <string name="registration_title">Title</string>
     <string name="registration_start_time">Start Time:</string>
     <string name="registration_end_time">End Time:</string>
@@ -281,9 +271,6 @@
     <string name="about_question">Question</string>
     <string name="about_answer">This is an answer</string>
     <string name="about_FAQ">FAQ</string>
-    <string name="help_bug_title">%s Bug: </string>
-    <string name="help_bug_summary">To help us find the bug, we\'ve added some information about your device : \nOS : %1$s\nApp Language : %2$s\nApp Version Name: %3$s\nApp Version Number : %4$d\nOS Version : %5$s\nSDK Version Number : %6$d\nPhone Model : %7$s\nEmail : %8$s</string>
-    <string name="help_bug_prompt">Please give us a summary of the bug:</string>
     <string name="bug_prompt">Enter your feedback here&#8230;</string>
     <string name="bug_email_prompt">Enter your email here&#8230;</string>
     <string name="bug_comment_invalid">Please enter your feedback before continuing</string>
@@ -318,22 +305,18 @@
     <!-- Unregistration -->
     <string name="unregister_dialog_title">Drop Classes</string>
     <string name="unregister_dialog_message">Are you sure you want to drop the selected classes?</string>
-    <string name="unregister_dialog_positive">Yes</string>
-    <string name="unregister_dialog_negative">Cancel</string>
 
     <!-- Drawer -->
     <string name="drawer_exit">Are you sure you want to exit?</string>
 
     <!-- Social Networks -->
     <string name="social_facebook_title">MyMartlet for %s</string>
-    <string name="social_facebook_caption">McGill at your fingertips!</string>
     <string name="social_facebook_description_android">MyMartlet allows any McGill student to have easy access to the McGill essentials such as their calendar, transcript, course list, and more!</string>
     <string name="social_facebook_image">http://imgur.com/iWPs14U.jpg</string>
     <string name="social_link_android">http://mymartlet.ca</string>
     <string name="social_twitter_message_android">Download MyMartlet for %s!</string>
     <string name="social_post_success">Post Successful!</string>
     <string name="social_post_failure">An error occurred. Please try again.</string>
-    <string name="twitter_post_failure_time">An error occurred. Please try again. Are the date and time on your device correctly set?</string>
 
     <!-- Splash -->
     <string name="logging_in">Logging In&#8230;</string>

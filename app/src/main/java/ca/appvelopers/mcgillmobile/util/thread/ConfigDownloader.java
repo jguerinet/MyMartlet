@@ -208,9 +208,9 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
      * @param gson         The GSON instance
      * @param parser       The JSON parser
      * @param configString The config String
-     * @throws IOException
+     * @throws Exception
      */
-    private void parseConfig(Gson gson, JsonParser parser, String configString) throws IOException{
+    private void parseConfig(Gson gson, JsonParser parser, String configString) throws Exception {
         //Create the JSON object from the String
         JsonObject configJSON = parser.parse(configString).getAsJsonObject();
 
@@ -247,9 +247,9 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
      * @param gson         The GSON instance
      * @param parser       The JSON parser
      * @param placesString The places String
-     * @throws IOException
+     * @throws Exception
      */
-    private void parsePlaces(Gson gson, JsonParser parser, String placesString) throws IOException{
+    private void parsePlaces(Gson gson, JsonParser parser, String placesString) throws Exception {
         //Convert the String into a JSON array
         JsonArray placesJSON = parser.parse(placesString).getAsJsonArray();
 

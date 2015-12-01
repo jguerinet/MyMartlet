@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.schedule;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -140,7 +141,7 @@ public class ScheduleViewBuilder {
 
             //Line
             View line = new View(mFragment.getActivity());
-            line.setBackgroundColor(mFragment.getResources().getColor(android.R.color.black));
+            line.setBackgroundColor(Color.BLACK);
             line.setLayoutParams(new ViewGroup.LayoutParams(
                     mFragment.getResources().getDimensionPixelSize(R.dimen.schedule_line),
                     ViewGroup.LayoutParams.MATCH_PARENT));

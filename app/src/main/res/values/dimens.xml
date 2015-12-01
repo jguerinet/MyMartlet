@@ -2,23 +2,16 @@
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="default_margin">16dp</dimen>
-    <dimen name="tab_host_default_height">48dp</dimen>
     <dimen name="line">1dp</dimen>
 
     <!-- Drawer -->
     <dimen name="padding_drawer">8dp</dimen>
-
-    <!-- Lists -->
-    <dimen name="padding_list">8dp</dimen>
-    <dimen name="list_item">48dp</dimen>
-    <dimen name="text_list">16sp</dimen>
 
     <!-- Padding Sizes -->
     <dimen name="padding_micro">10dp</dimen>
     <dimen name="padding_small">14dp</dimen>
     <dimen name="padding_medium">18dp</dimen>
     <dimen name="padding_large">22dp</dimen>
-    <dimen name="padding_content">72dp</dimen>
 
     <!-- Padding for Walkthrough -->
     <dimen name="padding_single">18dp</dimen>
@@ -38,19 +31,5 @@
 
     <!-- About Images -->
     <dimen name="about_image">80dp</dimen>
-
-    <!-- Lollipop Button Dimensions -->
-    <!-- Default insets (outer padding) around buttons -->
-    <dimen name="button_inset_vertical_material">6dp</dimen>
-    <dimen name="button_inset_horizontal_material">@dimen/control_inset_material</dimen>
-    <!-- Default inner padding within buttons -->
-    <dimen name="button_padding_vertical_material">@dimen/control_padding_material</dimen>
-    <dimen name="button_padding_horizontal_material">8dp</dimen>
-    <!-- Default insets (outer padding) around controls -->
-    <dimen name="control_inset_material">4dp</dimen>
-    <!-- Default inner padding within controls -->
-    <dimen name="control_padding_material">4dp</dimen>
-    <!-- Default rounded corner for controls -->
-    <dimen name="control_corner_material">2dp</dimen>
 
 </resources>

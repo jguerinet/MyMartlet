@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
@@ -51,7 +52,7 @@ public class WalkthroughActivity extends BaseActivity {
     /**
      * The ViewPagerIndicator
      */
-    @Bind(R.id.walkthrough_pageindicator)
+    @Bind(R.id.indicator)
     CirclePageIndicator mIndicator;
     /**
      * The next button
@@ -89,7 +90,7 @@ public class WalkthroughActivity extends BaseActivity {
         mIndicator.setViewPager(mViewPager);
         mIndicator.setStrokeColor(Color.WHITE);
         mIndicator.setPageColor(Color.GRAY);
-        mIndicator.setFillColor(getResources().getColor(R.color.red));
+        mIndicator.setFillColor(ContextCompat.getColor(this, R.color.red));
         mIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2){}
