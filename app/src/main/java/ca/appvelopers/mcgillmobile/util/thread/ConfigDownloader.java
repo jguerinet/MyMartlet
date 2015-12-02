@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util.thread;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -64,10 +63,6 @@ import timber.log.Timber;
  */
 public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     /**
-     * The app context
-     */
-    private Context mContext;
-    /**
      * True if we need to force the reloading of the data in the app, false otherwise
      */
     private boolean mForceReload;
@@ -86,12 +81,9 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
 
     /**
      * Default Constructor
-     *
-     * @param context The app context
      */
-    public ConfigDownloader(Context context){
-        this.mContext = context;
-        this.mForceReload = App.forceReload;
+    public ConfigDownloader(){
+        mForceReload = App.forceReload;
     }
 
     @Override

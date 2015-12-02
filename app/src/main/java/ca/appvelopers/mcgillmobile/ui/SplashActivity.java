@@ -110,7 +110,7 @@ public class SplashActivity extends BaseActivity {
      * Runs the config downloader
      */
     private void runConfigDownloader(){
-        new ConfigDownloader(this) {
+        new ConfigDownloader() {
             @Override
             protected void onPostExecute(Void param) {
                 //Check if we have the minimum required version
