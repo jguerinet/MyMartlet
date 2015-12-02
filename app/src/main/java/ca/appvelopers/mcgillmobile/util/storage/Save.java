@@ -59,7 +59,7 @@ public class Save {
      */
     public static void language(){
         Constants.PREFS.edit()
-                .putInt(Constants.LANGUAGE, App.getLanguage().ordinal())
+                .putInt(Constants.LANGUAGE, App.getLanguage())
                 .apply();
     }
 

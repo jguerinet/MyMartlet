@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Language;
 
 /**
  * The base class for all activities
@@ -62,9 +63,8 @@ public class BaseActivity extends AppCompatActivity {
     /**
      * Updates the locale
      */
-    public void updateLocale(){
-        Locale locale = new Locale(App.getLanguage().toString());
-        Locale.setDefault(locale);
+    private void updateLocale(){
+        Locale locale = new Locale(Language.getCode(App.getLanguage()));
         Configuration config = getBaseContext().getResources().getConfiguration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config,

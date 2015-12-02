@@ -66,8 +66,9 @@ public class Load {
     /**
      * @return The user's chosen language, defaults to English
      */
-    public static Language language(){
-        return Language.values()[(Constants.PREFS.getInt(Constants.LANGUAGE, 0))];
+    @SuppressWarnings("ResourceType")
+    public static @Language.Type int language(){
+        return Constants.PREFS.getInt(Constants.LANGUAGE, Language.ENGLISH);
     }
 
     /**

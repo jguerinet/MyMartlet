@@ -92,7 +92,7 @@
     <string name="eula_title">Contrat de Licence Utilisateur Final de l\'Application MyMartlet</string>
     <string name="eula_description">Ce Contrat de Licence Utilisateur Final (“Contrat) est entre vous et Appvelopers et gouverne l’utilisation de cette application disponible par le Play Store. En installant l’application MyMartlet, vous acceptez d’être lié par ce Contrat. Si vous n’acceptez pas les termes et conditions de ce Contrat, vous n’avez pas le droit d’utiliser l’application MyMartlet. </string>
     <string name="eula_parties">1. Parties</string>
-    <string name="eula_parties_decription">Ce Contrat est seulement entre vous et Appvelopers, et pas l’Université McGill. L’Université McGill n’est pas affiliée avec Appvelopers et l’Université McGill n’est pas responsable pour tout abus de l’application MyMartlet.</string>
+    <string name="eula_parties_description">Ce Contrat est seulement entre vous et Appvelopers, et pas l’Université McGill. L’Université McGill n’est pas affiliée avec Appvelopers et l’Université McGill n’est pas responsable pour tout abus de l’application MyMartlet.</string>
     <string name="eula_privacy">2. Confidentialité</string>
     <string name="eula_privacy_description">MyMartlet a le droit de récolter et utiliser de l’information par rapport à votre utilisation de l’application MyMartlet. Ceci peut inclure quelques types d’informations depuis et par rapport à votre appareil. Appvelopers a le droit d’utiliser cette information, du moment que c’est sous une forme qui ne peut pas vous identifier personnellement, pour mesurer l’utilisation et la performance de l’application MyMartlet. </string>
     <string name="eula_content">3. Contenu</string>

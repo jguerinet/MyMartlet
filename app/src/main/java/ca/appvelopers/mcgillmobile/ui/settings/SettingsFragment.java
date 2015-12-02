@@ -28,6 +28,10 @@ import android.widget.TextView;
 
 import com.instabug.library.Instabug;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -88,11 +92,15 @@ public class SettingsFragment extends BaseFragment {
         mActivity.setTitle(getString(R.string.title_settings));
 
         //Language
+        List<String> languages = new ArrayList<>();
+        languages.add(Language.getString(Language.ENGLISH));
+        languages.add(Language.getString(Language.FRENCH));
+        Collections.sort(languages);
         ArrayAdapter<String> languageAdapter =
-                new ArrayAdapter<>(mActivity, R.layout.spinner_item, Language.getStrings());
+                new ArrayAdapter<>(mActivity, R.layout.spinner_item, languages);
         languageAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         mLanguageSpinner.setAdapter(languageAdapter);
-        mLanguageSpinner.setSelection(App.getLanguage().ordinal());
+        mLanguageSpinner.setSelection(App.getLanguage());
 
         //Homepage
         mHomepageAdapter = new HomepageAdapter();
@@ -130,14 +138,13 @@ public class SettingsFragment extends BaseFragment {
     @OnItemSelected(R.id.settings_language)
     public void chooseLanguage(int position){
         //Get the chosen language
-        Language chosenLanguage = Language.values()[position];
+        @Language.Type int chosenLanguage = position;
 
-        Analytics.getInstance().sendEvent("Settings", "Language", chosenLanguage.toString());
+        Analytics.getInstance().sendEvent("Settings", "Language", Language.getCode(position));
 
         //If it's different than the previously selected language, update it and reload
         if(App.getLanguage() != chosenLanguage){
             App.setLanguage(chosenLanguage);
-            mActivity.updateLocale();
 
             //Reload MainActivity
             Intent intent = new Intent(mActivity, MainActivity.class)

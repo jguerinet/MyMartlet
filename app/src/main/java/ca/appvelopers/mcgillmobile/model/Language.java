@@ -16,9 +16,10 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -29,47 +30,42 @@ import ca.appvelopers.mcgillmobile.R;
  * @version 2.0.1
  * @since 1.0.0
  */
-public enum Language {
-    ENGLISH,
-    FRENCH;
+public class Language {
+    /**
+     * The different languages
+     */
+    @Retention(RetentionPolicy.CLASS)
+    @IntDef({UNDEFINED, ENGLISH, FRENCH})
+    public @interface Type{}
+    public static final int UNDEFINED = -1;
+    public static final int ENGLISH = 0;
+    public static final int FRENCH = 1;
 
     /**
-     * @return The language String
+     * @return The localized language String
      */
-    public String getString(){
-        switch(this){
+    public static String getString(@Type int language) {
+        switch (language) {
             case ENGLISH:
                 return App.getContext().getString(R.string.english);
             case FRENCH:
                 return App.getContext().getString(R.string.french);
             default:
-                return null;
+                throw new IllegalStateException("Unknown Language");
         }
     }
 
     /**
-     * @return The Strings of all of the languages available
+     * @return The language code
      */
-    public static List<String> getStrings(){
-        List<String> languages = new ArrayList<>();
-
-        for(Language language : values()){
-            languages.add(language.getString());
-        }
-
-        //Sort them alphabetically
-        Collections.sort(languages);
-
-        return languages;
-    }
-
-    @Override
-    public String toString(){
-        switch (this){
+    public static String getCode(@Type int language) {
+        switch (language) {
+            case ENGLISH:
+                return "en; ";
             case FRENCH:
                 return "fr";
             default:
-                return "en";
+                throw new IllegalStateException("Unknown language");
         }
     }
 }

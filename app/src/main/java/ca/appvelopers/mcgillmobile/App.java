@@ -65,7 +65,7 @@ public class App extends Application {
     /**
      * App language
      */
-    private static Language language;
+    private static @Language.Type int language = Language.UNDEFINED;
     /**
      * List of {@link Place}s
      */
@@ -152,7 +152,7 @@ public class App extends Application {
                 .setPostFeedbackMessage(getString(R.string.success))
                 .setWillShowFeedbackSentAlert(true)
                 .setUserData("Email: " + Load.fullUsername() + "\n" +
-                        "App Language: " + App.getLanguage().toString());
+                        "App Language: " + Language.getCode(App.getLanguage()));
     }
 
     /* GETTERS */
@@ -160,15 +160,15 @@ public class App extends Application {
     /**
      * @return The app {@link Context}
      */
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 
     /**
      * @return The app language
      */
-    public static Language getLanguage(){
-        if(language == null){
+    public static @Language.Type int getLanguage() {
+        if(language == Language.UNDEFINED){
             language = Load.language();
         }
         return language;
@@ -291,7 +291,7 @@ public class App extends Application {
     /**
      * @param language The app language
      */
-    public static void setLanguage(Language language){
+    public static void setLanguage(@Language.Type int language) {
         App.language = language;
         Save.language();
     }
@@ -299,7 +299,7 @@ public class App extends Application {
     /**
      * @param places The list of {@link Place}s
      */
-    public static void setPlaces(List<Place> places){
+    public static void setPlaces(List<Place> places) {
         App.places = places;
         Save.places();
     }
@@ -307,7 +307,7 @@ public class App extends Application {
     /**
      * @param placeTypes The list of {@link PlaceType}s
      */
-    public static void setPlaceTypes(List<PlaceType> placeTypes){
+    public static void setPlaceTypes(List<PlaceType> placeTypes) {
         App.placeTypes = placeTypes;
         Save.placeTypes();
     }
@@ -315,7 +315,7 @@ public class App extends Application {
     /**
      * @param terms The list of {@link Term}s the user can currently register in
      */
-    public static void setRegisterTerms(List<Term> terms){
+    public static void setRegisterTerms(List<Term> terms) {
         App.registerTerms = terms;
         Save.registerTerms();
     }
@@ -323,7 +323,7 @@ public class App extends Application {
     /**
      * @param transcript The user's {@link Transcript}
      */
-    public static void setTranscript(Transcript transcript){
+    public static void setTranscript(Transcript transcript) {
         synchronized (Constants.TRANSCRIPT_LOCK){
             App.transcript = transcript;
             Save.transcript();
@@ -333,7 +333,7 @@ public class App extends Application {
     /**
      * @param courses The user's {@link Course}s
      */
-    public static void setCourses(List<Course> courses){
+    public static void setCourses(List<Course> courses) {
         App.courses = courses;
         Save.courses();
     }
