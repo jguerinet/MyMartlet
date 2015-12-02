@@ -16,27 +16,28 @@
 
 package ca.appvelopers.mcgillmobile.ui.settings;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 
+import com.guerinet.formgenerator.FormGenerator;
 import com.instabug.library.Instabug;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
-import butterknife.OnItemSelected;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
@@ -57,33 +58,14 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
  */
 public class SettingsFragment extends BaseFragment {
     /**
-     * The language spinner
+     * The {@link FormGenerator} container
      */
-    @Bind(R.id.settings_language)
-    Spinner mLanguageSpinner;
-    /**
-     * The homepage spinner
-     */
-    @Bind(R.id.settings_homepage)
-    Spinner mHomepageSpinner;
-    /**
-     * The statistics switch
-     */
-    @Bind(R.id.settings_statistics)
-    Switch mStatistics;
-    /**
-     * The version number
-     */
-    @Bind(R.id.settings_version)
-    TextView mVersion;
-    /**
-     * The adapter used for the homepage spinner
-     */
-    private HomepageAdapter mHomepageAdapter;
+    @Bind(R.id.container)
+    protected LinearLayout mContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
+            Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, view);
@@ -91,79 +73,153 @@ public class SettingsFragment extends BaseFragment {
         Analytics.getInstance().sendScreen("Settings");
         mActivity.setTitle(getString(R.string.settings_version, Help.getVersionName()));
 
+        //Set up the FormGenerator
+        FormGenerator fg = FormGenerator.get()
+                .setDefaultIconColorId(R.color.red)
+                .setDefaultBackground(R.drawable.transparent_redpressed)
+                .bind(mActivity, mContainer);
+
         //Language
-        List<String> languages = new ArrayList<>();
-        languages.add(Language.getString(Language.ENGLISH));
-        languages.add(Language.getString(Language.FRENCH));
-        Collections.sort(languages);
-        ArrayAdapter<String> languageAdapter =
-                new ArrayAdapter<>(mActivity, R.layout.spinner_item, languages);
-        languageAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
-        mLanguageSpinner.setAdapter(languageAdapter);
-        mLanguageSpinner.setSelection(App.getLanguage());
+        fg.text(Language.getString(App.getLanguage()))
+                .leftIcon(R.drawable.ic_language)
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Get the languages, display them alphabetically
+                        List<String> languages = new ArrayList<>();
+                        languages.add(Language.getString(Language.ENGLISH));
+                        languages.add(Language.getString(Language.FRENCH));
+                        Collections.sort(languages);
+
+                        new AlertDialog.Builder(mActivity)
+                                .setTitle(R.string.settings_language)
+                                .setSingleChoiceItems(
+                                        languages.toArray(new CharSequence[languages.size()]),
+                                        App.getLanguage(), new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //Get the chosen language
+                                                @Language.Type int language = which;
+
+                                                Analytics.getInstance().sendEvent("Settings", "Language",
+                                                        Language.getCode(language));
+
+                                                //If it's different than the previously selected language,
+                                                //  update it and reload
+                                                if(App.getLanguage() != language) {
+                                                    App.setLanguage(language);
+
+                                                    //Reload MainActivity
+                                                    Intent intent =
+                                                            new Intent(mActivity, MainActivity.class)
+                                                                    .putExtra(Constants.HOMEPAGE,
+                                                                            Homepage.SETTINGS);
+                                                    startActivity(intent);
+                                                    mActivity.finish();
+                                                }
+                                            }
+                                        })
+                                .show();
+                    }
+                });
 
         //Homepage
-        mHomepageAdapter = new HomepageAdapter();
-        mHomepageSpinner.setAdapter(mHomepageAdapter);
-        mHomepageSpinner.setSelection(mHomepageAdapter.getPosition(App.getHomepage()));
+        fg.text(App.getHomepage().toString())
+                .leftIcon(R.drawable.ic_phone_android)
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Get the homepages and sort them alphabetically
+                        final Homepage[] homepages = Homepage.values();
+                        Arrays.sort(homepages, new Comparator<Homepage>() {
+                            @Override
+                            public int compare(Homepage a, Homepage b) {
+                                return a.toString().compareToIgnoreCase(b.toString());
+                            }
+                        });
+
+                        //Set up the titles and find the current homepage
+                        CharSequence[] homepageTitles = new CharSequence[homepages.length];
+                        int currentHomepage = -1;
+                        for(int i = 0; i < homepages.length; i++) {
+                            Homepage homepage = homepages[i];
+                            homepageTitles[i] = homepage.toString();
+                            //Set the current homepage
+                            if(App.getHomepage() == homepage) {
+                                currentHomepage = i;
+                            }
+                        }
+
+                        new AlertDialog.Builder(mActivity)
+                                .setTitle(R.string.settings_homepage)
+                                .setSingleChoiceItems(homepageTitles, currentHomepage,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //Get the chosen homepage
+                                                Homepage homepage = homepages[which];
+
+                                                Analytics.getInstance().sendEvent("Settings", "Homepage",
+                                                        homepage.toString());
+
+                                                //Update it in App
+                                                App.setHomepage(homepage);
+                                            }
+                                        })
+                                .show();
+                    }
+                });
 
         //Statistics
-        mStatistics.setChecked(Load.statistics());
+        fg.aSwitch(R.string.settings_statistics)
+                .leftIcon(R.drawable.ic_trending_up)
+                .checked(Load.statistics())
+                .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        Save.statistics(isChecked);
+                    }
+                });
+
+        //TODO A new FormGenerator version is needed here for the drawable padding on these buttons
+
+        //Help
+        fg.borderlessButton(R.string.title_help, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, HelpActivity.class));
+            }
+        })
+                .textColor(R.color.red, false)
+                .gravity(Gravity.START|Gravity.CENTER_VERTICAL)
+                .leftIcon(R.drawable.ic_help);
+
+        //About
+        fg.borderlessButton(R.string.title_about, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, AboutActivity.class));
+            }
+        })
+                .textColor(R.color.red, false)
+                .gravity(Gravity.START|Gravity.CENTER_VERTICAL)
+                .leftIcon(R.drawable.ic_info);
+
+        //Bug Report
+        fg.borderlessButton(R.string.title_report_bug, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Analytics.getInstance().sendEvent("About", "Report a Bug", null);
+                Instabug.getInstance().invokeFeedbackSender();
+            }
+        })
+                .textColor(R.color.red, false)
+                .gravity(Gravity.START|Gravity.CENTER_VERTICAL)
+                .leftIcon(R.drawable.ic_bug_report);
 
         //Hide the loading indicator
         hideLoadingIndicator();
 
         return view;
-    }
-
-    @OnClick(R.id.settings_help)
-    public void help(){
-        startActivity(new Intent(mActivity, HelpActivity.class));
-    }
-
-    @OnClick(R.id.settings_about)
-    public void about(){
-        startActivity(new Intent(mActivity, AboutActivity.class));
-    }
-
-    @OnClick(R.id.settings_bug)
-    public void reportBug(){
-        Analytics.getInstance().sendEvent("About", "Report a Bug", null);
-        Instabug.getInstance().invokeFeedbackSender();
-    }
-
-    @OnItemSelected(R.id.settings_language)
-    public void chooseLanguage(int position){
-        //Get the chosen language
-        @Language.Type int chosenLanguage = position;
-
-        Analytics.getInstance().sendEvent("Settings", "Language", Language.getCode(position));
-
-        //If it's different than the previously selected language, update it and reload
-        if(App.getLanguage() != chosenLanguage){
-            App.setLanguage(chosenLanguage);
-
-            //Reload MainActivity
-            Intent intent = new Intent(mActivity, MainActivity.class)
-                    .putExtra(Constants.HOMEPAGE, Homepage.SETTINGS);
-            startActivity(intent);
-            mActivity.finish();
-        }
-    }
-
-    @OnItemSelected(R.id.settings_homepage)
-    public void chooseHomepage(int position){
-        //Get the chosen homepage
-        Homepage chosenHomePage = mHomepageAdapter.getItem(position);
-
-        Analytics.getInstance().sendEvent("Settings", "Homepage", chosenHomePage.toString());
-
-        //Update it in App
-        App.setHomepage(chosenHomePage);
-    }
-
-    @OnCheckedChanged(R.id.settings_statistics)
-    public void enableStatistics(boolean enabled){
-        Save.statistics(enabled);
     }
 }
