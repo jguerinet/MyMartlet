@@ -72,6 +72,7 @@ public class Term implements Serializable {
      * @param term The term to compare
      * @return True if the current term is after the given term, false otherwise
      */
+    @SuppressWarnings("SimplifiableIfStatement")
     public boolean isAfter(Term term){
         //Year after
         if(mYear > term.getYear()){

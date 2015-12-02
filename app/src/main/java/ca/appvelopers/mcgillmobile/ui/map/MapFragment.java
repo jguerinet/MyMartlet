@@ -48,6 +48,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import junit.framework.Assert;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -338,6 +340,7 @@ public class MapFragment extends BaseFragment {
 
         //Get the SearchView
         MenuItem item = menu.findItem(R.id.action_search);
+        Assert.assertNotNull(mActivity.getSupportActionBar());
         final SearchView searchView =
                 new SearchView(mActivity.getSupportActionBar().getThemedContext());
         final int textViewID = searchView.getContext().getResources().

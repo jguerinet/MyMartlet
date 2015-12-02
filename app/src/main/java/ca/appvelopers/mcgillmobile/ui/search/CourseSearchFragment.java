@@ -48,6 +48,7 @@ import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Device;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import timber.log.Timber;
@@ -160,6 +161,7 @@ public class CourseSearchFragment extends BaseFragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup,
                              Bundle savedInstanceState){
@@ -188,12 +190,19 @@ public class CourseSearchFragment extends BaseFragment {
         mTermSpinner.setAdapter(mTermAdapter);
 
         mStartTime.setIs24HourView(false);
-        mStartTime.setCurrentHour(0);
-        mStartTime.setCurrentMinute(0);
-
         mEndTime.setIs24HourView(false);
-        mEndTime.setCurrentHour(0);
-        mEndTime.setCurrentMinute(0);
+        if (Device.isMarshmallow()) {
+            mStartTime.setHour(0);
+            mStartTime.setMinute(0);
+            mEndTime.setHour(0);
+            mEndTime.setMinute(0);
+        }
+        else {
+            mStartTime.setCurrentHour(0);
+            mStartTime.setCurrentMinute(0);
+            mEndTime.setCurrentHour(0);
+            mEndTime.setCurrentMinute(0);
+        }
 
         //Hide the loading indicator
         hideLoadingIndicator();
@@ -217,6 +226,7 @@ public class CourseSearchFragment extends BaseFragment {
     /**
      * Searches for courses based on the given information
      */
+    @SuppressWarnings("deprecation")
     @OnClick(R.id.search_button)
     void searchCourses(){
         //Get the selected term
@@ -258,17 +268,41 @@ public class CourseSearchFragment extends BaseFragment {
         //Show the user we are downloading new information
         mActivity.showToolbarProgress(true);
 
+        int startHour;
+        int startMinute;
+        boolean startAM;
+        int endHour;
+        int endMinute;
+        boolean endAM;
+
+        if (Device.isMarshmallow()) {
+            startHour = mStartTime.getHour() % 12;
+            startMinute = mStartTime.getMinute();
+            startAM = mStartTime.getHour() < 12;
+            endHour = mEndTime.getHour() % 12;
+            endMinute = mEndTime.getMinute();
+            endAM = mEndTime.getHour() < 12;
+        }
+        else {
+            startHour = mStartTime.getCurrentHour() % 12;
+            startMinute = mStartTime.getCurrentMinute();
+            startAM = mStartTime.getCurrentHour() < 12;
+            endHour = mEndTime.getCurrentHour() % 12;
+            endMinute = mEndTime.getCurrentMinute();
+            endAM = mEndTime.getCurrentHour() < 12;
+        }
+
         Connection.SearchURLBuilder builder = new Connection.SearchURLBuilder(term, subject)
                 .courseNumber(mNumber.getText().toString())
                 .title(mTitle.getText().toString())
                 .minCredits(minCredits)
                 .maxCredits(maxCredits)
-                .startHour(mStartTime.getCurrentHour() % 12)
-                .startMinute(mStartTime.getCurrentMinute())
-                .startAM(mStartTime.getCurrentHour() < 12)
-                .endHour(mStartTime.getCurrentHour() % 12)
-                .endMinute(mStartTime.getCurrentMinute())
-                .endAM(mEndTime.getCurrentHour() < 12);
+                .startHour(startHour)
+                .startMinute(startMinute)
+                .startAM(startAM)
+                .endHour(endHour)
+                .endMinute(endMinute)
+                .endAM(endAM);
 
         //Days
         if(mMonday.isChecked()){
@@ -333,14 +367,23 @@ public class CourseSearchFragment extends BaseFragment {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_reset){
             //Reset all of the views
-            mStartTime.setCurrentHour(0);
-            mStartTime.setCurrentMinute(0);
-            mEndTime.setCurrentHour(0);
-            mEndTime.setCurrentMinute(0);
+            if(Device.isMarshmallow()) {
+                mStartTime.setHour(0);
+                mStartTime.setMinute(0);
+                mEndTime.setHour(0);
+                mEndTime.setMinute(0);
+            }
+            else {
+                mStartTime.setCurrentHour(0);
+                mStartTime.setCurrentMinute(0);
+                mEndTime.setCurrentHour(0);
+                mEndTime.setCurrentMinute(0);
+            }
             mSubject.setText("");
             mNumber.setText("");
             mTitle.setText("");

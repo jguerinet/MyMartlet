@@ -196,19 +196,10 @@ public class CourseCalendar {
 	                        LocalDateTime start, LocalDateTime end, LocalDateTime lastDay) {
 		String prefix = "BEGIN:VEVENT\n";
 		String suffix = "END:VEVENT\n";
-		StringBuilder event = new StringBuilder();
 
-		event.append(prefix);
-		event.append(makeEventSummary(summary));
-		event.append(makeEventDescription(description));
-		event.append(makeEventLocation(location));
-		event.append(makeEventStamp());
-		event.append(makeEventStart(start));
-		event.append(makeEventEnd(end));
-		event.append(makeEventRecurrence(lastDay));
-		event.append(suffix);
-
-		return event.toString();
+        return prefix + makeEventSummary(summary) + makeEventDescription(description) +
+                makeEventLocation(location) + makeEventStamp() + makeEventStart(start) +
+                makeEventEnd(end) + makeEventRecurrence(lastDay) + suffix;
 	}
 	
 	/**
@@ -226,18 +217,10 @@ public class CourseCalendar {
 	                        LocalDateTime start, LocalDateTime end) {
 		String prefix = "BEGIN:VEVENT\n";
 		String suffix = "END:VEVENT\n";
-		StringBuilder event = new StringBuilder();
 
-		event.append(prefix);
-		event.append(makeEventSummary(summary));
-		event.append(makeEventDescription(description));
-		event.append(makeEventLocation(location));
-		event.append(makeEventStamp());
-		event.append(makeEventStart(start));
-		event.append(makeEventEnd(end));
-		event.append(suffix);
-
-		return event.toString();
+        return prefix + makeEventSummary(summary) + makeEventDescription(description) +
+                makeEventLocation(location) + makeEventStamp() + makeEventStart(start) +
+                makeEventEnd(end) + suffix;
 	}
 	
 	/**
@@ -388,7 +371,6 @@ public class CourseCalendar {
 	@SuppressWarnings("unused")
 	private String makeEventStart(Course item){
 		LocalTime startTime;
-		LocalDateTime startDate;
 		if (mRounded) {
 			startTime = item.getRoundedStartTime();
 		} else {
@@ -417,7 +399,6 @@ public class CourseCalendar {
 	@SuppressWarnings("unused")
 	private String makeEventEnd(Course item){
 		LocalTime endTime;
-		LocalDateTime endDate;
 		if (mRounded) {
 			endTime = item.getRoundedEndTime();
 		} else {
