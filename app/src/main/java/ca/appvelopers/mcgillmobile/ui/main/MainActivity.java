@@ -386,9 +386,9 @@ public class MainActivity extends BaseActivity {
     private void logout(){
         //Confirm with the user
         new AlertDialog.Builder(MainActivity.this)
-                .setTitle(getString(R.string.logout_dialog_title))
-                .setMessage(getString(R.string.logout_dialog_message))
-                .setPositiveButton(getString(R.string.logout_dialog_positive),
+                .setTitle(R.string.logout_dialog_title)
+                .setMessage(R.string.logout_dialog_message)
+                .setPositiveButton(R.string.logout_dialog_positive,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -399,8 +399,7 @@ public class MainActivity extends BaseActivity {
                             }
 
                         })
-                .setNegativeButton(getString(R.string.logout_dialog_negative), null)
-                .create()
+                .setNegativeButton(R.string.logout_dialog_negative, null)
                 .show();
     }
 

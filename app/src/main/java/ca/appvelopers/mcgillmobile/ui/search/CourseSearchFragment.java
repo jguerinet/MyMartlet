@@ -170,7 +170,7 @@ public class CourseSearchFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Registration");
-        mActivity.setTitle(getString(R.string.title_registration));
+        mActivity.setTitle(R.string.title_registration);
 
         //Check if there are any terms to register for
         List<Term> registerTerms = App.getRegisterTerms();

@@ -73,9 +73,7 @@ public class MyCoursesFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_web, container, false);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("MyCourses");
-
-        //Title
-        mActivity.setTitle(getString(R.string.title_mycourses));
+        mActivity.setTitle(R.string.title_mycourses);
 
         if(!Help.isConnected()){
             DialogHelper.showNeutralDialog(mActivity, getString(R.string.error),

@@ -89,7 +89,7 @@ public class SettingsFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Settings");
-        mActivity.setTitle(getString(R.string.title_settings));
+        mActivity.setTitle(getString(R.string.settings_version, Help.getVersionName()));
 
         //Language
         List<String> languages = new ArrayList<>();
@@ -109,9 +109,6 @@ public class SettingsFragment extends BaseFragment {
 
         //Statistics
         mStatistics.setChecked(Load.statistics());
-
-        //Version Number
-        mVersion.setText(getString(R.string.settings_version, Help.getVersionName()));
 
         //Hide the loading indicator
         hideLoadingIndicator();

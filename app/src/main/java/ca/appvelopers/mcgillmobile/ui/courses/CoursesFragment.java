@@ -253,10 +253,9 @@ public class CoursesFragment extends BaseFragment {
         else if (courses.size() > 0) {
             //Ask for confirmation before unregistering
             new AlertDialog.Builder(mActivity)
-                    .setTitle(getString(R.string.unregister_dialog_title))
-                    .setMessage(getString(R.string.unregister_dialog_message))
-                    .setPositiveButton(getString(android.R.string.yes),
-                            new DialogInterface.OnClickListener(){
+                    .setTitle(R.string.unregister_dialog_title)
+                    .setMessage(R.string.unregister_dialog_message)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //Show the user we are loading
@@ -295,8 +294,7 @@ public class CoursesFragment extends BaseFragment {
                                             });
                                 }
                             })
-                    .setNegativeButton(getString(android.R.string.cancel), null)
-                    .create()
+                    .setNegativeButton(android.R.string.cancel, null)
                     .show();
         }
     }

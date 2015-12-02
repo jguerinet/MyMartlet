@@ -84,7 +84,7 @@ public class EbillFragment extends BaseFragment {
         Analytics.getInstance().sendScreen("Ebill");
 
         //Title
-        mActivity.setTitle(getString(R.string.title_ebill));
+        mActivity.setTitle(R.string.title_ebill);
 
         mListView.setLayoutManager(new LinearLayoutManager(mActivity));
 

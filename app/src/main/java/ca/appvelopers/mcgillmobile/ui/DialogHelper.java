@@ -59,8 +59,7 @@ public class DialogHelper {
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setNeutralButton(context.getString(android.R.string.ok),
-                        new DialogInterface.OnClickListener() {
+                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -245,11 +244,10 @@ public class DialogHelper {
 
         new AlertDialog.Builder(context)
                 .setView(checkboxLayout)
-                .setTitle(context.getString(R.string.warning))
+                .setTitle(R.string.warning)
                 .setMessage(transcriptBug ? context.getString(R.string.bug_parser_transcript) :
                         context.getString(R.string.bug_parser_semester, term))
-                .setPositiveButton(context.getString(R.string.bug_parser_yes),
-                        new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.bug_parser_yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //Send the bug report
                                 Instabug.getInstance().sendFeedback(transcriptBug ?
@@ -269,8 +267,7 @@ public class DialogHelper {
                                 dialog.dismiss();
                             }
                         })
-                .setNegativeButton(context.getString(R.string.bug_parser_no),
-                        new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.bug_parser_no, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //Save the do not show again
                                 Save.parserErrorDoNotShow(dontShowAgain.isChecked());

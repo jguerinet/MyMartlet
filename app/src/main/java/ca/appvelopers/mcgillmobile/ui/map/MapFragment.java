@@ -160,7 +160,7 @@ public class MapFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
-        mActivity.setTitle(getString(R.string.title_map));
+        mActivity.setTitle(R.string.title_map);
         Analytics.getInstance().sendScreen("Map");
 
         //Set up the spinner

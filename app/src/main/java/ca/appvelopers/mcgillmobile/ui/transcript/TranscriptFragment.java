@@ -77,7 +77,7 @@ public class TranscriptFragment extends BaseFragment{
         ButterKnife.bind(this, view);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Transcript");
-        mActivity.setTitle(getString(R.string.title_transcript));
+        mActivity.setTitle(R.string.title_transcript);
 
         mListView.setLayoutManager(new LinearLayoutManager(mActivity));
 

@@ -52,9 +52,7 @@ public class DesktopFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_web, container, false);
         lockPortraitMode();
         Analytics.getInstance().sendScreen("Desktop Site");
-
-        //Title
-        mActivity.setTitle(getString(R.string.title_desktop));
+        mActivity.setTitle(R.string.title_desktop);
 
         if(!Help.isConnected()){
             DialogHelper.showNeutralDialog(mActivity, getString(R.string.error),
