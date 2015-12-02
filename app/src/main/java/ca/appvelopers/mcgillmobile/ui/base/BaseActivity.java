@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.ui.base;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import junit.framework.Assert;
 
 import java.util.Locale;
 
+import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Language;
@@ -42,19 +44,25 @@ import ca.appvelopers.mcgillmobile.model.Language;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
     /**
+     * The toolbar
+     */
+    @Nullable @Bind(R.id.toolbar)
+    protected Toolbar mToolbar;
+    /**
      * The progress bar shown in the toolbar
      */
-    private ProgressBar mToolbarProgressBar;
+    @Nullable @Bind(R.id.toolbar_progress)
+    protected ProgressBar mToolbarProgressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Update locale and config (it sometimes get reset in between activities)
         updateLocale();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig){
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         //Update locale and config (it gets reset when a configuration is changed)
         updateLocale();
@@ -63,7 +71,7 @@ public class BaseActivity extends AppCompatActivity {
     /**
      * Updates the locale
      */
-    private void updateLocale(){
+    private void updateLocale() {
         Locale locale = new Locale(Language.getCode(App.getLanguage()));
         Configuration config = getBaseContext().getResources().getConfiguration();
         config.locale = locale;
@@ -76,21 +84,17 @@ public class BaseActivity extends AppCompatActivity {
      *  Must be declared in the activity's layout file
      *
      * @param homeAsUp True if the home button should be displayed as up, false otherwise
-     * @return The toolbar
      */
-    public Toolbar setUpToolbar(boolean homeAsUp){
-        //Get the toolbar
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        //Set is as the action bar
-        setSupportActionBar(toolbar);
+    protected void setUpToolbar(boolean homeAsUp) {
+        if (mToolbar == null) {
+            throw new NullPointerException("Toolbar not found in activity layout");
+        }
 
-        //Set up the progress bar
-        mToolbarProgressBar = (ProgressBar)toolbar.findViewById(R.id.toolbar_progress);
+        //Set is as the action bar
+        setSupportActionBar(mToolbar);
 
         Assert.assertNotNull(getSupportActionBar());
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
-
-        return toolbar;
     }
 
     @Override
@@ -109,7 +113,8 @@ public class BaseActivity extends AppCompatActivity {
      *
      * @param visible True if it should be visible, false otherwise
      */
-    public void showToolbarProgress(boolean visible){
+    public void showToolbarProgress(boolean visible) {
+        Assert.assertNotNull(mToolbarProgressBar);
         mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

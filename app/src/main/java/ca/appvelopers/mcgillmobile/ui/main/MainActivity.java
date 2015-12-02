@@ -25,7 +25,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -151,6 +150,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        setUpToolbar(false);
 
         //Get the page from the intent. If not, use the home page
         mCurrentItem = (Homepage)getIntent().getSerializableExtra(Constants.HOMEPAGE);
@@ -171,15 +171,12 @@ public class MainActivity extends BaseActivity {
         mSettingsFragment = new SettingsFragment();
 
         //Initialize the Facebook SDK
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
         //Set up the Facebook callback manager
         mCallbackManager = CallbackManager.Factory.create();
 
-        //Set up the toolbar
-        Toolbar toolbar = setUpToolbar(false);
-
         //Set up the drawer
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, 0, 0){
             @Override
             public void onDrawerClosed(View view){
                 super.onDrawerClosed(view);
