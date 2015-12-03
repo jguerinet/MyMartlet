@@ -27,7 +27,6 @@ import ca.appvelopers.mcgillmobile.R;
 /**
  * The languages that this app is offered in
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class Language {

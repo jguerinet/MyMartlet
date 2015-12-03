@@ -53,7 +53,6 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
 /**
  * Allows the user to change the app settings
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class SettingsFragment extends BaseFragment {

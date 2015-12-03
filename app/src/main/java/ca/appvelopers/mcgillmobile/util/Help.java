@@ -42,7 +42,6 @@ import timber.log.Timber;
 /**
  * Contains various useful static help methods
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class Help {

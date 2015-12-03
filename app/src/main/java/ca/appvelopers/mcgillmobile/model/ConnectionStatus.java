@@ -22,7 +22,6 @@ import ca.appvelopers.mcgillmobile.R;
 /**
  * Represents the status of a connection
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public enum ConnectionStatus {

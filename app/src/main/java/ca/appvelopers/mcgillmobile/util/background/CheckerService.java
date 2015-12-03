@@ -42,8 +42,7 @@ import timber.log.Timber;
  * Runs the required checker tasks
  * @author Shabbir Hussain
  * @author Julien Guerinet
- * @version 2.0.1
- * @since 2.0
+ * @since 2.0.0
  */
 public class CheckerService extends IntentService {
 	/**

@@ -42,7 +42,6 @@ import timber.log.Timber;
 /**
  * Loads objects from internal storage or {@link SharedPreferences}
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 @SuppressWarnings("unchecked")

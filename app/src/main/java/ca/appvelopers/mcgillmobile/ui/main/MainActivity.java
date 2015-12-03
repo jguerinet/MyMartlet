@@ -70,7 +70,6 @@ import timber.log.Timber;
 /**
  * The MainActivity the contains the side drawer and the main views for the fragments
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class MainActivity extends BaseActivity {

@@ -36,7 +36,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * One page in the walkthrough
  * @author Julien Guerinet
  * @author Rafi Uddin
- * @version 2.0.1
  * @since 1.0.0
  */
 public class WalkthroughFragment extends Fragment {

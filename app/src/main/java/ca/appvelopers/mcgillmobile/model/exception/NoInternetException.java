@@ -19,8 +19,7 @@ package ca.appvelopers.mcgillmobile.model.exception;
 /**
  * Exception thrown when the user is not connected to the internet
  * @author Julien Guerinet
- * @version 2.0.1
- * @since 2.0
+ * @since 2.0.0
  */
 public class NoInternetException extends Exception {
 

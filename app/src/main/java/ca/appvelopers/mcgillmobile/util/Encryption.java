@@ -25,7 +25,6 @@ package ca.appvelopers.mcgillmobile.util;
  * TODO
  * Provides manual facilities for encrypting information into a simple modification of base 64
  * @author Omar Gonzalez
- * @version 2.0.1
  * @since 1.0.0
  */
 public class Encryption {

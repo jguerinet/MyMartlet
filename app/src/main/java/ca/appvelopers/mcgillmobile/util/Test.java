@@ -20,7 +20,6 @@ package ca.appvelopers.mcgillmobile.util;
  * Various utility methods to test sections of the app
  * @author Julien Guerinet
  * @author Ryan Singzon
- * @version 2.0.1
  * @since 1.0.0
  */
 public class Test {

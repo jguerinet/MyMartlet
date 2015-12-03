@@ -43,7 +43,6 @@ import ca.appvelopers.mcgillmobile.util.Date;
 /**
  * Builds the schedule view based on the orientation and the current date
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class ScheduleViewBuilder {

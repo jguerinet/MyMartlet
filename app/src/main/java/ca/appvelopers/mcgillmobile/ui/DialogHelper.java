@@ -43,7 +43,6 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
 /**
  * Helper methods that create dialogs for various situations
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class DialogHelper {

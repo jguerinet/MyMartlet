@@ -38,7 +38,6 @@ import ca.appvelopers.mcgillmobile.model.Language;
 /**
  * The base class for all activities
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 @SuppressLint("Registered")

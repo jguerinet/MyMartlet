@@ -50,7 +50,6 @@ import timber.log.Timber;
 /**
  * Application implementation
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class App extends Application {

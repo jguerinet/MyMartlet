@@ -32,7 +32,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 /**
  * Displays information about a semester from the user's transcript
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class SemesterActivity extends BaseActivity {

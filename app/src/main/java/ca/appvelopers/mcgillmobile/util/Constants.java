@@ -24,7 +24,6 @@ import ca.appvelopers.mcgillmobile.App;
 /**
  * Constants used around the app
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class Constants {

@@ -30,7 +30,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 /**
  * Clears objects from internal storage or {@link SharedPreferences}
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class Clear {

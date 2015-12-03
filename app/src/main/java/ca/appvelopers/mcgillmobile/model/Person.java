@@ -21,8 +21,7 @@ import java.io.Serializable;
 /**
  * One person for the About page
  * @author Julien Guerinet
- * @version 2.0.1
- * @since 2.0
+ * @since 2.0.0
  */
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;

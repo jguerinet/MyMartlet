@@ -38,7 +38,6 @@ import ca.appvelopers.mcgillmobile.model.Term;
 /**
  * Displays the list of courses in the user's wish list
  * @author Julien Guerinet
- * @version 2.0.1
  * @since 1.0.0
  */
 public class WishlistSearchCourseAdapter
