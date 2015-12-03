@@ -22,6 +22,7 @@
         <item name="android:textColorHighlight">#99db231e</item>
         <!-- Alert Dialog -->
         <item name="alertDialogTheme">@style/Theme.MyMartlet.AlertDialog</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="Theme.MyMartlet.AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
