@@ -136,12 +136,13 @@
     <string name="course_map">Voir sur la Carte</string>
 
     <!-- eBill Screen -->
-    <string name="ebill_statement_date">Date de Déclaration:</string>
-    <string name="ebill_due_date">Date d\'Echéance:</string>
+    <string name="ebill_statement_date">Date de Déclaration: %s</string>
+    <string name="ebill_due_date">Date d\'Echéance: %s</string>
 
     <!-- Settings Screen -->
     <string name="settings_language">Langue</string>
-    <string name="settings_homepage">Page d\'Accueil</string>
+    <string name="settings_homepage_title">Page d\'Accueil</string>
+    <string name="settings_homepage">Page d\'Accueil: %s</string>
     <string name="settings_statistics">Statistiques Anonymes d\'Utilisation</string>
     <string name="homepage_schedule">Calendrier</string>
     <string name="homepage_transcript">Bulletin</string>
