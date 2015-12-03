@@ -20,7 +20,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.formgenerator.TextViewFormItem;
 import com.instabug.library.Instabug;
 
 import java.util.ArrayList;
@@ -77,6 +77,7 @@ public class SettingsFragment extends BaseFragment {
         FormGenerator fg = FormGenerator.get()
                 .setDefaultIconColorId(R.color.red)
                 .setDefaultBackground(R.drawable.transparent_redpressed)
+                .setDefaultPaddingSize(R.dimen.padding_small)
                 .bind(mActivity, mContainer);
 
         //Language
@@ -124,8 +125,9 @@ public class SettingsFragment extends BaseFragment {
                 });
 
         //Homepage
-        fg.text(App.getHomepage().toString())
-                .leftIcon(R.drawable.ic_phone_android)
+        final TextViewFormItem homepage = fg.text(getString(R.string.settings_homepage,
+                App.getHomepage().toString()));
+        homepage.leftIcon(R.drawable.ic_phone_android)
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -151,19 +153,26 @@ public class SettingsFragment extends BaseFragment {
                         }
 
                         new AlertDialog.Builder(mActivity)
-                                .setTitle(R.string.settings_homepage)
+                                .setTitle(R.string.settings_homepage_title)
                                 .setSingleChoiceItems(homepageTitles, currentHomepage,
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 //Get the chosen homepage
-                                                Homepage homepage = homepages[which];
+                                                Homepage newHomepage = homepages[which];
 
-                                                Analytics.getInstance().sendEvent("Settings", "Homepage",
-                                                        homepage.toString());
+                                                Analytics.getInstance().sendEvent("Settings",
+                                                        "Homepage", newHomepage.toString());
 
                                                 //Update it in App
-                                                App.setHomepage(homepage);
+                                                App.setHomepage(newHomepage);
+
+                                                //Update the TextView
+                                                homepage.view().setText(
+                                                        getString(R.string.settings_homepage,
+                                                                newHomepage.toString()));
+
+                                                dialog.dismiss();
                                             }
                                         })
                                 .show();
@@ -181,41 +190,39 @@ public class SettingsFragment extends BaseFragment {
                     }
                 });
 
-        //TODO A new FormGenerator version is needed here for the drawable padding on these buttons
-
         //Help
-        fg.borderlessButton(R.string.title_help, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity, HelpActivity.class));
-            }
-        })
-                .textColor(R.color.red, false)
-                .gravity(Gravity.START|Gravity.CENTER_VERTICAL)
-                .leftIcon(R.drawable.ic_help);
+        fg.text(R.string.title_help)
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(mActivity, HelpActivity.class));
+                    }
+                })
+                .leftIcon(R.drawable.ic_help)
+                .view();
 
         //About
-        fg.borderlessButton(R.string.title_about, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity, AboutActivity.class));
-            }
-        })
-                .textColor(R.color.red, false)
-                .gravity(Gravity.START|Gravity.CENTER_VERTICAL)
-                .leftIcon(R.drawable.ic_info);
+        fg.text(R.string.title_about)
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(mActivity, AboutActivity.class));
+                    }
+                })
+                .leftIcon(R.drawable.ic_info)
+                .view();
 
         //Bug Report
-        fg.borderlessButton(R.string.title_report_bug, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Analytics.getInstance().sendEvent("About", "Report a Bug", null);
-                Instabug.getInstance().invokeFeedbackSender();
-            }
-        })
-                .textColor(R.color.red, false)
-                .gravity(Gravity.START|Gravity.CENTER_VERTICAL)
-                .leftIcon(R.drawable.ic_bug_report);
+        fg.text(R.string.title_report_bug)
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Analytics.getInstance().sendEvent("About", "Report a Bug", null);
+                        Instabug.getInstance().invokeFeedbackSender();
+                    }
+                })
+                .leftIcon(R.drawable.ic_bug_report)
+                .view();
 
         //Hide the loading indicator
         hideLoadingIndicator();
