@@ -1,5 +1,12 @@
 # Change Log
 
+## Version 2.0.2 (2016-01-12)
+* Fixed some reported crashes
+* Fixed bug where about page would not load
+* Fixed bug where transcript would not load on pre-Lollipop devices
+* Removed unnecessary color state lists 
+* Refreshed the Settings UI
+
 ## Version 2.0.1 (2015-11-20)
 * Open sourced the whole project
 * Switched to min SDK 15
