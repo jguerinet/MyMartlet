@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,11 @@ import ca.appvelopers.mcgillmobile.util.Help;
  */
 public class AboutActivity extends BaseActivity {
     /**
+     * The list view
+     */
+    @Bind(android.R.id.list)
+    protected RecyclerView mList;
+    /**
      * The list of people
      */
     private List<Person> mPeople;
@@ -54,9 +59,9 @@ public class AboutActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        Analytics.getInstance().sendScreen("About");
-
+        ButterKnife.bind(this);
         setUpToolbar(true);
+        Analytics.getInstance().sendScreen("About");
 
         mPeople = new ArrayList<>();
         //Adnan
@@ -117,9 +122,8 @@ public class AboutActivity extends BaseActivity {
                 getString(R.string.about_yulric_linkedin), getString(R.string.about_yulric_email)));
 
         //Set up the list
-        RecyclerView listView = (RecyclerView)findViewById(android.R.id.list);
-        listView.setLayoutManager(new LinearLayoutManager(this));
-        listView.setAdapter(new PersonAdapter());
+        mList.setLayoutManager(new LinearLayoutManager(this));
+        mList.setAdapter(new PersonAdapter());
     }
 
     /**
