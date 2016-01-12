@@ -251,14 +251,15 @@
 
                 <Button
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_small"
                     android:id="@+id/more_options"
-                    android:textColor="@color/black_redpressed"
+                    android:layout_gravity="center"
                     android:text="@string/registration_show_options"
-                    android:padding="@dimen/padding_small"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/red"
                     android:gravity="center"/>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
