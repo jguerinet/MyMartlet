@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_docuum"
             android:background="@drawable/transparent_redpressed"
-            android:textColor="@color/black_whitepressed"
+            android:textColor="@android:color/black"
             android:text="@string/course_docuum"
             android:gravity="center"
             android:padding="@dimen/padding_micro"/>
@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/course_map"
             android:background="@drawable/transparent_redpressed"
-            android:textColor="@color/black_whitepressed"
+            android:textColor="@android:color/black"
             android:text="@string/course_map"
             android:gravity="center"
             android:padding="@dimen/padding_micro"
