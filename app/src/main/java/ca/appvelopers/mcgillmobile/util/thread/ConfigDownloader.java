@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import org.joda.time.DateTimeZone;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.Proxy;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,8 +170,9 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                         }
                     }
                 }
-            }
-            catch (Exception e) {
+            } catch (SocketTimeoutException e) {
+                Timber.i("Error: Socket timeout");
+            } catch (Exception e) {
                 //Catch any possible exceptions
                 Timber.e(e, "Section Error: %s", mCurrentSection);
             }
