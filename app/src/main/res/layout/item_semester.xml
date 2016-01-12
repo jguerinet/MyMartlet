@@ -46,7 +46,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_chevron_right"
             android:gravity="center"
-            android:tint="@color/grey_whitepressed"
+            android:tint="@color/grey"
             android:duplicateParentState="true"
             tools:ignore="contentDescription"/>
     </LinearLayout>
