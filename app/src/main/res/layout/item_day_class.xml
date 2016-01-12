@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/course_code"
         android:textSize="@dimen/text_medium"
-        android:textColor="@color/white_greypressed"
+        android:textColor="@android:color/white"
         android:duplicateParentState="true"
         android:layout_marginLeft="@dimen/padding_micro"
         android:layout_marginStart="@dimen/padding_micro"/>
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/course_time"
-        android:textColor="@color/white_greypressed"
+        android:textColor="@android:color/white"
         android:duplicateParentState="true"
         android:layout_marginLeft="@dimen/padding_micro"
         android:layout_marginStart="@dimen/padding_micro"/>
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/course_location"
-        android:textColor="@color/white_greypressed"
+        android:textColor="@android:color/white"
         android:duplicateParentState="true"
         android:layout_marginLeft="@dimen/padding_micro"
         android:layout_marginStart="@dimen/padding_micro"/>
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/course_type"
         android:textStyle="italic"
-        android:textColor="@color/white_greypressed"
+        android:textColor="@android:color/white"
         android:duplicateParentState="true"
         android:layout_marginLeft="@dimen/padding_micro"
         android:layout_marginStart="@dimen/padding_micro"/>
