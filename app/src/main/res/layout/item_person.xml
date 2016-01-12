@@ -45,7 +45,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/linkedin"
             android:src="@drawable/ic_linkedin"
-            android:tint="@color/red_darkredpressed"
+            android:tint="@color/red"
+            android:background="?android:attr/selectableItemBackground"
             android:padding="@dimen/padding_micro"
             tools:ignore="contentDescription"/>
 
@@ -54,7 +55,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/email"
             android:src="@drawable/ic_email"
-            android:tint="@color/red_darkredpressed"
+            android:tint="@color/red"
+            android:background="?android:attr/selectableItemBackground"
             android:padding="@dimen/padding_micro"
             tools:ignore="contentDescription"/>
 
