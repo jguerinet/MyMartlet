@@ -2,7 +2,7 @@
 
 ## Summary
 The MyMartlet app provides a mobile portal to McGill University students to McGill's MyMcGill. It gives the user access to all of the essential MyMcGill features, such as schedule, transcript, ebill, adding/dropping courses, a campus map, and more. 
-This is an unofficial McGill app, and is not affiliated with McGill University whatsoever. [Download it from the Play Store](https://play.google.com/store/apps/details?id=ca.appvelopers.mcgillmobile).
+This is an unofficial McGill app, and is not affiliated with McGill University whatsoever. [Download it from the Play Store](https://play.google.com/store/apps/details?id=ca.appvelopers.mcgillmobile). 
 
 ## Contributions
 Have a feature request? Make an issue! If you want to implement it yourself, just fork the repo, make the changes, and submit a PR. 
