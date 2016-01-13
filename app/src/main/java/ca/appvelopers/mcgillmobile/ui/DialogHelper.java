@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CheckBox;
@@ -46,6 +47,21 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
  * @since 1.0.0
  */
 public class DialogHelper {
+
+    /**
+     * Shows an {@link AlertDialog} with one button
+     *
+     * @param context   App context
+     * @param titleId   String Id of the title String
+     * @param messageId String Id of the message String
+     */
+    public static void neutral(Context context, @StringRes int titleId, @StringRes int messageId) {
+        new AlertDialog.Builder(context)
+                .setTitle(titleId)
+                .setMessage(messageId)
+                .setNeutralButton(android.R.string.ok, null)
+                .show();
+    }
 
     /**
      * Shows an AlertDialog with one neutral button

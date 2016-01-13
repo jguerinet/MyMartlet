@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.ui.search.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsFragment;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopFragment;
-import ca.appvelopers.mcgillmobile.ui.web.MyCoursesFragment;
+import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
@@ -56,7 +56,7 @@ public class MainActivity extends DrawerActivity {
     /**
      * The MyCourses view
      */
-    private MyCoursesFragment mMyCoursesFragment;
+    private MyCoursesActivity mMyCoursesFragment;
     /**
      * The courses view
      */
@@ -100,7 +100,7 @@ public class MainActivity extends DrawerActivity {
 
         //Create the fragments
         mScheduleFragment = new ScheduleFragment();
-        mMyCoursesFragment = new MyCoursesFragment();
+        mMyCoursesFragment = new MyCoursesActivity();
         mCoursesFragment = new CoursesFragment();
         mCourseSearchFragment = new CourseSearchFragment();
         mWishlistFragment = new WishlistFragment();
@@ -115,13 +115,7 @@ public class MainActivity extends DrawerActivity {
 
     @Override
     public void onBackPressed(){
-        //If we are on a web page, check if we can go back in the web page itself
-        if(mCurrentItem == Homepage.MY_COURSES
-                && mMyCoursesFragment.getWebView().canGoBack()){
-            mMyCoursesFragment.getWebView().goBack();
-            return;
-        }
-        else if(mCurrentItem == Homepage.DESKTOP
+        if(mCurrentItem == Homepage.DESKTOP
                 && mDesktopFragment.getWebView().canGoBack()){
             mDesktopFragment.getWebView().goBack();
             return;
@@ -181,9 +175,6 @@ public class MainActivity extends DrawerActivity {
         switch(mCurrentItem) {
             case SCHEDULE:
                 fragment = mScheduleFragment;
-                break;
-            case MY_COURSES:
-                fragment = mMyCoursesFragment;
                 break;
             case COURSES:
                 fragment = mCoursesFragment;

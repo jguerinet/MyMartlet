@@ -90,6 +90,9 @@ public class DrawerActivity extends BaseActivity
     protected void onStart() {
         super.onStart();
 
+        //Set up the toolbar
+        setUpToolbar(false);
+
         //Set up the drawer
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, 0, 0);
         mDrawerToggle.setDrawerIndicatorEnabled(true);

@@ -26,9 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.MimeTypeMap;
@@ -36,9 +34,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
-import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
+import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -49,85 +49,81 @@ import ca.appvelopers.mcgillmobile.util.storage.Load;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class MyCoursesFragment extends BaseFragment {
+public class MyCoursesActivity extends DrawerActivity {
     /**
      * Code used to get the external storage permission for downloads
      */
     private static final int EXTERNAL_STORAGE_PERMISSION = 100;
     /**
-     * The main view
+     * Main content
      */
-    private WebView mWebView;
+    @Bind(R.id.web_view)
+    protected WebView mWebView;
 
-    @Override
+    @Override @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    @SuppressLint("SetJavaScriptEnabled")
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_web, container, false);
-        lockPortraitMode();
+        setContentView(R.layout.activity_web);
+        ButterKnife.bind(this);
         Analytics.get().sendScreen("MyCourses");
-        mActivity.setTitle(R.string.title_mycourses);
 
-        if(!Help.isConnected()){
-            DialogHelper.showNeutralDialog(mActivity, getString(R.string.error),
-                    getString(R.string.error_no_internet));
-            return view;
+        //No internet: not worth trying to load the view
+        if (!Help.isConnected()) {
+            DialogHelper.neutral(this, R.string.error, R.string.error_no_internet);
+            return;
         }
 
+        //TODO Why ?
         //Clear any existing cookies
         final CookieManager cookieManager = CookieManager.getInstance();
-        if(cookieManager.hasCookies()){
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (cookieManager.hasCookies()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 CookieManager.getInstance().removeAllCookies(null);
-            }
-            else{
+            } else{
                 //noinspection deprecation
                 CookieManager.getInstance().removeAllCookie();
             }
         }
 
-        //Get the WebView
-        mWebView = (WebView)view.findViewById(R.id.webview);
-
-        //allows download any file
+        //Set up any eventual downloads
         mWebView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition,
                                         String mimeType, long contentLength) {
                 //Check that we have the external storage permission
-                if(!Help.checkPermission(MyCoursesFragment.this,
+                if (!Help.checkPermission(MyCoursesActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, EXTERNAL_STORAGE_PERMISSION)) {
                     return;
                 }
 
+                //Set up the file name
                 String[] urlSplit = url.split("/");
                 String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
                 String fileName = urlSplit[urlSplit.length - 1].concat("" + extension);
-                Uri source = Uri.parse(url);
-                // Make a new request pointing to the url
-                DownloadManager.Request request = new DownloadManager.Request(source);
-                // Appears the same in Notification bar while downloading
+
+                //Make a new request pointing to the url
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+
+                //Show a notification while downloading
                 String cookie = cookieManager.getCookie(url);
                 request.addRequestHeader("Cookie", cookie);
                 request.setTitle(fileName);
                 request.allowScanningByMediaScanner();
                 request.setNotificationVisibility(
                         DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                // save the file in the "Downloads" folder of SDCARD
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                        fileName);
-                // get download service and enqueue file
+
+                //Save the file in the "Downloads" folder of SDCARD
+                request.setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_DOWNLOADS, fileName);
+
+                //Get the download manager and enqueue download
                 DownloadManager manager =
-                        (DownloadManager) mActivity.getSystemService(Context.DOWNLOAD_SERVICE);
+                        (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
                 manager.enqueue(request);
             }
         });
+
+        //Load the info into the WebView
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; " +
                 "LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) " +
@@ -147,20 +143,25 @@ public class MyCoursesFragment extends BaseFragment {
                         Load.password() + "'; document.forms[0].submit();})()");
 
                 view.setVisibility(View.VISIBLE);
-
-                //Hide the loading indicator
-                hideLoadingIndicator();
             }
         });
+    }
 
-        return view;
+    @Override
+    public void onBackPressed() {
+        //Check if we can go back on the page itself
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
             @NonNull int[] grantResults) {
         switch (requestCode) {
-            case EXTERNAL_STORAGE_PERMISSION: {
+            case EXTERNAL_STORAGE_PERMISSION:
                 int stringId;
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -169,17 +170,10 @@ public class MyCoursesFragment extends BaseFragment {
                 else {
                     stringId = R.string.storage_permission_refused;
                 }
-                Toast.makeText(mActivity, stringId, Toast.LENGTH_SHORT).show();
-            }
+                Toast.makeText(this, stringId, Toast.LENGTH_SHORT).show();
+                break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    /**
-     * @return The MyCourses WebView
-     */
-    public WebView getWebView(){
-        return mWebView;
     }
 }
