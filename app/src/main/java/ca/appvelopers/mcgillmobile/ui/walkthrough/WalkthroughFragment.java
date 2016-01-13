@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ public class WalkthroughFragment extends Fragment {
                                                    int position, long l){
                             Homepage chosenDrawerItem = homepageAdapter.getItem(position);
 
-                            Analytics.getInstance().sendEvent("Walkthrough", "Homepage",
+                            Analytics.get().sendEvent("Walkthrough", "Homepage",
                                     chosenDrawerItem.toString());
 
                             //Update it in the App
@@ -138,7 +138,7 @@ public class WalkthroughFragment extends Fragment {
 
                             //If the faculty is not null, send the GA
                             if(faculty != null){
-                                Analytics.getInstance().sendEvent("Walkthrough", "Faculty",
+                                Analytics.get().sendEvent("Walkthrough", "Faculty",
                                         faculty.toString());
                             }
                         }

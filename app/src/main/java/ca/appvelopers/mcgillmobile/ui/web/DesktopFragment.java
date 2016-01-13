@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class DesktopFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_web, container, false);
         lockPortraitMode();
-        Analytics.getInstance().sendScreen("Desktop Site");
+        Analytics.get().sendScreen("Desktop Site");
         mActivity.setTitle(R.string.title_desktop);
 
         if(!Help.isConnected()){

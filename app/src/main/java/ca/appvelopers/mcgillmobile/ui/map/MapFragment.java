@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,7 +160,7 @@ public class MapFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
         mActivity.setTitle(R.string.title_map);
-        Analytics.getInstance().sendScreen("Map");
+        Analytics.get().sendScreen("Map");
 
         //Set up the spinner
         final Spinner filter = (Spinner) view.findViewById(R.id.map_filter);

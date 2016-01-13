@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ public class SemesterActivity extends BaseActivity {
         setContentView(R.layout.activity_semester);
         ButterKnife.bind(this);
         setUpToolbar(true);
-        Analytics.getInstance().sendScreen("Transcript - Semester");
+        Analytics.get().sendScreen("Transcript - Semester");
 
         //Get the semester from the intent
         Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);

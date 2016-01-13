@@ -61,7 +61,7 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
         setUpToolbar(true);
-        Analytics.getInstance().sendScreen("About");
+        Analytics.get().sendScreen("About");
 
         mPeople = new ArrayList<>();
         //Adnan
@@ -177,14 +177,14 @@ public class AboutActivity extends BaseActivity {
                 mLinkedIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Analytics.getInstance().sendEvent("About", "Linkedin", person.getName());
+                        Analytics.get().sendEvent("About", "Linkedin", person.getName());
                         Help.openURL(AboutActivity.this, person.getLinkedIn());
                     }
                 });
                 mEmail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Analytics.getInstance().sendEvent("About", "Email", person.getName());
+                        Analytics.get().sendEvent("About", "Email", person.getName());
 
                         //Send an email :
                         Intent emailIntent = new Intent(Intent.ACTION_SEND)

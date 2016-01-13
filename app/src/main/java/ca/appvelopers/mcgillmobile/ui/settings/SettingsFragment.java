@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class SettingsFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, view);
         lockPortraitMode();
-        Analytics.getInstance().sendScreen("Settings");
+        Analytics.get().sendScreen("Settings");
         mActivity.setTitle(getString(R.string.settings_version, Help.getVersionName()));
 
         //Set up the FormGenerator
@@ -101,7 +101,7 @@ public class SettingsFragment extends BaseFragment {
                                                 //Get the chosen language
                                                 @Language.Type int language = which;
 
-                                                Analytics.getInstance().sendEvent("Settings", "Language",
+                                                Analytics.get().sendEvent("Settings", "Language",
                                                         Language.getCode(language));
 
                                                 //If it's different than the previously selected language,
@@ -160,7 +160,7 @@ public class SettingsFragment extends BaseFragment {
                                                 //Get the chosen homepage
                                                 Homepage newHomepage = homepages[which];
 
-                                                Analytics.getInstance().sendEvent("Settings",
+                                                Analytics.get().sendEvent("Settings",
                                                         "Homepage", newHomepage.toString());
 
                                                 //Update it in App
@@ -216,7 +216,7 @@ public class SettingsFragment extends BaseFragment {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Analytics.getInstance().sendEvent("About", "Report a Bug", null);
+                        Analytics.get().sendEvent("About", "Report a Bug", null);
                         Instabug.getInstance().invokeFeedbackSender();
                     }
                 })

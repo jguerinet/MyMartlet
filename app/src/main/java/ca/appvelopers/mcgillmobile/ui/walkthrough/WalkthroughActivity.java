@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ public class WalkthroughActivity extends BaseActivity {
         //Check if this is the normal walkthrough or the email one
         boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
 
-        Analytics.getInstance().sendScreen(email ? "Email Walkthrough" : "Walkthrough");
+        Analytics.get().sendScreen(email ? "Email Walkthrough" : "Walkthrough");
 
         mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), email);
         mViewPager.setAdapter(mWalkthroughAdapter);
@@ -122,7 +122,7 @@ public class WalkthroughActivity extends BaseActivity {
 
     @OnClick(R.id.walkthrough_close)
     void close(){
-        Analytics.getInstance().sendEvent("Walkthrough", "Skip", null);
+        Analytics.get().sendEvent("Walkthrough", "Skip", null);
         finish();
     }
 

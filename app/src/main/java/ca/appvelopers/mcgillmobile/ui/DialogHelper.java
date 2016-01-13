@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ public class DialogHelper {
      */
     public static void showChangeSemesterDialog(Context context, Term term, boolean registerTerms,
                                                 final TermCallback callback){
-        Analytics.getInstance().sendScreen("Change Semester");
+        Analytics.get().sendScreen("Change Semester");
 
         //Use the default term if no term was sent
         if(term == null){
@@ -147,7 +147,7 @@ public class DialogHelper {
      * @param course   The course
      */
     public static void showCourseDialog(final Activity activity, final Course course){
-        Analytics.getInstance().sendScreen("Schedule - Course");
+        Analytics.get().sendScreen("Schedule - Course");
 
         //Inflate the title
         View titleView = View.inflate(activity, R.layout.dialog_course_title, null);

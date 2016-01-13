@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public class TranscriptFragment extends BaseFragment{
         View view = inflater.inflate(R.layout.fragment_transcript, container, false);
         ButterKnife.bind(this, view);
         lockPortraitMode();
-        Analytics.getInstance().sendScreen("Transcript");
+        Analytics.get().sendScreen("Transcript");
         mActivity.setTitle(R.string.title_transcript);
 
         mListView.setLayoutManager(new LinearLayoutManager(mActivity));

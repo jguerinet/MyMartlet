@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,7 +170,7 @@ public class SplashActivity extends BaseActivity {
         //Make sure to delete anything with the previous user's info
         Clear.all();
 
-        Analytics.getInstance().sendScreen("Login");
+        Analytics.get().sendScreen("Login");
 
         //Get the necessary views
         final Button login = (Button) findViewById(R.id.login_button);
@@ -248,7 +248,7 @@ public class SplashActivity extends BaseActivity {
                             Save.username(username);
                             Save.password(password);
                             Save.rememberUsername(rememberUsernameView.isChecked());
-                            Analytics.getInstance().sendEvent("Login", "Remember Username",
+                            Analytics.get().sendEvent("Login", "Remember Username",
                                     String.valueOf(rememberUsernameView.isChecked()));
 
                             //set the background receiver after successful login
@@ -275,7 +275,7 @@ public class SplashActivity extends BaseActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Analytics.getInstance().sendEvent("Login", "Login Error",
+                                    Analytics.get().sendEvent("Login", "Login Error",
                                             status.getGAString());
                                     progressDialog.dismiss();
                                     DialogHelper.showNeutralDialog(SplashActivity.this,
@@ -417,7 +417,7 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Analytics.getInstance().sendEvent("Splash", "Auto-Login", "true");
+            Analytics.get().sendEvent("Splash", "Auto-Login", "true");
 
             //The connection instance
             Connection connection = Connection.getInstance();

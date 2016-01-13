@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -168,7 +168,7 @@ public class CourseSearchFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_course_search, viewGroup, false);
         ButterKnife.bind(this, view);
         lockPortraitMode();
-        Analytics.getInstance().sendScreen("Registration");
+        Analytics.get().sendScreen("Registration");
         mActivity.setTitle(R.string.title_registration);
 
         //Check if there are any terms to register for

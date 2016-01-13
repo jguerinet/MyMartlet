@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class SearchResultsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchresults);
         ButterKnife.bind(this);
-        Analytics.getInstance().sendScreen("Search Results");
+        Analytics.get().sendScreen("Search Results");
         setUpToolbar(true);
 
         //Get the info from the intent
@@ -204,7 +204,7 @@ public class SearchResultsActivity extends BaseActivity {
                     }
                 }
 
-                Analytics.getInstance().sendEvent("Search Results", "Add to Wishlist",
+                Analytics.get().sendEvent("Search Results", "Add to Wishlist",
                         String.valueOf(coursesAdded));
 
                 toastMessage = activity.getString(R.string.wishlist_add, coursesAdded);
@@ -213,7 +213,7 @@ public class SearchResultsActivity extends BaseActivity {
                 toastMessage = activity.getString(R.string.wishlist_remove, courses.size());
                 wishlist.removeAll(courses);
 
-                Analytics.getInstance().sendEvent("Wishlist", "Remove",
+                Analytics.get().sendEvent("Wishlist", "Remove",
                         String.valueOf(courses.size()));
             }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ public class EbillFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_ebill, container, false);
         ButterKnife.bind(this, view);
         lockPortraitMode();
-        Analytics.getInstance().sendScreen("Ebill");
+        Analytics.get().sendScreen("Ebill");
 
         //Title
         mActivity.setTitle(R.string.title_ebill);
