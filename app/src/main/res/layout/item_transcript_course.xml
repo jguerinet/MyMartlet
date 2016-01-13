@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="@dimen/default_margin"
         android:paddingRight="@dimen/default_margin"
-        android:layout_marginTop="@dimen/padding_micro">
+        android:layout_marginTop="@dimen/padding_micro"
+        android:layout_marginBottom="@dimen/padding_micro">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,17 +31,17 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/course_code"
                     android:textSize="@dimen/text_medium"
-                    android:textColor="@android:color/black"/>
+                    tools:text="Course Code"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/course_title"
                     android:textSize="@dimen/text_small"
-                    android:textColor="@android:color/black"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic"
+                    tools:text="Course Title"/>
 
-                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,7 +51,8 @@
                 android:paddingLeft="@dimen/padding_micro"
                 android:paddingRight="@dimen/padding_micro"
                 android:gravity="center"
-                android:textColor="@color/red"/>
+                android:textColor="@color/red"
+                tools:text="A"/>
 
         </LinearLayout>
 
@@ -62,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/course_credits"
                 android:textSize="@dimen/text_small"
-                android:textColor="@android:color/black"/>
+                tools:text="X Credits"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -71,10 +75,12 @@
                 android:id="@+id/course_average"
                 android:gravity="end"
                 android:textSize="@dimen/text_small"
-                android:textColor="@android:color/black"/>
+                tools:text="Course Average"/>
 
-            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
-    <include layout="@layout/item_divider"/>
+    <include layout="@layout/line"/>
+
 </LinearLayout>

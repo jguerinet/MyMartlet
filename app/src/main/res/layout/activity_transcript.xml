@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout">
@@ -12,34 +13,45 @@
 
         <include layout="@layout/toolbar"/>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/transcript_cgpa"
-            android:textSize="@dimen/text_large"
-            android:gravity="center"
-            android:textColor="@color/red"
-            android:layout_marginTop="@dimen/default_margin"/>
+            android:orientation="vertical"
+            tools:targetApi="21"
+            android:elevation="4dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/transcript_credits"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="italic"
-            android:gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/transcript_cgpa"
+                android:layout_gravity="center"
+                android:textSize="@dimen/text_large"
+                android:textColor="@color/red"
+                android:layout_marginTop="@dimen/padding_small"
+                tools:text="CGPA"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/semester_title"
-            android:textSize="@dimen/text_large"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:text="@string/transcript_semesters"
-            android:layout_marginLeft="@dimen/padding_micro"
-            android:layout_marginStart="@dimen/padding_micro"
-            android:paddingTop="@dimen/padding_small"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/transcript_credits"
+                android:layout_gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="italic"
+                tools:text="Total Credits"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/transcript_semesters"
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/padding_micro"
+                android:layout_marginStart="@dimen/padding_micro"
+                android:layout_marginTop="@dimen/padding_small"/>
+
+            <include layout="@layout/line"/>
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

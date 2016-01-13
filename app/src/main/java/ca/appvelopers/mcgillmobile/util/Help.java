@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.R;
 import okio.BufferedSource;
 import okio.Okio;
 import timber.log.Timber;
@@ -45,6 +47,13 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class Help {
+
+    /**
+     * Displays a toast with a generic error message
+     */
+    public static void error() {
+        Toast.makeText(App.getContext(), R.string.error_other, Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * Tints the given drawable a given color

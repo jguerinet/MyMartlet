@@ -124,5 +124,5 @@
         </LinearLayout>
     </LinearLayout>
 
-    <include layout="@layout/item_divider"/>
+    <include layout="@layout/line"/>
 </LinearLayout>

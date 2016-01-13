@@ -28,6 +28,8 @@ import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.base.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Help;
+import timber.log.Timber;
 
 /**
  * Displays information about a semester from the user's transcript
@@ -36,38 +38,38 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  */
 public class SemesterActivity extends BaseActivity {
     /**
-     * The semester's bachelor degree
+     * Semester's bachelor degree
      */
     @Bind(R.id.semester_bachelor)
-    TextView mBachelor;
+    protected TextView mBachelor;
     /**
-     * The semester program
+     * Semester program
      */
     @Bind(R.id.semester_program)
-    TextView mProgram;
+    protected TextView mProgram;
     /**
-     * The semester GPA
+     * Semester GPA
      */
     @Bind(R.id.semester_GPA)
-    TextView mGPA;
+    protected TextView mGPA;
     /**
-     * The semester credits
+     * Semester credits
      */
     @Bind(R.id.semester_credits)
-    TextView mCredits;
+    protected TextView mCredits;
     /**
-     * The user's status during this semester
+     * User's status during this semester
      */
-    @Bind(R.id.semester_fullTime)
-    TextView mFullTime;
+    @Bind(R.id.semester_full_time)
+    protected TextView mFullTime;
     /**
-     * The courses taken during this semester
+     * Courses taken during this semester
      */
     @Bind(android.R.id.list)
-    RecyclerView mCourses;
+    protected RecyclerView mList;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_semester);
         ButterKnife.bind(this);
@@ -77,6 +79,13 @@ public class SemesterActivity extends BaseActivity {
         //Get the semester from the intent
         Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);
 
+        if (semester == null) {
+            Help.error();
+            Timber.e(new IllegalArgumentException(), "Semester was null");
+            finish();
+            return;
+        }
+
         //Set the title as this current semester
         setTitle(semester.getSemesterName());
 
@@ -85,11 +94,11 @@ public class SemesterActivity extends BaseActivity {
         mProgram.setText(semester.getProgram());
         mGPA.setText(getString(R.string.transcript_termGPA, String.valueOf(semester.getGPA())));
         mCredits.setText(getString(R.string.semester_termCredits, semester.getCredits()));
-        mFullTime.setText(semester.isFullTime() ? getString(R.string.semester_fullTime) :
-                getString(R.string.semester_partTime));
+        mFullTime.setText(semester.isFullTime() ?
+                R.string.semester_fullTime : R.string.semester_partTime);
 
         //Set up the courses list
-        mCourses.setLayoutManager(new LinearLayoutManager(this));
-        mCourses.setAdapter(new SemesterAdapter(this, semester.getCourses()));
+        mList.setLayoutManager(new LinearLayoutManager(this));
+        mList.setAdapter(new SemesterAdapter(semester.getCourses()));
     }
 }

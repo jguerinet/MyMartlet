@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,36 +40,36 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  */
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterHolder> {
     /**
-     * The list of semesters
+     * List of semesters
      */
     private List<Semester> mSemesters;
 
     /**
      * Default Constructor
      *
-     * @param semesters The list of semesters
+     * @param semesters List of semesters
      */
-    public TranscriptAdapter(List<Semester> semesters){
-        this.mSemesters = semesters;
+    public TranscriptAdapter(List<Semester> semesters) {
+        mSemesters = semesters;
     }
 
     @Override
-    public SemesterHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public SemesterHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new SemesterHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_semester, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(SemesterHolder holder, int position){
+    public void onBindViewHolder(SemesterHolder holder, int position) {
         holder.bind(mSemesters.get(position));
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return mSemesters.size();
     }
 
-    class SemesterHolder extends RecyclerView.ViewHolder{
+    class SemesterHolder extends RecyclerView.ViewHolder {
         /**
          * The semester name
          */
@@ -81,12 +81,12 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
         @Bind(R.id.semester_gpa)
         protected TextView mGPA;
 
-        public SemesterHolder(View itemView){
+        public SemesterHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final Semester semester){
+        public void bind(final Semester semester) {
             final Context context = itemView.getContext();
 
             mName.setText(semester.getSemesterName());
@@ -97,8 +97,8 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, SemesterActivity.class);
-                    intent.putExtra(Constants.SEMESTER, semester);
+                    Intent intent = new Intent(context, SemesterActivity.class)
+                            .putExtra(Constants.SEMESTER, semester);
                     context.startActivity(intent);
                 }
             });

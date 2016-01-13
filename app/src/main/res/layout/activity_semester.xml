@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,32 +17,35 @@
         android:paddingTop="@dimen/default_margin">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/semester_bachelor"
             android:textSize="@dimen/text_large"
-            android:gravity="center"/>
+            android:layout_gravity="center"
+            tools:text="Bachelor of X"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/semester_program"
             android:textSize="@dimen/text_medium"
             android:paddingBottom="@dimen/padding_small"
-            android:gravity="center"/>
+            android:layout_gravity="center"
+            tools:text="Program"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/padding_micro">
+            android:layout_marginTop="@dimen/padding_micro">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/semester_GPA"
                 android:textSize="@dimen/text_medium"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5"
+                tools:text="GPA"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -49,26 +53,29 @@
                 android:id="@+id/semester_credits"
                 android:textSize="@dimen/text_medium"
                 android:gravity="end"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5"
+                tools:text="Credits"/>
 
         </LinearLayout>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/semester_fullTime"
-            android:textSize="@dimen/text_small"/>
-
+            android:id="@+id/semester_full_time"
+            android:textSize="@dimen/text_small"
+            tools:text="Full Time"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/semester_courses"
             android:textStyle="bold"
             android:textSize="@dimen/text_large"
-            android:paddingTop="@dimen/padding_small"/>
+            android:layout_marginTop="@dimen/padding_small"/>
 
     </LinearLayout>
+
+    <include layout="@layout/line"/>
     
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -77,4 +84,4 @@
         android:id="@android:id/list"
         android:clickable="false"/>
 
-    </LinearLayout>
+</LinearLayout>

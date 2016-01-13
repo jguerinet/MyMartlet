@@ -2,7 +2,8 @@
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="default_margin">16dp</dimen>
-    <dimen name="line">1dp</dimen>
+    <dimen name="line">0.5dp</dimen>
+    <dimen name="elevation">4dp</dimen>
 
     <!-- Drawer -->
     <dimen name="padding_drawer">8dp</dimen>
