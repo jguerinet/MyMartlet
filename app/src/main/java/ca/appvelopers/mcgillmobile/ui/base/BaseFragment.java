@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,6 @@ public class BaseFragment extends Fragment {
      * Hides the loading indicator. To be called by each fragment after the view is loaded
      */
     protected void hideLoadingIndicator(){
-        mActivity.showFragmentSwitcherProgress(false);
     }
 
     /**

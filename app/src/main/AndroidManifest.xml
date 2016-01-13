@@ -48,6 +48,12 @@
         <activity
             android:name=".ui.walkthrough.WalkthroughActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.transcript.TranscriptActivity"
+            android:label="@string/title_transcript"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.settings.AboutActivity"
             android:label="@string/title_about" />

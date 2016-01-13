@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import android.support.annotation.IdRes;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
+import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
 
 /**
  * The list of possible homepages
@@ -124,6 +126,40 @@ public enum Homepage {
             case R.id.settings:
                 return SETTINGS;
             //Facebook, Twitter, logout
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Returns the class to open based on the clicked menu Id
+     *
+     * @param menuId The clicked menu Id
+     * @return Class to open
+     */
+    public static Class getActivity(@IdRes int menuId) {
+        switch (menuId) {
+            case R.id.schedule:
+                return MainActivity.class;
+            case R.id.transcript:
+                return TranscriptActivity.class;
+            case R.id.my_courses:
+                return MainActivity.class;
+            case R.id.courses:
+                return MainActivity.class;
+            case R.id.wishlist:
+                return MainActivity.class;
+            case R.id.search:
+                return MainActivity.class;
+            case R.id.ebill:
+                return MainActivity.class;
+            case R.id.map:
+                return MainActivity.class;
+            case R.id.desktop:
+                return MainActivity.class;
+            case R.id.settings:
+                return MainActivity.class;
+            //Facebook, Twitter, Logout
             default:
                 return null;
         }

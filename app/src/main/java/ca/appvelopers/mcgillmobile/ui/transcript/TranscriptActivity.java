@@ -19,12 +19,8 @@ package ca.appvelopers.mcgillmobile.ui.transcript;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -32,7 +28,7 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
+import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Help;
@@ -44,93 +40,84 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class TranscriptFragment extends BaseFragment{
+public class TranscriptActivity extends DrawerActivity {
     /**
-     * The user's CGPA
+     * User's CGPA
      */
     @Bind(R.id.transcript_cgpa)
-    TextView mCGPA;
+    protected TextView mCGPA;
     /**
-     * The user's total credits
+     * User's total credits
      */
     @Bind(R.id.transcript_credits)
-    TextView mTotalCredits;
+    protected TextView mTotalCredits;
     /**
-     * The list of semesters
+     * List of semesters
      */
     @Bind(android.R.id.list)
-    RecyclerView mListView;
-
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //Fragment has a menu
-        setHasOptionsMenu(true);
-    }
+    protected RecyclerView mList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_transcript, container, false);
-        ButterKnife.bind(this, view);
-        lockPortraitMode();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_transcript);
+        ButterKnife.bind(this);
+        setUpToolbar(false);
         Analytics.get().sendScreen("Transcript");
-        mActivity.setTitle(R.string.title_transcript);
 
-        mListView.setLayoutManager(new LinearLayoutManager(mActivity));
-
-        //Load the info stored on the device
+        mList.setLayoutManager(new LinearLayoutManager(this));
         loadInfo();
-
-        //Hide the loading indicator
-        hideLoadingIndicator();
-
-        return view;
     }
 
-    private void loadInfo(){
+    /**
+     * Loads all of the info into the view
+     */
+    private void loadInfo() {
         Transcript transcript = App.getTranscript();
 
         //Reload all of the info
         mCGPA.setText(getString(R.string.transcript_CGPA, transcript.getCgpa()));
         mTotalCredits.setText(getString(R.string.transcript_credits, transcript.getTotalCredits()));
-        mListView.setAdapter(new TranscriptAdapter(transcript.getSemesters()));
+        mList.setAdapter(new TranscriptAdapter(transcript.getSemesters()));
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        inflater.inflate(R.menu.refresh, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.refresh, menu);
         Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                mActivity.showToolbarProgress(true);
-                new DownloaderThread(mActivity, Connection.TRANSCRIPT_URL)
+                showToolbarProgress(true);
+                new DownloaderThread(this, Connection.TRANSCRIPT_URL)
                         .execute(new DownloaderThread.Callback() {
                             @Override
-                            public void onDownloadFinished(final String result){
+                            public void onDownloadFinished(final String result) {
                                 //Parse the transcript if possible
-                                if(result != null){
+                                if (result != null) {
                                     Parser.parseTranscript(result);
                                 }
 
-                                mActivity.runOnUiThread(new Runnable() {
+                                //Reload the view
+                                runOnUiThread(new Runnable() {
                                     @Override
-                                    public void run(){
-                                        if(result != null){
+                                    public void run() {
+                                        if (result != null) {
                                             loadInfo();
                                         }
-                                        mActivity.showToolbarProgress(false);
+                                        showToolbarProgress(false);
                                     }
                                 });
                             }
                         });
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }
