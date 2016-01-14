@@ -74,8 +74,14 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".ui.search.SearchActivity"
+            android:label="@string/title_registration"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".ui.settings.AboutActivity"
             android:label="@string/title_about" />
+
         <activity android:name=".ui.settings.HelpActivity" />
         <activity
             android:name=".ui.main.MainActivity"

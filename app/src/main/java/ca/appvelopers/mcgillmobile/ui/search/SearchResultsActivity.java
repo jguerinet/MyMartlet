@@ -43,7 +43,7 @@ import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
- * Shows the results of the search from the CourseSearchFragment
+ * Shows the results of the search from the SearchActivity
  * @author Julien Guerinet
  * @since 1.0.0
  */

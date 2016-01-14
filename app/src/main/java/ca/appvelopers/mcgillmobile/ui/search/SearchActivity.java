@@ -18,12 +18,9 @@ package ca.appvelopers.mcgillmobile.ui.search;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -43,8 +40,8 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
-import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -58,131 +55,116 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class CourseSearchFragment extends BaseFragment {
+public class SearchActivity extends DrawerActivity {
+    /**
+     * Spinner to choose the term
+     */
+    @Bind(R.id.search_term)
+    protected Spinner mTermSpinner;
+    /**
+     * Course start time
+     */
+    @Bind(R.id.search_start)
+    protected TimePicker mStartTime;
+    /**
+     * Course end time
+     */
+    @Bind(R.id.search_end)
+    protected TimePicker mEndTime;
+    /**
+     * Course subject
+     */
+    @Bind(R.id.search_subject)
+    protected EditText mSubject;
+    /**
+     * Course number
+     */
+    @Bind(R.id.search_number)
+    protected EditText mNumber;
+    /**
+     * Course title
+     */
+    @Bind(R.id.search_title)
+    protected EditText mTitle;
+    /**
+     * Course min credits
+     */
+    @Bind(R.id.search_min)
+    protected EditText mMinCredits;
+    /**
+     * Course max credits
+     */
+    @Bind(R.id.search_max)
+    protected EditText mMaxCredits;
+    /**
+     * Course on Monday
+     */
+    @Bind(R.id.search_monday)
+    protected CheckBox mMonday;
+    /**
+     * Course on Tuesday
+     */
+    @Bind(R.id.search_tuesday)
+    protected CheckBox mTuesday;
+    /**
+     * Course on Wednesday
+     */
+    @Bind(R.id.search_wednesday)
+    protected CheckBox mWednesday;
+    /**
+     * Course on Thursday
+     */
+    @Bind(R.id.search_thursday)
+    protected CheckBox mThursday;
+    /**
+     * Course on Friday
+     */
+    @Bind(R.id.search_friday)
+    protected CheckBox mFriday;
+    /**
+     * Course on Saturday
+     */
+    @Bind(R.id.search_saturday)
+    protected CheckBox mSaturday;
+    /**
+     * Course on Sunday
+     */
+    @Bind(R.id.search_sunday)
+    protected CheckBox mSunday;
+    /**
+     * The more options container
+     */
+    @Bind(R.id.more_options_container)
+    protected LinearLayout mMoreOptionsContainer;
+    /**
+     * The more options button
+     */
+    @Bind(R.id.more_options)
+    protected Button mMoreOptionsButton;
     /**
      * Adapter for the term spinner
      */
     private TermAdapter mTermAdapter;
     /**
-     * Spinner to choose the term
+     * True if the user sees all of the options, false otherwise
      */
-    @Bind(R.id.search_term)
-    Spinner mTermSpinner;
-    /**
-     * Course start time
-     */
-    @Bind(R.id.search_start)
-    TimePicker mStartTime;
-    /**
-     * Course end time
-     */
-    @Bind(R.id.search_end)
-    TimePicker mEndTime;
-    /**
-     * Course subject
-     */
-    @Bind(R.id.search_subject)
-    EditText mSubject;
-    /**
-     * Course number
-     */
-    @Bind(R.id.search_number)
-    EditText mNumber;
-    /**
-     * Course title
-     */
-    @Bind(R.id.search_title)
-    EditText mTitle;
-    /**
-     * Course min credits
-     */
-    @Bind(R.id.search_min)
-    EditText mMinCredits;
-    /**
-     * Course max credits
-     */
-    @Bind(R.id.search_max)
-    EditText mMaxCredits;
-    /**
-     * Course on Monday
-     */
-    @Bind(R.id.search_monday)
-    CheckBox mMonday;
-    /**
-     * Course on Tuesday
-     */
-    @Bind(R.id.search_tuesday)
-    CheckBox mTuesday;
-    /**
-     * Course on Wednesday
-     */
-    @Bind(R.id.search_wednesday)
-    CheckBox mWednesday;
-    /**
-     * Course on Thursday
-     */
-    @Bind(R.id.search_thursday)
-    CheckBox mThursday;
-    /**
-     * Course on Friday
-     */
-    @Bind(R.id.search_friday)
-    CheckBox mFriday;
-    /**
-     * Course on Saturday
-     */
-    @Bind(R.id.search_saturday)
-    CheckBox mSaturday;
-    /**
-     * Course on Sunday
-     */
-    @Bind(R.id.search_sunday)
-    CheckBox mSunday;
-    /**
-     * The more options container
-     */
-    @Bind(R.id.more_options_container)
-    LinearLayout mMoreOptionsContainer;
-    /**
-     * The more options button
-     */
-    @Bind(R.id.more_options)
-    Button mMoreOptionsButton;
-    /**
-     * True if the user sees al of the options, false otherwise
-     */
-    private boolean mMoreOptions = false;
+    private boolean mAllOptions = false;
 
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-
-        //Fragment has a menu
-        setHasOptionsMenu(true);
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup,
-                             Bundle savedInstanceState){
-        super.onCreateView(inflater, viewGroup, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_course_search, viewGroup, false);
-        ButterKnife.bind(this, view);
-        lockPortraitMode();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search);
+        ButterKnife.bind(this);
         Analytics.get().sendScreen("Registration");
-        mActivity.setTitle(R.string.title_registration);
 
         //Check if there are any terms to register for
         List<Term> registerTerms = App.getRegisterTerms();
-        if(registerTerms.isEmpty()){
-            //Hide all of the search related stuff, show explanatory text, and return the view
-            view.findViewById(R.id.search_empty).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.search_container).setVisibility(View.GONE);
-            view.findViewById(R.id.search_button).setVisibility(View.GONE);
-
-            //Hide the loading indicator
-            hideLoadingIndicator();
-
-            return view;
+        if (registerTerms.isEmpty()) {
+            //Hide all of the search related stuff, show explanatory text, and return
+            findViewById(R.id.search_empty).setVisibility(View.VISIBLE);
+            findViewById(R.id.search_container).setVisibility(View.GONE);
+            findViewById(R.id.search_button).setVisibility(View.GONE);
+            return;
         }
 
         mTermAdapter = new TermAdapter(registerTerms);
@@ -190,82 +172,59 @@ public class CourseSearchFragment extends BaseFragment {
 
         mStartTime.setIs24HourView(false);
         mEndTime.setIs24HourView(false);
-        if (Device.isMarshmallow()) {
-            mStartTime.setHour(0);
-            mStartTime.setMinute(0);
-            mEndTime.setHour(0);
-            mEndTime.setMinute(0);
-        }
-        else {
-            mStartTime.setCurrentHour(0);
-            mStartTime.setCurrentMinute(0);
-            mEndTime.setCurrentHour(0);
-            mEndTime.setCurrentMinute(0);
-        }
 
-        //Hide the loading indicator
-        hideLoadingIndicator();
-
-        return view;
+        reset();
     }
 
     /**
      * Shows or hides more search options
      */
     @OnClick(R.id.more_options)
-    void showMoreOptions(){
-        //Inverse the more options boolean
-        mMoreOptions = !mMoreOptions;
+    protected void showMoreOptions() {
+        //Inverse the boolean
+        mAllOptions = !mAllOptions;
 
-        mMoreOptionsContainer.setVisibility(mMoreOptions ? View.VISIBLE : View.GONE);
-        mMoreOptionsButton.setText(mMoreOptions ? getString(R.string.registration_hide_options) :
-                getString(R.string.registration_show_options));
+        mMoreOptionsContainer.setVisibility(mAllOptions ? View.VISIBLE : View.GONE);
+        mMoreOptionsButton.setText(mAllOptions ?
+                R.string.registration_hide_options : R.string.registration_show_options);
     }
 
     /**
      * Searches for courses based on the given information
      */
-    @SuppressWarnings("deprecation")
-    @OnClick(R.id.search_button)
-    void searchCourses(){
+    @OnClick(R.id.search_button) @SuppressWarnings("deprecation")
+    protected void searchCourses() {
         //Get the selected term
         final Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
 
         //Subject Input
         String subject = mSubject.getText().toString().toUpperCase().trim();
-
-        if(subject.isEmpty()){
-            Toast.makeText(mActivity, getString(R.string.registration_error_no_faculty),
-                    Toast.LENGTH_SHORT).show();
+        if (subject.isEmpty()) {
+            Toast.makeText(this, R.string.registration_error_no_faculty, Toast.LENGTH_SHORT).show();
             return;
-        }
-        else if(!subject.matches("[A-Za-z]{4}")){
-            Toast.makeText(mActivity, getString(R.string.registration_invalid_subject),
-                    Toast.LENGTH_SHORT).show();
+        } else if(!subject.matches("[A-Za-z]{4}")){
+            Toast.makeText(this, R.string.registration_invalid_subject, Toast.LENGTH_SHORT).show();
             return;
         }
 
         //Check that the credits are valid
-        int minCredits, maxCredits;
+        int minCredits = 0;
+        int maxCredits = 0;
         try {
             minCredits = Integer.valueOf(mMinCredits.getText().toString());
-        } catch (NumberFormatException e){
-            minCredits = 0;
-        }
+        } catch (NumberFormatException ignored) {}
+
         try {
             maxCredits = Integer.valueOf(mMaxCredits.getText().toString());
-        } catch (NumberFormatException e){
-            maxCredits = 0;
-        }
+        } catch (NumberFormatException ignored) {}
 
-        if(maxCredits < minCredits){
-            Toast.makeText(mActivity, getString(R.string.registration_error_credits),
-                    Toast.LENGTH_SHORT).show();
+        if (maxCredits < minCredits) {
+            Toast.makeText(this, R.string.registration_error_credits, Toast.LENGTH_SHORT).show();
             return;
         }
 
         //Show the user we are downloading new information
-        mActivity.showToolbarProgress(true);
+        showToolbarProgress(true);
 
         int startHour;
         int startMinute;
@@ -281,8 +240,7 @@ public class CourseSearchFragment extends BaseFragment {
             endHour = mEndTime.getHour() % 12;
             endMinute = mEndTime.getMinute();
             endAM = mEndTime.getHour() < 12;
-        }
-        else {
+        } else {
             startHour = mStartTime.getCurrentHour() % 12;
             startMinute = mStartTime.getCurrentMinute();
             startAM = mStartTime.getCurrentHour() < 12;
@@ -304,25 +262,25 @@ public class CourseSearchFragment extends BaseFragment {
                 .endAM(endAM);
 
         //Days
-        if(mMonday.isChecked()){
+        if(mMonday.isChecked()) {
             builder.addDay(Day.MONDAY);
         }
-        if(mTuesday.isChecked()){
+        if(mTuesday.isChecked()) {
             builder.addDay(Day.TUESDAY);
         }
-        if(mWednesday.isChecked()){
+        if(mWednesday.isChecked()) {
             builder.addDay(Day.WEDNESDAY);
         }
-        if(mThursday.isChecked()){
+        if(mThursday.isChecked()) {
             builder.addDay(Day.THURSDAY);
         }
-        if(mFriday.isChecked()){
+        if(mFriday.isChecked()) {
             builder.addDay(Day.FRIDAY);
         }
-        if(mSaturday.isChecked()){
+        if(mSaturday.isChecked()) {
             builder.addDay(Day.SATURDAY);
         }
-        if(mSunday.isChecked()){
+        if(mSunday.isChecked()) {
             builder.addDay(Day.SUNDAY);
         }
 
@@ -332,26 +290,28 @@ public class CourseSearchFragment extends BaseFragment {
         Timber.i("URL: %s", searchURL);
 
         //Execute the request
-        new DownloaderThread(mActivity, searchURL).execute(new DownloaderThread.Callback() {
+        new DownloaderThread(this, searchURL).execute(new DownloaderThread.Callback() {
             @Override
-            public void onDownloadFinished(final String result){
+            public void onDownloadFinished(final String result) {
                 //If there is a result, parse it
-                final Intent intent = new Intent(mActivity, SearchResultsActivity.class);
-                if(result != null){
-                    List<Course> courses = Parser.parseClassResults(term, result);
-                    intent.putExtra(Constants.TERM, term)
-                            .putExtra(Constants.COURSES, (ArrayList<Course>)courses);
+                final List<Course> courses = new ArrayList<>();
+                if (result != null) {
+                     courses.addAll(Parser.parseClassResults(term, result));
                 }
 
-                mActivity.runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void run(){
-                        if(result != null){
+                    public void run() {
+                        if (result != null) {
+                            Intent intent = new Intent(SearchActivity.this,
+                                    SearchResultsActivity.class)
+                                    .putExtra(Constants.TERM, term)
+                                    .putExtra(Constants.COURSES, (ArrayList<Course>) courses);
                             startActivity(intent);
                         }
 
                         //Show the user we are downloading new information
-                        mActivity.showToolbarProgress(false);
+                        showToolbarProgress(false);
                     }
                 });
             }
@@ -359,45 +319,54 @@ public class CourseSearchFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+    public boolean onCreateOptionsMenu(Menu menu) {
         //Only inflate the menu if there are semesters to register for
-        if(!App.getRegisterTerms().isEmpty()){
-            inflater.inflate(R.menu.reset, menu);
+        if (!App.getRegisterTerms().isEmpty()) {
+            getMenuInflater().inflate(R.menu.reset, menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_reset:
+                reset();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
+    /**
+     * Resets all of the fields
+     */
     @SuppressWarnings("deprecation")
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_reset){
-            //Reset all of the views
-            if(Device.isMarshmallow()) {
-                mStartTime.setHour(0);
-                mStartTime.setMinute(0);
-                mEndTime.setHour(0);
-                mEndTime.setMinute(0);
-            }
-            else {
-                mStartTime.setCurrentHour(0);
-                mStartTime.setCurrentMinute(0);
-                mEndTime.setCurrentHour(0);
-                mEndTime.setCurrentMinute(0);
-            }
-            mSubject.setText("");
-            mNumber.setText("");
-            mTitle.setText("");
-            mMinCredits.setText("");
-            mMaxCredits.setText("");
-            mMonday.setChecked(false);
-            mTuesday.setChecked(false);
-            mWednesday.setChecked(false);
-            mThursday.setChecked(false);
-            mFriday.setChecked(false);
-            mSaturday.setChecked(false);
-            mSunday.setChecked(false);
-
-            return true;
+    private void reset() {
+        //Reset all of the views
+        if (Device.isMarshmallow()) {
+            mStartTime.setHour(0);
+            mStartTime.setMinute(0);
+            mEndTime.setHour(0);
+            mEndTime.setMinute(0);
+        } else {
+            mStartTime.setCurrentHour(0);
+            mStartTime.setCurrentMinute(0);
+            mEndTime.setCurrentHour(0);
+            mEndTime.setCurrentMinute(0);
         }
-        return super.onOptionsItemSelected(item);
+        mSubject.setText("");
+        mNumber.setText("");
+        mTitle.setText("");
+        mMinCredits.setText("");
+        mMaxCredits.setText("");
+        mMonday.setChecked(false);
+        mTuesday.setChecked(false);
+        mWednesday.setChecked(false);
+        mThursday.setChecked(false);
+        mFriday.setChecked(false);
+        mSaturday.setChecked(false);
+        mSunday.setChecked(false);
     }
 }

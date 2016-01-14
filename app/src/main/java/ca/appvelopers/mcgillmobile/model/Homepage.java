@@ -22,6 +22,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
+import ca.appvelopers.mcgillmobile.ui.search.SearchActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
@@ -105,37 +106,6 @@ public enum Homepage {
     /* STATIC */
 
     /**
-     * @return The homepage based on the menu id
-     */
-    public static Homepage getHomepage(@IdRes int menuId){
-        switch(menuId){
-            case R.id.schedule:
-                return SCHEDULE;
-            case R.id.transcript:
-                return TRANSCRIPT;
-            case R.id.my_courses:
-                return MY_COURSES;
-            case R.id.courses:
-                return COURSES;
-            case R.id.wishlist:
-                return WISHLIST;
-            case R.id.search:
-                return SEARCH_COURSES;
-            case R.id.ebill:
-                return EBILL;
-            case R.id.map:
-                return MAP;
-            case R.id.desktop:
-                return DESKTOP;
-            case R.id.settings:
-                return SETTINGS;
-            //Facebook, Twitter, logout
-            default:
-                return null;
-        }
-    }
-
-    /**
      * Returns the class to open based on the clicked menu Id
      *
      * @param menuId The clicked menu Id
@@ -154,7 +124,7 @@ public enum Homepage {
             case R.id.wishlist:
                 return MainActivity.class;
             case R.id.search:
-                return MainActivity.class;
+                return SearchActivity.class;
             case R.id.ebill:
                 return EbillActivity.class;
             case R.id.map:
