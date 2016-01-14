@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar"/>
 
@@ -18,10 +19,9 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/eula_title"
-                android:gravity="center"
                 android:textSize="@dimen/text_medium"
                 android:paddingTop="@dimen/padding_micro"
                 android:paddingBottom="@dimen/padding_micro"/>
@@ -91,12 +91,12 @@
                 android:visibility="gone">
                 
                 <Button
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/decline"
                     android:id="@+id/button_decline"
-                    android:textColor="@color/red"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    android:textColor="@color/red"/>
 
                 <View
                     android:layout_width="0dp"
@@ -104,16 +104,17 @@
                     android:layout_weight="1"/>
 
                 <Button
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/agree"
                     android:id="@+id/button_agree"
-                    android:textColor="@color/red"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    android:textColor="@color/red"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
 </LinearLayout>

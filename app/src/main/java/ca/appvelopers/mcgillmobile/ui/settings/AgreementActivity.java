@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
@@ -34,8 +35,14 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
  * @since 1.0.0
  */
 public class AgreementActivity extends BaseActivity {
+    /**
+     * The container with the buttons for the initial EULA agreement
+     */
+    @Bind(R.id.buttons_container)
+    protected LinearLayout mButtons;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement);
         ButterKnife.bind(this);
@@ -44,26 +51,21 @@ public class AgreementActivity extends BaseActivity {
         setUpToolbar(!required);
 
         //Check if we need to display the buttons
-        if(required){
-            LinearLayout layout = (LinearLayout)findViewById(R.id.buttons_container);
-            layout.setVisibility(View.VISIBLE);
+        if (required) {
+            mButtons.setVisibility(View.VISIBLE);
         }
     }
 
     @OnClick(R.id.button_agree)
-    public void agree(){
-        //Save the fact that they accepted
+    protected void agree() {
         Save.eula(true);
-
         setResult(RESULT_OK);
         finish();
     }
 
     @OnClick(R.id.button_decline)
-    public void decline(){
-        //Save the fact that they declined
+    protected void decline() {
         Save.eula(false);
-
         setResult(RESULT_CANCELED);
         finish();
     }
