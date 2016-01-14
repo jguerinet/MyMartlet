@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import android.support.annotation.StringRes;
+
 /**
  * An FAQ shown in the Help section
  * @author Rafi Uddin
@@ -24,41 +26,38 @@ package ca.appvelopers.mcgillmobile.model;
  */
 public class FAQItem {
     /**
-     * The FAQ question
+     * FAQ question Id
      */
-    private String mQuestion;
+    private @StringRes int mQuestion;
     /**
-     * The FAQ answer
+     * FAQ answer Id
      */
-    private String mAnswer;
+    private @StringRes int mAnswer;
 
     /**
      * Default Constructor
      *
-     * @param question The FAQ question
-     * @param answer   The FAQ answer
+     * @param question FAQ question Id
+     * @param answer   FAQ answer Id
      */
-    public FAQItem(String question, String answer){
-        this.mQuestion = question;
-        this.mAnswer = answer;
+    public FAQItem(@StringRes int question, @StringRes int answer) {
+        mQuestion = question;
+        mAnswer = answer;
     }
 
     /* GETTERS */
 
     /**
-     * @return The FAQ question
+     * @return FAQ question Id
      */
-    public String getQuestion()
-    {
-        return this.mQuestion;
+    public @StringRes int getQuestion() {
+        return mQuestion;
     }
 
     /**
-     * @return The FAQ answer
+     * @return FAQ answer Id
      */
-    public String getAnswer()
-    {
-        return this.mAnswer;
+    public @StringRes int getAnswer() {
+        return mAnswer;
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.guerinet.formgenerator.FormGenerator;
 import com.instabug.library.Instabug;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -152,6 +153,12 @@ public class App extends Application {
                 .setWillShowFeedbackSentAlert(true)
                 .setUserData("Email: " + Load.fullUsername() + "\n" +
                         "App Language: " + Language.getCode(App.getLanguage()));
+
+        //Set up the FormGenerator
+        FormGenerator.set(new FormGenerator.Builder()
+                .setDefaultIconColorId(R.color.red)
+                .setDefaultBackground(R.drawable.transparent_redpressed)
+                .setDefaultPaddingSize(R.dimen.padding_small));
     }
 
     /* GETTERS */

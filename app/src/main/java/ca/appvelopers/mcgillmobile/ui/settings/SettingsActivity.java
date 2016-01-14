@@ -66,12 +66,7 @@ public class SettingsActivity extends DrawerActivity {
         setTitle(getString(R.string.settings_version, Help.getVersionName()));
         Analytics.get().sendScreen("Settings");
 
-        //Set up the FormGenerator
-        FormGenerator fg = FormGenerator.get()
-                .setDefaultIconColorId(R.color.red)
-                .setDefaultBackground(R.drawable.transparent_redpressed)
-                .setDefaultPaddingSize(R.dimen.padding_small)
-                .bind(this, mContainer);
+        FormGenerator fg = FormGenerator.bind(this, mContainer);
 
         //Language
         fg.text(Language.getString(App.getLanguage()))
