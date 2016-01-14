@@ -60,6 +60,11 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".ui.web.DesktopActivity"
+            android:label="@string/title_desktop"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".ui.settings.AboutActivity"
             android:label="@string/title_about" />
         <activity android:name=".ui.settings.HelpActivity" />

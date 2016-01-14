@@ -17,17 +17,16 @@
 package ca.appvelopers.mcgillmobile.ui.web;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
-import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
+import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -37,30 +36,27 @@ import ca.appvelopers.mcgillmobile.util.storage.Load;
  * @author Julien Guerinet
  * @since 2.0.0
  */
-public class DesktopFragment extends BaseFragment {
+public class DesktopActivity extends DrawerActivity {
     /**
      * The WebView
      */
-    private WebView mWebView;
+    @Bind(R.id.web_view)
+    protected WebView mWebView;
 
-    @Override
-    @SuppressLint("SetJavaScriptEnabled")
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.activity_web, container, false);
-        lockPortraitMode();
+    @Override @SuppressLint("SetJavaScriptEnabled")
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_web);
+        ButterKnife.bind(this);
         Analytics.get().sendScreen("Desktop Site");
-        mActivity.setTitle(R.string.title_desktop);
 
-        if(!Help.isConnected()){
-            DialogHelper.showNeutralDialog(mActivity, getString(R.string.error),
-                    getString(R.string.error_no_internet));
-            return view;
+        //If the user is not connected to the internet, don't continue
+        if (!Help.isConnected()) {
+            DialogHelper.neutral(this, R.string.error, R.string.error_no_internet);
+            return;
         }
 
-        //Get the WebView
-        mWebView = (WebView)view.findViewById(R.id.web_view);
+        //Set up the WebView
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setBuiltInZoomControls(true);
@@ -68,31 +64,22 @@ public class DesktopFragment extends BaseFragment {
 
         mWebView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
         mWebView.setWebViewClient(new WebViewClient() {
-            public void onPageStarted(WebView view, String url, Bitmap favicon){
-                //view.loadUrl("javascript:(function(){document.write( '<style
-                // class=\"hideStuff\" type=\"text/css\">body {display:none;}</style>')});");
-                view.setVisibility(View.INVISIBLE);
-            }
-
-            public void onPageFinished(WebView view, String url){
+            public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
-                        Load.fullUsername() + "';" +
-                        "document.getElementById('password').value='" +
+                        Load.fullUsername() + "';document.getElementById('password').value='" +
                         Load.password() + "'; document.LoginForm.submit(); })()");
                 view.setVisibility(View.VISIBLE);
-
-                //Hide the loading indicator
-                hideLoadingIndicator();
             }
         });
-
-        return view;
     }
 
-    /**
-     * @return The Desktop WebView
-     */
-    public WebView getWebView(){
-        return mWebView;
+    @Override
+    public void onBackPressed() {
+        //Check if we can go back in the WebView
+        if(mWebView.canGoBack()){
+            mWebView.goBack();
+            return;
+        }
+        super.onBackPressed();
     }
 }

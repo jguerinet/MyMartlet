@@ -61,7 +61,7 @@ public class MyCoursesActivity extends DrawerActivity {
     protected WebView mWebView;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);

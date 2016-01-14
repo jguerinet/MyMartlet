@@ -16,10 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.ui.main;
 
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 
 import butterknife.ButterKnife;
@@ -34,8 +32,6 @@ import ca.appvelopers.mcgillmobile.ui.map.MapFragment;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.ui.search.CourseSearchFragment;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsFragment;
-import ca.appvelopers.mcgillmobile.ui.web.DesktopFragment;
-import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
@@ -53,10 +49,6 @@ public class MainActivity extends DrawerActivity {
      * The schedule view
      */
     private ScheduleFragment mScheduleFragment;
-    /**
-     * The MyCourses view
-     */
-    private MyCoursesActivity mMyCoursesFragment;
     /**
      * The courses view
      */
@@ -78,10 +70,6 @@ public class MainActivity extends DrawerActivity {
      */
     private MapFragment mMapFragment;
     /**
-     * The desktop site view
-     */
-    private DesktopFragment mDesktopFragment;
-    /**
      * The settings view
      */
     private SettingsFragment mSettingsFragment;
@@ -100,44 +88,15 @@ public class MainActivity extends DrawerActivity {
 
         //Create the fragments
         mScheduleFragment = new ScheduleFragment();
-        mMyCoursesFragment = new MyCoursesActivity();
         mCoursesFragment = new CoursesFragment();
         mCourseSearchFragment = new CourseSearchFragment();
         mWishlistFragment = new WishlistFragment();
         mEbillFragment = new EbillFragment();
         mMapFragment = new MapFragment();
-        mDesktopFragment = new DesktopFragment();
         mSettingsFragment = new SettingsFragment();
 
         //Load the initial checked item and fragment
         setFragment();
-    }
-
-    @Override
-    public void onBackPressed(){
-        if(mCurrentItem == Homepage.DESKTOP
-                && mDesktopFragment.getWebView().canGoBack()){
-            mDesktopFragment.getWebView().goBack();
-            return;
-        }
-        //Open the menu if it is not open
-        if(!mDrawerLayout.isDrawerOpen(mDrawer)){
-            mDrawerLayout.openDrawer(mDrawer);
-        }
-        //If it is open, ask the user if he wants to exit
-        else{
-            new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.drawer_exit))
-                    .setPositiveButton(getString(android.R.string.yes),
-                            new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            MainActivity.super.onBackPressed();
-                        }
-                    })
-                    .setNegativeButton(getString(android.R.string.no), null)
-                    .show();
-        }
     }
 
     @Override
@@ -190,9 +149,6 @@ public class MainActivity extends DrawerActivity {
                 break;
             case MAP:
                 fragment = mMapFragment;
-                break;
-            case DESKTOP:
-                fragment = mDesktopFragment;
                 break;
             case SETTINGS:
                 fragment = mSettingsFragment;
