@@ -22,6 +22,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
+import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
@@ -161,7 +162,7 @@ public enum Homepage {
             case R.id.desktop:
                 return DesktopActivity.class;
             case R.id.settings:
-                return MainActivity.class;
+                return SettingsActivity.class;
             //Facebook, Twitter, Logout
             default:
                 return null;

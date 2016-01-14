@@ -30,7 +30,6 @@ import ca.appvelopers.mcgillmobile.ui.courses.CoursesFragment;
 import ca.appvelopers.mcgillmobile.ui.map.MapFragment;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.ui.search.CourseSearchFragment;
-import ca.appvelopers.mcgillmobile.ui.settings.SettingsFragment;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistFragment;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
@@ -64,10 +63,6 @@ public class MainActivity extends DrawerActivity {
      * The map view
      */
     private MapFragment mMapFragment;
-    /**
-     * The settings view
-     */
-    private SettingsFragment mSettingsFragment;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -87,7 +82,6 @@ public class MainActivity extends DrawerActivity {
         mCourseSearchFragment = new CourseSearchFragment();
         mWishlistFragment = new WishlistFragment();
         mMapFragment = new MapFragment();
-        mSettingsFragment = new SettingsFragment();
 
         //Load the initial checked item and fragment
         setFragment();
@@ -140,9 +134,6 @@ public class MainActivity extends DrawerActivity {
                 break;
             case MAP:
                 fragment = mMapFragment;
-                break;
-            case SETTINGS:
-                fragment = mSettingsFragment;
                 break;
             default:
                 break;

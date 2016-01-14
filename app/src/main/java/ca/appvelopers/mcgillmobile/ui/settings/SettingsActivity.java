@@ -20,9 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -42,10 +40,8 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
-import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
-import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
+import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
@@ -55,7 +51,7 @@ import ca.appvelopers.mcgillmobile.util.storage.Save;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class SettingsFragment extends BaseFragment {
+public class SettingsActivity extends DrawerActivity {
     /**
      * The {@link FormGenerator} container
      */
@@ -63,21 +59,19 @@ public class SettingsFragment extends BaseFragment {
     protected LinearLayout mContainer;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        ButterKnife.bind(this, view);
-        lockPortraitMode();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+        ButterKnife.bind(this);
+        setTitle(getString(R.string.settings_version, Help.getVersionName()));
         Analytics.get().sendScreen("Settings");
-        mActivity.setTitle(getString(R.string.settings_version, Help.getVersionName()));
 
         //Set up the FormGenerator
         FormGenerator fg = FormGenerator.get()
                 .setDefaultIconColorId(R.color.red)
                 .setDefaultBackground(R.drawable.transparent_redpressed)
                 .setDefaultPaddingSize(R.dimen.padding_small)
-                .bind(mActivity, mContainer);
+                .bind(this, mContainer);
 
         //Language
         fg.text(Language.getString(App.getLanguage()))
@@ -91,7 +85,7 @@ public class SettingsFragment extends BaseFragment {
                         languages.add(Language.getString(Language.FRENCH));
                         Collections.sort(languages);
 
-                        new AlertDialog.Builder(mActivity)
+                        new AlertDialog.Builder(SettingsActivity.this)
                                 .setTitle(R.string.settings_language)
                                 .setSingleChoiceItems(
                                         languages.toArray(new CharSequence[languages.size()]),
@@ -104,18 +98,15 @@ public class SettingsFragment extends BaseFragment {
                                                 Analytics.get().sendEvent("Settings", "Language",
                                                         Language.getCode(language));
 
-                                                //If it's different than the previously selected language,
-                                                //  update it and reload
-                                                if(App.getLanguage() != language) {
+                                                //If it's different than the previously selected
+                                                //  language, update it and reload
+                                                if (App.getLanguage() != language) {
                                                     App.setLanguage(language);
 
-                                                    //Reload MainActivity
-                                                    Intent intent =
-                                                            new Intent(mActivity, MainActivity.class)
-                                                                    .putExtra(Constants.HOMEPAGE,
-                                                                            Homepage.SETTINGS);
-                                                    startActivity(intent);
-                                                    mActivity.finish();
+                                                    //Reload this activity
+                                                    startActivity(new Intent(SettingsActivity.this,
+                                                            SettingsActivity.class));
+                                                    finish();
                                                 }
                                             }
                                         })
@@ -142,16 +133,16 @@ public class SettingsFragment extends BaseFragment {
                         //Set up the titles and find the current homepage
                         CharSequence[] homepageTitles = new CharSequence[homepages.length];
                         int currentHomepage = -1;
-                        for(int i = 0; i < homepages.length; i++) {
+                        for (int i = 0; i < homepages.length; i++) {
                             Homepage homepage = homepages[i];
                             homepageTitles[i] = homepage.toString();
                             //Set the current homepage
-                            if(App.getHomepage() == homepage) {
+                            if (App.getHomepage() == homepage) {
                                 currentHomepage = i;
                             }
                         }
 
-                        new AlertDialog.Builder(mActivity)
+                        new AlertDialog.Builder(SettingsActivity.this)
                                 .setTitle(R.string.settings_homepage_title)
                                 .setSingleChoiceItems(homepageTitles, currentHomepage,
                                         new DialogInterface.OnClickListener() {
@@ -194,22 +185,20 @@ public class SettingsFragment extends BaseFragment {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(mActivity, HelpActivity.class));
+                        startActivity(new Intent(SettingsActivity.this, HelpActivity.class));
                     }
                 })
-                .leftIcon(R.drawable.ic_help)
-                .view();
+                .leftIcon(R.drawable.ic_help);
 
         //About
         fg.text(R.string.title_about)
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(mActivity, AboutActivity.class));
+                        startActivity(new Intent(SettingsActivity.this, AboutActivity.class));
                     }
                 })
-                .leftIcon(R.drawable.ic_info)
-                .view();
+                .leftIcon(R.drawable.ic_info);
 
         //Bug Report
         fg.text(R.string.title_report_bug)
@@ -220,12 +209,6 @@ public class SettingsFragment extends BaseFragment {
                         Instabug.getInstance().invokeFeedbackSender();
                     }
                 })
-                .leftIcon(R.drawable.ic_bug_report)
-                .view();
-
-        //Hide the loading indicator
-        hideLoadingIndicator();
-
-        return view;
+                .leftIcon(R.drawable.ic_bug_report);
     }
 }
