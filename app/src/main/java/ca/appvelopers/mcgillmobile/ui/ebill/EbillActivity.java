@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.ui.transcript;
+package ca.appvelopers.mcgillmobile.ui.ebill;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
@@ -36,23 +34,14 @@ import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
- * Shows the user's transcript
+ * Displays the user's ebill statements
+ * @author Rafi Uddin
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class TranscriptActivity extends DrawerActivity {
+public class EbillActivity extends DrawerActivity {
     /**
-     * User's CGPA
-     */
-    @Bind(R.id.transcript_cgpa)
-    protected TextView mCGPA;
-    /**
-     * User's total credits
-     */
-    @Bind(R.id.transcript_credits)
-    protected TextView mTotalCredits;
-    /**
-     * List of semesters
+     * List of statements
      */
     @Bind(android.R.id.list)
     protected RecyclerView mList;
@@ -60,9 +49,9 @@ public class TranscriptActivity extends DrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transcript);
+        setContentView(R.layout.activity_ebill);
         ButterKnife.bind(this);
-        Analytics.get().sendScreen("Transcript");
+        Analytics.get().sendScreen("Ebill");
 
         mList.setLayoutManager(new LinearLayoutManager(this));
         update();
@@ -70,7 +59,6 @@ public class TranscriptActivity extends DrawerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.refresh, menu);
         Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
         return true;
@@ -81,16 +69,14 @@ public class TranscriptActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 showToolbarProgress(true);
-                new DownloaderThread(this, Connection.TRANSCRIPT_URL)
+                new DownloaderThread(this, Connection.EBILL_URL)
                         .execute(new DownloaderThread.Callback() {
                             @Override
                             public void onDownloadFinished(final String result) {
-                                //Parse the transcript if possible
                                 if (result != null) {
-                                    Parser.parseTranscript(result);
+                                    Parser.parseEbill(result);
                                 }
 
-                                //Reload the view
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -112,11 +98,6 @@ public class TranscriptActivity extends DrawerActivity {
      * Updates the view
      */
     private void update() {
-        Transcript transcript = App.getTranscript();
-
-        //Reload all of the info
-        mCGPA.setText(getString(R.string.transcript_CGPA, transcript.getCgpa()));
-        mTotalCredits.setText(getString(R.string.transcript_credits, transcript.getTotalCredits()));
-        mList.setAdapter(new TranscriptAdapter(transcript.getSemesters()));
+        mList.setAdapter(new EbillAdapter(App.getEbill()));
     }
 }

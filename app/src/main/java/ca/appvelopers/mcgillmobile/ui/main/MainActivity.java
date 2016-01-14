@@ -27,7 +27,6 @@ import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesFragment;
-import ca.appvelopers.mcgillmobile.ui.ebill.EbillFragment;
 import ca.appvelopers.mcgillmobile.ui.map.MapFragment;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleFragment;
 import ca.appvelopers.mcgillmobile.ui.search.CourseSearchFragment;
@@ -62,10 +61,6 @@ public class MainActivity extends DrawerActivity {
      */
     private WishlistFragment mWishlistFragment;
     /**
-     * The eBill view
-     */
-    private EbillFragment mEbillFragment;
-    /**
      * The map view
      */
     private MapFragment mMapFragment;
@@ -91,7 +86,6 @@ public class MainActivity extends DrawerActivity {
         mCoursesFragment = new CoursesFragment();
         mCourseSearchFragment = new CourseSearchFragment();
         mWishlistFragment = new WishlistFragment();
-        mEbillFragment = new EbillFragment();
         mMapFragment = new MapFragment();
         mSettingsFragment = new SettingsFragment();
 
@@ -143,9 +137,6 @@ public class MainActivity extends DrawerActivity {
                 break;
             case WISHLIST:
                 fragment = mWishlistFragment;
-                break;
-            case EBILL:
-                fragment = mEbillFragment;
                 break;
             case MAP:
                 fragment = mMapFragment;

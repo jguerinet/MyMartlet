@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/padding_micro"
-    android:paddingRight="@dimen/padding_micro"
-    android:layout_marginTop="@dimen/padding_small">
+    android:paddingRight="@dimen/padding_micro">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/padding_small"
+        android:layout_marginBottom="@dimen/padding_small">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -23,12 +25,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/statement_date"
-                android:paddingBottom="@dimen/padding_micro"/>
+                android:paddingBottom="@dimen/padding_micro"
+                tools:text="Date"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/statement_due_date"/>
+                android:id="@+id/statement_due_date"
+                tools:text="Due Date"/>
+
         </LinearLayout>
 
         <TextView
@@ -36,8 +41,11 @@
             android:layout_height="match_parent"
             android:id="@+id/statement_amount"
             android:gravity="center"
-            android:padding="@dimen/padding_micro"/>
+            android:padding="@dimen/padding_micro"
+            tools:text="$0.00"/>
+
     </LinearLayout>
 
     <include layout="@layout/line"/>
+
 </LinearLayout>

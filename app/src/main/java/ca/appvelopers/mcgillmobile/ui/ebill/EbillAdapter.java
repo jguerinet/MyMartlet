@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,59 +48,49 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
      *
      * @param statements The list of statements
      */
-    public EbillAdapter(List<Statement> statements){
-        this.mStatements = statements;
+    public EbillAdapter(List<Statement> statements) {
+        mStatements = statements;
     }
 
     @Override
-    public StatementHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+    public StatementHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new StatementHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_statement, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(StatementHolder statementHolder, int i){
+    public void onBindViewHolder(StatementHolder statementHolder, int i) {
         statementHolder.bindStatement(mStatements.get(i));
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return mStatements.size();
     }
 
     class StatementHolder extends RecyclerView.ViewHolder {
         /**
-         * The statement date
+         * Statement date
          */
         @Bind(R.id.statement_date)
-        TextView mDate;
+        protected TextView mDate;
         /**
-         * The statement due date
+         * Statement due date
          */
         @Bind(R.id.statement_due_date)
-        TextView mDueDate;
+        protected TextView mDueDate;
         /**
-         * The statement amount
+         * Statement amount
          */
         @Bind(R.id.statement_amount)
-        TextView mAmount;
+        protected TextView mAmount;
 
-        /**
-         * Default Constructor
-         *
-         * @param itemView The item view
-         */
-        public StatementHolder(View itemView){
+        public StatementHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        /**
-         * Binds the statement to the current view
-         *
-         * @param statement The statement
-         */
-        public void bindStatement(Statement statement){
+        public void bindStatement(Statement statement) {
             Context context = itemView.getContext();
 
             mDate.setText(context.getString(R.string.ebill_statement_date,
@@ -110,6 +100,7 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
 
             double amount = statement.getAmount();
             mAmount.setText(String.format("$%s", String.valueOf(amount)));
+
             //Change the color to green or red depending on if the user owes money or not
             int colorId = amount < 0 ?  R.color.green : R.color.red;
             mAmount.setTextColor(ContextCompat.getColor(context, colorId));

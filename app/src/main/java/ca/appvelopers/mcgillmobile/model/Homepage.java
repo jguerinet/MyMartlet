@@ -20,6 +20,7 @@ import android.support.annotation.IdRes;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.ui.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
@@ -154,7 +155,7 @@ public enum Homepage {
             case R.id.search:
                 return MainActivity.class;
             case R.id.ebill:
-                return MainActivity.class;
+                return EbillActivity.class;
             case R.id.map:
                 return MainActivity.class;
             case R.id.desktop:
