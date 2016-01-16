@@ -137,7 +137,7 @@ public class MapActivity extends DrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_map);
+        setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
         Analytics.get().sendScreen("Map");
 
