@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -151,7 +151,7 @@ public class CheckerService extends IntentService {
 	 * Queries minerva to check for new seat openings
 	 */
 	private void checkSeats(){
-		//TODO Do this better: merge with WishlistFragment ? When do we send a notification ?
+		//TODO Do this better: merge with WishlistActivity ? When do we send a notification ?
 //		List<Course> wishlistClasses = App.getWishlist();
 //
 //		//Refresh

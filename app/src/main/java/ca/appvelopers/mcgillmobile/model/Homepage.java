@@ -27,6 +27,7 @@ import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
+import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistActivity;
 
 /**
  * The list of possible homepages
@@ -122,7 +123,7 @@ public enum Homepage {
             case R.id.courses:
                 return MainActivity.class;
             case R.id.wishlist:
-                return MainActivity.class;
+                return WishlistActivity.class;
             case R.id.search:
                 return SearchActivity.class;
             case R.id.ebill:

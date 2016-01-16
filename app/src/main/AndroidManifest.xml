@@ -82,6 +82,10 @@
             android:name=".ui.settings.AboutActivity"
             android:label="@string/title_about" />
 
+        <activity
+            android:name=".ui.wishlist.WishlistActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.settings.HelpActivity" />
         <activity
             android:name=".ui.main.MainActivity"
