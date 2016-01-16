@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ import ca.appvelopers.mcgillmobile.util.Date;
  */
 public class ScheduleViewBuilder {
     /**
-     * The ScheduleFragment instance
+     * The ScheduleActivity instance
      */
-    private ScheduleFragment mFragment;
+    private ScheduleActivity mActivity;
     /**
      * The starting date
      */
@@ -58,12 +58,12 @@ public class ScheduleViewBuilder {
     /**
      * Default Constructor
      *
-     * @param fragment     The ScheduleFragment instance
-     * @param startingDate The starting date
+     * @param activity     {@link ScheduleActivity} instance
+     * @param startingDate Starting date
      */
-    public ScheduleViewBuilder(ScheduleFragment fragment, LocalDate startingDate){
-        this.mFragment = fragment;
-        this.mDate = startingDate;
+    public ScheduleViewBuilder(ScheduleActivity activity, LocalDate startingDate) {
+        mActivity = activity;
+        mDate = startingDate;
     }
 
     /**
@@ -72,15 +72,14 @@ public class ScheduleViewBuilder {
      * @param orientation The current screen orientation
      * @return The view to use
      */
-    public View renderView(int orientation){
+    public View renderView(int orientation) {
         //Inflate the view
-        View view = View.inflate(mFragment.getActivity(), R.layout.fragment_schedule, null);
+        View view = View.inflate(mActivity, R.layout.activity_schedule, null);
 
         //Render the right view based on the orientation
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             renderLandscapeView(view);
-        }
-        else{
+        } else {
             renderPortraitView(view);
         }
 
@@ -92,12 +91,12 @@ public class ScheduleViewBuilder {
      *
      * @param view The base view
      */
-    private void renderLandscapeView(View view){
+    private void renderLandscapeView(View view) {
         //Get the timetable container
         LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);
 
         //Leave space at the top for the day names
-        View dayView = View.inflate(mFragment.getActivity(), R.layout.fragment_day_name, null);
+        View dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);
         //Black line to separate the timetable from the schedule
         View dayViewLine = dayView.findViewById(R.id.day_line);
         dayViewLine.setVisibility(View.VISIBLE);
@@ -116,33 +115,32 @@ public class ScheduleViewBuilder {
             Day day = Day.getDay(i);
 
             //Set up the day name
-            dayView = View.inflate(mFragment.getActivity(), R.layout.fragment_day_name, null);
+            dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);
             TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
             dayViewTitle.setText(day.toString());
             dayContainer.addView(dayView);
 
             //Set up the schedule container for that one day
-            LinearLayout scheduleContainer = new LinearLayout(mFragment.getActivity());
+            LinearLayout scheduleContainer = new LinearLayout(mActivity);
             scheduleContainer.setOrientation(LinearLayout.VERTICAL);
             scheduleContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                    mFragment.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
+                    mActivity.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
 
             //Get the classes for today
-            List<Course> courses = mFragment.getCourses(mDate.plusDays(i - currentDayIndex));
+            List<Course> courses = mActivity.getCourses(mDate.plusDays(i - currentDayIndex));
 
             //Fill the schedule for the current day
-            fillSchedule(mFragment.getActivity(), timetableContainer, scheduleContainer, courses,
-                    false);
+            fillSchedule(mActivity, timetableContainer, scheduleContainer, courses, false);
 
             //Add the current day to the schedule container
             dayContainer.addView(scheduleContainer);
 
             //Line
-            View line = new View(mFragment.getActivity());
+            View line = new View(mActivity);
             line.setBackgroundColor(Color.BLACK);
             line.setLayoutParams(new ViewGroup.LayoutParams(
-                    mFragment.getResources().getDimensionPixelSize(R.dimen.schedule_line),
+                    mActivity.getResources().getDimensionPixelSize(R.dimen.schedule_line),
                     ViewGroup.LayoutParams.MATCH_PARENT));
             dayContainer.addView(line);
         }
@@ -273,7 +271,7 @@ public class ScheduleViewBuilder {
     private void renderPortraitView(View view){
         //Set up the adapter
         final SchedulePagerAdapter adapter =
-                new SchedulePagerAdapter(mFragment.getChildFragmentManager(), mDate);
+                new SchedulePagerAdapter(mActivity.getSupportFragmentManager(), mDate);
 
         //Set up the ViewPager
         ViewPager pager = (ViewPager) view.findViewById(R.id.pager);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,8 +72,8 @@ public class DayFragment extends Fragment{
 
         //Get the arguments from the bundle
         mDate = (LocalDate)getArguments().get(Constants.DATE);
-        //Get the courses from the ScheduleFragment
-        mCourses = ((ScheduleFragment)getParentFragment()).getCourses(mDate);
+        //Get the courses from the ScheduleActivity
+        mCourses = ((ScheduleActivity)getActivity()).getCourses(mDate);
     }
 
     @Override

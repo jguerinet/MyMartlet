@@ -95,24 +95,11 @@
             android:name=".ui.courses.CoursesActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.settings.HelpActivity" />
         <activity
-            android:name=".ui.main.MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize" >
-            <intent-filter>
+            android:name=".ui.schedule.ScheduleActivity"
+            android:configChanges="orientation"/>
 
-                <!-- Twitter -->
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="mymartlet"
-                    android:scheme="oauth" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.settings.HelpActivity" />
         <activity
             android:name=".ui.search.SearchResultsActivity"
             android:screenOrientation="portrait" />

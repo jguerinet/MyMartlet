@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,22 @@ package ca.appvelopers.mcgillmobile.ui.schedule;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DialogHelper;
-import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
+import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Help;
@@ -50,8 +48,7 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
-public class ScheduleFragment extends BaseFragment {
+public class ScheduleActivity extends DrawerActivity {
     /**
      * The list of courses
      */
@@ -66,63 +63,57 @@ public class ScheduleFragment extends BaseFragment {
     private ScheduleViewBuilder mViewBuilder;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Load the right view
+        View view = loadView(getResources().getConfiguration().orientation);
+        setContentView(view);
+        ButterKnife.bind(this);
 
         mTerm = App.getDefaultTerm();
         mCourses = new ArrayList<>();
-
-        //Fragment has a menu
-        setHasOptionsMenu(true);
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        super.onCreateView(inflater, container, savedInstanceState);
-
         //Set up the ScheduleViewBuilder
         mViewBuilder = new ScheduleViewBuilder(this, getStartingDate());
 
-        //Load the right view
-        View view = loadView(getResources().getConfiguration().orientation);
-
         //Check if this is the first time the user is using the app
-        if(Load.firstOpen()){
-            //Show him the walkthrough if it is
-            startActivity(new Intent(mActivity, WalkthroughActivity.class));
+        if (Load.firstOpen()) {
+            //Show them the walkthrough if it is
+            startActivity(new Intent(this, WalkthroughActivity.class));
             //Save the fact that the walkthrough has been seen at least once
             Save.firstOpen();
         }
-
-        //Hide the loading indicator
-        hideLoadingIndicator();
-
-        return view;
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        //Only show the menu in portrait mode
+        return getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         //Only load the menu in portrait mode
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            inflater.inflate(R.menu.refresh_change_semester, menu);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            getMenuInflater().inflate(R.menu.refresh, menu);
+            getMenuInflater().inflate(R.menu.change_semester, menu);
             Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
+            return true;
         }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogHelper.showChangeSemesterDialog(mActivity, mTerm, false,
+                DialogHelper.showChangeSemesterDialog(this, mTerm, false,
                         new DialogHelper.TermCallback() {
                             @Override
-                            public void onTermSelected(Term term){
+                            public void onTermSelected(Term term) {
                                 mTerm = term;
 
                                 //Restart the schedule view builder with the right date
-                                mViewBuilder = new ScheduleViewBuilder(ScheduleFragment.this,
+                                mViewBuilder = new ScheduleViewBuilder(ScheduleActivity.this,
                                         getStartingDate());
 
                                 //Refresh the content
@@ -133,8 +124,16 @@ public class ScheduleFragment extends BaseFragment {
             case R.id.action_refresh:
                 refreshCourses();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setContentView(loadView(newConfig.orientation));
+        invalidateOptionsMenu();
     }
 
     /**
@@ -143,9 +142,9 @@ public class ScheduleFragment extends BaseFragment {
      * @param orientation The current orientation
      * @return The view to load
      */
-    private View loadView(int orientation){
+    private View loadView(int orientation) {
         //Title
-        mActivity.setTitle(mTerm.toString());
+        setTitle(mTerm.toString());
 
         //Return the view
         return mViewBuilder.renderView(orientation);
@@ -156,16 +155,16 @@ public class ScheduleFragment extends BaseFragment {
      *
      * @return The starting date
      */
-    private LocalDate getStartingDate(){
+    private LocalDate getStartingDate() {
         fillCourses();
 
         //Date is by default set to today
         LocalDate date = LocalDate.now();
         //Check if we are in the current semester
-        if(!mTerm.equals(Term.getCurrentTerm())){
+        if (!mTerm.equals(Term.getCurrentTerm())) {
             //If not, find the starting date of this semester instead of using today
-            for(Course classItem : mCourses){
-                if(classItem.getStartDate().isBefore(date)){
+            for (Course classItem : mCourses) {
+                if (classItem.getStartDate().isBefore(date)) {
                     date = classItem.getStartDate();
                 }
             }
@@ -177,17 +176,17 @@ public class ScheduleFragment extends BaseFragment {
     /**
      * Refreshes the list of courses for the given term and the user's transcript
      */
-    private void refreshCourses(){
+    private void refreshCourses() {
         //Show the user we are refreshing
-        mActivity.showToolbarProgress(true);
+        showToolbarProgress(true);
 
         //Download the courses for this term
-        new DownloaderThread(mActivity, Connection.getScheduleURL(mTerm))
+        new DownloaderThread(this, Connection.getScheduleURL(mTerm))
                 .execute(new DownloaderThread.Callback() {
                     @Override
-                    public void onDownloadFinished(String result){
+                    public void onDownloadFinished(String result) {
                         //Parse the courses if there are any
-                        if(result != null){
+                        if (result != null) {
                             Parser.parseCourses(mTerm, result);
 
                             //Download the Transcript
@@ -195,21 +194,21 @@ public class ScheduleFragment extends BaseFragment {
                             new DownloaderThread(null, Connection.TRANSCRIPT_URL)
                                     .execute(new DownloaderThread.Callback() {
                                         @Override
-                                        public void onDownloadFinished(String result){
+                                        public void onDownloadFinished(String result) {
                                             //Parse the transcript if possible
-                                            if(result != null){
+                                            if (result != null) {
                                                 Parser.parseTranscript(result);
                                             }
 
-                                            mActivity.runOnUiThread(new Runnable() {
+                                            runOnUiThread(new Runnable() {
                                                 @Override
-                                                public void run(){
+                                                public void run() {
                                                     //Update the view
-                                                    updateView(getResources().
-                                                            getConfiguration().orientation);
+                                                    setContentView(loadView(getResources().
+                                                            getConfiguration().orientation));
 
                                                     //Done refreshing
-                                                    mActivity.showToolbarProgress(false);
+                                                    showToolbarProgress(false);
                                                 }
                                             });
                                         }
@@ -222,11 +221,11 @@ public class ScheduleFragment extends BaseFragment {
     /**
      * Fills the class list with the current term's classes
      */
-    private void fillCourses(){
+    private void fillCourses() {
         //Clear the current course list, add the courses that are for this semester
         mCourses.clear();
-        for(Course classItem : App.getCourses()){
-            if(classItem.getTerm().equals(mTerm)){
+        for (Course classItem : App.getCourses()) {
+            if (classItem.getTerm().equals(mTerm)) {
                 mCourses.add(classItem);
             }
         }
@@ -238,34 +237,16 @@ public class ScheduleFragment extends BaseFragment {
      * @param date The date
      * @return The list of courses
      */
-    public List<Course> getCourses(LocalDate date){
+    public List<Course> getCourses(LocalDate date) {
         List<Course> courses = new ArrayList<>();
 
         //Go through the list of courses, find which ones have the same day and
         //  are for the given date
-        for(Course course : mCourses){
-            if(course.isForDate(date)){
+        for (Course course : mCourses) {
+            if (course.isForDate(date)) {
                 courses.add(course);
             }
         }
         return courses;
-    }
-
-    /**
-     * Updates the view
-     *
-     * @param orientation The current orientation
-     */
-    public void updateView(int orientation){
-        //Get the root view
-        ViewGroup rootView = (ViewGroup) getView();
-
-        if(rootView != null){
-            // Remove all the existing views from the root view.
-            rootView.removeAllViews();
-
-            //Reload a new view
-            rootView.addView(loadView(orientation));
-        }
     }
 }

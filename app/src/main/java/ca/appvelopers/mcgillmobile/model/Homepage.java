@@ -22,8 +22,8 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.ebill.EbillActivity;
-import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 import ca.appvelopers.mcgillmobile.ui.map.MapActivity;
+import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.search.SearchActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
@@ -117,7 +117,7 @@ public enum Homepage {
     public static Class getActivity(@IdRes int menuId) {
         switch (menuId) {
             case R.id.schedule:
-                return MainActivity.class;
+                return ScheduleActivity.class;
             case R.id.transcript:
                 return TranscriptActivity.class;
             case R.id.my_courses:
