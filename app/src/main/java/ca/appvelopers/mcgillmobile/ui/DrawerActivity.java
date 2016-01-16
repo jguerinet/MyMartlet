@@ -143,38 +143,36 @@ public class DrawerActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        //Try to get one of the activities to open
-        Class activity = Homepage.getActivity(item.getItemId());
+        Class activity;
+        switch (item.getItemId()) {
+            case R.id.facebook:
+                shareOnFacebook();
+                return true;
+            case R.id.twitter:
+                shareOnTwitter();
+                return true;
+            case R.id.logout:
+                logout();
+                return true;
+            default:
+                //Try to get one of the activities to open
+                activity = Homepage.getActivity(item.getItemId());
+                break;
+        }
 
-        //If the activity is null, then it's either Facebook, Twitter, or logout
         if (activity == null) {
-            switch (item.getItemId()) {
-                case R.id.facebook:
-                    shareOnFacebook();
-                    break;
-                case R.id.twitter:
-                    shareOnTwitter();
-                    break;
-                case R.id.logout:
-                    logout();
-                    break;
-                default:
-                    //Nothing found, do nothing
-                    return false;
-            }
-            return true;
+            //Nothing found, do nothing
+            return false;
         }
 
-        //Check if it's the currently opened activity and close the drawer if that's the case
         if (getClass().equals(activity)) {
+            //Check if it's the currently opened activity and close the drawer if that's the case
             mDrawerLayout.closeDrawer(GravityCompat.START);
-            return true;
+        } else {
+            //If not, load the page
+            startActivity(new Intent(this, activity));
+            finish();
         }
-
-        //If not, load the page
-        startActivity(new Intent(this, activity));
-        finish();
-
         return true;
     }
 
