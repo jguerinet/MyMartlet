@@ -22,6 +22,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
+import ca.appvelopers.mcgillmobile.ui.map.MapActivity;
 import ca.appvelopers.mcgillmobile.ui.search.SearchActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
@@ -129,7 +130,7 @@ public enum Homepage {
             case R.id.ebill:
                 return EbillActivity.class;
             case R.id.map:
-                return MainActivity.class;
+                return MapActivity.class;
             case R.id.desktop:
                 return DesktopActivity.class;
             case R.id.settings:

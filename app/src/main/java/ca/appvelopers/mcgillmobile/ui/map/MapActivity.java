@@ -24,12 +24,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -56,11 +53,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
-import ca.appvelopers.mcgillmobile.ui.base.BaseFragment;
+import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import timber.log.Timber;
@@ -72,79 +70,76 @@ import timber.log.Timber;
  * @author Quang Dao
  * @since 1.0.0
  */
-public class MapFragment extends BaseFragment {
+public class MapActivity extends DrawerActivity {
     private static final int LOCATION_REQUEST = 101;
     /**
-     * The coordinates used to center the map initially
+     * Coordinates used to center the map initially
      */
     private static final LatLng MCGILL = new LatLng(45.504435, -73.576006);
     /**
-     * The default zoom to use when they first open the map
-     */
-    private static final int DEFAULT_ZOOM = 14;
-    /**
-     * The default bearing to use when they first open the map
-     */
-    private static final int DEFAULT_BEARING = -54;
-    /**
-     * The fragment containing the map
-     */
-    private SupportMapFragment mFragment;
-    /**
-     * The map instance
-     */
-    private GoogleMap mMap;
-    /**
-     * The list of places on the map
-     */
-    private List<MapPlace> mPlaces;
-    /**
-     * The list of the user's favorite places
-     */
-    private List<Place> mFavoritePlaces;
-    /**
-     * The currently shown map places
-     */
-    private List<MapPlace> mCurrentPlaces;
-    /**
-     * The currently shown place
-     */
-    private MapPlace mPlace;
-    /**
-     * The currently selected category
-     */
-    private PlaceType mType;
-    /**
-     * The current search String
-     */
-    private String mSearchString;
-    /**
-     * The info container used to show the current place's detail
+     * Info container used to show the current place's detail
      */
     @Bind(R.id.info_container)
-    LinearLayout mInfoContainer;
+    protected LinearLayout mInfoContainer;
     /**
-     * The current place's title
+     * Current place's title
      */
     @Bind(R.id.place_title)
-    TextView mTitle;
+    protected TextView mTitle;
     /**
-     * The current place's address
+     * Current place's address
      */
     @Bind(R.id.place_address)
-    TextView mAddress;
+    protected TextView mAddress;
     /**
      * Button to add or remove a place from the user's favorites
      */
     @Bind(R.id.map_favorite)
-    Button mFavorite;
+    protected Button mFavorite;
+    /**
+     * Spinner to choose a filter for the map
+     */
+    @Bind(R.id.map_filter)
+    protected Spinner mFilter;
+    /**
+     * Fragment containing the map
+     */
+    private SupportMapFragment mFragment;
+    /**
+     * Map instance
+     */
+    private GoogleMap mMap;
+    /**
+     * List of places on the map
+     */
+    private List<MapPlace> mPlaces;
+    /**
+     * List of the user's favorite places
+     */
+    private List<Place> mFavoritePlaces;
+    /**
+     * Currently shown map places
+     */
+    private List<MapPlace> mCurrentPlaces;
+    /**
+     * Currently shown place
+     */
+    private MapPlace mPlace;
+    /**
+     * Currently selected category
+     */
+    private PlaceType mType;
+    /**
+     * Current search String
+     */
+    private String mSearchString;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Fragment has a menu
-        setHasOptionsMenu(true);
+        setContentView(R.layout.fragment_map);
+        ButterKnife.bind(this);
+        Analytics.get().sendScreen("Map");
 
         //Set up the initial information
         mPlaces = new ArrayList<>();
@@ -152,21 +147,11 @@ public class MapFragment extends BaseFragment {
         mFavoritePlaces = App.getFavoritePlaces();
         mSearchString = "";
         mType = new PlaceType(false);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
-        ButterKnife.bind(this, view);
-        mActivity.setTitle(R.string.title_map);
-        Analytics.get().sendScreen("Map");
 
         //Set up the spinner
-        final Spinner filter = (Spinner) view.findViewById(R.id.map_filter);
         final TypesAdapter adapter = new TypesAdapter();
-        filter.setAdapter(adapter);
-        filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mFilter.setAdapter(adapter);
+        mFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Get the selected category
@@ -180,94 +165,36 @@ public class MapFragment extends BaseFragment {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        //Directions
-        Button directions = (Button)view.findViewById(R.id.map_directions);
-        directions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Open Google Maps
-                if (mPlace != null) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://maps.google.com/maps?f=d &daddr=" +
-                                    mPlace.mMarker.getPosition().latitude + "," +
-                                    mPlace.mMarker.getPosition().longitude));
-                    startActivity(intent);
-                }
-            }
-        });
-
-        //Add/Remove to/from favorites
-        mFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                if(mPlace != null){
-                    //Check if it was in the favorites
-                    if(mFavoritePlaces.contains(mPlace.mPlace)){
-                        mFavoritePlaces.remove(mPlace.mPlace);
-
-                        //Alert the user
-                        Toast.makeText(mActivity, getString(R.string.map_favorites_removed,
-                                mPlace.mPlace.getName()), Toast.LENGTH_SHORT).show();
-
-                        //Change the text to "Add Favorites"
-                        mFavorite.setText(getString(R.string.map_favorites_add));
-
-                        //If we are in the favorites category, we need to hide this pin
-                        if(mType.getName().equals(PlaceType.FAVORITES)){
-                            mPlace.mMarker.setVisible(false);
-                        }
-                    }
-                    else{
-                        mFavoritePlaces.add(mPlace.mPlace);
-
-                        //Alert the user
-                        Toast.makeText(mActivity, getString(R.string.map_favorites_added,
-                                mPlace.mPlace.getName()), Toast.LENGTH_SHORT).show();
-
-                        //Change the text to "Remove Favorites"
-                        mFavorite.setText(getString(R.string.map_favorites_remove));
-                    }
-
-                    //Save the places
-                    App.setFavoritePlaces(mFavoritePlaces);
-                }
-            }
-        });
-
-        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         //Get the MapFragment
         mFragment = (SupportMapFragment)fragmentManager.findFragmentById(R.id.map);
         //If it's null, initialize it and put it in its view
-        if(mFragment == null){
+        if (mFragment == null) {
             mFragment = SupportMapFragment.newInstance();
             fragmentManager.beginTransaction()
                     .replace(R.id.map, mFragment)
                     .addToBackStack(null)
                     .commit();
         }
-
-        hideLoadingIndicator();
-
-        return view;
     }
 
     @Override
-    public void onResume(){
+    protected void onResume() {
         super.onResume();
         //If the map is null, bind it and add the markers
-        if(mMap == null){
+        if (mMap == null) {
             mMap = mFragment.getMap();
             //Set the camera's center position
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(MCGILL)
-                    .zoom(DEFAULT_ZOOM)
-                    .bearing(DEFAULT_BEARING)
+                    .zoom(14)
+                    .bearing(-54)
                     .tilt(0)
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             //Show the user's location if we have the permission to
-            if (Help.checkPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION,
+            if (Help.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION,
                     LOCATION_REQUEST)) {
                 mMap.setMyLocationEnabled(true);
             }
@@ -301,13 +228,13 @@ public class MapFragment extends BaseFragment {
 
                     //Find the concerned place
                     mPlace = null;
-                    for(MapPlace mapPlace : mPlaces){
-                        if(mapPlace.mMarker.equals(marker)){
+                    for (MapPlace mapPlace : mPlaces) {
+                        if (mapPlace.mMarker.equals(marker)) {
                             mPlace = mapPlace;
                         }
                     }
 
-                    if(mPlace == null){
+                    if (mPlace == null) {
                         Timber.e("Tapped place marker was not found");
                         return false;
                     }
@@ -322,9 +249,9 @@ public class MapFragment extends BaseFragment {
 
                     //Set up the favorite text
                     if (mFavoritePlaces.contains(mPlace.mPlace)) {
-                        mFavorite.setText(getString(R.string.map_favorites_remove));
+                        mFavorite.setText(R.string.map_favorites_remove);
                     } else {
-                        mFavorite.setText(getString(R.string.map_favorites_add));
+                        mFavorite.setText(R.string.map_favorites_add);
                     }
 
                     return false;
@@ -334,16 +261,15 @@ public class MapFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
 
         //Get the SearchView
         MenuItem item = menu.findItem(R.id.action_search);
-        Assert.assertNotNull(mActivity.getSupportActionBar());
-        final SearchView searchView =
-                new SearchView(mActivity.getSupportActionBar().getThemedContext());
-        final int textViewID = searchView.getContext().getResources().
-                getIdentifier("android:id/search_src_text",null, null);
+        Assert.assertNotNull(getSupportActionBar());
+        final SearchView searchView = new SearchView(getSupportActionBar().getThemedContext());
+        final int textViewID = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_src_text", null, null);
         final AutoCompleteTextView searchTextView =
                 (AutoCompleteTextView) searchView.findViewById(textViewID);
         try {
@@ -351,7 +277,7 @@ public class MapFragment extends BaseFragment {
             Field cursorDrawable = TextView.class.getDeclaredField("mCursorDrawableRes");
             cursorDrawable.setAccessible(true);
             cursorDrawable.set(searchTextView, 0);
-        } catch (Exception e){
+        } catch (Exception e) {
             Timber.e(e, "Cannot change color of cursor");
         }
 
@@ -376,18 +302,20 @@ public class MapFragment extends BaseFragment {
         //Reset the search view
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
-            public boolean onClose(){
+            public boolean onClose() {
                 mSearchString = "";
                 filterBySearchString();
                 return false;
             }
         });
+
+        return true;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
             @NonNull int[] grantResults) {
-        switch(requestCode){
+        switch (requestCode) {
             case LOCATION_REQUEST:
                 //Check if the permission has been granted
                 if (grantResults.length > 0 &&
@@ -404,14 +332,66 @@ public class MapFragment extends BaseFragment {
     }
 
     /**
+     * Opens Google Maps with directions to the chosen place
+     */
+    @OnClick(R.id.map_directions)
+    protected void directions() {
+        //Open Google Maps
+        if (mPlace != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://maps.google.com/maps?f=d &daddr=" +
+                            mPlace.mMarker.getPosition().latitude + "," +
+                            mPlace.mMarker.getPosition().longitude));
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * Adds or remove a place from the user's favorites
+     */
+    @OnClick(R.id.map_favorite)
+    protected void favorites() {
+        if (mPlace != null) {
+            //Check if it was in the favorites
+            if (mFavoritePlaces.contains(mPlace.mPlace)) {
+                mFavoritePlaces.remove(mPlace.mPlace);
+
+                //Alert the user
+                Toast.makeText(this, getString(R.string.map_favorites_removed,
+                        mPlace.mPlace.getName()), Toast.LENGTH_SHORT).show();
+
+                //Change the text to "Add Favorites"
+                mFavorite.setText(R.string.map_favorites_add);
+
+                //If we are in the favorites category, we need to hide this pin
+                if (mType.getName().equals(PlaceType.FAVORITES)) {
+                    mPlace.mMarker.setVisible(false);
+                }
+            } else {
+                mFavoritePlaces.add(mPlace.mPlace);
+
+                //Alert the user
+                Toast.makeText(this, getString(R.string.map_favorites_added,
+                        mPlace.mPlace.getName()), Toast.LENGTH_SHORT).show();
+
+                //Change the text to "Remove Favorites"
+                mFavorite.setText(getString(R.string.map_favorites_remove));
+            }
+
+            //Save the places
+            App.setFavoritePlaces(mFavoritePlaces);
+        }
+    }
+
+    /**
      * Shows or hides the given place
      *
      * @param place   The place
      * @param visible True if the place should be visible, false otherwise
      */
-    private void showPlace(MapPlace place, boolean visible){
+    private void showPlace(MapPlace place, boolean visible) {
         place.mMarker.setVisible(visible);
-        if(visible){
+        if (visible) {
             mCurrentPlaces.add(place);
         }
     }
@@ -419,13 +399,13 @@ public class MapFragment extends BaseFragment {
     /**
      * Filters the current places by the selected category
      */
-    private void filterByCategory(){
+    private void filterByCategory() {
         //Reset the current places
         mCurrentPlaces.clear();
 
         //Go through the places
-        for(MapPlace place : mPlaces){
-            switch(mType.getName()){
+        for (MapPlace place : mPlaces) {
+            switch (mType.getName()) {
                 //Show all of the places
                 case PlaceType.ALL:
                     showPlace(place, true);
@@ -450,8 +430,8 @@ public class MapFragment extends BaseFragment {
      */
     private void filterBySearchString() {
         //If there is no search String, just show everything
-        if(mSearchString.isEmpty()){
-            for(MapPlace mapPlace : mCurrentPlaces){
+        if (mSearchString.isEmpty()) {
+            for (MapPlace mapPlace : mCurrentPlaces) {
                 mapPlace.mMarker.setVisible(true);
             }
             return;
@@ -471,7 +451,7 @@ public class MapFragment extends BaseFragment {
         }
 
         //If you're showing only one place, focus on that place
-        if(numberOfPlaces == 1){
+        if (numberOfPlaces == 1) {
             focusPlace(place);
         }
     }
@@ -489,7 +469,7 @@ public class MapFragment extends BaseFragment {
     /**
      * Represents a place with its associated marker on the map
      */
-    class MapPlace{
+    class MapPlace {
         /**
          * The place
          */
@@ -505,7 +485,7 @@ public class MapFragment extends BaseFragment {
          * @param place  The place
          * @param marker The marker
          */
-        MapPlace(Place place, Marker marker){
+        MapPlace(Place place, Marker marker) {
             this.mPlace = place;
             this.mMarker = marker;
         }
