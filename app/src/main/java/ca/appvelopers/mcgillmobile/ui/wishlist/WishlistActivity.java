@@ -79,7 +79,7 @@ public class WishlistActivity extends DrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_wishlist);
+        setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
         Analytics.get().sendScreen("Wishlist");
 

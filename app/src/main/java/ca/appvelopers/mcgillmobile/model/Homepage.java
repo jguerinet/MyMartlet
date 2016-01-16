@@ -20,6 +20,7 @@ import android.support.annotation.IdRes;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.ebill.EbillActivity;
 import ca.appvelopers.mcgillmobile.ui.main.MainActivity;
 import ca.appvelopers.mcgillmobile.ui.map.MapActivity;
@@ -122,7 +123,7 @@ public enum Homepage {
             case R.id.my_courses:
                 return MyCoursesActivity.class;
             case R.id.courses:
-                return MainActivity.class;
+                return CoursesActivity.class;
             case R.id.wishlist:
                 return WishlistActivity.class;
             case R.id.search:

@@ -91,6 +91,10 @@
             android:label="@string/title_map"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.courses.CoursesActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.settings.HelpActivity" />
         <activity
             android:name=".ui.main.MainActivity"
