@@ -86,8 +86,8 @@ public class DrawerActivity extends BaseActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         //Set up the toolbar
         setUpToolbar(false);
@@ -99,9 +99,17 @@ public class DrawerActivity extends BaseActivity
         mDrawerLayout.setFocusableInTouchMode(false);
         mDrawer.setNavigationItemSelectedListener(this);
 
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         //Show the BugDialog if there is one
         String parserBug = getIntent().getStringExtra(Constants.BUG);
-        if(parserBug != null){
+        if (parserBug != null) {
+            getIntent().removeExtra(Constants.BUG);
             DialogHelper.showBugDialog(this, parserBug.equals(Constants.TRANSCRIPT),
                     getIntent().getStringExtra(Constants.TERM));
         }
@@ -120,12 +128,6 @@ public class DrawerActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
     }
 
     @Override
