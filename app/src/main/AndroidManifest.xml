@@ -52,31 +52,37 @@
         <activity
             android:name=".ui.transcript.TranscriptActivity"
             android:label="@string/title_transcript"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.web.MyCoursesActivity"
             android:label="@string/title_mycourses"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.web.DesktopActivity"
             android:label="@string/title_desktop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.ebill.EbillActivity"
             android:label="@string/title_ebill"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.search.SearchActivity"
             android:label="@string/title_registration"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.settings.AboutActivity"
@@ -84,20 +90,24 @@
 
         <activity
             android:name=".ui.wishlist.WishlistActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.map.MapActivity"
             android:label="@string/title_map"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.courses.CoursesActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
             android:name=".ui.schedule.ScheduleActivity"
-            android:configChanges="orientation"/>
+            android:configChanges="orientation"
+            android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity android:name=".ui.settings.HelpActivity" />
         <activity

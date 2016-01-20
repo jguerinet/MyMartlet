@@ -51,4 +51,8 @@
     <style name="Theme.MyMartlet.Button" parent="Widget.AppCompat.Button">
       <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <style name="Theme.MyMartlet.Drawer" parent="Theme.MyMartlet">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
 </resources>

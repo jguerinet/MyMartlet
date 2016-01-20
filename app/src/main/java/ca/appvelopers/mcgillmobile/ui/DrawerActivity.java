@@ -21,12 +21,14 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -68,9 +70,18 @@ public abstract class DrawerActivity extends BaseActivity
     @Bind(R.id.drawer)
     protected NavigationView mDrawer;
     /**
+     * Main content view to fade out and in on page change
+     */
+    @Bind(R.id.main)
+    protected View mMainView;
+    /**
      * The toggle for the drawer inside the action bar
      */
     private ActionBarDrawerToggle mDrawerToggle;
+    /**
+     * Handler for posting delayed actions
+     */
+    private Handler mHandler;
     /**
      * Callback manager used for Facebook
      */
@@ -79,6 +90,8 @@ public abstract class DrawerActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mHandler = new Handler();
 
         //Initialize the Facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -103,6 +116,10 @@ public abstract class DrawerActivity extends BaseActivity
 
         //Check the current item
         mDrawer.getMenu().findItem(Homepage.getMenuId(getCurrentPage())).setChecked(true);
+
+        //Fade in the main view
+        mMainView.setAlpha(0);
+        mMainView.animate().alpha(1).setDuration(250);
     }
 
     @Override
@@ -148,7 +165,15 @@ public abstract class DrawerActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Class activity;
+        @Homepage.Type int homepage = Homepage.getHomepage(item.getItemId());
+
+        //If it's the same as the current homepage, close the drawer and don't continue
+        if (homepage == getCurrentPage()) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
+        final Class activity;
         switch (item.getItemId()) {
             case R.id.facebook:
                 shareOnFacebook();
@@ -161,7 +186,7 @@ public abstract class DrawerActivity extends BaseActivity
                 return true;
             default:
                 //Try to get one of the activities to open
-                activity = Homepage.getActivity(Homepage.getHomepage(item.getItemId()));
+                activity = Homepage.getActivity(homepage);
                 break;
         }
 
@@ -170,14 +195,22 @@ public abstract class DrawerActivity extends BaseActivity
             return false;
         }
 
-        if (getClass().equals(activity)) {
-            //Check if it's the currently opened activity and close the drawer if that's the case
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            //If not, load the page
-            startActivity(new Intent(this, activity));
-            finish();
-        }
+        //If it's not the currently opened activity, launch it after a short delay
+        //  so that the user sees the drawer closing
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(DrawerActivity.this, activity));
+                finish();
+            }
+        }, 250);
+
+        //Fade out the main view
+        mMainView.animate().alpha(0).setDuration(150);
+
+        //Close the drawer
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
