@@ -42,12 +42,12 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
-import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -581,8 +581,8 @@ public class SplashActivity extends BaseActivity {
             if(mConnectionStatus == ConnectionStatus.OK ||
                     mConnectionStatus == ConnectionStatus.NO_INTERNET){
 
-                //TODO
-                Intent intent = new Intent(SplashActivity.this, TranscriptActivity.class);
+                Intent intent = new Intent(SplashActivity.this,
+                        Homepage.getActivity(App.getHomepage()));
                 //If there's a bug, add it to the intent
                 if(mBugPresent){
                     intent.putExtra(Constants.BUG, mTranscriptBug ? Constants.TRANSCRIPT : "")

@@ -112,36 +112,104 @@ public class Homepage {
     }
 
     /**
-     * Returns the class to open based on the clicked menu Id
+     * Returns the class to open based on the chosen homepage
      *
-     * @param menuId The clicked menu Id
+     * @param homepage Homepage
      * @return Class to open
      */
-    public static Class getActivity(@IdRes int menuId) {
-        switch (menuId) {
-            case R.id.schedule:
+    public static Class getActivity(@Type int homepage) {
+        switch (homepage) {
+            case SCHEDULE:
                 return ScheduleActivity.class;
-            case R.id.transcript:
+            case TRANSCRIPT:
                 return TranscriptActivity.class;
-            case R.id.my_courses:
+            case MY_COURSES:
                 return MyCoursesActivity.class;
-            case R.id.courses:
+            case COURSES:
                 return CoursesActivity.class;
-            case R.id.wishlist:
+            case WISHLIST:
                 return WishlistActivity.class;
-            case R.id.search:
+            case SEARCH_COURSES:
                 return SearchActivity.class;
-            case R.id.ebill:
+            case EBILL:
                 return EbillActivity.class;
-            case R.id.map:
+            case MAP:
                 return MapActivity.class;
-            case R.id.desktop:
+            case DESKTOP:
                 return DesktopActivity.class;
-            case R.id.settings:
+            case SETTINGS:
                 return SettingsActivity.class;
             //Facebook, Twitter, Logout
             default:
                 return null;
+        }
+    }
+
+    /**
+     * Converts the menu item Id to a homepage
+     *
+     * @param menuId Clicked menu item Id
+     * @return Homepage equivalent, {@link #UNDEFINED} if none
+     */
+    public static @Homepage.Type int getHomepage(@IdRes int menuId) {
+        switch (menuId) {
+            case R.id.schedule:
+                return SCHEDULE;
+            case R.id.transcript:
+                return TRANSCRIPT;
+            case R.id.my_courses:
+                return MY_COURSES;
+            case R.id.courses:
+                return COURSES;
+            case R.id.wishlist:
+                return WISHLIST;
+            case R.id.search:
+                return SEARCH_COURSES;
+            case R.id.ebill:
+                return EBILL;
+            case R.id.map:
+                return MAP;
+            case R.id.desktop:
+                return DESKTOP;
+            case R.id.settings:
+                return SETTINGS;
+            //Facebook, Twitter, Logout
+            default:
+                return UNDEFINED;
+        }
+    }
+
+    /**
+     * Returns the menu Id for the given homepage
+     *
+     * @param homepage Homepage
+     * @return Corresponding Menu item Id
+     */
+    public static @IdRes int getMenuId(@Homepage.Type int homepage) {
+        switch (homepage) {
+            case SCHEDULE:
+                return R.id.schedule;
+            case TRANSCRIPT:
+                return R.id.transcript;
+            case MY_COURSES:
+                return R.id.my_courses;
+            case COURSES:
+                return R.id.courses;
+            case WISHLIST:
+                return R.id.wishlist;
+            case SEARCH_COURSES:
+                return R.id.search;
+            case EBILL:
+                return R.id.ebill;
+            case MAP:
+                return R.id.map;
+            case DESKTOP:
+                return R.id.desktop;
+            case SETTINGS:
+                return R.id.settings;
+            //Facebook, Twitter, Logout
+            default:
+                return UNDEFINED;
         }
     }
 }

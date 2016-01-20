@@ -25,6 +25,7 @@ import android.webkit.WebViewClient;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
@@ -81,5 +82,10 @@ public class DesktopActivity extends DrawerActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected @Homepage.Type int getCurrentPage() {
+        return Homepage.DESKTOP;
     }
 }

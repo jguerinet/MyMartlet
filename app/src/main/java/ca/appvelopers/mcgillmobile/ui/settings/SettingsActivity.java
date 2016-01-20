@@ -159,4 +159,9 @@ public class SettingsActivity extends DrawerActivity {
                     }
                 });
     }
+
+    @Override
+    protected @Homepage.Type int getCurrentPage() {
+        return Homepage.SETTINGS;
+    }
 }

@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
@@ -65,15 +66,15 @@ public class ScheduleActivity extends DrawerActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Load the right view
-        View view = loadView(getResources().getConfiguration().orientation);
-        setContentView(view);
-        ButterKnife.bind(this);
-
         mTerm = App.getDefaultTerm();
         mCourses = new ArrayList<>();
         //Set up the ScheduleViewBuilder
         mViewBuilder = new ScheduleViewBuilder(this, getStartingDate());
+
+        //Load the right view
+        View view = loadView(getResources().getConfiguration().orientation);
+        setContentView(view);
+        ButterKnife.bind(this);
 
         //Check if this is the first time the user is using the app
         if (Load.firstOpen()) {
@@ -134,6 +135,11 @@ public class ScheduleActivity extends DrawerActivity {
         super.onConfigurationChanged(newConfig);
         setContentView(loadView(newConfig.orientation));
         invalidateOptionsMenu();
+    }
+
+    @Override
+    protected @Homepage.Type int getCurrentPage() {
+        return Homepage.SCHEDULE;
     }
 
     /**

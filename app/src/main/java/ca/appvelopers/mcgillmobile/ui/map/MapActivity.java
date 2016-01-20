@@ -56,6 +56,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
@@ -329,6 +330,11 @@ public class MapActivity extends DrawerActivity {
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    @Override
+    protected @Homepage.Type int getCurrentPage() {
+        return Homepage.MAP;
     }
 
     /**

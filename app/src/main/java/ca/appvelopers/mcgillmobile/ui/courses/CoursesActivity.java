@@ -39,6 +39,7 @@ import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
@@ -274,5 +275,10 @@ public class CoursesActivity extends DrawerActivity {
                     .setNegativeButton(android.R.string.cancel, null)
                     .show();
         }
+    }
+
+    @Override
+    protected @Homepage.Type int getCurrentPage() {
+        return Homepage.COURSES;
     }
 }

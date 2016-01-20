@@ -35,6 +35,7 @@ import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
@@ -144,6 +145,11 @@ public class WishlistActivity extends DrawerActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected @Homepage.Type int getCurrentPage() {
+        return Homepage.WISHLIST;
     }
 
     @OnClick(R.id.course_register)

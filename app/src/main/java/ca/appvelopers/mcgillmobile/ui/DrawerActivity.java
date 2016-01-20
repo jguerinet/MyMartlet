@@ -55,7 +55,7 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 2.1.0
  */
-public class DrawerActivity extends BaseActivity
+public abstract class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     /**
      * The drawer layout
@@ -99,8 +99,10 @@ public class DrawerActivity extends BaseActivity
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.setFocusableInTouchMode(false);
         mDrawer.setNavigationItemSelectedListener(this);
-
         mDrawerToggle.syncState();
+
+        //Check the current item
+        mDrawer.getMenu().findItem(Homepage.getMenuId(getCurrentPage())).setChecked(true);
     }
 
     @Override
@@ -159,7 +161,7 @@ public class DrawerActivity extends BaseActivity
                 return true;
             default:
                 //Try to get one of the activities to open
-                activity = Homepage.getActivity(item.getItemId());
+                activity = Homepage.getActivity(Homepage.getHomepage(item.getItemId()));
                 break;
         }
 
@@ -178,6 +180,13 @@ public class DrawerActivity extends BaseActivity
         }
         return true;
     }
+
+    /* ABSTRACT */
+
+    /**
+     * @return The page in the drawer that this activity represents
+     */
+    protected abstract @Homepage.Type int getCurrentPage();
 
     /* HELPERS */
 
