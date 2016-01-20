@@ -17,6 +17,10 @@
 package ca.appvelopers.mcgillmobile.model;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -32,81 +36,80 @@ import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistActivity;
 
 /**
- * The list of possible homepages
+ * List of possible homepages
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public enum Homepage {
+public class Homepage {
     /**
-     * The user's schedule
+     * The different homepages
      */
-    SCHEDULE,
-    /**
-     * The user's transcript
-     */
-    TRANSCRIPT,
-    /**
-     * The user's MyCourses page
-     */
-    MY_COURSES,
-    /**
-     * The user's list of courses
-     */
-    COURSES,
-    /**
-     * The user's wishlist
-     */
-    WISHLIST,
-    /**
-     * Search for courses
-     */
-    SEARCH_COURSES,
-    /**
-     * The user's ebill
-     */
-    EBILL,
-    /**
-     * Campus Map
-     */
-    MAP,
-    /**
-     * The user's MyMcGill
-     */
-    DESKTOP,
-    /**
-     * App Settings
-     */
-    SETTINGS;
+    @Retention(RetentionPolicy.CLASS)
+    @IntDef({UNDEFINED, SCHEDULE, TRANSCRIPT, MY_COURSES, COURSES, WISHLIST, SEARCH_COURSES, EBILL,
+            MAP, DESKTOP, SETTINGS})
+    public @interface Type{}
+    public static final int UNDEFINED = -1;
+    public static final int SCHEDULE = 0;
+    public static final int TRANSCRIPT = 1;
+    public static final int MY_COURSES = 2;
+    public static final int COURSES = 3;
+    public static final int WISHLIST = 4;
+    public static final int SEARCH_COURSES = 5;
+    public static final int EBILL = 6;
+    public static final int MAP = 7;
+    public static final int DESKTOP = 8;
+    public static final int SETTINGS = 9;
 
-    @Override
-    public String toString(){
-        switch(this){
+    /**
+     * @param homepage Homepage
+     * @return The title of the homepage
+     */
+    public static String getString(@Type int homepage) {
+        int stringId;
+        switch(homepage) {
             case SCHEDULE:
-                return App.getContext().getString(R.string.homepage_schedule);
+                stringId = R.string.homepage_schedule;
+                break;
             case TRANSCRIPT:
-                return App.getContext().getString(R.string.homepage_transcript);
+                stringId = R.string.homepage_transcript;
+                break;
             case MY_COURSES:
-                return App.getContext().getString(R.string.homepage_mycourses);
+                stringId = R.string.homepage_mycourses;
+                break;
             case COURSES:
-                return App.getContext().getString(R.string.homepage_courses);
+                stringId = R.string.homepage_courses;
+                break;
             case WISHLIST:
-                return App.getContext().getString(R.string.homepage_wishlist);
+                stringId = R.string.homepage_wishlist;
+                break;
             case SEARCH_COURSES:
-                return App.getContext().getString(R.string.homepage_search);
+                stringId = R.string.homepage_search;
+                break;
             case EBILL:
-                return App.getContext().getString(R.string.homepage_ebill);
+                stringId = R.string.homepage_ebill;
+                break;
             case MAP:
-                return App.getContext().getString(R.string.homepage_map);
+                stringId = R.string.homepage_map;
+                break;
             case DESKTOP:
-                return App.getContext().getString(R.string.homepage_desktop);
+                stringId = R.string.homepage_desktop;
+                break;
             case SETTINGS:
-                return App.getContext().getString(R.string.title_settings);
+                stringId = R.string.title_settings;
+                break;
             default:
-                throw new IllegalArgumentException("Unknown homepage: " + this);
+                throw new IllegalArgumentException("Unknown homepage: " + homepage);
         }
+        return App.getContext().getString(stringId);
     }
 
-    /* STATIC */
+    /**
+     * @param homepage Homepage
+     * @return The title String for the settings and/or the walkthrough
+     */
+    public static String getTitleString(@Type int homepage) {
+        return App.getContext().getString(R.string.settings_homepage, getString(homepage));
+    }
 
     /**
      * Returns the class to open based on the clicked menu Id

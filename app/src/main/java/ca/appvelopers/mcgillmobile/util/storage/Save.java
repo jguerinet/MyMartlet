@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,18 @@ public class Save {
     /* SHARED PREFS */
 
     /**
+     * Saves an integer to the {@link SharedPreferences}
+     *
+     * @param key   Key to save the int under
+     * @param value Value to save
+     */
+    private static void putInt(String key, int value) {
+        Constants.PREFS.edit()
+                .putInt(key, value)
+                .apply();
+    }
+
+    /**
      * @param code The version code to save
      */
     public static void versionCode(int code){
@@ -65,10 +77,8 @@ public class Save {
     /**
      * Saves the user's homepage
      */
-    public static void homepage(){
-        Constants.PREFS.edit()
-                .putInt(Constants.HOMEPAGE, App.getHomepage().ordinal())
-                .apply();
+    public static void homepage() {
+        putInt(Constants.HOMEPAGE, App.getHomepage());
     }
 
     /**

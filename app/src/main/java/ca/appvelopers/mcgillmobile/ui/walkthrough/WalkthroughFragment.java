@@ -23,12 +23,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Faculty;
 import ca.appvelopers.mcgillmobile.model.Homepage;
-import ca.appvelopers.mcgillmobile.ui.settings.HomepageAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
@@ -105,24 +107,25 @@ public class WalkthroughFragment extends Fragment {
                 case 6:
                     view = inflater.inflate(R.layout.fragment_walkthrough_6, container, false);
 
-                    Spinner homepage = (Spinner)view.findViewById(R.id.homepage);
-                    final HomepageAdapter homepageAdapter = new HomepageAdapter();
-                    homepage.setAdapter(homepageAdapter);
-                    homepage.setSelection(homepageAdapter.getPosition(App.getHomepage()));
-                    homepage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    final TextView homepageView = (TextView) view.findViewById(R.id.homepage);
+                    homepageView.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view,
-                                                   int position, long l){
-                            Homepage chosenDrawerItem = homepageAdapter.getItem(position);
+                        public void onClick(View v) {
+                            DialogHelper.list(getActivity(), R.string.settings_homepage_title,
+                                    new HomepageListAdapter() {
+                                        @Override
+                                        public void onHomepageSelected(
+                                                @Homepage.Type int homepage) {
+                                            homepageView.setText(Homepage.getTitleString(homepage));
 
-                            Analytics.get().sendEvent("Walkthrough", "Homepage",
-                                    chosenDrawerItem.toString());
+                                            Analytics.get().sendEvent("Walkthrough", "Homepage",
+                                                    Homepage.getString(homepage));
 
-                            //Update it in the App
-                            App.setHomepage(chosenDrawerItem);
+                                            //Update it in the App
+                                            App.setHomepage(homepage);
+                                        }
+                                    });
                         }
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {}
                     });
 
                     Spinner faculty = (Spinner)view.findViewById(R.id.faculty);

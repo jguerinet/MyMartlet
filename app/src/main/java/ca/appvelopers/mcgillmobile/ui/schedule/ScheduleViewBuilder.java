@@ -37,7 +37,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
-import ca.appvelopers.mcgillmobile.ui.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Date;
 
 /**

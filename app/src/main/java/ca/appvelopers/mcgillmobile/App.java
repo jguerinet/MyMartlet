@@ -97,7 +97,7 @@ public class App extends Application {
     /**
      * User's chosen homepage
      */
-    private static Homepage homepage;
+    private static @Homepage.Type int homepage = Homepage.UNDEFINED;
     /**
      * User's chosen default {@link Term}
      */
@@ -255,8 +255,8 @@ public class App extends Application {
     /**
      * @return The user's chosen homepage
      */
-    public static Homepage getHomepage(){
-        if(homepage == null){
+    public static @Homepage.Type int getHomepage() {
+        if (homepage == Homepage.UNDEFINED) {
             homepage = Load.homepage();
         }
         return homepage;
@@ -363,7 +363,7 @@ public class App extends Application {
     /**
      * @param homepage The user's chosen homepage
      */
-    public static void setHomepage(Homepage homepage){
+    public static void setHomepage(@Homepage.Type int homepage) {
         App.homepage = homepage;
         Save.homepage();
     }

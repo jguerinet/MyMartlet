@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,11 +71,11 @@ public class Load {
     }
 
     /**
-     * @return The chosen home page, defaults to the schedule
+     * @return Chosen home page, defaults to the schedule
      */
-    public static Homepage homepage(){
-        return Homepage.values()[
-                Constants.PREFS.getInt(Constants.HOMEPAGE, Homepage.SCHEDULE.ordinal())];
+    @SuppressWarnings("ResourceType")
+    public static @Homepage.Type int homepage() {
+        return Constants.PREFS.getInt(Constants.HOMEPAGE, Homepage.SCHEDULE);
     }
 
     /**

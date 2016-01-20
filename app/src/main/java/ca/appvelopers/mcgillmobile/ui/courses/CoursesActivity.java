@@ -40,8 +40,8 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.ui.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Help;
@@ -59,17 +59,17 @@ public class CoursesActivity extends DrawerActivity {
      * The ListView for the courses
      */
     @Bind(android.R.id.list)
-    private RecyclerView mList;
+    protected RecyclerView mList;
     /**
      * The button to unregister from a course
      */
     @Bind(R.id.course_register)
-    private Button mUnregisterButton;
+    protected Button mUnregisterButton;
     /**
      * The empty list view
      */
     @Bind(R.id.courses_empty)
-    private TextView mEmptyView;
+    protected TextView mEmptyView;
     /**
      * The ListView adapter
      */
