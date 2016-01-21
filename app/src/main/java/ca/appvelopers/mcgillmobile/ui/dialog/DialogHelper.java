@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.ui.dialog;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -116,35 +117,33 @@ public class DialogHelper {
      * @param registerTerms True if we should be using the registration terms, false otherwise
      * @param callback      Callback to use when a new term has been selected
      */
-    public static void changeSemester(Context context, Term term, boolean registerTerms,
+    public static void changeSemester(Context context, @Nullable Term term, boolean registerTerms,
             final TermCallback callback){
         Analytics.get().sendScreen("Change Semester");
 
         //Use the default term if no term was sent
-        if(term == null){
+        if(term == null) {
             term = App.getDefaultTerm();
         }
 
         List<Term> terms = new ArrayList<>();
-        //We are using the user's existing terms
-        if(!registerTerms){
+        if (!registerTerms) {
+            //We are using the user's existing terms
             for (Semester semester : App.getTranscript().getSemesters()) {
                 terms.add(semester.getTerm());
             }
-        }
-        //We are using the registration terms
-        else{
+        } else {
+            //We are using the registration terms
             terms.addAll(App.getRegisterTerms());
         }
 
-        View dialogView = View.inflate(context, R.layout.dialog_change_semester, null);
+        View view = View.inflate(context, R.layout.dialog_change_semester, null);
 
-        final CheckBox defaultCheckBox =
-                (CheckBox)dialogView.findViewById(R.id.change_semester_default);
-        final Spinner termSpinner = (Spinner)dialogView.findViewById(R.id.change_semester_term);
+        final CheckBox defaultCheckBox = (CheckBox) view.findViewById(R.id.default_term);
+        final Spinner termSpinner = (Spinner)view.findViewById(R.id.change_semester_term);
 
         //Don't show the checkbox if we are doing the register terms only
-        if(registerTerms){
+        if (registerTerms) {
             defaultCheckBox.setVisibility(View.GONE);
         }
 
@@ -154,14 +153,14 @@ public class DialogHelper {
         termSpinner.setSelection(terms.indexOf(term));
 
         new AlertDialog.Builder(context)
-                .setCustomTitle(View.inflate(context, R.layout.dialog_change_semester_title, null))
-                .setView(dialogView)
+                .setTitle(R.string.title_change_semester)
+                .setView(view)
                 .setCancelable(true)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which){
                         //Get the selected term
-                        Term term = (Term)termSpinner.getSelectedItem();
+                        Term term = (Term) termSpinner.getSelectedItem();
 
                         //Check if the default checkbox is checked
                         if(defaultCheckBox.isChecked()){
