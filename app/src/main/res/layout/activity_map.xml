@@ -17,24 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding_small">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/map_filter"
-                android:gravity="center_vertical"/>
-
-            <Spinner
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/map_filter"
-                android:layout_marginLeft="@dimen/padding_micro"
-                android:layout_marginStart="@dimen/padding_micro"/>
-
-        </LinearLayout>
+            android:orientation="vertical"
+            android:id="@+id/container"/>
 
         <FrameLayout
             android:id="@+id/map"

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.ui.map;
+package ca.appvelopers.mcgillmobile.ui;
 
 import android.Manifest;
 import android.content.Intent;
@@ -27,12 +27,10 @@ import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +42,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.formgenerator.TextViewFormItem;
 
 import junit.framework.Assert;
 
@@ -59,7 +59,8 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
-import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
 import timber.log.Timber;
@@ -83,6 +84,11 @@ public class MapActivity extends DrawerActivity {
     @Bind(R.id.info_container)
     protected LinearLayout mInfoContainer;
     /**
+     * {@link FormGenerator} container for the filter
+     */
+    @Bind(R.id.container)
+    protected LinearLayout mContainer;
+    /**
      * Current place's title
      */
     @Bind(R.id.place_title)
@@ -97,11 +103,6 @@ public class MapActivity extends DrawerActivity {
      */
     @Bind(R.id.map_favorite)
     protected Button mFavorite;
-    /**
-     * Spinner to choose a filter for the map
-     */
-    @Bind(R.id.map_filter)
-    protected Spinner mFilter;
     /**
      * Fragment containing the map
      */
@@ -149,22 +150,31 @@ public class MapActivity extends DrawerActivity {
         mSearchString = "";
         mType = new PlaceType(false);
 
-        //Set up the spinner
-        final TypesAdapter adapter = new TypesAdapter();
-        mFilter.setAdapter(adapter);
-        mFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Get the selected category
-                mType = adapter.getItem(position);
+        FormGenerator fg = FormGenerator.bind(this, mContainer);
 
-                //Filter the places
-                filterByCategory();
-            }
+        //Set up the place filter
+        final TextViewFormItem typeView = fg.text(mType.toString());
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        typeView.leftIcon(R.drawable.ic_location)
+                .rightIcon(R.drawable.ic_chevron_right, R.color.grey)
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogHelper.list(MapActivity.this, R.string.map_filter,
+                                new PlaceTypeListAdapter(mType) {
+                                    @Override
+                                    public void onPlaceTypeSelected(PlaceType type) {
+                                        mType = type;
+
+                                        //Update the text
+                                        typeView.view().setText(mType.toString());
+
+                                        //Update the filtered places
+                                        filterByCategory();
+                                    }
+                                });
+                    }
+                });
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         //Get the MapFragment

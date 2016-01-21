@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.ui.map;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
+package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,25 +22,30 @@ import java.util.Comparator;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 
 /**
- * Adapter for the place types in the type chooser
+ * Displays a list of place types to choose from in the maps section
  * @author Julien Guerinet
- * @since 1.0.0
+ * @since 2.1.0
  */
-public class TypesAdapter extends BaseAdapter {
+public abstract class PlaceTypeListAdapter implements DialogListAdapter {
     /**
-     * The list of types
+     * List of place types
      */
     private List<PlaceType> mTypes;
+    /**
+     * The current choice
+     */
+    private int mCurrentChoice;
 
     /**
      * Default Constructor
+     *
+     * @param mCurrentType The currently selected type
      */
-    public TypesAdapter(){
-        this.mTypes = new ArrayList<>();
+    public PlaceTypeListAdapter(PlaceType mCurrentType) {
+        mTypes = new ArrayList<>();
         mTypes.addAll(App.getPlaceTypes());
 
         //Sort them
@@ -62,46 +61,37 @@ public class TypesAdapter extends BaseAdapter {
 
         //Add the All option
         mTypes.add(0, new PlaceType(false));
+
+        mCurrentChoice = mTypes.indexOf(mCurrentType);
     }
 
     @Override
-    public int getCount() {
-        return mTypes.size();
+    public int getCurrentChoice() {
+        return mCurrentChoice;
     }
 
     @Override
-    public PlaceType getItem(int i) {
-        return mTypes.get(i);
-    }
+    public CharSequence[] getTitles() {
+        CharSequence[] titles = new CharSequence[mTypes.size()];
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
-        if(view == null){
-            view = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.spinner_item, viewGroup, false);
+        //Go through the types
+        for (int i = 0; i < mTypes.size(); i ++) {
+            //Add its title to the list
+            titles[i] = mTypes.get(i).toString();
         }
 
-        //Set the type name
-        ((TextView)view).setText(getItem(position).toString());
-
-        return view;
+        return titles;
     }
 
     @Override
-    public View getDropDownView(int position, View view, ViewGroup viewGroup){
-        if(view == null){
-            view = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.spinner_dropdown, viewGroup, false);
-        }
-
-        //Set the type name
-        ((TextView)view).setText(getItem(position).toString());
-
-        return view;
+    public void onChoiceSelected(int position) {
+       onPlaceTypeSelected(mTypes.get(position));
     }
+
+    /**
+     * Called when a faculty is selected
+     *
+     * @param type The {@link PlaceType} selected
+     */
+    public abstract void onPlaceTypeSelected(PlaceType type);
 }

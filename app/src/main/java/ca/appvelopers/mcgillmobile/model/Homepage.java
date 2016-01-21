@@ -24,9 +24,9 @@ import java.lang.annotation.RetentionPolicy;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.ui.MapActivity;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.ebill.EbillActivity;
-import ca.appvelopers.mcgillmobile.ui.map.MapActivity;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.search.SearchActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;

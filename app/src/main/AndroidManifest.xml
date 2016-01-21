@@ -94,7 +94,7 @@
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.map.MapActivity"
+            android:name=".ui.MapActivity"
             android:label="@string/title_map"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
