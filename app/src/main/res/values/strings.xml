@@ -65,6 +65,7 @@
     <string name="summer">Summer</string>
 
     <!-- Faculty Names -->
+    <string name="faculty_title">Choose Faculty</string>
     <string name="faculty_enviro">Faculty of Agricultural and Environmental Sciences</string>
     <string name="faculty_arts">Faculty of Arts</string>
     <string name="faculty_continuing_studies">School of Continuing Studies</string>
@@ -74,10 +75,11 @@
     <string name="faculty_graduate">Graduate and Postdoctoral Studies</string>
     <string name="faculty_law">Faculty of Law</string>
     <string name="faculty_management">Desautels Faculty of Management</string>
-    <string name="faculty_medecine">Faculty of Medicine</string>
+    <string name="faculty_medicine">Faculty of Medicine</string>
     <string name="faculty_music">Schulich School of Music</string>
     <string name="faculty_religion">Faculty of Religious Studies</string>
     <string name="faculty_science">Faculty of Science</string>
+    <string name="faculty_none">I\'d rather not say</string>
 
     <!-- Login Screen -->
     <string name="login_welcome">Welcome to MyMartlet. Please input your McGill username and password below.</string>

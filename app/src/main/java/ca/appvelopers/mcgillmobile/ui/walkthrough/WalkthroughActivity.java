@@ -18,10 +18,8 @@ package ca.appvelopers.mcgillmobile.ui.walkthrough;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
@@ -46,44 +44,47 @@ public class WalkthroughActivity extends BaseActivity {
     /**
      * The ViewPager
      */
-    @Bind(R.id.walkthrough_viewpager)
-    ViewPager mViewPager;
+    @Bind(R.id.view_pager)
+    protected ViewPager mViewPager;
     /**
      * The ViewPagerIndicator
      */
     @Bind(R.id.indicator)
-    CirclePageIndicator mIndicator;
+    protected CirclePageIndicator mIndicator;
     /**
      * The next button
      */
-    @Bind(R.id.walkthrough_next)
-    Button mNext;
+    @Bind(R.id.next)
+    protected Button mNext;
     /**
      * The back button
      */
-    @Bind(R.id.walkthrough_back)
-    Button mBack;
+    @Bind(R.id.back)
+    protected Button mBack;
     /**
-     * The adapter used for the walkthrough
+     * Adapter used for the walkthrough
      */
-    private WalkthroughAdapter mWalkthroughAdapter;
+    private PagerAdapter mAdapter;
     /**
-     * The current position in the walkthrough
+     * Current position in the walkthrough
      */
     private int mPosition = 0;
 
-    public void onCreate(Bundle savedInstanceState){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walkthrough);
         ButterKnife.bind(this);
 
-        //Check if this is the normal walkthrough or the email one
+        //Get the info to know what walkthrough to show
         boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
+        boolean firstOpen = getIntent().getBooleanExtra(Constants.FIRST_OPEN, false);
 
         Analytics.get().sendScreen(email ? "Email Walkthrough" : "Walkthrough");
 
-        mWalkthroughAdapter = new WalkthroughAdapter(getSupportFragmentManager(), email);
-        mViewPager.setAdapter(mWalkthroughAdapter);
+        //Load the right adapter
+        mAdapter = email ? new EmailWalkthroughAdapter() : new WalkthroughAdapter(firstOpen);
+        mViewPager.setAdapter(mAdapter);
 
         //Indicator
         mIndicator.setViewPager(mViewPager);
@@ -91,60 +92,43 @@ public class WalkthroughActivity extends BaseActivity {
         mIndicator.setPageColor(Color.GRAY);
         mIndicator.setFillColor(ContextCompat.getColor(this, R.color.red));
         mIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
-            public void onPageScrolled(int i, float v, int i2){}
+            public void onPageScrolled(int i, float v, int i2) {}
+
             @Override
-            public void onPageSelected(int position){
-                WalkthroughActivity.this.mPosition = position;
+            public void onPageSelected(int position) {
+                mPosition = position;
+                //Hide the back button on the first page
                 mBack.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
-                mNext.setText((position == mWalkthroughAdapter.getCount() - 1) ?
-                        getString(R.string.start) : getString(R.string.next));
+                //Set the right text on the next button if we are on the last page
+                mNext.setText((position == mAdapter.getCount() - 1) ?
+                        R.string.start : R.string.next);
             }
+
             @Override
-            public void onPageScrollStateChanged(int i){}
+            public void onPageScrollStateChanged(int i) {}
         });
     }
 
-    @OnClick(R.id.walkthrough_next)
-    void next(){
+    @OnClick(R.id.next)
+    protected void next(){
         //We've reached the end of the walkthrough
-        if (mPosition == mWalkthroughAdapter.getCount() - 1) {
+        if (mPosition == mAdapter.getCount() - 1) {
             finish();
         } else {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
         }
     }
 
-    @OnClick(R.id.walkthrough_back)
-    void back(){
+    @OnClick(R.id.back)
+    protected void back() {
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
     }
 
-    @OnClick(R.id.walkthrough_close)
-    void close(){
-        Analytics.get().sendEvent("Walkthrough", "Skip", null);
+    @OnClick(R.id.close)
+    protected void close() {
+        Analytics.get().sendEvent("Walkthrough", "Skip");
         finish();
-    }
-
-    /**
-     * Adapter used for the walkthroughs
-     */
-    class WalkthroughAdapter extends FragmentPagerAdapter {
-        private boolean mEmail;
-
-        public WalkthroughAdapter(FragmentManager fm, boolean email){
-            super(fm);
-            mEmail = email;
-        }
-
-        @Override
-        public Fragment getItem(int position){
-            return WalkthroughFragment.createInstance(position, mEmail);
-        }
-
-        @Override
-        public int getCount(){
-            return 7;
-        }
     }
 }

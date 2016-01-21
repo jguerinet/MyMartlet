@@ -38,6 +38,7 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -79,7 +80,9 @@ public class ScheduleActivity extends DrawerActivity {
         //Check if this is the first time the user is using the app
         if (Load.firstOpen()) {
             //Show them the walkthrough if it is
-            startActivity(new Intent(this, WalkthroughActivity.class));
+            Intent intent = new Intent(this, WalkthroughActivity.class)
+                    .putExtra(Constants.FIRST_OPEN, true);
+            startActivity(intent);
             //Save the fact that the walkthrough has been seen at least once
             Save.firstOpen();
         }

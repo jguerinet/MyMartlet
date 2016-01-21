@@ -1,55 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:gravity="center">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:padding="@dimen/padding_medium"
-        android:textColor="@android:color/black"
         android:text="@string/walkthrough_essentials"
-        android:textSize="@dimen/text_medium"
         android:gravity="center"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="@dimen/padding_small">
+        android:padding="@dimen/padding_medium">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:src="@drawable/map"
             android:adjustViewBounds="true"
             android:layout_marginBottom="@dimen/padding_double"
-            android:src="@drawable/map"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/title_map"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:src="@drawable/schedule"
             android:adjustViewBounds="true"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_single"
             android:layout_marginBottom="@dimen/padding_single"
-            android:src="@drawable/schedule"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/title_schedule"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:src="@drawable/transcript"
             android:adjustViewBounds="true"
             android:layout_gravity="end"
             android:layout_marginTop="@dimen/padding_double"
-            android:src="@drawable/transcript"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/title_transcript"/>
 
-        </FrameLayout>
+    </FrameLayout>
 
 </LinearLayout>
