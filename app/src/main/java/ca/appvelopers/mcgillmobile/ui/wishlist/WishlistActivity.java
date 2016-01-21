@@ -130,7 +130,7 @@ public class WishlistActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogHelper.showChangeSemesterDialog(this, mTerm, true,
+                DialogHelper.changeSemester(this, mTerm, true,
                         new DialogHelper.TermCallback() {
                             @Override
                             public void onTermSelected(Term term) {

@@ -116,8 +116,8 @@ public class DialogHelper {
      * @param registerTerms True if we should be using the registration terms, false otherwise
      * @param callback      Callback to use when a new term has been selected
      */
-    public static void showChangeSemesterDialog(Context context, Term term, boolean registerTerms,
-                                                final TermCallback callback){
+    public static void changeSemester(Context context, Term term, boolean registerTerms,
+            final TermCallback callback){
         Analytics.get().sendScreen("Change Semester");
 
         //Use the default term if no term was sent
