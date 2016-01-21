@@ -18,6 +18,8 @@ package ca.appvelopers.mcgillmobile;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -62,6 +64,10 @@ public class App extends Application {
      * The app {@link Context}
      */
     private static Context context;
+    /**
+     * The {@link SharedPreferences} instance
+     */
+    private static SharedPreferences sharedPrefs;
     /**
      * App language
      */
@@ -168,6 +174,16 @@ public class App extends Application {
      */
     public static Context getContext() {
         return context;
+    }
+
+    /**
+     * @return The {@link SharedPreferences} instance
+     */
+    public static SharedPreferences getSharedPrefs() {
+        if (sharedPrefs == null) {
+            sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        }
+        return sharedPrefs;
     }
 
     /**

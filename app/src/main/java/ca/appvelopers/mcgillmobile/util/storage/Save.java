@@ -42,36 +42,54 @@ public class Save {
      * @param value Value to save
      */
     private static void putInt(String key, int value) {
-        Constants.PREFS.edit()
+        App.getSharedPrefs().edit()
                 .putInt(key, value)
+                .apply();
+    }
+
+    /**
+     * Saves a boolean to the {@link SharedPreferences}
+     *
+     * @param key   Key to save the boolean under
+     * @param value Value to save
+     */
+    private static void putBoolean(String key, boolean value) {
+        App.getSharedPrefs().edit()
+                .putBoolean(key, value)
+                .apply();
+    }
+
+    /**
+     * Saves a String to the {@link SharedPreferences}
+     *
+     * @param key   Key to save the String under
+     * @param value Value to save
+     */
+    private static void putString(String key, String value) {
+        App.getSharedPrefs().edit()
+                .putString(key, value)
                 .apply();
     }
 
     /**
      * @param code The version code to save
      */
-    public static void versionCode(int code){
-        Constants.PREFS.edit()
-                .putInt(Constants.VERSION, code)
-                .apply();
+    public static void versionCode(int code) {
+        putInt(Constants.VERSION, code);
     }
 
     /**
      * Saves that the walkthrough has been viewed at least once
      */
-    public static void firstOpen(){
-        Constants.PREFS.edit()
-                .putBoolean(Constants.FIRST_OPEN, false)
-                .apply();
+    public static void firstOpen() {
+        putBoolean(Constants.FIRST_OPEN, false);
     }
 
     /**
      * Saves the user's chosen language
      */
-    public static void language(){
-        Constants.PREFS.edit()
-                .putInt(Constants.LANGUAGE, App.getLanguage())
-                .apply();
+    public static void language() {
+        putInt(Constants.LANGUAGE, App.getLanguage());
     }
 
     /**
@@ -84,73 +102,57 @@ public class Save {
     /**
      * @param doNotShow True if we should not show parser errors, false otherwise
      */
-    public static void parserErrorDoNotShow(boolean doNotShow){
-        Constants.PREFS.edit()
-                .putBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, doNotShow)
-                .apply();
+    public static void parserErrorDoNotShow(boolean doNotShow) {
+        putBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, doNotShow);
     }
 
     /**
      * @param doNotShow True if we should not show the loading screen, false otherwise
      */
-    public static void loadingDoNotShow(boolean doNotShow){
-        Constants.PREFS.edit()
-                .putBoolean(Constants.LOADING_DO_NOT_SHOW, doNotShow)
-                .apply();
+    public static void loadingDoNotShow(boolean doNotShow) {
+        putBoolean(Constants.LOADING_DO_NOT_SHOW, doNotShow);
     }
 
     /**
      * @param statistics True if we can collect anonymous usage statistics, false otherwise
      */
-    public static void statistics(boolean statistics){
-        Constants.PREFS.edit()
-                .putBoolean(Constants.STATISTICS, statistics)
-                .apply();
+    public static void statistics(boolean statistics) {
+        putBoolean(Constants.STATISTICS, statistics);
     }
 
     /**
      * @param username The user's username
      */
-    public static void username(String username){
-        Constants.PREFS.edit()
-                .putString(Constants.USERNAME, username)
-                .apply();
+    public static void username(String username) {
+        putString(Constants.USERNAME, username);
     }
 
     /**
      * @param password The user's password
      */
-    public static void password(String password){
-        Constants.PREFS.edit()
-                .putString(Constants.PASSWORD, Encryption.encode(password))
-                .apply();
+    public static void password(String password) {
+        putString(Constants.PASSWORD, Encryption.encode(password));
     }
 
     /**
      * @param rememberUsername True if we should remember the user's username, false otherwise
      */
-    public static void rememberUsername(boolean rememberUsername){
-        Constants.PREFS.edit()
-                .putBoolean(Constants.REMEMBER_USERNAME, rememberUsername)
-                .apply();
+    public static void rememberUsername(boolean rememberUsername) {
+        putBoolean(Constants.REMEMBER_USERNAME, rememberUsername);
     }
 
     /**
      * @param date The last date the web service was queries
      */
-    public static void ifModifiedSince(String date){
-        Constants.PREFS.edit()
-                .putString(Constants.IF_MODIFIED_SINCE, date)
-                .apply();
+    public static void ifModifiedSince(String date) {
+        putString(Constants.IF_MODIFIED_SINCE, date);
     }
 
     /**
      * @param accepted True if the user has accepted the EULA, false otherwise
      */
-    public static void eula(boolean accepted){
-        Constants.PREFS.edit()
-                .putBoolean(Constants.EULA, accepted)
-                .apply();
+    public static void eula(boolean accepted) {
+        putBoolean(Constants.EULA, accepted);
     }
 
     /* INTERNAL STORAGE */

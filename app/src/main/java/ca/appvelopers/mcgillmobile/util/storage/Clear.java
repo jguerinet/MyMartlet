@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,14 +40,14 @@ public class Clear {
     public static void all(){
         //If the user had not chosen to remember their username, clear it
         if(!Load.rememberUsername()) {
-            Constants.PREFS.edit()
+            App.getSharedPrefs().edit()
                     .remove(Constants.USERNAME)
                     .apply();
 
         }
 
         //Password
-        Constants.PREFS.edit()
+        App.getSharedPrefs().edit()
                 .remove(Constants.PASSWORD)
                 .apply();
 

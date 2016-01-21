@@ -51,23 +51,23 @@ public class Load {
     /**
      * @return The app version code stored, -1 if none
      */
-    public static int versionCode(){
-        return Constants.PREFS.getInt(Constants.VERSION, -1);
+    public static int versionCode() {
+        return App.getSharedPrefs().getInt(Constants.VERSION, -1);
     }
 
     /**
      * @return True if the app has been previously opened, false otherwise
      */
-    public static boolean firstOpen(){
-        return Constants.PREFS.getBoolean(Constants.FIRST_OPEN, true);
+    public static boolean firstOpen() {
+        return App.getSharedPrefs().getBoolean(Constants.FIRST_OPEN, true);
     }
 
     /**
      * @return The user's chosen language, defaults to English
      */
     @SuppressWarnings("ResourceType")
-    public static @Language.Type int language(){
-        return Constants.PREFS.getInt(Constants.LANGUAGE, Language.ENGLISH);
+    public static @Language.Type int language() {
+        return App.getSharedPrefs().getInt(Constants.LANGUAGE, Language.ENGLISH);
     }
 
     /**
@@ -75,84 +75,84 @@ public class Load {
      */
     @SuppressWarnings("ResourceType")
     public static @Homepage.Type int homepage() {
-        return Constants.PREFS.getInt(Constants.HOMEPAGE, Homepage.SCHEDULE);
+        return App.getSharedPrefs().getInt(Constants.HOMEPAGE, Homepage.SCHEDULE);
     }
 
     /**
      * @return True if the user has opted out of parser errors, false otherwise
      */
-    public static boolean parserErrorDoNotShow(){
-        return Constants.PREFS.getBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, false);
+    public static boolean parserErrorDoNotShow() {
+        return App.getSharedPrefs().getBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, false);
     }
 
     /**
      * @return True if the user has opted out of the loading screen, false otherwise
      */
-    public static boolean loadingDoNotShow(){
-        return Constants.PREFS.getBoolean(Constants.LOADING_DO_NOT_SHOW, false);
+    public static boolean loadingDoNotShow() {
+        return App.getSharedPrefs().getBoolean(Constants.LOADING_DO_NOT_SHOW, false);
     }
 
     /**
      * @return True if the user has opted into anonymous usage statistics, false otherwise
      */
-    public static boolean statistics(){
-        return Constants.PREFS.getBoolean(Constants.STATISTICS, true);
+    public static boolean statistics() {
+        return App.getSharedPrefs().getBoolean(Constants.STATISTICS, true);
     }
 
     /**
      * @return The user's full username
      */
-    public static String fullUsername(){
+    public static String fullUsername() {
         return username() + App.getContext().getString(R.string.login_email);
     }
 
     /**
      * @return The user's username (name only, no email suffix)
      */
-    public static String username(){
-        return Constants.PREFS.getString(Constants.USERNAME, null);
+    public static String username() {
+        return App.getSharedPrefs().getString(Constants.USERNAME, null);
     }
 
     /**
      * @return The user's password
      */
-    public static String password(){
-        return Encryption.decode(Constants.PREFS.getString(Constants.PASSWORD, null));
+    public static String password() {
+        return Encryption.decode(App.getSharedPrefs().getString(Constants.PASSWORD, null));
     }
 
     /**
      * @return True if the username should be remembered when logging out, false otherwise
      */
-    public static boolean rememberUsername(){
-        return Constants.PREFS.getBoolean(Constants.REMEMBER_USERNAME, true);
+    public static boolean rememberUsername() {
+        return App.getSharedPrefs().getBoolean(Constants.REMEMBER_USERNAME, true);
     }
 
     /**
      * @return True if the user has enabled seat checking, false otherwise
      */
-    public static boolean seatChecker(){
-        return Constants.PREFS.getBoolean(Constants.SEAT_CHECKER, false);
+    public static boolean seatChecker() {
+        return App.getSharedPrefs().getBoolean(Constants.SEAT_CHECKER, false);
     }
 
     /**
      * @return True if the user has enabled grade checking, false otherwise
      */
-    public static boolean gradeChecker(){
-        return Constants.PREFS.getBoolean(Constants.GRADE_CHECKER, false);
+    public static boolean gradeChecker() {
+        return App.getSharedPrefs().getBoolean(Constants.GRADE_CHECKER, false);
     }
 
     /**
      * @return The last date the WS was queried
      */
-    public static String ifModifiedSince(){
-        return Constants.PREFS.getString(Constants.IF_MODIFIED_SINCE, null);
+    public static String ifModifiedSince() {
+        return App.getSharedPrefs().getString(Constants.IF_MODIFIED_SINCE, null);
     }
 
     /**
      * @return True if the user has accepted the EULA, false otherwise
      */
-    public static boolean eula(){
-        return Constants.PREFS.getBoolean(Constants.EULA, false);
+    public static boolean eula() {
+        return App.getSharedPrefs().getBoolean(Constants.EULA, false);
     }
 
     /* INTERNAL STORAGE */
