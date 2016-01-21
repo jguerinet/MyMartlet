@@ -22,12 +22,12 @@
         <item name="android:textColorHighlight">#99db231e</item>
         <!-- Alert Dialog -->
         <item name="alertDialogTheme">@style/Theme.MyMartlet.AlertDialog</item>
+        <!-- Default Text Color -->
         <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="Theme.MyMartlet.AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/red</item>
-        <item name="android:textColorPrimary">@color/red</item>
     </style>
 
     <!-- Dark theme for the toolbar -->
