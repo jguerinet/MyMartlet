@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
+    android:orientation="vertical"
     android:gravity="center"
-    android:paddingBottom="@dimen/padding_small">
+    android:paddingBottom="@dimen/padding_small"
+    tools:ignore="UseCompoundDrawables">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_medium"
-        android:text="@string/help_email_walk3"
+        android:id="@+id/message"
         android:padding="@dimen/padding_small"
-        android:gravity="center"/>
+        android:gravity="center"
+        tools:text="@string/help_email_walk0"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/email3"
-        tools:ignore="contentDescription"/>
+        android:id="@+id/image"
+        android:contentDescription="@null"
+        tools:src="@drawable/email0"/>
 
 </LinearLayout>

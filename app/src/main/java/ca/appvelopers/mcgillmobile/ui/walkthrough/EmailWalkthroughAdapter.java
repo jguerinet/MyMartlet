@@ -17,9 +17,14 @@
 package ca.appvelopers.mcgillmobile.ui.walkthrough;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import ca.appvelopers.mcgillmobile.R;
 
@@ -33,40 +38,46 @@ public class EmailWalkthroughAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         final Context context = collection.getContext();
-        View view;
+        View view = View.inflate(collection.getContext(), R.layout.item_walkthrough_email, null);
+
+        //Bind the ImageView and the TextView
+        TextView message = (TextView) view.findViewById(R.id.message);
+
+        @DrawableRes int imageId;
         switch(position) {
-            //Welcome
             case 0:
-                view = View.inflate(context, R.layout.item_walkthrough_email_0, null);
+                message.setText(R.string.help_email_walk0);
+                imageId = R.drawable.email0;
                 break;
-            //Access Essentials
             case 1:
-                view = View.inflate(context, R.layout.item_walkthrough_email_1, null);
+                message.setText(R.string.help_email_walk1);
+                imageId = R.drawable.email1;
                 break;
-            //Main Menu Explanation
             case 2:
-                view = View.inflate(context, R.layout.item_walkthrough_email_2, null);
+                message.setText(R.string.help_email_walk2);
+                imageId = R.drawable.email2;
                 break;
-            //Horizontal Schedule
             case 3:
-                view = View.inflate(context, R.layout.item_walkthrough_email_3, null);
+                message.setText(R.string.help_email_walk3);
+                imageId = R.drawable.email3;
                 break;
-            //Offline Access / Security
             case 4:
-                view = View.inflate(context, R.layout.item_walkthrough_email_4, null);
+                message.setText(R.string.help_email_walk4);
+                imageId = R.drawable.email4;
                 break;
-            //Help/About/Bugs
             case 5:
-                view = View.inflate(context, R.layout.item_walkthrough_email_5, null);
-                break;
-            //Default Homepage / Faculty
-            case 6:
-                view = View.inflate(context, R.layout.item_walkthrough_email_6, null);
+                message.setText(R.string.help_email_walk5);
+                imageId = R.drawable.email5;
                 break;
             default:
                 throw new IllegalStateException(
                         String.format("Unknown position %d in email walkthrough", position));
         }
+
+        //Load the image
+        Picasso.with(context)
+                .load(imageId)
+                .into((ImageView) view.findViewById(R.id.image));
 
         collection.addView(view);
         return view;
@@ -79,7 +90,7 @@ public class EmailWalkthroughAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 7;
+        return 6;
     }
 
     @Override
