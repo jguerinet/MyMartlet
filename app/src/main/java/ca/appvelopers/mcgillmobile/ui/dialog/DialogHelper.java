@@ -54,28 +54,6 @@ public class DialogHelper {
      * Displays a dialog with a list of items to choose from
      *
      * @param context The app context
-     * @param title   The dialog title
-     * @param helper  The helper to use for this list
-     * @return The {@link AlertDialog} instance
-     */
-    public static AlertDialog list(Context context, String title, final DialogListAdapter helper){
-        return new AlertDialog.Builder(context)
-                .setTitle(title)
-                .setSingleChoiceItems(helper.getTitles(), helper.getCurrentChoice(),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                helper.onChoiceSelected(which);
-                                dialog.dismiss();
-                            }
-                        })
-                .show();
-    }
-
-    /**
-     * Displays a dialog with a list of items to choose from
-     *
-     * @param context The app context
      * @param title   The dialog title Id
      * @param helper  The helper to use for this list
      * @return The {@link AlertDialog} instance
