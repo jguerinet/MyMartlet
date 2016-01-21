@@ -57,23 +57,33 @@
 
                 <Button
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:id="@+id/map_directions"
-                    android:padding="@dimen/padding_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/directions"
                     android:text="@string/map_directions"
-                    android:gravity="center"/>
+                    android:singleLine="true"
+                    android:gravity="start|center_vertical"
+                    android:drawablePadding="@dimen/padding_micro"
+                    android:drawableLeft="@drawable/ic_directions"
+                    android:drawableStart="@drawable/ic_directions"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
 
                 <Button
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
                     android:id="@+id/map_favorite"
                     android:padding="@dimen/padding_small"
-                    android:gravity="center"
-                    android:text="@string/map_favorites_add"/>
+                    android:text="@string/map_favorites_add"
+                    android:singleLine="true"
+                    android:gravity="start|center_vertical"
+                    android:drawablePadding="@dimen/padding_micro"
+                    android:drawableLeft="@drawable/ic_star"
+                    android:drawableStart="@drawable/ic_star"/>
 
             </LinearLayout>
 

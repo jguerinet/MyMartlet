@@ -99,6 +99,11 @@ public class MapActivity extends DrawerActivity {
     @Bind(R.id.place_address)
     protected TextView mAddress;
     /**
+     * Button to get directions to a place
+     */
+    @Bind(R.id.directions)
+    protected Button mDirections;
+    /**
      * Button to add or remove a place from the user's favorites
      */
     @Bind(R.id.map_favorite)
@@ -175,6 +180,10 @@ public class MapActivity extends DrawerActivity {
                                 });
                     }
                 });
+
+        //Tint the drawables for the two buttons
+        Help.setTint(mDirections, 0, R.color.red);
+        Help.setTint(mFavorite, 0, R.color.red);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         //Get the MapFragment
@@ -350,7 +359,7 @@ public class MapActivity extends DrawerActivity {
     /**
      * Opens Google Maps with directions to the chosen place
      */
-    @OnClick(R.id.map_directions)
+    @OnClick(R.id.directions)
     protected void directions() {
         //Open Google Maps
         if (mPlace != null) {
