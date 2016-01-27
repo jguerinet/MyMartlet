@@ -70,7 +70,7 @@ public class MyCoursesActivity extends DrawerActivity {
 
         //No internet: not worth trying to load the view
         if (!Help.isConnected()) {
-            DialogHelper.neutral(this, R.string.error, R.string.error_no_internet);
+            DialogHelper.error(this, R.string.error_no_internet);
             return;
         }
 

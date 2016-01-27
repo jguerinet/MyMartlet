@@ -194,7 +194,7 @@ public class SplashActivity extends BaseActivity {
 
         //Check if an error message needs to be displayed, display it if so
         if (error != null) {
-            DialogHelper.neutral(this, R.string.error, error.getErrorStringId());
+            DialogHelper.error(this, error.getErrorStringId());
         }
 
         //Fill out username text if it is present
@@ -218,12 +218,10 @@ public class SplashActivity extends BaseActivity {
 
                 //Check that both of them are not empty, create appropriate error messages if so
                 if (TextUtils.isEmpty(username)) {
-                    DialogHelper.neutral(SplashActivity.this, R.string.error,
-                            R.string.login_error_username_empty);
+                    DialogHelper.error(SplashActivity.this, R.string.login_error_username_empty);
                     return;
                 } else if (TextUtils.isEmpty(password)) {
-                    DialogHelper.neutral(SplashActivity.this, R.string.error,
-                            R.string.login_error_password_empty);
+                    DialogHelper.error(SplashActivity.this, R.string.login_error_password_empty);
                     return;
                 }
 
@@ -276,7 +274,7 @@ public class SplashActivity extends BaseActivity {
                                     Analytics.get().sendEvent("Login", "Login Error",
                                             status.getGAString());
                                     progressDialog.dismiss();
-                                    DialogHelper.neutral(SplashActivity.this, R.string.error,
+                                    DialogHelper.error(SplashActivity.this,
                                             status.getErrorStringId());
                                 }
                             });

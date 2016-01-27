@@ -53,7 +53,7 @@ public class DesktopActivity extends DrawerActivity {
 
         //If the user is not connected to the internet, don't continue
         if (!Help.isConnected()) {
-            DialogHelper.neutral(this, R.string.error, R.string.error_no_internet);
+            DialogHelper.error(this, R.string.error_no_internet);
             return;
         }
 

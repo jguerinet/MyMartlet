@@ -60,7 +60,7 @@ public class DialogHelper {
      * @return The {@link AlertDialog} instance
      */
     public static AlertDialog list(Context context, @StringRes int title,
-            final DialogListAdapter helper){
+            final DialogListAdapter helper) {
         return new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setSingleChoiceItems(helper.getTitles(), helper.getCurrentChoice(),
@@ -75,15 +75,14 @@ public class DialogHelper {
     }
 
     /**
-     * Shows an {@link AlertDialog} with one button
+     * Shows an error {@link AlertDialog} with one button
      *
      * @param context   App context
-     * @param titleId   String Id of the title String
-     * @param messageId String Id of the message String
+     * @param messageId String Id of the error description
      */
-    public static void neutral(Context context, @StringRes int titleId, @StringRes int messageId) {
+    public static void error(Context context, @StringRes int messageId) {
         new AlertDialog.Builder(context)
-                .setTitle(titleId)
+                .setTitle(R.string.error)
                 .setMessage(messageId)
                 .setNeutralButton(android.R.string.ok, null)
                 .show();
