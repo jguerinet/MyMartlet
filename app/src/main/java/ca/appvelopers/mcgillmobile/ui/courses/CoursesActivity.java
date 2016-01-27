@@ -258,10 +258,9 @@ public class CoursesActivity extends DrawerActivity {
                                                                     Toast.LENGTH_LONG).show();
                                                         } else {
                                                             //If not, show the error message
-                                                            DialogHelper.showNeutralDialog(
+                                                            DialogHelper.neutral(
                                                                     CoursesActivity.this,
-                                                                    getString(R.string.
-                                                                            unregistration_error),
+                                                                    R.string.unregistration_error,
                                                                     error);
                                                         }
 

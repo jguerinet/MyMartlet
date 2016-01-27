@@ -78,10 +78,8 @@ public class DownloaderThread extends Thread {
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
 						public void run(){
-							DialogHelper.showNeutralDialog(mActivity,
-									mActivity.getString(R.string.error),
-									noInternet ? mActivity.getString(R.string.error_no_internet) :
-											mActivity.getString(R.string.error_other));
+							DialogHelper.neutral(mActivity, R.string.error,
+									noInternet ? R.string.error_no_internet : R.string.error_other);
 						}
 					});
 				}

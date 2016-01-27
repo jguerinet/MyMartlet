@@ -154,9 +154,8 @@ public class SearchResultsActivity extends BaseActivity {
                                             }
 
                                             //Show an alert dialog with the errors
-                                            DialogHelper.showNeutralDialog(activity,
-                                                    activity.getString(R.string.registration_error),
-                                                    error);
+                                            DialogHelper.neutral(activity,
+                                                    R.string.registration_error, error);
                                         }
 
                                         //Remove the courses from the wishlist if they were there

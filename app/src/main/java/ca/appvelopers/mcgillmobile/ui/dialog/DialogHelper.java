@@ -90,22 +90,17 @@ public class DialogHelper {
     }
 
     /**
-     * Shows an AlertDialog with one neutral button
+     * Shows an {@link AlertDialog} with one button
      *
-     * @param context The app context
-     * @param title   The dialog title
-     * @param message The dialog message
+     * @param context App context
+     * @param title   String Id of the title String
+     * @param message Dialog message
      */
-    public static void showNeutralDialog(Context context, String title, String message){
+    public static void neutral(Context context, @StringRes int title, String message) {
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                .setNeutralButton(android.R.string.ok, null)
                 .show();
     }
 

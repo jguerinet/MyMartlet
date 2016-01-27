@@ -193,8 +193,8 @@ public class SplashActivity extends BaseActivity {
         rememberUsernameView.setChecked(Load.rememberUsername());
 
         //Check if an error message needs to be displayed, display it if so
-        if(error != null){
-            DialogHelper.showNeutralDialog(this, getString(R.string.error), error.getErrorString());
+        if (error != null) {
+            DialogHelper.neutral(this, R.string.error, error.getErrorStringId());
         }
 
         //Fill out username text if it is present
@@ -218,14 +218,12 @@ public class SplashActivity extends BaseActivity {
 
                 //Check that both of them are not empty, create appropriate error messages if so
                 if (TextUtils.isEmpty(username)) {
-                    DialogHelper.showNeutralDialog(SplashActivity.this,
-                            getString(R.string.error),
-                            getString(R.string.login_error_username_empty));
+                    DialogHelper.neutral(SplashActivity.this, R.string.error,
+                            R.string.login_error_username_empty);
                     return;
                 } else if (TextUtils.isEmpty(password)) {
-                    DialogHelper.showNeutralDialog(SplashActivity.this,
-                            getString(R.string.error),
-                            getString(R.string.login_error_password_empty));
+                    DialogHelper.neutral(SplashActivity.this, R.string.error,
+                            R.string.login_error_password_empty);
                     return;
                 }
 
@@ -278,8 +276,8 @@ public class SplashActivity extends BaseActivity {
                                     Analytics.get().sendEvent("Login", "Login Error",
                                             status.getGAString());
                                     progressDialog.dismiss();
-                                    DialogHelper.showNeutralDialog(SplashActivity.this,
-                                            getString(R.string.error), status.getErrorString());
+                                    DialogHelper.neutral(SplashActivity.this, R.string.error,
+                                            status.getErrorStringId());
                                 }
                             });
                         }
