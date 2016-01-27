@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package ca.appvelopers.mcgillmobile.model;
+
+import android.support.annotation.StringRes;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -49,16 +51,23 @@ public enum ConnectionStatus {
     /**
      * @return The status' associated error String
      */
-    public String getErrorString(){
-        switch(this){
+    public String getErrorString() {
+        return App.getContext().getString(getErrorStringId());
+    }
+
+    /**
+     * @return The status' associated error String Id
+     */
+    public @StringRes int getErrorStringId() {
+        switch (this) {
             case OK:
-                return null;
+                throw new IllegalArgumentException("You should not be calling this method on OK");
             case WRONG_INFO:
-                return App.getContext().getString(R.string.login_error_wrong_data);
+                return R.string.login_error_wrong_data;
             case NO_INTERNET:
-                return App.getContext().getString(R.string.error_no_internet);
+                return R.string.error_no_internet;
             default:
-                return App.getContext().getString(R.string.error_other);
+                return R.string.error_other;
         }
     }
 
