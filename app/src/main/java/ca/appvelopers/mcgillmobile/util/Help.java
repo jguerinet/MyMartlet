@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,7 +33,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import okio.BufferedSource;
 import okio.Okio;
-import timber.log.Timber;
 
 /**
  * Contains various useful static help methods
@@ -78,37 +76,6 @@ public class Help {
             return fileSource.readUtf8();
         } catch(IOException e){
             e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * @return The app version code
-     */
-    public static int getVersionCode(){
-        PackageInfo packageInfo = getPackageInfo();
-
-        return packageInfo != null ? packageInfo.versionCode : -1;
-    }
-
-    /**
-     * @return The app version name
-     */
-    public static String getVersionName(){
-        PackageInfo packageInfo = getPackageInfo();
-
-        return packageInfo != null ? packageInfo.versionName : "";
-    }
-
-    /**
-     * @return The app package info
-     */
-    private static PackageInfo getPackageInfo(){
-        try{
-            return App.getContext().getPackageManager().getPackageInfo(
-                    App.getContext().getPackageName(), 0);
-        } catch(PackageManager.NameNotFoundException e){
-            Timber.e(e, "Name not found on PackageInfo");
             return null;
         }
     }

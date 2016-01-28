@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
+import com.guerinet.utils.Util;
 import com.instabug.library.Instabug;
 
 import butterknife.Bind;
@@ -38,7 +39,6 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 
@@ -59,7 +59,7 @@ public class SettingsActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.settings_version, Help.getVersionName()));
+        setTitle(getString(R.string.settings_version, Util.versionName(this)));
         Analytics.get().sendScreen("Settings");
 
         FormGenerator fg = FormGenerator.bind(this, mContainer);

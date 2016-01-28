@@ -37,6 +37,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.guerinet.utils.Util;
+
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -51,7 +53,6 @@ import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
@@ -113,7 +114,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             protected void onPostExecute(Void param) {
                 //Check if we have the minimum required version
-                if(this.getMinVersion() > Help.getVersionCode()){
+                if(this.getMinVersion() > Util.versionCode(SplashActivity.this)){
                     //If not, show the right container
                     LinearLayout minVersionContainer =
                             (LinearLayout) findViewById(R.id.version_container);

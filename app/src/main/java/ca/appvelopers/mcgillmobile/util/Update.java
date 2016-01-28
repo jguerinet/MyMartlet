@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package ca.appvelopers.mcgillmobile.util;
+
+import com.guerinet.utils.Util;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -32,7 +34,7 @@ public class Update {
      */
     public static void update(){
         //Get the version code
-        int code = Help.getVersionCode();
+        int code = Util.versionCode(App.getContext());
 
         //Load the current version number from the preferences.
         int storedVersion = Load.versionCode();
