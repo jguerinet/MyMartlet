@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
+import com.guerinet.utils.dialog.ListDialogInterface;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +31,7 @@ import ca.appvelopers.mcgillmobile.model.Language;
  * @since 2.0.0
  */
 @SuppressWarnings("ResourceType")
-public abstract class LanguageListAdapter implements DialogListAdapter {
+public abstract class LanguageListAdapter implements ListDialogInterface {
     /**
      * List of languages and their String equivalents
      */
@@ -57,7 +59,7 @@ public abstract class LanguageListAdapter implements DialogListAdapter {
     }
 
     @Override
-    public CharSequence[] getTitles() {
+    public CharSequence[] getChoices() {
         CharSequence[] titles = new CharSequence[mLanguages.size()];
         for (int i = 0; i < mLanguages.size(); i ++) {
             titles[i] = Language.getString(mLanguages.get(i));

@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
+import com.guerinet.utils.dialog.ListDialogInterface;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,7 +30,7 @@ import ca.appvelopers.mcgillmobile.model.Faculty;
  * @author Julien Guerinet
  * @since 2.1.0
  */
-public abstract class FacultyListAdapter implements DialogListAdapter {
+public abstract class FacultyListAdapter implements ListDialogInterface {
     /**
      * List of faculties
      */
@@ -80,7 +82,7 @@ public abstract class FacultyListAdapter implements DialogListAdapter {
     }
 
     @Override
-    public CharSequence[] getTitles() {
+    public CharSequence[] getChoices() {
         return mFaculties.toArray(new CharSequence[mFaculties.size()]);
     }
 

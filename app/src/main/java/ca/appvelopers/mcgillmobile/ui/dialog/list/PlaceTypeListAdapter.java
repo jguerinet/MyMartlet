@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
+import com.guerinet.utils.dialog.ListDialogInterface;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +31,7 @@ import ca.appvelopers.mcgillmobile.model.PlaceType;
  * @author Julien Guerinet
  * @since 2.1.0
  */
-public abstract class PlaceTypeListAdapter implements DialogListAdapter {
+public abstract class PlaceTypeListAdapter implements ListDialogInterface {
     /**
      * List of place types
      */
@@ -71,7 +73,7 @@ public abstract class PlaceTypeListAdapter implements DialogListAdapter {
     }
 
     @Override
-    public CharSequence[] getTitles() {
+    public CharSequence[] getChoices() {
         CharSequence[] titles = new CharSequence[mTypes.size()];
 
         //Go through the types

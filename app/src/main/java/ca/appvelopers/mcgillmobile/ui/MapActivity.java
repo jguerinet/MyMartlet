@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.Util;
+import com.guerinet.utils.dialog.DialogHelper;
 
 import junit.framework.Assert;
 
@@ -62,7 +63,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
-import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import timber.log.Timber;

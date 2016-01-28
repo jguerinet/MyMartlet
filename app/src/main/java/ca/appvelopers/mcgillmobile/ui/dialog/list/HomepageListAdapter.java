@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
+import com.guerinet.utils.dialog.ListDialogInterface;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +31,7 @@ import ca.appvelopers.mcgillmobile.model.Homepage;
  * @since 2.0.0
  */
 @SuppressWarnings("ResourceType")
-public abstract class HomepageListAdapter implements DialogListAdapter {
+public abstract class HomepageListAdapter implements ListDialogInterface {
     /**
      * The list of homepages
      */
@@ -67,7 +69,7 @@ public abstract class HomepageListAdapter implements DialogListAdapter {
     }
 
     @Override
-    public CharSequence[] getTitles() {
+    public CharSequence[] getChoices() {
         CharSequence[] titles = new CharSequence[mHomepages.size()];
         for (int i = 0; i < mHomepages.size(); i ++) {
             titles[i] = Homepage.getString(mHomepages.get(i));
