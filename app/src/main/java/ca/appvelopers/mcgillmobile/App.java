@@ -20,11 +20,11 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.utils.ProductionTree;
 import com.instabug.library.Instabug;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -128,7 +128,19 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
            Timber.plant(new Timber.DebugTree());
         }
-        Timber.plant(new CrashlyticsTree());
+        if (BuildConfig.REPORT_CRASHES) {
+            Timber.plant(new ProductionTree() {
+                @Override
+                protected void log(String message) {
+                    Crashlytics.log(message);
+                }
+
+                @Override
+                protected void logException(Throwable t) {
+                    Crashlytics.logException(t);
+                }
+            });
+        }
 
         //Set up The Fabric stuff: Twitter, Crashlytics
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Passwords.TWITTER_KEY,
@@ -416,24 +428,5 @@ public class App extends Application {
     }
     public static void UnsetAlarm(Context context){
         BootReceiver.cancelAlarm(context);
-    }
-
-    /**
-     * Timber tree that is used during crash reporting in production
-     */
-    private class CrashlyticsTree extends Timber.Tree {
-        @Override
-        protected void log(int priority, String tag, String message, Throwable t) {
-            //We don't want to log verbose and debug logs
-            if(priority == Log.VERBOSE || priority == Log.DEBUG){
-                return;
-            }
-
-            Crashlytics.log(message);
-            //If there's a crash, log it too
-            if(t != null){
-                Crashlytics.logException(t);
-            }
-        }
     }
 }
