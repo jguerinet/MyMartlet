@@ -34,6 +34,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.guerinet.utils.Util;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
@@ -92,7 +94,7 @@ public class MyCoursesActivity extends DrawerActivity {
             public void onDownloadStart(String url, String userAgent, String contentDisposition,
                                         String mimeType, long contentLength) {
                 //Check that we have the external storage permission
-                if (!Help.checkPermission(MyCoursesActivity.this,
+                if (!Util.requestPermission(MyCoursesActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, EXTERNAL_STORAGE_PERMISSION)) {
                     return;
                 }

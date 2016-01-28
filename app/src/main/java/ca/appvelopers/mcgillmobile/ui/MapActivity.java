@@ -65,7 +65,6 @@ import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Help;
 import timber.log.Timber;
 
 /**
@@ -222,7 +221,7 @@ public class MapActivity extends DrawerActivity {
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             //Show the user's location if we have the permission to
-            if (Help.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION,
+            if (Util.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION,
                     LOCATION_REQUEST)) {
                 mMap.setMyLocationEnabled(true);
             }
