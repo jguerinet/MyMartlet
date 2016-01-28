@@ -18,10 +18,13 @@ package ca.appvelopers.mcgillmobile.ui.schedule;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.guerinet.utils.Util;
 
 import org.joda.time.LocalDate;
 
@@ -39,7 +42,6 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
@@ -100,7 +102,7 @@ public class ScheduleActivity extends DrawerActivity {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             getMenuInflater().inflate(R.menu.refresh, menu);
             getMenuInflater().inflate(R.menu.change_semester, menu);
-            Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
+            Util.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
             return true;
         }
         return super.onCreateOptionsMenu(menu);

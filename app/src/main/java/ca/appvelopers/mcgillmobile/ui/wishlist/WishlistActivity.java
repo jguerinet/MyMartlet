@@ -16,6 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.ui.wishlist;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.guerinet.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +46,6 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
@@ -115,7 +117,7 @@ public class WishlistActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!App.getRegisterTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.refresh, menu);
-            Help.setTint(menu.findItem(R.id.action_refresh).getIcon(), android.R.color.white);
+            Util.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
 
             //Allow user to change the semester if there is more than 1 semester
             if (App.getRegisterTerms().size() > 1) {

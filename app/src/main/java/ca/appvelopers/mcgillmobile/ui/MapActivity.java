@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -44,6 +45,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
+import com.guerinet.utils.Util;
 
 import junit.framework.Assert;
 
@@ -52,6 +54,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -108,6 +111,11 @@ public class MapActivity extends DrawerActivity {
      */
     @Bind(R.id.map_favorite)
     protected Button mFavorite;
+    /**
+     * Primary color for the {@link TextView} drawables
+     */
+    @BindColor(R.color.red)
+    protected @ColorInt int primaryColor;
     /**
      * Fragment containing the map
      */
@@ -182,8 +190,8 @@ public class MapActivity extends DrawerActivity {
                 });
 
         //Tint the drawables for the two buttons
-        Help.setTint(mDirections, 0, R.color.red);
-        Help.setTint(mFavorite, 0, R.color.red);
+        Util.setTint(mDirections, 0, primaryColor);
+        Util.setTint(mFavorite, 0, primaryColor);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         //Get the MapFragment
