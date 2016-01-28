@@ -45,7 +45,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 
 import junit.framework.Assert;
@@ -189,8 +189,8 @@ public class MapActivity extends DrawerActivity {
                 });
 
         //Tint the drawables for the two buttons
-        Util.setTint(mDirections, 0, primaryColor);
-        Util.setTint(mFavorite, 0, primaryColor);
+        Utils.setTint(mDirections, 0, primaryColor);
+        Utils.setTint(mFavorite, 0, primaryColor);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         //Get the MapFragment
@@ -221,7 +221,7 @@ public class MapActivity extends DrawerActivity {
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             //Show the user's location if we have the permission to
-            if (Util.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION,
+            if (Utils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION,
                     LOCATION_REQUEST)) {
                 mMap.setMyLocationEnabled(true);
             }

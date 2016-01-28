@@ -31,7 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +107,7 @@ public class CoursesActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.refresh, menu);
         getMenuInflater().inflate(R.menu.change_semester, menu);
-        Util.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
+        Utils.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
         return true;
     }
 

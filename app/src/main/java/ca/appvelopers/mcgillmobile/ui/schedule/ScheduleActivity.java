@@ -24,7 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 
 import org.joda.time.LocalDate;
 
@@ -102,7 +102,7 @@ public class ScheduleActivity extends DrawerActivity {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             getMenuInflater().inflate(R.menu.refresh, menu);
             getMenuInflater().inflate(R.menu.change_semester, menu);
-            Util.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
+            Utils.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
             return true;
         }
         return super.onCreateOptionsMenu(menu);

@@ -37,7 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 
 import java.util.List;
 
@@ -114,7 +114,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             protected void onPostExecute(Void param) {
                 //Check if we have the minimum required version
-                if(this.getMinVersion() > Util.versionCode(SplashActivity.this)){
+                if(this.getMinVersion() > Utils.versionCode(SplashActivity.this)){
                     //If not, show the right container
                     LinearLayout minVersionContainer =
                             (LinearLayout) findViewById(R.id.version_container);

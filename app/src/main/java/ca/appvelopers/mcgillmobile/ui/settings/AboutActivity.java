@@ -26,7 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -178,7 +178,7 @@ public class AboutActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         Analytics.get().sendEvent("About", "Linkedin", person.getName());
-                        Util.openURL(AboutActivity.this, person.getLinkedIn());
+                        Utils.openURL(AboutActivity.this, person.getLinkedIn());
                     }
                 });
                 mEmail.setOnClickListener(new View.OnClickListener() {

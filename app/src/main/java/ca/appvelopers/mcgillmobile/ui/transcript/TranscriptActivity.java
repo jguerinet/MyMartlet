@@ -24,7 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,7 +75,7 @@ public class TranscriptActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.refresh, menu);
-        Util.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
+        Utils.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
         return true;
     }
 

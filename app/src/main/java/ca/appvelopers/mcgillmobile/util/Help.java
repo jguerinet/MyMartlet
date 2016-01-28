@@ -20,7 +20,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 
 import java.io.IOException;
 
@@ -40,7 +40,7 @@ public class Help {
      * Displays a toast with a generic error message
      */
     public static void error() {
-        Util.toast(App.getContext(), R.string.error_other);
+        Utils.toast(App.getContext(), R.string.error_other);
     }
 
     /**

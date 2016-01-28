@@ -27,7 +27,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +117,7 @@ public class WishlistActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!App.getRegisterTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.refresh, menu);
-            Util.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
+            Utils.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
 
             //Allow user to change the semester if there is more than 1 semester
             if (App.getRegisterTerms().size() > 1) {

@@ -16,7 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import com.guerinet.utils.Util;
+import com.guerinet.utils.Utils;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -34,7 +34,7 @@ public class Update {
      */
     public static void update(){
         //Get the version code
-        int code = Util.versionCode(App.getContext());
+        int code = Utils.versionCode(App.getContext());
 
         //Load the current version number from the preferences.
         int storedVersion = Load.versionCode();
