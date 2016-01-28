@@ -26,7 +26,7 @@ import android.widget.LinearLayout;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.Util;
-import com.guerinet.utils.dialog.DialogHelper;
+import com.guerinet.utils.dialog.DialogUtils;
 import com.instabug.library.Instabug;
 
 import butterknife.Bind;
@@ -71,7 +71,7 @@ public class SettingsActivity extends DrawerActivity {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DialogHelper.list(context, R.string.settings_language,
+                        DialogUtils.list(context, R.string.settings_language,
                                 new LanguageListAdapter() {
                                     @Override
                                     public void onLanguageSelected(@Language.Type int language) {
@@ -99,7 +99,7 @@ public class SettingsActivity extends DrawerActivity {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DialogHelper.list(context, R.string.settings_homepage_title,
+                        DialogUtils.list(context, R.string.settings_homepage_title,
                                 new HomepageListAdapter() {
                                     @Override
                                     public void onHomepageSelected(@Homepage.Type int homepage) {

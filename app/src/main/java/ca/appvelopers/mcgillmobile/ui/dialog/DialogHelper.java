@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.guerinet.utils.Util;
+import com.guerinet.utils.dialog.DialogUtils;
 import com.instabug.library.Instabug;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class DialogHelper {
      * @param messageId String Id of the error description
      */
     public static void error(Context context, @StringRes int messageId) {
-        com.guerinet.utils.dialog.DialogHelper.neutral(context, R.string.error, messageId);
+        DialogUtils.neutral(context, R.string.error, messageId);
     }
 
     /**

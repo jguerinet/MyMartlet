@@ -46,7 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.Util;
-import com.guerinet.utils.dialog.DialogHelper;
+import com.guerinet.utils.dialog.DialogUtils;
 
 import junit.framework.Assert;
 
@@ -172,7 +172,7 @@ public class MapActivity extends DrawerActivity {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DialogHelper.list(MapActivity.this, R.string.map_filter,
+                        DialogUtils.list(MapActivity.this, R.string.map_filter,
                                 new PlaceTypeListAdapter(mType) {
                                     @Override
                                     public void onPlaceTypeSelected(PlaceType type) {

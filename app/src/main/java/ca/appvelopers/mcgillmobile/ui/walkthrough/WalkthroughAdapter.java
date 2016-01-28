@@ -25,7 +25,7 @@ import android.widget.LinearLayout;
 
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
-import com.guerinet.utils.dialog.DialogHelper;
+import com.guerinet.utils.dialog.DialogUtils;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -96,7 +96,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                         .onClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                DialogHelper.list(context, R.string.settings_homepage_title,
+                                DialogUtils.list(context, R.string.settings_homepage_title,
                                         new HomepageListAdapter() {
                                             @Override
                                             public void onHomepageSelected(
@@ -127,7 +127,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                         .onClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                DialogHelper.list(context, R.string.faculty_title,
+                                DialogUtils.list(context, R.string.faculty_title,
                                         new FacultyListAdapter(facultyView.view()
                                                 .getText().toString()) {
                                             @Override
