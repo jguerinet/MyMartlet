@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.guerinet.utils.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Person;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Help;
 
 /**
  * Displays information about the Appvelopers team
@@ -178,7 +178,7 @@ public class AboutActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         Analytics.get().sendEvent("About", "Linkedin", person.getName());
-                        Help.openURL(AboutActivity.this, person.getLinkedIn());
+                        Util.openURL(AboutActivity.this, person.getLinkedIn());
                     }
                 });
                 mEmail.setOnClickListener(new View.OnClickListener() {

@@ -27,6 +27,7 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.guerinet.utils.Util;
 import com.instabug.library.Instabug;
 
 import java.util.ArrayList;
@@ -230,7 +231,7 @@ public class DialogHelper {
         docuum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                Help.openURL(activity, Help.getDocuumLink(course.getSubject(), course.getNumber()));
+                Util.openURL(activity, Help.getDocuumLink(course.getSubject(), course.getNumber()));
             }
         });
 

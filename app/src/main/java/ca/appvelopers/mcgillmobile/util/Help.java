@@ -18,12 +18,10 @@ package ca.appvelopers.mcgillmobile.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -50,25 +48,6 @@ public class Help {
      */
     public static void error() {
         Util.toast(App.getContext(), R.string.error_other);
-    }
-
-    /* URLS */
-
-    /**
-     * Opens a given URL
-     *
-     * @param activity The calling activity
-     * @param url      The URL
-     */
-    public static void openURL(Activity activity, String url){
-        //Check that the URL starts with HTTP or HTTPS, add it if it is not the case.
-        if(!url.startsWith("http://") && !url.startsWith("https://")){
-            url = "http://" + url;
-        }
-
-        Intent urlIntent = new Intent(Intent.ACTION_VIEW)
-                .setData(Uri.parse(url));
-        activity.startActivity(urlIntent);
     }
 
     /**
