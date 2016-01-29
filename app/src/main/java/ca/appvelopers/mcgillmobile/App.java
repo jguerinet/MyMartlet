@@ -30,6 +30,7 @@ import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -137,7 +138,10 @@ public class App extends Application {
 
                 @Override
                 protected void logException(Throwable t) {
-                    Crashlytics.logException(t);
+                    //Don't log SocketTimeoutExceptions
+                    if (!(t instanceof SocketTimeoutException)) {
+                        Crashlytics.logException(t);
+                    }
                 }
             });
         }
