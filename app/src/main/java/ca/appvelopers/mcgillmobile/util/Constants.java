@@ -119,10 +119,6 @@ public class Constants {
     /* SHARED PREFS */
 
     /**
-     * The user's username
-     */
-    public static final String USERNAME = "username";
-    /**
      * The user's password
      */
     public static final String PASSWORD = "password";

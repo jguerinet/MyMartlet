@@ -50,10 +50,11 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Homepage;
-import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
@@ -99,6 +100,11 @@ public class SplashActivity extends BaseActivity {
     @Inject
     @Named(PrefsModule.EULA)
     protected BooleanPreference eulaPref;
+    /**
+     * {@link UsernamePreference} instance
+     */
+    @Inject
+    protected UsernamePreference usernamePref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,11 +172,10 @@ public class SplashActivity extends BaseActivity {
                 }
 
                 //Get the username and password stored
-                String username = Load.username();
                 String password = Load.password();
 
                 //If one of them is null, show the login screen with no error message
-                if(username == null || password == null){
+                if(usernamePref.get() == null || password == null){
                     showLoginScreen((ConnectionStatus)getIntent()
                             .getSerializableExtra(Constants.CONNECTION_STATUS));
                 }
@@ -196,9 +201,9 @@ public class SplashActivity extends BaseActivity {
         loginContainer.setVisibility(View.VISIBLE);
 
         //Get the username before clearing everything
-        String username = Load.username();
+        String username = usernamePref.get();
         //Make sure to delete anything with the previous user's info
-        Clear.all(sharedPrefs, rememberUsernamePref);
+        Clear.all(sharedPrefs, rememberUsernamePref, usernamePref);
 
         Analytics.get().sendScreen("Login");
 
@@ -271,7 +276,7 @@ public class SplashActivity extends BaseActivity {
                         // If the connection was successful, start the app initializer
                         if (status == ConnectionStatus.OK) {
                             // Store the login info.
-                            Save.username(username);
+                            usernamePref.set(username);
                             Save.password(password);
                             rememberUsernamePref.set(rememberUsernameView.isChecked());
                             Analytics.get().sendEvent("Login", "Remember Username",

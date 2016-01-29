@@ -36,10 +36,14 @@ import android.widget.Toast;
 
 import com.guerinet.utils.Utils;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
+import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
@@ -62,12 +66,18 @@ public class MyCoursesActivity extends DrawerActivity {
      */
     @Bind(R.id.web_view)
     protected WebView mWebView;
+    /**
+     * {@link UsernamePreference} instance
+     */
+    @Inject
+    protected UsernamePreference usernamePref;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
+        App.component(this).inject(this);
         Analytics.get().sendScreen("MyCourses");
 
         //No internet: not worth trying to load the view
@@ -141,7 +151,7 @@ public class MyCoursesActivity extends DrawerActivity {
                 //Preload the user's information
                 view.loadUrl("javascript:(function f(){" +
                         "(document.getElementsByName('j_username')[0]).value='" +
-                        Load.fullUsername() + "';" +
+                        usernamePref.full() + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
                         Load.password() + "'; document.forms[0].submit();})()");
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,6 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.User;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
 import timber.log.Timber;
 
 /**
@@ -857,8 +856,7 @@ public class Parser {
 
         //If there is nothing to parse, don't continue
         if(table == null){
-            //Set the mail name as a placeholder for the user
-            App.setUser(new User(Load.username(), ""));
+            App.setUser(new User("", ""));
             return;
         }
 

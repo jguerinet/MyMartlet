@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,7 +135,8 @@ public class Connection {
 	 */
 	private Connection(){
 		//Get the username and password from the SharedPrefs
-		this.mUsername = Load.fullUsername();
+        //TODO
+//		this.mUsername = Load.fullUsername();
 		this.mPassword = Load.password();
 		//Set up the client
 		this.mClient = new OkHttpClient();

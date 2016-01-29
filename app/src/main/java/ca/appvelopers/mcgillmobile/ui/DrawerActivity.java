@@ -52,7 +52,8 @@ import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
-import ca.appvelopers.mcgillmobile.model.PrefsModule;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -91,13 +92,18 @@ public abstract class DrawerActivity extends BaseActivity
      */
     @Inject
     @Named(PrefsModule.HIDE_PARSER_ERROR)
-    protected BooleanPreference hideParserErrorPrefs;
+    protected BooleanPreference hideParserErrorPref;
     /**
      * Remember username {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.REMEMBER_USERNAME)
-    protected BooleanPreference rememberUsernamePrefs;
+    protected BooleanPreference rememberUsernamePref;
+    /**
+     * {@link UsernamePreference} instance
+     */
+    @Inject
+    protected UsernamePreference usernamePref;
     /**
      * The toggle for the drawer inside the action bar
      */
@@ -156,7 +162,7 @@ public abstract class DrawerActivity extends BaseActivity
         if (parserBug != null) {
             getIntent().removeExtra(Constants.BUG);
             DialogHelper.showBugDialog(this, parserBug.equals(Constants.TRANSCRIPT),
-                    getIntent().getStringExtra(Constants.TERM), hideParserErrorPrefs);
+                    getIntent().getStringExtra(Constants.TERM), hideParserErrorPref);
         }
     }
 
@@ -261,7 +267,7 @@ public abstract class DrawerActivity extends BaseActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Analytics.get().sendEvent("Logout", "Clicked");
-                                Clear.all(sharedPrefs, rememberUsernamePrefs);
+                                Clear.all(sharedPrefs, rememberUsernamePref, usernamePref);
                                 //Go back to SplashActivity
                                 startActivity(new Intent(DrawerActivity.this,
                                         SplashActivity.class));

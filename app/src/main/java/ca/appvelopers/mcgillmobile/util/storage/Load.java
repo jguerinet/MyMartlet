@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
@@ -62,20 +61,6 @@ public class Load {
     @SuppressWarnings("ResourceType")
     public static @Homepage.Type int homepage() {
         return App.getSharedPrefs().getInt(Constants.HOMEPAGE, Homepage.SCHEDULE);
-    }
-
-    /**
-     * @return The user's full username
-     */
-    public static String fullUsername() {
-        return username() + App.getContext().getString(R.string.login_email);
-    }
-
-    /**
-     * @return The user's username (name only, no email suffix)
-     */
-    public static String username() {
-        return App.getSharedPrefs().getString(Constants.USERNAME, null);
     }
 
     /**

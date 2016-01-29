@@ -42,11 +42,12 @@ import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
-import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.User;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.Update;
@@ -73,7 +74,12 @@ public class App extends Application {
      */
     @Inject
     @Named(PrefsModule.VERSION)
-    protected IntPreference versionPrefs;
+    protected IntPreference versionPref;
+    /**
+     * {@link UsernamePreference} instance
+     */
+    @Inject
+    protected UsernamePreference usernamePref;
     /**
      * The app {@link Context}
      */
@@ -176,13 +182,13 @@ public class App extends Application {
         component.inject(this);
 
         //Run the update code, if any
-        Update.update(versionPrefs);
+        Update.update(versionPref);
 
         //Set up Instabug
         Instabug.initialize(this, Passwords.INSTABUG_KEY)
                 .enableEmailField(true, false)
                 .setCommentPlaceholder(getString(R.string.bug_prompt))
-                .setDefaultEmail(Load.fullUsername())
+                .setDefaultEmail(usernamePref.full())
                 .setEmailPlaceholder(getString(R.string.bug_email_prompt))
                 .setInvalidCommentAlertText(getString(R.string.bug_comment_invalid))
                 .setSubmitButtonText(getString(R.string.submit))
@@ -194,7 +200,7 @@ public class App extends Application {
                 .setShowIntroDialog(false)
                 .setPostFeedbackMessage(getString(R.string.success))
                 .setWillShowFeedbackSentAlert(true)
-                .setUserData("Email: " + Load.fullUsername() + "\n" +
+                .setUserData("Email: " + usernamePref.full() + "\n" +
                         "App Language: " + Language.getCode(App.getLanguage()));
 
         //Set up the FormGenerator
@@ -457,7 +463,7 @@ public class App extends Application {
     
     //to be set after successful login
     public static void SetAlarm(Context context){
-        BootReceiver.setAlarm(context);
+//        BootReceiver.setAlarm(context);
     }
     public static void UnsetAlarm(Context context){
         BootReceiver.cancelAlarm(context);

@@ -39,7 +39,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
-import ca.appvelopers.mcgillmobile.model.PrefsModule;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;

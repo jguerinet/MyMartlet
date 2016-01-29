@@ -22,10 +22,14 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
+import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
@@ -43,12 +47,18 @@ public class DesktopActivity extends DrawerActivity {
      */
     @Bind(R.id.web_view)
     protected WebView mWebView;
+    /**
+     * {@link UsernamePreference} instance
+     */
+    @Inject
+    protected UsernamePreference usernamePref;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
+        App.component(this).inject(this);
         Analytics.get().sendScreen("Desktop Site");
 
         //If the user is not connected to the internet, don't continue
@@ -67,7 +77,7 @@ public class DesktopActivity extends DrawerActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
-                        Load.fullUsername() + "';document.getElementById('password').value='" +
+                        usernamePref.full() + "';document.getElementById('password').value='" +
                         Load.password() + "'; document.LoginForm.submit(); })()");
                 view.setVisibility(View.VISIBLE);
             }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model;
+package ca.appvelopers.mcgillmobile.model.prefs;
 
 import android.content.SharedPreferences;
 

@@ -48,18 +48,6 @@ public class Save {
     }
 
     /**
-     * Saves a boolean to the {@link SharedPreferences}
-     *
-     * @param key   Key to save the boolean under
-     * @param value Value to save
-     */
-    private static void putBoolean(String key, boolean value) {
-        App.getSharedPrefs().edit()
-                .putBoolean(key, value)
-                .apply();
-    }
-
-    /**
      * Saves a String to the {@link SharedPreferences}
      *
      * @param key   Key to save the String under
@@ -83,13 +71,6 @@ public class Save {
      */
     public static void homepage() {
         putInt(Constants.HOMEPAGE, App.getHomepage());
-    }
-
-    /**
-     * @param username The user's username
-     */
-    public static void username(String username) {
-        putString(Constants.USERNAME, username);
     }
 
     /**

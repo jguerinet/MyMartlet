@@ -18,12 +18,15 @@ package ca.appvelopers.mcgillmobile;
 
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.model.PrefsModule;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
+import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
+import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
+import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import dagger.Component;
 
 /**
@@ -38,5 +41,8 @@ public interface BaseComponent {
     void inject(SplashActivity activity);
     void inject(AgreementActivity activity);
     void inject(ScheduleActivity activity);
+    void inject(MyCoursesActivity activity);
+    void inject(DesktopActivity activity);
     void inject(SettingsActivity activity);
+    void inject(BootReceiver receiver);
 }

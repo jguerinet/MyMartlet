@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.guerinet.utils.prefs.StringPreference;
+
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
+import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 
 /**
@@ -33,10 +39,21 @@ import ca.appvelopers.mcgillmobile.util.storage.Load;
  * @since 2.0.0
  */
 public class BootReceiver extends BroadcastReceiver {
+    /**
+     * Username {@link StringPreference}
+     */
+    @Inject
+    protected UsernamePreference usernamePref;
+    /**
+     * Password {@link StringPreference}
+     */
+    //TODO
+    protected StringPreference passwordPref;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		setAlarm(context);
+        App.component(context).inject(this);
+        setAlarm(context, usernamePref.get(), passwordPref.get());
 	}
 
 	/**
@@ -44,13 +61,11 @@ public class BootReceiver extends BroadcastReceiver {
 	 *
 	 * @param context The app context
 	 */
-	public static void setAlarm(Context context){
+	public static void setAlarm(Context context, String username, String password) {
 		//If we don't need it, don't start it
-		if(Load.username() == null || Load.password() == null ||
-				(!Load.seatChecker() && !Load.gradeChecker())){
+		if (username == null || password == null || (!Load.seatChecker() && !Load.gradeChecker())) {
 			//Make sure it's cancelled
 			cancelAlarm(context);
-
 			return;
 		}
 
