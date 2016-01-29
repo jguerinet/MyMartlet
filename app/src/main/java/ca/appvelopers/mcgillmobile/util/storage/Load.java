@@ -49,13 +49,6 @@ public class Load {
     /* SHARED PREFS */
 
     /**
-     * @return True if the app has been previously opened, false otherwise
-     */
-    public static boolean firstOpen() {
-        return App.getSharedPrefs().getBoolean(Constants.FIRST_OPEN, true);
-    }
-
-    /**
      * @return The user's chosen language, defaults to English
      */
     @SuppressWarnings("ResourceType")

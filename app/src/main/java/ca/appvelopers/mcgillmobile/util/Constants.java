@@ -147,11 +147,7 @@ public class Constants {
      */
     public static final String HOMEPAGE = "home_page";
     /**
-     * The app version code of the info stored
-     */
-    public static final String VERSION = "version";
-    /**
-     * True if this is the first time the user is signing in, false otherwise
+     * Intent key that is true if this is the first time the user is signing in, false otherwise
      */
     public static final String FIRST_OPEN = "first_open";
     /**

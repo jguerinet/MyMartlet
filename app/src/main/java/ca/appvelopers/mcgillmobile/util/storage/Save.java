@@ -72,13 +72,6 @@ public class Save {
     }
 
     /**
-     * Saves that the walkthrough has been viewed at least once
-     */
-    public static void firstOpen() {
-        putBoolean(Constants.FIRST_OPEN, false);
-    }
-
-    /**
      * Saves the user's chosen language
      */
     public static void language() {

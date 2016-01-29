@@ -25,17 +25,22 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.prefs.BooleanPreference;
 
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Homepage;
+import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
@@ -43,8 +48,6 @@ import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
@@ -53,6 +56,9 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @since 1.0.0
  */
 public class ScheduleActivity extends DrawerActivity {
+    @Inject
+    @Named(PrefsModule.FIRST_OPEN)
+    protected BooleanPreference firstOpenPrefs;
     /**
      * The list of courses
      */
@@ -78,15 +84,16 @@ public class ScheduleActivity extends DrawerActivity {
         View view = loadView(getResources().getConfiguration().orientation);
         setContentView(view);
         ButterKnife.bind(this);
+        App.component(this).inject(this);
 
         //Check if this is the first time the user is using the app
-        if (Load.firstOpen()) {
+        if (firstOpenPrefs.get()) {
             //Show them the walkthrough if it is
             Intent intent = new Intent(this, WalkthroughActivity.class)
                     .putExtra(Constants.FIRST_OPEN, true);
             startActivity(intent);
             //Save the fact that the walkthrough has been seen at least once
-            Save.firstOpen();
+            firstOpenPrefs.set(false);
         }
     }
 

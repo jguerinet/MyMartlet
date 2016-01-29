@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.model;
 
 import android.content.SharedPreferences;
 
+import com.guerinet.utils.prefs.BooleanPreference;
 import com.guerinet.utils.prefs.IntPreference;
 
 import javax.inject.Named;
@@ -37,6 +38,7 @@ public class PrefsModule {
 
     /* PREFERENCE NAMES */
     public static final String VERSION = "version";
+    public static final String FIRST_OPEN = "first_open";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -47,5 +49,16 @@ public class PrefsModule {
     @Named(VERSION)
     protected IntPreference provideVersion(SharedPreferences prefs) {
         return new IntPreference(prefs, VERSION, -1);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if this is the first time that the user logs in, false otherwise
+     */
+    @Provides
+    @Singleton
+    @Named(FIRST_OPEN)
+    protected BooleanPreference provideFirstOpen(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, FIRST_OPEN, true);
     }
 }
