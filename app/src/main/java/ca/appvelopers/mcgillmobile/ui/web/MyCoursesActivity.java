@@ -43,12 +43,12 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
+import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
 
 /**
  * Displays the user's MyCourses page
@@ -71,6 +71,11 @@ public class MyCoursesActivity extends DrawerActivity {
      */
     @Inject
     protected UsernamePreference usernamePref;
+    /**
+     * {@link PasswordPreference} instance
+     */
+    @Inject
+    protected PasswordPreference passwordPref;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +158,7 @@ public class MyCoursesActivity extends DrawerActivity {
                         "(document.getElementsByName('j_username')[0]).value='" +
                         usernamePref.full() + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
-                        Load.password() + "'; document.forms[0].submit();})()");
+                        passwordPref.get() + "'; document.forms[0].submit();})()");
 
                 view.setVisibility(View.VISIBLE);
             }

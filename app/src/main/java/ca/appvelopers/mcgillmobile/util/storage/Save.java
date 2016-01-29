@@ -24,7 +24,6 @@ import java.io.ObjectOutputStream;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Encryption;
 import timber.log.Timber;
 
 /**
@@ -48,18 +47,6 @@ public class Save {
     }
 
     /**
-     * Saves a String to the {@link SharedPreferences}
-     *
-     * @param key   Key to save the String under
-     * @param value Value to save
-     */
-    private static void putString(String key, String value) {
-        App.getSharedPrefs().edit()
-                .putString(key, value)
-                .apply();
-    }
-
-    /**
      * Saves the user's chosen language
      */
     public static void language() {
@@ -71,13 +58,6 @@ public class Save {
      */
     public static void homepage() {
         putInt(Constants.HOMEPAGE, App.getHomepage());
-    }
-
-    /**
-     * @param password The user's password
-     */
-    public static void password(String password) {
-        putString(Constants.PASSWORD, Encryption.encode(password));
     }
 
     /* INTERNAL STORAGE */

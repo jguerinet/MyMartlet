@@ -20,7 +20,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -53,6 +52,7 @@ import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
+import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
@@ -63,8 +63,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 
 /**
@@ -77,11 +75,6 @@ public class SplashActivity extends BaseActivity {
      * Code used when starting the AgreementActivity
      */
     private static final int AGREEMENT_CODE = 100;
-    /**
-     * {@link SharedPreferences} instance
-     */
-    @Inject
-    protected SharedPreferences sharedPrefs;
     /**
      * Hide loading {@link BooleanPreference}
      */
@@ -105,6 +98,11 @@ public class SplashActivity extends BaseActivity {
      */
     @Inject
     protected UsernamePreference usernamePref;
+    /**
+     * {@link PasswordPreference} instance
+     */
+    @Inject
+    protected PasswordPreference passwordPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,11 +169,8 @@ public class SplashActivity extends BaseActivity {
                     return;
                 }
 
-                //Get the username and password stored
-                String password = Load.password();
-
                 //If one of them is null, show the login screen with no error message
-                if(usernamePref.get() == null || password == null){
+                if(usernamePref.get() == null || passwordPref.get() == null){
                     showLoginScreen((ConnectionStatus)getIntent()
                             .getSerializableExtra(Constants.CONNECTION_STATUS));
                 }
@@ -203,7 +198,7 @@ public class SplashActivity extends BaseActivity {
         //Get the username before clearing everything
         String username = usernamePref.get();
         //Make sure to delete anything with the previous user's info
-        Clear.all(sharedPrefs, rememberUsernamePref, usernamePref);
+        Clear.all(rememberUsernamePref, usernamePref, passwordPref);
 
         Analytics.get().sendScreen("Login");
 
@@ -277,7 +272,7 @@ public class SplashActivity extends BaseActivity {
                         if (status == ConnectionStatus.OK) {
                             // Store the login info.
                             usernamePref.set(username);
-                            Save.password(password);
+                            passwordPref.set(password);
                             rememberUsernamePref.set(rememberUsernameView.isChecked());
                             Analytics.get().sendEvent("Login", "Remember Username",
                                     String.valueOf(rememberUsernameView.isChecked()));

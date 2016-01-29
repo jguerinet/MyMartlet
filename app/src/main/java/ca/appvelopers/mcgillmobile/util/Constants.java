@@ -119,10 +119,6 @@ public class Constants {
     /* SHARED PREFS */
 
     /**
-     * The user's password
-     */
-    public static final String PASSWORD = "password";
-    /**
      * True if the user has currently turned on the seat checker, false otherwise
      */
     public static final String SEAT_CHECKER = "seat_checker";

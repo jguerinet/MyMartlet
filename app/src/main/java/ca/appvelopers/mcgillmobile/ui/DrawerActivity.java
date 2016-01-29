@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,6 +51,7 @@ import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
+import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
@@ -83,11 +83,6 @@ public abstract class DrawerActivity extends BaseActivity
     @Bind(R.id.main)
     protected View mMainView;
     /**
-     * {@link SharedPreferences} instance
-     */
-    @Inject
-    protected SharedPreferences sharedPrefs;
-    /**
      * Hide parser error {@link BooleanPreference}
      */
     @Inject
@@ -104,6 +99,11 @@ public abstract class DrawerActivity extends BaseActivity
      */
     @Inject
     protected UsernamePreference usernamePref;
+    /**
+     * {@link PasswordPreference} instance
+     */
+    @Inject
+    protected PasswordPreference passwordPref;
     /**
      * The toggle for the drawer inside the action bar
      */
@@ -267,7 +267,7 @@ public abstract class DrawerActivity extends BaseActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Analytics.get().sendEvent("Logout", "Clicked");
-                                Clear.all(sharedPrefs, rememberUsernamePref, usernamePref);
+                                Clear.all(rememberUsernamePref, usernamePref, passwordPref);
                                 //Go back to SplashActivity
                                 startActivity(new Intent(DrawerActivity.this,
                                         SplashActivity.class));

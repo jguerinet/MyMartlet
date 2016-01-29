@@ -29,12 +29,12 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
+import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
 
 /**
  * Shows the desktop page of MyMcGill
@@ -52,6 +52,11 @@ public class DesktopActivity extends DrawerActivity {
      */
     @Inject
     protected UsernamePreference usernamePref;
+    /**
+     * {@link PasswordPreference} instance
+     */
+    @Inject
+    protected PasswordPreference passwordPref;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +83,7 @@ public class DesktopActivity extends DrawerActivity {
             public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
                         usernamePref.full() + "';document.getElementById('password').value='" +
-                        Load.password() + "'; document.LoginForm.submit(); })()");
+                        passwordPref.get() + "'; document.LoginForm.submit(); })()");
                 view.setVisibility(View.VISIBLE);
             }
         });

@@ -46,7 +46,6 @@ import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
 import okio.BufferedSink;
 import timber.log.Timber;
 
@@ -137,7 +136,7 @@ public class Connection {
 		//Get the username and password from the SharedPrefs
         //TODO
 //		this.mUsername = Load.fullUsername();
-		this.mPassword = Load.password();
+//		this.mPassword = Load.password();
 		//Set up the client
 		this.mClient = new OkHttpClient();
 		//Set up the list of cookies

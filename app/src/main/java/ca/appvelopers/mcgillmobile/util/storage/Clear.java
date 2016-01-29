@@ -27,8 +27,8 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.Statement;
+import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
-import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
  * Clears objects from internal storage or {@link SharedPreferences}
@@ -40,21 +40,19 @@ public class Clear {
     /**
      * Clears all of the user's info
      *
-     * @param prefs                {@link SharedPreferences} instance
      * @param rememberUsernamePref Remember username {@link BooleanPreference}
      * @param usernamePref         {@link UsernamePreference} instance
+     * @param passwordPref         {@link PasswordPreference} instance
      */
-    public static void all(SharedPreferences prefs, BooleanPreference rememberUsernamePref,
-            UsernamePreference usernamePref) {
+    public static void all(BooleanPreference rememberUsernamePref, UsernamePreference usernamePref,
+            PasswordPreference passwordPref) {
         //If the user had not chosen to remember their username, clear it
         if (!rememberUsernamePref.get()) {
             usernamePref.clear();
         }
 
         //Password
-        prefs.edit()
-                .remove(Constants.PASSWORD)
-                .apply();
+        passwordPref.clear();
 
         //Schedule
         App.setCourses(new ArrayList<Course>());

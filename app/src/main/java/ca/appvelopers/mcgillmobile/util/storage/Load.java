@@ -35,7 +35,6 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Encryption;
 import timber.log.Timber;
 
 /**
@@ -61,13 +60,6 @@ public class Load {
     @SuppressWarnings("ResourceType")
     public static @Homepage.Type int homepage() {
         return App.getSharedPrefs().getInt(Constants.HOMEPAGE, Homepage.SCHEDULE);
-    }
-
-    /**
-     * @return The user's password
-     */
-    public static String password() {
-        return Encryption.decode(App.getSharedPrefs().getString(Constants.PASSWORD, null));
     }
 
     /**
