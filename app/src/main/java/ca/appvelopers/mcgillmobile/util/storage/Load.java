@@ -62,20 +62,6 @@ public class Load {
         return App.getSharedPrefs().getInt(Constants.HOMEPAGE, Homepage.SCHEDULE);
     }
 
-    /**
-     * @return True if the user has enabled seat checking, false otherwise
-     */
-    public static boolean seatChecker() {
-        return App.getSharedPrefs().getBoolean(Constants.SEAT_CHECKER, false);
-    }
-
-    /**
-     * @return True if the user has enabled grade checking, false otherwise
-     */
-    public static boolean gradeChecker() {
-        return App.getSharedPrefs().getBoolean(Constants.GRADE_CHECKER, false);
-    }
-
     /* INTERNAL STORAGE */
 
     /**

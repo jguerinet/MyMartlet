@@ -34,7 +34,6 @@ import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import timber.log.Timber;
 
@@ -68,15 +67,16 @@ public class CheckerService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		Timber.i("Service started");
 
-		//Check the grades if needed
-		if(Load.gradeChecker()){
-			checkGrades();
-		}
-		
-		//Check the seats if needed
-		if(Load.seatChecker()){
-			checkSeats();
-		}
+        //TODO
+//		//Check the grades if needed
+//		if(Load.gradeChecker()){
+//			checkGrades();
+//		}
+//
+//		//Check the seats if needed
+//		if(Load.seatChecker()){
+//			checkSeats();
+//		}
 	}
 	
 	/**

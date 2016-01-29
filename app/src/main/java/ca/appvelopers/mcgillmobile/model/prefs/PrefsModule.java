@@ -44,6 +44,8 @@ public class PrefsModule {
     public static final String STATISTICS = "statistics";
     public static final String REMEMBER_USERNAME = "remember_username";
     public static final String EULA = "user_agreement";
+    public static final String SEAT_CHECKER = "seat_checker";
+    public static final String GRADE_CHECKER = "grade_checker";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -120,5 +122,27 @@ public class PrefsModule {
     @Named(EULA)
     protected BooleanPreference provideEULA(SharedPreferences prefs) {
         return new BooleanPreference(prefs, EULA, false);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if we should be checking seats for the user, false otherwise
+     */
+    @Provides
+    @Singleton
+    @Named(SEAT_CHECKER)
+    protected BooleanPreference provideSeatChecker(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, SEAT_CHECKER, false);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if we should be checking grades for the user, false otherwise
+     */
+    @Provides
+    @Singleton
+    @Named(GRADE_CHECKER)
+    protected BooleanPreference provideGradeChecker(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, GRADE_CHECKER, false);
     }
 }

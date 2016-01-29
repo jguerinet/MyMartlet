@@ -119,14 +119,6 @@ public class Constants {
     /* SHARED PREFS */
 
     /**
-     * True if the user has currently turned on the seat checker, false otherwise
-     */
-    public static final String SEAT_CHECKER = "seat_checker";
-    /**
-     * True if the user has currently turned on the grade checker, false otherwise
-     */
-    public static final String GRADE_CHECKER = "grade_checker";
-    /**
      * The user's chosen language
      */
     public static final String LANGUAGE = "language";

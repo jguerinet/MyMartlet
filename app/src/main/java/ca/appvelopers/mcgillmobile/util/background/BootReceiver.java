@@ -22,15 +22,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.guerinet.utils.prefs.BooleanPreference;
 import com.guerinet.utils.prefs.StringPreference;
 
 import java.util.Calendar;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
 
 /**
  * Automatically (re)starts the alarm if needed when the device is rebooted or the user opts in.
@@ -47,13 +49,26 @@ public class BootReceiver extends BroadcastReceiver {
     /**
      * Password {@link StringPreference}
      */
-    //TODO
+    @Inject
     protected StringPreference passwordPref;
+    /**
+     * Seat checker {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.SEAT_CHECKER)
+    protected BooleanPreference seatCheckerPref;
+    /**
+     * Grade checker {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.GRADE_CHECKER)
+    protected BooleanPreference gradeCheckerPref;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
         App.component(context).inject(this);
-        setAlarm(context, usernamePref.get(), passwordPref.get());
+        setAlarm(context, usernamePref.get(), passwordPref.get(), seatCheckerPref.get(),
+                gradeCheckerPref.get());
 	}
 
 	/**
@@ -61,9 +76,10 @@ public class BootReceiver extends BroadcastReceiver {
 	 *
 	 * @param context The app context
 	 */
-	public static void setAlarm(Context context, String username, String password) {
+	public static void setAlarm(Context context, String username, String password,
+            boolean seatChecker, boolean gradeChecker) {
 		//If we don't need it, don't start it
-		if (username == null || password == null || (!Load.seatChecker() && !Load.gradeChecker())) {
+		if (username == null || password == null || (!seatChecker && !gradeChecker)) {
 			//Make sure it's cancelled
 			cancelAlarm(context);
 			return;
