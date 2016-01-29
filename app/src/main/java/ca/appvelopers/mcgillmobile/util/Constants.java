@@ -153,7 +153,7 @@ public class Constants {
     /**
      * True if the user has accepted anonymous usage statistics, false otherwise
      */
-    public static final String STATISTICS = "statistics";
+
     /**
      * The last If-Modified-Since date used for the config
      */

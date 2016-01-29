@@ -86,13 +86,6 @@ public class Save {
     }
 
     /**
-     * @param statistics True if we can collect anonymous usage statistics, false otherwise
-     */
-    public static void statistics(boolean statistics) {
-        putBoolean(Constants.STATISTICS, statistics);
-    }
-
-    /**
      * @param username The user's username
      */
     public static void username(String username) {

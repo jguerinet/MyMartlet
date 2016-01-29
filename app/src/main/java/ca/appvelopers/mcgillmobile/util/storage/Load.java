@@ -65,13 +65,6 @@ public class Load {
     }
 
     /**
-     * @return True if the user has opted into anonymous usage statistics, false otherwise
-     */
-    public static boolean statistics() {
-        return App.getSharedPrefs().getBoolean(Constants.STATISTICS, true);
-    }
-
-    /**
      * @return The user's full username
      */
     public static String fullUsername() {

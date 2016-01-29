@@ -41,6 +41,7 @@ public class PrefsModule {
     public static final String FIRST_OPEN = "first_open";
     public static final String HIDE_PARSER_ERROR = "hide_parser_error";
     public static final String HIDE_LOADING = "hide_loading";
+    public static final String STATISTICS = "statistics";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -84,5 +85,16 @@ public class PrefsModule {
     @Named(HIDE_LOADING)
     protected BooleanPreference provideHideLoading(SharedPreferences prefs) {
         return new BooleanPreference(prefs, HIDE_LOADING, false);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if we can collect anonymous usage statistics, false otherwise (defaults to true)
+     */
+    @Provides
+    @Singleton
+    @Named(STATISTICS)
+    protected BooleanPreference provideStatistics(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, STATISTICS, true);
     }
 }

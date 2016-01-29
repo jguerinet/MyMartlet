@@ -27,7 +27,11 @@ import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.utils.prefs.BooleanPreference;
 import com.instabug.library.Instabug;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,12 +39,11 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
+import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 
 /**
  * Allows the user to change the app settings
@@ -53,12 +56,19 @@ public class SettingsActivity extends DrawerActivity {
      */
     @Bind(R.id.container)
     protected LinearLayout mContainer;
+    /**
+     * Statistics {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.STATISTICS)
+    protected BooleanPreference statisticsPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
+        App.component(this).inject(this);
         setTitle(getString(R.string.settings_version, Utils.versionName(this)));
         Analytics.get().sendScreen("Settings");
 
@@ -120,11 +130,11 @@ public class SettingsActivity extends DrawerActivity {
         //Statistics
         fg.aSwitch(R.string.settings_statistics)
                 .leftIcon(R.drawable.ic_trending_up)
-                .checked(Load.statistics())
+                .checked(statisticsPrefs.get())
                 .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Save.statistics(isChecked);
+                        statisticsPrefs.set(isChecked);
                     }
                 });
 
