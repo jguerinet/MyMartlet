@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile;
+package ca.appvelopers.mcgillmobile.model;
 
-import javax.inject.Singleton;
+import android.content.SharedPreferences;
 
-import ca.appvelopers.mcgillmobile.model.PrefsModule;
-import dagger.Component;
+import ca.appvelopers.mcgillmobile.AppModule;
+import dagger.Module;
 
 /**
- * Dagger Base Component
+ * Dagger module for the {@link SharedPreferences} values
  * @author Julien Guerinet
  * @since 2.0.4
  */
-@Singleton @Component(modules = {AppModule.class, PrefsModule.class})
-public interface BaseComponent {
+@Module(includes = AppModule.class)
+public class PrefsModule {
 }
