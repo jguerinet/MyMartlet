@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 2.0.3 (2016-01-28)
+* Switched from fragments to activities
+* Set up dependency to the Android Utils library 
+
 ## Version 2.0.2 (2016-01-12)
 * Fixed some reported crashes
 * Fixed bug where about page would not load
