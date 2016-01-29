@@ -18,6 +18,8 @@ package ca.appvelopers.mcgillmobile.util.storage;
 
 import android.content.SharedPreferences;
 
+import com.guerinet.utils.prefs.BooleanPreference;
+
 import java.util.ArrayList;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -36,18 +38,21 @@ public class Clear {
 
     /**
      * Clears all of the user's info
+     *
+     * @param prefs                 {@link SharedPreferences} instance
+     * @param rememberUsernamePrefs Remember username {@link BooleanPreference}
      */
-    public static void all(){
+    public static void all(SharedPreferences prefs, BooleanPreference rememberUsernamePrefs) {
         //If the user had not chosen to remember their username, clear it
-        if(!Load.rememberUsername()) {
-            App.getSharedPrefs().edit()
+        if (!rememberUsernamePrefs.get()) {
+            prefs.edit()
                     .remove(Constants.USERNAME)
                     .apply();
 
         }
 
         //Password
-        App.getSharedPrefs().edit()
+        prefs.edit()
                 .remove(Constants.PASSWORD)
                 .apply();
 

@@ -42,6 +42,7 @@ public class PrefsModule {
     public static final String HIDE_PARSER_ERROR = "hide_parser_error";
     public static final String HIDE_LOADING = "hide_loading";
     public static final String STATISTICS = "statistics";
+    public static final String REMEMBER_USERNAME = "remember_username";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -96,5 +97,13 @@ public class PrefsModule {
     @Named(STATISTICS)
     protected BooleanPreference provideStatistics(SharedPreferences prefs) {
         return new BooleanPreference(prefs, STATISTICS, true);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if we should remember the user's username, false otherwise (defaults to true)
+     */
+    protected BooleanPreference provideRememberUsername(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, REMEMBER_USERNAME, true);
     }
 }

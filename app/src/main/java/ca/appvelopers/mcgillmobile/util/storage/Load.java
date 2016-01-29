@@ -86,13 +86,6 @@ public class Load {
     }
 
     /**
-     * @return True if the username should be remembered when logging out, false otherwise
-     */
-    public static boolean rememberUsername() {
-        return App.getSharedPrefs().getBoolean(Constants.REMEMBER_USERNAME, true);
-    }
-
-    /**
      * @return True if the user has enabled seat checking, false otherwise
      */
     public static boolean seatChecker() {

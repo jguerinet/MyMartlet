@@ -20,6 +20,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -76,11 +77,22 @@ public class SplashActivity extends BaseActivity {
      */
     private static final int AGREEMENT_CODE = 100;
     /**
+     * {@link SharedPreferences} instance
+     */
+    @Inject
+    protected SharedPreferences sharedPrefs;
+    /**
      * Hide loading {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.HIDE_LOADING)
     protected BooleanPreference hideLoadingPrefs;
+    /**
+     * Remember username {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.REMEMBER_USERNAME)
+    protected BooleanPreference rememberUsernamePrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +193,7 @@ public class SplashActivity extends BaseActivity {
         //Get the username before clearing everything
         String username = Load.username();
         //Make sure to delete anything with the previous user's info
-        Clear.all();
+        Clear.all(sharedPrefs, rememberUsernamePrefs);
 
         Analytics.get().sendScreen("Login");
 
@@ -203,7 +215,7 @@ public class SplashActivity extends BaseActivity {
 
         final CheckBox rememberUsernameView = (CheckBox) findViewById(R.id.login_remember_username);
         //Remember Me box checked based on user's previous preference
-        rememberUsernameView.setChecked(Load.rememberUsername());
+        rememberUsernameView.setChecked(rememberUsernamePrefs.get());
 
         //Check if an error message needs to be displayed, display it if so
         if (error != null) {
@@ -256,7 +268,7 @@ public class SplashActivity extends BaseActivity {
                             // Store the login info.
                             Save.username(username);
                             Save.password(password);
-                            Save.rememberUsername(rememberUsernameView.isChecked());
+                            rememberUsernamePrefs.set(rememberUsernameView.isChecked());
                             Analytics.get().sendEvent("Login", "Remember Username",
                                     String.valueOf(rememberUsernameView.isChecked()));
 

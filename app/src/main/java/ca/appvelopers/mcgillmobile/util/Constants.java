@@ -127,10 +127,6 @@ public class Constants {
      */
     public static final String PASSWORD = "password";
     /**
-     * True if we should remember the username, false otherwise
-     */
-    public static final String REMEMBER_USERNAME = "remember_username";
-    /**
      * True if the user has currently turned on the seat checker, false otherwise
      */
     public static final String SEAT_CHECKER = "seat_checker";

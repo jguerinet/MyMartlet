@@ -100,13 +100,6 @@ public class Save {
     }
 
     /**
-     * @param rememberUsername True if we should remember the user's username, false otherwise
-     */
-    public static void rememberUsername(boolean rememberUsername) {
-        putBoolean(Constants.REMEMBER_USERNAME, rememberUsername);
-    }
-
-    /**
      * @param date The last date the web service was queries
      */
     public static void ifModifiedSince(String date) {

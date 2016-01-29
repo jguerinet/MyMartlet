@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -81,11 +82,22 @@ public abstract class DrawerActivity extends BaseActivity
     @Bind(R.id.main)
     protected View mMainView;
     /**
+     * {@link SharedPreferences} instance
+     */
+    @Inject
+    protected SharedPreferences sharedPrefs;
+    /**
      * Hide parser error {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.HIDE_PARSER_ERROR)
     protected BooleanPreference hideParserErrorPrefs;
+    /**
+     * Remember username {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.REMEMBER_USERNAME)
+    protected BooleanPreference rememberUsernamePrefs;
     /**
      * The toggle for the drawer inside the action bar
      */
@@ -249,7 +261,7 @@ public abstract class DrawerActivity extends BaseActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Analytics.get().sendEvent("Logout", "Clicked");
-                                Clear.all();
+                                Clear.all(sharedPrefs, rememberUsernamePrefs);
                                 //Go back to SplashActivity
                                 startActivity(new Intent(DrawerActivity.this,
                                         SplashActivity.class));
