@@ -40,6 +40,7 @@ public class PrefsModule {
     public static final String VERSION = "version";
     public static final String FIRST_OPEN = "first_open";
     public static final String HIDE_PARSER_ERROR = "hide_parser_error";
+    public static final String HIDE_LOADING = "hide_loading";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -72,5 +73,16 @@ public class PrefsModule {
     @Named(HIDE_PARSER_ERROR)
     protected BooleanPreference provideHideParserError(SharedPreferences prefs) {
         return new BooleanPreference(prefs, HIDE_PARSER_ERROR, false);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if we should hide the loading skip dialog, false otherwise
+     */
+    @Provides
+    @Singleton
+    @Named(HIDE_LOADING)
+    protected BooleanPreference provideHideLoading(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, HIDE_LOADING, false);
     }
 }

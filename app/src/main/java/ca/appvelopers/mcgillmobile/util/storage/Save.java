@@ -86,13 +86,6 @@ public class Save {
     }
 
     /**
-     * @param doNotShow True if we should not show the loading screen, false otherwise
-     */
-    public static void loadingDoNotShow(boolean doNotShow) {
-        putBoolean(Constants.LOADING_DO_NOT_SHOW, doNotShow);
-    }
-
-    /**
      * @param statistics True if we can collect anonymous usage statistics, false otherwise
      */
     public static void statistics(boolean statistics) {

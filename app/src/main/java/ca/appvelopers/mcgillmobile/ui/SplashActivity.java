@@ -38,13 +38,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.prefs.BooleanPreference;
 
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Homepage;
+import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
@@ -70,11 +75,18 @@ public class SplashActivity extends BaseActivity {
      * Code used when starting the AgreementActivity
      */
     private static final int AGREEMENT_CODE = 100;
+    /**
+     * Hide loading {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.HIDE_LOADING)
+    protected BooleanPreference hideLoadingPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        App.component(this).inject(this);
 
         //Check if the user has accepted the user agreement
         if(Load.eula()){
@@ -370,7 +382,7 @@ public class SplashActivity extends BaseActivity {
                     }
 
                     //If the user has checked the "Do Not Show" option previously, skip directly
-                    if(Load.loadingDoNotShow()){
+                    if (hideLoadingPrefs.get()) {
                         publishNewProgress(getString(R.string.skipping));
                         cancel(false);
                         return;
@@ -390,7 +402,7 @@ public class SplashActivity extends BaseActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which){
                                             //Save the do not show option
-                                            Save.loadingDoNotShow(doNotShow.isChecked());
+                                            hideLoadingPrefs.set(doNotShow.isChecked());
 
                                             //Cancel the info downloader
                                             publishNewProgress(getString(R.string.skipping));
@@ -403,7 +415,7 @@ public class SplashActivity extends BaseActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which){
                                             //Save the do not show option
-                                            Save.loadingDoNotShow(doNotShow.isChecked());
+                                            hideLoadingPrefs.set(doNotShow.isChecked());
                                             dialog.dismiss();
                                         }
                                     })

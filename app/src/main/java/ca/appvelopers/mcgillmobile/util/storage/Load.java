@@ -65,13 +65,6 @@ public class Load {
     }
 
     /**
-     * @return True if the user has opted out of the loading screen, false otherwise
-     */
-    public static boolean loadingDoNotShow() {
-        return App.getSharedPrefs().getBoolean(Constants.LOADING_DO_NOT_SHOW, false);
-    }
-
-    /**
      * @return True if the user has opted into anonymous usage statistics, false otherwise
      */
     public static boolean statistics() {

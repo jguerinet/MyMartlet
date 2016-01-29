@@ -20,6 +20,7 @@ import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
+import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
 import dagger.Component;
 
@@ -32,5 +33,6 @@ import dagger.Component;
 public interface BaseComponent {
     void inject(App app);
     void inject(DrawerActivity activity);
+    void inject(SplashActivity activity);
     void inject(ScheduleActivity activity);
 }
