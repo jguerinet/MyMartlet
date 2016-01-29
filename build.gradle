@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:1.5.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
         classpath 'com.google.gms:google-services:1.5.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
