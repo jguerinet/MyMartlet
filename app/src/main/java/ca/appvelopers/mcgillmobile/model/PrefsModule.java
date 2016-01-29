@@ -18,8 +18,14 @@ package ca.appvelopers.mcgillmobile.model;
 
 import android.content.SharedPreferences;
 
+import com.guerinet.utils.prefs.IntPreference;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import ca.appvelopers.mcgillmobile.AppModule;
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * Dagger module for the {@link SharedPreferences} values
@@ -28,4 +34,18 @@ import dagger.Module;
  */
 @Module(includes = AppModule.class)
 public class PrefsModule {
+
+    /* PREFERENCE NAMES */
+    public static final String VERSION = "version";
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return Stored version {@link IntPreference}, defaults to -1
+     */
+    @Provides
+    @Singleton
+    @Named(VERSION)
+    protected IntPreference provideVersion(SharedPreferences prefs) {
+        return new IntPreference(prefs, VERSION, -1);
+    }
 }
