@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
@@ -23,6 +25,6 @@ import dagger.Component;
  * @author Julien Guerinet
  * @since 2.0.4
  */
-@Component
+@Singleton @Component(modules = {AppModule.class})
 public interface BaseComponent {
 }
