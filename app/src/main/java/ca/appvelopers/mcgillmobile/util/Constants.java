@@ -159,10 +159,6 @@ public class Constants {
      */
     public static final String IF_MODIFIED_SINCE = "if_modified_since";
     /**
-     * True if the user has opted out of showing parser errors, false otherwise
-     */
-    public static final String PARSER_ERROR_DO_NOT_SHOW = "parser_do_not_show";
-    /**
      * True if the user has opted out of showing the skip message, false otherwise
      */
     public static final String LOADING_DO_NOT_SHOW = "loading_do_not_show";

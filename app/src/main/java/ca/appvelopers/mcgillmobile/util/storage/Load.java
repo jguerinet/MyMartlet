@@ -65,13 +65,6 @@ public class Load {
     }
 
     /**
-     * @return True if the user has opted out of parser errors, false otherwise
-     */
-    public static boolean parserErrorDoNotShow() {
-        return App.getSharedPrefs().getBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, false);
-    }
-
-    /**
      * @return True if the user has opted out of the loading screen, false otherwise
      */
     public static boolean loadingDoNotShow() {

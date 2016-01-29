@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.utils.prefs.BooleanPreference;
 import com.instabug.library.Instabug;
 
 import java.util.ArrayList;
@@ -42,8 +43,6 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 
 /**
  * Helper methods that create dialogs for various situations
@@ -239,9 +238,9 @@ public class DialogHelper {
      * @param term          The class that the bug is in if this is a schedule bug
      */
     public static void showBugDialog(final Context context, final boolean transcriptBug,
-                                     final String term) {
+            final String term, final BooleanPreference hideParserErrorPrefs) {
         //Only show if they have not checked "Do not show again" already
-        if(!Load.parserErrorDoNotShow()) {
+        if(hideParserErrorPrefs.get()) {
             return;
         }
 
@@ -269,7 +268,7 @@ public class DialogHelper {
                                         });
 
                                 //Save the do not show option
-                                Save.parserErrorDoNotShow(dontShowAgain.isChecked());
+                                hideParserErrorPrefs.set(dontShowAgain.isChecked());
 
                                 dialog.dismiss();
                             }
@@ -277,7 +276,7 @@ public class DialogHelper {
                 .setNegativeButton(R.string.bug_parser_no, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //Save the do not show again
-                                Save.parserErrorDoNotShow(dontShowAgain.isChecked());
+                                hideParserErrorPrefs.set(dontShowAgain.isChecked());
 
                                 dialog.dismiss();
                             }

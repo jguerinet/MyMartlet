@@ -39,6 +39,7 @@ public class PrefsModule {
     /* PREFERENCE NAMES */
     public static final String VERSION = "version";
     public static final String FIRST_OPEN = "first_open";
+    public static final String HIDE_PARSER_ERROR = "hide_parser_error";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -60,5 +61,16 @@ public class PrefsModule {
     @Named(FIRST_OPEN)
     protected BooleanPreference provideFirstOpen(SharedPreferences prefs) {
         return new BooleanPreference(prefs, FIRST_OPEN, true);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if we should hide parser errors, false otherwise
+     */
+    @Provides
+    @Singleton
+    @Named(HIDE_PARSER_ERROR)
+    protected BooleanPreference provideHideParserError(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, HIDE_PARSER_ERROR, false);
     }
 }

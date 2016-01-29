@@ -86,13 +86,6 @@ public class Save {
     }
 
     /**
-     * @param doNotShow True if we should not show parser errors, false otherwise
-     */
-    public static void parserErrorDoNotShow(boolean doNotShow) {
-        putBoolean(Constants.PARSER_ERROR_DO_NOT_SHOW, doNotShow);
-    }
-
-    /**
      * @param doNotShow True if we should not show the loading screen, false otherwise
      */
     public static void loadingDoNotShow(boolean doNotShow) {

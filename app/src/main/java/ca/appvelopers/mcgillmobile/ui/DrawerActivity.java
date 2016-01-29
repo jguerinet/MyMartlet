@@ -38,14 +38,20 @@ import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.guerinet.utils.prefs.BooleanPreference;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import butterknife.Bind;
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Homepage;
+import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -75,6 +81,12 @@ public abstract class DrawerActivity extends BaseActivity
     @Bind(R.id.main)
     protected View mMainView;
     /**
+     * Hide parser error {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.HIDE_PARSER_ERROR)
+    protected BooleanPreference hideParserErrorPrefs;
+    /**
      * The toggle for the drawer inside the action bar
      */
     private ActionBarDrawerToggle mDrawerToggle;
@@ -90,6 +102,7 @@ public abstract class DrawerActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.component(this).inject(this);
 
         mHandler = new Handler();
 
@@ -131,7 +144,7 @@ public abstract class DrawerActivity extends BaseActivity
         if (parserBug != null) {
             getIntent().removeExtra(Constants.BUG);
             DialogHelper.showBugDialog(this, parserBug.equals(Constants.TRANSCRIPT),
-                    getIntent().getStringExtra(Constants.TERM));
+                    getIntent().getStringExtra(Constants.TERM), hideParserErrorPrefs);
         }
     }
 
