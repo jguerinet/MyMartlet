@@ -62,8 +62,7 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class App extends Application {
-    //TODO Change these to Shared Prefs
-    public static boolean forceReload = false;
+    //TODO Change this to Shared Prefs
     public static boolean forceUserReload = false;
     /**
      * Dagger {@link BaseComponent}

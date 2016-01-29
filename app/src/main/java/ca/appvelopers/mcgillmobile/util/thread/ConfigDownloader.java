@@ -34,9 +34,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.Proxy;
@@ -49,11 +46,8 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Date;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Passwords;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 import timber.log.Timber;
 
 /**
@@ -62,10 +56,6 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
-    /**
-     * True if we need to force the reloading of the data in the app, false otherwise
-     */
-    private boolean mForceReload;
     /**
      * The URL to download the places from
      */
@@ -82,17 +72,12 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     /**
      * Default Constructor
      */
-    public ConfigDownloader(){
-        mForceReload = App.forceReload;
-    }
+    public ConfigDownloader() {}
 
     @Override
     public Void doInBackground(Void... params){
         //Check if we are connected to the internet
         if(Help.isConnected()){
-            //Load the If-Modified-Since date
-            String date = Load.ifModifiedSince();
-
             try {
                 /* CONFIG */
                 mCurrentSection = "CONFIG";
@@ -124,11 +109,6 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                 Request.Builder requestBuilder = new Request.Builder()
                         .get()
                         .url(Constants.CONFIG_URL);
-
-                //No IfModifiedSince stuff if we are forcing the reload
-                if (!mForceReload && date != null) {
-                    requestBuilder.header("If-Modified-Since", date);
-                }
 
                 //Make the request and get the response
                 Response response = client.newCall(requestBuilder.build()).execute();
@@ -163,10 +143,6 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
                         if (responseCode == 200) {
                             //Parse the downloaded String
                             parsePlaces(gson, parser, response.body().string());
-
-                            //Update the If-Modified-Since date
-                            Save.ifModifiedSince(Date.getRFC1123String(
-                                    DateTime.now().withZone(DateTimeZone.forID("UCT"))));
                         }
                     }
                 }

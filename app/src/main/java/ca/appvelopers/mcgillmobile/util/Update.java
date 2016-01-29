@@ -45,7 +45,6 @@ public class Update {
             while (storedVersion < code) {
                 //First time opening the app
                 if (storedVersion == -1) {
-                    init();
                     //Break out of the loop
                     break;
                 } else if (storedVersion == 6) {
@@ -70,8 +69,6 @@ public class Update {
     private static void update13() {
         //Delete old transcript to avoid all of the crash reports
         App.getContext().deleteFile(Constants.TRANSCRIPT);
-
-        App.forceReload = true;
         App.forceUserReload = true;
     }
 
@@ -81,13 +78,5 @@ public class Update {
     private static void update7() {
         //Force the user to re-update all of the information in the app
         App.forceUserReload = true;
-    }
-
-    /**
-     * Run anything that needs to be run the first time the app is opened
-     */
-    private static void init() {
-        //Force the config downloader
-        App.forceReload = true;
     }
 }

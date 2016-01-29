@@ -103,6 +103,9 @@ public class PrefsModule {
      * @param prefs {@link SharedPreferences} instance
      * @return True if we should remember the user's username, false otherwise (defaults to true)
      */
+    @Provides
+    @Singleton
+    @Named(REMEMBER_USERNAME)
     protected BooleanPreference provideRememberUsername(SharedPreferences prefs) {
         return new BooleanPreference(prefs, REMEMBER_USERNAME, true);
     }

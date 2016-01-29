@@ -147,14 +147,6 @@ public class Constants {
      */
     public static final String FIRST_OPEN = "first_open";
     /**
-     * True if the user has accepted anonymous usage statistics, false otherwise
-     */
-
-    /**
-     * The last If-Modified-Since date used for the config
-     */
-    public static final String IF_MODIFIED_SINCE = "if_modified_since";
-    /**
      * True if the user has accepted the user agreement, false otherwise
      */
     public static final String EULA = "user_agreement";

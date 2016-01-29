@@ -100,13 +100,6 @@ public class Load {
     }
 
     /**
-     * @return The last date the WS was queried
-     */
-    public static String ifModifiedSince() {
-        return App.getSharedPrefs().getString(Constants.IF_MODIFIED_SINCE, null);
-    }
-
-    /**
      * @return True if the user has accepted the EULA, false otherwise
      */
     public static boolean eula() {

@@ -100,13 +100,6 @@ public class Save {
     }
 
     /**
-     * @param date The last date the web service was queries
-     */
-    public static void ifModifiedSince(String date) {
-        putString(Constants.IF_MODIFIED_SINCE, date);
-    }
-
-    /**
      * @param accepted True if the user has accepted the EULA, false otherwise
      */
     public static void eula(boolean accepted) {
