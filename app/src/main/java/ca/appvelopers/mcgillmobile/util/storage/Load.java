@@ -49,13 +49,6 @@ public class Load {
     /* SHARED PREFS */
 
     /**
-     * @return The app version code stored, -1 if none
-     */
-    public static int versionCode() {
-        return App.getSharedPrefs().getInt(Constants.VERSION, -1);
-    }
-
-    /**
      * @return True if the app has been previously opened, false otherwise
      */
     public static boolean firstOpen() {

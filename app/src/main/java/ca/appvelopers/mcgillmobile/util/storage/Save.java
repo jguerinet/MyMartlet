@@ -72,13 +72,6 @@ public class Save {
     }
 
     /**
-     * @param code The version code to save
-     */
-    public static void versionCode(int code) {
-        putInt(Constants.VERSION, code);
-    }
-
-    /**
      * Saves that the walkthrough has been viewed at least once
      */
     public static void firstOpen() {

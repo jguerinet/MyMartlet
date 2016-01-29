@@ -17,10 +17,9 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.prefs.IntPreference;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 
 /**
  * Runs any update code
@@ -31,34 +30,36 @@ public class Update {
 
     /**
      * Checks if the app has been updated and runs any update code needed if so
+     *
+     * @param versionPrefs Version {@link IntPreference}
      */
-    public static void update(){
+    public static void update(IntPreference versionPrefs) {
         //Get the version code
         int code = Utils.versionCode(App.getContext());
 
-        //Load the current version number from the preferences.
-        int storedVersion = Load.versionCode();
+        //Get the current version number
+        int storedVersion = versionPrefs.get();
 
         //Stored version is smaller than version number
-        while(storedVersion < code) {
-            //First time opening the app
-            if (storedVersion == -1) {
-                init();
-                //Break out of the loop
-                break;
-            }
-            else if (storedVersion == 6) {
-                update7();
-            }
-            else if (storedVersion == 12) {
-                update13();
+        if (storedVersion < code) {
+            while (storedVersion < code) {
+                //First time opening the app
+                if (storedVersion == -1) {
+                    init();
+                    //Break out of the loop
+                    break;
+                } else if (storedVersion == 6) {
+                    update7();
+                } else if (storedVersion == 12) {
+                    update13();
+                }
+
+                storedVersion ++;
             }
 
-            storedVersion ++;
+            //Store the new version in the SharedPrefs
+            versionPrefs.set(code);
         }
-
-        //Store the new version in the SharedPrefs
-        Save.versionCode(code);
     }
 
     /**

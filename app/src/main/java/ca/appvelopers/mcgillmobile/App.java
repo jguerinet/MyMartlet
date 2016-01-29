@@ -25,6 +25,7 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
+import com.guerinet.utils.prefs.IntPreference;
 import com.instabug.library.Instabug;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -33,11 +34,15 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
+import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -64,6 +69,12 @@ public class App extends Application {
      * Dagger {@link BaseComponent}
      */
     private BaseComponent component;
+    /**
+     * Version {@link IntPreference}
+     */
+    @Inject
+    @Named(PrefsModule.VERSION)
+    protected IntPreference versionPrefs;
     /**
      * The app {@link Context}
      */
@@ -162,8 +173,11 @@ public class App extends Application {
                 .appModule(new AppModule(this))
                 .build();
 
+        //Inject Dagger
+        component.inject(this);
+
         //Run the update code, if any
-        Update.update();
+        Update.update(versionPrefs);
 
         //Set up Instabug
         Instabug.initialize(this, Passwords.INSTABUG_KEY)

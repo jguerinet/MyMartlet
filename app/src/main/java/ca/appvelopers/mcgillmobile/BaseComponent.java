@@ -28,4 +28,5 @@ import dagger.Component;
  */
 @Singleton @Component(modules = {AppModule.class, PrefsModule.class})
 public interface BaseComponent {
+    void inject(App app);
 }
