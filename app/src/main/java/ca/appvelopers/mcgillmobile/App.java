@@ -60,7 +60,10 @@ public class App extends Application {
     //TODO Change these to Shared Prefs
     public static boolean forceReload = false;
     public static boolean forceUserReload = false;
-
+    /**
+     * Dagger {@link BaseComponent}
+     */
+    private BaseComponent component;
     /**
      * The app {@link Context}
      */
@@ -154,6 +157,11 @@ public class App extends Application {
                 .disabled(!BuildConfig.REPORT_CRASHES).build()).build();
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
 
+        //Initialize the Dagger component
+        component = DaggerBaseComponent.builder()
+                .appModule(new AppModule(this))
+                .build();
+
         //Run the update code, if any
         Update.update();
 
@@ -184,6 +192,14 @@ public class App extends Application {
     }
 
     /* GETTERS */
+
+    /**
+     * @param context App context
+     * @return The {@link BaseComponent} instance
+     */
+    public static BaseComponent component(Context context) {
+        return ((App) context.getApplicationContext()).component;
+    }
 
     /**
      * @return The app {@link Context}
