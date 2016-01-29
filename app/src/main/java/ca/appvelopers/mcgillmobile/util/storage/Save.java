@@ -99,13 +99,6 @@ public class Save {
         putString(Constants.PASSWORD, Encryption.encode(password));
     }
 
-    /**
-     * @param accepted True if the user has accepted the EULA, false otherwise
-     */
-    public static void eula(boolean accepted) {
-        putBoolean(Constants.EULA, accepted);
-    }
-
     /* INTERNAL STORAGE */
 
     /**

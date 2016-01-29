@@ -20,13 +20,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.guerinet.utils.prefs.BooleanPreference;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 
 /**
  * Displays the EULA
@@ -40,12 +46,19 @@ public class AgreementActivity extends BaseActivity {
      */
     @Bind(R.id.buttons_container)
     protected LinearLayout mButtons;
+    /**
+     * EULA {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.EULA)
+    protected BooleanPreference eulaPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement);
         ButterKnife.bind(this);
+        App.component(this).inject(this);
 
         boolean required = getIntent().getBooleanExtra(Constants.EULA_REQUIRED, false);
         setUpToolbar(!required);
@@ -58,14 +71,14 @@ public class AgreementActivity extends BaseActivity {
 
     @OnClick(R.id.button_agree)
     protected void agree() {
-        Save.eula(true);
+        eulaPref.set(true);
         setResult(RESULT_OK);
         finish();
     }
 
     @OnClick(R.id.button_decline)
     protected void decline() {
-        Save.eula(false);
+        eulaPref.set(false);
         setResult(RESULT_CANCELED);
         finish();
     }

@@ -43,6 +43,7 @@ public class PrefsModule {
     public static final String HIDE_LOADING = "hide_loading";
     public static final String STATISTICS = "statistics";
     public static final String REMEMBER_USERNAME = "remember_username";
+    public static final String EULA = "user_agreement";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -108,5 +109,16 @@ public class PrefsModule {
     @Named(REMEMBER_USERNAME)
     protected BooleanPreference provideRememberUsername(SharedPreferences prefs) {
         return new BooleanPreference(prefs, REMEMBER_USERNAME, true);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if the user has accepted the EULA, false otherwise (defaults to false)
+     */
+    @Provides
+    @Singleton
+    @Named(EULA)
+    protected BooleanPreference provideEULA(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, EULA, false);
     }
 }

@@ -146,8 +146,4 @@ public class Constants {
      * Intent key that is true if this is the first time the user is signing in, false otherwise
      */
     public static final String FIRST_OPEN = "first_open";
-    /**
-     * True if the user has accepted the user agreement, false otherwise
-     */
-    public static final String EULA = "user_agreement";
 }

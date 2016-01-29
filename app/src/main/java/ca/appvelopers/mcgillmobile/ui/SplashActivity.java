@@ -86,13 +86,19 @@ public class SplashActivity extends BaseActivity {
      */
     @Inject
     @Named(PrefsModule.HIDE_LOADING)
-    protected BooleanPreference hideLoadingPrefs;
+    protected BooleanPreference hideLoadingPref;
     /**
      * Remember username {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.REMEMBER_USERNAME)
-    protected BooleanPreference rememberUsernamePrefs;
+    protected BooleanPreference rememberUsernamePref;
+    /**
+     * EULA {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.EULA)
+    protected BooleanPreference eulaPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +107,10 @@ public class SplashActivity extends BaseActivity {
         App.component(this).inject(this);
 
         //Check if the user has accepted the user agreement
-        if(Load.eula()){
+        if (eulaPref.get()) {
             //Run the config downloader if so
             runConfigDownloader();
-        }
-        else{
+        } else{
             //If not, show it
             Intent intent = new Intent(this, AgreementActivity.class)
                     .putExtra(Constants.EULA_REQUIRED, true);
@@ -193,7 +198,7 @@ public class SplashActivity extends BaseActivity {
         //Get the username before clearing everything
         String username = Load.username();
         //Make sure to delete anything with the previous user's info
-        Clear.all(sharedPrefs, rememberUsernamePrefs);
+        Clear.all(sharedPrefs, rememberUsernamePref);
 
         Analytics.get().sendScreen("Login");
 
@@ -215,7 +220,7 @@ public class SplashActivity extends BaseActivity {
 
         final CheckBox rememberUsernameView = (CheckBox) findViewById(R.id.login_remember_username);
         //Remember Me box checked based on user's previous preference
-        rememberUsernameView.setChecked(rememberUsernamePrefs.get());
+        rememberUsernameView.setChecked(rememberUsernamePref.get());
 
         //Check if an error message needs to be displayed, display it if so
         if (error != null) {
@@ -268,7 +273,7 @@ public class SplashActivity extends BaseActivity {
                             // Store the login info.
                             Save.username(username);
                             Save.password(password);
-                            rememberUsernamePrefs.set(rememberUsernameView.isChecked());
+                            rememberUsernamePref.set(rememberUsernameView.isChecked());
                             Analytics.get().sendEvent("Login", "Remember Username",
                                     String.valueOf(rememberUsernameView.isChecked()));
 
@@ -394,7 +399,7 @@ public class SplashActivity extends BaseActivity {
                     }
 
                     //If the user has checked the "Do Not Show" option previously, skip directly
-                    if (hideLoadingPrefs.get()) {
+                    if (hideLoadingPref.get()) {
                         publishNewProgress(getString(R.string.skipping));
                         cancel(false);
                         return;
@@ -414,7 +419,7 @@ public class SplashActivity extends BaseActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which){
                                             //Save the do not show option
-                                            hideLoadingPrefs.set(doNotShow.isChecked());
+                                            hideLoadingPref.set(doNotShow.isChecked());
 
                                             //Cancel the info downloader
                                             publishNewProgress(getString(R.string.skipping));
@@ -427,7 +432,7 @@ public class SplashActivity extends BaseActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which){
                                             //Save the do not show option
-                                            hideLoadingPrefs.set(doNotShow.isChecked());
+                                            hideLoadingPref.set(doNotShow.isChecked());
                                             dialog.dismiss();
                                         }
                                     })

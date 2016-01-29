@@ -99,13 +99,6 @@ public class Load {
         return App.getSharedPrefs().getBoolean(Constants.GRADE_CHECKER, false);
     }
 
-    /**
-     * @return True if the user has accepted the EULA, false otherwise
-     */
-    public static boolean eula() {
-        return App.getSharedPrefs().getBoolean(Constants.EULA, false);
-    }
-
     /* INTERNAL STORAGE */
 
     /**

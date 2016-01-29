@@ -22,6 +22,7 @@ import ca.appvelopers.mcgillmobile.model.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
+import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import dagger.Component;
 
@@ -35,6 +36,7 @@ public interface BaseComponent {
     void inject(App app);
     void inject(DrawerActivity activity);
     void inject(SplashActivity activity);
+    void inject(AgreementActivity activity);
     void inject(ScheduleActivity activity);
     void inject(SettingsActivity activity);
 }
