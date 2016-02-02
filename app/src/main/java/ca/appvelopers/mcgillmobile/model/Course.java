@@ -16,6 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
@@ -68,7 +69,7 @@ public class Course implements Serializable {
     /**
      * The days this course is on
      */
-    private List<Day> days;
+    private List<DayOfWeek> days;
     /**
      * The course type (ex: lecture, tutorial...)
      */
@@ -126,8 +127,9 @@ public class Course implements Serializable {
      * @param endDate    The ending date for this course
      */
     public Course(Term term, String subject, String number, String title, int crn, String section,
-            LocalTime startTime, LocalTime endTime, List<Day> days, String type, String location,
-            String instructor, double credits, LocalDate startDate, LocalDate endDate) {
+            LocalTime startTime, LocalTime endTime, List<DayOfWeek> days, String type,
+            String location, String instructor, double credits, LocalDate startDate,
+            LocalDate endDate) {
         this.term = term;
         this.number = number;
         this.subject = subject;
@@ -174,9 +176,9 @@ public class Course implements Serializable {
      * @param waitlistRemaining The number of waitlist seats remaining
      */
     public Course(Term term, String subject, String number, String title, int crn, String section,
-            LocalTime startTime, LocalTime endTime, List<Day> days, String type, String location,
-            String instructor, double credits, LocalDate startDate, LocalDate endDate, int capacity,
-            int seatsRemaining, int waitlistRemaining) {
+            LocalTime startTime, LocalTime endTime, List<DayOfWeek> days, String type,
+            String location, String instructor, double credits, LocalDate startDate,
+            LocalDate endDate, int capacity, int seatsRemaining, int waitlistRemaining) {
         this(term, subject, number, title, crn, section, startTime, endTime, days, type, location,
                 instructor, credits, startDate, endDate);
 
@@ -254,7 +256,7 @@ public class Course implements Serializable {
     /**
      * @return The days this course is on
      */
-    public List<Day> getDays() {
+    public List<DayOfWeek> getDays() {
         return days;
     }
 
@@ -355,7 +357,7 @@ public class Course implements Serializable {
     public boolean isForDate(LocalDate date) {
         //Check if the date is within the date range and the course is offered on that day
         return !date.isBefore(startDate) && !date.isAfter(endDate) &&
-                days.contains(Day.getDay(date));
+                days.contains(date.getDayOfWeek());
     }
 
     /**

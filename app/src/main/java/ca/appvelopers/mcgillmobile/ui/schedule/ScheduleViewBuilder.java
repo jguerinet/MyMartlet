@@ -36,7 +36,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.DateUtils;
 
@@ -112,12 +112,12 @@ public class ScheduleViewBuilder {
 
         //Go through the 7 days of the week
         for(int i = 1; i < 8; i ++){
-            Day day = Day.getDay(i);
+            DayUtil day = DayUtil.getDay(i);
 
             //Set up the day name
             dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);
             TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
-            dayViewTitle.setText(day.toString());
+            dayViewTitle.setText(day.getString());
             dayContainer.addView(dayView);
 
             //Set up the schedule container for that one day

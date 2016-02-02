@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.model.Term;
 
 /**
@@ -157,7 +157,7 @@ public class WishlistSearchCourseAdapter
             mWaitlistRemaining.setVisibility(View.VISIBLE);
             mWaitlistRemaining.setText(mContext.getString(R.string.registration_waitlist,
                     course.getWaitlistRemaining()));
-            mDays.setText(Day.getDayStrings(course.getDays()));
+            mDays.setText(DayUtil.getDayStrings(course.getDays()));
             mHours.setText(course.getTimeString());
             mDates.setText(course.getDateString());
 

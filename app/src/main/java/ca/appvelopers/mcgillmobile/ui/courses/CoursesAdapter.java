@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.model.DayUtil;
 
 /**
  * The adapter used for the list of courses
@@ -88,7 +88,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
             mType.setText(course.getType());
             mCredits.setText(itemView.getContext().getString(
                     R.string.course_credits, course.getCredits()));
-            mDays.setText(Day.getDayStrings(course.getDays()));
+            mDays.setText(DayUtil.getDayStrings(course.getDays()));
             mHours.setText(course.getTimeString());
 
             //Show the check box if the user can unregister

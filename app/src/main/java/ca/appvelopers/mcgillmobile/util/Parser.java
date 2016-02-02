@@ -37,7 +37,7 @@ import java.util.Map;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.model.Season;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -560,9 +560,9 @@ public class Parser {
                         }
 
                         //Day Parsing
-                        List<Day> days = new ArrayList<>();
+                        List<DayUtil> days = new ArrayList<>();
                         for (char dayCharacter : dayCharacters) {
-                            days.add(Day.getDay(dayCharacter));
+                            days.add(DayUtil.getDay(dayCharacter));
                         }
 
                         //Date Range parsing
@@ -621,7 +621,7 @@ public class Parser {
             String number = "ERROR";
             String title = "";
             String type = "";
-            List<Day> days = new ArrayList<>();
+            List<DayUtil> days = new ArrayList<>();
             int crn = 0;
             String instructor = "";
             String location = "";
@@ -683,14 +683,14 @@ public class Parser {
                             String dayString = row.text();
                             //TBA Stuff
                             if(dayString.equals("TBA")){
-                                days.add(Day.TBA);
+                                days.add(DayUtil.TBA);
                                 i = 10;
                                 rowNumber++;
                             }
                             else{
                                 char[] dayCharacters = dayString.toCharArray();
                                 for(char dayChar : dayCharacters){
-                                    days.add(Day.getDay(dayChar));
+                                    days.add(DayUtil.getDay(dayChar));
                                 }
                             }
                             break;

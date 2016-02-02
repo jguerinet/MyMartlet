@@ -38,7 +38,7 @@ import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
@@ -264,25 +264,25 @@ public class SearchActivity extends DrawerActivity {
 
         //Days
         if(mMonday.isChecked()) {
-            builder.addDay(Day.MONDAY);
+            builder.addDay(DayUtil.MONDAY);
         }
         if(mTuesday.isChecked()) {
-            builder.addDay(Day.TUESDAY);
+            builder.addDay(DayUtil.TUESDAY);
         }
         if(mWednesday.isChecked()) {
-            builder.addDay(Day.WEDNESDAY);
+            builder.addDay(DayUtil.WEDNESDAY);
         }
         if(mThursday.isChecked()) {
-            builder.addDay(Day.THURSDAY);
+            builder.addDay(DayUtil.THURSDAY);
         }
         if(mFriday.isChecked()) {
-            builder.addDay(Day.FRIDAY);
+            builder.addDay(DayUtil.FRIDAY);
         }
         if(mSaturday.isChecked()) {
-            builder.addDay(Day.SATURDAY);
+            builder.addDay(DayUtil.SATURDAY);
         }
         if(mSunday.isChecked()) {
-            builder.addDay(Day.SUNDAY);
+            builder.addDay(DayUtil.SUNDAY);
         }
 
         String searchURL = builder.build();

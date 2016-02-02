@@ -42,7 +42,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
@@ -556,7 +556,7 @@ public class Connection {
 		/**
 		 * The course days
 		 */
-		private List<Day> mDays = new ArrayList<>();
+		private List<DayUtil> mDays = new ArrayList<>();
 
 		/**
 		 * Default Constructor
@@ -665,7 +665,7 @@ public class Connection {
 		 * @param day Adds a course day
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder addDay(Day day){
+		public SearchURLBuilder addDay(DayUtil day){
 			this.mDays.add(day);
 			return this;
 		}
@@ -705,7 +705,7 @@ public class Connection {
 					"&end_mi=" + mEndMinute +
 					"&end_ap=" + (mEndAM ? 'a' : 'p');
 
-			for(Day day : mDays){
+			for(DayUtil day : mDays){
 				url += "&sel_day=" + day.getDayChar();
 			}
 

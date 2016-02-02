@@ -30,7 +30,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Day;
+import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DateUtils;
 
@@ -83,7 +83,7 @@ public class DayFragment extends Fragment{
 
         //Day Title
         TextView dayTitle = (TextView)view.findViewById(R.id.day_title);
-        dayTitle.setText(Day.getDay(mDate).toString());
+        dayTitle.setText(DayUtil.getDay(mDate).toString());
 
         //Date Title
         TextView dayDate = (TextView)view.findViewById(R.id.day_date);
