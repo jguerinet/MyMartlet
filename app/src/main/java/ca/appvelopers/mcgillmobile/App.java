@@ -25,6 +25,7 @@ import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
 import com.guerinet.utils.prefs.IntPreference;
 import com.instabug.library.Instabug;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
@@ -170,6 +171,9 @@ public class App extends Application {
 
         //Inject Dagger
         component.inject(this);
+
+        //Initialize ATT
+        AndroidThreeTen.init(this);
 
         //Run the update code, if any
         Update.update(versionPref);
