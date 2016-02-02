@@ -29,6 +29,7 @@ All contributions are welcome!
 * [GPS - Analytics](https://developers.google.com/analytics/devguides/collection/android/v4/)
 * [GPS - Maps](https://developers.google.com/maps/documentation/android-api/)
 * [GSON](https://github.com/google/gson)
+* [Dagger](http://google.github.io/dagger)
 * [Android Utils](https://github.com/jguerinet/android-utils)
 * [FormGenerator](https://github.com/jguerinet/form-generator)
 * [Instabug](https://instabug.com/sdk-integration#android)
