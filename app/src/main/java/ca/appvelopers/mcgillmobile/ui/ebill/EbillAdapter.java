@@ -30,7 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
-import ca.appvelopers.mcgillmobile.util.Date;
+import ca.appvelopers.mcgillmobile.util.DateUtils;
 
 /**
  * Adapter used for the ebill page
@@ -94,9 +94,9 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
             Context context = itemView.getContext();
 
             mDate.setText(context.getString(R.string.ebill_statement_date,
-                    Date.getDateString(statement.getDate())));
+                    DateUtils.getDateString(statement.getDate())));
             mDueDate.setText(context.getString(R.string.ebill_due_date,
-                    Date.getDateString(statement.getDueDate())));
+                    DateUtils.getDateString(statement.getDueDate())));
 
             double amount = statement.getAmount();
             mAmount.setText(String.format("$%s", String.valueOf(amount)));

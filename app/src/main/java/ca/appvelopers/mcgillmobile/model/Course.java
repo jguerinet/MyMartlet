@@ -22,7 +22,7 @@ import org.threeten.bp.LocalTime;
 import java.io.Serializable;
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.util.Date;
+import ca.appvelopers.mcgillmobile.util.DateUtils;
 import timber.log.Timber;
 
 /**
@@ -368,14 +368,15 @@ public class Course implements Serializable {
             return "";
         }
 
-        return Date.getTimeString(startTime) + " - " + Date.getTimeString(endTime);
+        return DateUtils.getTimeString(startTime) + " - " + DateUtils.getTimeString(endTime);
     }
 
     /**
      * @return The course dates in String format
      */
     public String getDateString() {
-        return Date.getShortDateString(startDate) + " - " + Date.getShortDateString(endDate);
+        return DateUtils.getShortDateString(startDate) + " - " +
+                DateUtils.getShortDateString(endDate);
     }
 
     /**

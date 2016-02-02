@@ -32,7 +32,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Date;
+import ca.appvelopers.mcgillmobile.util.DateUtils;
 
 /**
  * Represents one day in the schedule in portrait mode
@@ -87,7 +87,7 @@ public class DayFragment extends Fragment{
 
         //Date Title
         TextView dayDate = (TextView)view.findViewById(R.id.day_date);
-        dayDate.setText(Date.getDateString(mDate));
+        dayDate.setText(DateUtils.getDateString(mDate));
 
         //Get the container for the timetable
         LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);

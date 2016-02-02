@@ -26,7 +26,7 @@ import org.joda.time.format.DateTimeFormatter;
  * @author Julien Guerinet
  * @since 2.0.0
  */
-public class Date {
+public class DateUtils {
 
 	/**
 	 * Returns a String of the hour (ex: 8 AM)

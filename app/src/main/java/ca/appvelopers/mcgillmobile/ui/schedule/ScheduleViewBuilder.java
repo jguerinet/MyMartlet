@@ -38,7 +38,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.Date;
+import ca.appvelopers.mcgillmobile.util.DateUtils;
 
 /**
  * Builds the schedule view based on the orientation and the current date
@@ -169,7 +169,7 @@ public class ScheduleViewBuilder {
 
             //Put the correct time
             TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-            time.setText(Date.getHourString(hour));
+            time.setText(DateUtils.getHourString(hour));
 
             //Add it to the right container
             timetableContainer.addView(timetableCell);
