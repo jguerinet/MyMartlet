@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import org.joda.time.LocalDate;
+import org.threeten.bp.LocalDate;
 
 import java.util.List;
 
@@ -29,39 +29,39 @@ import ca.appvelopers.mcgillmobile.R;
  * @since 1.0.0
  */
 public enum Day {
+    /**
+     * Used when no date has been set on the course
+     */
+    TBA,
     MONDAY,
     TUESDAY,
     WEDNESDAY,
     THURSDAY,
     FRIDAY,
     SATURDAY,
-    SUNDAY,
-    /**
-     * Used when no date has been set on the course
-     */
-    TBA;
+    SUNDAY;
 
     /**
-     * Gets the day based on a number between 0 and 6
+     * Gets the day based on a number between 1 and 7
      *
      * @param dayIndex The day index
      * @return The corresponding day, TBA if not found
      */
-    public static Day getDay(int dayIndex){
+    public static Day getDay(int dayIndex) {
         switch (dayIndex) {
-            case 0:
-                return Day.MONDAY;
             case 1:
-                return Day.TUESDAY;
+                return Day.MONDAY;
             case 2:
-                return Day.WEDNESDAY;
+                return Day.TUESDAY;
             case 3:
-                return Day.THURSDAY;
+                return Day.WEDNESDAY;
             case 4:
-                return Day.FRIDAY;
+                return Day.THURSDAY;
             case 5:
-                return Day.SATURDAY;
+                return Day.FRIDAY;
             case 6:
+                return Day.SATURDAY;
+            case 8:
                 return Day.SUNDAY;
             default:
                 return Day.TBA;
@@ -74,9 +74,8 @@ public enum Day {
      * @param date The date
      * @return The corresponding day
      */
-    public static Day getDay(LocalDate date){
-        //Offset by 1 since Jodatime starts counting at 1
-        return getDay(date.getDayOfWeek() - 1);
+    public static Day getDay(LocalDate date) {
+        return getDay(date.getDayOfWeek().getValue());
     }
 
     /**
@@ -85,7 +84,7 @@ public enum Day {
      * @param dayChar The day character
      * @return The corresponding day, TBA if not found
      */
-    public static Day getDay(char dayChar){
+    public static Day getDay(char dayChar) {
         switch (dayChar) {
             case 'M':
                 return Day.MONDAY;
@@ -111,7 +110,7 @@ public enum Day {
      *
      * @return The day character
      */
-    public String getDayChar(){
+    public String getDayChar() {
         switch (this) {
             case MONDAY:
                 return "M";
@@ -133,7 +132,7 @@ public enum Day {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         switch(this){
             case MONDAY:
                 return App.getContext().getString(R.string.monday);

@@ -107,11 +107,11 @@ public class ScheduleViewBuilder {
         //Get the schedule container
         LinearLayout dayContainer = (LinearLayout)view.findViewById(R.id.schedule_container);
 
-        //Find the index of the given date (days are offset by 1 in Jodatime)
-        int currentDayIndex = mDate.getDayOfWeek() - 1;
+        //Find the index of the given date
+        int currentDayIndex = mDate.getDayOfWeek();
 
         //Go through the 7 days of the week
-        for(int i = 0; i < 7; i ++){
+        for(int i = 1; i < 8; i ++){
             Day day = Day.getDay(i);
 
             //Set up the day name
