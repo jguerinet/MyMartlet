@@ -52,6 +52,8 @@ public class Update {
                 } else if (storedVersion == 12) {
                     update13();
                 }
+                //TODO v2.1.0
+                //Remove all user info, since we changed the data model completely
 
                 storedVersion ++;
             }
