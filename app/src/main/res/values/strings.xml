@@ -23,7 +23,6 @@
     <string name="title_agreement">EULA</string>
 
     <!-- General Strings -->
-    <string name="facebook_id">828093890556007</string>
     <string name="success">Success!</string>
     <string name="error">Error</string>
     <string name="warning">Warning</string>
@@ -222,7 +221,7 @@
     <string name="about_hernan">Hernan Gatta</string>
     <string name="about_hernan_role">Head iOS Developer</string>
     <string name="about_hernan_description">A blurb? I\'m AWESOME! (More so than Josh.)</string>
-    <string name="about_hernan_linkedin">ca.linkedin.com/in/hernangatta</string>
+    <string name="about_hernan_linkedin">http://ca.linkedin.com/in/hernangatta</string>
     <string name="about_hernan_email">gattahernan\@gmail.com</string>
     <string name="about_joshua">Joshua David Alfaro</string>
     <string name="about_joshua_role">Graphic Designer, Android Developer</string>
@@ -232,7 +231,7 @@
     <string name="about_julia">Julia Skrak</string>
     <string name="about_julia_role">iOS Developer</string>
     <string name="about_julia_description">Julia is an Arts Student majoring in Computer Science at McGill University. She is currently developing the iOS version. </string>
-    <string name="about_julia_linkedin">www.linkedin.com/pub/julia-skrak/a7/a9/765</string>
+    <string name="about_julia_linkedin">http://www.linkedin.com/pub/julia-skrak/a7/a9/765</string>
     <string name="about_julia_email">julia.skrak\@mail.mcgill.ca</string>
     <string name="about_julien">Julien Guerinet</string>
     <string name="about_julien_role">Project Manager, Head Android Developer</string>
@@ -295,7 +294,7 @@
     <string name="help_download">Download the Official McGill App</string>
 
     <!-- Maps -->
-    <string name="map_filter">Filter: </string>
+    <string name="map_filter">Filter by Category</string>
     <string name="map_all">All</string>
     <string name="map_favorites">Favorites</string>
     <string name="map_directions">Directions</string>
