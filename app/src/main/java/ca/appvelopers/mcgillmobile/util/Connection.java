@@ -28,6 +28,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.threeten.bp.DayOfWeek;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -505,158 +506,158 @@ public class Connection {
 	 */
 	public static class SearchURLBuilder {
 		/**
-		 * The course term
+		 * Course term
 		 */
-		private Term mTerm;
+		private Term term;
 		/**
-		 * The course subject
+		 * Course subject
 		 */
-		private String mSubject;
+		private String subject;
 		/**
-		 * The course number
+		 * Course number
 		 */
-		private String mCourseNumber = "";
+		private String courseNumber = "";
 		/**
-		 * The course title
+		 * Course title
 		 */
-		private String mTitle = "";
+		private String title = "";
 		/**
-		 * The course min credit
+		 * Course min credit
 		 */
-		private int mMinCredit = 0;
+		private int minCredit = 0;
 		/**
-		 * The course max credit
+		 * Course max credit
 		 */
-		private int mMaxCredit = 0;
+		private int maxCredit = 0;
 		/**
-		 * The course start hour
+		 * Course start hour
 		 */
-		private int mStartHour = 0;
+		private int startHour = 0;
 		/**
-		 * The course start minute
+		 * Course start minute
 		 */
-		private int mStartMinute = 0;
+		private int startMinute = 0;
 		/**
 		 * True if the start time is AM, false otherwise
 		 */
-		private boolean mStartAM = true;
+		private boolean startAM = true;
 		/**
-		 * The course end hour
+		 * Course end hour
 		 */
-		private int mEndHour = 0;
+		private int endHour = 0;
 		/**
-		 * The course end minute
+		 * Course end minute
 		 */
-		private int mEndMinute = 0;
+		private int endMinute = 0;
 		/**
 		 * True if the end time is AM, false otherwise
 		 */
-		private boolean mEndAM = true;
+		private boolean endAM = true;
 		/**
-		 * The course days
+		 * Course days
 		 */
-		private List<DayUtils> mDays = new ArrayList<>();
+		private List<DayOfWeek> days = new ArrayList<>();
 
 		/**
 		 * Default Constructor
 		 *
-		 * @param term    The course term
-		 * @param subject The course subject
+		 * @param term    Course term
+		 * @param subject Course subject
 		 */
-		public SearchURLBuilder(Term term, String subject){
-			this.mTerm = term;
-			this.mSubject = subject;
+		public SearchURLBuilder(Term term, String subject) {
+			this.term = term;
+			this.subject = subject;
 		}
 
 		/* SETTERS */
 
 		/**
-		 * @param courseNumber Sets the course number
+		 * @param courseNumber Course number
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder courseNumber(String courseNumber){
-			this.mCourseNumber = courseNumber;
+		public SearchURLBuilder courseNumber(String courseNumber) {
+			this.courseNumber = courseNumber;
 			return this;
 		}
 
 		/**
-		 * @param title Sets the course title
+		 * @param title Course title
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder title(String title){
-			this.mTitle = title;
+		public SearchURLBuilder title(String title) {
+			this.title = title;
 			return this;
 		}
 
 		/**
-		 * @param minCredit Sets the course min credits
+		 * @param minCredit Course min credits
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder minCredits(int minCredit){
-			this.mMinCredit = minCredit;
+		public SearchURLBuilder minCredits(int minCredit) {
+			this.minCredit = minCredit;
 			return this;
 		}
 
 		/**
-		 * @param maxCredit Sets the course max credits
+		 * @param maxCredit Course max credits
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder maxCredits(int maxCredit){
-			this.mMaxCredit = maxCredit;
+		public SearchURLBuilder maxCredits(int maxCredit) {
+			this.maxCredit = maxCredit;
 			return this;
 		}
 
 		/**
-		 * @param startHour Sest the course start hour
+		 * @param startHour Course start hour
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder startHour(int startHour){
-			this.mStartHour = startHour;
+		public SearchURLBuilder startHour(int startHour) {
+			this.startHour = startHour;
 			return this;
 		}
 
 		/**
-		 * @param startMinute Sets the course start minute
+		 * @param startMinute Course start minute
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder startMinute(int startMinute){
-			this.mStartMinute = startMinute;
+		public SearchURLBuilder startMinute(int startMinute) {
+			this.startMinute = startMinute;
 			return this;
 		}
 
 		/**
-		 * @param startAM Sets if the course starting time is AM or PM
+		 * @param startAM True if the course is AM, false if PM
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder startAM(boolean startAM){
-			this.mStartAM = startAM;
+		public SearchURLBuilder startAM(boolean startAM) {
+			this.startAM = startAM;
 			return this;
 		}
 
 		/**
-		 * @param endHour Sets the course end hour
+		 * @param endHour Course end hour
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder endHour(int endHour){
-			this.mEndHour = endHour;
+		public SearchURLBuilder endHour(int endHour) {
+			this.endHour = endHour;
 			return this;
 		}
 
 		/**
-		 * @param endMinute Sets the course end minute
+		 * @param endMinute Course end minute
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder endMinute(int endMinute){
-			this.mEndMinute = endMinute;
+		public SearchURLBuilder endMinute(int endMinute) {
+			this.endMinute = endMinute;
 			return this;
 		}
 
 		/**
-		 * @param endAM Sets if the course ending time is AM or PM
+		 * @param endAM True if the ending time is AM, false if PM
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder endAM(boolean endAM){
-			this.mEndAM = endAM;
+		public SearchURLBuilder endAM(boolean endAM) {
+			this.endAM = endAM;
 			return this;
 		}
 
@@ -664,8 +665,8 @@ public class Connection {
 		 * @param day Adds a course day
 		 * @return The builder instance
 		 */
-		public SearchURLBuilder addDay(DayUtils day){
-			this.mDays.add(day);
+		public SearchURLBuilder addDay(DayOfWeek day) {
+			this.days.add(day);
 			return this;
 		}
 
@@ -674,9 +675,9 @@ public class Connection {
 		 *
 		 * @return The course search URL to use for this course search
 		 */
-		public String build(){
+		public String build() {
 			String url = COURSE_SEARCH_URL +
-					"term_in=" + mTerm.getYear() + mTerm.getSeason().getSeasonNumber() +
+					"term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
 					"&sel_subj=dummy" +
 					"&sel_day=dummy" +
 					"&sel_schd=dummy" +
@@ -687,25 +688,25 @@ public class Connection {
 					"&sel_instr=dummy" +
 					"&sel_ptrm=dummy" +
 					"&sel_attr=dummy" +
-					"&sel_subj=" + mSubject +
-					"&sel_crse=" + mCourseNumber +
-					"&sel_title=" + mTitle +
+					"&sel_subj=" + subject +
+					"&sel_crse=" + courseNumber +
+					"&sel_title=" + title +
 					"&sel_schd=%25" +
-					"&sel_from_cred=" + mMinCredit +
-					"&sel_to_cred=" + mMaxCredit +
+					"&sel_from_cred=" + minCredit +
+					"&sel_to_cred=" + maxCredit +
 					"&sel_levl=%25" +
 					"&sel_ptrm=%25" +
 					"&sel_instr=%25" +
 					"&sel_attr=%25" +
-					"&begin_hh=" + mStartHour +
-					"&begin_mi=" + mStartMinute +
-					"&begin_ap=" + (mStartAM ? 'a' : 'p') +
-					"&end_hh=" + mEndHour +
-					"&end_mi=" + mEndMinute +
-					"&end_ap=" + (mEndAM ? 'a' : 'p');
+					"&begin_hh=" + startHour +
+					"&begin_mi=" + startMinute +
+					"&begin_ap=" + (startAM ? 'a' : 'p') +
+					"&end_hh=" + endHour +
+					"&end_mi=" + endMinute +
+					"&end_ap=" + (endAM ? 'a' : 'p');
 
-			for(DayUtils day : mDays){
-				url += "&sel_day=" + day.getDayChar();
+            for (DayOfWeek day : days) {
+				url += "&sel_day=" + DayUtils.getDayChar(day);
 			}
 
 			return url;

@@ -29,6 +29,8 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.threeten.bp.DayOfWeek;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,6 @@ import ca.appvelopers.mcgillmobile.ui.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.Device;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -264,25 +265,25 @@ public class SearchActivity extends DrawerActivity {
 
         //Days
         if(mMonday.isChecked()) {
-            builder.addDay(DayUtils.MONDAY);
+            builder.addDay(DayOfWeek.MONDAY);
         }
         if(mTuesday.isChecked()) {
-            builder.addDay(DayUtils.TUESDAY);
+            builder.addDay(DayOfWeek.TUESDAY);
         }
         if(mWednesday.isChecked()) {
-            builder.addDay(DayUtils.WEDNESDAY);
+            builder.addDay(DayOfWeek.WEDNESDAY);
         }
         if(mThursday.isChecked()) {
-            builder.addDay(DayUtils.THURSDAY);
+            builder.addDay(DayOfWeek.THURSDAY);
         }
         if(mFriday.isChecked()) {
-            builder.addDay(DayUtils.FRIDAY);
+            builder.addDay(DayOfWeek.FRIDAY);
         }
         if(mSaturday.isChecked()) {
-            builder.addDay(DayUtils.SATURDAY);
+            builder.addDay(DayOfWeek.SATURDAY);
         }
         if(mSunday.isChecked()) {
-            builder.addDay(DayUtils.SUNDAY);
+            builder.addDay(DayOfWeek.SUNDAY);
         }
 
         String searchURL = builder.build();
