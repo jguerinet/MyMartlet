@@ -124,7 +124,7 @@ public class TranscriptActivity extends DrawerActivity {
         Transcript transcript = App.getTranscript();
 
         //Reload all of the info
-        mCGPA.setText(getString(R.string.transcript_CGPA, transcript.getCgpa()));
+        mCGPA.setText(getString(R.string.transcript_CGPA, transcript.getCGPA()));
         mTotalCredits.setText(getString(R.string.transcript_credits, transcript.getTotalCredits()));
         mList.setAdapter(new TranscriptAdapter(transcript.getSemesters()));
     }

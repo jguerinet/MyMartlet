@@ -93,12 +93,12 @@ public class CheckerService extends IntentService {
 			Transcript newTranscript = App.getTranscript();
 
 			//Check if the CGPA has changed, alert the user if it has
-			if(Math.abs(oldTranscript.getCgpa() - newTranscript.getCgpa()) >= 0.01){
+			if(Math.abs(oldTranscript.getCGPA() - newTranscript.getCGPA()) >= 0.01){
                 //TODO
 				Intent intent = new Intent(this, SplashActivity.class);
 //						.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT);
 				//TODO Use String here
-				createNotification(intent, "Your new CGPA is " + newTranscript.getCgpa(),
+				createNotification(intent, "Your new CGPA is " + newTranscript.getCGPA(),
 						GRADES_ID);
 				return;
 			}

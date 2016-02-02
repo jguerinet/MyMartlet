@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,34 +26,34 @@ import java.util.List;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Transcript implements Serializable{
+public class Transcript implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
-     * The user's cumulative GPA
+     * User's cumulative GPA
      */
-    private double mCGPA;
+    private double cgpa;
     /**
-     * The user's total number of credits
+     * User's total number of credits
      */
-    private double mTotalCredits;
+    private double totalCredits;
     /**
-     * The list of semesters
+     * List of semesters
      */
-    private List<Semester> mSemesters;
+    private List<Semester> semesters;
 
     /**
-     * Default Constructo
+     * Default Constructor
      *
-     * @param cgpa         The CGPA
-     * @param totalCredits The total number of credits
-     * @param semesters    The semesters
+     * @param cgpa         CGPA
+     * @param totalCredits Total number of credits
+     * @param semesters    List of semesters
      */
-    public Transcript(double cgpa, double totalCredits, List<Semester> semesters){
-        this.mCGPA = cgpa;
-        this.mTotalCredits = totalCredits;
-        this.mSemesters = semesters;
+    public Transcript(double cgpa, double totalCredits, List<Semester> semesters) {
+        this.cgpa = cgpa;
+        this.totalCredits = totalCredits;
+        this.semesters = semesters;
         //Store the semesters in reverse chronological order
-        Collections.reverse(this.mSemesters);
+        Collections.reverse(this.semesters);
     }
 
     /* GETTERS */
@@ -61,21 +61,21 @@ public class Transcript implements Serializable{
     /**
      * @return The CGPA
      */
-    public double getCgpa(){
-        return this.mCGPA;
+    public double getCGPA() {
+        return cgpa;
     }
 
     /**
      * @return The total number of credits
      */
-    public double getTotalCredits(){
-        return this.mTotalCredits;
+    public double getTotalCredits() {
+        return totalCredits;
     }
 
     /**
      * @return The semesters (in reverse chronological order)
      */
-    public List<Semester> getSemesters(){
-        return this.mSemesters;
+    public List<Semester> getSemesters() {
+        return semesters;
     }
 }
