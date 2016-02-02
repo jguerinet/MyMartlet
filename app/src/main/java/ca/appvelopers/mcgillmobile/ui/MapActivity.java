@@ -232,7 +232,7 @@ public class MapActivity extends DrawerActivity {
             for (Place place : App.getPlaces()) {
                 //Create a MapPlace for this
                 Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(place.getLatitude(), place.getLongitude()))
+                        .position(place.getCoordinates())
                         .draggable(false)
                         .visible(true));
 
@@ -496,8 +496,7 @@ public class MapActivity extends DrawerActivity {
      * @param place The place
      */
     private void focusPlace(MapPlace place) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(
-                new LatLng(place.mPlace.getLatitude(), place.mPlace.getLongitude())));
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(place.mPlace.getCoordinates()));
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,28 +26,28 @@ import java.util.List;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Place implements Serializable{
+public class Place implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * The place name
      */
-    private String mName;
+    private String name;
     /**
      * The place types
      */
-    private List<PlaceType> mTypes;
+    private List<PlaceType> types;
     /**
      * The address of this place
      */
-    private String mAddress;
+    private String address;
     /**
      * The latitude coordinate of this place
      */
-    private double mLatitude;
+    private double latitude;
     /**
      * The longitude coordinate of this place
      */
-    private double mLongitude;
+    private double longitude;
 
     /**
      * Default Constructor
@@ -56,13 +58,12 @@ public class Place implements Serializable{
      * @param latitude  The latitude coordinate of this place
      * @param longitude The longitude coordinate of this place
      */
-    public Place(String name, String[] types, String address, double latitude,
-                 double longitude){
-        this.mName = name;
-        this.mTypes = PlaceType.getTypes(types);
-        this.mAddress = address;
-        this.mLatitude = latitude;
-        this.mLongitude = longitude;
+    public Place(String name, String[] types, String address, double latitude, double longitude) {
+        this.name = name;
+        this.types = PlaceType.getTypes(types);
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     /* GETTERS */
@@ -70,29 +71,22 @@ public class Place implements Serializable{
     /**
      * @return The name of this place
      */
-    public String getName(){
-        return this.mName;
+    public String getName() {
+        return name;
     }
 
     /**
      * @return The address of this place
      */
-    public String getAddress(){
-        return this.mAddress;
+    public String getAddress() {
+        return address;
     }
 
     /**
-     * @return The latitude coordinate of this place
+     * @return The place coordinates
      */
-    public double getLatitude(){
-        return this.mLatitude;
-    }
-
-    /**
-     * @return The longitude coordinate of this place
-     */
-    public double getLongitude(){
-        return this.mLongitude;
+    public LatLng getCoordinates() {
+        return new LatLng(latitude, longitude);
     }
 
     /**
@@ -101,20 +95,19 @@ public class Place implements Serializable{
      * @param type The type
      * @return True if it is part of the type, false otherwise
      */
-    public boolean isOfType(PlaceType type){
-        return mTypes.contains(type);
+    public boolean isOfType(PlaceType type) {
+        return types.contains(type);
     }
 
     @Override
-    public boolean equals(Object object){
-        if(!(object instanceof Place)){
+    public boolean equals(Object object) {
+        if (!(object instanceof Place)) {
             return false;
         }
 
-        Place place = (Place)object;
-        return mName.equalsIgnoreCase(place.getName()) &&
-                mAddress.equalsIgnoreCase(place.getAddress()) &&
-                mLatitude == place.getLatitude() &&
-                mLongitude == place.getLongitude();
+        Place place = (Place) object;
+        return name.equalsIgnoreCase(place.getName()) &&
+                address.equalsIgnoreCase(place.getAddress()) &&
+                getCoordinates().equals(place.getCoordinates());
     }
 }
