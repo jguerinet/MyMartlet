@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,10 @@
 package ca.appvelopers.mcgillmobile.util;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -166,9 +167,9 @@ public class CourseCalendar {
 			endTime = item.getEndTime();
 		}
 		startDate = item.getStartDate();
-		firstClassBegin = startDate.toLocalDateTime(startTime);
-		firstClassEnd   = startDate.toLocalDateTime(endTime);
-		lastDay = item.getEndDate().toLocalDateTime(new LocalTime(23, 0));
+		firstClassBegin = LocalDateTime.of(startDate, startTime);
+		firstClassEnd   = LocalDateTime.of(startDate, endTime);
+		lastDay = LocalDateTime.of(item.getEndDate(), LocalTime.of(23, 0));
 		if (mRecurring) {
 			event = makeEvent(summary, description, location, firstClassBegin, 
 							   firstClassEnd, lastDay);
@@ -375,7 +376,7 @@ public class CourseCalendar {
 		} else {
 			startTime = item.getStartTime();
 		}
-		return makeEventStart(item.getStartDate().toLocalDateTime(startTime));
+		return makeEventStart(LocalDateTime.of(item.getStartDate(), startTime));
 	}
 	
 	/**
@@ -403,7 +404,7 @@ public class CourseCalendar {
 		} else {
 			endTime = item.getEndTime();
 		}
-		return makeEventEnd(item.getEndDate().toLocalDateTime(endTime));
+		return makeEventEnd(LocalDateTime.of(item.getEndDate(), endTime));
 	}
 	
 	/**
@@ -447,7 +448,7 @@ public class CourseCalendar {
 	 */
 	@SuppressWarnings("unused")
 	private String makeEventRecurrence(Course item){
-		return makeEventRecurrence(item.getEndDate().toLocalDateTime(new LocalTime(23, 0)));
+		return makeEventRecurrence(LocalDateTime.of(item.getEndDate(), LocalTime.of(23, 0)));
 	}
 	
 	/* ICS FORMATTING METHODS */
@@ -471,10 +472,8 @@ public class CourseCalendar {
 	 * @param date Event to make date out of
 	 * @return Formatted time
 	 */
-	private String formatTimeToICS(LocalDateTime date){
-		String time;
-		time = date.toString("YYYYMMdd")+"T"+date.toString("HHmmss");
-		return time;
+	private String formatTimeToICS(LocalDateTime date) {
+        return DateTimeFormatter.ofPattern("YYYYMMddTHHmmss").format(date);
 	}
 	
 	//Joda DateTime's getDayOfWeek method returns an integer where 0 is Sunday.  
