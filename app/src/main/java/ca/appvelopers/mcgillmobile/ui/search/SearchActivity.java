@@ -39,7 +39,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Day;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
@@ -48,6 +47,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Device;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import timber.log.Timber;
 
@@ -341,8 +341,9 @@ public class SearchActivity extends DrawerActivity {
     }
 
     @Override
-    protected @Homepage.Type int getCurrentPage() {
-        return Homepage.SEARCH_COURSES;
+    protected @HomepageManager.Homepage
+    int getCurrentPage() {
+        return HomepageManager.SEARCH_COURSES;
     }
 
     /**

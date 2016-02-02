@@ -50,13 +50,13 @@ import javax.inject.Named;
 import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
 import timber.log.Timber;
 
@@ -105,6 +105,11 @@ public abstract class DrawerActivity extends BaseActivity
     @Inject
     protected PasswordPreference passwordPref;
     /**
+     * The {@link HomepageManager} instance
+     */
+    @Inject
+    protected HomepageManager homepageManager;
+    /**
      * The toggle for the drawer inside the action bar
      */
     private ActionBarDrawerToggle mDrawerToggle;
@@ -146,7 +151,7 @@ public abstract class DrawerActivity extends BaseActivity
         mDrawerToggle.syncState();
 
         //Check the current item
-        mDrawer.getMenu().findItem(Homepage.getMenuId(getCurrentPage())).setChecked(true);
+        mDrawer.getMenu().findItem(homepageManager.getMenuId(getCurrentPage())).setChecked(true);
 
         //Fade in the main view
         mMainView.setAlpha(0);
@@ -196,15 +201,6 @@ public abstract class DrawerActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        @Homepage.Type int homepage = Homepage.getHomepage(item.getItemId());
-
-        //If it's the same as the current homepage, close the drawer and don't continue
-        if (homepage == getCurrentPage()) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-            return true;
-        }
-
-        final Class activity;
         switch (item.getItemId()) {
             case R.id.facebook:
                 shareOnFacebook();
@@ -216,33 +212,36 @@ public abstract class DrawerActivity extends BaseActivity
                 logout();
                 return true;
             default:
+                @HomepageManager.Homepage int homepage =
+                        homepageManager.getHomepage(item.getItemId());
+
+                //If it's the same as the current homepage, close the drawer and don't continue
+                if (homepage == getCurrentPage()) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+
                 //Try to get one of the activities to open
-                activity = Homepage.getActivity(homepage);
-                break;
+                final Class activity = homepageManager.getActivity(homepage);
+
+                //If it's not the currently opened activity, launch it after a short delay
+                //  so that the user sees the drawer closing
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(DrawerActivity.this, activity));
+                        finish();
+                    }
+                }, 250);
+
+                //Fade out the main view
+                mMainView.animate().alpha(0).setDuration(150);
+
+                //Close the drawer
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                return true;
         }
-
-        if (activity == null) {
-            //Nothing found, do nothing
-            return false;
-        }
-
-        //If it's not the currently opened activity, launch it after a short delay
-        //  so that the user sees the drawer closing
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(DrawerActivity.this, activity));
-                finish();
-            }
-        }, 250);
-
-        //Fade out the main view
-        mMainView.animate().alpha(0).setDuration(150);
-
-        //Close the drawer
-        mDrawerLayout.closeDrawer(GravityCompat.START);
-
-        return true;
     }
 
     /* ABSTRACT */
@@ -250,7 +249,8 @@ public abstract class DrawerActivity extends BaseActivity
     /**
      * @return The page in the drawer that this activity represents
      */
-    protected abstract @Homepage.Type int getCurrentPage();
+    protected abstract @HomepageManager.Homepage
+    int getCurrentPage();
 
     /* HELPERS */
 
@@ -267,7 +267,8 @@ public abstract class DrawerActivity extends BaseActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Analytics.get().sendEvent("Logout", "Clicked");
-                                Clear.all(rememberUsernamePref, usernamePref, passwordPref);
+                                Clear.all(rememberUsernamePref, usernamePref, passwordPref,
+                                        homepageManager);
                                 //Go back to SplashActivity
                                 startActivity(new Intent(DrawerActivity.this,
                                         SplashActivity.class));

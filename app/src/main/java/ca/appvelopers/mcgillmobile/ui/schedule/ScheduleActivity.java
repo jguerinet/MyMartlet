@@ -39,7 +39,6 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
@@ -48,6 +47,7 @@ import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
@@ -150,8 +150,9 @@ public class ScheduleActivity extends DrawerActivity {
     }
 
     @Override
-    protected @Homepage.Type int getCurrentPage() {
-        return Homepage.SCHEDULE;
+    protected @HomepageManager.Homepage
+    int getCurrentPage() {
+        return HomepageManager.SCHEDULE;
     }
 
     /**

@@ -123,10 +123,6 @@ public class Constants {
      */
     public static final String LANGUAGE = "language";
     /**
-     * The user's chosen homepage
-     */
-    public static final String HOMEPAGE = "home_page";
-    /**
      * Intent key that is true if this is the first time the user is signing in, false otherwise
      */
     public static final String FIRST_OPEN = "first_open";

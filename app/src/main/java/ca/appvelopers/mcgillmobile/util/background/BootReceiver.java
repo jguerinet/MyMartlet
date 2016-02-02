@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.guerinet.utils.prefs.BooleanPreference;
-import com.guerinet.utils.prefs.StringPreference;
 
 import java.util.Calendar;
 
@@ -31,6 +30,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 
@@ -42,15 +42,15 @@ import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
  */
 public class BootReceiver extends BroadcastReceiver {
     /**
-     * Username {@link StringPreference}
+     * {@link UsernamePreference}
      */
     @Inject
     protected UsernamePreference usernamePref;
     /**
-     * Password {@link StringPreference}
+     * {@link PasswordPreference} instance
      */
     @Inject
-    protected StringPreference passwordPref;
+    protected PasswordPreference passwordPref;
     /**
      * Seat checker {@link BooleanPreference}
      */

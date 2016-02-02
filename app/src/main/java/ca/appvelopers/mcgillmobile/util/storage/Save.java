@@ -53,13 +53,6 @@ public class Save {
         putInt(Constants.LANGUAGE, App.getLanguage());
     }
 
-    /**
-     * Saves the user's homepage
-     */
-    public static void homepage() {
-        putInt(Constants.HOMEPAGE, App.getHomepage());
-    }
-
     /* INTERNAL STORAGE */
 
     /**

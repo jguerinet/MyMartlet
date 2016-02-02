@@ -42,13 +42,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
  * Displays the user's MyCourses page
@@ -196,7 +196,8 @@ public class MyCoursesActivity extends DrawerActivity {
     }
 
     @Override
-    protected @Homepage.Type int getCurrentPage() {
-        return Homepage.MY_COURSES;
+    protected @HomepageManager.Homepage
+    int getCurrentPage() {
+        return HomepageManager.MY_COURSES;
     }
 }

@@ -24,11 +24,11 @@ import java.util.ArrayList;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
  * Clears objects from internal storage or {@link SharedPreferences}
@@ -43,9 +43,10 @@ public class Clear {
      * @param rememberUsernamePref Remember username {@link BooleanPreference}
      * @param usernamePref         {@link UsernamePreference} instance
      * @param passwordPref         {@link PasswordPreference} instance
+     * @param homepageManager      {@link HomepageManager} instance
      */
     public static void all(BooleanPreference rememberUsernamePref, UsernamePreference usernamePref,
-            PasswordPreference passwordPref) {
+            PasswordPreference passwordPref, HomepageManager homepageManager) {
         //If the user had not chosen to remember their username, clear it
         if (!rememberUsernamePref.get()) {
             usernamePref.clear();
@@ -66,8 +67,8 @@ public class Clear {
         //User Info
         App.setUser(null);
 
-        //Homepage
-        App.setHomepage(Homepage.SCHEDULE);
+        //HomepageManager
+        homepageManager.clear();
 
         //Default Term
         App.setDefaultTerm(null);

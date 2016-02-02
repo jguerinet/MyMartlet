@@ -27,12 +27,14 @@ import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.dialog.DialogUtils;
 
+import javax.inject.Inject;
+
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.FacultyListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
  * Initial walkthrough
@@ -44,11 +46,22 @@ public class WalkthroughAdapter extends PagerAdapter {
      * True if this is the first open, false otherwise
      *  For a first open there is an extra page at the end
      */
-    private boolean mFirstOpen;
+    private boolean firstOpen;
+    /**
+     * App context
+     */
+    @Inject
+    protected Context context;
+    /**
+     * The {@link HomepageManager} instance
+     */
+    @Inject
+    protected HomepageManager homepagePref;
 
-    public WalkthroughAdapter(boolean firstOpen) {
+    public WalkthroughAdapter(Context context, boolean firstOpen) {
         super();
-        mFirstOpen = firstOpen;
+        this.firstOpen = firstOpen;
+        App.component(context).inject(this);
     }
 
     @Override
@@ -76,20 +89,19 @@ public class WalkthroughAdapter extends PagerAdapter {
             case 4:
                 view = View.inflate(context, R.layout.item_walkthrough_4, null);
                 break;
-            //Default Homepage / Faculty (first open only)
+            //Default HomepageManager / Faculty (first open only)
             case 5:
                 view = View.inflate(context, R.layout.item_walkthrough_5, null);
 
                 FormGenerator fg = FormGenerator.bind(context, (LinearLayout) view);
 
-                //Homepage Prompt
+                //HomepageManager Prompt
                 fg.text(R.string.walkthrough_homepage)
                         .gravity(Gravity.CENTER)
                         .padding(R.dimen.padding_small);
 
-                //Homepage
-                final TextViewFormItem homepageView =
-                        fg.text(Homepage.getTitleString(App.getHomepage()));
+                //HomepageManager
+                final TextViewFormItem homepageView = fg.text(homepagePref.getTitleString());
                 homepageView
                         .leftIcon(R.drawable.ic_phone_android)
                         .rightIcon(R.drawable.ic_chevron_right, R.color.grey)
@@ -97,18 +109,18 @@ public class WalkthroughAdapter extends PagerAdapter {
                             @Override
                             public void onClick(View v) {
                                 DialogUtils.list(context, R.string.settings_homepage_title,
-                                        new HomepageListAdapter() {
+                                        new HomepageListAdapter(context) {
                                             @Override
                                             public void onHomepageSelected(
-                                                    @Homepage.Type int homepage) {
+                                                    @HomepageManager.Homepage int choice) {
+                                                //Update it
+                                                homepageManager.set(choice);
+
                                                 homepageView.view().setText(
-                                                        Homepage.getTitleString(homepage));
+                                                        homepageManager.getTitleString());
 
-                                                Analytics.get().sendEvent("Walkthrough", "Homepage",
-                                                        Homepage.getString(homepage));
-
-                                                //Update it in the App
-                                                App.setHomepage(homepage);
+                                                Analytics.get().sendEvent("Walkthrough", "HomepageManager",
+                                                        homepageManager.getString());
                                             }
                                         });
                             }
@@ -160,7 +172,7 @@ public class WalkthroughAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mFirstOpen ? 6 : 5;
+        return firstOpen ? 6 : 5;
     }
 
     @Override

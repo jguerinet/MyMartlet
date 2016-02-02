@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model;
+package ca.appvelopers.mcgillmobile.util.manager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
+
+import com.guerinet.utils.prefs.IntPreference;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import ca.appvelopers.mcgillmobile.App;
+import javax.inject.Inject;
+
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.MapActivity;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
@@ -36,19 +41,19 @@ import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistActivity;
 
 /**
- * List of possible homepages
+ * Manages the user's homepageManager, an extension of the {@link IntPreference}
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Homepage {
+public class HomepageManager extends IntPreference {
     /**
      * The different homepages
      */
     @Retention(RetentionPolicy.CLASS)
-    @IntDef({UNDEFINED, SCHEDULE, TRANSCRIPT, MY_COURSES, COURSES, WISHLIST, SEARCH_COURSES, EBILL,
-            MAP, DESKTOP, SETTINGS})
-    public @interface Type{}
-    public static final int UNDEFINED = -1;
+    @IntDef({SCHEDULE, TRANSCRIPT, MY_COURSES, COURSES, WISHLIST, SEARCH_COURSES, EBILL, MAP,
+            DESKTOP, SETTINGS})
+    public @interface Homepage {}
+
     public static final int SCHEDULE = 0;
     public static final int TRANSCRIPT = 1;
     public static final int MY_COURSES = 2;
@@ -61,10 +66,92 @@ public class Homepage {
     public static final int SETTINGS = 9;
 
     /**
-     * @param homepage Homepage
+     * App context
+     */
+    private Context context;
+
+    /**
+     * Default Constructor
+     *
+     * @param prefs        {@link SharedPreferences} instance
+     * @param context      App context
+     */
+    @Inject
+    public HomepageManager(SharedPreferences prefs, Context context) {
+        super(prefs, "home_page", SCHEDULE);
+        this.context = context;
+    }
+
+    @Override
+    @SuppressWarnings("ResourceType")
+    public @Homepage int get() {
+        return super.get();
+    }
+
+    @Override
+    public void set(@Homepage int value) {
+        super.set(value);
+    }
+
+    /**
+     * @return The title String for the settings and/or the walkthrough
+     */
+    public String getTitleString() {
+        return context.getString(R.string.settings_homepage, getString(get()));
+    }
+
+    /**
+     * @return Class to open for the current homepage
+     */
+    public Class getActivity() {
+        return getActivity(get());
+    }
+
+    /**
+     * @return The title of the current homepage
+     */
+    public String getString() {
+        return getString(get());
+    }
+
+    /**
+     * Returns the class to open based on the chosen homepage
+     *
+     * @param homepage The homepage to find the class for
+     * @return Class to open
+     */
+    public Class getActivity(@Homepage int homepage) {
+        switch (homepage) {
+            case SCHEDULE:
+                return ScheduleActivity.class;
+            case TRANSCRIPT:
+                return TranscriptActivity.class;
+            case MY_COURSES:
+                return MyCoursesActivity.class;
+            case COURSES:
+                return CoursesActivity.class;
+            case WISHLIST:
+                return WishlistActivity.class;
+            case SEARCH_COURSES:
+                return SearchActivity.class;
+            case EBILL:
+                return EbillActivity.class;
+            case MAP:
+                return MapActivity.class;
+            case DESKTOP:
+                return DesktopActivity.class;
+            case SETTINGS:
+                return SettingsActivity.class;
+            default:
+                throw new IllegalStateException("Unknown homepage");
+        }
+    }
+
+    /**
+     * @param homepage The homepage
      * @return The title of the homepage
      */
-    public static String getString(@Type int homepage) {
+    public String getString(@Homepage int homepage) {
         int stringId;
         switch(homepage) {
             case SCHEDULE:
@@ -100,58 +187,16 @@ public class Homepage {
             default:
                 throw new IllegalArgumentException("Unknown homepage: " + homepage);
         }
-        return App.getContext().getString(stringId);
-    }
-
-    /**
-     * @param homepage Homepage
-     * @return The title String for the settings and/or the walkthrough
-     */
-    public static String getTitleString(@Type int homepage) {
-        return App.getContext().getString(R.string.settings_homepage, getString(homepage));
-    }
-
-    /**
-     * Returns the class to open based on the chosen homepage
-     *
-     * @param homepage Homepage
-     * @return Class to open
-     */
-    public static Class getActivity(@Type int homepage) {
-        switch (homepage) {
-            case SCHEDULE:
-                return ScheduleActivity.class;
-            case TRANSCRIPT:
-                return TranscriptActivity.class;
-            case MY_COURSES:
-                return MyCoursesActivity.class;
-            case COURSES:
-                return CoursesActivity.class;
-            case WISHLIST:
-                return WishlistActivity.class;
-            case SEARCH_COURSES:
-                return SearchActivity.class;
-            case EBILL:
-                return EbillActivity.class;
-            case MAP:
-                return MapActivity.class;
-            case DESKTOP:
-                return DesktopActivity.class;
-            case SETTINGS:
-                return SettingsActivity.class;
-            //Facebook, Twitter, Logout
-            default:
-                return null;
-        }
+        return context.getString(stringId);
     }
 
     /**
      * Converts the menu item Id to a homepage
      *
      * @param menuId Clicked menu item Id
-     * @return Homepage equivalent, {@link #UNDEFINED} if none
+     * @return Homepage equivalent
      */
-    public static @Homepage.Type int getHomepage(@IdRes int menuId) {
+    public @Homepage int getHomepage(@IdRes int menuId) {
         switch (menuId) {
             case R.id.schedule:
                 return SCHEDULE;
@@ -173,19 +218,18 @@ public class Homepage {
                 return DESKTOP;
             case R.id.settings:
                 return SETTINGS;
-            //Facebook, Twitter, Logout
             default:
-                return UNDEFINED;
+                throw new IllegalStateException("Unknown homepage");
         }
     }
 
     /**
-     * Returns the menu Id for the given homepage
+     * Returns the menu Id for the given homepageManager
      *
-     * @param homepage Homepage
+     * @param homepage HomepageManager
      * @return Corresponding Menu item Id
      */
-    public static @IdRes int getMenuId(@Homepage.Type int homepage) {
+    public @IdRes int getMenuId(@Homepage int homepage) {
         switch (homepage) {
             case SCHEDULE:
                 return R.id.schedule;
@@ -207,9 +251,8 @@ public class Homepage {
                 return R.id.desktop;
             case SETTINGS:
                 return R.id.settings;
-            //Facebook, Twitter, Logout
             default:
-                return UNDEFINED;
+                throw new IllegalStateException("Unknown homepage");
         }
     }
 }

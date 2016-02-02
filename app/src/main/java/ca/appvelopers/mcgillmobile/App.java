@@ -38,7 +38,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
@@ -120,10 +119,6 @@ public class App extends Application {
      * {@link User} instance
      */
     private static User user;
-    /**
-     * User's chosen homepage
-     */
-    private static @Homepage.Type int homepage = Homepage.UNDEFINED;
     /**
      * User's chosen default {@link Term}
      */
@@ -320,16 +315,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The user's chosen homepage
-     */
-    public static @Homepage.Type int getHomepage() {
-        if (homepage == Homepage.UNDEFINED) {
-            homepage = Load.homepage();
-        }
-        return homepage;
-    }
-
-    /**
      * @return The user's chosen default {@link Term}
      */
     public static Term getDefaultTerm(){
@@ -425,14 +410,6 @@ public class App extends Application {
     public static void setUser(User user){
         App.user = user;
         Save.user();
-    }
-
-    /**
-     * @param homepage The user's chosen homepage
-     */
-    public static void setHomepage(@Homepage.Type int homepage) {
-        App.homepage = homepage;
-        Save.homepage();
     }
 
     /**

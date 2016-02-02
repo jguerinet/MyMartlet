@@ -28,13 +28,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
  * Shows the desktop page of MyMcGill
@@ -100,7 +100,8 @@ public class DesktopActivity extends DrawerActivity {
     }
 
     @Override
-    protected @Homepage.Type int getCurrentPage() {
-        return Homepage.DESKTOP;
+    protected @HomepageManager.Homepage
+    int getCurrentPage() {
+        return HomepageManager.DESKTOP;
     }
 }

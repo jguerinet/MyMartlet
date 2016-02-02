@@ -26,7 +26,6 @@ import android.support.v4.app.NotificationCompat;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
@@ -95,8 +94,9 @@ public class CheckerService extends IntentService {
 
 			//Check if the CGPA has changed, alert the user if it has
 			if(Math.abs(oldTranscript.getCgpa() - newTranscript.getCgpa()) >= 0.01){
-				Intent intent = new Intent(this, SplashActivity.class)
-						.putExtra(Constants.HOMEPAGE, Homepage.TRANSCRIPT);
+                //TODO
+				Intent intent = new Intent(this, SplashActivity.class);
+//						.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT);
 				//TODO Use String here
 				createNotification(intent, "Your new CGPA is " + newTranscript.getCgpa(),
 						GRADES_ID);
@@ -121,8 +121,9 @@ public class CheckerService extends IntentService {
 									foundCourse = oldCourse;
 									//Alert the user if the grade has changed
 									if(!course.getUserGrade().equals(oldCourse.getUserGrade())){
+                                        //TODO
 										Intent intent = new Intent(this, SplashActivity.class)
-												.putExtra(Constants.HOMEPAGE, Homepage.TRANSCRIPT)
+//												.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT)
 												.putExtra(Constants.TERM, semester.getTerm());
 										//TODO Use a String
 										createNotification(intent, "Your Grades are updated",
@@ -234,7 +235,7 @@ public class CheckerService extends IntentService {
 //		for(Course wantedClass : wishlistClasses){
 //			if(wantedClass.getSeatsRemaining()>0){
 //				Intent intent = new Intent(this, SplashActivity.class)
-//						.putExtra(Constants.HOMEPAGE, Homepage.WISHLIST)
+//						.putExtra(Constants.HOMEPAGE, HomepageManager.WISHLIST)
 //						.putExtra(Constants.TERM, wantedClass.getTerm());
 //				//show notification
 //				createNotification(intent, "A spot has opened up for the class: " +

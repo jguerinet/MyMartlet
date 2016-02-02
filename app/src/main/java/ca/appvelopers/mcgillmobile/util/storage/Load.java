@@ -26,7 +26,6 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
@@ -52,14 +51,6 @@ public class Load {
     @SuppressWarnings("ResourceType")
     public static @Language.Type int language() {
         return App.getSharedPrefs().getInt(Constants.LANGUAGE, Language.ENGLISH);
-    }
-
-    /**
-     * @return Chosen home page, defaults to the schedule
-     */
-    @SuppressWarnings("ResourceType")
-    public static @Homepage.Type int homepage() {
-        return App.getSharedPrefs().getInt(Constants.HOMEPAGE, Homepage.SCHEDULE);
     }
 
     /* INTERNAL STORAGE */

@@ -37,13 +37,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
  * Allows the user to change the app settings
@@ -62,6 +62,11 @@ public class SettingsActivity extends DrawerActivity {
     @Inject
     @Named(PrefsModule.STATISTICS)
     protected BooleanPreference statisticsPrefs;
+    /**
+     * {@link HomepageManager} instance
+     */
+    @Inject
+    protected HomepageManager homepagePref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,25 +108,24 @@ public class SettingsActivity extends DrawerActivity {
                     }
                 });
 
-        //Homepage
-        final TextViewFormItem homepageView = fg.text(Homepage.getTitleString(App.getHomepage()));
+        //HomepageManager
+        final TextViewFormItem homepageView = fg.text(homepagePref.getTitleString());
         homepageView.leftIcon(R.drawable.ic_phone_android)
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         DialogUtils.list(context, R.string.settings_homepage_title,
-                                new HomepageListAdapter() {
+                                new HomepageListAdapter(SettingsActivity.this) {
                                     @Override
-                                    public void onHomepageSelected(@Homepage.Type int homepage) {
-                                        Analytics.get().sendEvent("Settings", "Homepage",
-                                                Homepage.getString(homepage));
+                                    public void onHomepageSelected(@HomepageManager.Homepage int choice) {
+                                        //Update the instance
+                                        homepageManager.set(choice);
 
-                                        //Update it in App
-                                        App.setHomepage(homepage);
+                                        Analytics.get().sendEvent("Settings", "HomepageManager",
+                                                homepageManager.getString());
 
                                         //Update the TextView
-                                        homepageView.view().setText(
-                                                Homepage.getTitleString(homepage));
+                                        homepageView.view().setText(homepageManager.getTitleString());
                                     }
                                 });
                     }
@@ -171,7 +175,8 @@ public class SettingsActivity extends DrawerActivity {
     }
 
     @Override
-    protected @Homepage.Type int getCurrentPage() {
-        return Homepage.SETTINGS;
+    protected @HomepageManager.Homepage
+    int getCurrentPage() {
+        return HomepageManager.SETTINGS;
     }
 }

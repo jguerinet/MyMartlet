@@ -83,7 +83,7 @@ public class WalkthroughActivity extends BaseActivity {
         Analytics.get().sendScreen(email ? "Email Walkthrough" : "Walkthrough");
 
         //Load the right adapter
-        mAdapter = email ? new EmailWalkthroughAdapter() : new WalkthroughAdapter(firstOpen);
+        mAdapter = email ? new EmailWalkthroughAdapter() : new WalkthroughAdapter(this, firstOpen);
         mViewPager.setAdapter(mAdapter);
 
         //Indicator

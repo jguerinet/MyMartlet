@@ -21,9 +21,11 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
+import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughAdapter;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
@@ -45,4 +47,6 @@ public interface BaseComponent {
     void inject(DesktopActivity activity);
     void inject(SettingsActivity activity);
     void inject(BootReceiver receiver);
+    void inject(WalkthroughAdapter adapter);
+    void inject(HomepageListAdapter adapter);
 }

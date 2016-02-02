@@ -60,11 +60,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Homepage;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import timber.log.Timber;
 
 /**
@@ -359,8 +359,9 @@ public class MapActivity extends DrawerActivity {
     }
 
     @Override
-    protected @Homepage.Type int getCurrentPage() {
-        return Homepage.MAP;
+    protected @HomepageManager.Homepage
+    int getCurrentPage() {
+        return HomepageManager.MAP;
     }
 
     /**
