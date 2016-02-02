@@ -16,10 +16,9 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 /**
  * Contains useful static methods relating to dates
@@ -35,7 +34,7 @@ public class DateUtils {
 	 * @return The String representation of the hour
 	 */
 	public static String getHourString(int hour) {
-		return LocalTime.MIDNIGHT.withHourOfDay(hour).toString(DateTimeFormat.forPattern("h a"));
+        return LocalTime.MIDNIGHT.withHour(hour).format(DateTimeFormatter.ofPattern("h a"));
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class DateUtils {
 	 * @return The String representation of the time
 	 */
 	public static String getTimeString(LocalTime time) {
-		return time.toString(DateTimeFormat.forPattern("hh:mm a"));
+        return time.format(DateTimeFormatter.ofPattern("hh:mm a"));
 	}
 
 	/**
@@ -59,12 +58,12 @@ public class DateUtils {
 		DateTimeFormatter fmt;
         //TODO Take the local directly from the context, and let the formatter do the work
 //		if (language == LanguageManager.ENGLISH) {
-			fmt = DateTimeFormat.forPattern("MMM dd, yyyy");
+			fmt = DateTimeFormatter.ofPattern("MMM dd, yyyy");
 //		} else {
 //			fmt = DateTimeFormat.forPattern("dd MMM yyyy");
 //		}
 
-		return fmt.print(date);
+		return date.format(fmt);
 	}
 
 	/**
@@ -78,11 +77,11 @@ public class DateUtils {
 		DateTimeFormatter fmt;
         //TODO Take the local directly from the context, and let the formatter do the work
 //		if (language == LanguageManager.ENGLISH) {
-			fmt = DateTimeFormat.forPattern("MMMM dd, yyyy");
+			fmt = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 //		} else {
 //			fmt = DateTimeFormat.forPattern("dd MMMM yyyy");
 //		}
 
-		return fmt.print(date);
+		return date.format(fmt);
 	}
 }
