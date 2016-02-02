@@ -35,7 +35,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.FAQItem;
+import ca.appvelopers.mcgillmobile.model.FAQ;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -118,16 +118,16 @@ public class HelpActivity extends BaseActivity {
         /**
          * The list of FAQs
          */
-        private List<FAQItem> mFAQs;
+        private List<FAQ> mFAQs;
 
         /**
          * Default Constructor
          */
         public FAQAdapter() {
             mFAQs = new ArrayList<>();
-            mFAQs.add(new FAQItem(R.string.help_question1, R.string.help_answer1));
-            mFAQs.add(new FAQItem(R.string.help_question2, R.string.help_answer2));
-            mFAQs.add(new FAQItem(R.string.help_question3, R.string.help_answer3));
+            mFAQs.add(new FAQ(R.string.help_question1, R.string.help_answer1));
+            mFAQs.add(new FAQ(R.string.help_question2, R.string.help_answer2));
+            mFAQs.add(new FAQ(R.string.help_question3, R.string.help_answer3));
         }
 
         @Override
@@ -163,7 +163,7 @@ public class HelpActivity extends BaseActivity {
                 ButterKnife.bind(this, itemView);
             }
 
-            public void bind(FAQItem item) {
+            public void bind(FAQ item) {
                 mQuestion.setText(item.getQuestion());
                 mAnswer.setText(item.getAnswer());
             }

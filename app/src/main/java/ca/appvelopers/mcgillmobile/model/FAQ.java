@@ -24,7 +24,7 @@ import android.support.annotation.StringRes;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class FAQItem {
+public class FAQ {
     /**
      * FAQ question Id
      */
@@ -40,7 +40,7 @@ public class FAQItem {
      * @param question FAQ question Id
      * @param answer   FAQ answer Id
      */
-    public FAQItem(@StringRes int question, @StringRes int answer) {
+    public FAQ(@StringRes int question, @StringRes int answer) {
         this.question = question;
         this.answer = answer;
     }
