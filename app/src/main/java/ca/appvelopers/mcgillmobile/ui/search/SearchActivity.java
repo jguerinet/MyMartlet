@@ -38,13 +38,13 @@ import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.Device;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -264,25 +264,25 @@ public class SearchActivity extends DrawerActivity {
 
         //Days
         if(mMonday.isChecked()) {
-            builder.addDay(DayUtil.MONDAY);
+            builder.addDay(DayUtils.MONDAY);
         }
         if(mTuesday.isChecked()) {
-            builder.addDay(DayUtil.TUESDAY);
+            builder.addDay(DayUtils.TUESDAY);
         }
         if(mWednesday.isChecked()) {
-            builder.addDay(DayUtil.WEDNESDAY);
+            builder.addDay(DayUtils.WEDNESDAY);
         }
         if(mThursday.isChecked()) {
-            builder.addDay(DayUtil.THURSDAY);
+            builder.addDay(DayUtils.THURSDAY);
         }
         if(mFriday.isChecked()) {
-            builder.addDay(DayUtil.FRIDAY);
+            builder.addDay(DayUtils.FRIDAY);
         }
         if(mSaturday.isChecked()) {
-            builder.addDay(DayUtil.SATURDAY);
+            builder.addDay(DayUtils.SATURDAY);
         }
         if(mSunday.isChecked()) {
-            builder.addDay(DayUtil.SUNDAY);
+            builder.addDay(DayUtils.SUNDAY);
         }
 
         String searchURL = builder.build();

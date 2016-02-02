@@ -36,9 +36,9 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.DateUtils;
+import ca.appvelopers.mcgillmobile.util.DayUtils;
 
 /**
  * Builds the schedule view based on the orientation and the current date
@@ -112,7 +112,7 @@ public class ScheduleViewBuilder {
 
         //Go through the 7 days of the week
         for(int i = 1; i < 8; i ++){
-            DayUtil day = DayUtil.getDay(i);
+            DayUtils day = DayUtils.getDay(i);
 
             //Set up the day name
             dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);

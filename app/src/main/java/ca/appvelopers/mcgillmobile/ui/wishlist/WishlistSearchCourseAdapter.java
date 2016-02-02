@@ -32,8 +32,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.DayUtil;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.util.DayUtils;
 
 /**
  * Displays the list of courses in the user's wish list
@@ -157,7 +157,7 @@ public class WishlistSearchCourseAdapter
             mWaitlistRemaining.setVisibility(View.VISIBLE);
             mWaitlistRemaining.setText(mContext.getString(R.string.registration_waitlist,
                     course.getWaitlistRemaining()));
-            mDays.setText(DayUtil.getDayStrings(course.getDays()));
+            mDays.setText(DayUtils.getDayStrings(course.getDays()));
             mHours.setText(course.getTimeString());
             mDates.setText(course.getDateString());
 

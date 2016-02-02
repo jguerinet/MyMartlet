@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model;
+package ca.appvelopers.mcgillmobile.util;
 
 import android.content.Context;
 
@@ -29,7 +29,7 @@ import ca.appvelopers.mcgillmobile.R;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class DayUtil {
+public class DayUtils {
 
     /**
      * Gets the day based on a character (M, T, W, R, F, S, N). Characters taken from Minerva

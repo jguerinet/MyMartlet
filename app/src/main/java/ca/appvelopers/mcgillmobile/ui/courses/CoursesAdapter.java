@@ -31,7 +31,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.DayUtil;
+import ca.appvelopers.mcgillmobile.util.DayUtils;
 
 /**
  * The adapter used for the list of courses
@@ -88,7 +88,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
             mType.setText(course.getType());
             mCredits.setText(itemView.getContext().getString(
                     R.string.course_credits, course.getCredits()));
-            mDays.setText(DayUtil.getDayStrings(course.getDays()));
+            mDays.setText(DayUtils.getDayStrings(course.getDays()));
             mHours.setText(course.getTimeString());
 
             //Show the check box if the user can unregister
