@@ -18,14 +18,14 @@ package ca.appvelopers.mcgillmobile.util;
 
 import android.support.v4.util.Pair;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -85,7 +85,7 @@ public class Parser {
             //of one of the following rows, depending on the HTML layout
 
             //CGPA
-            if(row.text().startsWith(Token.CUM_GPA.getString())){
+            if(row.text().startsWith(Token.CUM_GPA)){
                 dataRow = rows.get(index + 1);
                 try{
                     cgpa = Double.parseDouble(dataRow.text());
@@ -95,7 +95,7 @@ public class Parser {
                 }
             }
             //Credits
-            if(row.text().startsWith(Token.TOTAL_CREDITS.getString())){
+            if(row.text().startsWith(Token.TOTAL_CREDITS)){
                 dataRow = rows.get(index+1);
                 try{
                     totalCredits = Double.parseDouble(dataRow.text());
@@ -109,10 +109,10 @@ public class Parser {
             if(row.text().startsWith(Season.FALL.getId()) ||
                     row.text().startsWith(Season.WINTER.getId()) ||
                     row.text().startsWith(Season.SUMMER.getId()) ||
-                    row.text().startsWith(Token.READMITTED_FALL.getString()) ||
-                    row.text().startsWith(Token.READMITTED_WINTER.getString()) ||
-                    row.text().startsWith(Token.READMITTED_SUMMER.getString()) ||
-                    row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
+                    row.text().startsWith(Token.READMITTED_FALL) ||
+                    row.text().startsWith(Token.READMITTED_WINTER) ||
+                    row.text().startsWith(Token.READMITTED_SUMMER) ||
+                    row.text().startsWith(Token.CHANGE_PROGRAM)){
 
                 //Initialize variables
                 String scheduleSemester = row.text().trim();
@@ -130,7 +130,7 @@ public class Parser {
                     season = Season.findSeason(scheduleSemesterItems[0]);
                     yearString = scheduleSemesterItems[1];
                 }
-                else if(row.text().startsWith(Token.CHANGE_PROGRAM.getString())){
+                else if(row.text().startsWith(Token.CHANGE_PROGRAM)){
                     season = Season.findSeason(scheduleSemesterItems[3]);
                     yearString = scheduleSemesterItems[4];
                 }
@@ -148,7 +148,6 @@ public class Parser {
 
                 String program = "";
                 String bachelor = "";
-                int programYear = 99;
                 double termCredits = 0;
                 double termGPA = 0.0;
                 boolean fullTime = false;
@@ -164,15 +163,15 @@ public class Parser {
 
                 while(true){
                     //Student has graduated
-                    if(dataRow.text().contains(Token.GRANTED.getString())){
+                    if(dataRow.text().contains(Token.GRANTED)){
                         break;
                     }
 
                     //Semester Info
-                    else if(dataRow.text().startsWith(Token.DIPLOMA.getString()) ||
-                            dataRow.text().startsWith(Token.BACHELOR.getString()) ||
-                            dataRow.text().startsWith(Token.MASTER.getString()) ||
-                            dataRow.text().startsWith(Token.DOCTOR.getString())){
+                    else if(dataRow.text().startsWith(Token.DIPLOMA) ||
+                            dataRow.text().startsWith(Token.BACHELOR) ||
+                            dataRow.text().startsWith(Token.MASTER) ||
+                            dataRow.text().startsWith(Token.DOCTOR)){
 
                         //Example string:
                         //"Bachelor&nbps;of&nbsp;Engineering"<br>
@@ -186,27 +185,6 @@ public class Parser {
                         if(degreeDetails[1].startsWith("Full-time")){
                             fullTime = true;
                         }
-                        else if(degreeDetails[1].contains("0")){
-                            programYear = 0;
-                        }
-                        else if(degreeDetails[1].contains("1")){
-                            programYear = 1;
-                        }
-                        else if(degreeDetails[1].contains("2")){
-                            programYear = 2;
-                        }
-                        else if(degreeDetails[1].contains("3")){
-                            programYear = 3;
-                        }
-                        else if(degreeDetails[1].contains("4")){
-                            programYear = 4;
-                        }
-                        else if(degreeDetails[1].contains("5")){
-                            programYear = 5;
-                        }
-                        else if(degreeDetails[1].contains("6")){
-                            programYear = 6;
-                        }
 
                         int detailsIndex = 0;
                         for(String detail : degreeDetails){
@@ -218,7 +196,7 @@ public class Parser {
                         }
                     }
                     //Term GPA
-                    else if(dataRow.text().startsWith(Token.TERM_GPA.getString())){
+                    else if(dataRow.text().startsWith(Token.TERM_GPA)){
                         try{
                             termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
                         }
@@ -228,7 +206,7 @@ public class Parser {
                         }
                     }
                     //Term Credits
-                    else if(dataRow.text().startsWith(Token.TERM_CREDITS.getString())){
+                    else if(dataRow.text().startsWith(Token.TERM_CREDITS)){
                         try{
                             termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                         }
@@ -240,7 +218,7 @@ public class Parser {
                     //Course Info
                     else if(dataRow.text().matches("[A-Za-z]{4} [0-9]{3}.*") ||
                             dataRow.text().matches("[A-Za-z]{3}[0-9] [0-9]{3}") ||
-                            dataRow.text().startsWith(Token.CREDIT_EXEMPTION.getString())){
+                            dataRow.text().startsWith(Token.CREDIT_EXEMPTION)){
                         String title = "";
                         String code = "";
                         String grade = "N/A";
@@ -367,10 +345,10 @@ public class Parser {
                     if(dataRow.text().startsWith(Season.FALL.getId()) ||
                             dataRow.text().startsWith(Season.WINTER.getId()) ||
                             dataRow.text().startsWith(Season.SUMMER.getId()) ||
-                            dataRow.text().startsWith(Token.READMITTED_FALL.getString()) ||
-                            dataRow.text().startsWith(Token.READMITTED_WINTER.getString()) ||
-                            dataRow.text().startsWith(Token.READMITTED_SUMMER.getString()) ||
-                            dataRow.text().startsWith(Token.CHANGE_PROGRAM.getString())){
+                            dataRow.text().startsWith(Token.READMITTED_FALL) ||
+                            dataRow.text().startsWith(Token.READMITTED_WINTER) ||
+                            dataRow.text().startsWith(Token.READMITTED_SUMMER) ||
+                            dataRow.text().startsWith(Token.CHANGE_PROGRAM)){
 
                         break;
                     }
@@ -387,9 +365,9 @@ public class Parser {
 
                 //Check if there are any courses associated with the semester
                 //If not, don't add the semester to the list of semesters
-                if(!courses.isEmpty()){
+                if (!courses.isEmpty()) {
                     Semester semester = new Semester(new Term(season, year), program, bachelor,
-                            programYear, termCredits, termGPA, fullTime, satisfactory, courses);
+                            termCredits, termGPA, fullTime, satisfactory, courses);
 
                     semesters.add(semester);
                 }
@@ -549,8 +527,8 @@ public class Parser {
                                 endHour += 12;
                             }
 
-                            startTime = new LocalTime(startHour, startMinute);
-                            endTime = new LocalTime(endHour, endMinute);
+                            startTime = LocalTime.of(startHour, startMinute);
+                            endTime = LocalTime.of(endHour, endMinute);
                         }
                         //Try/Catch for classes with no assigned times
                         catch (NumberFormatException e) {
@@ -559,7 +537,7 @@ public class Parser {
                         }
 
                         //Day Parsing
-                        List<DayUtils> days = new ArrayList<>();
+                        List<DayOfWeek> days = new ArrayList<>();
                         for (char dayCharacter : dayCharacters) {
                             days.add(DayUtils.getDay(dayCharacter));
                         }
@@ -620,7 +598,7 @@ public class Parser {
             String number = "ERROR";
             String title = "";
             String type = "";
-            List<DayUtils> days = new ArrayList<>();
+            List<DayOfWeek> days = new ArrayList<>();
             int crn = 0;
             String instructor = "";
             String location = "";
@@ -628,10 +606,7 @@ public class Parser {
             LocalTime startTime = getDefaultStartTime();
             LocalTime endTime = getDefaultEndTime();
             int capacity = 0;
-            int seatsAvailable = 0;
             int seatsRemaining = 0;
-            int waitlistCapacity = 0;
-            int waitlistAvailable = 0;
             int waitlistRemaining = 0;
             LocalDate startDate = LocalDate.now();
             LocalDate endDate = LocalDate.now();
@@ -681,14 +656,12 @@ public class Parser {
                         case 8:
                             String dayString = row.text();
                             //TBA Stuff
-                            if(dayString.equals("TBA")){
-                                days.add(DayUtils.TBA);
+                            if (dayString.equals("TBA")) {
                                 i = 10;
                                 rowNumber++;
-                            }
-                            else{
+                            } else {
                                 char[] dayCharacters = dayString.toCharArray();
-                                for(char dayChar : dayCharacters){
+                                for (char dayChar : dayCharacters) {
                                     days.add(DayUtils.getDay(dayChar));
                                 }
                             }
@@ -717,8 +690,8 @@ public class Parser {
                                     endHour += 12;
                                 }
 
-                                startTime = new LocalTime(startHour, startMinute);
-                                endTime = new LocalTime(endHour, endMinute);
+                                startTime = LocalTime.of(startHour, startMinute);
+                                endTime = LocalTime.of(endHour, endMinute);
                             }
                             //Try/Catch for classes with no assigned times
                             catch (NumberFormatException e) {
@@ -730,21 +703,9 @@ public class Parser {
                         case 10:
                             capacity = Integer.parseInt(row.text());
                             break;
-                        // Seats available
-                        case 11:
-                            seatsAvailable = Integer.parseInt(row.text());
-                            break;
                         // Seats remaining
                         case 12:
                             seatsRemaining = Integer.parseInt(row.text());
-                            break;
-                        // Waitlist capacity
-                        case 13:
-                            waitlistCapacity = Integer.parseInt(row.text());
-                            break;
-                        // Waitlist available
-                        case 14:
-                            waitlistAvailable = Integer.parseInt(row.text());
                             break;
                         // Waitlist remaining
                         case 15:
@@ -780,8 +741,7 @@ public class Parser {
                 //Create a new course object and add it to list
                 classItems.add(new Course(term, subject, number, title, crn, "", startTime,
                         endTime, days, type, location, instructor, credits, startDate, endDate,
-                        capacity, seatsAvailable, seatsRemaining, waitlistCapacity,
-                        waitlistAvailable, waitlistRemaining));
+                        capacity, seatsRemaining, waitlistRemaining));
             }
         }
         return classItems;
@@ -914,15 +874,15 @@ public class Parser {
     /**
      * @return A start time that will yield 0 for the rounded start time
      */
-    private static LocalTime getDefaultStartTime(){
-        return new LocalTime(0, 5);
+    private static LocalTime getDefaultStartTime() {
+        return LocalTime.of(0, 5);
     }
 
     /**
      * @return An end time that will yield 0 for the rounded end time
      */
-    private static LocalTime getDefaultEndTime(){
-        return new LocalTime(0, 55);
+    private static LocalTime getDefaultEndTime() {
+        return LocalTime.of(0, 55);
     }
 
     /**
@@ -931,11 +891,11 @@ public class Parser {
      * @param date The date String
      * @return The corresponding local date
      */
-    private static LocalDate parseDate(String date){
+    private static LocalDate parseDate(String date) {
         //Set up the formatter we're going to use to parse these Strings
-        DateTimeFormatter dtf =  DateTimeFormat.forPattern("MMM dd, yyyy").withLocale(Locale.US);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US);
 
-        return dtf.parseLocalDate(date);
+        return LocalDate.parse(date, dtf);
     }
 
     /**
@@ -945,7 +905,7 @@ public class Parser {
      * @return A pair representing the starting and ending dates of the range
      */
     private static Pair<LocalDate, LocalDate> parseDateRange(String dateRange)
-            throws IllegalArgumentException{
+            throws IllegalArgumentException {
         //Split the range into the 2 date Strings
         String startDate = dateRange.split(" - ")[0];
         String endDate = dateRange.split(" - ")[1];
@@ -958,74 +918,24 @@ public class Parser {
      * Holds strings that the parser looks for when it extracts data from the transcript
      * @author Ryan Singzon
      */
-    public enum Token {
+    public class Token {
         //Semester names
-        READMITTED_FALL,
-        READMITTED_WINTER,
-        READMITTED_SUMMER,
-        CHANGE_PROGRAM,
+        public static final String READMITTED_FALL = "Readmitted Fall";
+        public static final String READMITTED_WINTER = "Readmitted Winter";
+        public static final String READMITTED_SUMMER = "Readmitted Summer";
+        public static final String CHANGE_PROGRAM = "Change";
 
-        DIPLOMA,
-        BACHELOR,
-        MASTER,
-        DOCTOR,
-        YEAR,
-        FULL_TIME,
-        PROGRAM,
-        GRANTED,
+        public static final String DIPLOMA = "Dip";
+        public static final String BACHELOR = "Bachelor";
+        public static final String MASTER = "Master";
+        public static final String DOCTOR = "Doctor";
+        public static final String GRANTED = "Granted";
 
         //End of semester items
-        ADVANCED_STANDING,
-        TERM_CREDITS,
-        TOTAL_CREDITS,
-        CREDIT_EXEMPTION,
-        TERM_GPA,
-        CUM_GPA,
-        STANDING;
-
-        //Get the string for a given token
-        public String getString(){
-            switch(this){
-                case READMITTED_FALL:
-                    return "Readmitted Fall";
-                case READMITTED_WINTER:
-                    return "Readmitted Winter";
-                case READMITTED_SUMMER:
-                    return "Readmitted Summer";
-                case CHANGE_PROGRAM:
-                    return "Change";
-                case DIPLOMA:
-                    return "Dip";
-                case BACHELOR:
-                    return "Bachelor";
-                case MASTER:
-                    return "Master";
-                case DOCTOR:
-                    return "Doctor";
-                case FULL_TIME:
-                    return "Full-time";
-                case YEAR:
-                    return "Year";
-                case PROGRAM:
-                    break;
-                case GRANTED:
-                    return "Granted";
-                case ADVANCED_STANDING:
-                    return "Advanced Standing";
-                case TERM_CREDITS:
-                    return "TERM TOTALS:";
-                case TOTAL_CREDITS:
-                    return "TOTAL CREDITS:";
-                case CREDIT_EXEMPTION:
-                    return "Credits/Exemptions";
-                case TERM_GPA:
-                    return "TERM GPA";
-                case CUM_GPA:
-                    return "CUM GPA";
-                case STANDING:
-                    return "Standing:";
-            }
-            return null;
-        }
+        public static final String TERM_CREDITS = "TERM TOTALS:";
+        public static final String TOTAL_CREDITS = "TOTAL CREDITS:";
+        public static final String CREDIT_EXEMPTION = "Credits/Exemptions";
+        public static final String TERM_GPA = "TERM GPA";
+        public static final String CUM_GPA = "CUM GPA";
     }
 }
