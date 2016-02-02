@@ -50,11 +50,11 @@ public class AboutActivity extends BaseActivity {
      * The list view
      */
     @Bind(android.R.id.list)
-    protected RecyclerView mList;
+    protected RecyclerView list;
     /**
      * The list of people
      */
-    private List<Person> mPeople;
+    private List<Person> people;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,154 +63,156 @@ public class AboutActivity extends BaseActivity {
         setUpToolbar(true);
         Analytics.get().sendScreen("About");
 
-        mPeople = new ArrayList<>();
+        people = new ArrayList<>();
         //Adnan
-        mPeople.add(new Person(getString(R.string.about_adnan), R.drawable.about_adnan,
-                getString(R.string.about_adnan_role), getString(R.string.about_adnan_description),
-                getString(R.string.about_adnan_linkedin), getString(R.string.about_adnan_email)));
+        people.add(new Person(R.string.about_adnan, R.drawable.about_adnan,
+                R.string.about_adnan_role, R.string.about_adnan_description,
+                R.string.about_adnan_linkedin, R.string.about_adnan_email));
 
         //Hernan
-        mPeople.add(new Person(getString(R.string.about_hernan), R.drawable.about_hernan,
-                getString(R.string.about_hernan_role), getString(R.string.about_hernan_description),
-                getString(R.string.about_hernan_linkedin), getString(R.string.about_hernan_email)));
+        people.add(new Person(R.string.about_hernan, R.drawable.about_hernan,
+                R.string.about_hernan_role, R.string.about_hernan_description,
+                R.string.about_hernan_linkedin, R.string.about_hernan_email));
 
         //Josh
-        mPeople.add(new Person(getString(R.string.about_joshua), R.drawable.about_josh,
-                getString(R.string.about_joshua_role), getString(R.string.about_joshua_description),
-                getString(R.string.about_joshua_linkedin), getString(R.string.about_joshua_email)));
+        people.add(new Person(R.string.about_joshua, R.drawable.about_josh,
+                R.string.about_joshua_role, R.string.about_joshua_description,
+                R.string.about_joshua_linkedin, R.string.about_joshua_email));
 
         //Julia
-        mPeople.add(new Person(getString(R.string.about_julia), R.drawable.about_julia,
-                getString(R.string.about_julia_role), getString(R.string.about_julia_description),
-                getString(R.string.about_julia_linkedin), getString(R.string.about_julia_email)));
+        people.add(new Person(R.string.about_julia, R.drawable.about_julia,
+                R.string.about_julia_role, R.string.about_julia_description,
+                R.string.about_julia_linkedin, R.string.about_julia_email));
 
         //Julien
-        mPeople.add(new Person(getString(R.string.about_julien), R.drawable.about_julien,
-                getString(R.string.about_julien_role), getString(R.string.about_julien_description),
-                getString(R.string.about_julien_linkedin), getString(R.string.about_julien_email)));
+        people.add(new Person(R.string.about_julien, R.drawable.about_julien,
+                R.string.about_julien_role, R.string.about_julien_description,
+                R.string.about_julien_linkedin, R.string.about_julien_email));
 
         //Quang
-        mPeople.add(new Person(getString(R.string.about_quang), R.drawable.about_quang,
-                getString(R.string.about_quang_role), getString(R.string.about_quang_description),
-                getString(R.string.about_quang_linkedin), getString(R.string.about_quang_email)));
+        people.add(new Person(R.string.about_quang, R.drawable.about_quang,
+                R.string.about_quang_role, R.string.about_quang_description,
+                R.string.about_quang_linkedin, R.string.about_quang_email));
 
         //Ryan
-        mPeople.add(new Person(getString(R.string.about_ryan), R.drawable.about_ryan,
-                getString(R.string.about_ryan_role), getString(R.string.about_ryan_description),
-                getString(R.string.about_ryan_linkedin), getString(R.string.about_ryan_email)));
+        people.add(new Person(R.string.about_ryan, R.drawable.about_ryan,
+                R.string.about_ryan_role, R.string.about_ryan_description,
+                R.string.about_ryan_linkedin, R.string.about_ryan_email));
 
         //Selim
-        mPeople.add(new Person(getString(R.string.about_selim), R.drawable.about_selim,
-                getString(R.string.about_selim_role), getString(R.string.about_selim_description),
-                getString(R.string.about_selim_linkedin), getString(R.string.about_selim_email)));
+        people.add(new Person(R.string.about_selim, R.drawable.about_selim,
+                R.string.about_selim_role, R.string.about_selim_description,
+                R.string.about_selim_linkedin, R.string.about_selim_email));
 
         //Shabbir
-        mPeople.add(new Person(getString(R.string.about_shabbir), R.drawable.about_shabbir,
-                getString(R.string.about_shabbir_role),
-                getString(R.string.about_shabbir_description),
-                getString(R.string.about_shabbir_linkedin),
-                getString(R.string.about_shabbir_email)));
+        people.add(new Person(R.string.about_shabbir, R.drawable.about_shabbir,
+                R.string.about_shabbir_role, R.string.about_shabbir_description,
+                R.string.about_shabbir_linkedin, R.string.about_shabbir_email));
 
         //Xavier
-        mPeople.add(new Person(getString(R.string.about_xavier), R.drawable.about_xavier,
-                getString(R.string.about_xavier_role), getString(R.string.about_xavier_description),
-                getString(R.string.about_xavier_linkedin), getString(R.string.about_xavier_email)));
+        people.add(new Person(R.string.about_xavier, R.drawable.about_xavier,
+                R.string.about_xavier_role, R.string.about_xavier_description,
+                R.string.about_xavier_linkedin, R.string.about_xavier_email));
 
         //Yulric
-        mPeople.add(new Person(getString(R.string.about_yulric), R.drawable.about_yulric,
-                getString(R.string.about_yulric_role), getString(R.string.about_yulric_description),
-                getString(R.string.about_yulric_linkedin), getString(R.string.about_yulric_email)));
+        people.add(new Person(R.string.about_yulric, R.drawable.about_yulric,
+                R.string.about_yulric_role, R.string.about_yulric_description,
+                R.string.about_yulric_linkedin, R.string.about_yulric_email));
 
         //Set up the list
-        mList.setLayoutManager(new LinearLayoutManager(this));
-        mList.setAdapter(new PersonAdapter());
+        list.setLayoutManager(new LinearLayoutManager(this));
+        list.setAdapter(new PersonAdapter());
     }
 
     /**
      * Displays the developers in the About page
      */
     public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonHolder> {
+
+        @Override
+        public PersonHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new PersonHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_person, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(PersonHolder holder, int position) {
+            holder.bind(people.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return people.size();
+        }
+
         class PersonHolder extends RecyclerView.ViewHolder {
             /**
              * Person's name
              */
             @Bind(R.id.name)
-            protected TextView mName;
+            protected TextView name;
             /**
              * Person's picture
              */
             @Bind(R.id.picture)
-            protected ImageView mPicture;
+            protected ImageView picture;
             /**
              * Person's role
              */
             @Bind(R.id.role)
-            protected TextView mRole;
+            protected TextView role;
             /**
              * Person's description
              */
             @Bind(R.id.description)
-            protected TextView mDescription;
+            protected TextView description;
             /**
              * URL to person's LinkedIn
              */
             @Bind(R.id.linkedin)
-            protected ImageView mLinkedIn;
+            protected ImageView linkedIn;
             /**
              * Person's email
              */
             @Bind(R.id.email)
-            protected ImageView mEmail;
+            protected ImageView email;
 
-            public PersonHolder(View itemView){
+            public PersonHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }
 
-            public void bind(final Person person){
-                mName.setText(person.getName());
+            public void bind(final Person person) {
+                name.setText(person.getName());
+
                 Picasso.with(AboutActivity.this)
                         .load(person.getPictureId())
-                        .into(mPicture);
-                mRole.setText(person.getRole());
-                mDescription.setText(person.getDescription());
-                mLinkedIn.setOnClickListener(new View.OnClickListener() {
+                        .into(picture);
+
+                role.setText(person.getRole());
+                description.setText(person.getDescription());
+                linkedIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Analytics.get().sendEvent("About", "Linkedin", person.getName());
-                        Utils.openURL(AboutActivity.this, person.getLinkedIn());
+                        Analytics.get().sendEvent("About", "Linkedin", getString(person.getName()));
+                        Utils.openURL(AboutActivity.this, getString(person.getLinkedIn()));
                     }
                 });
-                mEmail.setOnClickListener(new View.OnClickListener() {
+                email.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Analytics.get().sendEvent("About", "Email", person.getName());
+                        Analytics.get().sendEvent("About", "Email", getString(person.getName()));
 
                         //Send an email :
                         Intent emailIntent = new Intent(Intent.ACTION_SEND)
-                                .putExtra(Intent.EXTRA_EMAIL, new String[]{person.getEmail()})
+                                .putExtra(Intent.EXTRA_EMAIL,
+                                        new String[]{getString(person.getEmail())})
                                 .setType("message/rfc822");
                         startActivity(Intent.createChooser(emailIntent,
                                 getString(R.string.about_email_picker_title)));
                     }
                 });
             }
-        }
-
-        @Override
-        public PersonHolder onCreateViewHolder(ViewGroup parent, int viewType){
-            return new PersonHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_person, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(PersonHolder holder, int position){
-            holder.bind(mPeople.get(position));
-        }
-
-        @Override
-        public int getItemCount(){
-            return mPeople.size();
         }
     }
 }

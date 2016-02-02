@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
+
 import java.io.Serializable;
 
 /**
@@ -28,27 +31,27 @@ public class Person implements Serializable {
 	/**
 	 * Person's name
 	 */
-	private String mName;
+	private @StringRes int name;
 	/**
 	 * Person's picture
 	 */
-	private int mPictureId;
+	private @DrawableRes int pictureId;
 	/**
 	 * Person's role
 	 */
-	private String mRole;
+	private @StringRes int role;
 	/**
 	 * A short description about the person
 	 */
-	private String mDescription;
+	private @StringRes int description;
 	/**
 	 * Person's email
 	 */
-	private String mEmail;
+	private @StringRes int email;
 	/**
 	 * URL to the person's LinkedIn
 	 */
-	private String mLinkedin;
+	private @StringRes int linkedin;
 
 	/**
 	 * Default Constructor
@@ -60,14 +63,14 @@ public class Person implements Serializable {
 	 * @param email       Person's email
 	 * @param linkedin    URL to the person's LinkedIn
 	 */
-	public Person(String name, int pictureId, String role, String description,
-	              String email, String linkedin){
-		this.mName = name;
-		this.mPictureId = pictureId;
-		this.mRole = role;
-		this.mDescription = description;
-		this.mEmail = email;
-		this.mLinkedin = linkedin;
+	public Person(@StringRes int name, @DrawableRes int pictureId, @StringRes int role,
+            @StringRes int description, @StringRes int email, @StringRes int linkedin) {
+		this.name = name;
+		this.pictureId = pictureId;
+		this.role = role;
+		this.description = description;
+		this.email = email;
+		this.linkedin = linkedin;
 	}
 
 	/* GETTERS */
@@ -75,42 +78,42 @@ public class Person implements Serializable {
 	/**
 	 * @return Person's name
 	 */
-	public String getName(){
-		return this.mName;
+	public @StringRes int getName() {
+		return name;
 	}
 
 	/**
 	 * @return Person's picture Id
 	 */
-	public int getPictureId(){
-		return this.mPictureId;
+	public @DrawableRes int getPictureId() {
+		return pictureId;
 	}
 
 	/**
 	 * @return Person's role
 	 */
-	public String getRole(){
-		return this.mRole;
+	public @StringRes int getRole() {
+		return role;
 	}
 
 	/**
 	 * @return A short description about the person
 	 */
-	public String getDescription(){
-		return this.mDescription;
+	public @StringRes int getDescription() {
+		return description;
 	}
 
 	/**
 	 * @return Person's email
 	 */
-	public String getEmail(){
-		return this.mEmail;
+	public @StringRes int getEmail() {
+		return email;
 	}
 
 	/**
 	 * @return The URL to the person's LinkedIn
 	 */
-	public String getLinkedIn(){
-		return this.mLinkedin;
+	public @StringRes int getLinkedIn() {
+		return linkedin;
 	}
 }
