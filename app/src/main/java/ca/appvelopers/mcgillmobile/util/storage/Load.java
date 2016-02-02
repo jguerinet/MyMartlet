@@ -16,8 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util.storage;
 
-import android.content.SharedPreferences;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
@@ -26,7 +24,6 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -37,23 +34,12 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import timber.log.Timber;
 
 /**
- * Loads objects from internal storage or {@link SharedPreferences}
+ * Loads objects from the internal storage
  * @author Julien Guerinet
  * @since 1.0.0
  */
 @SuppressWarnings("unchecked")
 public class Load {
-    /* SHARED PREFS */
-
-    /**
-     * @return The user's chosen language, defaults to English
-     */
-    @SuppressWarnings("ResourceType")
-    public static @Language.Type int language() {
-        return App.getSharedPrefs().getInt(Constants.LANGUAGE, Language.ENGLISH);
-    }
-
-    /* INTERNAL STORAGE */
 
     /**
      * Loads the object at the given file name

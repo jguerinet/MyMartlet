@@ -30,10 +30,12 @@ import junit.framework.Assert;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Language;
+import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
  * The base class for all activities
@@ -52,10 +54,16 @@ public class BaseActivity extends AppCompatActivity {
      */
     @Nullable @Bind(R.id.toolbar_progress)
     protected ProgressBar mToolbarProgressBar;
+    /**
+     * The {@link LanguageManager} instance
+     */
+    @Inject
+    protected LanguageManager languageManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.component(this).inject(this);
         //Update locale and config (it sometimes get reset in between activities)
         updateLocale();
     }
@@ -71,7 +79,7 @@ public class BaseActivity extends AppCompatActivity {
      * Updates the locale
      */
     private void updateLocale() {
-        Locale locale = new Locale(Language.getCode(App.getLanguage()));
+        Locale locale = new Locale(languageManager.getCode());
         Configuration config = getBaseContext().getResources().getConfiguration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config,

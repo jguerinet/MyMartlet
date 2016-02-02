@@ -16,14 +16,20 @@
 
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
+import android.content.Context;
+
 import com.guerinet.utils.dialog.ListDialogInterface;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Language;
+import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
  * Displays the list of languages the app is available in
@@ -33,36 +39,44 @@ import ca.appvelopers.mcgillmobile.model.Language;
 @SuppressWarnings("ResourceType")
 public abstract class LanguageListAdapter implements ListDialogInterface {
     /**
+     * The {@link LanguageManager} instance
+     */
+    @Inject
+    protected LanguageManager languageManager;
+    /**
      * List of languages and their String equivalents
      */
-    private List<Integer> mLanguages;
+    private List<Integer> languages;
 
     /**
      * Default Constructor
      */
-    public LanguageListAdapter() {
-        mLanguages.add(Language.ENGLISH);
-        mLanguages.add(Language.FRENCH);
+    public LanguageListAdapter(Context context) {
+        App.component(context).inject(this);
+        languages = new ArrayList<>();
+        languages.add(LanguageManager.ENGLISH);
+        languages.add(LanguageManager.FRENCH);
 
         //Sort them alphabetically
-        Collections.sort(mLanguages, new Comparator<Integer>() {
+        Collections.sort(languages, new Comparator<Integer>() {
             @Override
             public int compare(Integer lhs, Integer rhs) {
-                return Language.getString(lhs).compareToIgnoreCase(Language.getString(rhs));
+                return languageManager.getString(lhs)
+                        .compareToIgnoreCase(languageManager.getString(rhs));
             }
         });
     }
 
     @Override
     public int getCurrentChoice() {
-        return mLanguages.indexOf(App.getLanguage());
+        return languages.indexOf(languageManager.get());
     }
 
     @Override
     public CharSequence[] getChoices() {
-        CharSequence[] titles = new CharSequence[mLanguages.size()];
-        for (int i = 0; i < mLanguages.size(); i ++) {
-            titles[i] = Language.getString(mLanguages.get(i));
+        CharSequence[] titles = new CharSequence[languages.size()];
+        for (int i = 0; i < languages.size(); i ++) {
+            titles[i] = languageManager.getString(languages.get(i));
         }
 
         return titles;
@@ -70,7 +84,7 @@ public abstract class LanguageListAdapter implements ListDialogInterface {
 
     @Override
     public void onChoiceSelected(int position) {
-        onLanguageSelected(mLanguages.get(position));
+        onLanguageSelected(languages.get(position));
     }
 
     /**

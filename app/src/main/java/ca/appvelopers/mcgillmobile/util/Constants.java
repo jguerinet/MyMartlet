@@ -32,10 +32,14 @@ public class Constants {
     public static final String PLAY_STORE_LINK = "market://details?id=ca.appvelopers.mcgillmobile";
 
     /* SYNCHRONIZATION LOCKS*/
+
     /**
      * Lock used for the transcript
      */
     public static final Object TRANSCRIPT_LOCK = new Object();
+
+    /* INTENT KEYS */
+
     /**
      * Key used to pass a ConnectionStatus via an intent
      */
@@ -72,6 +76,10 @@ public class Constants {
      * Key used to pass whether or not the user needs to accept the EULA via an intent
      */
     public static final String EULA_REQUIRED = "eula_required";
+    /**
+     * Key that is true if this is the first time the user is signing in, false otherwise
+     */
+    public static final String FIRST_OPEN = "first_open";
 
     /* INTERNAL STORAGE */
 
@@ -115,15 +123,4 @@ public class Constants {
      * The file name where the list of terms a user can register for are stored
      */
     public static final String REGISTER_TERMS_FILE = "register_terms";
-
-    /* SHARED PREFS */
-
-    /**
-     * The user's chosen language
-     */
-    public static final String LANGUAGE = "language";
-    /**
-     * Intent key that is true if this is the first time the user is signing in, false otherwise
-     */
-    public static final String FIRST_OPEN = "first_open";
 }

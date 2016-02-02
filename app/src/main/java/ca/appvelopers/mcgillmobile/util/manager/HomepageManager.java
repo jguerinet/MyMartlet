@@ -41,7 +41,7 @@ import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistActivity;
 
 /**
- * Manages the user's homepageManager, an extension of the {@link IntPreference}
+ * Manages the user's homepage, an extension of the {@link IntPreference}
  * @author Julien Guerinet
  * @since 1.0.0
  */

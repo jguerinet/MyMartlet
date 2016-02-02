@@ -19,9 +19,12 @@ package ca.appvelopers.mcgillmobile;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
@@ -39,6 +42,7 @@ import dagger.Component;
 @Singleton @Component(modules = {AppModule.class, PrefsModule.class})
 public interface BaseComponent {
     void inject(App app);
+    void inject(BaseActivity activity);
     void inject(DrawerActivity activity);
     void inject(SplashActivity activity);
     void inject(AgreementActivity activity);
@@ -49,4 +53,6 @@ public interface BaseComponent {
     void inject(BootReceiver receiver);
     void inject(WalkthroughAdapter adapter);
     void inject(HomepageListAdapter adapter);
+    void inject(LanguageListAdapter adapter);
+    void inject(PlaceTypeListAdapter adapter);
 }

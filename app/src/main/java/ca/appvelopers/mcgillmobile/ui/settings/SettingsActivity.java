@@ -37,13 +37,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
  * Allows the user to change the app settings
@@ -62,11 +62,6 @@ public class SettingsActivity extends DrawerActivity {
     @Inject
     @Named(PrefsModule.STATISTICS)
     protected BooleanPreference statisticsPrefs;
-    /**
-     * {@link HomepageManager} instance
-     */
-    @Inject
-    protected HomepageManager homepagePref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,35 +76,36 @@ public class SettingsActivity extends DrawerActivity {
         final Context context = this;
 
         //Language
-        fg.text(Language.getString(App.getLanguage()))
+        fg.text(languageManager.getString())
                 .leftIcon(R.drawable.ic_language)
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         DialogUtils.list(context, R.string.settings_language,
-                                new LanguageListAdapter() {
+                                new LanguageListAdapter(SettingsActivity.this) {
                                     @Override
-                                    public void onLanguageSelected(@Language.Type int language) {
-                                        Analytics.get().sendEvent("Settings", "Language",
-                                                Language.getCode(language));
-
-                                        //If it's different than the previously selected language,
-                                        //  update it and reload
-                                        if (App.getLanguage() != language) {
-                                            App.setLanguage(language);
-
-                                            //Reload this activity
-                                            startActivity(
-                                                    new Intent(context, SettingsActivity.class));
-                                            finish();
+                                    public void onLanguageSelected(
+                                            @LanguageManager.Language int language) {
+                                        //Don't continue if it's the selected language
+                                        if (language == languageManager.get()) {
+                                            return;
                                         }
+
+                                        languageManager.set(language);
+
+                                        Analytics.get().sendEvent("Settings", "Language",
+                                                languageManager.getCode());
+
+                                        //Reload this activity
+                                        startActivity(new Intent(context, SettingsActivity.class));
+                                        finish();
                                     }
                                 });
                     }
                 });
 
         //HomepageManager
-        final TextViewFormItem homepageView = fg.text(homepagePref.getTitleString());
+        final TextViewFormItem homepageView = fg.text(homepageManager.getTitleString());
         homepageView.leftIcon(R.drawable.ic_phone_android)
                 .onClick(new View.OnClickListener() {
                     @Override

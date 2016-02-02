@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -457,7 +457,7 @@ public class Course implements Serializable{
      *
      * @return The course dates in String format
      */
-    public String getDateString(){
+    public String getDateString() {
         return Date.getShortDateString(mStartDate) + " - " + Date.getShortDateString(mEndDate);
     }
 

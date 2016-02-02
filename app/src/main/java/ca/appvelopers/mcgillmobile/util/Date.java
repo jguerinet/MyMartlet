@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,10 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.Language;
 
 /**
  * Contains useful static methods relating to dates
@@ -38,7 +34,7 @@ public class Date {
 	 * @param hour    The hour
 	 * @return The String representation of the hour
 	 */
-	public static String getHourString(int hour){
+	public static String getHourString(int hour) {
 		return LocalTime.MIDNIGHT.withHourOfDay(hour).toString(DateTimeFormat.forPattern("h a"));
 	}
 
@@ -48,7 +44,7 @@ public class Date {
 	 * @param time    The time
 	 * @return The String representation of the time
 	 */
-	public static String getTimeString(LocalTime time){
+	public static String getTimeString(LocalTime time) {
 		return time.toString(DateTimeFormat.forPattern("hh:mm a"));
 	}
 
@@ -58,15 +54,15 @@ public class Date {
 	 * @param date The date
 	 * @return A locale-dependent short String representation of the date
 	 */
-	public static String getShortDateString(LocalDate date){
+	public static String getShortDateString(LocalDate date) {
 		//Depending on the language chosen
 		DateTimeFormatter fmt;
-		if(App.getLanguage() == Language.ENGLISH){
+        //TODO Take the local directly from the context, and let the formatter do the work
+//		if (language == LanguageManager.ENGLISH) {
 			fmt = DateTimeFormat.forPattern("MMM dd, yyyy");
-		}
-		else{
-			fmt = DateTimeFormat.forPattern("dd MMM yyyy");
-		}
+//		} else {
+//			fmt = DateTimeFormat.forPattern("dd MMM yyyy");
+//		}
 
 		return fmt.print(date);
 	}
@@ -77,30 +73,16 @@ public class Date {
 	 * @param date The date
 	 * @return A locale-dependent String representation of the date
 	 */
-	public static String getDateString(LocalDate date){
+	public static String getDateString(LocalDate date) {
 		//Depending on the language chosen
 		DateTimeFormatter fmt;
-		if(App.getLanguage() == Language.ENGLISH){
+        //TODO Take the local directly from the context, and let the formatter do the work
+//		if (language == LanguageManager.ENGLISH) {
 			fmt = DateTimeFormat.forPattern("MMMM dd, yyyy");
-		}
-		else{
-			fmt = DateTimeFormat.forPattern("dd MMMM yyyy");
-		}
+//		} else {
+//			fmt = DateTimeFormat.forPattern("dd MMMM yyyy");
+//		}
 
 		return fmt.print(date);
-	}
-
-	/**
-	 * Gets the DateTime in the RFC 1123 format (for If-Modified-Since)
-	 *  Warning: No timezone changing done
-	 *
-	 * @param date The date to use
-	 * @return The date in the RFC 1123 format
-	 */
-	public static String getRFC1123String(DateTime date){
-		return date.dayOfWeek().getAsShortText() + ", " + date.getDayOfMonth() + " " +
-				date.monthOfYear().getAsShortText() + " " + date.getYear() + " " +
-				date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" +
-				date.getSecondOfMinute() + " UTC";
 	}
 }

@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.util.storage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -27,33 +26,11 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import timber.log.Timber;
 
 /**
- * Saves objects to internal storage or {@link SharedPreferences}
+ * Saves objects to the internal storage
  * @author Julien Guerinet
  * @since 1.0.0
  */
 public class Save {
-    /* SHARED PREFS */
-
-    /**
-     * Saves an integer to the {@link SharedPreferences}
-     *
-     * @param key   Key to save the int under
-     * @param value Value to save
-     */
-    private static void putInt(String key, int value) {
-        App.getSharedPrefs().edit()
-                .putInt(key, value)
-                .apply();
-    }
-
-    /**
-     * Saves the user's chosen language
-     */
-    public static void language() {
-        putInt(Constants.LANGUAGE, App.getLanguage());
-    }
-
-    /* INTERNAL STORAGE */
 
     /**
      * Saves an object to internal storage

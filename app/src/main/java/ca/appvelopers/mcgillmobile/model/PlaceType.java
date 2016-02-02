@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
  * A type of place that the user can filter by
@@ -109,16 +110,18 @@ public class PlaceType implements Serializable{
         return types;
     }
 
-    @Override
-    public String toString(){
-        if(mName.equals(FAVORITES)){
+    /**
+     * @param language The current language
+     * @return The String to use
+     */
+    public String getString(@LanguageManager.Language int language) {
+        if (mName.equals(FAVORITES)) {
             return App.getContext().getString(R.string.map_favorites);
-        }
-        else if(mName.equals(ALL)){
+        } else if(mName.equals(ALL)) {
             return App.getContext().getString(R.string.map_all);
         }
 
-        if(App.getLanguage() == Language.FRENCH){
+        if (language == LanguageManager.FRENCH) {
             return mFrenchString;
         }
         return mEnglishString;

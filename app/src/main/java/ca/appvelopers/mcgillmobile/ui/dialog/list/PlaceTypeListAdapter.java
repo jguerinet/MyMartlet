@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
+import android.content.Context;
+
 import com.guerinet.utils.dialog.ListDialogInterface;
 
 import java.util.ArrayList;
@@ -23,8 +25,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
+import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
  * Displays a list of place types to choose from in the maps section
@@ -35,51 +40,59 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
     /**
      * List of place types
      */
-    private List<PlaceType> mTypes;
+    private List<PlaceType> types;
     /**
      * The current choice
      */
-    private int mCurrentChoice;
+    private int currentChoice;
+    /**
+     * The {@link LanguageManager} instance
+     */
+    @Inject
+    protected LanguageManager languageManager;
 
     /**
      * Default Constructor
      *
+     * @param context      App context
      * @param mCurrentType The currently selected type
      */
-    public PlaceTypeListAdapter(PlaceType mCurrentType) {
-        mTypes = new ArrayList<>();
-        mTypes.addAll(App.getPlaceTypes());
+    public PlaceTypeListAdapter(Context context, PlaceType mCurrentType) {
+        App.component(context).inject(this);
+        types = new ArrayList<>();
+        types.addAll(App.getPlaceTypes());
 
         //Sort them
-        Collections.sort(mTypes, new Comparator<PlaceType>() {
+        Collections.sort(types, new Comparator<PlaceType>() {
             @Override
             public int compare(PlaceType type, PlaceType type2) {
-                return type.toString().compareToIgnoreCase(type2.toString());
+                return type.getString(languageManager.get())
+                        .compareToIgnoreCase(type2.getString(languageManager.get()));
             }
         });
 
         //Add the favorites option
-        mTypes.add(0, new PlaceType(true));
+        types.add(0, new PlaceType(true));
 
         //Add the All option
-        mTypes.add(0, new PlaceType(false));
+        types.add(0, new PlaceType(false));
 
-        mCurrentChoice = mTypes.indexOf(mCurrentType);
+        currentChoice = types.indexOf(mCurrentType);
     }
 
     @Override
     public int getCurrentChoice() {
-        return mCurrentChoice;
+        return currentChoice;
     }
 
     @Override
     public CharSequence[] getChoices() {
-        CharSequence[] titles = new CharSequence[mTypes.size()];
+        CharSequence[] titles = new CharSequence[types.size()];
 
         //Go through the types
-        for (int i = 0; i < mTypes.size(); i ++) {
+        for (int i = 0; i < types.size(); i ++) {
             //Add its title to the list
-            titles[i] = mTypes.get(i).toString();
+            titles[i] = types.get(i).getString(languageManager.get());
         }
 
         return titles;
@@ -87,7 +100,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
 
     @Override
     public void onChoiceSelected(int position) {
-       onPlaceTypeSelected(mTypes.get(position));
+       onPlaceTypeSelected(types.get(position));
     }
 
     /**

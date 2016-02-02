@@ -18,8 +18,6 @@ package ca.appvelopers.mcgillmobile;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -38,7 +36,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -51,6 +48,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
+import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 import io.fabric.sdk.android.Fabric;
@@ -80,17 +78,14 @@ public class App extends Application {
     @Inject
     protected UsernamePreference usernamePref;
     /**
+     * The {@link LanguageManager} instance
+     */
+    @Inject
+    protected LanguageManager languageManager;
+    /**
      * The app {@link Context}
      */
     private static Context context;
-    /**
-     * The {@link SharedPreferences} instance
-     */
-    private static SharedPreferences sharedPrefs;
-    /**
-     * App language
-     */
-    private static @Language.Type int language = Language.UNDEFINED;
     /**
      * List of {@link Place}s
      */
@@ -196,7 +191,7 @@ public class App extends Application {
                 .setPostFeedbackMessage(getString(R.string.success))
                 .setWillShowFeedbackSentAlert(true)
                 .setUserData("Email: " + usernamePref.full() + "\n" +
-                        "App Language: " + Language.getCode(App.getLanguage()));
+                        "App Language: " + languageManager.getCode());
 
         //Set up the FormGenerator
         FormGenerator.set(new FormGenerator.Builder()
@@ -220,26 +215,6 @@ public class App extends Application {
      */
     public static Context getContext() {
         return context;
-    }
-
-    /**
-     * @return The {@link SharedPreferences} instance
-     */
-    public static SharedPreferences getSharedPrefs() {
-        if (sharedPrefs == null) {
-            sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        }
-        return sharedPrefs;
-    }
-
-    /**
-     * @return The app language
-     */
-    public static @Language.Type int getLanguage() {
-        if(language == Language.UNDEFINED){
-            language = Load.language();
-        }
-        return language;
     }
 
     /**
@@ -345,14 +320,6 @@ public class App extends Application {
     }
 
     /* SETTERS */
-
-    /**
-     * @param language The app language
-     */
-    public static void setLanguage(@Language.Type int language) {
-        App.language = language;
-        Save.language();
-    }
 
     /**
      * @param places The list of {@link Place}s

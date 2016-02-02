@@ -165,7 +165,7 @@ public class MapActivity extends DrawerActivity {
         FormGenerator fg = FormGenerator.bind(this, mContainer);
 
         //Set up the place filter
-        final TextViewFormItem typeView = fg.text(mType.toString());
+        final TextViewFormItem typeView = fg.text(mType.getString(languageManager.get()));
 
         typeView.leftIcon(R.drawable.ic_location)
                 .rightIcon(R.drawable.ic_chevron_right, R.color.grey)
@@ -173,13 +173,14 @@ public class MapActivity extends DrawerActivity {
                     @Override
                     public void onClick(View v) {
                         DialogUtils.list(MapActivity.this, R.string.map_filter,
-                                new PlaceTypeListAdapter(mType) {
+                                new PlaceTypeListAdapter(MapActivity.this, mType) {
                                     @Override
                                     public void onPlaceTypeSelected(PlaceType type) {
                                         mType = type;
 
                                         //Update the text
-                                        typeView.view().setText(mType.toString());
+                                        typeView.view().setText(
+                                                mType.getString(languageManager.get()));
 
                                         //Update the filtered places
                                         filterByCategory();
