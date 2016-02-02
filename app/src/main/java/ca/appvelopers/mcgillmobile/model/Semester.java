@@ -100,7 +100,7 @@ public class Semester implements Serializable {
      * @return Semester name
      */
     public String getSemesterName() {
-        return term.toString();
+        return term.getString();
     }
 
     /**

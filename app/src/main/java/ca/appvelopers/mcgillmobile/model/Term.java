@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,39 +28,39 @@ import java.io.Serializable;
 public class Term implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
-     * The term season
+     * Term season
      */
-    private Season mSeason;
+    private Season season;
     /**
-     * The term year
+     * Term year
      */
-    private int mYear;
+    private int year;
 
     /**
      * Default Constructor
      *
-     * @param season The term season
-     * @param year   The term year
+     * @param season Term season
+     * @param year   Term year
      */
-    public Term(Season season, int year){
-        this.mSeason = season;
-        this.mYear = year;
+    public Term(Season season, int year) {
+        this.season = season;
+        this.year = year;
     }
 
     /* GETTERS */
 
     /**
-     * @return The term season
+     * @return Term season
      */
-    public Season getSeason(){
-        return mSeason;
+    public Season getSeason() {
+        return season;
     }
 
     /**
-     * @return The term year
+     * @return Term year
      */
-    public int getYear(){
-        return mYear;
+    public int getYear() {
+        return year;
     }
 
     /* HELPERS */
@@ -72,40 +72,42 @@ public class Term implements Serializable {
      * @return True if the current term is after the given term, false otherwise
      */
     @SuppressWarnings("SimplifiableIfStatement")
-    public boolean isAfter(Term term){
-        //Year after
-        if(mYear > term.getYear()){
+    public boolean isAfter(Term term) {
+        if (year > term.getYear()) {
+            //Year after
             return true;
-        }
-        //Year Before
-        else if(mYear < term.getYear()){
+        } else if (year < term.getYear()) {
+            //Year Before
             return false;
-        }
-        //Same year
-        else{
-            //Check the semesters
-            return Integer.valueOf(mSeason.getSeasonNumber()) >
+        } else {
+            //Same year: check the semesters
+            return Integer.valueOf(season.getSeasonNumber()) >
                     Integer.valueOf(term.getSeason().getSeasonNumber());
         }
     }
 
-    public String getId(){
-        return mSeason.getId() + " " + mYear;
+    /**
+     * @return Term Id, for parsing errors
+     */
+    public String getId() {
+        return season.getId() + " " + year;
+    }
+
+    /**
+     * @return String representation of the term
+     */
+    public String getString() {
+        return season.toString() + " " + year;
     }
 
     @Override
-    public String toString(){
-        return mSeason.toString() + " " + mYear;
-    }
-
-    @Override
-    public boolean equals(Object object){
-        if(!(object instanceof Term)){
+    public boolean equals(Object object) {
+        if (!(object instanceof Term)) {
             return false;
         }
 
-        Term term = (Term)object;
-        return mSeason == term.getSeason() && mYear == term.getYear();
+        Term term = (Term) object;
+        return season == term.getSeason() && year == term.getYear();
     }
 
     /* STATIC HELPERS */
@@ -116,7 +118,7 @@ public class Term implements Serializable {
      * @param term The term String
      * @return The parsed term
      */
-    public static Term parseTerm(String term){
+    public static Term parseTerm(String term) {
         String[] termParts = term.split(" ");
         return new Term(Season.findSeason(termParts[0]), Integer.valueOf(termParts[1]));
     }
@@ -126,18 +128,16 @@ public class Term implements Serializable {
      *
      * @return Today's corresponding term
      */
-    public static Term getCurrentTerm(){
+    public static Term getCurrentTerm() {
         LocalDate today = LocalDate.now();
         int month = today.getMonthOfYear();
         int year = today.getYear();
 
-        if (month >= 9 && month <= 12){
+        if (month >= 9 && month <= 12) {
             return new Term(Season.FALL, year);
-        }
-        else if (month >= 1 && month <= 4){
+        } else if (month >= 1 && month <= 4) {
             return new Term(Season.WINTER, year);
-        }
-        else{
+        } else {
             return new Term(Season.SUMMER, year);
         }
     }

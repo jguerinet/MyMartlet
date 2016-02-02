@@ -138,7 +138,7 @@ public class CoursesActivity extends DrawerActivity {
      */
     private void update() {
         //Set the title
-        setTitle(mTerm.toString());
+        setTitle(mTerm.getString());
 
         //User can unregister if the current term is in the list of terms to register for
         boolean canUnregister = App.getRegisterTerms().contains(mTerm);

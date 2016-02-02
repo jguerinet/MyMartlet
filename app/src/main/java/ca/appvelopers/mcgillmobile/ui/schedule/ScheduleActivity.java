@@ -163,7 +163,7 @@ public class ScheduleActivity extends DrawerActivity {
      */
     private View loadView(int orientation) {
         //Title
-        setTitle(mTerm.toString());
+        setTitle(mTerm.getString());
 
         //Return the view
         return mViewBuilder.renderView(orientation);

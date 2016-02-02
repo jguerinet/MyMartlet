@@ -176,7 +176,7 @@ public class WishlistActivity extends DrawerActivity {
         //Only load the info if there is info to load
         if (!App.getRegisterTerms().isEmpty()) {
             //Set the title
-            setTitle(mTerm.toString());
+            setTitle(mTerm.getString());
 
             //Reload the adapter
             mAdapter = new WishlistSearchCourseAdapter(this, mTerm, mCourses);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ public class TermAdapter extends BaseAdapter implements SpinnerAdapter{
         }
 
         //Semester name
-        ((TextView)view).setText(getItem(position).toString());
+        ((TextView)view).setText(getItem(position).getString());
 
         return view;
     }
@@ -94,7 +94,7 @@ public class TermAdapter extends BaseAdapter implements SpinnerAdapter{
         }
 
         //Semester name
-        ((TextView)view).setText(getItem(position).toString());
+        ((TextView)view).setText(getItem(position).getString());
 
         return view;
     }
