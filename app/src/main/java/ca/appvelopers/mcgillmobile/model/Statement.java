@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import org.joda.time.LocalDate;
+import org.threeten.bp.LocalDate;
 
 import java.io.Serializable;
 
@@ -26,54 +26,54 @@ import java.io.Serializable;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Statement implements Serializable{
+public class Statement implements Serializable {
     private static final long serialVersionUID = 1L;
 	/**
-	 * The statement date
+	 * Statement date
 	 */
-	private LocalDate mDate;
+	private LocalDate date;
 	/**
-	 * The due date
+	 * Due date
 	 */
-	private LocalDate mDueDate;
+	private LocalDate dueDate;
 	/**
-	 * The total amount due or owed
+	 * Total amount due or owed
 	 */
-	private double mAmount;
+	private double amount;
 
 	/**
 	 * Default Constructor
 	 *
-	 * @param date    The statement date
-	 * @param dueDate The due date
-	 * @param amount  The amount due or owed
+	 * @param date    Statement date
+	 * @param dueDate Due date
+	 * @param amount  Amount due or owed
 	 */
-	public Statement(LocalDate date, LocalDate dueDate, double amount){
-		this.mDate = date;
-		this.mDueDate = dueDate;
-		this.mAmount = amount;
+	public Statement(LocalDate date, LocalDate dueDate, double amount) {
+		this.date = date;
+		this.dueDate = dueDate;
+		this.amount = amount;
 	}
 
 	/* GETTERS */
 
 	/**
-	 * @return The statement date
+	 * @return Statement date
 	 */
 	public LocalDate getDate() {
-		return this.mDate;
+		return date;
 	}
 
 	/**
-	 * @return The statement due date
+	 * @return Statement due date
 	 */
 	public LocalDate getDueDate() {
-		return this.mDueDate;
+		return dueDate;
 	}
 
 	/**
-	 * @return The amount owed or due
+	 * @return Amount owed or due
 	 */
 	public double getAmount() {
-		return this.mAmount;
+		return amount;
 	}
 }
