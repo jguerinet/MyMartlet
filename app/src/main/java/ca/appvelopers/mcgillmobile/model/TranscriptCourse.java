@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,91 +27,91 @@ import java.io.Serializable;
 public class TranscriptCourse implements Serializable{
     private static final long serialVersionUID = 1L;
     /**
-     * The course term
+     * Course term
      */
-    private Term mTerm;
+    private Term term;
     /**
-     * The course code (e.g. ECSE 428)
+     * Course code (e.g. ECSE 428)
      */
-    private String mCode;
+    private String code;
     /**
-     * The course title
+     * Course title
      */
-    private String mTitle;
+    private String title;
     /**
-     * The course credits
+     * Course credits
      */
-    private double mCredits;
+    private double credits;
     /**
-     * The user's grade in this course
+     * User's grade in this course
      */
-    private String mUserGrade;
+    private String userGrade;
     /**
-     * The average grade in this course
+     * Average grade in this course
      */
-    private String mAverageGrade;
+    private String averageGrade;
 
     /**
      * Default Constructor
      *
-     * @param term         The course term
-     * @param code         The course code
-     * @param title        The course title
-     * @param credits      The course credits
-     * @param userGrade    The user's grade
-     * @param averageGrade The course average grade
+     * @param term         Course term
+     * @param code         Course code
+     * @param title        Course title
+     * @param credits      Course credits
+     * @param userGrade    User's grade
+     * @param averageGrade Course average grade
      */
-    public TranscriptCourse(Term term, String code, String title, double credits,
-                            String userGrade, String averageGrade){
-        this.mTerm = term;
-        this.mCode = code;
-        this.mTitle = title;
-        this.mCredits = credits;
-        this.mUserGrade = userGrade;
-        this.mAverageGrade = averageGrade;
+    public TranscriptCourse(Term term, String code, String title, double credits, String userGrade,
+            String averageGrade) {
+        this.term = term;
+        this.code = code;
+        this.title = title;
+        this.credits = credits;
+        this.userGrade = userGrade;
+        this.averageGrade = averageGrade;
     }
 
     /* GETTERS */
 
     /**
-     * @return The course term
+     * @return Course term
      */
-    public Term getTerm(){
-        return this.mTerm;
+    public Term getTerm() {
+        return term;
     }
 
     /**
-     * @return The course code
+     * @return Course code
      */
-    public String getCourseCode(){
-        return this.mCode;
+    public String getCourseCode() {
+        return code;
     }
 
     /**
-     * @return The course title
+     * @return Course title
      */
-    public String getCourseTitle(){
-        return this.mTitle;
+    public String getCourseTitle() {
+        return title;
     }
 
     /**
-     * @return The course credits
+     * @return Course credits
      */
-    public double getCredits(){
-        return this.mCredits;
+    public double getCredits() {
+        return credits;
     }
 
     /**
-     * @return The user's grade
+     * @return User's grade
      */
-    public String getUserGrade(){
-        return this.mUserGrade;
+    public String getUserGrade() {
+        return userGrade;
     }
 
     /**
-     * @return The average grade
+     * @return Average grade
      */
-    public String getAverageGrade(){
-        return this.mAverageGrade;
+    public String getAverageGrade() {
+        return averageGrade;
     }
 }
