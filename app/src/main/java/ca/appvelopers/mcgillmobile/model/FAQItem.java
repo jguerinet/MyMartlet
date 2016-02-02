@@ -28,11 +28,11 @@ public class FAQItem {
     /**
      * FAQ question Id
      */
-    private @StringRes int mQuestion;
+    private @StringRes int question;
     /**
      * FAQ answer Id
      */
-    private @StringRes int mAnswer;
+    private @StringRes int answer;
 
     /**
      * Default Constructor
@@ -41,8 +41,8 @@ public class FAQItem {
      * @param answer   FAQ answer Id
      */
     public FAQItem(@StringRes int question, @StringRes int answer) {
-        mQuestion = question;
-        mAnswer = answer;
+        this.question = question;
+        this.answer = answer;
     }
 
     /* GETTERS */
@@ -51,13 +51,13 @@ public class FAQItem {
      * @return FAQ question Id
      */
     public @StringRes int getQuestion() {
-        return mQuestion;
+        return question;
     }
 
     /**
      * @return FAQ answer Id
      */
     public @StringRes int getAnswer() {
-        return mAnswer;
+        return answer;
     }
 }
