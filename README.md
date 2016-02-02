@@ -54,7 +54,7 @@ All contributions are welcome!
 See the [Change Log](CHANGELOG.md).
 
 ## Copyright
-	 Copyright 2014-2015 Appvelopers
+	 Copyright 2014-2016 Appvelopers
 
 	 Licensed under the Apache License, Version 2.0 (the "License");
 	 you may not use this file except in compliance with the License.
