@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,38 +26,38 @@ import java.io.Serializable;
 public class User implements Serializable{
     private static final long serialVersionUID = 1L;
     /**
-     * The user's name
+     * User's name
      */
-    private String mName;
+    private String name;
     /**
-     * The user's McGill Id
+     * User's McGill Id
      */
-    private String mId;
+    private String id;
 
     /**
      * Default Constructor
      *
-     * @param name The user's name
-     * @param id   The user's McGill Id
+     * @param name User's name
+     * @param id   User's McGill Id
      */
-    public User(String name, String id){
-        this.mName = name;
-        this.mId = id;
+    public User(String name, String id) {
+        this.name = name;
+        this.id = id;
     }
 
     /* GETTERS */
 
     /**
-     * @return The user's name
+     * @return User's name
      */
-    public String getName(){
-        return mName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @return The user's Id
+     * @return User's Id
      */
-    public String getId(){
-        return mId;
+    public String getId() {
+        return id;
     }
 }
