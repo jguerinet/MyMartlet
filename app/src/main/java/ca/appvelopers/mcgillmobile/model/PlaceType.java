@@ -25,6 +25,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
+ * TODO
  * A type of place that the user can filter by
  * @author Julien Guerinet
  * @since 1.0.0
