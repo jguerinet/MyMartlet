@@ -16,8 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalTime;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,92 +31,80 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Course implements Serializable{
+public class Course implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * The term this class is for
      */
-    private Term mTerm;
+    private Term term;
     /**
      * The course's 4-letter subject (ex: MATH)
      */
-    private String mSubject;
+    private String subject;
     /**
      * The course's number (ex: 263)
      */
-    private String mNumber;
+    private String number;
     /**
      * The course title
      */
-    private String mTitle;
+    private String title;
     /**
      * The course CRN number
      */
-    private int mCRN;
+    private int crn;
     /**
      * The course section (ex: 001)
      */
-    private String mSection;
+    private String section;
     /**
      * The course's start time
      */
-    private LocalTime mStartTime;
+    private LocalTime startTime;
     /**
      * The course's end time
      */
-    private LocalTime mEndTime;
+    private LocalTime endTime;
     /**
      * The days this course is on
      */
-    private List<Day> mDays;
+    private List<Day> days;
     /**
      * The course type (ex: lecture, tutorial...)
      */
-    private String mType;
+    private String type;
     /**
      * The course location (generally building and room number)
      */
-    private String mLocation;
+    private String location;
     /**
      * The course's instructor's name
      */
-    private String mInstructor;
+    private String instructor;
     /**
      * The course total capacity (for registration)
      */
-    private int mCapacity;
-    /**
-     * The number of seats available (for registration)
-     */
-    private int mSeatsAvailable;
+    private int capacity;
     /**
      * The number of seats remaining (for registration)
      */
-    private int mSeatsRemaining;
-    /**
-     * The total number of waitlist spots
-     */
-    private int mWaitlistCapacity;
-    /**
-     * The number of waitlist spots available
-     */
-    private int mWaitlistAvailable;
+    private int seatsRemaining;
     /**
      * The number of waitlist spots remaining
      */
-    private int mWaitlistRemaining;
+    private int waitlistRemaining;
     /**
      * The number of credits for this course
      */
-    private double mCredits;
+    private double credits;
     /**
      * The course start date
      */
-    private LocalDate mStartDate;
+    private LocalDate startDate;
     /**
      * The course end date
      */
-    private LocalDate mEndDate;
+    private LocalDate endDate;
 
     /**
      * Constructor used for the user's already registered classes
@@ -137,34 +125,30 @@ public class Course implements Serializable{
      * @param startDate  The starting date for this course
      * @param endDate    The ending date for this course
      */
-    public Course(Term term, String subject, String number, String title, int crn,
-                  String section, LocalTime startTime, LocalTime endTime, List<Day> days,
-                  String type, String location, String instructor, double credits,
-                  LocalDate startDate, LocalDate endDate){
-        this.mTerm = term;
-        this.mNumber = number;
-        this.mSubject = subject;
-        this.mNumber = number;
-        this.mTitle = title;
-        this.mCRN = crn;
-        this.mSection = section;
-        this.mStartTime = startTime;
-        this.mEndTime = endTime;
-        this.mDays = days;
-        this.mType = type;
-        this.mLocation = location;
-        this.mInstructor = instructor;
-        this.mCredits = credits;
-        this.mStartDate = startDate;
-        this.mEndDate = endDate;
+    public Course(Term term, String subject, String number, String title, int crn, String section,
+            LocalTime startTime, LocalTime endTime, List<Day> days, String type, String location,
+            String instructor, double credits, LocalDate startDate, LocalDate endDate) {
+        this.term = term;
+        this.number = number;
+        this.subject = subject;
+        this.number = number;
+        this.title = title;
+        this.crn = crn;
+        this.section = section;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.days = days;
+        this.type = type;
+        this.location = location;
+        this.instructor = instructor;
+        this.credits = credits;
+        this.startDate = startDate;
+        this.endDate = endDate;
 
         //These fields are not needed (they are used for the search results)
-        this.mCapacity = -1;
-        this.mSeatsAvailable = -1;
-        this.mSeatsRemaining = -1;
-        this.mWaitlistCapacity = -1;
-        this.mWaitlistAvailable = -1;
-        this.mWaitlistRemaining = -1;
+        capacity = -1;
+        seatsRemaining = -1;
+        waitlistRemaining = -1;
     }
 
     /**
@@ -186,27 +170,19 @@ public class Course implements Serializable{
      * @param startDate         THe course's start date
      * @param endDate           The course's end date
      * @param capacity          The course capacity
-     * @param seatsAvailable    The number of seats available
      * @param seatsRemaining    The number of seats remaining
-     * @param waitlistCapacity  The waitlist capacity
-     * @param waitlistAvailable The number of waitlist seats available
      * @param waitlistRemaining The number of waitlist seats remaining
      */
-    public Course(Term term, String subject, String number, String title, int crn,
-                  String section, LocalTime startTime, LocalTime endTime, List<Day> days,
-                  String type, String location, String instructor, double credits,
-                  LocalDate startDate, LocalDate endDate, int capacity, int seatsAvailable,
-                  int seatsRemaining, int waitlistCapacity, int waitlistAvailable,
-                  int waitlistRemaining){
+    public Course(Term term, String subject, String number, String title, int crn, String section,
+            LocalTime startTime, LocalTime endTime, List<Day> days, String type, String location,
+            String instructor, double credits, LocalDate startDate, LocalDate endDate, int capacity,
+            int seatsRemaining, int waitlistRemaining) {
         this(term, subject, number, title, crn, section, startTime, endTime, days, type, location,
                 instructor, credits, startDate, endDate);
 
-        this.mCapacity = capacity;
-        this.mSeatsAvailable = seatsAvailable;
-        this.mSeatsRemaining = seatsRemaining;
-        this.mWaitlistCapacity = waitlistCapacity;
-        this.mWaitlistAvailable = waitlistAvailable;
-        this.mWaitlistRemaining = waitlistRemaining;
+        this.capacity = capacity;
+        this.seatsRemaining = seatsRemaining;
+        this.waitlistRemaining = waitlistRemaining;
     }
 
 	/* GETTERS */
@@ -214,251 +190,192 @@ public class Course implements Serializable{
     /**
      * @return The course term
      */
-    public Term getTerm(){
-        return this.mTerm;
+    public Term getTerm() {
+        return term;
     }
 
     /**
      * @return The course code
      */
-    public String getCode(){
-        return this.mSubject + " " + this.mNumber;
+    public String getCode() {
+        return subject + " " + number;
     }
 
     /**
      * @return The course subject
      */
-    public String getSubject(){
-        return this.mSubject;
+    public String getSubject() {
+        return subject;
     }
 
     /**
      * @return The course number
      */
-    public String getNumber(){
-        return this.mNumber;
+    public String getNumber() {
+        return number;
     }
 
     /**
      * @return The course title
      */
     public String getTitle() {
-        return this.mTitle;
+        return title;
     }
 
     /**
      * @return The course CRN
      */
-    public int getCRN(){
-        return this.mCRN;
+    public int getCRN() {
+        return crn;
     }
 
     /**
      * @return The course section
      */
-    public String getSection(){
-        return this.mSection;
+    public String getSection() {
+        return section;
     }
 
     /**
      * @return The course start time
      */
-    public LocalTime getStartTime(){
-        return this.mStartTime;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
 
     /**
      * @return The course end time
      */
-    public LocalTime getEndTime(){
-        return this.mEndTime;
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
     /**
      * @return The days this course is on
      */
-    public List<Day> getDays(){
-        return this.mDays;
+    public List<Day> getDays() {
+        return days;
     }
 
     /**
      * @return The course type
      */
-    public String getType(){
-        return this.mType;
+    public String getType() {
+        return type;
     }
 
     /**
      * @return The course's location
      */
-    public String getLocation(){
-        return this.mLocation;
+    public String getLocation() {
+        return location;
     }
 
     /**
      * @return The course's instructor
      */
-    public String getInstructor(){
-        return this.mInstructor;
+    public String getInstructor() {
+        return instructor;
     }
 
     /**
      * @return The course credits
      */
-    public double getCredits(){
-        return this.mCredits;
+    public double getCredits() {
+        return credits;
     }
 
     /**
      * @return The number of spots remaining
      */
-    public int getSeatsRemaining(){
-        return this.mSeatsRemaining;
+    public int getSeatsRemaining() {
+        return seatsRemaining;
     }
 
     /**
      * @return The number of waitlist spots remaining
      */
-    public int getWaitlistRemaining(){
-        return this.mWaitlistRemaining;
+    public int getWaitlistRemaining() {
+        return waitlistRemaining;
     }
 
     /**
      * @return The starting date
      */
-    public LocalDate getStartDate(){
-        return this.mStartDate;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
     /**
      * @return The ending date
      */
-    public LocalDate getEndDate(){
-        return this.mEndDate;
-    }
-
-    /* SETTERS */
-
-    /**
-     * @param time The start time of the course
-     */
-    public void setStartTime(LocalTime time){
-        this.mStartTime = time;
-    }
-
-    /**
-     * @param time The end time of the course
-     */
-    public void setEndTime(LocalTime time){
-        this.mEndTime = time;
-    }
-
-    /**
-     * @param days The days this course is on
-     */
-    public void setDays(List<Day> days){
-        this.mDays = days;
-    }
-
-    /**
-     * @param location The course's location
-     */
-    public void setLocation(String location){
-        this.mLocation = location;
-    }
-
-    /**
-     * @param instructor The instructor for this course
-     */
-    public void setInstructor(String instructor){
-        this.mInstructor = instructor;
-    }
-
-    /**
-     * @param seatsRemaining The number of spots remaining
-     */
-    public void setSeatsRemaining(int seatsRemaining){
-        this.mSeatsRemaining = seatsRemaining;
-    }
-
-    /**
-     * @param waitlistRemaining The number of waitlist spots remaining
-     */
-    public void setWaitlistRemaining(int waitlistRemaining){
-        this.mWaitlistRemaining = waitlistRemaining;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     /* HELPERS */
 
     /**
-     * Get the start time of the course, rounded off to the nearest half hour
+     * Returns the start time of the course, rounded off to the nearest half hour
      *
      * @return The course rounded start time
      */
-    public LocalTime getRoundedStartTime(){
+    public LocalTime getRoundedStartTime() {
         //Check if the start time is already a half hour increment
-        if(mStartTime.getMinuteOfHour() == 0 || mStartTime.getMinuteOfHour() == 30){
-            return mStartTime;
+        if (startTime.getMinute() == 0 || startTime.getMinute() == 30) {
+            return startTime;
         }
 
         //If not, remove 5 minutes to the start time to get round numbers
-        //  (McGill start times are always 5 minutes after the nearest half hour
-        return mStartTime.minusMinutes(5);
+        //  (McGill start times are always 5 minutes after the nearest half hour)
+        return startTime.minusMinutes(5);
     }
 
-
-
     /**
-     * Gets the end time of the course, rounded off the the nearest half hour
+     * Returns the end time of the course, rounded off the the nearest half hour
      *
      * @return The course rounded end time
      */
-    public LocalTime getRoundedEndTime(){
+    public LocalTime getRoundedEndTime() {
         //Check if the end time is already a half hour increment
-        if(mEndTime.getMinuteOfHour() == 0 || mEndTime.getMinuteOfHour() == 30){
-            return mEndTime;
+        if (endTime.getMinute() == 0 || endTime.getMinute() == 30) {
+            return endTime;
         }
 
         //If not, add 5 minutes to the end time to get round numbers
         //  (McGill end times are always 5 minutes before the nearest half hour
-        return mEndTime.plusMinutes(5);
+        return endTime.plusMinutes(5);
     }
 
     /**
-     * Checks if the course is for the given date
-     *
      * @param date The given date
-     * @return True if it is, false otherwise
+     * @return True if the course if for the given date, false otherwise
      */
-    public boolean isForDate(LocalDate date){
+    public boolean isForDate(LocalDate date) {
         //Check if the date is within the date range and the course is offered on that day
-        return !date.isBefore(mStartDate) && !date.isAfter(mEndDate) &&
-                mDays.contains(Day.getDay(date));
+        return !date.isBefore(startDate) && !date.isAfter(endDate) &&
+                days.contains(Day.getDay(date));
     }
 
     /**
-     * Gets the String representing the course times
-     *
      * @return The course times in String format
      */
-    public String getTimeString(){
+    public String getTimeString() {
         //No time associated, therefore no time string
-        if(mStartTime.getHourOfDay() == 0 && mStartTime.getMinuteOfHour() == 0){
+        if (startTime.getHour() == 0 && startTime.getMinute() == 0) {
             Timber.i("No time associated when getting String");
             return "";
         }
 
-        return Date.getTimeString(mStartTime) + " - " + Date.getTimeString(mEndTime);
+        return Date.getTimeString(startTime) + " - " + Date.getTimeString(endTime);
     }
 
     /**
-     * Returns a String representing the dates for this course
-     *
      * @return The course dates in String format
      */
     public String getDateString() {
-        return Date.getShortDateString(mStartDate) + " - " + Date.getShortDateString(mEndDate);
+        return Date.getShortDateString(startDate) + " - " + Date.getShortDateString(endDate);
     }
 
     /**
@@ -468,13 +385,14 @@ public class Course implements Serializable{
      * @return True if they are equal, false otherwise
      */
     @Override
-    public boolean equals(Object object){
-        if(!(object instanceof Course)){
+    public boolean equals(Object object) {
+        if (!(object instanceof Course)) {
             return false;
         }
-        Course classItem = (Course)object;
+
+        Course course = (Course) object;
 
         //Check if they have the same season, year, and CRN
-        return this.mCRN == classItem.getCRN() && this.mTerm.equals(classItem.getTerm());
+        return crn == course.getCRN() && term.equals(course.getTerm());
     }
 }
