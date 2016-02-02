@@ -62,7 +62,7 @@
     <string name="summer">Eté</string>
 
     <!-- Faculty Names -->
-    <string name="faculty_title">TODO</string>
+    <string name="faculty_title">Choisissez votre Faculté</string>
     <string name="faculty_enviro">Faculté des Sciences de l\'Agriculture et de l\'Environment</string>
     <string name="faculty_arts">Faculté des Arts</string>
     <string name="faculty_continuing_studies">École d\'Éducation Permanente</string>
@@ -76,7 +76,7 @@
     <string name="faculty_music">École de Musique Schulich</string>
     <string name="faculty_religion">Faculté d\'Études Religieuses</string>
     <string name="faculty_science">Faculté des Sciences</string>
-    <string name="faculty_none">TODO</string>
+    <string name="faculty_none">Je ne préfère pas dire</string>
 
     <!-- Login Screen -->
     <string name="login_welcome">Bienvenue à MyMartlet. Veuillez s\'il vous plaît entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
@@ -237,6 +237,9 @@
     <string name="about_question">Question</string>
     <string name="about_answer">Je suis une réponse</string>
     <string name="about_FAQ">Question Fréquentes</string>
+    <string name="bug_prompt">Entrez vos commentaires ici&#8230;</string>
+    <string name="bug_email_prompt">Entrez votre email ici&#8230;</string>
+    <string name="bug_comment_invalid">Veuillez s\'il vous plaît entrer vos commentaires avant de continuer</string>
     <string name="help_question1">Qu\'est ce que c\'est MyMartlet?</string>
     <string name="help_question2">Est-ce que cette application est officiellement fait par McGill ?</string>
     <string name="help_question3">Sur quelles platformes pouvons nous trouver cette application ?</string>
