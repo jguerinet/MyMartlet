@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.joda.time.LocalDate;
+import org.threeten.bp.LocalDate;
 
 import java.util.List;
 
@@ -43,11 +43,11 @@ public class DayFragment extends Fragment{
     /**
      * The date this represents
      */
-    private LocalDate mDate;
+    private LocalDate date;
     /**
      * The list of courses to show
      */
-    private List<Course> mCourses;
+    private List<Course> courses;
 
     /**
      * Creates a new DayFragment instance with bundled arguments
@@ -55,7 +55,7 @@ public class DayFragment extends Fragment{
      * @param date The date
      * @return The DayFragment instance
      */
-    public static DayFragment newInstance(LocalDate date){
+    public static DayFragment newInstance(LocalDate date) {
         DayFragment fragment = new DayFragment();
 
         //Put the arguments in the bundle
@@ -67,13 +67,13 @@ public class DayFragment extends Fragment{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Get the arguments from the bundle
-        mDate = (LocalDate)getArguments().get(Constants.DATE);
+        date = (LocalDate) getArguments().get(Constants.DATE);
         //Get the courses from the ScheduleActivity
-        mCourses = ((ScheduleActivity)getActivity()).getCourses(mDate);
+        courses = ((ScheduleActivity) getActivity()).getCourses(date);
     }
 
     @Override
@@ -83,11 +83,11 @@ public class DayFragment extends Fragment{
 
         //Day Title
         TextView dayTitle = (TextView)view.findViewById(R.id.day_title);
-        dayTitle.setText(DayUtils.getDay(mDate).toString());
+        dayTitle.setText(DayUtils.getString(getActivity(), date.getDayOfWeek()));
 
         //Date Title
         TextView dayDate = (TextView)view.findViewById(R.id.day_date);
-        dayDate.setText(DateUtils.getDateString(mDate));
+        dayDate.setText(DateUtils.getDateString(date));
 
         //Get the container for the timetable
         LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);
@@ -96,7 +96,7 @@ public class DayFragment extends Fragment{
 
         //Fill it up
         ScheduleViewBuilder.fillSchedule(getActivity(), timetableContainer, scheduleContainer,
-                mCourses, true);
+                courses, true);
 
         return view;
     }

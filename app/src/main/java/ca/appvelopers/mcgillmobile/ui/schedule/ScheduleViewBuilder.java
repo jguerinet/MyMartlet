@@ -28,9 +28,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.List;
 
@@ -49,21 +50,21 @@ public class ScheduleViewBuilder {
     /**
      * The ScheduleActivity instance
      */
-    private ScheduleActivity mActivity;
+    private ScheduleActivity activity;
     /**
      * The starting date
      */
-    private LocalDate mDate;
+    private LocalDate date;
 
     /**
      * Default Constructor
      *
-     * @param activity     {@link ScheduleActivity} instance
-     * @param startingDate Starting date
+     * @param activity {@link ScheduleActivity} instance
+     * @param date     Starting date
      */
-    public ScheduleViewBuilder(ScheduleActivity activity, LocalDate startingDate) {
-        mActivity = activity;
-        mDate = startingDate;
+    public ScheduleViewBuilder(ScheduleActivity activity, LocalDate date) {
+        this.activity = activity;
+        this.date = date;
     }
 
     /**
@@ -74,7 +75,7 @@ public class ScheduleViewBuilder {
      */
     public View renderView(int orientation) {
         //Inflate the view
-        View view = View.inflate(mActivity, R.layout.activity_schedule, null);
+        View view = View.inflate(activity, R.layout.activity_schedule, null);
 
         //Render the right view based on the orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -96,7 +97,7 @@ public class ScheduleViewBuilder {
         LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);
 
         //Leave space at the top for the day names
-        View dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);
+        View dayView = View.inflate(activity, R.layout.fragment_day_name, null);
         //Black line to separate the timetable from the schedule
         View dayViewLine = dayView.findViewById(R.id.day_line);
         dayViewLine.setVisibility(View.VISIBLE);
@@ -108,39 +109,39 @@ public class ScheduleViewBuilder {
         LinearLayout dayContainer = (LinearLayout)view.findViewById(R.id.schedule_container);
 
         //Find the index of the given date
-        int currentDayIndex = mDate.getDayOfWeek();
+        int currentDayIndex = date.getDayOfWeek().getValue();
 
         //Go through the 7 days of the week
         for(int i = 1; i < 8; i ++){
-            DayUtils day = DayUtils.getDay(i);
+            DayOfWeek day = DayOfWeek.of(i);
 
             //Set up the day name
-            dayView = View.inflate(mActivity, R.layout.fragment_day_name, null);
-            TextView dayViewTitle = (TextView)dayView.findViewById(R.id.day_name);
-            dayViewTitle.setText(day.getString());
+            dayView = View.inflate(activity, R.layout.fragment_day_name, null);
+            TextView dayViewTitle = (TextView) dayView.findViewById(R.id.day_name);
+            dayViewTitle.setText(DayUtils.getString(activity, day));
             dayContainer.addView(dayView);
 
             //Set up the schedule container for that one day
-            LinearLayout scheduleContainer = new LinearLayout(mActivity);
+            LinearLayout scheduleContainer = new LinearLayout(activity);
             scheduleContainer.setOrientation(LinearLayout.VERTICAL);
             scheduleContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                    mActivity.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
+                    activity.getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
 
             //Get the classes for today
-            List<Course> courses = mActivity.getCourses(mDate.plusDays(i - currentDayIndex));
+            List<Course> courses = activity.getCourses(date.plusDays(i - currentDayIndex));
 
             //Fill the schedule for the current day
-            fillSchedule(mActivity, timetableContainer, scheduleContainer, courses, false);
+            fillSchedule(activity, timetableContainer, scheduleContainer, courses, false);
 
             //Add the current day to the schedule container
             dayContainer.addView(scheduleContainer);
 
             //Line
-            View line = new View(mActivity);
+            View line = new View(activity);
             line.setBackgroundColor(Color.BLACK);
             line.setLayoutParams(new ViewGroup.LayoutParams(
-                    mActivity.getResources().getDimensionPixelSize(R.dimen.schedule_line),
+                    activity.getResources().getDimensionPixelSize(R.dimen.schedule_line),
                     ViewGroup.LayoutParams.MATCH_PARENT));
             dayContainer.addView(line);
         }
@@ -158,7 +159,7 @@ public class ScheduleViewBuilder {
      */
     public static void fillSchedule(final Activity activity, LinearLayout timetableContainer,
                                     LinearLayout scheduleContainer, List<Course> courses,
-                                    boolean clickableCourses){
+                                    boolean clickableCourses) {
         //This will be used of an end time of a course when it is added to the schedule container
         LocalTime currentCourseEndTime = null;
 
@@ -180,7 +181,7 @@ public class ScheduleViewBuilder {
                 Course currentCourse = null;
 
                 //Get the current time
-                LocalTime currentTime = new LocalTime(hour, min);
+                LocalTime currentTime = LocalTime.of(hour, min);
 
                 //if currentCourseEndTime = null (no course is being added) or it is equal to
                 //the current time in min (end of a course being added) we need to add a new view
@@ -224,8 +225,9 @@ public class ScheduleViewBuilder {
                         location.setText(currentCourse.getLocation());
 
                         //Find out how long this course is in terms of blocks of 30 min
-                        int length = Minutes.minutesBetween(currentCourse.getRoundedStartTime(),
-                                currentCourse.getRoundedEndTime()).getMinutes() / 30;
+                        int length = (int) ChronoUnit.MINUTES.between(
+                                currentCourse.getRoundedStartTime(),
+                                currentCourse.getRoundedEndTime()) / 30;
 
                         //Set the height of the view depending on this height
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -271,7 +273,7 @@ public class ScheduleViewBuilder {
     private void renderPortraitView(View view){
         //Set up the adapter
         final SchedulePagerAdapter adapter =
-                new SchedulePagerAdapter(mActivity.getSupportFragmentManager(), mDate);
+                new SchedulePagerAdapter(activity.getSupportFragmentManager(), date);
 
         //Set up the ViewPager
         ViewPager pager = (ViewPager) view.findViewById(R.id.pager);
@@ -284,7 +286,7 @@ public class ScheduleViewBuilder {
             public void onPageSelected(int i) {
                 //Update the view builder's date every time the page is turned to have the right
                 //  week if ever the user rotates his device
-                mDate = adapter.getDate(i);
+                date = adapter.getDate(i);
             }
             @Override
             public void onPageScrollStateChanged(int i) {}
@@ -298,11 +300,11 @@ public class ScheduleViewBuilder {
         /**
          * The starting date
          */
-        private LocalDate mStartingDate;
+        private LocalDate startingDate;
         /**
          * The index of the first day
          */
-        private int mFirstDayIndex;
+        private int firstDayIndex;
 
         /**
          * Default Constructor
@@ -312,9 +314,9 @@ public class ScheduleViewBuilder {
          */
         public SchedulePagerAdapter(FragmentManager fm, LocalDate date){
             super(fm);
-            this.mStartingDate = date;
-            //Get the first day (offset of 500002 to get the right day)
-            this.mFirstDayIndex = 500002 + mDate.getDayOfWeek();
+            this.startingDate = date;
+            //Get the first day (offset of 500001 to get the right day)
+            this.firstDayIndex = 500001 + ScheduleViewBuilder.this.date.getDayOfWeek().getValue();
         }
 
         @Override
@@ -338,7 +340,7 @@ public class ScheduleViewBuilder {
          * @return The first day index
          */
         public int getFirstDayIndex(){
-            return this.mFirstDayIndex;
+            return this.firstDayIndex;
         }
 
         /**
@@ -348,7 +350,7 @@ public class ScheduleViewBuilder {
          * @return The corresponding date
          */
         public LocalDate getDate(int i){
-            return mStartingDate.plusDays(i - mFirstDayIndex);
+            return startingDate.plusDays(i - firstDayIndex);
         }
     }
 }

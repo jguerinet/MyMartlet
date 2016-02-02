@@ -27,7 +27,7 @@ import android.view.View;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.BooleanPreference;
 
-import org.joda.time.LocalDate;
+import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
