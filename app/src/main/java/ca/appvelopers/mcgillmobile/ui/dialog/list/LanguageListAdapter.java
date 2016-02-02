@@ -28,7 +28,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.Language;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
@@ -92,5 +91,5 @@ public abstract class LanguageListAdapter implements ListDialogInterface {
      *
      * @param language The selected language
      */
-    public abstract void onLanguageSelected(@Language.Type int language);
+    public abstract void onLanguageSelected(@LanguageManager.Language int language);
 }
