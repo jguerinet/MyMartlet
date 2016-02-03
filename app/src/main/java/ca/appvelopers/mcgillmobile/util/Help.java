@@ -16,9 +16,10 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
+import android.content.Context;
+
 import com.guerinet.utils.Utils;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
 /**
@@ -30,9 +31,11 @@ public class Help {
 
     /**
      * Displays a toast with a generic error message
+     *
+     * @param context App context
      */
-    public static void error() {
-        Utils.toast(App.getContext(), R.string.error_other);
+    public static void error(Context context) {
+        Utils.toast(context, R.string.error_other);
     }
 
     /**

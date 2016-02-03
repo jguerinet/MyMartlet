@@ -80,7 +80,7 @@ public class SemesterActivity extends BaseActivity {
         Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);
 
         if (semester == null) {
-            Help.error();
+            Help.error(this);
             Timber.e(new IllegalArgumentException(), "Semester was null");
             finish();
             return;
