@@ -29,6 +29,8 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.guerinet.utils.Device;
+
 import org.threeten.bp.DayOfWeek;
 
 import java.util.ArrayList;
@@ -46,7 +48,6 @@ import ca.appvelopers.mcgillmobile.ui.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Device;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
@@ -194,7 +195,8 @@ public class SearchActivity extends DrawerActivity {
     /**
      * Searches for courses based on the given information
      */
-    @OnClick(R.id.search_button) @SuppressWarnings("deprecation")
+    @OnClick(R.id.search_button)
+    @SuppressWarnings("deprecation, NewApi")
     protected void searchCourses() {
         //Get the selected term
         final Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
@@ -350,7 +352,7 @@ public class SearchActivity extends DrawerActivity {
     /**
      * Resets all of the fields
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation, NewApi")
     private void reset() {
         //Reset all of the views
         if (Device.isMarshmallow()) {

@@ -16,18 +16,10 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.guerinet.utils.Utils;
-
-import java.io.IOException;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import okio.BufferedSource;
-import okio.Okio;
 
 /**
  * Contains various useful static help methods
@@ -44,44 +36,13 @@ public class Help {
     }
 
     /**
-     * Gets the Docuum link for a course
+     * Returns the Docuum link for a course
      *
      * @param courseName The 4-letter name of the code
      * @param courseCode The course code number
      * @return The Docuum URL
      */
-    public static String getDocuumLink(String courseName, String courseCode){
+    public static String getDocuumLink(String courseName, String courseCode) {
         return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
-    }
-
-    /* OTHER */
-
-    /**
-     * Reads a String from a local file
-     *
-     * @param context      The app context
-     * @param fileResource The resource of the file to read
-     * @return The file in String format
-     */
-    public static String readFromFile(Context context, int fileResource) {
-        try{
-            BufferedSource fileSource =
-                    Okio.buffer(Okio.source(context.getResources().openRawResource(fileResource)));
-
-            return fileSource.readUtf8();
-        } catch(IOException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * @return True if the user is connected to the internet, false otherwise
-     */
-    public static boolean isConnected() {
-        ConnectivityManager connectManager = (ConnectivityManager)
-                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = connectManager.getActiveNetworkInfo();
-        return info != null && info.isConnected();
     }
 }

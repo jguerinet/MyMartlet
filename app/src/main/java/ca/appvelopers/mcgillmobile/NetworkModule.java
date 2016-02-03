@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,28 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.util;
+package ca.appvelopers.mcgillmobile;
 
-import android.os.Build;
+import android.content.Context;
+import android.net.ConnectivityManager;
+
+import dagger.Module;
+import dagger.Provides;
 
 /**
- * Helper methods relating to the user's device
+ * Dagger module for all network injections
  * @author Julien Guerinet
- * @since 2.0.2
+ * @since 2.0.4
  */
-public class Device {
+@Module(includes = AppModule.class)
+public class NetworkModule {
+
     /**
-     * @return True if the OS is Marshmallow or higher
+     * @param context App context
+     * @return The {@link ConnectivityManager} instance
      */
-    public static boolean isMarshmallow() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    @Provides
+    public ConnectivityManager provideConnectivityManager(Context context) {
+        return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 }

@@ -39,7 +39,7 @@ import dagger.Component;
  * @author Julien Guerinet
  * @since 2.0.4
  */
-@Singleton @Component(modules = {AppModule.class, PrefsModule.class})
+@Singleton @Component(modules = {AppModule.class, NetworkModule.class, PrefsModule.class})
 public interface BaseComponent {
     void inject(App app);
     void inject(BaseActivity activity);

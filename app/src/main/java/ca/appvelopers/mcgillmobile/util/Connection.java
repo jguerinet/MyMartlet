@@ -16,6 +16,10 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+
+import com.guerinet.utils.Utils;
 import com.squareup.okhttp.CacheControl;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
@@ -41,6 +45,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
@@ -176,7 +181,8 @@ public class Connection {
 	public String get(String url, boolean autoLogin) throws MinervaException, IOException,
 			NoInternetException{
 		//Check if the user is connected to the internet
-		if(!Help.isConnected()){
+		if(!Utils.isConnected((ConnectivityManager)
+                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))){
 			throw new NoInternetException();
 		}
 
@@ -306,7 +312,8 @@ public class Connection {
 	 */
 	public ConnectionStatus login(){
 		try {
-			if(!Help.isConnected()){
+			if(!Utils.isConnected((ConnectivityManager)
+                    App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))){
 				return ConnectionStatus.NO_INTERNET;
 			}
 

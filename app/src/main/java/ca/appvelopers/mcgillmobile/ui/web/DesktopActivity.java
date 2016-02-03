@@ -17,10 +17,13 @@
 package ca.appvelopers.mcgillmobile.ui.web;
 
 import android.annotation.SuppressLint;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.guerinet.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -33,7 +36,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
@@ -57,6 +59,11 @@ public class DesktopActivity extends DrawerActivity {
      */
     @Inject
     protected PasswordPreference passwordPref;
+    /**
+     * The {@link ConnectivityManager} instance
+     */
+    @Inject
+    protected ConnectivityManager connectivityManager;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +74,7 @@ public class DesktopActivity extends DrawerActivity {
         Analytics.get().sendScreen("Desktop Site");
 
         //If the user is not connected to the internet, don't continue
-        if (!Help.isConnected()) {
+        if (!Utils.isConnected(connectivityManager)) {
             DialogHelper.error(this, R.string.error_no_internet);
             return;
         }

@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.util.thread;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -28,6 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.guerinet.utils.Utils;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.OkHttpClient;
@@ -46,7 +49,6 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import timber.log.Timber;
 
@@ -77,7 +79,8 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     @Override
     public Void doInBackground(Void... params){
         //Check if we are connected to the internet
-        if(Help.isConnected()){
+        if(Utils.isConnected((ConnectivityManager)
+                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))){
             try {
                 /* CONFIG */
                 mCurrentSection = "CONFIG";

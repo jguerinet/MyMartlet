@@ -21,8 +21,8 @@ import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -34,6 +34,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.guerinet.utils.Device;
 import com.guerinet.utils.Utils;
 
 import javax.inject.Inject;
@@ -47,7 +48,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
@@ -76,6 +76,11 @@ public class MyCoursesActivity extends DrawerActivity {
      */
     @Inject
     protected PasswordPreference passwordPref;
+    /**
+     * The {@link ConnectivityManager} instance
+     */
+    @Inject
+    protected ConnectivityManager connectivityManager;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,7 @@ public class MyCoursesActivity extends DrawerActivity {
         Analytics.get().sendScreen("MyCourses");
 
         //No internet: not worth trying to load the view
-        if (!Help.isConnected()) {
+        if (!Utils.isConnected(connectivityManager)) {
             DialogHelper.error(this, R.string.error_no_internet);
             return;
         }
@@ -95,7 +100,7 @@ public class MyCoursesActivity extends DrawerActivity {
         //Clear any existing cookies
         final CookieManager cookieManager = CookieManager.getInstance();
         if (cookieManager.hasCookies()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Device.isLollipop()) {
                 CookieManager.getInstance().removeAllCookies(null);
             } else{
                 //noinspection deprecation
