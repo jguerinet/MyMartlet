@@ -61,6 +61,7 @@ android {
         }
         beta {
             initWith debug
+            signingConfig signingConfigs.release
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
         release {
