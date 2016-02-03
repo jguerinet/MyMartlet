@@ -41,7 +41,6 @@ All contributions are welcome!
 * [Picasso](https://github.com/square/picasso)
 * [Twitter](https://dev.twitter.com/mopub/android)
 * [ViewPagerIndicator](https://github.com/JakeWharton/ViewPagerIndicator)
-* [Joda Time](https://github.com/JodaOrg/joda-time)
 * [JSoup](https://github.com/jhy/jsoup)
 
 ## Contributors

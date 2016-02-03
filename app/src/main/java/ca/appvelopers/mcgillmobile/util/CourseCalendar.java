@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import org.joda.time.DateTime;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
@@ -476,18 +475,6 @@ public class CourseCalendar {
         return DateTimeFormatter.ofPattern("YYYYMMddTHHmmss").format(date);
 	}
 	
-	//Joda DateTime's getDayOfWeek method returns an integer where 0 is Sunday.  
-	static String[] iCalDays = {"SU","MO","TU","WE","TH","FR","SA"};
-	
-    /**
-     * Returns the day of the week in iCalendar format, e.g. MO,TH 
-     * @param date The given date
-     * @return Day of the week
-     */
-    public static String toDayOfWeek(DateTime date){
-        return iCalDays[date.getDayOfWeek()];
-    }
-    
     /**
      * This is an example usage for this class.
      *

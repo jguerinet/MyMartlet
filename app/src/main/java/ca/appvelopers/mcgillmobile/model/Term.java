@@ -16,7 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import org.joda.time.LocalDate;
+import org.threeten.bp.LocalDate;
 
 import java.io.Serializable;
 
@@ -130,7 +130,7 @@ public class Term implements Serializable {
      */
     public static Term getCurrentTerm() {
         LocalDate today = LocalDate.now();
-        int month = today.getMonthOfYear();
+        int month = today.getMonthValue();
         int year = today.getYear();
 
         if (month >= 9 && month <= 12) {
