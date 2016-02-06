@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import android.content.Context;
+
 import org.threeten.bp.LocalDate;
 
 import java.io.Serializable;
@@ -30,7 +32,7 @@ public class Term implements Serializable {
     /**
      * Term season
      */
-    private Season season;
+    private @Season.Type String season;
     /**
      * Term year
      */
@@ -42,7 +44,7 @@ public class Term implements Serializable {
      * @param season Term season
      * @param year   Term year
      */
-    public Term(Season season, int year) {
+    public Term(@Season.Type String season, int year) {
         this.season = season;
         this.year = year;
     }
@@ -52,7 +54,7 @@ public class Term implements Serializable {
     /**
      * @return Term season
      */
-    public Season getSeason() {
+    public @Season.Type String getSeason() {
         return season;
     }
 
@@ -81,8 +83,8 @@ public class Term implements Serializable {
             return false;
         } else {
             //Same year: check the semesters
-            return Integer.valueOf(season.getSeasonNumber()) >
-                    Integer.valueOf(term.getSeason().getSeasonNumber());
+            return Integer.valueOf(Season.getSeasonNumber(season)) >
+                    Integer.valueOf(Season.getSeasonNumber(term.getSeason()));
         }
     }
 
@@ -90,14 +92,22 @@ public class Term implements Serializable {
      * @return Term Id, for parsing errors
      */
     public String getId() {
-        return season.getId() + " " + year;
+        return season + " " + year;
     }
 
     /**
+     * @param context App context
      * @return String representation of the term
      */
-    public String getString() {
-        return season.toString() + " " + year;
+    public String getString(Context context) {
+        return Season.getString(context, season) + " " + year;
+    }
+
+    /**
+     * @return The term in a format used by McGill
+     */
+    public String getTermNumber() {
+        return year + Season.getSeasonNumber(season);
     }
 
     @Override
@@ -107,7 +117,7 @@ public class Term implements Serializable {
         }
 
         Term term = (Term) object;
-        return season == term.getSeason() && year == term.getYear();
+        return season.equals(term.getSeason()) && year == term.getYear();
     }
 
     /* STATIC HELPERS */
@@ -120,7 +130,7 @@ public class Term implements Serializable {
      */
     public static Term parseTerm(String term) {
         String[] termParts = term.split(" ");
-        return new Term(Season.findSeason(termParts[0]), Integer.valueOf(termParts[1]));
+        return new Term(Season.getSeason(termParts[0]), Integer.valueOf(termParts[1]));
     }
 
     /**

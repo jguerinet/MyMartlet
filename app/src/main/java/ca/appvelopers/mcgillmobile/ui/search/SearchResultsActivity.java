@@ -82,7 +82,7 @@ public class SearchResultsActivity extends BaseActivity {
                 (ArrayList<Course>)getIntent().getSerializableExtra(Constants.COURSES);
 
         //Set the title
-        setTitle(mTerm.getString());
+        setTitle(mTerm.getString(this));
 
         //ListView
         mAdapter = new WishlistSearchCourseAdapter(this, mTerm, courses);

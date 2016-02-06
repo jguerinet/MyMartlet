@@ -444,8 +444,8 @@ public class Connection {
 	 * @param term The term
 	 * @return The schedule URL
 	 */
-    public static String getScheduleURL(Term term){
-        return Connection.SCHEDULE_URL + term.getYear() + term.getSeason().getSeasonNumber();
+    public static String getScheduleURL(Term term) {
+        return Connection.SCHEDULE_URL + term.getTermNumber();
     }
 
     /**
@@ -457,8 +457,7 @@ public class Connection {
      * @return The proper registration URL
      */
     public static String getRegistrationURL(Term term, List<Course> classes, boolean dropCourse){
-        String registrationURL = COURSE_REGISTRATION_URL + term.getYear() +
-		        term.getSeason().getSeasonNumber();
+        String registrationURL = COURSE_REGISTRATION_URL + term.getTermNumber();
 
         //Add random Minerva stuff that is apparently necessary
         registrationURL += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
@@ -467,17 +466,16 @@ public class Connection {
 
         if(dropCourse){
             for(Course classItem : classes){
-                registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.getYear() +
-		                term.getSeason().getSeasonNumber() + "&CRN_IN=" + classItem.getCRN() +
-                        "&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY" +
-                        "&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+                registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.getTermNumber() +
+                        "&CRN_IN=" + classItem.getCRN() + "&start_date_in=DUMMY&end_date_in=DUMMY" +
+                        "&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&" +
+                        "TITLE=DUMMY&MESG=DUMMY";
             }
         }
         else{
-            registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getYear() +
-		            term.getSeason().getSeasonNumber() + "&CRN_IN=DUMMY&start_date_in=DUMMY&" +
-		            "end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMYLEVL=DUMMY&CRED=DUMMY&" +
-		            "GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
+            registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getTermNumber() +
+		            "&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&" +
+                    "SEC=DUMMYLEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
         }
 
         //Lots of junk
@@ -684,7 +682,7 @@ public class Connection {
 		 */
 		public String build() {
 			String url = COURSE_SEARCH_URL +
-					"term_in=" + term.getYear() + term.getSeason().getSeasonNumber() +
+					"term_in=" + term.getTermNumber() +
 					"&sel_subj=dummy" +
 					"&sel_day=dummy" +
 					"&sel_schd=dummy" +

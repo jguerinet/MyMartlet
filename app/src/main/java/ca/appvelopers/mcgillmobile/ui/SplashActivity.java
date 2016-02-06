@@ -530,7 +530,7 @@ public class SplashActivity extends BaseActivity {
                                     publishNewProgress(getString(mDownloadEverything ?
                                                     R.string.downloading_semester :
                                                     R.string.updating_semester,
-                                            term.getString()));
+                                            term.getString(SplashActivity.this)));
 
                                     //Download the schedule
                                     try{

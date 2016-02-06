@@ -89,7 +89,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
         public void bind(final Semester semester) {
             final Context context = itemView.getContext();
 
-            mName.setText(semester.getSemesterName());
+            mName.setText(semester.getSemesterName(context));
             mGPA.setText(context.getString(R.string.transcript_termGPA,
                     String.valueOf(semester.getGPA())));
 

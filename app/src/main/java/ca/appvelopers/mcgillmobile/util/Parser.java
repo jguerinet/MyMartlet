@@ -106,9 +106,9 @@ public class Parser {
                 }
             }
             //Semester Information
-            if(row.text().startsWith(Season.FALL.getId()) ||
-                    row.text().startsWith(Season.WINTER.getId()) ||
-                    row.text().startsWith(Season.SUMMER.getId()) ||
+            if(row.text().startsWith(Season.FALL) ||
+                    row.text().startsWith(Season.WINTER) ||
+                    row.text().startsWith(Season.SUMMER) ||
                     row.text().startsWith(Token.READMITTED_FALL) ||
                     row.text().startsWith(Token.READMITTED_WINTER) ||
                     row.text().startsWith(Token.READMITTED_SUMMER) ||
@@ -119,31 +119,31 @@ public class Parser {
                 String[] scheduleSemesterItems = scheduleSemester.split("\\s+");
 
                 //Find the right season and year, making sure to get the right array index
-                Season season;
+                @Season.Type String season;
                 String yearString;
                 int year = -1;
 
-                if(row.text().startsWith(Season.FALL.getId()) ||
-                        row.text().startsWith(Season.WINTER.getId()) ||
-                        row.text().startsWith(Season.SUMMER.getId()) ){
+                if(row.text().startsWith(Season.FALL) ||
+                        row.text().startsWith(Season.WINTER) ||
+                        row.text().startsWith(Season.SUMMER) ){
 
-                    season = Season.findSeason(scheduleSemesterItems[0]);
+                    season = Season.getSeason(scheduleSemesterItems[0]);
                     yearString = scheduleSemesterItems[1];
                 }
                 else if(row.text().startsWith(Token.CHANGE_PROGRAM)){
-                    season = Season.findSeason(scheduleSemesterItems[3]);
+                    season = Season.getSeason(scheduleSemesterItems[3]);
                     yearString = scheduleSemesterItems[4];
                 }
                 else{
-                    season = Season.findSeason(scheduleSemesterItems[1]);
+                    season = Season.getSeason(scheduleSemesterItems[1]);
                     yearString = scheduleSemesterItems[2];
                 }
 
                 try{
                     year = Integer.valueOf(yearString);
-                } catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     Timber.e(e, "Semester Year Transcript Parsing Bug");
-                    error = season.getId();
+                    error = season;
                 }
 
                 String program = "";
@@ -201,7 +201,7 @@ public class Parser {
                         }
                         catch (NumberFormatException e){
                             Timber.e(e, "Term GPA Transcript Parsing Bug");
-                            error = season.getId() + year;
+                            error = season + " " + year;
                         }
                     }
                     //Term Credits
@@ -211,7 +211,7 @@ public class Parser {
                         }
                         catch (NumberFormatException e){
                             Timber.e(e, "Term Credits Transcript Parsing Bug");
-                            error = season.getId() + year;
+                            error = season + " " + year;
                         }
                     }
                     //Course Info
@@ -243,7 +243,7 @@ public class Parser {
                                     code = dataRow.text().substring(0, 10);
                                 } catch(Exception e){
                                     Timber.e(e, "Course Code Transcript Parsing Bug");
-                                    error = season.getId() + year;
+                                    error = season + " " + year;
                                 }
                             }
 
@@ -288,7 +288,7 @@ public class Parser {
                                     credits = extractCredits(code);
                                 } catch(Exception e){
                                     Timber.e(e, "Credits Transcript Parsing Bug");
-                                    error = season.getId() + year;
+                                    error = season + " " + year;
                                     credits = -1;
                                 }
                             }
@@ -328,7 +328,7 @@ public class Parser {
                                         e.printStackTrace();
                                     } catch(Exception e3){
                                         Timber.e(e, "Credits Transcript Parsing Bug");
-                                        error = season.getId() + year;
+                                        error = season + " " + year;
                                         credits = 99;
                                     }
                                 }
@@ -341,9 +341,9 @@ public class Parser {
                     /**
                      * Breaks the loop if the next semester is reached
                      */
-                    if(dataRow.text().startsWith(Season.FALL.getId()) ||
-                            dataRow.text().startsWith(Season.WINTER.getId()) ||
-                            dataRow.text().startsWith(Season.SUMMER.getId()) ||
+                    if(dataRow.text().startsWith(Season.FALL) ||
+                            dataRow.text().startsWith(Season.WINTER) ||
+                            dataRow.text().startsWith(Season.SUMMER) ||
                             dataRow.text().startsWith(Token.READMITTED_FALL) ||
                             dataRow.text().startsWith(Token.READMITTED_WINTER) ||
                             dataRow.text().startsWith(Token.READMITTED_SUMMER) ||

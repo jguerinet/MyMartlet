@@ -81,7 +81,7 @@ public class TermAdapter extends BaseAdapter implements SpinnerAdapter{
         }
 
         //Semester name
-        ((TextView)view).setText(getItem(position).getString());
+        ((TextView)view).setText(getItem(position).getString(viewGroup.getContext()));
 
         return view;
     }
@@ -94,7 +94,7 @@ public class TermAdapter extends BaseAdapter implements SpinnerAdapter{
         }
 
         //Semester name
-        ((TextView)view).setText(getItem(position).getString());
+        ((TextView)view).setText(getItem(position).getString(viewGroup.getContext()));
 
         return view;
     }

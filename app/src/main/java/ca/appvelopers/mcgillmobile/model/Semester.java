@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -90,10 +92,11 @@ public class Semester implements Serializable {
     }
 
     /**
+     * @param context App context
      * @return Semester name
      */
-    public String getSemesterName() {
-        return term.getString();
+    public String getSemesterName(Context context) {
+        return term.getString(context);
     }
 
     /**

@@ -87,7 +87,7 @@ public class SemesterActivity extends BaseActivity {
         }
 
         //Set the title as this current semester
-        setTitle(semester.getSemesterName());
+        setTitle(semester.getSemesterName(this));
 
         //Set the info up
         mBachelor.setText(semester.getBachelor());

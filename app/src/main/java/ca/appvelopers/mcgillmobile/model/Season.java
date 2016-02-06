@@ -16,69 +16,68 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import ca.appvelopers.mcgillmobile.App;
+import android.content.Context;
+import android.support.annotation.StringDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import ca.appvelopers.mcgillmobile.R;
 
 /**
- * TODO
  * The different seasons a term can be in
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public enum Season {
+public final class Season {
+    /**
+     * The different seasons for a term can be in
+     */
+    @Retention(RetentionPolicy.CLASS)
+    @StringDef({FALL, WINTER, SUMMER})
+    public @interface Type {}
+
     /**
      * September - December
      */
-    FALL,
+    public static final String FALL = "Fall";
     /**
      * January - April
      */
-    WINTER,
+    public static final String WINTER = "Winter";
     /**
      * May, June, July
      */
-    SUMMER;
+    public static final String SUMMER = "Summer";
 
     /**
-     * Finds a season based on a String
+     * Private Constructor
+     */
+    private Season(){}
+
+    /**
+     * Finds a season based on its language independent Id
      *
      * @param season The String
      * @return The corresponding season
      */
-    public static Season findSeason(String season){
-        if(season.equalsIgnoreCase(FALL.getId())){
+    public static @Type String getSeason(String season) {
+        if (season.equalsIgnoreCase(FALL)) {
             return FALL;
-        }
-        else if(season.equalsIgnoreCase(WINTER.getId())){
+        } else if(season.equalsIgnoreCase(WINTER)) {
             return WINTER;
-        }
-        else if(season.equalsIgnoreCase(SUMMER.getId())){
+        } else if(season.equalsIgnoreCase(SUMMER)) {
             return SUMMER;
         }
-        return null;
+        throw new IllegalStateException("Unknown season: " + season);
     }
 
     /**
-     * @return The language independent Id of this season
-     */
-    public String getId(){
-        switch (this){
-            case FALL:
-                return "Fall";
-            case WINTER:
-                return "Winter";
-            case SUMMER:
-                return "Summer";
-            default:
-                return "Error";
-        }
-    }
-
-    /**
+     * @param season The season
      * @return The McGill season number for the given season
      */
-    public String getSeasonNumber(){
-        switch(this){
+    public static String getSeasonNumber(@Type String season) {
+        switch(season) {
             case FALL:
                 return "09";
             case WINTER:
@@ -86,21 +85,24 @@ public enum Season {
             case SUMMER:
                 return "05";
             default:
-                return "-1";
+                throw new IllegalStateException("Unknown Season: " + season);
         }
     }
 
-    @Override
-    public String toString(){
-        switch(this){
+    /**
+     * @param season The season
+     * @return The locale-based String representation of the season
+     */
+    public static String getString(Context context, @Type String season) {
+        switch (season) {
             case FALL:
-                return App.getContext().getString(R.string.fall);
+                return context.getString(R.string.fall);
             case WINTER:
-                return App.getContext().getString(R.string.winter);
+                return context.getString(R.string.winter);
             case SUMMER:
-                return App.getContext().getString(R.string.summer);
+                return context.getString(R.string.summer);
             default:
-                return App.getContext().getString(R.string.error);
+                throw new IllegalStateException("Unknown Season: " + season);
         }
     }
 }
