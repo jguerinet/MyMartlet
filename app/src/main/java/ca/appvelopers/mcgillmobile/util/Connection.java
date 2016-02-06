@@ -159,7 +159,7 @@ public class Connection {
 	private Connection() {
         //Inject this to get the username and password from Dagger
         App.component(App.getContext()).inject(this);
-        username = usernamePref.get();
+        username = usernamePref.full();
         password = passwordPref.get();
 		//Set up the list of cookies
 		cookies = new ArrayList<>();
