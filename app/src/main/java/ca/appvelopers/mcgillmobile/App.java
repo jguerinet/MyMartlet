@@ -47,7 +47,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Passwords;
-import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -174,9 +173,6 @@ public class App extends Application {
 
         //Initialize ATT
         AndroidThreeTen.init(this);
-
-        //Run the update code, if any
-        Update.update(versionPref);
 
         //Set up Instabug
         Instabug.initialize(this, Passwords.INSTABUG_KEY)

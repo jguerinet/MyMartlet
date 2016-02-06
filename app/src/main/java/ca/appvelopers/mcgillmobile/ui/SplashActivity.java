@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.guerinet.utils.prefs.IntPreference;
 
 import java.util.List;
 
@@ -61,6 +62,7 @@ import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Test;
+import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
@@ -87,6 +89,12 @@ public class SplashActivity extends BaseActivity {
     @Inject
     @Named(PrefsModule.REMEMBER_USERNAME)
     protected BooleanPreference rememberUsernamePref;
+    /**
+     * Version {@link IntPreference}
+     */
+    @Inject
+    @Named(PrefsModule.VERSION)
+    protected IntPreference versionPref;
     /**
      * EULA {@link BooleanPreference}
      */
@@ -149,6 +157,14 @@ public class SplashActivity extends BaseActivity {
      */
     private void runConfigDownloader(){
         new ConfigDownloader() {
+            @Override
+            public Void doInBackground(Void... params) {
+                //Run the update code, if any
+                Update.update(SplashActivity.this, versionPref);
+
+                return super.doInBackground(params);
+            }
+
             @Override
             protected void onPostExecute(Void param) {
                 //Check if we have the minimum required version

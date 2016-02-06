@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
+import android.content.Context;
+
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.IntPreference;
 
@@ -31,30 +33,35 @@ public class Update {
     /**
      * Checks if the app has been updated and runs any update code needed if so
      *
+     * @param context      App context
      * @param versionPrefs Version {@link IntPreference}
      */
-    public static void update(IntPreference versionPrefs) {
+    public static void update(Context context, IntPreference versionPrefs) {
         //Get the version code
-        int code = Utils.versionCode(App.getContext());
+        int code = Utils.versionCode(context);
 
         //Get the current version number
         int storedVersion = versionPrefs.get();
 
         //Stored version is smaller than version number
         if (storedVersion < code) {
-            while (storedVersion < code) {
-                //First time opening the app
-                if (storedVersion == -1) {
-                    //Break out of the loop
-                    break;
-                } else if (storedVersion == 6) {
-                    update7();
-                } else if (storedVersion == 12) {
-                    update13();
+            updateLoop: while (storedVersion < code) {
+                //Find the closest version to the stored one and cascade down through the updates
+                switch (storedVersion) {
+                    case -1:
+                        //First time opening the app, break out of the loop
+                        break updateLoop;
+                    case 6:
+                        update7();
+                    case 12:
+                        update13();
+                    //TODO v2.1.0
+                        //Remove all user info, since we changed the data model completely
+                    //This will never get directly called, it will only be accessed through another
+                    //  update above
+                    case 0:
+                        break updateLoop;
                 }
-                //TODO v2.1.0
-                //Remove all user info, since we changed the data model completely
-
                 storedVersion ++;
             }
 
@@ -64,9 +71,9 @@ public class Update {
     }
 
     /**
-     * Object Changes and File location Changes:
-     * - Force the reload of all of the config stuff
-     * - Force the user to reload all of their info
+     * v2.0.1
+     * - Object Changes  -> Force the user to reload all of their info
+     * - Place changes -> Force the reload of all of the config stuff
      */
     private static void update13() {
         //Delete old transcript to avoid all of the crash reports
@@ -75,7 +82,8 @@ public class Update {
     }
 
     /**
-     * Object changes -> Force the reload of all of the info
+     * v1.0.1
+     * - Object changes -> Force the reload of all of the info
      */
     private static void update7() {
         //Force the user to re-update all of the information in the app
