@@ -55,11 +55,11 @@ public class Update {
                         update7();
                     case 12:
                         update13();
-                    //TODO v2.1.0
-                        //Remove all user info, since we changed the data model completely
-                    //This will never get directly called, it will only be accessed through another
-                    //  update above
+                    case 15:
+                        update16();
                     case 0:
+                        //This will never get directly called, it will only be accessed through
+                        // another update above
                         break updateLoop;
                 }
                 storedVersion ++;
@@ -71,14 +71,26 @@ public class Update {
     }
 
     /**
+     * v2.1.0
+     * - Removed Hungarian notation everywhere -> redownload config and user data
+     */
+    private static void update16() {
+        //Redownload everything
+        clearConfig();
+        clearUserInfo();
+        App.setWishlist(null);
+        App.setFavoritePlaces(null);
+    }
+
+    /**
      * v2.0.1
      * - Object Changes  -> Force the user to reload all of their info
      * - Place changes -> Force the reload of all of the config stuff
      */
     private static void update13() {
-        //Delete old transcript to avoid all of the crash reports
-        App.getContext().deleteFile(Constants.TRANSCRIPT);
-        App.forceUserReload = true;
+        //Re-download all user info
+        clearConfig();
+        clearUserInfo();
     }
 
     /**
@@ -87,6 +99,26 @@ public class Update {
      */
     private static void update7() {
         //Force the user to re-update all of the information in the app
-        App.forceUserReload = true;
+        clearUserInfo();
+    }
+
+    /**
+     * Clears all of the config info
+     */
+    private static void clearConfig() {
+        App.setPlaces(null);
+        App.setPlaceTypes(null);
+        App.setRegisterTerms(null);
+    }
+
+    /**
+     * Clears all of the downloaded user info
+     */
+    private static void clearUserInfo() {
+        App.setTranscript(null);
+        App.setCourses(null);
+        App.setEbill(null);
+        App.setUser(null);
+        App.setDefaultTerm(null);
     }
 }

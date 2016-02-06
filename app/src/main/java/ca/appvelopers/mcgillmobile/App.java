@@ -47,7 +47,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Passwords;
-import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
@@ -60,8 +59,6 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class App extends Application {
-    //TODO Change this to Shared Prefs
-    public static boolean forceUserReload = false;
     /**
      * Dagger {@link BaseComponent}
      */
@@ -398,18 +395,18 @@ public class App extends Application {
     /**
      * @param places The user's list of favorite {@link Place}s
      */
-    public static void setFavoritePlaces(List<Place> places){
+    public static void setFavoritePlaces(List<Place> places) {
         App.favoritePlaces = places;
         Save.favoritePlaces();
     }
 
     /* HELPER METHODS */
-    
-    //to be set after successful login
-    public static void SetAlarm(Context context){
-//        BootReceiver.setAlarm(context);
-    }
-    public static void UnsetAlarm(Context context){
-        BootReceiver.cancelAlarm(context);
-    }
+
+//    //to be set after successful login
+//    public static void SetAlarm(Context context){
+////        BootReceiver.setAlarm(context);
+//    }
+//    public static void UnsetAlarm(Context context){
+//        BootReceiver.cancelAlarm(context);
+//    }
 }

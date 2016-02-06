@@ -393,8 +393,8 @@ public class SplashActivity extends BaseActivity {
         protected void onPreExecute(){
             //Check if we need to download everything or only the essential stuff
             //We need to download everything if there is null info or if we are forcing a reload
-            mDownloadEverything = App.getCourses() == null || App.getTranscript() == null ||
-                    App.getUser() == null || App.getEbill() == null || App.forceUserReload;
+            mDownloadEverything = App.getTranscript() == null || App.getUser() == null ||
+                    App.getEbill() == null;
 
             //Loading Container
             mLoadingContainer = (LinearLayout)findViewById(R.id.loading_container);
