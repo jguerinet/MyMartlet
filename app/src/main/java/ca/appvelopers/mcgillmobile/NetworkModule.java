@@ -19,6 +19,8 @@ package ca.appvelopers.mcgillmobile;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -37,5 +39,10 @@ public class NetworkModule {
     @Provides
     public ConnectivityManager provideConnectivityManager(Context context) {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    }
+
+    @Provides
+    public OkHttpClient provideOkHttpClient() {
+        return new OkHttpClient();
     }
 }

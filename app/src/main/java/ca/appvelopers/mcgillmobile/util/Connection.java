@@ -43,6 +43,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.net.ssl.HttpsURLConnection;
 
 import ca.appvelopers.mcgillmobile.App;
@@ -51,6 +52,8 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
+import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
+import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import okio.BufferedSink;
 import timber.log.Timber;
 
@@ -106,22 +109,38 @@ public class Connection {
 	 * Singleton instance
 	 */
 	private static Connection connection;
-	/**
-	 * The user's username
-	 */
-	private String mUsername;
-	/**
-	 * The user's password
-	 */
-	private String mPassword;
-	/**
+    /**
+     * {@link OkHttpClient} instance
+     */
+    @Inject
+    protected OkHttpClient client;
+    /**
+     * {@link ConnectivityManager} instance
+     */
+    @Inject
+    protected ConnectivityManager connectivityManager;
+    /**
+     * {@link UsernamePreference} instance
+     */
+    @Inject
+    protected UsernamePreference usernamePref;
+    /**
+     * {@link PasswordPreference} passwordPref;
+     */
+    @Inject
+    protected PasswordPreference passwordPref;
+    /**
+     * Username
+     */
+    private String username;
+    /**
+     * Password
+     */
+    private String password;
+    /**
 	 * The list of cookies
 	 */
-	private List<String> mCookies;
-	/**
-	 * The OkHttpClient
-	 */
-	private OkHttpClient mClient;
+	private List<String> cookies;
 
 	/**
 	 * @return The connection instance
@@ -137,15 +156,13 @@ public class Connection {
 	/**
 	 * Default Constructor
 	 */
-	private Connection(){
-		//Get the username and password from the SharedPrefs
-        //TODO
-//		this.mUsername = Load.fullUsername();
-//		this.mPassword = Load.password();
-		//Set up the client
-		this.mClient = new OkHttpClient();
+	private Connection() {
+        //Inject this to get the username and password from Dagger
+        App.component(App.getContext()).inject(this);
+        username = usernamePref.get();
+        password = passwordPref.get();
 		//Set up the list of cookies
-		this.mCookies = new ArrayList<>();
+		cookies = new ArrayList<>();
 		//Set up the cookie handler
 		CookieHandler.setDefault(new CookieManager());
 	}
@@ -155,15 +172,15 @@ public class Connection {
 	/**
 	 * @param username The username to use
 	 */
-    public void setUsername(String username){
-        this.mUsername = username;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 	/**
 	 * @param password The password to use
 	 */
-    public void setPassword(String password){
-        this.mPassword = password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 	/* HELPERS */
@@ -181,8 +198,7 @@ public class Connection {
 	public String get(String url, boolean autoLogin) throws MinervaException, IOException,
 			NoInternetException{
 		//Check if the user is connected to the internet
-		if(!Utils.isConnected((ConnectivityManager)
-                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))){
+		if (!Utils.isConnected(connectivityManager)) {
 			throw new NoInternetException();
 		}
 
@@ -190,14 +206,14 @@ public class Connection {
 		Request.Builder builder = getDefaultRequest(url).get();
 
 		//Add the cookies if there are any
-		for(String cookie : mCookies){
+		for(String cookie : cookies){
 			builder.addHeader("Cookie", cookie.split(";", 1)[0]);
 		}
 
 		Timber.i("Sending 'GET' request to: %s", url);
 
 		//Execute the request, get the response
-		Response response = mClient.newCall(builder.build()).execute();
+		Response response = client.newCall(builder.build()).execute();
 
 		int responseCode = response.code();
 		Timber.i("Response Code: %d", responseCode);
@@ -241,7 +257,7 @@ public class Connection {
 		}
 
 		//Get the response cookies and set them
-		mCookies = response.headers("Set-Cookie");
+		cookies = response.headers("Set-Cookie");
 
 		//Return the body in String format
 		return response.body().string();
@@ -290,14 +306,14 @@ public class Connection {
 				.header("Referer", referer);
 
 		//Add the cookies if there are any
-		for(String cookie : mCookies){
+		for(String cookie : cookies){
 			builder.addHeader("Cookie", cookie.split(";", 1)[0]);
 		}
 
 		Timber.i("Sending 'POST' request to: %s", url);
 
 		//Execute the request, get the result
-		Response response = mClient.newCall(builder.build()).execute();
+		Response response = client.newCall(builder.build()).execute();
 
 		Timber.i("Response Code: %d", response.code());
 
@@ -319,7 +335,7 @@ public class Connection {
 
 			//1. Get Minerva's login page and determine the login parameters
 			Request request = new Request.Builder().get().url(LOGIN_PAGE_URL).build();
-			String html = mClient.newCall(request).execute().body().string();
+			String html = client.newCall(request).execute().body().string();
 			String postParams = getLoginParameters(html);
 			
 			//Search for "Authorization Failure"
@@ -372,11 +388,11 @@ public class Connection {
 						String value;
 						//Username
 						if(key.equals("sid")){
-							value = mUsername;
+							value = username;
 						}
 						//Password
 						else{
-							value = mPassword;
+							value = password;
 						}
 
 						//Add this to the list if params
