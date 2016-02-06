@@ -151,7 +151,6 @@ public class Parser {
                 double termCredits = 0;
                 double termGPA = 0.0;
                 boolean fullTime = false;
-                boolean satisfactory = false;
                 List<TranscriptCourse> courses = new ArrayList<>();
 
                 //Search rows until the end of the semester is reached
@@ -367,7 +366,7 @@ public class Parser {
                 //If not, don't add the semester to the list of semesters
                 if (!courses.isEmpty()) {
                     Semester semester = new Semester(new Term(season, year), program, bachelor,
-                            termCredits, termGPA, fullTime, satisfactory, courses);
+                            termCredits, termGPA, fullTime, courses);
 
                     semesters.add(semester);
                 }

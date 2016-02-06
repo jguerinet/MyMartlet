@@ -53,10 +53,6 @@ public class Semester implements Serializable {
      */
     private boolean fullTime;
     /**
-     * True if the user's standing was satisfactory during this semester, false otherwise
-     */
-    private boolean satisfactory;
-    /**
      * The list of courses taken during this semester
      */
     private List<TranscriptCourse> courses;
@@ -71,19 +67,16 @@ public class Semester implements Serializable {
      * @param gpa          Semester GPA
      * @param fullTime     True if the user was a full-time student during this semester,
      *                     false otherwise
-     * @param satisfactory True if the user's standing was satisfactory during this semester,
-     *                     false otherwise
      * @param courses      The list of courses taken during this semester
      */
     public Semester(Term term, String program, String bachelor, double credits, double gpa,
-            boolean fullTime, boolean satisfactory, List<TranscriptCourse> courses) {
+            boolean fullTime, List<TranscriptCourse> courses) {
         this.term = term;
         this.program = program;
         this.bachelor = bachelor;
         this.credits = credits;
         this.gpa = gpa;
         this.fullTime = fullTime;
-        this.satisfactory = satisfactory;
         this.courses = courses;
     }
 
