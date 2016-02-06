@@ -57,7 +57,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
      * @param context      App context
      * @param mCurrentType The currently selected type
      */
-    public PlaceTypeListAdapter(Context context, PlaceType mCurrentType) {
+    public PlaceTypeListAdapter(final Context context, PlaceType mCurrentType) {
         App.component(context).inject(this);
         types = new ArrayList<>();
         types.addAll(App.getPlaceTypes());
@@ -66,8 +66,8 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
         Collections.sort(types, new Comparator<PlaceType>() {
             @Override
             public int compare(PlaceType type, PlaceType type2) {
-                return type.getString(languageManager.get())
-                        .compareToIgnoreCase(type2.getString(languageManager.get()));
+                return type.getString(context, languageManager.get())
+                        .compareToIgnoreCase(type2.getString(context, languageManager.get()));
             }
         });
 
@@ -92,7 +92,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
         //Go through the types
         for (int i = 0; i < types.size(); i ++) {
             //Add its title to the list
-            titles[i] = types.get(i).getString(languageManager.get());
+            titles[i] = types.get(i).getString(App.getContext(), languageManager.get());
         }
 
         return titles;

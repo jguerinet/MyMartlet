@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +27,11 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
- * TODO
  * A type of place that the user can filter by
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class PlaceType implements Serializable{
+public class PlaceType implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * The user's saved favorite places
@@ -43,27 +44,27 @@ public class PlaceType implements Serializable{
     /**
      * The type name
      */
-    private String mName;
+    private String name;
     /**
      * The type English String
      */
-    private String mEnglishString;
+    private String englishString;
     /**
      * The type French String
      */
-    private String mFrenchString;
+    private String frenchString;
 
     /**
      * Default Constructor
      *
-     * @param name          The type name
-     * @param englishString The type English String
-     * @param frenchString  The type French String
+     * @param name          Type name
+     * @param englishString Type English String
+     * @param frenchString  Type French String
      */
-    public PlaceType(String name, String englishString, String frenchString){
-        this.mName = name;
-        this.mEnglishString = englishString;
-        this.mFrenchString = frenchString;
+    public PlaceType(String name, String englishString, String frenchString) {
+        this.name = name;
+        this.englishString = englishString;
+        this.frenchString = frenchString;
     }
 
     /**
@@ -71,10 +72,10 @@ public class PlaceType implements Serializable{
      *
      * @param favorites True if this is the favorites type, false if this is the all type
      */
-    public PlaceType(boolean favorites){
-        this.mName = favorites ? FAVORITES : ALL;
-        this.mEnglishString = null;
-        this.mFrenchString = null;
+    public PlaceType(boolean favorites) {
+        this.name = favorites ? FAVORITES : ALL;
+        this.englishString = null;
+        this.frenchString = null;
     }
 
     /* GETTERS */
@@ -82,8 +83,8 @@ public class PlaceType implements Serializable{
     /**
      * @return The type name
      */
-    public String getName(){
-        return this.mName;
+    public String getName() {
+        return this.name;
     }
 
     /* HELPERS */
@@ -94,14 +95,14 @@ public class PlaceType implements Serializable{
      * @param typeStrings The list of Strings
      * @return The corresponding list of types
      */
-    public static List<PlaceType> getTypes(String[] typeStrings){
+    public static List<PlaceType> getTypes(String[] typeStrings) {
         List<PlaceType> types = new ArrayList<>();
         //Go through the type Strings
-        for(String type : typeStrings){
+        for (String type : typeStrings) {
             //Go through the place types
-            for(PlaceType placeType : App.getPlaceTypes()){
+            for (PlaceType placeType : App.getPlaceTypes()) {
                 //If a type String equals the place type's name, then add it and break the loop
-                if(type.equals(placeType.getName())){
+                if (type.equals(placeType.getName())) {
                     types.add(placeType);
                     break;
                 }
@@ -112,20 +113,21 @@ public class PlaceType implements Serializable{
     }
 
     /**
+     * @param context  App context
      * @param language The current language
      * @return The String to use
      */
-    public String getString(@LanguageManager.Language int language) {
-        if (mName.equals(FAVORITES)) {
-            return App.getContext().getString(R.string.map_favorites);
-        } else if(mName.equals(ALL)) {
-            return App.getContext().getString(R.string.map_all);
+    public String getString(Context context, @LanguageManager.Language int language) {
+        if (name.equals(FAVORITES)) {
+            return context.getString(R.string.map_favorites);
+        } else if(name.equals(ALL)) {
+            return context.getString(R.string.map_all);
         }
 
         if (language == LanguageManager.FRENCH) {
-            return mFrenchString;
+            return frenchString;
         }
-        return mEnglishString;
+        return englishString;
     }
 
 
@@ -134,7 +136,7 @@ public class PlaceType implements Serializable{
      * @return True if they have the same name, false otherwise
      */
     @Override
-    public boolean equals(Object object){
-        return object instanceof PlaceType && ((PlaceType)object).getName().equals(this.mName);
+    public boolean equals(Object object) {
+        return object instanceof PlaceType && ((PlaceType)object).name.equals(this.name);
     }
 }

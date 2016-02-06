@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -74,12 +75,9 @@ import timber.log.Timber;
  * @author Quang Dao
  * @since 1.0.0
  */
-public class MapActivity extends DrawerActivity {
+public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener {
     private static final int LOCATION_REQUEST = 101;
-    /**
-     * Coordinates used to center the map initially
-     */
-    private static final LatLng MCGILL = new LatLng(45.504435, -73.576006);
     /**
      * Info container used to show the current place's detail
      */
@@ -118,11 +116,7 @@ public class MapActivity extends DrawerActivity {
     /**
      * Fragment containing the map
      */
-    private SupportMapFragment mFragment;
-    /**
-     * Map instance
-     */
-    private GoogleMap mMap;
+    private GoogleMap map;
     /**
      * List of places on the map
      */
@@ -165,7 +159,7 @@ public class MapActivity extends DrawerActivity {
         FormGenerator fg = FormGenerator.bind(this, mContainer);
 
         //Set up the place filter
-        final TextViewFormItem typeView = fg.text(mType.getString(languageManager.get()));
+        final TextViewFormItem typeView = fg.text(mType.getString(this, languageManager.get()));
 
         typeView.leftIcon(R.drawable.ic_location)
                 .rightIcon(R.drawable.ic_chevron_right, R.color.grey)
@@ -179,8 +173,8 @@ public class MapActivity extends DrawerActivity {
                                         mType = type;
 
                                         //Update the text
-                                        typeView.view().setText(
-                                                mType.getString(languageManager.get()));
+                                        typeView.view().setText(mType.getString(MapActivity.this,
+                                                languageManager.get()));
 
                                         //Update the filtered places
                                         filterByCategory();
@@ -195,97 +189,18 @@ public class MapActivity extends DrawerActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         //Get the MapFragment
-        mFragment = (SupportMapFragment)fragmentManager.findFragmentById(R.id.map);
+        SupportMapFragment fragment =
+                (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
         //If it's null, initialize it and put it in its view
-        if (mFragment == null) {
-            mFragment = SupportMapFragment.newInstance();
+        if (fragment == null) {
+            fragment = SupportMapFragment.newInstance();
             fragmentManager.beginTransaction()
-                    .replace(R.id.map, mFragment)
+                    .replace(R.id.map, fragment)
                     .addToBackStack(null)
                     .commit();
         }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //If the map is null, bind it and add the markers
-        if (mMap == null) {
-            mMap = mFragment.getMap();
-            //Set the camera's center position
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(MCGILL)
-                    .zoom(14)
-                    .bearing(-54)
-                    .tilt(0)
-                    .build();
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            //Show the user's location if we have the permission to
-            if (Utils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION,
-                    LOCATION_REQUEST)) {
-                mMap.setMyLocationEnabled(true);
-            }
-            //If we don't, it will be requested
-
-            //Go through all of the places
-            for (Place place : App.getPlaces()) {
-                //Create a MapPlace for this
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(place.getCoordinates())
-                        .draggable(false)
-                        .visible(true));
-
-                //Add it to the list
-                mPlaces.add(new MapPlace(place, marker));
-            }
-
-            //Filter
-            filterByCategory();
-
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    //If there was a marker that was selected before set it back to red
-                    if (mPlace != null) {
-                        mPlace.mMarker.setIcon(BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_RED));
-                    }
-                    //Pull up the info container
-                    mInfoContainer.setVisibility(View.VISIBLE);
-
-                    //Find the concerned place
-                    mPlace = null;
-                    for (MapPlace mapPlace : mPlaces) {
-                        if (mapPlace.mMarker.equals(marker)) {
-                            mPlace = mapPlace;
-                        }
-                    }
-
-                    if (mPlace == null) {
-                        Timber.e("Tapped place marker was not found");
-                        return false;
-                    }
-
-                    //Set it to blue
-                    mPlace.mMarker.setIcon(BitmapDescriptorFactory.defaultMarker(
-                            BitmapDescriptorFactory.HUE_AZURE));
-
-                    //Set up the info
-                    mTitle.setText(mPlace.mPlace.getName());
-                    mAddress.setText(mPlace.mPlace.getAddress());
-
-                    //Set up the favorite text
-                    if (mFavoritePlaces.contains(mPlace.mPlace)) {
-                        mFavorite.setText(R.string.map_favorites_remove);
-                    } else {
-                        mFavorite.setText(R.string.map_favorites_add);
-                    }
-
-                    return false;
-                }
-            });
-        }
+        fragment.getMapAsync(this);
     }
 
     @Override
@@ -349,8 +264,9 @@ public class MapActivity extends DrawerActivity {
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Show the user on the map if that is the case
-                    if (mMap != null) {
-                        mMap.setMyLocationEnabled(true);
+                    if (map != null) {
+                        //noinspection MissingPermission
+                        map.setMyLocationEnabled(true);
                     }
                 }
                 break;
@@ -496,7 +412,89 @@ public class MapActivity extends DrawerActivity {
      * @param place The place
      */
     private void focusPlace(MapPlace place) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(place.mPlace.getCoordinates()));
+        if (map != null) {
+            map.animateCamera(CameraUpdateFactory.newLatLng(place.mPlace.getCoordinates()));
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+
+        //Set the camera's center position to the McGill campus
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(45.504435, -73.576006))
+                .zoom(14)
+                .bearing(-54)
+                .tilt(0)
+                .build();
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        //Show the user's location if we have the permission to
+        if (Utils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION,
+                LOCATION_REQUEST)) {
+            //noinspection MissingPermission
+            map.setMyLocationEnabled(true);
+        }
+        //If we don't, it will be requested
+
+        //Go through all of the places
+        for (Place place : App.getPlaces()) {
+            //Create a MapPlace for this
+            Marker marker = map.addMarker(new MarkerOptions()
+                    .position(place.getCoordinates())
+                    .draggable(false)
+                    .visible(true));
+
+            //Add it to the list
+            mPlaces.add(new MapPlace(place, marker));
+        }
+
+        //Filter
+        filterByCategory();
+
+        map.setOnMarkerClickListener(this);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        //If there was a marker that was selected before set it back to red
+        if (mPlace != null) {
+            mPlace.mMarker.setIcon(BitmapDescriptorFactory
+                    .defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        }
+        //Pull up the info container
+        mInfoContainer.setVisibility(View.VISIBLE);
+
+        //Find the concerned place
+        mPlace = null;
+        for (MapPlace mapPlace : mPlaces) {
+            if (mapPlace.mMarker.equals(marker)) {
+                mPlace = mapPlace;
+            }
+        }
+
+        if (mPlace == null) {
+            Timber.e("Tapped place marker was not found");
+            return false;
+        }
+
+        //Set it to blue
+        mPlace.mMarker.setIcon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+        //Set up the info
+        mTitle.setText(mPlace.mPlace.getName());
+        mAddress.setText(mPlace.mPlace.getAddress());
+
+        //Set up the favorite text
+        if (mFavoritePlaces.contains(mPlace.mPlace)) {
+            mFavorite.setText(R.string.map_favorites_remove);
+        } else {
+            mFavorite.setText(R.string.map_favorites_add);
+        }
+
+        return false;
     }
 
     /**
