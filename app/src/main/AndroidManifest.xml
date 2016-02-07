@@ -106,7 +106,7 @@
 
         <activity
             android:name=".ui.schedule.ScheduleActivity"
-            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity android:name=".ui.settings.HelpActivity" />
