@@ -1,5 +1,12 @@
 # Change Log
 
+## Version 2.1.0 (2016-02-06)
+* Started using Dagger for dependency injection almost everywhere
+* Removed Hungarian notation from all of the models
+* Replaced Joda Time with Android Three Ten 
+* Removed unused fields on some models
+* Temporarily disabled the landscape orientation fo the schedule because it is not rendering correctly since the activity switch
+
 ## Version 2.0.3 (2016-01-28)
 * Switched from fragments to activities
 * Set up dependency to the Android Utils library 
