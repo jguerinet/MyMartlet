@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
@@ -35,34 +34,5 @@ public class DateUtils {
 	 */
 	public static String getHourString(int hour) {
         return LocalTime.MIDNIGHT.withHour(hour).format(DateTimeFormatter.ofPattern("h a"));
-	}
-
-	/**
-	 * Returns a String representation of the time (ex: 8:00 AM)
-	 *
-	 * @param time    The time
-	 * @return The String representation of the time
-	 */
-	public static String getTimeString(LocalTime time) {
-        return time.format(DateTimeFormatter.ofPattern("hh:mm a"));
-	}
-
-	/**
-	 * Returns a String representation of a date depending on the language chosen (in short format)
-	 *
-	 * @param date The date
-	 * @return A locale-dependent short String representation of the date
-	 */
-	public static String getShortDateString(LocalDate date) {
-		//Depending on the language chosen
-		DateTimeFormatter fmt;
-        //TODO Take the local directly from the context, and let the formatter do the work
-//		if (language == LanguageManager.ENGLISH) {
-			fmt = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-//		} else {
-//			fmt = DateTimeFormat.forPattern("dd MMM yyyy");
-//		}
-
-		return date.format(fmt);
 	}
 }

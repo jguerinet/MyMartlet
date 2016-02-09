@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import com.guerinet.utils.DateUtils;
+
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
@@ -23,7 +25,6 @@ import org.threeten.bp.LocalTime;
 import java.io.Serializable;
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.util.DateUtils;
 import timber.log.Timber;
 
 /**
@@ -370,15 +371,16 @@ public class Course implements Serializable {
             return "";
         }
 
-        return DateUtils.getTimeString(startTime) + " - " + DateUtils.getTimeString(endTime);
+        return DateUtils.getShortTimeString(startTime) + " - " +
+                DateUtils.getShortTimeString(endTime);
     }
 
     /**
      * @return The course dates in String format
      */
     public String getDateString() {
-        return DateUtils.getShortDateString(startDate) + " - " +
-                DateUtils.getShortDateString(endDate);
+        return DateUtils.getMediumDateString(startDate) + " - " +
+                DateUtils.getMediumDateString(endDate);
     }
 
     /**
