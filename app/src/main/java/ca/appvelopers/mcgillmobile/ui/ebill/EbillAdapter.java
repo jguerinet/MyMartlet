@@ -24,13 +24,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.guerinet.utils.DateUtils;
+
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
-import ca.appvelopers.mcgillmobile.util.DateUtils;
 
 /**
  * Adapter used for the ebill page
@@ -94,9 +95,9 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
             Context context = itemView.getContext();
 
             mDate.setText(context.getString(R.string.ebill_statement_date,
-                    DateUtils.getDateString(statement.getDate())));
+                    DateUtils.getLongDateString(statement.getDate())));
             mDueDate.setText(context.getString(R.string.ebill_due_date,
-                    DateUtils.getDateString(statement.getDueDate())));
+                    DateUtils.getLongDateString(statement.getDueDate())));
 
             double amount = statement.getAmount();
             mAmount.setText(String.format("$%s", String.valueOf(amount)));

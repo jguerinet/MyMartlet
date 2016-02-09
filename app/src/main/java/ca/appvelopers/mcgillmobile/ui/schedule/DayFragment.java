@@ -24,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.guerinet.utils.DateUtils;
+
 import org.threeten.bp.LocalDate;
 
 import java.util.List;
@@ -31,7 +33,6 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.DateUtils;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
 /**
@@ -87,7 +88,7 @@ public class DayFragment extends Fragment{
 
         //Date Title
         TextView dayDate = (TextView)view.findViewById(R.id.day_date);
-        dayDate.setText(DateUtils.getDateString(date));
+        dayDate.setText(DateUtils.getLongDateString(date));
 
         //Get the container for the timetable
         LinearLayout timetableContainer = (LinearLayout)view.findViewById(R.id.timetable_container);

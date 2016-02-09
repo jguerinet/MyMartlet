@@ -65,23 +65,4 @@ public class DateUtils {
 
 		return date.format(fmt);
 	}
-
-	/**
-	 * Returns a String representation of a date depending on the language chosen
-	 *
-	 * @param date The date
-	 * @return A locale-dependent String representation of the date
-	 */
-	public static String getDateString(LocalDate date) {
-		//Depending on the language chosen
-		DateTimeFormatter fmt;
-        //TODO Take the local directly from the context, and let the formatter do the work
-//		if (language == LanguageManager.ENGLISH) {
-			fmt = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-//		} else {
-//			fmt = DateTimeFormat.forPattern("dd MMMM yyyy");
-//		}
-
-		return date.format(fmt);
-	}
 }
