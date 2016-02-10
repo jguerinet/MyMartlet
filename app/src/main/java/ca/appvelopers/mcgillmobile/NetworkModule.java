@@ -28,8 +28,10 @@ import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
+import timber.log.Timber;
 
 /**
  * Dagger module for all network injections
@@ -53,6 +55,23 @@ public class NetworkModule {
     }
 
     /* OKHTTP */
+
+    /**
+     * @return The {@link HttpLoggingInterceptor} instance for HTTP logging
+     */
+    @Provides
+    @Singleton
+    protected HttpLoggingInterceptor provideLoggingInterceptor() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(
+                new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                        Timber.tag("OkHttp").i(message);
+                    }
+                });
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        return interceptor;
+    }
 
     /**
      * @return The {@link OkHttpClient} instance
