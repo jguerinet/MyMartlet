@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -81,11 +82,24 @@ public class NetworkModule {
      */
     @Provides
     @Singleton
+    @Named(CONFIG)
     public Retrofit provideConfigRetrofit(@Named(CONFIG) OkHttpClient client, Gson gson) {
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl("http://mymartlet.herokuapp.com/api/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+    }
+
+    /* RETROFIT SERVICES */
+
+    /**
+     * @param retrofit The {@link Retrofit} instance to use for the config server
+     * @return The {@link ConfigService} instance
+     */
+    @Provides
+    @Singleton
+    public ConfigService provideConfigService(@Named(CONFIG) Retrofit retrofit) {
+        return retrofit.create(ConfigService.class);
     }
 }
