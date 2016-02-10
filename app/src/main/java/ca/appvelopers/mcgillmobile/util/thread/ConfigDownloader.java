@@ -31,15 +31,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.guerinet.utils.Utils;
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.Proxy;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +42,9 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Passwords;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import timber.log.Timber;
 
 /**
@@ -87,26 +82,6 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
 
                 //Initialize the OkHttp client
                 OkHttpClient client = new OkHttpClient();
-
-                //Add authentication
-                client.setAuthenticator(new Authenticator() {
-                    @Override
-                    public Request authenticate(Proxy proxy, Response response) throws
-                            IOException{
-                        //Set up the credentials
-                        String credentials = Credentials.basic(Passwords.CONFIG_USERNAME,
-                                Passwords.CONFIG_PASSWORD);
-                        //Add it to the passed response's request object
-                        return response.request().newBuilder()
-                                .header("Authorization", credentials)
-                                .build();
-                    }
-                    @Override
-                    public Request authenticateProxy(Proxy proxy, Response response)
-                            throws IOException{
-                        return null;
-                    }
-                });
 
                 //Build the config request
                 Request.Builder requestBuilder = new Request.Builder()
