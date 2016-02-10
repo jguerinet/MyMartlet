@@ -18,6 +18,8 @@ package ca.appvelopers.mcgillmobile;import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -49,7 +51,8 @@ public class AppModule {
     /**
      * @return App context
      */
-    @Provides @Singleton
+    @Provides
+    @Singleton
     protected Context provideContext() {
         return context;
     }
@@ -58,8 +61,18 @@ public class AppModule {
      * @param context App context
      * @return {@link SharedPreferences} instance
      */
-    @Provides @Singleton
+    @Provides
+    @Singleton
     protected SharedPreferences provideSharedPrefs(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    /**
+     * @return The {@link Gson} singleton instance
+     */
+    @Provides
+    @Singleton
+    protected Gson provideGson() {
+        return new Gson();
     }
 }
