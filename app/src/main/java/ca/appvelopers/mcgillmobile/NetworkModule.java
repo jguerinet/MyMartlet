@@ -74,22 +74,28 @@ public class NetworkModule {
     }
 
     /**
+     * @param interceptor The {@link HttpLoggingInterceptor} instance
      * @return The {@link OkHttpClient} instance
      */
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient() {
-        return new OkHttpClient();
+    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
     }
 
     /**
+     * @param interceptor The {@link HttpLoggingInterceptor} instance
      * @return The {@link OkHttpClient} instance for the config server
      */
     @Provides
     @Singleton
     @Named(CONFIG)
-    public OkHttpClient provideConfigOkHttpClient() {
-        return new OkHttpClient();
+    public OkHttpClient provideConfigOkHttpClient(HttpLoggingInterceptor interceptor) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
     }
 
     /* RETROFIT */
