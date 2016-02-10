@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
+import com.squareup.moshi.Moshi;
 
 import javax.inject.Singleton;
 
@@ -74,5 +75,15 @@ public class AppModule {
     @Singleton
     protected Gson provideGson() {
         return new Gson();
+    }
+
+    /**
+     * @return The {@link Moshi} singleton instance
+     */
+    @Provides
+    @Singleton
+    protected Moshi provideMoshi() {
+        return new Moshi.Builder()
+                .build();
     }
 }
