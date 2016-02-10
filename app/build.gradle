@@ -116,6 +116,8 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.2'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'org.jsoup:jsoup:1.8.3'
 }

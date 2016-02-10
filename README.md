@@ -39,6 +39,7 @@ All contributions are welcome!
 * [okhttp](https://github.com/square/okhttp)
 * [okio](https://github.com/square/okio)
 * [Picasso](https://github.com/square/picasso)
+* [Retrofit](https://github.com/square/retrofit)
 * [Twitter](https://dev.twitter.com/mopub/android)
 * [ViewPagerIndicator](https://github.com/JakeWharton/ViewPagerIndicator)
 * [JSoup](https://github.com/jhy/jsoup)
