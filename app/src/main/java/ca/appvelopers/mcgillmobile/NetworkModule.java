@@ -22,6 +22,7 @@ import android.net.ConnectivityManager;
 import com.google.gson.Gson;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -56,6 +57,7 @@ public class NetworkModule {
      * @return The {@link OkHttpClient} instance
      */
     @Provides
+    @Singleton
     public OkHttpClient provideOkHttpClient() {
         return new OkHttpClient();
     }
@@ -64,6 +66,7 @@ public class NetworkModule {
      * @return The {@link OkHttpClient} instance for the config server
      */
     @Provides
+    @Singleton
     @Named(CONFIG)
     public OkHttpClient provideConfigOkHttpClient() {
         return new OkHttpClient();
@@ -76,6 +79,8 @@ public class NetworkModule {
      * @param gson   {@link Gson} instance for the converting
      * @return The {@link Retrofit} instance to use for the config server
      */
+    @Provides
+    @Singleton
     public Retrofit provideConfigRetrofit(@Named(CONFIG) OkHttpClient client, Gson gson) {
         return new Retrofit.Builder()
                 .client(client)
