@@ -21,13 +21,20 @@ import android.net.ConnectivityManager;
 
 import com.squareup.moshi.Moshi;
 
+import java.io.IOException;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
+import ca.appvelopers.mcgillmobile.util.Passwords;
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Credentials;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -95,6 +102,19 @@ public class NetworkModule {
     public OkHttpClient provideConfigOkHttpClient(HttpLoggingInterceptor interceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        //Add the authentication to the header
+                        Request newRequest = chain.request()
+                                .newBuilder()
+                                .addHeader("Authorization", Credentials.basic(
+                                        Passwords.CONFIG_USERNAME, Passwords.CONFIG_PASSWORD))
+                                .build();
+
+                        return chain.proceed(newRequest);
+                    }
+                })
                 .build();
     }
 
