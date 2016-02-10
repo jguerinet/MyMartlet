@@ -19,11 +19,15 @@ package ca.appvelopers.mcgillmobile;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
+import com.google.gson.Gson;
+
 import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Dagger module for all network injections
@@ -46,6 +50,8 @@ public class NetworkModule {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
+    /* OKHTTP */
+
     /**
      * @return The {@link OkHttpClient} instance
      */
@@ -61,5 +67,20 @@ public class NetworkModule {
     @Named(CONFIG)
     public OkHttpClient provideConfigOkHttpClient() {
         return new OkHttpClient();
+    }
+
+    /* RETROFIT */
+
+    /**
+     * @param client {@link OkHttpClient} instance to use for the config server
+     * @param gson   {@link Gson} instance for the converting
+     * @return The {@link Retrofit} instance to use for the config server
+     */
+    public Retrofit provideConfigRetrofit(@Named(CONFIG) OkHttpClient client, Gson gson) {
+        return new Retrofit.Builder()
+                .client(client)
+                .baseUrl("http://mymartlet.herokuapp.com/api/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
     }
 }
