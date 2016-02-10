@@ -19,10 +19,11 @@ package ca.appvelopers.mcgillmobile;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
-import com.squareup.okhttp.OkHttpClient;
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 
 /**
  * Dagger module for all network injections
@@ -31,6 +32,10 @@ import dagger.Provides;
  */
 @Module(includes = AppModule.class)
 public class NetworkModule {
+    /**
+     * Config server injections
+     */
+    public static final String CONFIG = "config";
 
     /**
      * @param context App context
@@ -41,8 +46,20 @@ public class NetworkModule {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
+    /**
+     * @return The {@link OkHttpClient} instance
+     */
     @Provides
     public OkHttpClient provideOkHttpClient() {
+        return new OkHttpClient();
+    }
+
+    /**
+     * @return The {@link OkHttpClient} instance for the config server
+     */
+    @Provides
+    @Named(CONFIG)
+    public OkHttpClient provideConfigOkHttpClient() {
         return new OkHttpClient();
     }
 }
