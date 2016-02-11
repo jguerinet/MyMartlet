@@ -26,6 +26,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.guerinet.utils.DateUtils;
 import com.guerinet.utils.prefs.DatePreference;
 
 import java.io.IOException;
@@ -42,6 +43,8 @@ import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
+import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Downloads the config variables and the list of places from the web server
@@ -96,11 +99,17 @@ public class ConfigDownloader extends Thread {
 
     @Override
     public void run() {
+        //Places
         try {
-            retrofit2.Response<List<Place>> places = configService.places(null).execute();
-            App.setPlaces(places.body());
+            Response<List<Place>> response = configService
+                    .places(DateUtils.getRFC1123String(imsPlacesPref.getDate()))
+                    .execute();
+
+            if (response.isSuccess()) {
+                App.setPlaces(response.body());
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e, "Error downloading places");
         }
 //        (new Callback<List<Place>>() {
 //            @Override
