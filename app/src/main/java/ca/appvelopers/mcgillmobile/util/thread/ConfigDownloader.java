@@ -111,6 +111,20 @@ public class ConfigDownloader extends Thread {
         } catch (IOException e) {
             Timber.e(e, "Error downloading places");
         }
+
+        //Place Categories
+        try {
+            Response<List<PlaceType>> response = configService
+                    .categories(DateUtils.getRFC1123String(imsCategoriesPref.getDate()))
+                    .execute();
+
+            if (response.isSuccess()) {
+                App.setPlaceTypes(response.body());
+            }
+        } catch (IOException e) {
+            Timber.e(e, "Error downloading place categories");
+        }
+
 //        (new Callback<List<Place>>() {
 //            @Override
 //            public void onResponse(Call<List<Place>> call, retrofit2.Response<List<Place>> response) {
@@ -258,20 +272,6 @@ public class ConfigDownloader extends Thread {
     }
 
     /* DESERIALIZERS */
-
-    /**
-     * Deserializer used to deserialize the PlaceType object
-     */
-    private static class PlaceCategoryDeserializer implements JsonDeserializer<PlaceType>{
-        @Override
-        public PlaceType deserialize(JsonElement json, Type type,
-                                     JsonDeserializationContext context) throws JsonParseException{
-            JsonObject object = json.getAsJsonObject();
-            return new PlaceType(object.get("Name").getAsString(),
-                    object.get("En").getAsString(),
-                    object.get("Fr").getAsString());
-        }
-    }
 
     /**
      * Deserializer used to deserialize the Place object
