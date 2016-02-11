@@ -48,10 +48,10 @@ public class PrefsModule {
     public static final String EULA = "user_agreement";
     public static final String SEAT_CHECKER = "seat_checker";
     public static final String GRADE_CHECKER = "grade_checker";
-    public static final String IF_MODIFIED_SINCE_CONFIG = "if_modified_since_config";
-    public static final String IF_MODIFIED_SINCE_PLACES = "if_modified_since_places";
-    public static final String IF_MODIFIED_SINCE_CATEGORIES = "if_modified_since_categories";
-    public static final String IF_MODIFIED_SINCE_REGISTRATION = "if_modified_since_registration";
+    public static final String IMS_CONFIG = "ims_config";
+    public static final String IMS_PLACES = "ims_places";
+    public static final String IMS_CATEGORIES = "ims_categories";
+    public static final String IMS_REGISTRATION = "ims_registration";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -169,9 +169,9 @@ public class PrefsModule {
      */
     @Provides
     @Singleton
-    @Named(IF_MODIFIED_SINCE_CONFIG)
-    protected DatePreference provideIfModifiedSinceConfig(SharedPreferences prefs) {
-        return new DatePreference(prefs, IF_MODIFIED_SINCE_CONFIG, null);
+    @Named(IMS_CONFIG)
+    protected DatePreference provideIMSConfig(SharedPreferences prefs) {
+        return new DatePreference(prefs, IMS_CONFIG, null);
     }
 
     /**
@@ -180,9 +180,9 @@ public class PrefsModule {
      */
     @Provides
     @Singleton
-    @Named(IF_MODIFIED_SINCE_PLACES)
-    protected DatePreference provideIfModifiedSincePlaces(SharedPreferences prefs) {
-        return new DatePreference(prefs, IF_MODIFIED_SINCE_PLACES, null);
+    @Named(IMS_PLACES)
+    protected DatePreference provideIMSPlaces(SharedPreferences prefs) {
+        return new DatePreference(prefs, IMS_PLACES, null);
     }
 
     /**
@@ -191,9 +191,9 @@ public class PrefsModule {
      */
     @Provides
     @Singleton
-    @Named(IF_MODIFIED_SINCE_CATEGORIES)
-    protected DatePreference provideIfModifiedSinceCategories(SharedPreferences prefs) {
-        return new DatePreference(prefs, IF_MODIFIED_SINCE_CATEGORIES, null);
+    @Named(IMS_CATEGORIES)
+    protected DatePreference provideIMSCategories(SharedPreferences prefs) {
+        return new DatePreference(prefs, IMS_CATEGORIES, null);
     }
 
     /**
@@ -202,8 +202,8 @@ public class PrefsModule {
      */
     @Provides
     @Singleton
-    @Named(IF_MODIFIED_SINCE_REGISTRATION)
-    protected DatePreference provideIfModifiedSinceRegistrationSemesters(SharedPreferences prefs) {
-        return new DatePreference(prefs, IF_MODIFIED_SINCE_REGISTRATION, null);
+    @Named(IMS_REGISTRATION)
+    protected DatePreference provideIMSRegistration(SharedPreferences prefs) {
+        return new DatePreference(prefs, IMS_REGISTRATION, null);
     }
 }

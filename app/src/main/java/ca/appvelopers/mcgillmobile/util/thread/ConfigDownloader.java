@@ -26,6 +26,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.guerinet.utils.prefs.DatePreference;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -33,11 +34,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 
 /**
@@ -46,8 +49,35 @@ import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
  * @since 1.0.0
  */
 public class ConfigDownloader extends Thread {
+    /**
+     * Retrofit {@link ConfigService} instance
+     */
     @Inject
     protected ConfigService configService;
+    /**
+     * The Config If-Modified-Since {@link DatePreference}
+     */
+    @Inject
+    @Named(PrefsModule.IMS_CONFIG)
+    protected DatePreference imsConfigPref;
+    /**
+     * The Places If-Modified-Since {@link DatePreference}
+     */
+    @Inject
+    @Named(PrefsModule.IMS_PLACES)
+    protected DatePreference imsPlacesPref;
+    /**
+     * The Categories If-Modified-Since {@link DatePreference}
+     */
+    @Inject
+    @Named(PrefsModule.IMS_CATEGORIES)
+    protected DatePreference imsCategoriesPref;
+    /**
+     * The Registration Semesters If-Modified-Since {@link DatePreference}
+     */
+    @Inject
+    @Named(PrefsModule.IMS_REGISTRATION)
+    protected DatePreference imsRegistrationPref;
     /**
      * The URL to download the places from
      */
