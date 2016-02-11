@@ -33,6 +33,7 @@ import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
+import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import dagger.Component;
 
 /**
@@ -57,4 +58,5 @@ public interface BaseComponent {
     void inject(HomepageListAdapter adapter);
     void inject(LanguageListAdapter adapter);
     void inject(PlaceTypeListAdapter adapter);
+    void inject(ConfigDownloader downloader);
 }
