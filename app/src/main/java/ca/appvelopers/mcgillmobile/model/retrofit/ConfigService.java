@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.model.retrofit;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.Place;
+import ca.appvelopers.mcgillmobile.model.PlaceType;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -36,4 +37,11 @@ public interface ConfigService {
      */
     @GET("places")
     Call<List<Place>> places(@Header("If-Modified-Since") String ifModifiedSince);
+
+    /**
+     * @param ifModifiedSince If-Modified-Since date to add, null if none
+     * @return List of parsed {@link PlaceType}s
+     */
+    @GET("categories")
+    Call<List<PlaceType>> categories(@Header("If-Modified-Since") String ifModifiedSince);
 }
