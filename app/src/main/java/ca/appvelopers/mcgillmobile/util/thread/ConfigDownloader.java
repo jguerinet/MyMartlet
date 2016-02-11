@@ -29,6 +29,8 @@ import com.google.gson.JsonParser;
 import com.guerinet.utils.DateUtils;
 import com.guerinet.utils.prefs.DatePreference;
 
+import org.threeten.bp.ZonedDateTime;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -107,6 +109,7 @@ public class ConfigDownloader extends Thread {
 
             if (response.isSuccess()) {
                 App.setPlaces(response.body());
+                imsPlacesPref.set(ZonedDateTime.now());
             }
         } catch (IOException e) {
             Timber.e(e, "Error downloading places");
@@ -120,6 +123,7 @@ public class ConfigDownloader extends Thread {
 
             if (response.isSuccess()) {
                 App.setPlaceTypes(response.body());
+                imsCategoriesPref.set(ZonedDateTime.now());
             }
         } catch (IOException e) {
             Timber.e(e, "Error downloading place categories");
