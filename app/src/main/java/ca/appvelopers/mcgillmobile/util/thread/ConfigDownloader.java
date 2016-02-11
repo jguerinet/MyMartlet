@@ -83,10 +83,6 @@ public class ConfigDownloader extends Thread {
      */
     private String mPlacesURL;
     /**
-     * The minimum required version of the app that the client should be running
-     */
-    private int mMinVersion;
-    /**
      * Keeps track fo the eventual section that the error is in
      */
     private String mCurrentSection;
@@ -193,15 +189,6 @@ public class ConfigDownloader extends Thread {
 //    @Override
 //    protected abstract void onPostExecute(Void param);
 
-    /* GETTERS */
-
-    /**
-     * @return The minimum version required
-     */
-    public int getMinVersion(){
-        return this.mMinVersion;
-    }
-
     /* HELPERS */
 
     /**
@@ -214,9 +201,6 @@ public class ConfigDownloader extends Thread {
     private void parseConfig(Gson gson, JsonParser parser, String configString) throws Exception {
         //Create the JSON object from the String
         JsonObject configJSON = parser.parse(configString).getAsJsonObject();
-
-        //Get the min version
-        mMinVersion = configJSON.get("MinAndroidVersion").getAsInt();
 
         //Get the Places URL
         mPlacesURL = configJSON.get("PlacesURL").getAsString();
