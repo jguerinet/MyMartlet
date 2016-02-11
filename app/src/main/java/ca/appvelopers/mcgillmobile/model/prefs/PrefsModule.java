@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.model.prefs;
 import android.content.SharedPreferences;
 
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.guerinet.utils.prefs.DatePreference;
 import com.guerinet.utils.prefs.IntPreference;
 
 import javax.inject.Named;
@@ -47,6 +48,10 @@ public class PrefsModule {
     public static final String EULA = "user_agreement";
     public static final String SEAT_CHECKER = "seat_checker";
     public static final String GRADE_CHECKER = "grade_checker";
+    public static final String IF_MODIFIED_SINCE_CONFIG = "if_modified_since_config";
+    public static final String IF_MODIFIED_SINCE_PLACES = "if_modified_since_places";
+    public static final String IF_MODIFIED_SINCE_CATEGORIES = "if_modified_since_categories";
+    public static final String IF_MODIFIED_SINCE_REGISTRATION = "if_modified_since_registration";
 
     /**
      * @param prefs {@link SharedPreferences} instance
@@ -156,5 +161,49 @@ public class PrefsModule {
     @Named(GRADE_CHECKER)
     protected BooleanPreference provideGradeChecker(SharedPreferences prefs) {
         return new BooleanPreference(prefs, GRADE_CHECKER, false);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return The If-Modified-Since date for the config, null if none
+     */
+    @Provides
+    @Singleton
+    @Named(IF_MODIFIED_SINCE_CONFIG)
+    protected DatePreference provideIfModifiedSinceConfig(SharedPreferences prefs) {
+        return new DatePreference(prefs, IF_MODIFIED_SINCE_CONFIG, null);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return The If-Modified-Since date for the places, null if none
+     */
+    @Provides
+    @Singleton
+    @Named(IF_MODIFIED_SINCE_PLACES)
+    protected DatePreference provideIfModifiedSincePlaces(SharedPreferences prefs) {
+        return new DatePreference(prefs, IF_MODIFIED_SINCE_PLACES, null);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return The If-Modified-Since date for the categories, null if none
+     */
+    @Provides
+    @Singleton
+    @Named(IF_MODIFIED_SINCE_CATEGORIES)
+    protected DatePreference provideIfModifiedSinceCategories(SharedPreferences prefs) {
+        return new DatePreference(prefs, IF_MODIFIED_SINCE_CATEGORIES, null);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return The If-Modified-Since date for the registration semesters, null if none
+     */
+    @Provides
+    @Singleton
+    @Named(IF_MODIFIED_SINCE_REGISTRATION)
+    protected DatePreference provideIfModifiedSinceRegistrationSemesters(SharedPreferences prefs) {
+        return new DatePreference(prefs, IF_MODIFIED_SINCE_REGISTRATION, null);
     }
 }
