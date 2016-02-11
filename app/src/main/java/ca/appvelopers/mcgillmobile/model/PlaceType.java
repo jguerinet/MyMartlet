@@ -36,36 +36,28 @@ public class PlaceType implements Serializable {
     /**
      * The user's saved favorite places
      */
-    public static final String FAVORITES = "Favorites";
+    public static final int FAVORITES = -2;
     /**
      * All of the places
      */
-    public static final String ALL = "All";
+    public static final int ALL = -1;
     /**
      * The type name
      */
-    private String name;
+    protected int id;
     /**
      * The type English String
      */
-    private String englishString;
+    protected String en;
     /**
      * The type French String
      */
-    private String frenchString;
+    protected String fr;
 
     /**
-     * Default Constructor
-     *
-     * @param name          Type name
-     * @param englishString Type English String
-     * @param frenchString  Type French String
+     * Default Moshi Constructor
      */
-    public PlaceType(String name, String englishString, String frenchString) {
-        this.name = name;
-        this.englishString = englishString;
-        this.frenchString = frenchString;
-    }
+    protected PlaceType() {}
 
     /**
      * Constructor used to create the Favorites and All types
@@ -73,23 +65,24 @@ public class PlaceType implements Serializable {
      * @param favorites True if this is the favorites type, false if this is the all type
      */
     public PlaceType(boolean favorites) {
-        this.name = favorites ? FAVORITES : ALL;
-        this.englishString = null;
-        this.frenchString = null;
+        this.id = favorites ? FAVORITES : ALL;
+        this.en = null;
+        this.fr = null;
     }
 
     /* GETTERS */
 
     /**
-     * @return The type name
+     * @return Category Id
      */
-    public String getName() {
-        return this.name;
+    public int getId() {
+        return id;
     }
 
     /* HELPERS */
 
     /**
+     * TODO
      * Get the list of types based on a list of Strings
      *
      * @param typeStrings The list of Strings
@@ -102,7 +95,7 @@ public class PlaceType implements Serializable {
             //Go through the place types
             for (PlaceType placeType : App.getPlaceTypes()) {
                 //If a type String equals the place type's name, then add it and break the loop
-                if (type.equals(placeType.getName())) {
+                if (type.equals(placeType.getId())) {
                     types.add(placeType);
                     break;
                 }
@@ -118,16 +111,14 @@ public class PlaceType implements Serializable {
      * @return The String to use
      */
     public String getString(Context context, @LanguageManager.Language int language) {
-        if (name.equals(FAVORITES)) {
+        if (id == FAVORITES) {
             return context.getString(R.string.map_favorites);
-        } else if(name.equals(ALL)) {
+        } else if(id == ALL) {
             return context.getString(R.string.map_all);
+        } else if (language == LanguageManager.FRENCH) {
+            return fr;
         }
-
-        if (language == LanguageManager.FRENCH) {
-            return frenchString;
-        }
-        return englishString;
+        return en;
     }
 
 
@@ -137,6 +128,6 @@ public class PlaceType implements Serializable {
      */
     @Override
     public boolean equals(Object object) {
-        return object instanceof PlaceType && ((PlaceType)object).name.equals(this.name);
+        return object instanceof PlaceType && ((PlaceType) object).id == this.id;
     }
 }
