@@ -131,7 +131,7 @@ public class NetworkModule {
     public Retrofit provideConfigRetrofit(@Named(CONFIG) OkHttpClient client, Moshi moshi) {
         return new Retrofit.Builder()
                 .client(client)
-                .baseUrl("http://mymartlet.herokuapp.com/api/")
+                .baseUrl("http://mymartlet.herokuapp.com/api/v2/")
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
     }
