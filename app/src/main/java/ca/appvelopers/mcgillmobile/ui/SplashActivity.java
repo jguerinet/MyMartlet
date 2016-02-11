@@ -96,6 +96,12 @@ public class SplashActivity extends BaseActivity {
     @Named(PrefsModule.VERSION)
     protected IntPreference versionPref;
     /**
+     * Min version {@link IntPreference}
+     */
+    @Inject
+    @Named(PrefsModule.MIN_VERSION)
+    protected IntPreference minVersionPref;
+    /**
      * EULA {@link BooleanPreference}
      */
     @Inject
@@ -123,15 +129,20 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         App.component(this).inject(this);
 
-        //Check if the user has accepted the user agreement
-        if (eulaPref.get()) {
-            //Run the config downloader if so
-            runConfigDownloader();
-        } else{
-            //If not, show it
+        //Run the update code, if any
+        Update.update(this, versionPref);
+
+        //Start downloading the config
+        new ConfigDownloader(this).start();
+
+        if (!eulaPref.get()) {
+            //If the user has not accepted the EULA, show it before continuing
             Intent intent = new Intent(this, AgreementActivity.class)
                     .putExtra(Constants.EULA_REQUIRED, true);
             startActivityForResult(intent, AGREEMENT_CODE);
+        } else {
+            //If they have, go to the next screen
+            showNextScreen();
         }
     }
 
@@ -140,7 +151,7 @@ public class SplashActivity extends BaseActivity {
         if(requestCode == AGREEMENT_CODE){
             //If they agreed, run the config downloader
             if(resultCode == RESULT_OK){
-                runConfigDownloader();
+                showNextScreen();
             }
             //If not, close the app
             else if(resultCode == RESULT_CANCELED){
@@ -152,55 +163,31 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Runs the config downloader
-     */
-    private void runConfigDownloader(){
-        new ConfigDownloader() {
-            @Override
-            public Void doInBackground(Void... params) {
-                //Run the update code, if any
-                Update.update(SplashActivity.this, versionPref);
+    private void showNextScreen() {
+        if (minVersionPref.get() > Utils.versionCode(this)) {
+            //If we don't have the min required version, show the right container
+            LinearLayout minVersionContainer = (LinearLayout) findViewById(R.id.version_container);
+            minVersionContainer.setVisibility(View.VISIBLE);
 
-                return super.doInBackground(params);
-            }
-
-            @Override
-            protected void onPostExecute(Void param) {
-                //Check if we have the minimum required version
-                if(this.getMinVersion() > Utils.versionCode(SplashActivity.this)){
-                    //If not, show the right container
-                    LinearLayout minVersionContainer =
-                            (LinearLayout) findViewById(R.id.version_container);
-                    minVersionContainer.setVisibility(View.VISIBLE);
-
-                    //Set up the button
-                    Button versionButton = (Button) findViewById(R.id.version_button);
-                    versionButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //Redirect them to the play store
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(Constants.PLAY_STORE_LINK));
-                            startActivity(intent);
-                        }
-                    });
-
-                    //Nothing else is done
-                    return;
+            //Set up the button
+            Button versionButton = (Button) findViewById(R.id.version_button);
+            versionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Redirect them to the play store
+                    Intent intent = new Intent(Intent.ACTION_VIEW)
+                            .setData(Uri.parse(Constants.PLAY_STORE_LINK));
+                    startActivity(intent);
                 }
-
-                //If one of them is null, show the login screen with no error message
-                if(usernamePref.get() == null || passwordPref.get() == null){
-                    showLoginScreen((ConnectionStatus)getIntent()
-                            .getSerializableExtra(Constants.CONNECTION_STATUS));
-                }
-                //If not, try to log them in and download the info
-                else{
-                    new AppInitializer(false).execute();
-                }
-            }
-        }.execute();
+            });
+        } else if (usernamePref.get() == null || passwordPref.get() == null) {
+            //If we are missing some login info, show the login screen with no error message
+            showLoginScreen((ConnectionStatus) getIntent()
+                    .getSerializableExtra(Constants.CONNECTION_STATUS));
+        } else {
+            //Try logging the user in and download their info
+            new AppInitializer(false).execute();
+        }
     }
 
     public void showLoginScreen(ConnectionStatus error){

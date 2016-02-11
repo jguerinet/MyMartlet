@@ -38,6 +38,7 @@ public class PrefsModule {
 
     /* PREFERENCE NAMES */
     public static final String VERSION = "version";
+    public static final String MIN_VERSION = "min_version";
     public static final String FIRST_OPEN = "first_open";
     public static final String HIDE_PARSER_ERROR = "hide_parser_error";
     public static final String HIDE_LOADING = "hide_loading";
@@ -56,6 +57,17 @@ public class PrefsModule {
     @Named(VERSION)
     protected IntPreference provideVersion(SharedPreferences prefs) {
         return new IntPreference(prefs, VERSION, -1);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return The minimum app version required, defaults to -1
+     */
+    @Provides
+    @Singleton
+    @Named(MIN_VERSION)
+    protected IntPreference provideMinVersion(SharedPreferences prefs) {
+        return new IntPreference(prefs, MIN_VERSION, -1);
     }
 
     /**

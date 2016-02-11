@@ -17,11 +17,8 @@
 package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -29,30 +26,28 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-import com.guerinet.utils.Utils;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.util.Constants;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import timber.log.Timber;
+import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 
 /**
  * Downloads the config variables and the list of places from the web server
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
+public class ConfigDownloader extends Thread {
+    @Inject
+    protected ConfigService configService;
     /**
      * The URL to download the places from
      */
@@ -69,75 +64,104 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
     /**
      * Default Constructor
      */
-    public ConfigDownloader() {}
-
-    @Override
-    public Void doInBackground(Void... params){
-        //Check if we are connected to the internet
-        if(Utils.isConnected((ConnectivityManager)
-                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))){
-            try {
-                /* CONFIG */
-                mCurrentSection = "CONFIG";
-
-                //Initialize the OkHttp client
-                OkHttpClient client = new OkHttpClient();
-
-                //Build the config request
-                Request.Builder requestBuilder = new Request.Builder()
-                        .get()
-                        .url(Constants.CONFIG_URL);
-
-                //Make the request and get the response
-                Response response = client.newCall(requestBuilder.build()).execute();
-
-                //Get the response code
-                int responseCode = response.code();
-                Timber.i("Config Response Code: %d", responseCode);
-                if (responseCode == 200) {
-                    //Set up the Gson parser by adding our custom deserializers
-                    GsonBuilder builder = new GsonBuilder();
-                    builder.registerTypeAdapter(Place.class, new PlaceDeserializer());
-                    builder.registerTypeAdapter(PlaceType.class,
-                            new PlaceCategoryDeserializer());
-                    Gson gson = builder.create();
-                    JsonParser parser = new JsonParser();
-
-                    //Parse the downloaded String
-                    parseConfig(gson, parser, response.body().string());
-
-                    /* PLACES */
-                    mCurrentSection = "PLACES";
-
-                    if(mPlacesURL != null){
-                        //Use the same builder, just change the URL
-                        requestBuilder.url(mPlacesURL);
-
-                        //Make the request and get the response
-                        response = client.newCall(requestBuilder.build()).execute();
-
-                        responseCode = response.code();
-                        Timber.i("Places Response Code: %d", responseCode);
-                        if (responseCode == 200) {
-                            //Parse the downloaded String
-                            parsePlaces(gson, parser, response.body().string());
-                        }
-                    }
-                }
-            } catch (SocketTimeoutException e) {
-                Timber.i("Error: Socket timeout");
-            } catch (Exception e) {
-                //Catch any possible exceptions
-                Timber.e(e, "Section Error: %s", mCurrentSection);
-            }
-        }
-
-        Timber.i("Finished");
-        return null;
+    public ConfigDownloader(Context context) {
+        App.component(context).inject(this);
     }
 
     @Override
-    protected abstract void onPostExecute(Void param);
+    public void run() {
+        try {
+            retrofit2.Response<List<Place>> places = configService.places(null).execute();
+            App.setPlaces(places.body());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        (new Callback<List<Place>>() {
+//            @Override
+//            public void onResponse(Call<List<Place>> call, retrofit2.Response<List<Place>> response) {
+//                try {
+//                    Thread.sleep(10000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                Timber.i("LOL");
+//                App.setPlaces(response.body());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Place>> call, Throwable t) {
+//                Timber.e(t, "Error downloading the places");
+//            }
+//        });
+    }
+
+//    @Override
+//    public Void doInBackground(Void... params){
+//        //Check if we are connected to the internet
+//        if(Utils.isConnected((ConnectivityManager)
+//                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))){
+//            try {
+//                /* CONFIG */
+//                mCurrentSection = "CONFIG";
+//
+//                //Initialize the OkHttp client
+//                OkHttpClient client = new OkHttpClient();
+//
+//                //Build the config request
+//                Request.Builder requestBuilder = new Request.Builder()
+//                        .get()
+//                        .url(Constants.CONFIG_URL);
+//
+//                //Make the request and get the response
+//                Response response = client.newCall(requestBuilder.build()).execute();
+//
+//                //Get the response code
+//                int responseCode = response.code();
+//                Timber.i("Config Response Code: %d", responseCode);
+//                if (responseCode == 200) {
+//                    //Set up the Gson parser by adding our custom deserializers
+//                    GsonBuilder builder = new GsonBuilder();
+//                    builder.registerTypeAdapter(Place.class, new PlaceDeserializer());
+//                    builder.registerTypeAdapter(PlaceType.class,
+//                            new PlaceCategoryDeserializer());
+//                    Gson gson = builder.create();
+//                    JsonParser parser = new JsonParser();
+//
+//                    //Parse the downloaded String
+//                    parseConfig(gson, parser, response.body().string());
+//
+//                    /* PLACES */
+//                    mCurrentSection = "PLACES";
+//
+//                    if(mPlacesURL != null){
+//                        //Use the same builder, just change the URL
+//                        requestBuilder.url(mPlacesURL);
+//
+//                        //Make the request and get the response
+//                        response = client.newCall(requestBuilder.build()).execute();
+//
+//                        responseCode = response.code();
+//                        Timber.i("Places Response Code: %d", responseCode);
+//                        if (responseCode == 200) {
+//                            //Parse the downloaded String
+//                            parsePlaces(gson, parser, response.body().string());
+//                        }
+//                    }
+//                }
+//            } catch (SocketTimeoutException e) {
+//                Timber.i("Error: Socket timeout");
+//            } catch (Exception e) {
+//                //Catch any possible exceptions
+//                Timber.e(e, "Section Error: %s", mCurrentSection);
+//            }
+//        }
+//
+//        Timber.i("Finished");
+//        return null;
+//    }
+
+//    @Override
+//    protected abstract void onPostExecute(Void param);
 
     /* GETTERS */
 
@@ -201,7 +225,8 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         JsonArray placesJSON = parser.parse(placesString).getAsJsonArray();
 
         //Convert the JsonArray into a list of places
-        List<Place> places = gson.fromJson(placesJSON, new TypeToken<List<Place>>(){}.getType());
+        List<Place> places = null;
+//        List<Place> places = gson.fromJson(placesJSON, new TypeToken<List<Place>>(){}.getType());
 
         //Save it if it isn't null
         if(places != null) {
@@ -233,12 +258,13 @@ public abstract class ConfigDownloader extends AsyncTask<Void, Void, Void>{
         public Place deserialize(JsonElement json, Type type, JsonDeserializationContext context)
                 throws JsonParseException{
             JsonObject object = json.getAsJsonObject();
-            return new Place(object.get("Name").getAsString(),
-                    (String[])context.deserialize(object.get("Categories"),
-                            new TypeToken<String[]>(){}.getType()),
-                    object.get("Address").getAsString(),
-                    object.get("Latitude").getAsDouble(),
-                    object.get("Longitude").getAsDouble());
+            return null;
+//            return new Place(object.get("Name").getAsString(),
+//                    (String[])context.deserialize(object.get("Categories"),
+//                            new TypeToken<String[]>(){}.getType()),
+//                    object.get("Address").getAsString(),
+//                    object.get("Latitude").getAsDouble(),
+//                    object.get("Longitude").getAsDouble());
         }
     }
 }
