@@ -32,7 +32,6 @@ import com.guerinet.utils.prefs.IntPreference;
 
 import org.threeten.bp.ZonedDateTime;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +117,7 @@ public class ConfigDownloader extends Thread {
                 minVersionPref.set(response.body().androidMinVersion);
                 imsConfigPref.set(ZonedDateTime.now());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Timber.e(e, "Error downloading config");
         }
 
@@ -132,7 +131,7 @@ public class ConfigDownloader extends Thread {
                 App.setPlaces(response.body());
                 imsPlacesPref.set(ZonedDateTime.now());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Timber.e(e, "Error downloading places");
         }
 
@@ -146,7 +145,7 @@ public class ConfigDownloader extends Thread {
                 App.setPlaceTypes(response.body());
                 imsCategoriesPref.set(ZonedDateTime.now());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Timber.e(e, "Error downloading place categories");
         }
 
@@ -160,7 +159,7 @@ public class ConfigDownloader extends Thread {
                 App.setRegisterTerms(response.body());
                 imsRegistrationPref.set(ZonedDateTime.now());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Timber.e(e, "Error downloading registration terms");
         }
 
