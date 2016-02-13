@@ -28,7 +28,6 @@ All contributions are welcome!
 * [Facebook](https://github.com/facebook/facebook-android-sdk)
 * [GPS - Analytics](https://developers.google.com/analytics/devguides/collection/android/v4/)
 * [GPS - Maps](https://developers.google.com/maps/documentation/android-api/)
-* [GSON](https://github.com/google/gson)
 * [Dagger](http://google.github.io/dagger)
 * [Android Utils](https://github.com/jguerinet/android-utils)
 * [FormGenerator](https://github.com/jguerinet/form-generator)
