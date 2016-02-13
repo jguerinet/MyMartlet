@@ -32,11 +32,16 @@ public class Term implements Serializable {
     /**
      * Term season
      */
-    private @Season.Type String season;
+    protected @Season.Type String season;
     /**
      * Term year
      */
-    private int year;
+    protected int year;
+
+    /**
+     * Moshi Constructor
+     */
+    protected Term() {}
 
     /**
      * Default Constructor

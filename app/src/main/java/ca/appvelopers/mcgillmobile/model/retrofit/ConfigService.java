@@ -20,6 +20,7 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader.Config;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -52,4 +53,11 @@ public interface ConfigService {
      */
     @GET("categories")
     Call<List<PlaceType>> categories(@Header("If-Modified-Since") String ifModifiedSince);
+
+    /**
+     * @param ifModifiedSince If-Modified-Since date to add, null if none
+     * @return List of parsed registration {@link Term}s
+     */
+    @GET("registration-terms")
+    Call<List<Term>> registrationTerms(@Header("If-Modified-Since") String ifModifiedSince);
 }

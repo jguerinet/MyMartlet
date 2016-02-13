@@ -150,6 +150,20 @@ public class ConfigDownloader extends Thread {
             Timber.e(e, "Error downloading place categories");
         }
 
+        //Registration Semesters
+        try {
+            Response<List<Term>> response = configService
+                    .registrationTerms(DateUtils.getRFC1123String(imsRegistrationPref.getDate()))
+                    .execute();
+
+            if (response.isSuccess()) {
+                App.setRegisterTerms(response.body());
+                imsRegistrationPref.set(ZonedDateTime.now());
+            }
+        } catch (IOException e) {
+            Timber.e(e, "Error downloading registration terms");
+        }
+
 //        (new Callback<List<Place>>() {
 //            @Override
 //            public void onResponse(Call<List<Place>> call, retrofit2.Response<List<Place>> response) {
