@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -27,6 +28,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.guerinet.utils.DateUtils;
+import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.DatePreference;
 import com.guerinet.utils.prefs.IntPreference;
 
@@ -54,6 +56,11 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class ConfigDownloader extends Thread {
+    /**
+     * {@link ConnectivityManager} instance
+     */
+    @Inject
+    protected ConnectivityManager connectivityManager;
     /**
      * Retrofit {@link ConfigService} instance
      */
@@ -107,6 +114,11 @@ public class ConfigDownloader extends Thread {
 
     @Override
     public void run() {
+        //If we're not connected to the internet, don't continue
+        if (!Utils.isConnected(connectivityManager)) {
+            return;
+        }
+
         //Config
         try {
             Response<Config> response = configService
@@ -162,26 +174,7 @@ public class ConfigDownloader extends Thread {
         } catch (Exception e) {
             Timber.e(e, "Error downloading registration terms");
         }
-
-//        (new Callback<List<Place>>() {
-//            @Override
-//            public void onResponse(Call<List<Place>> call, retrofit2.Response<List<Place>> response) {
-//                try {
-//                    Thread.sleep(10000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                Timber.i("LOL");
-//                App.setPlaces(response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Place>> call, Throwable t) {
-//                Timber.e(t, "Error downloading the places");
-//            }
-//        });
     }
-
 //    @Override
 //    public Void doInBackground(Void... params){
 //        //Check if we are connected to the internet
