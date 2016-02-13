@@ -28,6 +28,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.guerinet.utils.DateUtils;
 import com.guerinet.utils.prefs.DatePreference;
+import com.guerinet.utils.prefs.IntPreference;
 
 import org.threeten.bp.ZonedDateTime;
 
@@ -84,6 +85,12 @@ public class ConfigDownloader extends Thread {
     @Named(PrefsModule.IMS_REGISTRATION)
     protected DatePreference imsRegistrationPref;
     /**
+     * The min version {@link IntPreference}
+     */
+    @Inject
+    @Named(PrefsModule.MIN_VERSION)
+    protected IntPreference minVersionPref;
+    /**
      * The URL to download the places from
      */
     private String mPlacesURL;
@@ -101,6 +108,20 @@ public class ConfigDownloader extends Thread {
 
     @Override
     public void run() {
+        //Config
+        try {
+            Response<Config> response = configService
+                    .config(DateUtils.getRFC1123String(imsConfigPref.getDate()))
+                    .execute();
+
+            if (response.isSuccess()) {
+                minVersionPref.set(response.body().androidMinVersion);
+                imsConfigPref.set(ZonedDateTime.now());
+            }
+        } catch (IOException e) {
+            Timber.e(e, "Error downloading config");
+        }
+
         //Places
         try {
             Response<List<Place>> response = configService
@@ -293,6 +314,16 @@ public class ConfigDownloader extends Thread {
 //                    object.get("Latitude").getAsDouble(),
 //                    object.get("Longitude").getAsDouble());
         }
+    }
+
+    /**
+     * Config skeleton class
+     */
+    public static class Config {
+        /**
+         * Minimum version of the app that the user needs
+         */
+        protected int androidMinVersion = -1;
     }
 }
 
