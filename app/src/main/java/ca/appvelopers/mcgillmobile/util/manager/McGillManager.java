@@ -74,11 +74,6 @@ public class McGillManager {
     private static final String COURSE_SEARCH_URL =
 			"https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
 	/**
-	 * Course Registration Errors URL
-	 */
-	public static final String REGISTRATION_ERROR_URL =
-			"http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm";
-	/**
 	 * Singleton instance
 	 */
 	private static McGillManager mcGillManager;

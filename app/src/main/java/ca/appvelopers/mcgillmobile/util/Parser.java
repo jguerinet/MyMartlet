@@ -44,7 +44,6 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.User;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import timber.log.Timber;
 
 /**
@@ -769,7 +768,7 @@ public class Parser {
 
                 //Insert list of CRNs and errors into a map
                 for(Element link : links){
-                    if(link.toString().contains(McGillManager.REGISTRATION_ERROR_URL)){
+                    if(link.toString().contains("http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm")){
                         String CRN = link.parent().parent().child(1).text();
                         String error = link.text();
                         errors.put(CRN, error);
