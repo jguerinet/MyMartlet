@@ -149,7 +149,7 @@ public class McGillManager {
 	public static McGillManager getInstance(){
 		//If the connection is null, create it
 		if(mcGillManager == null){
-			mcGillManager = new McGillManager();
+			mcGillManager = new McGillManager(App.getContext());
 		}
 		return mcGillManager;
 	}
@@ -158,9 +158,9 @@ public class McGillManager {
 	 * Default Constructor
 	 */
     @Inject
-	protected McGillManager() {
+	protected McGillManager(Context context) {
         //Inject this to get the username and password from Dagger
-        App.component(App.getContext()).inject(this);
+        App.component(context).inject(this);
         username = usernamePref.full();
         password = passwordPref.get();
 		//Set up the list of cookies
