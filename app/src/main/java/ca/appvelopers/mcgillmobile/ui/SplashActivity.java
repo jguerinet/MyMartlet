@@ -58,12 +58,12 @@ import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Test;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 
@@ -272,10 +272,10 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void run() {
                         //Set the username and password
-                        Connection.getInstance().setUsername(
+                        McGillManager.getInstance().setUsername(
                                 username + getString(R.string.login_email));
-                        Connection.getInstance().setPassword(password);
-                        final ConnectionStatus status = Connection.getInstance().login();
+                        McGillManager.getInstance().setPassword(password);
+                        final ConnectionStatus status = McGillManager.getInstance().login();
                         // If the connection was successful, start the app initializer
                         if (status == ConnectionStatus.OK) {
                             // Store the login info.
@@ -454,7 +454,7 @@ public class SplashActivity extends BaseActivity {
             Analytics.get().sendEvent("Splash", "Auto-Login", "true");
 
             //The connection instance
-            Connection connection = Connection.getInstance();
+            McGillManager mcGillManager = McGillManager.getInstance();
 
             //Set up a while loop to go through everything while checking if the user cancelled
             //  every time
@@ -467,7 +467,7 @@ public class SplashActivity extends BaseActivity {
                         publishNewProgress(getString(R.string.logging_in));
 
                         //If he's already logged in, the connection is OK
-                        mConnectionStatus = mLoggedIn ? ConnectionStatus.OK : connection.login();
+                        mConnectionStatus = mLoggedIn ? ConnectionStatus.OK : mcGillManager.login();
 
                         //If we did not connect, break the loop now
                         if(mConnectionStatus != ConnectionStatus.OK){
@@ -487,7 +487,7 @@ public class SplashActivity extends BaseActivity {
                             }
                             else{
                                 transcriptBug = Parser.parseTranscript(
-                                        connection.get(Connection.TRANSCRIPT_URL));
+                                        mcGillManager.get(McGillManager.TRANSCRIPT_URL));
                             }
                             //If there was an error, show it
                             if(transcriptBug != null){
@@ -538,7 +538,7 @@ public class SplashActivity extends BaseActivity {
                                     //Download the schedule
                                     try{
                                         scheduleBug = Parser.parseCourses(term,
-                                                connection.get(Connection.getScheduleURL(term)));
+                                                mcGillManager.get(McGillManager.getScheduleURL(term)));
                                     } catch(MinervaException e){
                                         //Set the connection status and break the loop
                                         mConnectionStatus = ConnectionStatus.WRONG_INFO;
@@ -568,7 +568,7 @@ public class SplashActivity extends BaseActivity {
 
                         //Download the eBill and user info
                         try{
-                            String ebillString = connection.get(Connection.EBILL_URL);
+                            String ebillString = mcGillManager.get(McGillManager.EBILL_URL);
                             Parser.parseEbill(ebillString);
                         } catch(MinervaException e){
                             //Set the connection status and break the loop

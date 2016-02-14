@@ -44,9 +44,9 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
@@ -233,7 +233,7 @@ public class WishlistActivity extends DrawerActivity {
 
                     String subject = code[0];
                     String number = code[1];
-                    String url = new Connection.SearchURLBuilder(course.getTerm(), subject)
+                    String url = new McGillManager.SearchURLBuilder(course.getTerm(), subject)
                             .courseNumber(number)
                             .build();
 

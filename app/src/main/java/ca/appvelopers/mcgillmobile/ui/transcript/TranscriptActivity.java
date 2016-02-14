@@ -33,9 +33,9 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
@@ -84,7 +84,7 @@ public class TranscriptActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 showToolbarProgress(true);
-                new DownloaderThread(this, Connection.TRANSCRIPT_URL)
+                new DownloaderThread(this, McGillManager.TRANSCRIPT_URL)
                         .execute(new DownloaderThread.Callback() {
                             @Override
                             public void onDownloadFinished(final String result) {

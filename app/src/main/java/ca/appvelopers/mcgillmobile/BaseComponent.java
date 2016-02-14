@@ -31,8 +31,8 @@ import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughAdapter;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import dagger.Component;
 
@@ -52,7 +52,7 @@ public interface BaseComponent {
     void inject(MyCoursesActivity activity);
     void inject(DesktopActivity activity);
     void inject(SettingsActivity activity);
-    void inject(Connection connection);
+    void inject(McGillManager mcGillManager);
     void inject(BootReceiver receiver);
     void inject(WalkthroughAdapter adapter);
     void inject(HomepageListAdapter adapter);

@@ -23,7 +23,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import timber.log.Timber;
 
 /**
@@ -66,7 +66,7 @@ public class DownloaderThread extends Thread {
 		synchronized(this){
 			mResult = null;
 			try{
-				mResult = Connection.getInstance().get(mURL);
+				mResult = McGillManager.getInstance().get(mURL);
 			} catch(MinervaException e){
 				//TODO Broadcast this
 			} catch(Exception e){

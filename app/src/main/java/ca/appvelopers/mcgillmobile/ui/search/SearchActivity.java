@@ -46,10 +46,10 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import timber.log.Timber;
 
@@ -253,7 +253,7 @@ public class SearchActivity extends DrawerActivity {
             endAM = mEndTime.getCurrentHour() < 12;
         }
 
-        Connection.SearchURLBuilder builder = new Connection.SearchURLBuilder(term, subject)
+        McGillManager.SearchURLBuilder builder = new McGillManager.SearchURLBuilder(term, subject)
                 .courseNumber(mNumber.getText().toString())
                 .title(mTitle.getText().toString())
                 .minCredits(minCredits)

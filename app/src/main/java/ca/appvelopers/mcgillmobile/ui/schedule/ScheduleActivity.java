@@ -44,10 +44,10 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
@@ -200,7 +200,7 @@ public class ScheduleActivity extends DrawerActivity {
         showToolbarProgress(true);
 
         //Download the courses for this term
-        new DownloaderThread(this, Connection.getScheduleURL(mTerm))
+        new DownloaderThread(this, McGillManager.getScheduleURL(mTerm))
                 .execute(new DownloaderThread.Callback() {
                     @Override
                     public void onDownloadFinished(String result) {
@@ -210,7 +210,7 @@ public class ScheduleActivity extends DrawerActivity {
 
                             //Download the Transcript
                             //  (if ever the user has new semesters on their transcript)
-                            new DownloaderThread(null, Connection.TRANSCRIPT_URL)
+                            new DownloaderThread(null, McGillManager.TRANSCRIPT_URL)
                                     .execute(new DownloaderThread.Callback() {
                                         @Override
                                         public void onDownloadFinished(String result) {
