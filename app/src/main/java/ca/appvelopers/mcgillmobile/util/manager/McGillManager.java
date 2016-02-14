@@ -157,7 +157,8 @@ public class McGillManager {
 	/**
 	 * Default Constructor
 	 */
-	private McGillManager() {
+    @Inject
+	protected McGillManager() {
         //Inject this to get the username and password from Dagger
         App.component(App.getContext()).inject(this);
         username = usernamePref.full();
