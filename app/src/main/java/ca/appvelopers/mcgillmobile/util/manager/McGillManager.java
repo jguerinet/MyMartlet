@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.net.ssl.HttpsURLConnection;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
@@ -198,97 +197,6 @@ public class McGillManager {
         //Return the body in String format
         return response.body().string();
     }
-
-	/**
-	 * Sends a GET request and returns the body in String format
-	 *
-	 * @param url       The URL
-	 * @param autoLogin True if we should try reconnecting the user automatically, false otherwise
-	 * @return The page contents in String format
-	 * @throws MinervaException
-	 * @throws IOException
-	 * @throws NoInternetException
-	 */
-	public String get(String url, boolean autoLogin) throws MinervaException, IOException,
-			NoInternetException{
-		//Check if the user is connected to the internet
-		if (!Utils.isConnected(connectivityManager)) {
-			throw new NoInternetException();
-		}
-
-		//Create the request
-		Request.Builder builder = getDefaultRequest(url).get();
-
-		//Add the cookies if there are any
-		for(String cookie : cookies){
-			builder.addHeader("Cookie", cookie.split(";", 1)[0]);
-		}
-
-		Timber.i("Sending 'GET' request to: %s", url);
-
-		//Execute the request, get the response
-		Response response = client.newCall(builder.build()).execute();
-
-		int responseCode = response.code();
-		Timber.i("Response Code: %d", responseCode);
-
-		//Check the response code
-		switch(responseCode){
-			//If this is a redirect, go to the new link
-			case HttpsURLConnection.HTTP_MOVED_TEMP:
-			case HttpsURLConnection.HTTP_MOVED_PERM:
-				String nextLocation = response.header("Location");
-				return get(nextLocation, autoLogin);
-			default:
-				//All is ignored, carry on
-				break;
-		}
-
-		//Check the headers
-		if(!validateHeaders(response.headers())){
-			//We've been logged out of Minerva. Try logging back in if needed
-			if(autoLogin){
-				//Launch the login process
-				final ConnectionStatus status = login();
-
-				//Successfully logged them back in, try retrieving the stuff again
-				if(status == ConnectionStatus.OK){
-					return get(url, false);
-				}
-				//No internet: show no internet dialog
-				else if(status == ConnectionStatus.NO_INTERNET){
-					throw new NoInternetException();
-				}
-				//Wrong credentials: back to login screen
-				else if(status == ConnectionStatus.WRONG_INFO){
-					throw new MinervaException();
-				}
-			}
-			//If not, throw the exception
-			else{
-				throw new MinervaException();
-			}
-		}
-
-		//Get the response cookies and set them
-		cookies = response.headers("Set-Cookie");
-
-		//Return the body in String format
-		return response.body().string();
-	}
-
-	/**
-	 * Sends a GET request and returns the body in String format with auto-login enabled
-	 *
-	 * @param url The URL
-	 * @return The page contents in String format
-	 * @throws MinervaException
-	 * @throws IOException
-	 * @throws NoInternetException
-	 */
-	public String get(String url) throws MinervaException, IOException, NoInternetException{
-		return get(url, true);
-	}
 
 	/**
 	 * Attempts to log into Minerva
