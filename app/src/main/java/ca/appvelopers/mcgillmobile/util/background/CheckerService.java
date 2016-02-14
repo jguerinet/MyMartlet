@@ -32,8 +32,6 @@ import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import timber.log.Timber;
 
 /**
@@ -82,7 +80,9 @@ public class CheckerService extends IntentService {
 	 * Downloads the user's transcript to check for new or changed grades
 	 */
 	private void checkGrades(){
-		String html = new DownloaderThread(this, McGillManager.TRANSCRIPT_URL).execute();
+        //TODO
+//		String html = new DownloaderThread(this, McGillManager.TRANSCRIPT_URL).execute();
+        String html = null;
 
 		if(html != null){
 			//Get the previous grades

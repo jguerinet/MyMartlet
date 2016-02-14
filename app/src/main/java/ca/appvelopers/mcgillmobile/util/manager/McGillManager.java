@@ -74,11 +74,6 @@ public class McGillManager {
     private static final String SCHEDULE_URL =
 			"https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
 	/**
-	 * Transcript URL
-	 */
-	public static final String TRANSCRIPT_URL =
-			"https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V";
-	/**
 	 * Ebill URL
 	 */
 	public static final String EBILL_URL = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";

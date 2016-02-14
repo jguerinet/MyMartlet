@@ -489,7 +489,7 @@ public class SplashActivity extends BaseActivity {
                             }
                             else{
                                 transcriptBug = Parser.parseTranscript(
-                                        mcGillManager.get(McGillManager.TRANSCRIPT_URL));
+                                        mcGillManager.get(mcGillService.transcript()));
                             }
                             //If there was an error, show it
                             if(transcriptBug != null){

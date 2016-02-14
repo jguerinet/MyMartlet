@@ -210,7 +210,7 @@ public class ScheduleActivity extends DrawerActivity {
 
                             //Download the Transcript
                             //  (if ever the user has new semesters on their transcript)
-                            new DownloaderThread(null, McGillManager.TRANSCRIPT_URL)
+                            new DownloaderThread(ScheduleActivity.this, mcGillService.transcript())
                                     .execute(new DownloaderThread.Callback() {
                                         @Override
                                         public void onDownloadFinished(String result) {
