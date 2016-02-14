@@ -56,6 +56,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.BufferedSink;
+import retrofit2.Call;
 import timber.log.Timber;
 
 /**
@@ -181,6 +182,51 @@ public class McGillManager {
     }
 
 	/* HELPERS */
+
+    public String get(Call<Response> call) throws NoInternetException, MinervaException, IOException {
+        return get(call, true);
+    }
+
+    public String get(Call<Response> call, boolean autoLogin) throws NoInternetException, MinervaException, IOException {
+        //Check if the user is connected to the internet
+        if (!Utils.isConnected(connectivityManager)) {
+            throw new NoInternetException();
+        }
+
+        //Make the call
+        Response response = call.execute().body();
+
+        //Check for Minerva logout
+        List<String> setCookies = response.headers().values("Set-Cookie");
+        for (String cookie: setCookies) {
+            if (cookie.contains("SESSID=;")) {
+                if (autoLogin) {
+                    //We've been logged out of Minerva. Try logging back in if needed
+                    ConnectionStatus status = login();
+
+                    if (status == ConnectionStatus.OK) {
+                        //Successfully logged them back in, try retrieving the stuff again
+                        return get(call.clone(), false);
+                    } else if (status == ConnectionStatus.NO_INTERNET) {
+                        //No internet: show error
+                        throw new NoInternetException();
+                    } else if (status == ConnectionStatus.WRONG_INFO) {
+                        //Wrong credentials: back to login screen
+                        throw new MinervaException();
+                    }
+                } else {
+                    //If not, throw the exception
+                    throw new MinervaException();
+                }
+            }
+        }
+
+        //Get the response cookies and set them
+        cookies = response.headers("Set-Cookie");
+
+        //Return the body in String format
+        return response.body().string();
+    }
 
 	/**
 	 * Sends a GET request and returns the body in String format

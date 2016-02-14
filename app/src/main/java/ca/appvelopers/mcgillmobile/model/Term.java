@@ -111,7 +111,8 @@ public class Term implements Serializable {
     /**
      * @return The term in a format used by McGill
      */
-    public String getTermNumber() {
+    @Override
+    public String toString() {
         return year + Season.getSeasonNumber(season);
     }
 

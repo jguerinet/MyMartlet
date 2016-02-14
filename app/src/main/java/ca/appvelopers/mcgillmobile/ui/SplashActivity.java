@@ -78,6 +78,11 @@ public class SplashActivity extends BaseActivity {
      */
     private static final int AGREEMENT_CODE = 100;
     /**
+     * The {@link McGillManager} instance
+     */
+    @Inject
+    protected McGillManager mcGillManager;
+    /**
      * Hide loading {@link BooleanPreference}
      */
     @Inject
@@ -453,9 +458,6 @@ public class SplashActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             Analytics.get().sendEvent("Splash", "Auto-Login", "true");
 
-            //The connection instance
-            McGillManager mcGillManager = McGillManager.getInstance();
-
             //Set up a while loop to go through everything while checking if the user cancelled
             //  every time
             int downloadIndex = 0;
@@ -538,7 +540,7 @@ public class SplashActivity extends BaseActivity {
                                     //Download the schedule
                                     try{
                                         scheduleBug = Parser.parseCourses(term,
-                                                mcGillManager.get(McGillManager.getScheduleURL(term)));
+                                                mcGillManager.get(mcGillService.schedule(term)));
                                     } catch(MinervaException e){
                                         //Set the connection status and break the loop
                                         mConnectionStatus = ConnectionStatus.WRONG_INFO;

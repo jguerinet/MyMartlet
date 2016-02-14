@@ -180,7 +180,7 @@ public class CoursesActivity extends DrawerActivity {
         showToolbarProgress(true);
 
         //Download the courses for this term
-        new DownloaderThread(this, McGillManager.getScheduleURL(mTerm))
+        new DownloaderThread(this, mcGillService.schedule(mTerm))
                 .execute(new DownloaderThread.Callback() {
                     @Override
                     public void onDownloadFinished(String result) {
@@ -190,7 +190,7 @@ public class CoursesActivity extends DrawerActivity {
 
                             //Download the Transcript
                             //  (if ever the user has new semesters on their transcript)
-                            new DownloaderThread(null, McGillManager.TRANSCRIPT_URL)
+                            new DownloaderThread(CoursesActivity.this, mcGillService.transcript())
                                     .execute(new DownloaderThread.Callback() {
                                         @Override
                                         public void onDownloadFinished(String result) {

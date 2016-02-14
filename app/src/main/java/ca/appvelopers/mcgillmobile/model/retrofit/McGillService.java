@@ -16,13 +16,16 @@
 
 package ca.appvelopers.mcgillmobile.model.retrofit;
 
+import ca.appvelopers.mcgillmobile.model.Term;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Retrofit service to use to get information from McGill
@@ -41,6 +44,7 @@ public interface McGillService {
     /**
      * Creates the POST request that logs the user in
      *
+     * @param body The {@link ResponseBody} instance, wrapping the filled out login form
      * @return The McGill login {@link ResponseBody}
      */
     @Headers({
@@ -59,4 +63,36 @@ public interface McGillService {
     @POST("twbkwbis.P_ValLogin")
     Call<ResponseBody> login(@Body RequestBody body);
 
+    /**
+     * Retrieves the user's schedule for a given term
+     *
+     * @param term The term to retrieve the schedule for, in String format
+     * @return The schedule {@link Response}
+     */
+    @Headers({
+            "Cache-Control: no-cache",
+            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language: en-US,en;q=0.5",
+            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
+                    "Mobile Safari/<WebKit Rev>"
+    })
+    @GET("bwskfshd.P_CrseSchdDetl?term_in={term}")
+    Call<Response> schedule(@Path("term") Term term);
+
+    /**
+     * Retrieves the user's transcript
+     *
+     * @return The transcript {@link Response}
+     */
+    @Headers({
+            "Cache-Control: no-cache",
+            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language: en-US,en;q=0.5",
+            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
+                    "Mobile Safari/<WebKit Rev>"
+    })
+    @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
+    Call<Response> transcript();
 }
