@@ -95,4 +95,20 @@ public interface McGillService {
     })
     @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
     Call<Response> transcript();
+
+    /**
+     * Retrieves the user's ebill
+     *
+     * @return The ebill {@link Response}
+     */
+    @Headers({
+            "Cache-Control: no-cache",
+            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language: en-US,en;q=0.5",
+            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
+                    "Mobile Safari/<WebKit Rev>"
+    })
+    @GET("bztkcbil.pm_viewbills")
+    Call<Response> ebill();
 }

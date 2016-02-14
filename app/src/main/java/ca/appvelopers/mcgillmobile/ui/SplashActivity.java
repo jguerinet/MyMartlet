@@ -570,7 +570,7 @@ public class SplashActivity extends BaseActivity {
 
                         //Download the eBill and user info
                         try{
-                            String ebillString = mcGillManager.get(McGillManager.EBILL_URL);
+                            String ebillString = mcGillManager.get(mcGillService.ebill());
                             Parser.parseEbill(ebillString);
                         } catch(MinervaException e){
                             //Set the connection status and break the loop

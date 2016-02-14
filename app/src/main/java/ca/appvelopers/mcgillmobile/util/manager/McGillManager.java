@@ -69,10 +69,6 @@ import timber.log.Timber;
  */
 public class McGillManager {
 	/**
-	 * Ebill URL
-	 */
-	public static final String EBILL_URL = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
-	/**
 	 * Course Search URL
 	 */
     private static final String COURSE_SEARCH_URL =

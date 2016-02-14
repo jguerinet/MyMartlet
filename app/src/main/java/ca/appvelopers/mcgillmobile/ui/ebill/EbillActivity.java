@@ -33,7 +33,6 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
@@ -72,7 +71,7 @@ public class EbillActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 showToolbarProgress(true);
-                new DownloaderThread(this, McGillManager.EBILL_URL)
+                new DownloaderThread(this, mcGillService.ebill())
                         .execute(new DownloaderThread.Callback() {
                             @Override
                             public void onDownloadFinished(final String result) {
