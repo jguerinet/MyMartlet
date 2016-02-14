@@ -69,11 +69,6 @@ import timber.log.Timber;
  */
 public class McGillManager {
 	/**
-	 * Course Search URL
-	 */
-    private static final String COURSE_SEARCH_URL =
-			"https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
-	/**
 	 * Singleton instance
 	 */
 	private static McGillManager mcGillManager;
@@ -644,8 +639,7 @@ public class McGillManager {
 		 * @return The course search URL to use for this course search
 		 */
 		public String build() {
-			String url = COURSE_SEARCH_URL +
-					"term_in=" + term.getTermNumber() +
+			String url = "term_in=" + term.toString() +
 					"&sel_subj=dummy" +
 					"&sel_day=dummy" +
 					"&sel_schd=dummy" +

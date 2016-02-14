@@ -113,7 +113,7 @@ public interface McGillService {
     Call<Response> ebill();
 
     /**
-     * Retrieves the user's ebill
+     * Registers or unregisters someone to a list of courses
      *
      * @param url The end of the registration URL
      * @return The registration {@link Response}
@@ -128,4 +128,21 @@ public interface McGillService {
     })
     @GET("bwckcoms.P_Regs?term_in={url}")
     Call<Response> registration(@Path("url") String url);
+
+    /**
+     * Searches for a list of classes
+     *
+     * @param url The end of the search URL
+     * @return The search {@link Response}
+     */
+    @Headers({
+            "Cache-Control: no-cache",
+            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language: en-US,en;q=0.5",
+            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
+                    "Mobile Safari/<WebKit Rev>"
+    })
+    @GET("bwskfcls.P_GetCrse?{url}")
+    Call<Response> search(@Path("url") String url);
 }

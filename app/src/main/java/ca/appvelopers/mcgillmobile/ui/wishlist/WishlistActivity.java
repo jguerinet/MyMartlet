@@ -237,7 +237,7 @@ public class WishlistActivity extends DrawerActivity {
                             .courseNumber(number)
                             .build();
 
-                    String html = new DownloaderThread(WishlistActivity.this, url)
+                    String html = new DownloaderThread(WishlistActivity.this, mcGillService.search(url))
                             .execute();
 
                     if (html != null) {

@@ -51,7 +51,6 @@ import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import timber.log.Timber;
 
 /**
  * Allows a user to search for courses that they can register for
@@ -288,13 +287,8 @@ public class SearchActivity extends DrawerActivity {
             builder.addDay(DayOfWeek.SUNDAY);
         }
 
-        String searchURL = builder.build();
-
-        //Retrieve courses obtained from Minerva
-        Timber.i("URL: %s", searchURL);
-
         //Execute the request
-        new DownloaderThread(this, searchURL).execute(new DownloaderThread.Callback() {
+        new DownloaderThread(this, mcGillService.search(builder.build())).execute(new DownloaderThread.Callback() {
             @Override
             public void onDownloadFinished(final String result) {
                 //If there is a result, parse it
