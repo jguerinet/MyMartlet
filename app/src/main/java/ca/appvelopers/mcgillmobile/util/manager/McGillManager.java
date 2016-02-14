@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
@@ -47,11 +48,7 @@ import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
-import okhttp3.CacheControl;
-import okhttp3.Headers;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.BufferedSink;
@@ -66,21 +63,13 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 1.0.0
  */
+@Singleton
 public class McGillManager {
-	/**
-	 * Singleton instance
-	 */
-	private static McGillManager mcGillManager;
     /**
      * The {@link McGillService} instance
      */
     @Inject
     protected McGillService mcGillService;
-    /**
-     * {@link OkHttpClient} instance
-     */
-    @Inject
-    protected OkHttpClient client;
     /**
      * {@link ConnectivityManager} instance
      */
@@ -97,28 +86,9 @@ public class McGillManager {
     @Inject
     protected PasswordPreference passwordPref;
     /**
-     * Username
-     */
-    private String username;
-    /**
-     * Password
-     */
-    private String password;
-    /**
 	 * The list of cookies
 	 */
 	private List<String> cookies;
-
-	/**
-	 * @return The connection instance
-	 */
-	public static McGillManager getInstance(){
-		//If the connection is null, create it
-		if(mcGillManager == null){
-			mcGillManager = new McGillManager(App.getContext());
-		}
-		return mcGillManager;
-	}
 
 	/**
 	 * Default Constructor
@@ -127,29 +97,11 @@ public class McGillManager {
 	protected McGillManager(Context context) {
         //Inject this to get the username and password from Dagger
         App.component(context).inject(this);
-        username = usernamePref.full();
-        password = passwordPref.get();
 		//Set up the list of cookies
 		cookies = new ArrayList<>();
 		//Set up the cookie handler
 		CookieHandler.setDefault(new CookieManager());
 	}
-
-	/* SETTERS */
-
-	/**
-	 * @param username The username to use
-	 */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-	/**
-	 * @param password The password to use
-	 */
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 	/* HELPERS */
 
@@ -203,7 +155,7 @@ public class McGillManager {
 	 *
 	 * @return The resulting connection status
 	 */
-	public ConnectionStatus login() {
+	public ConnectionStatus login(String username, String password) {
         //Don't continue of the user is not connected to the internet
         if (!Utils.isConnected(connectivityManager)) {
             return ConnectionStatus.NO_INTERNET;
@@ -274,38 +226,8 @@ public class McGillManager {
         return ConnectionStatus.OK;
     }
 
-	/**
-	 * Gets the request builder with the default headers set up
-	 *
-	 * @param url The URL to connect to
-	 * @return The request builder
-	 */
-	private Request.Builder getDefaultRequest(String url){
-		return new Request.Builder()
-				.url(url)
-				.cacheControl(new CacheControl.Builder().noCache().build())
-				.header("User-Agent", "Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-						"AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-						"Mobile Safari/<WebKit Rev>")
-				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-				.header("Accept-Language", "en-US,en;q=0.5");
-	}
-
-	/**
-	 * Check the headers for a bad connection
-	 *
-	 * @param headers The headers received from the response
-	 * @return True if the headers are validated, false otherwise
-	 */
-    private boolean validateHeaders(Headers headers){
-    	//Check for Minerva logout
-    	List<String> setCookies = headers.values("Set-Cookie");
-    	for(String cookie: setCookies){
-	    	if(cookie.contains("SESSID=;")){
-			    return false;
-	    	}
-    	}
-    	return true;
+    public ConnectionStatus login() {
+        return login(usernamePref.full(), passwordPref.get());
     }
 
     public List<String> getCookies() {

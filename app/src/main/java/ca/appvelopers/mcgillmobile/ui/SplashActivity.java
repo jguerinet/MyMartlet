@@ -276,11 +276,8 @@ public class SplashActivity extends BaseActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        //Set the username and password
-                        McGillManager.getInstance().setUsername(
-                                username + getString(R.string.login_email));
-                        McGillManager.getInstance().setPassword(password);
-                        final ConnectionStatus status = McGillManager.getInstance().login();
+                        final ConnectionStatus status = mcGillManager
+                                .login(username + getString(R.string.login_email), password);
                         // If the connection was successful, start the app initializer
                         if (status == ConnectionStatus.OK) {
                             // Store the login info.
