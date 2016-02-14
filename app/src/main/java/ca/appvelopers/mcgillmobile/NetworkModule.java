@@ -27,6 +27,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
+import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import dagger.Module;
 import dagger.Provides;
@@ -48,9 +49,10 @@ import timber.log.Timber;
 @Module(includes = AppModule.class)
 public class NetworkModule {
     /**
-     * Config server injections
+     * Injection Names
      */
     public static final String CONFIG = "config";
+    public static final String MCGILL = "mcgill";
 
     /**
      * @param context App context
@@ -146,5 +148,15 @@ public class NetworkModule {
     @Singleton
     public ConfigService provideConfigService(@Named(CONFIG) Retrofit retrofit) {
         return retrofit.create(ConfigService.class);
+    }
+
+    /**
+     * @param retrofit The {@link Retrofit} instance to use when connecting to McGill
+     * @return The {@link McGillService} instance
+     */
+    @Provides
+    @Singleton
+    public McGillService provideMcGillService(@Named(MCGILL) Retrofit retrofit) {
+        return retrofit.create(McGillService.class);
     }
 }
