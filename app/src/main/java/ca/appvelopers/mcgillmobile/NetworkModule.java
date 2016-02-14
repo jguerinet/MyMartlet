@@ -138,6 +138,19 @@ public class NetworkModule {
                 .build();
     }
 
+    /**
+     * @param client {@link OkHttpClient} instance to use when connecting to McGill
+     * @return The {@link Retrofit} instance to use when connecting to McGill
+     */
+    @Provides
+    @Singleton
+    public Retrofit provideMcGillRetrofit(OkHttpClient client) {
+        return new Retrofit.Builder()
+                .client(client)
+                .baseUrl("https://horizon.mcgill.ca/pban1/")
+                .build();
+    }
+
     /* RETROFIT SERVICES */
 
     /**
