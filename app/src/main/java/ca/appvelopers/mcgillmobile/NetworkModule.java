@@ -29,6 +29,7 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Passwords;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Credentials;
@@ -84,13 +85,29 @@ public class NetworkModule {
 
     /**
      * @param interceptor The {@link HttpLoggingInterceptor} instance
+     * @param manager     The {@link McGillManager} instance to get the cookies
      * @return The {@link OkHttpClient} instance
      */
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor) {
+    @Named(MCGILL)
+    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor,
+            final McGillManager manager) {
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request.Builder builder = chain.request().newBuilder();
+
+                        //Add the cookies if there are any
+                        for(String cookie : manager.getCookies()){
+                            builder.addHeader("Cookie", cookie.split(";", 1)[0]);
+                        }
+
+                        return chain.proceed(builder.build());
+                    }
+                })
                 .build();
     }
 
@@ -144,7 +161,8 @@ public class NetworkModule {
      */
     @Provides
     @Singleton
-    public Retrofit provideMcGillRetrofit(OkHttpClient client) {
+    @Named(MCGILL)
+    public Retrofit provideMcGillRetrofit(@Named(MCGILL) OkHttpClient client) {
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl("https://horizon.mcgill.ca/pban1/")

@@ -16,11 +16,47 @@
 
 package ca.appvelopers.mcgillmobile.model.retrofit;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+
 /**
  * Retrofit service to use to get information from McGill
  * @author Julien Guerinet
  * @since 2.2.0
  */
 public interface McGillService {
+    /**
+     * Get the login page to fill out the user info
+     *
+     * @return The McGill login page {@link ResponseBody}
+     */
+    @GET("twbkwbis.P_WWWLogin")
+    Call<ResponseBody> loginPage();
+
+    /**
+     * Creates the POST request that logs the user in
+     *
+     * @return The McGill login {@link ResponseBody}
+     */
+    @Headers({
+            "Cache-Control: no-cache",
+            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language: en-US,en;q=0.5",
+            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+                "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
+                "Mobile Safari/<WebKit Rev>",
+            "Host: horizon.mcgill.ca",
+            "Origin: https://horizon.mcgill.ca",
+            "DNT: 1",
+            "Connection: keep-alive",
+            "Referer: https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin"
+    })
+    @POST("twbkwbis.P_ValLogin")
+    Call<ResponseBody> login(@Body RequestBody body);
 
 }

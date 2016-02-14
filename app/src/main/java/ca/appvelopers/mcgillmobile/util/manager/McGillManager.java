@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.util.manager;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.support.v4.util.Pair;
 
 import com.guerinet.utils.Utils;
 
@@ -28,10 +29,8 @@ import org.jsoup.select.Elements;
 import org.threeten.bp.DayOfWeek;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +46,7 @@ import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import okhttp3.CacheControl;
 import okhttp3.Headers;
@@ -67,16 +67,6 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class McGillManager {
-	/**
-	 * Login URL
-	 */
-	private static final String LOGIN_PAGE_URL =
-			"https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin";
-	/**
-	 * Login POST URL
-	 */
-	private static final String LOGIN_POST_URL =
-			"https://horizon.mcgill.ca/pban1/twbkwbis.P_ValLogin";
 	/**
 	 * Schedule URL
 	 */
@@ -110,6 +100,11 @@ public class McGillManager {
 	 * Singleton instance
 	 */
 	private static McGillManager mcGillManager;
+    /**
+     * The {@link McGillService} instance
+     */
+    @Inject
+    protected McGillService mcGillService;
     /**
      * {@link OkHttpClient} instance
      */
@@ -279,146 +274,80 @@ public class McGillManager {
 	}
 
 	/**
-	 *  Sends a post request and returns the response body in String format
-	 *
-	 * @param url        The URL
-	 * @param referer    The referer
-	 * @param postParams The post parameters
-	 * @return The response body in String format
-	 * @throws IOException
-	 */
-	private String post(String url, String referer, final String postParams) throws IOException{
-		//Create the request
-		Request.Builder builder = getDefaultRequest(url)
-				.post(new RequestBody() {
-					@Override
-					public MediaType contentType(){
-						return MediaType.parse("application/x-www-form-urlencoded");
-					}
-
-					@Override
-					public void writeTo(BufferedSink sink) throws IOException{
-						sink.writeString(postParams, Charset.forName("UTF-8"));
-					}
-				})
-				.header("Host", "horizon.mcgill.ca")
-				.header("Origin", "https://horizon.mcgill.ca")
-				.header("DNT", "1")
-				.header("Connection", "keep-alive")
-				.header("Referer", referer);
-
-		//Add the cookies if there are any
-		for(String cookie : cookies){
-			builder.addHeader("Cookie", cookie.split(";", 1)[0]);
-		}
-
-		Timber.i("Sending 'POST' request to: %s", url);
-
-		//Execute the request, get the result
-		Response response = client.newCall(builder.build()).execute();
-
-		Timber.i("Response Code: %d", response.code());
-
-		//Return the response body
-		return response.body().string();
-	}
-
-	/**
 	 * Attempts to log into Minerva
 	 *
 	 * @return The resulting connection status
 	 */
-	public ConnectionStatus login(){
-		try {
-			if(!Utils.isConnected((ConnectivityManager)
-                    App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))){
-				return ConnectionStatus.NO_INTERNET;
-			}
+	public ConnectionStatus login() {
+        //Don't continue of the user is not connected to the internet
+        if (!Utils.isConnected(connectivityManager)) {
+            return ConnectionStatus.NO_INTERNET;
+        }
 
+		try {
 			//1. Get Minerva's login page and determine the login parameters
-			Request request = new Request.Builder().get().url(LOGIN_PAGE_URL).build();
-			String html = client.newCall(request).execute().body().string();
-			String postParams = getLoginParameters(html);
-			
+            String response = mcGillService.loginPage().execute().body().string();
+
+            List<Pair<String, String>> params = new ArrayList<>();
+
+            //Parse the HTML document with JSoup
+            Document doc = Jsoup.parse(response);
+
+            //Google Form Id
+            Elements forms = doc.getElementsByTag("form");
+            //Go through the forms
+            for (Element formElement : forms) {
+                //Find the one with name 'loginform1'
+                if (formElement.attr("name").equals("loginform1")) {
+                    //Go through the input elements
+                    for (Element inputElement : formElement.getElementsByTag("input")) {
+                        //Get the key of the input element
+                        String key = inputElement.attr("name");
+
+                        if (key.equals("sid")) {
+                            //Username
+                            params.add(new Pair<>(key, username));
+                        } else if (key.equals("PIN")) {
+                            //Password
+                            params.add(new Pair<>(key, password));
+                        }
+                    }
+
+                }
+            }
+
+            //Get the POST params in String format (remove the '?' at the beginning
+            final String body = Utils.getQuery(params).substring(1);
+
 			//Search for "Authorization Failure"
-			if(postParams.contains("WRONG_INFO")){
+			if (body.contains("WRONG_INFO")) {
 				return ConnectionStatus.WRONG_INFO;
 			}
 
 			//2. Construct above post's content and then send a POST request for authentication
-			String response = post(LOGIN_POST_URL, LOGIN_PAGE_URL, postParams);
+            response = mcGillService.login(new RequestBody() {
+                @Override
+                public MediaType contentType() {
+                    return MediaType.parse("application/x-www-form-urlencoded");
+                }
 
-			//Check that the connection was actually made
-			if (!response.contains("WELCOME")){
+                @Override
+                public void writeTo(BufferedSink sink) throws IOException {
+                    sink.writeString(body, Charset.forName("UTF-8"));
+                }
+            }).execute().body().string();
+
+			if (!response.contains("WELCOME")) {
+                //If we're not on the Welcome page, then the user entered wrong info
 				return ConnectionStatus.WRONG_INFO;
 			}
 		} catch (IOException e) {
-			Timber.e(e, "IOException during login");
+			Timber.e(e, "Exception during login");
 			return ConnectionStatus.ERROR_UNKNOWN;
 		}
 
         return ConnectionStatus.OK;
     }
-
-	/**
-	 * Gets the parameters to use for logging into Minerva
-	 *
-	 * @param html The login HTML page
-	 * @return String representing the parameters to use for logging into Minerva
-	 * @throws UnsupportedEncodingException
-	 */
-	private String getLoginParameters(String html) throws UnsupportedEncodingException{
-		List<String> params = new ArrayList<>();
-		Timber.i("Extracting form's data...");
-
-		//Parse the HTML document with JSoup
-		Document doc = Jsoup.parse(html);
-
-		//Google Form Id
-		Elements forms = doc.getElementsByTag("form");
-		//Go through the forms
-		for (Element formElement : forms) {
-			//Find the one with name 'loginform1'
-			if (formElement.attr("name").equals("loginform1")){
-				//Go through the input elements
-				for (Element inputElement : formElement.getElementsByTag("input")){
-					//Get the key of the input element
-					String key = inputElement.attr("name");
-
-					//Find the username and password elements
-					if(key.equals("sid") || key.equals("PIN")){
-						String value;
-						//Username
-						if(key.equals("sid")){
-							value = username;
-						}
-						//Password
-						else{
-							value = password;
-						}
-
-						//Add this to the list if params
-						params.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
-					}
-				}
-
-			}
-		}
-
-		//Go through the parameters
-		StringBuilder result = new StringBuilder();
-		for (String param : params){
-			//No & for the first parameter
-			if (result.length() == 0){
-				result.append(param);
-			}
-			else{
-				result.append("&").append(param);
-			}
-		}
-
-		return result.toString();
-	}
 
 	/**
 	 * Gets the request builder with the default headers set up
@@ -452,6 +381,10 @@ public class McGillManager {
 	    	}
     	}
     	return true;
+    }
+
+    public List<String> getCookies() {
+        return cookies;
     }
 
     /* URL BUILDERS */
