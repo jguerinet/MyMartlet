@@ -47,7 +47,6 @@ import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
@@ -200,7 +199,7 @@ public class ScheduleActivity extends DrawerActivity {
         showToolbarProgress(true);
 
         //Download the courses for this term
-        new DownloaderThread(this, McGillManager.getScheduleURL(mTerm))
+        new DownloaderThread(this, mcGillService.schedule(mTerm))
                 .execute(new DownloaderThread.Callback() {
                     @Override
                     public void onDownloadFinished(String result) {

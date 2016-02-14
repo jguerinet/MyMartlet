@@ -69,11 +69,6 @@ import timber.log.Timber;
  */
 public class McGillManager {
 	/**
-	 * Schedule URL
-	 */
-    private static final String SCHEDULE_URL =
-			"https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=";
-	/**
 	 * Ebill URL
 	 */
 	public static final String EBILL_URL = "https://horizon.mcgill.ca/pban1/bztkcbil.pm_viewbills";
@@ -429,16 +424,6 @@ public class McGillManager {
     }
 
     /* URL BUILDERS */
-
-	/**
-	 * Returns the URL to download the schedule for a given term
-	 *
-	 * @param term The term
-	 * @return The schedule URL
-	 */
-    public static String getScheduleURL(Term term) {
-        return McGillManager.SCHEDULE_URL + term.getTermNumber();
-    }
 
     /**
      * Returns the URL to register for courses for the given parameters
