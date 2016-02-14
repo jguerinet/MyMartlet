@@ -243,7 +243,8 @@ public class CoursesActivity extends DrawerActivity {
 
                                     //Run the registration thread
                                     new DownloaderThread(CoursesActivity.this,
-                                            McGillManager.getRegistrationURL(mTerm, courses, true))
+                                            mcGillService.registration(
+                                                    McGillManager.getRegistrationURL(mTerm, courses, true)))
                                             .execute(new DownloaderThread.Callback() {
                                                 @Override
                                                 public void onDownloadFinished(String result) {

@@ -74,11 +74,6 @@ public class McGillManager {
     private static final String COURSE_SEARCH_URL =
 			"https://horizon.mcgill.ca/pban1/bwskfcls.P_GetCrse?";
 	/**
-	 * Course Registration URL
-	 */
-    private static final String COURSE_REGISTRATION_URL =
-			"https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=";
-	/**
 	 * Course Registration Errors URL
 	 */
 	public static final String REGISTRATION_ERROR_URL =
@@ -429,8 +424,8 @@ public class McGillManager {
      * @param dropCourse True if the user is dropping courses, false otherwise
      * @return The proper registration URL
      */
-    public static String getRegistrationURL(Term term, List<Course> classes, boolean dropCourse){
-        String registrationURL = COURSE_REGISTRATION_URL + term.getTermNumber();
+    public static String getRegistrationURL(Term term, List<Course> classes, boolean dropCourse) {
+        String registrationURL = term.toString();
 
         //Add random Minerva stuff that is apparently necessary
         registrationURL += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
@@ -439,14 +434,14 @@ public class McGillManager {
 
         if(dropCourse){
             for(Course classItem : classes){
-                registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.getTermNumber() +
+                registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.toString() +
                         "&CRN_IN=" + classItem.getCRN() + "&start_date_in=DUMMY&end_date_in=DUMMY" +
                         "&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&" +
                         "TITLE=DUMMY&MESG=DUMMY";
             }
         }
         else{
-            registrationURL += "&RSTS_IN=&assoc_term_in=" + term.getTermNumber() +
+            registrationURL += "&RSTS_IN=&assoc_term_in=" + term.toString() +
 		            "&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&" +
                     "SEC=DUMMYLEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
         }

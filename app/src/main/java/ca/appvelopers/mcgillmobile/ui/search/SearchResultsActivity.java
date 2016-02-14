@@ -127,7 +127,8 @@ public class SearchResultsActivity extends BaseActivity {
             //Show the user we are refreshing
             activity.showToolbarProgress(true);
 
-            new DownloaderThread(activity, McGillManager.getRegistrationURL(term, courses, false))
+            new DownloaderThread(activity, activity.getMcGillService().registration(
+                    McGillManager.getRegistrationURL(term, courses, false)))
                     .execute(new DownloaderThread.Callback() {
                         @Override
                         public void onDownloadFinished(final String result){

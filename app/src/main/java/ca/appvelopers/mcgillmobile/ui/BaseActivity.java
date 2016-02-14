@@ -130,4 +130,8 @@ public class BaseActivity extends AppCompatActivity {
         Assert.assertNotNull(mToolbarProgressBar);
         mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
+
+    public McGillService getMcGillService() {
+        return mcGillService;
+    }
 }
