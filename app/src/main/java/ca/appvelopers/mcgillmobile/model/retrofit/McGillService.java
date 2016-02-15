@@ -48,12 +48,6 @@ public interface McGillService {
      * @return The McGill login {@link ResponseBody}
      */
     @Headers({
-            "Cache-Control: no-cache",
-            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language: en-US,en;q=0.5",
-            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-                "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-                "Mobile Safari/<WebKit Rev>",
             "Host: horizon.mcgill.ca",
             "Origin: https://horizon.mcgill.ca",
             "DNT: 1",
@@ -69,14 +63,6 @@ public interface McGillService {
      * @param term The term to retrieve the schedule for, in String format
      * @return The schedule {@link Response}
      */
-    @Headers({
-            "Cache-Control: no-cache",
-            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language: en-US,en;q=0.5",
-            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-                    "Mobile Safari/<WebKit Rev>"
-    })
     @GET("bwskfshd.P_CrseSchdDetl?term_in={term}")
     Call<Response> schedule(@Path("term") Term term);
 
@@ -85,14 +71,6 @@ public interface McGillService {
      *
      * @return The transcript {@link Response}
      */
-    @Headers({
-            "Cache-Control: no-cache",
-            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language: en-US,en;q=0.5",
-            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-                    "Mobile Safari/<WebKit Rev>"
-    })
     @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
     Call<Response> transcript();
 
@@ -101,14 +79,6 @@ public interface McGillService {
      *
      * @return The ebill {@link Response}
      */
-    @Headers({
-            "Cache-Control: no-cache",
-            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language: en-US,en;q=0.5",
-            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-                    "Mobile Safari/<WebKit Rev>"
-    })
     @GET("bztkcbil.pm_viewbills")
     Call<Response> ebill();
 
@@ -118,14 +88,6 @@ public interface McGillService {
      * @param url The end of the registration URL
      * @return The registration {@link Response}
      */
-    @Headers({
-            "Cache-Control: no-cache",
-            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language: en-US,en;q=0.5",
-            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-                    "Mobile Safari/<WebKit Rev>"
-    })
     @GET("bwckcoms.P_Regs?term_in={url}")
     Call<Response> registration(@Path("url") String url);
 
@@ -135,14 +97,6 @@ public interface McGillService {
      * @param url The end of the search URL
      * @return The search {@link Response}
      */
-    @Headers({
-            "Cache-Control: no-cache",
-            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language: en-US,en;q=0.5",
-            "User-Agent: Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
-                    "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> " +
-                    "Mobile Safari/<WebKit Rev>"
-    })
     @GET("bwskfcls.P_GetCrse?{url}")
     Call<Response> search(@Path("url") String url);
 }

@@ -105,6 +105,15 @@ public class NetworkModule {
                             builder.addHeader("Cookie", cookie);
                         }
 
+                        //Add the other necessary headers
+                        builder.addHeader("Cache-Control", "no-cache");
+                        builder.addHeader("Accept",
+                                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                        builder.addHeader("Accept-Language", "en-US,en;q=0.5");
+                        builder.addHeader("User-Agent", "Mozilla/5.0 (Linux; <Android Version>; " +
+                                "<Build Tag etc.>) " + "AppleWebKit/<WebKit Rev> (KHTML, " +
+                                "like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>");
+
                         return chain.proceed(builder.build());
                     }
                 })
