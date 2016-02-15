@@ -26,10 +26,10 @@ import java.io.IOException;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import ca.appvelopers.mcgillmobile.model.prefs.CookiePreference;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Passwords;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Credentials;
@@ -85,14 +85,14 @@ public class NetworkModule {
 
     /**
      * @param interceptor The {@link HttpLoggingInterceptor} instance
-     * @param manager     The {@link McGillManager} instance to get the cookies
+     * @param cookiePref  The {@link CookiePreference} instance to add the cookies to the requests
      * @return The {@link OkHttpClient} instance
      */
     @Provides
     @Singleton
     @Named(MCGILL)
     public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor,
-            final McGillManager manager) {
+            final CookiePreference cookiePref) {
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .addNetworkInterceptor(new Interceptor() {
@@ -101,8 +101,8 @@ public class NetworkModule {
                         Request.Builder builder = chain.request().newBuilder();
 
                         //Add the cookies if there are any
-                        for(String cookie : manager.getCookies()){
-                            builder.addHeader("Cookie", cookie.split(";", 1)[0]);
+                        for (String cookie : cookiePref.getCookies()) {
+                            builder.addHeader("Cookie", cookie);
                         }
 
                         return chain.proceed(builder.build());

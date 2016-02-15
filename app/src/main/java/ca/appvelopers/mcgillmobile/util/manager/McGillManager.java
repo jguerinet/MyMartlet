@@ -44,6 +44,7 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
+import ca.appvelopers.mcgillmobile.model.prefs.CookiePreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
@@ -86,9 +87,10 @@ public class McGillManager {
     @Inject
     protected PasswordPreference passwordPref;
     /**
-	 * The list of cookies
-	 */
-	private List<String> cookies;
+     * The {@link CookiePreference} instance
+     */
+    @Inject
+    protected CookiePreference cookiePref;
 
 	/**
 	 * Default Constructor
@@ -97,8 +99,6 @@ public class McGillManager {
 	protected McGillManager(Context context) {
         //Inject this to get the username and password from Dagger
         App.component(context).inject(this);
-		//Set up the list of cookies
-		cookies = new ArrayList<>();
 		//Set up the cookie handler
 		CookieHandler.setDefault(new CookieManager());
 	}
@@ -144,7 +144,7 @@ public class McGillManager {
         }
 
         //Get the response cookies and set them
-        cookies = response.headers("Set-Cookie");
+        cookiePref.set(response.headers("Set-Cookie"));
 
         //Return the body in String format
         return response.body().string();
@@ -228,10 +228,6 @@ public class McGillManager {
 
     public ConnectionStatus login() {
         return login(usernamePref.full(), passwordPref.get());
-    }
-
-    public List<String> getCookies() {
-        return cookies;
     }
 
     /* URL BUILDERS */
