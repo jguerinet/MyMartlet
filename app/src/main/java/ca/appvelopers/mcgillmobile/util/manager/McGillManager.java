@@ -93,11 +93,32 @@ public class McGillManager {
 
 	/* HELPERS */
 
-    public String get(Call<ResponseBody> call) throws NoInternetException, MinervaException, IOException {
+    /**
+     * Performs a GET call to a McGill endpoint, with auto-login if the user has been logged out
+     *
+     * @param call The call to execute
+     * @return The response body in String format
+     * @throws NoInternetException
+     * @throws MinervaException
+     * @throws IOException
+     */
+    public String get(Call<ResponseBody> call) throws NoInternetException, MinervaException,
+            IOException {
         return get(call, true);
     }
 
-    public String get(Call<ResponseBody> call, boolean autoLogin) throws NoInternetException, MinervaException, IOException {
+    /**
+     * Performs a GET call to a McGill endpoint, with optionally auto-login
+     *
+     * @param call      The call to execute
+     * @param autoLogin True if we should try to log the user back in if they have been logged out
+     * @return The response body in String format
+     * @throws NoInternetException
+     * @throws MinervaException
+     * @throws IOException
+     */
+    public String get(Call<ResponseBody> call, boolean autoLogin) throws NoInternetException,
+            MinervaException, IOException {
         //Check if the user is connected to the internet
         if (!Utils.isConnected(connectivityManager)) {
             throw new NoInternetException();
@@ -153,7 +174,7 @@ public class McGillManager {
             //Get the login page in order to get the appropriate cookies
             mcGillService.login().execute();
 
-			//2. Construct above post's content and then send a POST request for authentication
+            //Create the POST request with the given username and password
             String response = mcGillService.login(username, password).execute().body().string();
 
 			if (!response.contains("WELCOME")) {
@@ -168,6 +189,11 @@ public class McGillManager {
         return ConnectionStatus.OK;
     }
 
+    /**
+     * Logs the user in with the stored username and password
+     *
+     * @return The resulting {@link ConnectionStatus}
+     */
     public ConnectionStatus login() {
         return login(usernamePref.full(), passwordPref.get());
     }
