@@ -149,9 +149,8 @@ public class McGillManager {
         }
 
 		try {
-            //We need to keep this to initialize the cookie manager for some reason
-            //FIXME: 2016-02-16
-            mcGillService.login("", "").execute();
+            //Get the login page in order to get the appropriate cookies
+            mcGillService.login().execute();
 
 			//2. Construct above post's content and then send a POST request for authentication
             String response = mcGillService.login(username, password).execute().body().string();

@@ -33,10 +33,10 @@ import retrofit2.http.Path;
  */
 public interface McGillService {
     /**
-     * Get the login page to fill out the user info
+     * Get the login page to get the necessary cookies
      */
-    @GET("twbkwbis.P_WWWLogin")
-    Call<ResponseBody> loginPage();
+    @GET("twbkwbis.P_ValLogin")
+    Call<ResponseBody> login();
 
     /**
      * Creates the POST request that logs the user in
