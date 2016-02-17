@@ -17,13 +17,12 @@
 package ca.appvelopers.mcgillmobile.model.retrofit;
 
 import ca.appvelopers.mcgillmobile.model.Term;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -35,8 +34,6 @@ import retrofit2.http.Path;
 public interface McGillService {
     /**
      * Get the login page to fill out the user info
-     *
-     * @return The McGill login page {@link ResponseBody}
      */
     @GET("twbkwbis.P_WWWLogin")
     Call<ResponseBody> loginPage();
@@ -44,18 +41,13 @@ public interface McGillService {
     /**
      * Creates the POST request that logs the user in
      *
-     * @param body The {@link ResponseBody} instance, wrapping the filled out login form
+     * @param username The user's McGill email
+     * @param password The user's password
      * @return The McGill login {@link ResponseBody}
      */
-    @Headers({
-            "Host: horizon.mcgill.ca",
-            "Origin: https://horizon.mcgill.ca",
-            "DNT: 1",
-            "Connection: keep-alive",
-            "Referer: https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin"
-    })
+    @FormUrlEncoded
     @POST("twbkwbis.P_ValLogin")
-    Call<ResponseBody> login(@Body RequestBody body);
+    Call<ResponseBody> login(@Field("sid") String username, @Field("PIN") String password);
 
     /**
      * Retrieves the user's schedule for a given term

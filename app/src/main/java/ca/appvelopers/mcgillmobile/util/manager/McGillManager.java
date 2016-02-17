@@ -18,20 +18,12 @@ package ca.appvelopers.mcgillmobile.util.manager;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.support.v4.util.Pair;
 
 import com.guerinet.utils.Utils;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.threeten.bp.DayOfWeek;
 
 import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +41,7 @@ import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-import okio.BufferedSink;
 import retrofit2.Call;
 import timber.log.Timber;
 
@@ -99,9 +88,7 @@ public class McGillManager {
 	protected McGillManager(Context context) {
         //Inject this to get the username and password from Dagger
         App.component(context).inject(this);
-		//Set up the cookie handler
-		CookieHandler.setDefault(new CookieManager());
-	}
+    }
 
 	/* HELPERS */
 
@@ -162,57 +149,12 @@ public class McGillManager {
         }
 
 		try {
-			//1. Get Minerva's login page and determine the login parameters
-            String response = mcGillService.loginPage().execute().body().string();
-
-            List<Pair<String, String>> params = new ArrayList<>();
-
-            //Parse the HTML document with JSoup
-            Document doc = Jsoup.parse(response);
-
-            //Google Form Id
-            Elements forms = doc.getElementsByTag("form");
-            //Go through the forms
-            for (Element formElement : forms) {
-                //Find the one with name 'loginform1'
-                if (formElement.attr("name").equals("loginform1")) {
-                    //Go through the input elements
-                    for (Element inputElement : formElement.getElementsByTag("input")) {
-                        //Get the key of the input element
-                        String key = inputElement.attr("name");
-
-                        if (key.equals("sid")) {
-                            //Username
-                            params.add(new Pair<>(key, username));
-                        } else if (key.equals("PIN")) {
-                            //Password
-                            params.add(new Pair<>(key, password));
-                        }
-                    }
-
-                }
-            }
-
-            //Get the POST params in String format (remove the '?' at the beginning
-            final String body = Utils.getQuery(params).substring(1);
-
-			//Search for "Authorization Failure"
-			if (body.contains("WRONG_INFO")) {
-				return ConnectionStatus.WRONG_INFO;
-			}
+            //We need to keep this to initialize the cookie manager for some reason
+            //FIXME: 2016-02-16
+            mcGillService.login("", "").execute();
 
 			//2. Construct above post's content and then send a POST request for authentication
-            response = mcGillService.login(new RequestBody() {
-                @Override
-                public MediaType contentType() {
-                    return MediaType.parse("application/x-www-form-urlencoded");
-                }
-
-                @Override
-                public void writeTo(BufferedSink sink) throws IOException {
-                    sink.writeString(body, Charset.forName("UTF-8"));
-                }
-            }).execute().body().string();
+            String response = mcGillService.login(username, password).execute().body().string();
 
 			if (!response.contains("WELCOME")) {
                 //If we're not on the Welcome page, then the user entered wrong info

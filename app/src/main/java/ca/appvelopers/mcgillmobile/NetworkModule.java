@@ -22,6 +22,8 @@ import android.net.ConnectivityManager;
 import com.squareup.moshi.Moshi;
 
 import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -34,6 +36,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Credentials;
 import okhttp3.Interceptor;
+import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -60,8 +63,20 @@ public class NetworkModule {
      * @return The {@link ConnectivityManager} instance
      */
     @Provides
-    public ConnectivityManager provideConnectivityManager(Context context) {
+    protected ConnectivityManager provideConnectivityManager(Context context) {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    }
+
+    /**
+     * @return The {@link CookieManager} instance to use
+     */
+    @Provides
+    @Singleton
+    protected CookieManager provideCookieManager() {
+        //Provide a manager that accepts all cookies
+        CookieManager manager = new CookieManager();
+        manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        return manager;
     }
 
     /* OKHTTP */
@@ -86,14 +101,16 @@ public class NetworkModule {
     /**
      * @param interceptor The {@link HttpLoggingInterceptor} instance
      * @param cookiePref  The {@link CookiePreference} instance to add the cookies to the requests
+     * @param manager     The {@link CookieManager} instance
      * @return The {@link OkHttpClient} instance
      */
     @Provides
     @Singleton
     @Named(MCGILL)
-    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor,
-            final CookiePreference cookiePref) {
+    public OkHttpClient provideMcGillOkHttpClient(HttpLoggingInterceptor interceptor,
+            final CookiePreference cookiePref, CookieManager manager) {
         return new OkHttpClient.Builder()
+                .cookieJar(new JavaNetCookieJar(manager))
                 .addInterceptor(interceptor)
                 .addNetworkInterceptor(new Interceptor() {
                     @Override
@@ -104,15 +121,6 @@ public class NetworkModule {
                         for (String cookie : cookiePref.getCookies()) {
                             builder.addHeader("Cookie", cookie);
                         }
-
-                        //Add the other necessary headers
-                        builder.addHeader("Cache-Control", "no-cache");
-                        builder.addHeader("Accept",
-                                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-                        builder.addHeader("Accept-Language", "en-US,en;q=0.5");
-                        builder.addHeader("User-Agent", "Mozilla/5.0 (Linux; <Android Version>; " +
-                                "<Build Tag etc.>) " + "AppleWebKit/<WebKit Rev> (KHTML, " +
-                                "like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>");
 
                         return chain.proceed(builder.build());
                     }
