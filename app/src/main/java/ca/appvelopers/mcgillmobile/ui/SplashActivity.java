@@ -66,6 +66,7 @@ import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
+import timber.log.Timber;
 
 /**
  * First activity that is opened when the app is started
@@ -499,6 +500,7 @@ public class SplashActivity extends BaseActivity {
                             break downloadLoop;
                         } catch(Exception e){
                             //IOException or no internet - continue in any case
+                            Timber.e(e, "");
                         }
                         break;
                     //Semesters

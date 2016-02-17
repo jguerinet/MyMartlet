@@ -41,8 +41,9 @@ import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -92,18 +93,18 @@ public class McGillManager {
 
 	/* HELPERS */
 
-    public String get(Call<Response> call) throws NoInternetException, MinervaException, IOException {
+    public String get(Call<ResponseBody> call) throws NoInternetException, MinervaException, IOException {
         return get(call, true);
     }
 
-    public String get(Call<Response> call, boolean autoLogin) throws NoInternetException, MinervaException, IOException {
+    public String get(Call<ResponseBody> call, boolean autoLogin) throws NoInternetException, MinervaException, IOException {
         //Check if the user is connected to the internet
         if (!Utils.isConnected(connectivityManager)) {
             throw new NoInternetException();
         }
 
         //Make the call
-        Response response = call.execute().body();
+        Response<ResponseBody> response = call.execute();
 
         //Check for Minerva logout
         List<String> setCookies = response.headers().values("Set-Cookie");
@@ -131,7 +132,7 @@ public class McGillManager {
         }
 
         //Get the response cookies and set them
-        cookiePref.set(response.headers("Set-Cookie"));
+        cookiePref.set(response.headers().values("Set-Cookie"));
 
         //Return the body in String format
         return response.body().string();

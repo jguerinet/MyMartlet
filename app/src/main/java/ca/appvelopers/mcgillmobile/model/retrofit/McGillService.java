@@ -56,7 +56,7 @@ public interface McGillService {
      * @return The schedule {@link Response}
      */
     @GET("bwskfshd.P_CrseSchdDetl?term_in={term}")
-    Call<Response> schedule(@Path("term") Term term);
+    Call<ResponseBody> schedule(@Path("term") Term term);
 
     /**
      * Retrieves the user's transcript
@@ -64,7 +64,7 @@ public interface McGillService {
      * @return The transcript {@link Response}
      */
     @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
-    Call<Response> transcript();
+    Call<ResponseBody> transcript();
 
     /**
      * Retrieves the user's ebill
@@ -72,7 +72,7 @@ public interface McGillService {
      * @return The ebill {@link Response}
      */
     @GET("bztkcbil.pm_viewbills")
-    Call<Response> ebill();
+    Call<ResponseBody> ebill();
 
     /**
      * Registers or unregisters someone to a list of courses
@@ -81,7 +81,7 @@ public interface McGillService {
      * @return The registration {@link Response}
      */
     @GET("bwckcoms.P_Regs?term_in={url}")
-    Call<Response> registration(@Path("url") String url);
+    Call<ResponseBody> registration(@Path("url") String url);
 
     /**
      * Searches for a list of classes
@@ -90,5 +90,5 @@ public interface McGillService {
      * @return The search {@link Response}
      */
     @GET("bwskfcls.P_GetCrse?{url}")
-    Call<Response> search(@Path("url") String url);
+    Call<ResponseBody> search(@Path("url") String url);
 }

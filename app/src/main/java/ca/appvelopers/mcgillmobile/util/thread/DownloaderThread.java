@@ -27,7 +27,7 @@ import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import timber.log.Timber;
 
@@ -46,7 +46,7 @@ public class DownloaderThread extends Thread {
 	/**
 	 * The URL to query
 	 */
-    private Call<Response> call;
+    private Call<ResponseBody> call;
 	/**
 	 * The body response, in String format
 	 */
@@ -61,7 +61,7 @@ public class DownloaderThread extends Thread {
 	 *
 	 * @param context    The app context
 	 */
-	public DownloaderThread(Context context, Call<Response> call) {
+	public DownloaderThread(Context context, Call<ResponseBody> call) {
         //TODO Show / hide errors logic
 		//Make sure that the context is an activity before setting it (Service calls this too)
 		this.mActivity = context instanceof Activity ? (Activity)context : null;
