@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util.manager;
 
-import android.content.Context;
 import android.net.ConnectivityManager;
 
 import com.guerinet.utils.Utils;
@@ -30,7 +29,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
@@ -86,10 +84,7 @@ public class McGillManager {
 	 * Default Constructor
 	 */
     @Inject
-	protected McGillManager(Context context) {
-        //Inject this to get the username and password from Dagger
-        App.component(context).inject(this);
-    }
+	protected McGillManager() {}
 
 	/* HELPERS */
 
