@@ -142,6 +142,8 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      */
     private String mSearchString;
 
+    private boolean mTwentyfourHourSchedule;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -314,7 +316,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                 mFavorite.setText(R.string.map_favorites_add);
 
                 //If we are in the favorites category, we need to hide this pin
-                if (mType.getId().equals(PlaceType.FAVORITES)) {
+                if (mType.getId() == (PlaceType.FAVORITES)) {
                     mPlace.mMarker.setVisible(false);
                 }
             } else {
