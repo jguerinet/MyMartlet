@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.ui;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -46,6 +45,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
@@ -66,6 +68,7 @@ import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
+import dagger.Lazy;
 import timber.log.Timber;
 
 /**
@@ -78,6 +81,36 @@ public class SplashActivity extends BaseActivity {
      * Code used when starting the AgreementActivity
      */
     private static final int AGREEMENT_CODE = 100;
+    /**
+     * Container if the min version is not satisfied
+     */
+    @Bind(R.id.version_container)
+    protected LinearLayout minVersionContainer;
+    /**
+     * Container with the login views
+     */
+    @Bind(R.id.login_container)
+    protected LinearLayout loginContainer;
+    /**
+     * The login {@link Button}
+     */
+    @Bind(R.id.login_button)
+    protected Button loginButton;
+    /**
+     * {@link EditText} where the user enters their username
+     */
+    @Bind(R.id.login_username)
+    protected EditText usernameView;
+    /**
+     * {@link EditText} where the user enters their password
+     */
+    @Bind(R.id.login_password)
+    protected EditText passwordView;
+    /**
+     * {@link CheckBox} where the user decides if their username should be remembered
+     */
+    @Bind(R.id.login_remember_username)
+    protected CheckBox rememberUsername;
     /**
      * The {@link McGillManager} instance
      */
@@ -128,11 +161,17 @@ public class SplashActivity extends BaseActivity {
      */
     @Inject
     protected HomepageManager homepageManager;
+    /**
+     * The {@link InputMethodManager}
+     */
+    @Inject
+    protected Lazy<InputMethodManager> imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
         App.component(this).inject(this);
 
         //Run the update code, if any
@@ -154,38 +193,29 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == AGREEMENT_CODE){
-            //If they agreed, run the config downloader
-            if(resultCode == RESULT_OK){
-                showNextScreen();
-            }
-            //If not, close the app
-            else if(resultCode == RESULT_CANCELED){
-                finish();
-            }
-        }
-        else{
-            super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case AGREEMENT_CODE:
+                if (resultCode == RESULT_OK) {
+                    //If they agreed, run the config downloader
+                    showNextScreen();
+                } else {
+                    //If not, close the app
+                    finish();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
         }
     }
 
+    /**
+     * Shows the first screen to the user depending on their situation
+     */
     private void showNextScreen() {
         if (minVersionPref.get() > Utils.versionCode(this)) {
             //If we don't have the min required version, show the right container
-            LinearLayout minVersionContainer = (LinearLayout) findViewById(R.id.version_container);
             minVersionContainer.setVisibility(View.VISIBLE);
-
-            //Set up the button
-            Button versionButton = (Button) findViewById(R.id.version_button);
-            versionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Redirect them to the play store
-                    Intent intent = new Intent(Intent.ACTION_VIEW)
-                            .setData(Uri.parse(Constants.PLAY_STORE_LINK));
-                    startActivity(intent);
-                }
-            });
         } else if (usernamePref.get() == null || passwordPref.get() == null) {
             //If we are missing some login info, show the login screen with no error message
             showLoginScreen((ConnectionStatus) getIntent()
@@ -196,7 +226,7 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    public void showLoginScreen(ConnectionStatus error){
+    private void showLoginScreen(ConnectionStatus error) {
         //Move the logo to the top
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -209,121 +239,35 @@ public class SplashActivity extends BaseActivity {
         final LinearLayout loginContainer = (LinearLayout)findViewById(R.id.login_container);
         loginContainer.setVisibility(View.VISIBLE);
 
-        //Get the username before clearing everything
-        String username = usernamePref.get();
-        //Make sure to delete anything with the previous user's info
+        //Delete of the previous user's info
         Clear.all(rememberUsernamePref, usernamePref, passwordPref, homepageManager);
 
-        Analytics.get().sendScreen("Login");
+        //Fill out username text if it is present
+        if (usernamePref.get() != null) {
+            usernameView.setText(usernamePref.get());
+        }
 
-        //Get the necessary views
-        final Button login = (Button) findViewById(R.id.login_button);
-        final EditText usernameView = (EditText) findViewById(R.id.login_username);
-        final EditText passwordView = (EditText) findViewById(R.id.login_password);
         //Set it to that when clicking the IME Action button it tries to log you in directly
         passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_GO){
-                    login.performClick();
+                if (actionId == EditorInfo.IME_ACTION_GO) {
+                    loginButton.performClick();
                     return true;
                 }
                 return false;
             }
         });
 
-        final CheckBox rememberUsernameView = (CheckBox) findViewById(R.id.login_remember_username);
         //Remember Me box checked based on user's previous preference
-        rememberUsernameView.setChecked(rememberUsernamePref.get());
+        rememberUsername.setChecked(rememberUsernamePref.get());
 
         //Check if an error message needs to be displayed, display it if so
         if (error != null) {
             DialogHelper.error(this, error.getErrorStringId());
         }
 
-        //Fill out username text if it is present
-        if(username != null){
-            usernameView.setText(username);
-        }
-
-        //Set up the OnClickListener for the login button
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Hide the keyboard
-                usernameView.clearFocus();
-                InputMethodManager imm =
-                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(usernameView.getWindowToken(), 0);
-
-                //Get the inputted username and password
-                final String username = usernameView.getText().toString().trim();
-                final String password = passwordView.getText().toString().trim();
-
-                //Check that both of them are not empty, create appropriate error messages if so
-                if (TextUtils.isEmpty(username)) {
-                    DialogHelper.error(SplashActivity.this, R.string.login_error_username_empty);
-                    return;
-                } else if (TextUtils.isEmpty(password)) {
-                    DialogHelper.error(SplashActivity.this, R.string.login_error_password_empty);
-                    return;
-                }
-
-                final ProgressDialog progressDialog = new ProgressDialog(SplashActivity.this);
-                progressDialog.setMessage(getString(R.string.please_wait));
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.show();
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final ConnectionStatus status = mcGillManager
-                                .login(username + getString(R.string.login_email), password);
-                        // If the connection was successful, start the app initializer
-                        if (status == ConnectionStatus.OK) {
-                            // Store the login info.
-                            usernamePref.set(username);
-                            passwordPref.set(password);
-                            rememberUsernamePref.set(rememberUsernameView.isChecked());
-                            Analytics.get().sendEvent("Login", "Remember Username",
-                                    String.valueOf(rememberUsernameView.isChecked()));
-
-                            //set the background receiver after successful login
-//                            if(!App.isAlarmActive()){
-//                            	App.SetAlarm(LoginActivity.this);
-//                            }
-
-                            //Dismiss the progress dialog
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressDialog.dismiss();
-
-                                    //Hide the login container
-                                    loginContainer.setVisibility(View.GONE);
-
-                                    //Start the downloading of information
-                                    new AppInitializer(true).execute();
-                                }
-                            });
-                        }
-                        //Else show error dialog
-                        else {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Analytics.get().sendEvent("Login", "Login Error",
-                                            status.getGAString());
-                                    progressDialog.dismiss();
-                                    DialogHelper.error(SplashActivity.this,
-                                            status.getErrorStringId());
-                                }
-                            });
-                        }
-                    }
-                }).start();
-            }
-        });
+        Analytics.get().sendScreen("Login");
     }
 
     /**
@@ -644,4 +588,86 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Called when the min version button is clicked
+     */
+    @OnClick(R.id.version_button)
+    protected void downloadNewVersion() {
+        //Redirect them to the play store
+        Intent intent = new Intent(Intent.ACTION_VIEW)
+                .setData(Uri.parse(Constants.PLAY_STORE_LINK));
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.login_button)
+    protected void login() {
+        //Hide the keyboard
+        usernameView.clearFocus();
+        imm.get().hideSoftInputFromWindow(usernameView.getWindowToken(), 0);
+
+        //Get the inputted username and password
+        final String username = usernameView.getText().toString().trim();
+        final String password = passwordView.getText().toString().trim();
+
+        //Check that both of them are not empty, create appropriate error messages if so
+        if (TextUtils.isEmpty(username)) {
+            DialogHelper.error(this, R.string.login_error_username_empty);
+            return;
+        } else if (TextUtils.isEmpty(password)) {
+            DialogHelper.error(this, R.string.login_error_password_empty);
+            return;
+        }
+
+        //TODO Replace this with spinner on page
+        final ProgressDialog progressDialog = new ProgressDialog(SplashActivity.this);
+        progressDialog.setMessage(getString(R.string.please_wait));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final ConnectionStatus status = mcGillManager
+                        .login(username + getString(R.string.login_email), password);
+                // If the connection was successful, start the app initializer
+                if (status == ConnectionStatus.OK) {
+                    // Store the login info.
+                    usernamePref.set(username);
+                    passwordPref.set(password);
+                    rememberUsernamePref.set(rememberUsername.isChecked());
+                    Analytics.get().sendEvent("Login", "Remember Username",
+                            String.valueOf(rememberUsername.isChecked()));
+
+                    //set the background receiver after successful login
+//                            if(!App.isAlarmActive()){
+//                            	App.SetAlarm(LoginActivity.this);
+//                            }
+
+                    //Dismiss the progress dialog
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+
+                            //Hide the login container
+                            loginContainer.setVisibility(View.GONE);
+
+                            //Start the downloading of information
+                            new AppInitializer(true).execute();
+                        }
+                    });
+                } else {
+                    //Else show error dialog
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Analytics.get().sendEvent("Login", "Login Error", status.getGAString());
+                            progressDialog.dismiss();
+                            DialogHelper.error(SplashActivity.this, status.getErrorStringId());
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
 }

@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.squareup.moshi.Moshi;
 
@@ -77,5 +78,14 @@ public class AppModule {
     protected Moshi provideMoshi() {
         return new Moshi.Builder()
                 .build();
+    }
+
+    /**
+     * @param context App context
+     * @return The {@link InputMethodManager}
+     */
+    @Provides
+    protected InputMethodManager provideInputMethodManager(Context context) {
+        return (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 }
