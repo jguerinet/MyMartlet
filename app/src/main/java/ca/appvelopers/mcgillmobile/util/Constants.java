@@ -49,6 +49,10 @@ public class Constants {
      */
     public static final String DATE = "date";
     /**
+     * Key used to pass a date via an intent
+     */
+    public static final String TWENTYFOURHOURS = "twentyfourhours";
+    /**
      * Key used to pass a term via an intent
      */
     public static final String TERM = "term";

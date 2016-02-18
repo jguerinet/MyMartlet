@@ -146,6 +146,7 @@
     <string name="settings_homepage_title">Page d\'Accueil</string>
     <string name="settings_homepage">Page d\'Accueil: %s</string>
     <string name="settings_statistics">Statistiques Anonymes d\'Utilisation</string>
+    <string name="settings_twentyfourhours">Calendrier en 24 heures</string>
     <string name="homepage_schedule">Calendrier</string>
     <string name="homepage_transcript">Bulletin</string>
     <string name="homepage_mycourses">MyCourses</string>

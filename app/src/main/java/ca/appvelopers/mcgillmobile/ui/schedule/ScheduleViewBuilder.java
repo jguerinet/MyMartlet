@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.guerinet.utils.prefs.BooleanPreference;
+
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
@@ -35,8 +37,13 @@ import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.DateUtils;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
@@ -57,6 +64,13 @@ public class ScheduleViewBuilder {
     private LocalDate date;
 
     /**
+     * SCHEDULE_24HR {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.SCHEDULE_24HR)
+    protected BooleanPreference TwentyFourHourPrefs;
+
+    /**
      * Default Constructor
      *
      * @param activity {@link ScheduleActivity} instance
@@ -65,6 +79,7 @@ public class ScheduleViewBuilder {
     public ScheduleViewBuilder(ScheduleActivity activity, LocalDate date) {
         this.activity = activity;
         this.date = date;
+        App.component(activity).inject(this);
     }
 
     /**
@@ -132,7 +147,7 @@ public class ScheduleViewBuilder {
             List<Course> courses = activity.getCourses(date.plusDays(i - currentDayIndex));
 
             //Fill the schedule for the current day
-            fillSchedule(activity, timetableContainer, scheduleContainer, courses, false);
+            fillSchedule(activity, timetableContainer, scheduleContainer, courses, false,TwentyFourHourPrefs.get());
 
             //Add the current day to the schedule container
             dayContainer.addView(scheduleContainer);
@@ -159,7 +174,7 @@ public class ScheduleViewBuilder {
      */
     public static void fillSchedule(final Activity activity, LinearLayout timetableContainer,
                                     LinearLayout scheduleContainer, List<Course> courses,
-                                    boolean clickableCourses) {
+                                    boolean clickableCourses, boolean TwentyFourHourPreference) {
         //This will be used of an end time of a course when it is added to the schedule container
         LocalTime currentCourseEndTime = null;
 
@@ -170,7 +185,12 @@ public class ScheduleViewBuilder {
 
             //Put the correct time
             TextView time = (TextView)timetableCell.findViewById(R.id.cell_time);
-            time.setText(DateUtils.getHourString(hour));
+
+            if(TwentyFourHourPreference){
+                time.setText(DateUtils.getHourStringTwentyFourHrFmt(hour));
+            }else {
+                time.setText(DateUtils.getHourString(hour));
+            }
 
             //Add it to the right container
             timetableContainer.addView(timetableCell);
@@ -322,7 +342,7 @@ public class ScheduleViewBuilder {
         @Override
         public Fragment getItem(int i) {
             LocalDate date = getDate(i);
-            return DayFragment.newInstance(date);
+            return DayFragment.newInstance(date,TwentyFourHourPrefs.get());
         }
 
         @Override

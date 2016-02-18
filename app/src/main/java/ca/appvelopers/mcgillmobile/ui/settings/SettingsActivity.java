@@ -63,6 +63,13 @@ public class SettingsActivity extends DrawerActivity {
     @Named(PrefsModule.STATISTICS)
     protected BooleanPreference statisticsPrefs;
 
+    /**
+     * SCHEDULE_24HR {@link BooleanPreference}
+     */
+    @Inject
+    @Named(PrefsModule.SCHEDULE_24HR)
+    protected BooleanPreference TwentyFourHourPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,14 +176,14 @@ public class SettingsActivity extends DrawerActivity {
                     }
                 });
 
-        //Statistics
-        fg.aSwitch(R.string.settings_statistics)
-                .leftIcon(R.drawable.ic_trending_up)
-                .checked(statisticsPrefs.get())
+        //24hrSchedule
+        fg.aSwitch(R.string.settings_twentyfourhours)
+                .leftIcon(R.drawable.ic_clock)
+                .checked(TwentyFourHourPrefs.get())
                 .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        statisticsPrefs.set(isChecked);
+                        TwentyFourHourPrefs.set(isChecked);
                     }
                 });
     }

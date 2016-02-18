@@ -25,7 +25,9 @@ import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
+import ca.appvelopers.mcgillmobile.ui.schedule.DayFragment;
 import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
+import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleViewBuilder;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughAdapter;
@@ -46,6 +48,7 @@ import dagger.Component;
 @Singleton @Component(modules = {AppModule.class, NetworkModule.class, PrefsModule.class})
 public interface BaseComponent {
     void inject(App app);
+    void inject(ScheduleViewBuilder activity);
     void inject(BaseActivity activity);
     void inject(DrawerActivity activity);
     void inject(SplashActivity activity);

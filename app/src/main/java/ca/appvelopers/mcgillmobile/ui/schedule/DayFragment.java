@@ -25,13 +25,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.guerinet.utils.DateUtils;
+import com.guerinet.utils.prefs.BooleanPreference;
 
 import org.threeten.bp.LocalDate;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
@@ -50,18 +56,23 @@ public class DayFragment extends Fragment{
      */
     private List<Course> courses;
 
+    private boolean twentyFourHours;
+
+
+
     /**
      * Creates a new DayFragment instance with bundled arguments
      *
      * @param date The date
      * @return The DayFragment instance
      */
-    public static DayFragment newInstance(LocalDate date) {
+    public static DayFragment newInstance(LocalDate date,boolean TwentyFourHours) {
         DayFragment fragment = new DayFragment();
 
         //Put the arguments in the bundle
         Bundle args = new Bundle();
         args.putSerializable(Constants.DATE, date);
+        args.putSerializable(Constants.TWENTYFOURHOURS, TwentyFourHours);
         fragment.setArguments(args);
 
         return fragment;
@@ -70,11 +81,11 @@ public class DayFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Get the arguments from the bundle
         date = (LocalDate) getArguments().get(Constants.DATE);
         //Get the courses from the ScheduleActivity
         courses = ((ScheduleActivity) getActivity()).getCourses(date);
+        this.twentyFourHours = (boolean)getArguments().get(Constants.TWENTYFOURHOURS);
     }
 
     @Override
@@ -97,7 +108,7 @@ public class DayFragment extends Fragment{
 
         //Fill it up
         ScheduleViewBuilder.fillSchedule(getActivity(), timetableContainer, scheduleContainer,
-                courses, true);
+                courses, true,twentyFourHours);
 
         return view;
     }

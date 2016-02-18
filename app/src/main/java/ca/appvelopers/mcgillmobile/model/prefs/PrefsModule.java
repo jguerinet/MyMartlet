@@ -44,6 +44,7 @@ public class PrefsModule {
     public static final String HIDE_PARSER_ERROR = "hide_parser_error";
     public static final String HIDE_LOADING = "hide_loading";
     public static final String STATISTICS = "statistics";
+    public static final String SCHEDULE_24HR = "24hr Schedule";
     public static final String REMEMBER_USERNAME = "remember_username";
     public static final String EULA = "user_agreement";
     public static final String SEAT_CHECKER = "seat_checker";
@@ -117,6 +118,17 @@ public class PrefsModule {
     @Named(STATISTICS)
     protected BooleanPreference provideStatistics(SharedPreferences prefs) {
         return new BooleanPreference(prefs, STATISTICS, true);
+    }
+
+    /**
+     * @param prefs {@link SharedPreferences} instance
+     * @return True if User wants their schedule in the 24 hour format
+     */
+    @Provides
+    @Singleton
+    @Named(SCHEDULE_24HR)
+    protected BooleanPreference provideScheduleTime(SharedPreferences prefs) {
+        return new BooleanPreference(prefs, SCHEDULE_24HR, false);
     }
 
     /**

@@ -35,4 +35,7 @@ public class DateUtils {
 	public static String getHourString(int hour) {
         return LocalTime.MIDNIGHT.withHour(hour).format(DateTimeFormatter.ofPattern("h a"));
 	}
+	public static String getHourStringTwentyFourHrFmt(int hour) {
+		return LocalTime.MIDNIGHT.withHour(hour).format(DateTimeFormatter.ofPattern("HH:mm"));
+	}
 }
