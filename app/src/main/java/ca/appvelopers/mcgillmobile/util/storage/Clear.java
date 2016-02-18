@@ -78,5 +78,7 @@ public class Clear {
 
         //Favorite places
         App.setFavoritePlaces(new ArrayList<Place>());
+
+        //TODO Clear internal storage
     }
 }
