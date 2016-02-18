@@ -25,6 +25,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Retrofit service to use to get information from McGill
@@ -55,8 +56,8 @@ public interface McGillService {
      * @param term The term to retrieve the schedule for, in String format
      * @return The schedule {@link Response}
      */
-    @GET("bwskfshd.P_CrseSchdDetl?term_in={term}")
-    Call<ResponseBody> schedule(@Path("term") Term term);
+    @GET("bwskfshd.P_CrseSchdDetl")
+    Call<ResponseBody> schedule(@Query("term_in") Term term);
 
     /**
      * Retrieves the user's transcript
