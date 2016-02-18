@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,15 @@
 
 package ca.appvelopers.mcgillmobile.model.exception;
 
+import java.io.IOException;
+
 /**
+ * TODO Do we need this ?
  * Exception thrown when the user is not connected to the internet
  * @author Julien Guerinet
  * @since 2.0.0
  */
-public class NoInternetException extends Exception {
+public class NoInternetException extends IOException {
 
 	/**
 	 * Default Constructor
