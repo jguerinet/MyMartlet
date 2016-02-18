@@ -16,3 +16,4 @@ facebook_api.xml
 /app/src/main/java/ca/appvelopers/mcgillmobile/util/PasswordsSample.java
 /app/src/main/res/values/facebook_api_sample.xml
 /util/signing.properties.sample
+*.iml
