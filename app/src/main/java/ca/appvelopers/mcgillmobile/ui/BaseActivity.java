@@ -49,12 +49,12 @@ public class BaseActivity extends AppCompatActivity {
      * The toolbar
      */
     @Nullable @Bind(R.id.toolbar)
-    protected Toolbar mToolbar;
+    protected Toolbar toolbar;
     /**
      * The progress bar shown in the toolbar
      */
     @Nullable @Bind(R.id.toolbar_progress)
-    protected ProgressBar mToolbarProgressBar;
+    protected ProgressBar toolbarProgress;
     /**
      * The {@link McGillService} instance
      */
@@ -92,24 +92,6 @@ public class BaseActivity extends AppCompatActivity {
                 getBaseContext().getResources().getDisplayMetrics());
     }
 
-    /**
-     * Sets up the toolbar as the activity's action bar.
-     *  Must be declared in the activity's layout file
-     *
-     * @param homeAsUp True if the home button should be displayed as up, false otherwise
-     */
-    protected void setUpToolbar(boolean homeAsUp) {
-        if (mToolbar == null) {
-            throw new NullPointerException("Toolbar not found in activity layout");
-        }
-
-        //Set is as the action bar
-        setSupportActionBar(mToolbar);
-
-        Assert.assertNotNull(getSupportActionBar());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //Go back if the home button is clicked
@@ -122,16 +104,33 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * Sets up the toolbar as the activity's action bar.
+     *  Must be declared in the activity's layout file
+     *
+     * @param homeAsUp True if the home button should be displayed as up, false otherwise
+     */
+    protected void setUpToolbar(boolean homeAsUp) {
+        Assert.assertNotNull(toolbar);
+
+        //Set is as the action bar
+        setSupportActionBar(toolbar);
+
+        Assert.assertNotNull(getSupportActionBar());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUp);
+    }
+
+    /**
      * Shows or hides the progress bar in the toolbar
      *
      * @param visible True if it should be visible, false otherwise
      */
     public void showToolbarProgress(boolean visible) {
-        Assert.assertNotNull(mToolbarProgressBar);
-        mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
+        Assert.assertNotNull(toolbarProgress);
+        toolbarProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public McGillService getMcGillService() {
+        //TODO This shouldn't exist
         return mcGillService;
     }
 }

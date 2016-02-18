@@ -143,7 +143,7 @@ public abstract class DrawerActivity extends BaseActivity
         setUpToolbar(false);
 
         //Set up the drawer
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, 0, 0);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.setFocusableInTouchMode(false);
