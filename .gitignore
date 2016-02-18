@@ -1,8 +1,5 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
-/.idea/
 .DS_Store
 Thumbs.db
 /build
@@ -11,9 +8,11 @@ Thumbs.db
 Passwords.java
 google-services.json
 facebook_api.xml
-/app/app.iml
-/app/google-services-sample.json
-/app/src/main/java/ca/appvelopers/mcgillmobile/util/PasswordsSample.java
-/app/src/main/res/values/facebook_api_sample.xml
-/util/signing.properties.sample
 *.iml
+.idea/libraries
+.idea/shelf
+app.xml
+gradle.xml
+misc.xml
+modules.xml
+workspace.xml
