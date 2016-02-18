@@ -168,6 +168,17 @@ public class SettingsActivity extends DrawerActivity {
                         Instabug.getInstance().invokeFeedbackSender();
                     }
                 });
+
+        //Statistics
+        fg.aSwitch(R.string.settings_statistics)
+                .leftIcon(R.drawable.ic_trending_up)
+                .checked(statisticsPrefs.get())
+                .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        statisticsPrefs.set(isChecked);
+                    }
+                });
     }
 
     @Override
