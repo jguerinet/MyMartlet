@@ -30,7 +30,6 @@ import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
-import java.net.CookieManager;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
@@ -80,11 +79,6 @@ public class App extends Application {
      */
     @Inject
     protected LanguageManager languageManager;
-    /**
-     * The {@link CookieManager} instance
-     */
-    @Inject
-    protected CookieManager cookieManager;
     /**
      * The app {@link Context}
      */
@@ -173,9 +167,6 @@ public class App extends Application {
 
         //Inject Dagger
         component.inject(this);
-
-        //Set the default cookie manager to accept everything
-        CookieManager.setDefault(cookieManager);
 
         //Initialize ATT
         AndroidThreeTen.init(this);

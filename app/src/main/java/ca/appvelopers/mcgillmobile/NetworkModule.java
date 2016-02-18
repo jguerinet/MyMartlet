@@ -22,21 +22,23 @@ import android.net.ConnectivityManager;
 import com.squareup.moshi.Moshi;
 
 import java.io.IOException;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.model.prefs.CookiePreference;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.Credentials;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
-import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -67,18 +69,6 @@ public class NetworkModule {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
-    /**
-     * @return The {@link CookieManager} instance to use
-     */
-    @Provides
-    @Singleton
-    protected CookieManager provideCookieManager() {
-        //Provide a manager that accepts all cookies
-        CookieManager manager = new CookieManager();
-        manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-        return manager;
-    }
-
     /* OKHTTP */
 
     /**
@@ -100,31 +90,30 @@ public class NetworkModule {
 
     /**
      * @param interceptor The {@link HttpLoggingInterceptor} instance
-     * @param cookiePref  The {@link CookiePreference} instance to add the cookies to the requests
-     * @param manager     The {@link CookieManager} instance
      * @return The {@link OkHttpClient} instance
      */
     @Provides
     @Singleton
     @Named(MCGILL)
-    public OkHttpClient provideMcGillOkHttpClient(HttpLoggingInterceptor interceptor,
-            final CookiePreference cookiePref, CookieManager manager) {
+    public OkHttpClient provideMcGillOkHttpClient(HttpLoggingInterceptor interceptor) {
         return new OkHttpClient.Builder()
-                .cookieJar(new JavaNetCookieJar(manager))
-                .addInterceptor(interceptor)
-                .addNetworkInterceptor(new Interceptor() {
+                .cookieJar(new CookieJar() {
+                    private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+
                     @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request.Builder builder = chain.request().newBuilder();
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        //Save the cookies per URL host
+                        cookieStore.put(url.host(), cookies);
+                    }
 
-                        //Add the cookies if there are any
-                        for (String cookie : cookiePref.getCookies()) {
-                            builder.addHeader("Cookie", cookie);
-                        }
-
-                        return chain.proceed(builder.build());
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        //Use the cookies for the given URL host
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies == null ? new ArrayList<Cookie>() : cookies;
                     }
                 })
+                .addInterceptor(interceptor)
                 .build();
     }
 
