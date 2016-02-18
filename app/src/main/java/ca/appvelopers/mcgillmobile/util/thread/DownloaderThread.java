@@ -19,11 +19,16 @@ package ca.appvelopers.mcgillmobile.util.thread;
 import android.app.Activity;
 import android.content.Context;
 
+import javax.inject.Inject;
+
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.Connection;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import timber.log.Timber;
 
 /**
@@ -32,6 +37,8 @@ import timber.log.Timber;
  * @since 2.0.0
  */
 public class DownloaderThread extends Thread {
+    @Inject
+    protected McGillManager mcGillManager;
 	/**
 	 * The calling activity (to show eventual errors)
 	 */
@@ -39,7 +46,7 @@ public class DownloaderThread extends Thread {
 	/**
 	 * The URL to query
 	 */
-	private String mURL;
+    private Call<ResponseBody> call;
 	/**
 	 * The body response, in String format
 	 */
@@ -53,23 +60,24 @@ public class DownloaderThread extends Thread {
 	 * Default Constructor
 	 *
 	 * @param context    The app context
-	 * @param url        The URl to make the request to
 	 */
-	public DownloaderThread(Context context, String url){
+	public DownloaderThread(Context context, Call<ResponseBody> call) {
+        //TODO Show / hide errors logic
 		//Make sure that the context is an activity before setting it (Service calls this too)
 		this.mActivity = context instanceof Activity ? (Activity)context : null;
-		this.mURL = url;
-	}
+		this.call = call;
+        App.component(context).inject(this);
+    }
 
 	@Override
 	public void run() {
-		synchronized(this){
+		synchronized(this) {
 			mResult = null;
 			try{
-				mResult = Connection.getInstance().get(mURL);
-			} catch(MinervaException e){
+                mResult = mcGillManager.get(call);
+			} catch (MinervaException e) {
 				//TODO Broadcast this
-			} catch(Exception e){
+			} catch(Exception e) {
 				final boolean noInternet = e instanceof NoInternetException;
 				Timber.e(e, noInternet ? "No Internet" : "IOException");
 

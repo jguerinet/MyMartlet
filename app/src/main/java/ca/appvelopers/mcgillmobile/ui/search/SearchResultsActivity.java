@@ -37,9 +37,9 @@ import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistSearchCourseAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 
 /**
@@ -127,7 +127,8 @@ public class SearchResultsActivity extends BaseActivity {
             //Show the user we are refreshing
             activity.showToolbarProgress(true);
 
-            new DownloaderThread(activity, Connection.getRegistrationURL(term, courses, false))
+            new DownloaderThread(activity, activity.getMcGillService().registration(
+                    McGillManager.getRegistrationURL(term, courses, false)))
                     .execute(new DownloaderThread.Callback() {
                         @Override
                         public void onDownloadFinished(final String result){

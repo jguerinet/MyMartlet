@@ -487,7 +487,7 @@ public class Parser {
                         Elements cells = row.getElementsByTag("td");
 
                         String[] times = {};
-                        char[] dayCharacters = {};
+                        List<DayOfWeek> days = new ArrayList<>();
                         String location = "";
                         String dateRange = "";
                         String type = "";
@@ -495,7 +495,11 @@ public class Parser {
 
                         try{
                             times = cells.get(0).text().split(" - ");
-                            dayCharacters = cells.get(1).text().toCharArray();
+                            //Day Parsing
+                            String dayString = cells.get(1).text().replace('\u00A0',' ').trim();
+                            for (int k = 0; k < dayString.length(); k ++) {
+                                days.add(DayUtils.getDay(dayString.charAt(k)));
+                            }
                             location = cells.get(2).text();
                             dateRange = cells.get(3).text();
                             type = cells.get(4).text();
@@ -533,12 +537,6 @@ public class Parser {
                         catch (NumberFormatException e) {
                             startTime = getDefaultStartTime();
                             endTime = getDefaultEndTime();
-                        }
-
-                        //Day Parsing
-                        List<DayOfWeek> days = new ArrayList<>();
-                        for (char dayCharacter : dayCharacters) {
-                            days.add(DayUtils.getDay(dayCharacter));
                         }
 
                         //Date Range parsing
@@ -659,9 +657,10 @@ public class Parser {
                                 i = 10;
                                 rowNumber++;
                             } else {
-                                char[] dayCharacters = dayString.toCharArray();
-                                for (char dayChar : dayCharacters) {
-                                    days.add(DayUtils.getDay(dayChar));
+                                //Day Parsing
+                                dayString = dayString.replace('\u00A0',' ').trim();
+                                for (int k = 0; k < dayString.length(); k ++) {
+                                    days.add(DayUtils.getDay(dayString.charAt(k)));
                                 }
                             }
                             break;
@@ -768,7 +767,7 @@ public class Parser {
 
                 //Insert list of CRNs and errors into a map
                 for(Element link : links){
-                    if(link.toString().contains(Connection.REGISTRATION_ERROR_URL)){
+                    if(link.toString().contains("http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm")){
                         String CRN = link.parent().parent().child(1).text();
                         String error = link.text();
                         errors.put(CRN, error);

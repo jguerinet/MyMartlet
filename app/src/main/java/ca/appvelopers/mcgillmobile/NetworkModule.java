@@ -22,15 +22,22 @@ import android.net.ConnectivityManager;
 import com.squareup.moshi.Moshi;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
+import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.Credentials;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,16 +55,17 @@ import timber.log.Timber;
 @Module(includes = AppModule.class)
 public class NetworkModule {
     /**
-     * Config server injections
+     * Injection Names
      */
     public static final String CONFIG = "config";
+    public static final String MCGILL = "mcgill";
 
     /**
      * @param context App context
      * @return The {@link ConnectivityManager} instance
      */
     @Provides
-    public ConnectivityManager provideConnectivityManager(Context context) {
+    protected ConnectivityManager provideConnectivityManager(Context context) {
         return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
@@ -86,8 +94,25 @@ public class NetworkModule {
      */
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor) {
+    @Named(MCGILL)
+    public OkHttpClient provideMcGillOkHttpClient(HttpLoggingInterceptor interceptor) {
         return new OkHttpClient.Builder()
+                .cookieJar(new CookieJar() {
+                    private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        //Save the cookies per URL host
+                        cookieStore.put(url.host(), cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        //Use the cookies for the given URL host
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies == null ? new ArrayList<Cookie>() : cookies;
+                    }
+                })
                 .addInterceptor(interceptor)
                 .build();
     }
@@ -136,6 +161,20 @@ public class NetworkModule {
                 .build();
     }
 
+    /**
+     * @param client {@link OkHttpClient} instance to use when connecting to McGill
+     * @return The {@link Retrofit} instance to use when connecting to McGill
+     */
+    @Provides
+    @Singleton
+    @Named(MCGILL)
+    public Retrofit provideMcGillRetrofit(@Named(MCGILL) OkHttpClient client) {
+        return new Retrofit.Builder()
+                .client(client)
+                .baseUrl("https://horizon.mcgill.ca/pban1/")
+                .build();
+    }
+
     /* RETROFIT SERVICES */
 
     /**
@@ -146,5 +185,15 @@ public class NetworkModule {
     @Singleton
     public ConfigService provideConfigService(@Named(CONFIG) Retrofit retrofit) {
         return retrofit.create(ConfigService.class);
+    }
+
+    /**
+     * @param retrofit The {@link Retrofit} instance to use when connecting to McGill
+     * @return The {@link McGillService} instance
+     */
+    @Provides
+    @Singleton
+    public McGillService provideMcGillService(@Named(MCGILL) Retrofit retrofit) {
+        return retrofit.create(McGillService.class);
     }
 }

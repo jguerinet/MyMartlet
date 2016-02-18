@@ -32,11 +32,16 @@ public class Term implements Serializable {
     /**
      * Term season
      */
-    private @Season.Type String season;
+    protected @Season.Type String season;
     /**
      * Term year
      */
-    private int year;
+    protected int year;
+
+    /**
+     * Moshi Constructor
+     */
+    protected Term() {}
 
     /**
      * Default Constructor
@@ -106,7 +111,8 @@ public class Term implements Serializable {
     /**
      * @return The term in a format used by McGill
      */
-    public String getTermNumber() {
+    @Override
+    public String toString() {
         return year + Season.getSeasonNumber(season);
     }
 

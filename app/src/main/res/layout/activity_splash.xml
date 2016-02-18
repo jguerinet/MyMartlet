@@ -1,66 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:animateLayoutChanges="true">
 
-    <RelativeLayout
-        android:orientation="vertical"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:animateLayoutChanges="true"
         android:padding="@dimen/default_margin"
         android:layout_gravity="center">
 
-        <Button
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            android:text="@string/skip"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:visibility="gone"/>
-
         <ImageView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:id="@+id/logo"
             android:src="@drawable/logo_small"
+            android:layout_gravity="center"
             android:paddingBottom="@dimen/padding_large"
             android:paddingTop="@dimen/padding_large"
-            android:id="@+id/logo"
             android:adjustViewBounds="true"
             android:scaleType="center"
-            tools:ignore="ContentDescription"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/skip"/>
+            android:contentDescription="@null"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/logo"
-            android:id="@+id/version_container"
-            android:gravity="center"
+            android:id="@+id/progress_container"
+            android:paddingTop="@dimen/padding_double"
             android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/loading_progress"
+                android:indeterminate="true"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/new_version_title"
+                android:id="@+id/progress_text"
+                android:textSize="@dimen/text_small"
                 android:gravity="center"
-                android:paddingBottom="@dimen/padding_small"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/new_version_button"
-                android:id="@+id/version_button"/>
+                android:padding="@dimen/padding_micro"/>
 
         </LinearLayout>
 
@@ -70,7 +57,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/login_container"
-            android:layout_below="@id/logo"
             android:visibility="gone">
 
             <LinearLayout
@@ -138,24 +124,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/loading_container"
-            android:paddingTop="@dimen/padding_double"
-            android:visibility="gone"
-            android:layout_below="@+id/logo">
-
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/loading_progress"
-                android:indeterminate="true"/>
+            android:id="@+id/version_container"
+            android:gravity="center"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/loading_title"
-                android:textSize="@dimen/text_small"
+                android:text="@string/new_version_title"
                 android:gravity="center"
-                android:padding="@dimen/padding_micro"/>
+                android:paddingBottom="@dimen/padding_small"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_version_button"
+                android:id="@+id/version_button"
+                android:textColor="@android:color/white"/>
+
         </LinearLayout>
-    </RelativeLayout>
+
+    </LinearLayout>
+
 </ScrollView>

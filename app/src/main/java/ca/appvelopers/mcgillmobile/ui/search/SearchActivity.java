@@ -46,12 +46,11 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Connection;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import timber.log.Timber;
 
 /**
  * Allows a user to search for courses that they can register for
@@ -253,7 +252,7 @@ public class SearchActivity extends DrawerActivity {
             endAM = mEndTime.getCurrentHour() < 12;
         }
 
-        Connection.SearchURLBuilder builder = new Connection.SearchURLBuilder(term, subject)
+        McGillManager.SearchURLBuilder builder = new McGillManager.SearchURLBuilder(term, subject)
                 .courseNumber(mNumber.getText().toString())
                 .title(mTitle.getText().toString())
                 .minCredits(minCredits)
@@ -288,13 +287,8 @@ public class SearchActivity extends DrawerActivity {
             builder.addDay(DayOfWeek.SUNDAY);
         }
 
-        String searchURL = builder.build();
-
-        //Retrieve courses obtained from Minerva
-        Timber.i("URL: %s", searchURL);
-
         //Execute the request
-        new DownloaderThread(this, searchURL).execute(new DownloaderThread.Callback() {
+        new DownloaderThread(this, mcGillService.search(builder.build())).execute(new DownloaderThread.Callback() {
             @Override
             public void onDownloadFinished(final String result) {
                 //If there is a result, parse it

@@ -17,23 +17,15 @@
 package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
 import com.guerinet.utils.DateUtils;
+import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.DatePreference;
+import com.guerinet.utils.prefs.IntPreference;
 
 import org.threeten.bp.ZonedDateTime;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,6 +46,11 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class ConfigDownloader extends Thread {
+    /**
+     * {@link ConnectivityManager} instance
+     */
+    @Inject
+    protected ConnectivityManager connectivityManager;
     /**
      * Retrofit {@link ConfigService} instance
      */
@@ -84,13 +81,11 @@ public class ConfigDownloader extends Thread {
     @Named(PrefsModule.IMS_REGISTRATION)
     protected DatePreference imsRegistrationPref;
     /**
-     * The URL to download the places from
+     * The min version {@link IntPreference}
      */
-    private String mPlacesURL;
-    /**
-     * Keeps track fo the eventual section that the error is in
-     */
-    private String mCurrentSection;
+    @Inject
+    @Named(PrefsModule.MIN_VERSION)
+    protected IntPreference minVersionPref;
 
     /**
      * Default Constructor
@@ -101,6 +96,25 @@ public class ConfigDownloader extends Thread {
 
     @Override
     public void run() {
+        //If we're not connected to the internet, don't continue
+        if (!Utils.isConnected(connectivityManager)) {
+            return;
+        }
+
+        //Config
+        try {
+            Response<Config> response = configService
+                    .config(DateUtils.getRFC1123String(imsConfigPref.getDate()))
+                    .execute();
+
+            if (response.isSuccess()) {
+                minVersionPref.set(response.body().androidMinVersion);
+                imsConfigPref.set(ZonedDateTime.now());
+            }
+        } catch (Exception e) {
+            Timber.e(e, "Error downloading config");
+        }
+
         //Places
         try {
             Response<List<Place>> response = configService
@@ -111,7 +125,7 @@ public class ConfigDownloader extends Thread {
                 App.setPlaces(response.body());
                 imsPlacesPref.set(ZonedDateTime.now());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Timber.e(e, "Error downloading places");
         }
 
@@ -125,174 +139,33 @@ public class ConfigDownloader extends Thread {
                 App.setPlaceTypes(response.body());
                 imsCategoriesPref.set(ZonedDateTime.now());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Timber.e(e, "Error downloading place categories");
         }
 
-//        (new Callback<List<Place>>() {
-//            @Override
-//            public void onResponse(Call<List<Place>> call, retrofit2.Response<List<Place>> response) {
-//                try {
-//                    Thread.sleep(10000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                Timber.i("LOL");
-//                App.setPlaces(response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Place>> call, Throwable t) {
-//                Timber.e(t, "Error downloading the places");
-//            }
-//        });
-    }
+        //Registration Semesters
+        try {
+            Response<List<Term>> response = configService
+                    .registrationTerms(DateUtils.getRFC1123String(imsRegistrationPref.getDate()))
+                    .execute();
 
-//    @Override
-//    public Void doInBackground(Void... params){
-//        //Check if we are connected to the internet
-//        if(Utils.isConnected((ConnectivityManager)
-//                App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))){
-//            try {
-//                /* CONFIG */
-//                mCurrentSection = "CONFIG";
-//
-//                //Initialize the OkHttp client
-//                OkHttpClient client = new OkHttpClient();
-//
-//                //Build the config request
-//                Request.Builder requestBuilder = new Request.Builder()
-//                        .get()
-//                        .url(Constants.CONFIG_URL);
-//
-//                //Make the request and get the response
-//                Response response = client.newCall(requestBuilder.build()).execute();
-//
-//                //Get the response code
-//                int responseCode = response.code();
-//                Timber.i("Config Response Code: %d", responseCode);
-//                if (responseCode == 200) {
-//                    //Set up the Gson parser by adding our custom deserializers
-//                    GsonBuilder builder = new GsonBuilder();
-//                    builder.registerTypeAdapter(Place.class, new PlaceDeserializer());
-//                    builder.registerTypeAdapter(PlaceType.class,
-//                            new PlaceCategoryDeserializer());
-//                    Gson gson = builder.create();
-//                    JsonParser parser = new JsonParser();
-//
-//                    //Parse the downloaded String
-//                    parseConfig(gson, parser, response.body().string());
-//
-//                    /* PLACES */
-//                    mCurrentSection = "PLACES";
-//
-//                    if(mPlacesURL != null){
-//                        //Use the same builder, just change the URL
-//                        requestBuilder.url(mPlacesURL);
-//
-//                        //Make the request and get the response
-//                        response = client.newCall(requestBuilder.build()).execute();
-//
-//                        responseCode = response.code();
-//                        Timber.i("Places Response Code: %d", responseCode);
-//                        if (responseCode == 200) {
-//                            //Parse the downloaded String
-//                            parsePlaces(gson, parser, response.body().string());
-//                        }
-//                    }
-//                }
-//            } catch (SocketTimeoutException e) {
-//                Timber.i("Error: Socket timeout");
-//            } catch (Exception e) {
-//                //Catch any possible exceptions
-//                Timber.e(e, "Section Error: %s", mCurrentSection);
-//            }
-//        }
-//
-//        Timber.i("Finished");
-//        return null;
-//    }
-
-//    @Override
-//    protected abstract void onPostExecute(Void param);
-
-    /* HELPERS */
-
-    /**
-     * Parses the config String into the different sections of the config
-     * @param gson         The GSON instance
-     * @param parser       The JSON parser
-     * @param configString The config String
-     * @throws Exception
-     */
-    private void parseConfig(Gson gson, JsonParser parser, String configString) throws Exception {
-        //Create the JSON object from the String
-        JsonObject configJSON = parser.parse(configString).getAsJsonObject();
-
-        //Get the Places URL
-        mPlacesURL = configJSON.get("PlacesURL").getAsString();
-
-        //Get the registration terms
-        List<Term> registrationTerms = new ArrayList<>();
-        JsonArray registrationTermsJSON = configJSON.getAsJsonArray("RegistrationSemesters");
-        for(int i = 0; i < registrationTermsJSON.size(); i ++){
-            registrationTerms.add(Term.parseTerm(registrationTermsJSON.get(i).getAsString()));
-        }
-
-        //Save the registration terms
-        App.setRegisterTerms(registrationTerms);
-
-        //Get the place categories
-        List<PlaceType> categories = new ArrayList<>();
-        JsonArray categoriesJSON = configJSON.getAsJsonArray("Place Categories");
-        for(int i = 0; i < categoriesJSON.size(); i ++){
-            categories.add(gson.fromJson(categoriesJSON.get(i), PlaceType.class));
-        }
-
-        //Save the place categories
-        App.setPlaceTypes(categories);
-    }
-
-    /**
-     * Parses the list of places
-     *
-     * @param gson         The GSON instance
-     * @param parser       The JSON parser
-     * @param placesString The places String
-     * @throws Exception
-     */
-    private void parsePlaces(Gson gson, JsonParser parser, String placesString) throws Exception {
-        //Convert the String into a JSON array
-        JsonArray placesJSON = parser.parse(placesString).getAsJsonArray();
-
-        //Convert the JsonArray into a list of places
-        List<Place> places = null;
-//        List<Place> places = gson.fromJson(placesJSON, new TypeToken<List<Place>>(){}.getType());
-
-        //Save it if it isn't null
-        if(places != null) {
-            App.setPlaces(places);
+            if (response.isSuccess()) {
+                App.setRegisterTerms(response.body());
+                imsRegistrationPref.set(ZonedDateTime.now());
+            }
+        } catch (Exception e) {
+            Timber.e(e, "Error downloading registration terms");
         }
     }
 
-    /* DESERIALIZERS */
-
     /**
-     * Deserializer used to deserialize the Place object
+     * Config skeleton class
      */
-    private static class PlaceDeserializer implements JsonDeserializer<Place>{
-        @Override
-        public Place deserialize(JsonElement json, Type type, JsonDeserializationContext context)
-                throws JsonParseException{
-            JsonObject object = json.getAsJsonObject();
-            return null;
-//            return new Place(object.get("Name").getAsString(),
-//                    (String[])context.deserialize(object.get("Categories"),
-//                            new TypeToken<String[]>(){}.getType()),
-//                    object.get("Address").getAsString(),
-//                    object.get("Latitude").getAsDouble(),
-//                    object.get("Longitude").getAsDouble());
-        }
+    public static class Config {
+        /**
+         * Minimum version of the app that the user needs
+         */
+        protected int androidMinVersion = -1;
     }
 }
 

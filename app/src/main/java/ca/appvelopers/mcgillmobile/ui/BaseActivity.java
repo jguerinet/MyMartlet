@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
@@ -54,6 +55,11 @@ public class BaseActivity extends AppCompatActivity {
      */
     @Nullable @Bind(R.id.toolbar_progress)
     protected ProgressBar mToolbarProgressBar;
+    /**
+     * The {@link McGillService} instance
+     */
+    @Inject
+    protected McGillService mcGillService;
     /**
      * The {@link LanguageManager} instance
      */
@@ -123,5 +129,9 @@ public class BaseActivity extends AppCompatActivity {
     public void showToolbarProgress(boolean visible) {
         Assert.assertNotNull(mToolbarProgressBar);
         mToolbarProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public McGillService getMcGillService() {
+        return mcGillService;
     }
 }

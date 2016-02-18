@@ -23,10 +23,6 @@ package ca.appvelopers.mcgillmobile.util;
  */
 public class Constants {
     /**
-     * URL to the config
-     */
-    public static final String CONFIG_URL = "http://admin.mymartlet.ca/config";
-    /**
      * Play Store link to our app (when we require the user to update their version)
      */
     public static final String PLAY_STORE_LINK = "market://details?id=ca.appvelopers.mcgillmobile";

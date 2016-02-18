@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile;import android.content.Context;
+package ca.appvelopers.mcgillmobile;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.inputmethod.InputMethodManager;
 
-import com.google.gson.Gson;
 import com.squareup.moshi.Moshi;
 
 import javax.inject.Singleton;
@@ -69,15 +71,6 @@ public class AppModule {
     }
 
     /**
-     * @return The {@link Gson} singleton instance
-     */
-    @Provides
-    @Singleton
-    protected Gson provideGson() {
-        return new Gson();
-    }
-
-    /**
      * @return The {@link Moshi} singleton instance
      */
     @Provides
@@ -85,5 +78,14 @@ public class AppModule {
     protected Moshi provideMoshi() {
         return new Moshi.Builder()
                 .build();
+    }
+
+    /**
+     * @param context App context
+     * @return The {@link InputMethodManager}
+     */
+    @Provides
+    protected InputMethodManager provideInputMethodManager(Context context) {
+        return (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 }
