@@ -190,7 +190,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case AGREEMENT_CODE:
                 if (resultCode == RESULT_OK) {
@@ -220,7 +220,7 @@ public class SplashActivity extends BaseActivity {
                     .getSerializableExtra(Constants.CONNECTION_STATUS));
         } else {
             //Try logging the user in and download their info
-            new AppInitializer(false).execute();
+            new AppInitializer(true).execute();
         }
     }
 
@@ -320,7 +320,7 @@ public class SplashActivity extends BaseActivity {
                             loginContainer.setVisibility(View.GONE);
 
                             //Start the downloading of information
-                            new AppInitializer(true).execute();
+                            new AppInitializer(false).execute();
                         }
                     });
                 } else {
@@ -341,19 +341,19 @@ public class SplashActivity extends BaseActivity {
     /**
      * Initializes the app by logging the user in and downloading the required information
      */
-    public class AppInitializer extends AsyncTask<Void, String, ConnectionStatus> {
+    class AppInitializer extends AsyncTask<Void, String, ConnectionStatus> {
         /**
-         * True if the user has already logged in (first open), false otherwise
+         * True if we should auto-login the user, false if they have just logged in
          */
-        private boolean mLoggedIn;
+        private boolean autoLogin;
 
         /**
          * Default Constructor
          *
-         * @param loggedIn True if the user has already logged in (first open), false otherwise
+         * @param autoLogin True if we should auto-login the user, false if they have just logged in
          */
-        public AppInitializer(boolean loggedIn) {
-            this.mLoggedIn = loggedIn;
+        public AppInitializer(boolean autoLogin) {
+            this.autoLogin = autoLogin;
         }
 
         @Override
@@ -367,11 +367,10 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         protected ConnectionStatus doInBackground(Void... params) {
-            //TODO This is wrong
-            Analytics.get().sendEvent("Splash", "Auto-Login", "true");
+            Analytics.get().sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
 
             //If they're already logged in, the connection is OK
-            ConnectionStatus status =  mLoggedIn ? ConnectionStatus.OK : mcGillManager.login();
+            ConnectionStatus status =  autoLogin ? ConnectionStatus.OK : mcGillManager.login();
 
             //Check if we need to download everything or only the essential stuff
             //We need to download everything if there is null info
