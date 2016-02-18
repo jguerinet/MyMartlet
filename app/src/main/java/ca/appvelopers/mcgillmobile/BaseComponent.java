@@ -35,6 +35,7 @@ import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
 import dagger.Component;
 
 /**
@@ -64,5 +65,6 @@ public interface BaseComponent {
     void inject(PlaceTypeListAdapter adapter);
 
     void inject(ConfigDownloader downloader);
+    void inject(UserDownloader downloader);
     void inject(DownloaderThread thread);
 }
