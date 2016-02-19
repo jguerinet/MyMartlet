@@ -26,10 +26,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -38,6 +36,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.guerinet.utils.Utils;
+import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
@@ -53,9 +53,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
-import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
 import timber.log.Timber;
@@ -71,23 +69,17 @@ public abstract class DrawerActivity extends BaseActivity
      * The drawer layout
      */
     @Bind(R.id.drawer_layout)
-    protected DrawerLayout mDrawerLayout;
+    protected DrawerLayout drawerLayout;
     /**
      * The navigation view
      */
     @Bind(R.id.drawer)
-    protected NavigationView mDrawer;
+    protected NavigationView drawer;
     /**
      * Main content view to fade out and in on page change
      */
     @Bind(R.id.main)
-    protected View mMainView;
-    /**
-     * Hide parser error {@link BooleanPreference}
-     */
-    @Inject
-    @Named(PrefsModule.HIDE_PARSER_ERROR)
-    protected BooleanPreference hideParserErrorPref;
+    protected View mainView;
     /**
      * Remember username {@link BooleanPreference}
      */
@@ -112,27 +104,27 @@ public abstract class DrawerActivity extends BaseActivity
     /**
      * The toggle for the drawer inside the action bar
      */
-    private ActionBarDrawerToggle mDrawerToggle;
+    private ActionBarDrawerToggle drawerToggle;
     /**
      * Handler for posting delayed actions
      */
-    private Handler mHandler;
+    private Handler handler;
     /**
      * Callback manager used for Facebook
      */
-    private CallbackManager mCallbackManager;
+    private CallbackManager facebookCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.component(this).inject(this);
 
-        mHandler = new Handler();
+        handler = new Handler();
 
         //Initialize the Facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
         //Set up the Facebook callback manager
-        mCallbackManager = CallbackManager.Factory.create();
+        facebookCallbackManager = CallbackManager.Factory.create();
     }
 
     @Override
@@ -143,39 +135,26 @@ public abstract class DrawerActivity extends BaseActivity
         setUpToolbar(false);
 
         //Set up the drawer
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerLayout.setFocusableInTouchMode(false);
-        mDrawer.setNavigationItemSelectedListener(this);
-        mDrawerToggle.syncState();
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.setFocusableInTouchMode(false);
+        drawer.setNavigationItemSelectedListener(this);
+        drawerToggle.syncState();
 
         //Check the current item
-        mDrawer.getMenu().findItem(homepageManager.getMenuId(getCurrentPage())).setChecked(true);
+        drawer.getMenu().findItem(homepageManager.getMenuId(getCurrentPage())).setChecked(true);
 
         //Fade in the main view
-        mMainView.setAlpha(0);
-        mMainView.animate().alpha(1).setDuration(250);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        //Show the BugDialog if there is one
-        String parserBug = getIntent().getStringExtra(Constants.BUG);
-        if (parserBug != null) {
-            getIntent().removeExtra(Constants.BUG);
-            DialogHelper.showBugDialog(this, parserBug.equals(Constants.TRANSCRIPT),
-                    getIntent().getStringExtra(Constants.TERM), hideParserErrorPref);
-        }
+        mainView.setAlpha(0);
+        mainView.animate().alpha(1).setDuration(250);
     }
 
     @Override
     public void onBackPressed() {
-        //Open the menu if it's not open
-        if (!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.openDrawer(GravityCompat.START);
+        if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            //Open the menu if it's not open
+            drawerLayout.openDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -183,20 +162,19 @@ public abstract class DrawerActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //For Facebook sharing
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -217,7 +195,7 @@ public abstract class DrawerActivity extends BaseActivity
 
                 //If it's the same as the current homepage, close the drawer and don't continue
                 if (homepage == getCurrentPage()) {
-                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }
 
@@ -226,7 +204,7 @@ public abstract class DrawerActivity extends BaseActivity
 
                 //If it's not the currently opened activity, launch it after a short delay
                 //  so that the user sees the drawer closing
-                mHandler.postDelayed(new Runnable() {
+                handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         startActivity(new Intent(DrawerActivity.this, activity));
@@ -235,10 +213,10 @@ public abstract class DrawerActivity extends BaseActivity
                 }, 250);
 
                 //Fade out the main view
-                mMainView.animate().alpha(0).setDuration(150);
+                mainView.animate().alpha(0).setDuration(150);
 
                 //Close the drawer
-                mDrawerLayout.closeDrawer(GravityCompat.START);
+                drawerLayout.closeDrawer(GravityCompat.START);
 
                 return true;
         }
@@ -249,8 +227,7 @@ public abstract class DrawerActivity extends BaseActivity
     /**
      * @return The page in the drawer that this activity represents
      */
-    protected abstract @HomepageManager.Homepage
-    int getCurrentPage();
+    protected abstract @HomepageManager.Homepage int getCurrentPage();
 
     /* HELPERS */
 
@@ -258,26 +235,21 @@ public abstract class DrawerActivity extends BaseActivity
      * Logs the user out
      */
     private void logout() {
-        //Confirm with the user
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.logout_dialog_title)
-                .setMessage(R.string.logout_dialog_message)
-                .setPositiveButton(R.string.logout_dialog_positive,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Analytics.get().sendEvent("Logout", "Clicked");
-                                Clear.all(rememberUsernamePref, usernamePref, passwordPref,
-                                        homepageManager);
-                                //Go back to SplashActivity
-                                startActivity(new Intent(DrawerActivity.this,
-                                        SplashActivity.class));
-                                finish();
-                            }
-
-                        })
-                .setNegativeButton(R.string.logout_dialog_negative, null)
-                .show();
+        DialogUtils.alert(this, R.string.logout_dialog_title, R.string.logout_dialog_message,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            Analytics.get().sendEvent("Logout", "Clicked");
+                            Clear.all(rememberUsernamePref, usernamePref, passwordPref,
+                                    homepageManager);
+                            //Go back to SplashActivity
+                            startActivity(new Intent(DrawerActivity.this, SplashActivity.class));
+                            finish();
+                        }
+                        dialog.dismiss();
+                    }
+                });
     }
 
     /**
@@ -296,13 +268,12 @@ public abstract class DrawerActivity extends BaseActivity
 
         //Show the dialog
         ShareDialog dialog = new ShareDialog(this);
-        dialog.registerCallback(mCallbackManager, new FacebookCallback<Sharer.Result>() {
+        dialog.registerCallback(facebookCallbackManager, new FacebookCallback<Sharer.Result>() {
             @Override
             public void onSuccess(Sharer.Result result) {
                 if (result.getPostId() != null) {
                     //Let the user know he posted successfully
-                    Toast.makeText(DrawerActivity.this, R.string.social_post_success,
-                            Toast.LENGTH_SHORT).show();
+                    Utils.toast(DrawerActivity.this, R.string.social_post_success);
                     Analytics.get().sendEvent("facebook", "successful_post");
                 } else {
                     Timber.i("Facebook post cancelled");
@@ -316,8 +287,7 @@ public abstract class DrawerActivity extends BaseActivity
 
             @Override
             public void onError(FacebookException e) {
-                Toast.makeText(DrawerActivity.this, R.string.social_post_failure,
-                        Toast.LENGTH_SHORT).show();
+                Utils.toast(DrawerActivity.this, R.string.social_post_failure);
                 Timber.e(e, "Error posting to Facebook");
                 Analytics.get().sendEvent("facebook", "failed_post");
             }
@@ -334,7 +304,7 @@ public abstract class DrawerActivity extends BaseActivity
                     .text(getString(R.string.social_twitter_message_android, "Android"))
                     .url(new URL(getString(R.string.social_link_android)))
                     .show();
-        } catch(MalformedURLException e) {
+        } catch (MalformedURLException e) {
             Timber.e(e, "Twitter URL malformed");
         }
     }
