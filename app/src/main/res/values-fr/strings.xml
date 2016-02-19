@@ -26,7 +26,6 @@
     <string name="success">Succès!</string>
     <string name="error">Erreur</string>
     <string name="warning">Avertissement</string>
-    <string name="please_wait">Veuillez attendre s\'il vous plaît…</string>
     <string name="done">Terminer</string>
     <string name="refresh">Rafraîchir</string>
     <string name="submit">Soumettre</string>
@@ -40,12 +39,6 @@
     <string name="skip">Sauter</string>
     <string name="agree">Accepter</string>
     <string name="decline">Decliner</string>
-    <string name="bug_parser_transcript">Il y avait une erreur en téléchargeant votre bulletin. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur sur votre bulletin. </string>
-    <string name="bug_parser_semester">Il y avait une erreur en téléchargeant les cours du semestre suivant de votre calendrier: %s. Malheureusement nous ne pouvons pas le réparer sans voir ce qu’est le problème. Est-ce que vous voulez soumettre un rapport de bug qui indique que vous voulez nous rencontrer? Veuillez noter que si le bug n’est pas réparé, il y aura une erreur dans le calendrier pour ce semestre.</string>
-    <string name="bug_parser_yes">Biensûr!</string>
-    <string name="bug_parser_no">Non Merci</string>
-    <string name="bug_parser_no_show">Ne plus afficher</string>
-    <string name="skip_loading">Si vous continuez, votre information la plus récente (emploi du temps actuel et bulletin) ne sera pas mise à jour. Continuer ?</string>
 
     <!-- Day Names -->
     <string name="monday">Lundi</string>
@@ -79,7 +72,6 @@
     <string name="faculty_none">Je ne préfère pas dire</string>
 
     <!-- Login Screen -->
-    <string name="login_welcome">Bienvenue à MyMartlet. Veuillez s\'il vous plaît entrer votre nom d\'utilisateur McGill et votre mot de passe.</string>
     <string name="login_username">Nom d\'Utilisateur</string>
     <string name="login_password">Mot de Passe</string>
     <string name="login_button">Connexion</string>
@@ -103,10 +95,7 @@
     <string name="eula_license_description">Appvelopers vous accorde la capacité d’utiliser l’application MyMartlet pour votre utilisation personnelle et non-commerciale. Vous avez seulement le droit d’utiliser l’application MyMartlet sur les appareils que vous possédez ou contrôlez, comme permis par les conditions générales d’utilisation du Play Store.</string>
 
     <!-- Logout -->
-    <string name="logout_dialog_title">Déconnexion</string>
     <string name="logout_dialog_message">Voulez-vous continuer?</string>
-    <string name="logout_dialog_positive">Continuer</string>
-    <string name="logout_dialog_negative">Annuler</string>
 
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">GPA du Semestre: %s</string>
@@ -238,12 +227,7 @@
     <string name="about_yulric_description">Yulric a récemment terminé ses études d\'ingénieur électrique à l\'Université McGill et est actuellement le chef de développement web à Sigvaria Mobile Technologies Inc. </string>
 
     <!-- Help -->
-    <string name="about_question">Question</string>
-    <string name="about_answer">Je suis une réponse</string>
     <string name="about_FAQ">Question Fréquentes</string>
-    <string name="bug_prompt">Entrez vos commentaires ici&#8230;</string>
-    <string name="bug_email_prompt">Entrez votre email ici&#8230;</string>
-    <string name="bug_comment_invalid">Veuillez s\'il vous plaît entrer vos commentaires avant de continuer</string>
     <string name="help_question1">Qu\'est ce que c\'est MyMartlet?</string>
     <string name="help_question2">Est-ce que cette application est officiellement fait par McGill ?</string>
     <string name="help_question3">Sur quelles platformes pouvons nous trouver cette application ?</string>
@@ -252,13 +236,6 @@
     <string name="help_answer3">Cette application existe sur Android et nous sommes en train de développer une version iOS.</string>
     <string name="help_walkthrough">Guide d\'Utilisation</string>
     <string name="help_email_walkthrough">Configurez Votre Email sur Votre Mobile</string>
-    <string name="help_email_walk0">Avertissement: ces étapes peuvent varier selon votre version d’Android et le modèle de votre téléphone. \nAllez dans Réglages → + Ajouter un Compte</string>
-    <string name="help_email_walk1">Choisissez Email</string>
-    <string name="help_email_walk2">Entrez votre email McGill et mot de passe et appuyez sur Suivant.</string>
-    <string name="help_email_walk3">Choisissez Exchange</string>
-    <string name="help_email_walk4">Appuyez sur OK</string>
-    <string name="help_email_walk5">Appuyez sur Suivant</string>
-    <string name="help_email_walk6">Votre email est configuré!</string>
     <string name="help_download">Télécharger l’Application Officielle de McGill</string>
     <string name="help_beta_tester">TODO </string>
 
@@ -277,9 +254,6 @@
     <string name="unregister_dialog_title">Désinscription de Cours</string>
     <string name="unregister_dialog_message">Êtes-vous sûr de vouloir vous désinscrire de ce(s) cours?</string>
 
-    <!-- Drawer -->
-    <string name="drawer_exit">Êtes-vous sûr de vouloir quitter l\'application?</string>
-
     <!-- Social Networks -->
     <string name="social_facebook_title">MyMartlet pour %s</string>
     <string name="social_facebook_description_android">MyMartlet permet aux étudiants de McGill d’accéder facilement tous les essentiels de McGill tels que leur calendrier, bulletin, liste de cours et plus!</string>
@@ -288,16 +262,9 @@
     <string name="social_post_failure">Une erreur est survenue. Réessayez s\'il vous plaît.</string>
 
     <!-- Splash -->
-    <string name="logging_in">Connexion&#8230;</string>
     <string name="downloading_transcript">Téléchargement de votre bulletin&#8230;</string>
     <string name="downloading_semester">Téléchargement du semestre: %s&#8230;</string>
     <string name="downloading_ebill">Téléchargement de votre eBill&#8230;</string>
-    <string name="downloading_user">Téléchargement de l’information de l’utilisateur&#8230;</string>
-    <string name="updating_transcript">Mise à jour de votre bulletin&#8230;</string>
-    <string name="updating_semester">Mise à jour du semestre: %s&#8230;</string>
-    <string name="updating_ebill">Mise à jour de votre eBill&#8230;</string>
-    <string name="updating_user">Mise à jour de l’information de l’utilisateur&#8230;</string>
-    <string name="skipping">Un moment&#8230;</string>
 
     <!-- MyCourses -->
     <string name="storage_permission_granted">Vous pouvez maintenant recommencer le téléchargement!</string>

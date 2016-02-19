@@ -26,7 +26,6 @@
     <string name="success">Success!</string>
     <string name="error">Error</string>
     <string name="warning">Warning</string>
-    <string name="please_wait">Please Wait&#8230;</string>
     <string name="done">Done</string>
     <string name="refresh">Refresh</string>
     <string name="submit">Submit</string>
@@ -40,14 +39,6 @@
     <string name="skip">Skip</string>
     <string name="agree">Agree</string>
     <string name="decline">Decline</string>
-    <string name="bug_parser_transcript">There was a bug while downloading your transcript. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us? Please note that if this bug is not fixed, there will be an error on your transcript.</string>
-    <string name="bug_parser_semester">There was a bug while downloading the following semester\'s classes: %s. Unfortunately we cannot fix it without seeing what caused it. Do you agree to submit a bug report indicating that you are willing to meet with us? Please noe that if this bug is not fixed, there will be an error in your semester schedule.</string>
-    <string name="bug_parser_yes">Sure!</string>
-    <string name="bug_parser_no">No Thanks</string>
-    <string name="bug_parser_no_show">Don\'t show this to me again</string>
-    <string name="bug_parser_transcript_title">Parsing bug in Transcript for: %s</string>
-    <string name="bug_parser_semester_title">Parsing bug in Semester for Semester %1$s and Class %2$s</string>
-    <string name="skip_loading">If you continue, your most recent information (current schedule and transcript) will not automatically be updated. Continue ?</string>
 
     <!-- Day Names -->
     <string name="monday">Monday</string>
@@ -81,7 +72,6 @@
     <string name="faculty_none">I\'d rather not say</string>
 
     <!-- Login Screen -->
-    <string name="login_welcome">Welcome to MyMartlet. Please input your McGill username and password below.</string>
     <string name="login_username">Username</string>
     <string name="login_email">\@mail.mcgill.ca</string>
     <string name="login_password">Password</string>
@@ -106,10 +96,7 @@
     <string name="eula_license_description">Appvelopers grants the ability to use the MyMartlet App for your personal, non-commercial purposes. You may only use the MyMartlet App on devices that you own or control and as permitted by the Play Store Terms of Service.</string>
 
     <!-- Logout -->
-    <string name="logout_dialog_title">Logout</string>
     <string name="logout_dialog_message">Are you sure you want to logout?</string>
-    <string name="logout_dialog_positive">Yes</string>
-    <string name="logout_dialog_negative">Cancel</string>
 
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">Term GPA: %s</string>
@@ -274,12 +261,7 @@
     <string name="about_yulric_email">yulric.sequeira\@mail.mcgill.ca</string>
 
     <!-- Help -->
-    <string name="about_question">Question</string>
-    <string name="about_answer">This is an answer</string>
     <string name="about_FAQ">FAQ</string>
-    <string name="bug_prompt">Enter your feedback here&#8230;</string>
-    <string name="bug_email_prompt">Enter your email here&#8230;</string>
-    <string name="bug_comment_invalid">Please enter your feedback before continuing</string>
     <string name="help_question1">What is MyMartlet ?</string>
     <string name="help_question2">Is this app officially made by McGill ?</string>
     <string name="help_question3">On which platforms can we find this app ?</string>
@@ -288,13 +270,6 @@
     <string name="help_answer3">This app exists on Android and we are currently developing an iOS.</string>
     <string name="help_walkthrough">User Guide</string>
     <string name="help_email_walkthrough">Set up Your Email on Your Device</string>
-    <string name="help_email_walk0">Warning: steps may vary slightly based on Android version and phone model. \nGo to Settings → + Add account</string>
-    <string name="help_email_walk1">Select Email</string>
-    <string name="help_email_walk2">Enter your McGill email and password and select next</string>
-    <string name="help_email_walk3">Select Exchange</string>
-    <string name="help_email_walk4">Select OK</string>
-    <string name="help_email_walk5">Select Next</string>
-    <string name="help_email_walk6">Your email is set up!</string>
     <string name="help_download">Download the Official McGill App</string>
     <string name="help_beta_tester">Become a Beta Tester</string>
 
@@ -313,9 +288,6 @@
     <string name="unregister_dialog_title">Drop Classes</string>
     <string name="unregister_dialog_message">Are you sure you want to drop the selected classes?</string>
 
-    <!-- Drawer -->
-    <string name="drawer_exit">Are you sure you want to exit?</string>
-
     <!-- Social Networks -->
     <string name="social_facebook_title">MyMartlet for %s</string>
     <string name="social_facebook_description_android">MyMartlet allows any McGill student to have easy access to the McGill essentials such as their calendar, transcript, course list, and more!</string>
@@ -326,16 +298,9 @@
     <string name="social_post_failure">An error occurred. Please try again.</string>
 
     <!-- Splash -->
-    <string name="logging_in">Logging In&#8230;</string>
     <string name="downloading_transcript">Downloading Transcript&#8230;</string>
     <string name="downloading_semester">Downloading %s Schedule&#8230;</string>
     <string name="downloading_ebill">Downloading eBill&#8230;</string>
-    <string name="downloading_user">Downloading User Info&#8230;</string>
-    <string name="updating_transcript">Updating Transcript&#8230;</string>
-    <string name="updating_semester">Updating %s Schedule&#8230;</string>
-    <string name="updating_ebill">Updating eBill&#8230;</string>
-    <string name="updating_user">Updating User Info&#8230;</string>
-    <string name="skipping">Skipping&#8230;</string>
 
     <!-- MyCourses -->
     <string name="storage_permission_granted">You can now start the download again!</string>

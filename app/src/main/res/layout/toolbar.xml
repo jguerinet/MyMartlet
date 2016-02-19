@@ -10,7 +10,7 @@
     android:theme="@style/Theme.MyMartlet.Toolbar"
     app:popupTheme="@style/Theme.MyMartlet.PopupMenu"
     tools:targetApi="21"
-    android:elevation="4dp">
+    android:elevation="@dimen/elevation">
 
     <ProgressBar
         android:id="@+id/toolbar_progress"

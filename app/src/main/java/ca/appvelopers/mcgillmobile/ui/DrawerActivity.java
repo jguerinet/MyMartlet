@@ -234,7 +234,7 @@ public abstract class DrawerActivity extends BaseActivity
      * Logs the user out
      */
     private void logout() {
-        DialogUtils.alert(this, R.string.logout_dialog_title, R.string.logout_dialog_message,
+        DialogUtils.alert(this, R.string.warning, R.string.logout_dialog_message,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
