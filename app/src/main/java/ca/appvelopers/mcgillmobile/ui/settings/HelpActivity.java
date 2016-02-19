@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.ui.settings;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,8 +101,7 @@ public class HelpActivity extends BaseActivity {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=com.mcgill")));
+                        Utils.openPlayStoreApp(HelpActivity.this, "com.mcgill");
                     }
                 });
         

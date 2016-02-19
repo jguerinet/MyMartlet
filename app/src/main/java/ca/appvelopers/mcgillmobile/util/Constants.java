@@ -22,11 +22,6 @@ package ca.appvelopers.mcgillmobile.util;
  * @since 1.0.0
  */
 public class Constants {
-    /**
-     * Play Store link to our app (when we require the user to update their version)
-     */
-    public static final String PLAY_STORE_LINK = "market://details?id=ca.appvelopers.mcgillmobile";
-
     /* SYNCHRONIZATION LOCKS*/
 
     /**

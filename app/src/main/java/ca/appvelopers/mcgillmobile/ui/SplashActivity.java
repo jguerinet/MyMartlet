@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -261,10 +260,8 @@ public class SplashActivity extends BaseActivity {
      */
     @OnClick(R.id.version_button)
     protected void downloadNewVersion() {
-        //Redirect them to the play store
-        Intent intent = new Intent(Intent.ACTION_VIEW)
-                .setData(Uri.parse(Constants.PLAY_STORE_LINK));
-        startActivity(intent);
+        //Redirect them to the Play Store
+        Utils.openPlayStoreApp(this, getPackageName());
     }
 
     /**
