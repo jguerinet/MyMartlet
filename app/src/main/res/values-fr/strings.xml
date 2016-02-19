@@ -211,6 +211,8 @@
 
     <!-- About -->
     <string name="about_github">TODO</string>
+    <string name="contributors_current">TODO</string>
+    <string name="contributors_past">TODO</string>
     <string name="about_email_picker_title">Compléter cette action avec&#8230;</string>
     <string name="about_adnan_role">Développeur Android</string>
     <string name="about_adnan_description">Plus connu comme le mec qui connaît tout le monde sur le campus. En 2014, Adnan a fameusement organisé un évènement de poulet frit qui tient toujours le record du plus petit nombre de cas de salmonelles à un évènement d\'ingénieur.</string>

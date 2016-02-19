@@ -214,6 +214,8 @@
 
     <!-- About -->
     <string name="about_github">Click here to check out the code on GitHub!</string>
+    <string name="contributors_current">Current Contributors</string>
+    <string name="contributors_past">Past Contributors</string>
     <string name="about_email_picker_title">Complete Action Using&#8230;</string>
     <string name="about_adnan">Adnan Uddin</string>
     <string name="about_adnan_role">Android Developer</string>
@@ -227,22 +229,22 @@
     <string name="about_hernan_email">gattahernan\@gmail.com</string>
     <string name="about_joshua">Joshua David Alfaro</string>
     <string name="about_joshua_role">Graphic Designer, Android Developer</string>
-    <string name="about_joshua_description">Josh is an Electrical Engineering student at McGill University. Josh is also a member of ECSESS RoboElectronics which helps students learn and prepare for design competitions. While taking his minor in Software Engineering, Josh supported the development of this mobile application. </string>
+    <string name="about_joshua_description">Josh is a McGill University Electrical Engineering undergraduate. While taking his minor in Software Engineering, Josh supported the development and did a lot of the design for the app. </string>
     <string name="about_joshua_linkedin">http://ca.linkedin.com/pub/joshua-david-alfaro/24/988/5b7</string>
     <string name="about_joshua_email">JoshuaDavidAlfaro\@gmail.com</string>
     <string name="about_julia">Julia Skrak</string>
     <string name="about_julia_role">iOS Developer</string>
-    <string name="about_julia_description">Julia is an Arts Student majoring in Computer Science at McGill University. She is currently developing the iOS version. </string>
+    <string name="about_julia_description">Julia is an Arts undergraduate who majored in Computer Science at McGill University. She contributed to the iOS version, which sadly was never finished. </string>
     <string name="about_julia_linkedin">http://www.linkedin.com/pub/julia-skrak/a7/a9/765</string>
     <string name="about_julia_email">julia.skrak\@mail.mcgill.ca</string>
     <string name="about_julien">Julien Guerinet</string>
     <string name="about_julien_role">Project Manager, Head Android Developer</string>
-    <string name="about_julien_description">Julien recently graduated from McGill University as a Computer Engineer and is currently the lead mobile developer at Sigvaria Mobile Technologies Inc.</string>
+    <string name="about_julien_description">Julien is a McGill University Computer Engineering undergraduate and currently maintains MyMartlet as much as possible while working as a mobile developer in Ottawa.</string>
     <string name="about_julien_linkedin">http://ca.linkedin.com/in/julienguerinet</string>
     <string name="about_julien_email">julien\@sigvaria.com</string>
     <string name="about_quang">Nhat-Quang Dao</string>
     <string name="about_quang_role">Android Developer</string>
-    <string name="about_quang_description">Quang is an Software Engineering student with a great sense of taste. The hackathon where he served as the scrum master was one of the most memorable times for everyone.</string>
+    <string name="about_quang_description">Quang is an Software Engineering undergraduate with a great sense of taste. The hackathon where he served as the scrum master was one of the most memorable times for everyone.</string>
     <string name="about_quang_linkedin">https://www.linkedin.com/pub/quang-dao/59/672/715</string>
     <string name="about_quang_email">nhat.quang.d\@gmail.com</string>
     <string name="about_ryan">Ryan Singzon</string>
@@ -257,7 +259,7 @@
     <string name="about_selim_email">selim.belhaouane\@gmail.com</string>
     <string name="about_shabbir">Shabbir Hussain</string>
     <string name="about_shabbir_role">Scrum Master, Assistant to the Scrum Master, Android Developer</string>
-    <string name="about_shabbir_description">Shabbir is an EE student who prefers software development. Although he did contribute to this project, the team knows him exclusively as Assistant to the Scrum Master. Contact him if you are interested in playing rec volleyball.</string>
+    <string name="about_shabbir_description">Shabbir is an EE undergraduate who prefers software development. Although he did contribute to this project, the team knows him exclusively as Assistant to the Scrum Master. Contact him if you are interested in playing rec volleyball.</string>
     <string name="about_shabbir_linkedin">http://ca.linkedin.com/in/shabbirhusn</string>
     <string name="about_shabbir_email">shabbir.husn\@outlook.com</string>
     <string name="about_xavier">Xavier Sit</string>
@@ -267,7 +269,7 @@
     <string name="about_xavier_email">chiwingsit\@gmail.com</string>
     <string name="about_yulric">Yulric Sequeira</string>
     <string name="about_yulric_role">Web Developer</string>
-    <string name="about_yulric_description">Yulric recently graduated from McGill University as Electrical Engineer and is currently the lead web developer at Sigvaria Mobile Technologies Inc. </string>
+    <string name="about_yulric_description">Yulric is a McGill University Electrical Engineer undergraduate.</string>
     <string name="about_yulric_linkedin">http://www.linkedin.com/in/yulricsequeira</string>
     <string name="about_yulric_email">yulric.sequeira\@mail.mcgill.ca</string>
 

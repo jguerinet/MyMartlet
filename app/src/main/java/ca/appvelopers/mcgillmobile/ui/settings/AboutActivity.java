@@ -17,9 +17,12 @@
 package ca.appvelopers.mcgillmobile.ui.settings;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +55,6 @@ public class AboutActivity extends BaseActivity {
      */
     @Bind(android.R.id.list)
     protected RecyclerView list;
-    /**
-     * The list of people
-     */
-    private List<Person> people;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,62 +63,6 @@ public class AboutActivity extends BaseActivity {
         ButterKnife.bind(this);
         setUpToolbar(true);
         Analytics.get().sendScreen("About");
-
-        people = new ArrayList<>();
-        //Adnan
-        people.add(new Person(R.string.about_adnan, R.drawable.about_adnan,
-                R.string.about_adnan_role, R.string.about_adnan_description,
-                R.string.about_adnan_linkedin, R.string.about_adnan_email));
-
-        //Hernan
-        people.add(new Person(R.string.about_hernan, R.drawable.about_hernan,
-                R.string.about_hernan_role, R.string.about_hernan_description,
-                R.string.about_hernan_linkedin, R.string.about_hernan_email));
-
-        //Josh
-        people.add(new Person(R.string.about_joshua, R.drawable.about_josh,
-                R.string.about_joshua_role, R.string.about_joshua_description,
-                R.string.about_joshua_linkedin, R.string.about_joshua_email));
-
-        //Julia
-        people.add(new Person(R.string.about_julia, R.drawable.about_julia,
-                R.string.about_julia_role, R.string.about_julia_description,
-                R.string.about_julia_linkedin, R.string.about_julia_email));
-
-        //Julien
-        people.add(new Person(R.string.about_julien, R.drawable.about_julien,
-                R.string.about_julien_role, R.string.about_julien_description,
-                R.string.about_julien_linkedin, R.string.about_julien_email));
-
-        //Quang
-        people.add(new Person(R.string.about_quang, R.drawable.about_quang,
-                R.string.about_quang_role, R.string.about_quang_description,
-                R.string.about_quang_linkedin, R.string.about_quang_email));
-
-        //Ryan
-        people.add(new Person(R.string.about_ryan, R.drawable.about_ryan,
-                R.string.about_ryan_role, R.string.about_ryan_description,
-                R.string.about_ryan_linkedin, R.string.about_ryan_email));
-
-        //Selim
-        people.add(new Person(R.string.about_selim, R.drawable.about_selim,
-                R.string.about_selim_role, R.string.about_selim_description,
-                R.string.about_selim_linkedin, R.string.about_selim_email));
-
-        //Shabbir
-        people.add(new Person(R.string.about_shabbir, R.drawable.about_shabbir,
-                R.string.about_shabbir_role, R.string.about_shabbir_description,
-                R.string.about_shabbir_linkedin, R.string.about_shabbir_email));
-
-        //Xavier
-        people.add(new Person(R.string.about_xavier, R.drawable.about_xavier,
-                R.string.about_xavier_role, R.string.about_xavier_description,
-                R.string.about_xavier_linkedin, R.string.about_xavier_email));
-
-        //Yulric
-        people.add(new Person(R.string.about_yulric, R.drawable.about_yulric,
-                R.string.about_yulric_role, R.string.about_yulric_description,
-                R.string.about_yulric_linkedin, R.string.about_yulric_email));
 
         //Set up the list
         list.setLayoutManager(new LinearLayoutManager(this));
@@ -134,24 +77,134 @@ public class AboutActivity extends BaseActivity {
     /**
      * Displays the developers in the About page
      */
-    public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonHolder> {
+    public class PersonAdapter extends RecyclerView.Adapter {
+        /**
+         * Person view type
+         */
+        private static final int PERSON = 0;
+        /**
+         * The list of items
+         */
+        private List<Object> items;
 
-        @Override
-        public PersonHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new PersonHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_person, parent, false));
+        /**
+         * Default Constructors
+         */
+        public PersonAdapter() {
+            items = new ArrayList<>();
+
+            //Current Contributors
+            items.add(R.string.contributors_current);
+
+            //Julien
+            items.add(new Person(R.string.about_julien, R.drawable.about_julien,
+                    R.string.about_julien_role, R.string.about_julien_description,
+                    R.string.about_julien_linkedin, R.string.about_julien_email));
+
+            //Shabbir
+            items.add(new Person(R.string.about_shabbir, R.drawable.about_shabbir,
+                    R.string.about_shabbir_role, R.string.about_shabbir_description,
+                    R.string.about_shabbir_linkedin, R.string.about_shabbir_email));
+
+            //Past Contributors
+            items.add(R.string.contributors_past);
+
+            //Adnan
+            items.add(new Person(R.string.about_adnan, R.drawable.about_adnan,
+                    R.string.about_adnan_role, R.string.about_adnan_description,
+                    R.string.about_adnan_linkedin, R.string.about_adnan_email));
+
+            //Hernan
+            items.add(new Person(R.string.about_hernan, R.drawable.about_hernan,
+                    R.string.about_hernan_role, R.string.about_hernan_description,
+                    R.string.about_hernan_linkedin, R.string.about_hernan_email));
+
+            //Josh
+            items.add(new Person(R.string.about_joshua, R.drawable.about_josh,
+                    R.string.about_joshua_role, R.string.about_joshua_description,
+                    R.string.about_joshua_linkedin, R.string.about_joshua_email));
+
+            //Julia
+            items.add(new Person(R.string.about_julia, R.drawable.about_julia,
+                    R.string.about_julia_role, R.string.about_julia_description,
+                    R.string.about_julia_linkedin, R.string.about_julia_email));
+
+            //Quang
+            items.add(new Person(R.string.about_quang, R.drawable.about_quang,
+                    R.string.about_quang_role, R.string.about_quang_description,
+                    R.string.about_quang_linkedin, R.string.about_quang_email));
+
+            //Ryan
+            items.add(new Person(R.string.about_ryan, R.drawable.about_ryan,
+                    R.string.about_ryan_role, R.string.about_ryan_description,
+                    R.string.about_ryan_linkedin, R.string.about_ryan_email));
+
+            //Selim
+            items.add(new Person(R.string.about_selim, R.drawable.about_selim,
+                    R.string.about_selim_role, R.string.about_selim_description,
+                    R.string.about_selim_linkedin, R.string.about_selim_email));
+
+            //Xavier
+            items.add(new Person(R.string.about_xavier, R.drawable.about_xavier,
+                    R.string.about_xavier_role, R.string.about_xavier_description,
+                    R.string.about_xavier_linkedin, R.string.about_xavier_email));
+
+            //Yulric
+            items.add(new Person(R.string.about_yulric, R.drawable.about_yulric,
+                    R.string.about_yulric_role, R.string.about_yulric_description,
+                    R.string.about_yulric_linkedin, R.string.about_yulric_email));
         }
 
         @Override
-        public void onBindViewHolder(PersonHolder holder, int position) {
-            holder.bind(people.get(position));
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            if (viewType == PERSON) {
+                return new PersonHolder(inflater.inflate(R.layout.item_person, parent, false));
+            }
+            int padding = getResources().getDimensionPixelOffset(R.dimen.padding_small);
+            TextView textView = new TextView(parent.getContext());
+            textView.setTypeface(null, Typeface.BOLD);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimension(R.dimen.text_large));
+            textView.setPadding(padding, padding, padding, padding);
+            return new HeaderHolder(textView);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (getItemViewType(position) == PERSON) {
+                ((PersonHolder) holder).bind((Person) items.get(position));
+            } else {
+                ((HeaderHolder) holder).bind((Integer) items.get(position));
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return (items.get(position) instanceof Person) ? PERSON : -1;
         }
 
         @Override
         public int getItemCount() {
-            return people.size();
+            return items.size();
         }
 
+        /**
+         * Header in the list
+         */
+        class HeaderHolder extends RecyclerView.ViewHolder {
+            public HeaderHolder(TextView itemView) {
+                super(itemView);
+            }
+
+            public void bind(@StringRes int title) {
+                ((TextView) itemView).setText(title);
+            }
+        }
+
+        /**
+         * Person item in the list
+         */
         class PersonHolder extends RecyclerView.ViewHolder {
             /**
              * Person's name
