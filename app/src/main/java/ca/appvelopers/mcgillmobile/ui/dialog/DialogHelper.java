@@ -29,8 +29,6 @@ import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
-import com.guerinet.utils.prefs.BooleanPreference;
-import com.instabug.library.Instabug;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,21 +57,6 @@ public class DialogHelper {
      */
     public static void error(Context context, @StringRes int messageId) {
         DialogUtils.neutral(context, R.string.error, messageId);
-    }
-
-    /**
-     * Shows an {@link AlertDialog} with one button
-     *
-     * @param context App context
-     * @param title   String Id of the title String
-     * @param message Dialog message
-     */
-    public static void neutral(Context context, @StringRes int title, String message) {
-        new AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setNeutralButton(android.R.string.ok, null)
-                .show();
     }
 
     /**
@@ -226,61 +209,6 @@ public class DialogHelper {
                         dialog.dismiss();
                     }
                 })
-                .show();
-    }
-
-    /**
-     * Creates a dialog that is shown when there was a bug in the parsing of the transcript/schedule
-     *
-     * @param context       The app context
-     * @param transcriptBug True if it's a bug on the transcript,
-     *                          false if it's a bug on the schedule
-     * @param term          The class that the bug is in if this is a schedule bug
-     */
-    public static void showBugDialog(final Context context, final boolean transcriptBug,
-            final String term, final BooleanPreference hideParserErrorPrefs) {
-        //Only show if they have not checked "Do not show again" already
-        if(hideParserErrorPrefs.get()) {
-            return;
-        }
-
-        //Set up the layout
-        View checkboxLayout = View.inflate(context, R.layout.dialog_checkbox, null);
-        final CheckBox dontShowAgain = (CheckBox) checkboxLayout.findViewById(R.id.skip);
-
-        new AlertDialog.Builder(context)
-                .setView(checkboxLayout)
-                .setTitle(R.string.warning)
-                .setMessage(transcriptBug ? context.getString(R.string.bug_parser_transcript) :
-                        context.getString(R.string.bug_parser_semester, term))
-                .setPositiveButton(R.string.bug_parser_yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //Send the bug report
-                                Instabug.getInstance().sendFeedback(transcriptBug ?
-                                                context.getString(R.string.bug_parser_transcript_title,
-                                                        term) :
-                                                context.getString(R.string.bug_parser_semester_title),
-                                        null, new Instabug.OnSendBugReportListener() {
-                                            @Override
-                                            public void onBugReportSent(boolean b, String s) {
-
-                                            }
-                                        });
-
-                                //Save the do not show option
-                                hideParserErrorPrefs.set(dontShowAgain.isChecked());
-
-                                dialog.dismiss();
-                            }
-                        })
-                .setNegativeButton(R.string.bug_parser_no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //Save the do not show again
-                                hideParserErrorPrefs.set(dontShowAgain.isChecked());
-
-                                dialog.dismiss();
-                            }
-                        })
                 .show();
     }
 

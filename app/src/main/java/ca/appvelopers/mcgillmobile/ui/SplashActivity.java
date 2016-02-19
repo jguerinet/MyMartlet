@@ -115,12 +115,6 @@ public class SplashActivity extends BaseActivity {
     @Inject
     protected McGillManager mcGillManager;
     /**
-     * Hide loading {@link BooleanPreference}
-     */
-    @Inject
-    @Named(PrefsModule.HIDE_LOADING)
-    protected BooleanPreference hideLoadingPref;
-    /**
      * Remember username {@link BooleanPreference}
      */
     @Inject

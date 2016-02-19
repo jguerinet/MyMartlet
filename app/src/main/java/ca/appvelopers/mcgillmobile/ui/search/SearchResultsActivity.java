@@ -23,6 +23,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.guerinet.utils.dialog.DialogUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
-import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistSearchCourseAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -155,7 +156,7 @@ public class SearchResultsActivity extends BaseActivity {
                                             }
 
                                             //Show an alert dialog with the errors
-                                            DialogHelper.neutral(activity,
+                                            DialogUtils.neutral(activity,
                                                     R.string.registration_error, error);
                                         }
 

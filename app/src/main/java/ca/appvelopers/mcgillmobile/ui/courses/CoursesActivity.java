@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.dialog.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -261,7 +262,7 @@ public class CoursesActivity extends DrawerActivity {
                                                                     Toast.LENGTH_LONG).show();
                                                         } else {
                                                             //If not, show the error message
-                                                            DialogHelper.neutral(
+                                                            DialogUtils.neutral(
                                                                     CoursesActivity.this,
                                                                     R.string.unregistration_error,
                                                                     error);
