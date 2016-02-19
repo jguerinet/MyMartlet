@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Person;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
@@ -56,7 +57,8 @@ public class AboutActivity extends BaseActivity {
      */
     private List<Person> people;
 
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
@@ -122,6 +124,11 @@ public class AboutActivity extends BaseActivity {
         //Set up the list
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(new PersonAdapter());
+    }
+
+    @OnClick(R.id.github)
+    protected void gitHub() {
+        Utils.openURL(this, "https://github.com/jguerinet/MyMartlet-Android/");
     }
 
     /**

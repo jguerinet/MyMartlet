@@ -213,6 +213,7 @@
     <string name="courses_none_selected">You must select at least one course.</string>
 
     <!-- About -->
+    <string name="about_github">Click here to check out the code on GitHub!</string>
     <string name="about_email_picker_title">Complete Action Using&#8230;</string>
     <string name="about_adnan">Adnan Uddin</string>
     <string name="about_adnan_role">Android Developer</string>
