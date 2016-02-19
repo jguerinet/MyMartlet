@@ -52,10 +52,6 @@ public class Constants {
      */
     public static final String TERM = "term";
     /**
-     * Key used to pass an email via an intent
-     */
-    public static final String EMAIL = "email";
-    /**
      * Key used to pass a list of courses via an intent
      */
     public static final String COURSES = "courses";
