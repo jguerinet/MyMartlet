@@ -104,6 +104,15 @@ public class HelpActivity extends BaseActivity {
                         Utils.openPlayStoreApp(HelpActivity.this, "com.mcgill");
                     }
                 });
+
+        //Become Beta Tester
+        fg.text(R.string.help_beta_tester)
+                .onClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Utils.openURL(HelpActivity.this, "https://betas.to/iRinaygk");
+                    }
+                });
         
         //FAQ
         mList.setLayoutManager(new LinearLayoutManager(this));
