@@ -55,13 +55,13 @@ public class SettingsActivity extends DrawerActivity {
      * The {@link FormGenerator} container
      */
     @Bind(R.id.container)
-    protected LinearLayout mContainer;
+    protected LinearLayout container;
     /**
      * Statistics {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.STATISTICS)
-    protected BooleanPreference statisticsPrefs;
+    protected BooleanPreference statsPrefs;
 
     /**
      * SCHEDULE_24HR {@link BooleanPreference}
@@ -79,7 +79,7 @@ public class SettingsActivity extends DrawerActivity {
         setTitle(getString(R.string.settings_version, Utils.versionName(this)));
         Analytics.get().sendScreen("Settings");
 
-        FormGenerator fg = FormGenerator.bind(this, mContainer);
+        FormGenerator fg = FormGenerator.bind(this, container);
         final Context context = this;
 
         //Language
@@ -137,11 +137,11 @@ public class SettingsActivity extends DrawerActivity {
         //Statistics
         fg.aSwitch(R.string.settings_statistics)
                 .leftIcon(R.drawable.ic_trending_up)
-                .checked(statisticsPrefs.get())
+                .checked(statsPrefs.get())
                 .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        statisticsPrefs.set(isChecked);
+                        statsPrefs.set(isChecked);
                     }
                 });
 
