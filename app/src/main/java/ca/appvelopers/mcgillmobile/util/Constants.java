@@ -65,10 +65,6 @@ public class Constants {
      */
     public static final String COURSES = "courses";
     /**
-     * Key used to pass a parsing bug via an intent
-     */
-    public static final String BUG = "bug";
-    /**
      * Key used to pass a transcript via an intent
      */
     public static final String TRANSCRIPT = "transcript";
