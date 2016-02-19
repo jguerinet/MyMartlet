@@ -24,7 +24,6 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
-import com.guerinet.utils.prefs.IntPreference;
 import com.instabug.library.Feature;
 import com.instabug.library.IBGInvocationEvent;
 import com.instabug.library.IBGInvocationMode;
@@ -37,9 +36,6 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
@@ -47,8 +43,6 @@ import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.User;
-import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
-import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -66,17 +60,6 @@ public class App extends Application {
      * Dagger {@link BaseComponent}
      */
     private BaseComponent component;
-    /**
-     * Version {@link IntPreference}
-     */
-    @Inject
-    @Named(PrefsModule.VERSION)
-    protected IntPreference versionPref;
-    /**
-     * {@link UsernamePreference} instance
-     */
-    @Inject
-    protected UsernamePreference usernamePref;
     /**
      * The app {@link Context}
      */
@@ -162,9 +145,6 @@ public class App extends Application {
         component = DaggerBaseComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
-
-        //Inject Dagger
-        component.inject(this);
 
         //Initialize ATT
         AndroidThreeTen.init(this);

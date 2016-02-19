@@ -47,7 +47,6 @@ import dagger.Component;
  */
 @Singleton @Component(modules = {AppModule.class, NetworkModule.class, PrefsModule.class})
 public interface BaseComponent {
-    void inject(App app);
     void inject(ScheduleViewBuilder activity);
     void inject(BaseActivity activity);
     void inject(DrawerActivity activity);
