@@ -171,7 +171,9 @@ public class SettingsActivity extends DrawerActivity {
                     @Override
                     public void onClick(View v) {
                         analytics.sendEvent("About", "Report a Bug");
-                        Instabug.getInstance().invokeFeedbackSender();
+                        Instabug.setUserData("App Language: " + languageManager.getCode());
+                        Instabug.setUserEmail(usernamePref.full());
+                        Instabug.invoke();
                     }
                 });
 

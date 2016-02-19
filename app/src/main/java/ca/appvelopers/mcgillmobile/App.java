@@ -18,12 +18,16 @@ package ca.appvelopers.mcgillmobile;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
 import com.guerinet.utils.prefs.IntPreference;
+import com.instabug.library.Feature;
+import com.instabug.library.IBGInvocationEvent;
+import com.instabug.library.IBGInvocationMode;
 import com.instabug.library.Instabug;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.twitter.sdk.android.Twitter;
@@ -172,23 +176,22 @@ public class App extends Application {
         AndroidThreeTen.init(this);
 
         //Set up Instabug
-        Instabug.initialize(this, Passwords.INSTABUG_KEY)
-                .enableEmailField(true, false)
-                .setCommentPlaceholder(getString(R.string.bug_prompt))
-                .setDefaultEmail(usernamePref.full())
-                .setEmailPlaceholder(getString(R.string.bug_email_prompt))
-                .setInvalidCommentAlertText(getString(R.string.bug_comment_invalid))
-                .setSubmitButtonText(getString(R.string.submit))
-                .setCommentIsRequired(true)
+        new Instabug.Builder(this, BuildConfig.DEBUG ?
+                Passwords.INSTABUG_DEBUG_KEY : Passwords.INSTABUG_KEY)
+                .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventNone)
+                .setDefaultInvocationMode(IBGInvocationMode.IBGInvocationModeFeedbackSender)
+                .setEmailFieldRequired(true)
+                .setCommentFieldRequired(true)
                 .setDebugEnabled(false)
-                .setInvocationEvent(Instabug.IBGInvocationEvent.IBGInvocationEventNone)
-                .setIsTrackingCrashes(false)
-                .setIsTrackingUserSteps(false)
-                .setShowIntroDialog(false)
-                .setPostFeedbackMessage(getString(R.string.success))
-                .setWillShowFeedbackSentAlert(true)
-                .setUserData("Email: " + usernamePref.full() + "\n" +
-                        "App Language: " + languageManager.getCode());
+                .setConsoleLogState(Feature.State.ENABLED)
+                .setCrashReportingState(Feature.State.DISABLED)
+                .setInAppMessagingState(Feature.State.DISABLED)
+                .setInstabugLogState(Feature.State.DISABLED)
+                .setPushNotificationState(Feature.State.DISABLED)
+                .setTrackingUserStepsState(Feature.State.DISABLED)
+                .setUserDataState(Feature.State.ENABLED)
+                .build();
+        Instabug.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
 
         //Set up the FormGenerator
         FormGenerator.set(new FormGenerator.Builder()
