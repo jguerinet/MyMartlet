@@ -16,13 +16,19 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
+import android.content.Context;
+
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.guerinet.utils.prefs.BooleanPreference;
 
-import ca.appvelopers.mcgillmobile.App;
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import ca.appvelopers.mcgillmobile.BuildConfig;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import timber.log.Timber;
 
 
@@ -33,31 +39,34 @@ import timber.log.Timber;
  */
 public class Analytics {
     /**
-     * The singleton instance of this class
+     * Google Analytics {@link Tracker}
      */
-    private static Analytics instance;
+    private final Tracker tracker;
     /**
-     * The tracker
+     * Statistics {@link BooleanPreference}
      */
-    private Tracker mTracker;
+    private final BooleanPreference statsPref;
 
     /**
-     * @return The Analytics instance
+     * Default Constructor
+     *
+     * @param context   App context
+     * @param statsPref Statistics {@link BooleanPreference}
      */
-    public static Analytics get() {
-        //Instantiate it if it's not already ready
-        if(instance == null) {
-            instance = new Analytics();
-        }
-        return instance;
+    @Inject
+    protected Analytics(Context context, @Named(PrefsModule.STATS) BooleanPreference statsPref) {
+        //Set up the tracker
+        tracker = GoogleAnalytics.getInstance(context).newTracker(R.xml.global_tracker);
+        this.statsPref = statsPref;
     }
 
     /**
-     * Default private constructor, used to set up the tracker
+     * Analytics are disabled if we are in debug mode or if the user has disabled them
+     *
+     * @return True if statistics are disabled, false otherwise
      */
-    private Analytics() {
-        //Set up the tracker
-        mTracker = GoogleAnalytics.getInstance(App.getContext()).newTracker(R.xml.global_tracker);
+    private boolean isDisabled() {
+        return BuildConfig.DEBUG || !statsPref.get();
     }
 
     /**
@@ -67,13 +76,16 @@ public class Analytics {
      * @param action   Event action
      */
     public void sendEvent(String category, String action) {
-        if (!BuildConfig.DEBUG) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory(category)
-                    .setAction(action)
-                    .build());
+        if (isDisabled()) {
+            Timber.d("GA Event: %s, %s", category, action);
+            return;
         }
-        Timber.d("GA Event: %s, %s", category, action);
+
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory(category)
+                .setAction(action)
+                .build());
+        Timber.i("GA Event: %s, %s", category, action);
     }
 
     /**
@@ -84,14 +96,17 @@ public class Analytics {
      * @param label    Event label
      */
     public void sendEvent(String category, String action, String label) {
-        if (!BuildConfig.DEBUG) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory(category)
-                    .setAction(action)
-                    .setLabel(label)
-                    .build());
+        if (isDisabled()) {
+            Timber.d("GA Event: %s, %s, %s", category, action, label);
+            return;
         }
-        Timber.d("GA Event: %s, %s, %s", category, action, label);
+
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory(category)
+                .setAction(action)
+                .setLabel(label)
+                .build());
+        Timber.i("GA Event: %s, %s, %s", category, action, label);
     }
 
     /**
@@ -100,13 +115,14 @@ public class Analytics {
      * @param screenName Name of the screen
      */
     public void sendScreen(String screenName) {
-        if (!BuildConfig.DEBUG) {
-            //Set the screen name
-            mTracker.setScreenName(screenName);
-
-            //Send the screen view
-            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        if (isDisabled()) {
+            Timber.d("GA Screen: %s", screenName);
+            return;
         }
-        Timber.d("GA Screen: %s", screenName);
+
+        //Set the screen name and send it
+        tracker.setScreenName(screenName);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        Timber.i("GA Screen: %s", screenName);
     }
 }

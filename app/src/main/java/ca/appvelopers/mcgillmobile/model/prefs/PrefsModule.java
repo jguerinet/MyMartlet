@@ -41,7 +41,7 @@ public class PrefsModule {
     public static final String VERSION = "version";
     public static final String MIN_VERSION = "min_version";
     public static final String FIRST_OPEN = "first_open";
-    public static final String STATISTICS = "statistics";
+    public static final String STATS = "statistics";
     public static final String SCHEDULE_24HR = "24hr Schedule";
     public static final String REMEMBER_USERNAME = "remember_username";
     public static final String EULA = "user_agreement";
@@ -91,9 +91,9 @@ public class PrefsModule {
      */
     @Provides
     @Singleton
-    @Named(STATISTICS)
+    @Named(STATS)
     protected BooleanPreference provideStatistics(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, STATISTICS, true);
+        return new BooleanPreference(prefs, STATS, true);
     }
 
     /**

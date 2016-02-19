@@ -45,6 +45,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.DateUtils;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
@@ -69,6 +70,11 @@ public class ScheduleViewBuilder {
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
     protected BooleanPreference TwentyFourHourPrefs;
+    /**
+     * {@link Analytics} instance
+     */
+    @Inject
+    protected Analytics analytics;
 
     /**
      * Default Constructor
@@ -147,7 +153,8 @@ public class ScheduleViewBuilder {
             List<Course> courses = activity.getCourses(date.plusDays(i - currentDayIndex));
 
             //Fill the schedule for the current day
-            fillSchedule(activity, timetableContainer, scheduleContainer, courses, false,TwentyFourHourPrefs.get());
+            fillSchedule(activity, timetableContainer, scheduleContainer, courses, false,
+                    TwentyFourHourPrefs.get(), analytics);
 
             //Add the current day to the schedule container
             dayContainer.addView(scheduleContainer);
@@ -174,7 +181,8 @@ public class ScheduleViewBuilder {
      */
     public static void fillSchedule(final Activity activity, LinearLayout timetableContainer,
                                     LinearLayout scheduleContainer, List<Course> courses,
-                                    boolean clickableCourses, boolean TwentyFourHourPreference) {
+                                    boolean clickableCourses, boolean TwentyFourHourPreference,
+            final Analytics analytics) {
         //This will be used of an end time of a course when it is added to the schedule container
         LocalTime currentCourseEndTime = null;
 
@@ -264,7 +272,7 @@ public class ScheduleViewBuilder {
                             scheduleCell.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    DialogHelper.showCourseDialog(activity, course);
+                                    DialogHelper.showCourseDialog(activity, course, analytics);
                                 }
                             });
                         }

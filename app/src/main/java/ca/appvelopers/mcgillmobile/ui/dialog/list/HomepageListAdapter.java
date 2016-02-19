@@ -28,6 +28,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
@@ -41,6 +42,11 @@ public abstract class HomepageListAdapter implements ListDialogInterface {
      */
     @Inject
     protected HomepageManager homepageManager;
+    /**
+     * {@link Analytics} instance
+     */
+    @Inject
+    protected Analytics analytics;
     /**
      * The list of homepages
      */

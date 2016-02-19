@@ -30,7 +30,6 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
@@ -53,7 +52,7 @@ public class EbillActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ebill);
         ButterKnife.bind(this);
-        Analytics.get().sendScreen("Ebill");
+        analytics.sendScreen("Ebill");
 
         mList.setLayoutManager(new LinearLayoutManager(this));
         update();

@@ -47,7 +47,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
@@ -88,7 +87,7 @@ public class MyCoursesActivity extends DrawerActivity {
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
         App.component(this).inject(this);
-        Analytics.get().sendScreen("MyCourses");
+        analytics.sendScreen("MyCourses");
 
         //No internet: not worth trying to load the view
         if (!Utils.isConnected(connectivityManager)) {

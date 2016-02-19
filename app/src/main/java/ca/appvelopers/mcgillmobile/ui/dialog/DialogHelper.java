@@ -66,10 +66,11 @@ public class DialogHelper {
      * @param term          The term currently selected
      * @param registerTerms True if we should be using the registration terms, false otherwise
      * @param callback      Callback to use when a new term has been selected
+     * @param analytics     {@link Analytics} instance
      */
     public static void changeSemester(Context context, @Nullable Term term, boolean registerTerms,
-            final TermCallback callback){
-        Analytics.get().sendScreen("Change Semester");
+            final TermCallback callback, Analytics analytics) {
+        analytics.sendScreen("Change Semester");
 
         //Use the default term if no term was sent
         if(term == null) {
@@ -133,11 +134,13 @@ public class DialogHelper {
     /**
      * Shows a dialog with course information
      *
-     * @param activity The calling activity
-     * @param course   The course
+     * @param activity  The calling activity
+     * @param course    The course
+     * @param analytics {@link Analytics} instance
      */
-    public static void showCourseDialog(final Activity activity, final Course course){
-        Analytics.get().sendScreen("Schedule - Course");
+    public static void showCourseDialog(final Activity activity, final Course course,
+            Analytics analytics){
+        analytics.sendScreen("Schedule - Course");
 
         //Inflate the title
         View titleView = View.inflate(activity, R.layout.dialog_course_title, null);

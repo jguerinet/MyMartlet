@@ -46,7 +46,6 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -88,7 +87,7 @@ public class CoursesActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
-        Analytics.get().sendScreen("View Courses");
+        analytics.sendScreen("View Courses");
 
         mTerm = App.getDefaultTerm();
 
@@ -124,7 +123,7 @@ public class CoursesActivity extends DrawerActivity {
                                 update();
                                 refreshCourses();
                             }
-                        });
+                        }, analytics);
                 return true;
             case R.id.action_refresh:
                 refreshCourses();

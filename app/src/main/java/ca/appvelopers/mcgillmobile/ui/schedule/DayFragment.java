@@ -25,19 +25,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.guerinet.utils.DateUtils;
-import com.guerinet.utils.prefs.BooleanPreference;
 
 import org.threeten.bp.LocalDate;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
@@ -57,7 +55,8 @@ public class DayFragment extends Fragment{
     private List<Course> courses;
 
     private boolean twentyFourHours;
-
+    @Inject
+    protected Analytics analytics;
 
 
     /**
@@ -81,6 +80,7 @@ public class DayFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.component(getContext()).inject(this);
         //Get the arguments from the bundle
         date = (LocalDate) getArguments().get(Constants.DATE);
         //Get the courses from the ScheduleActivity
@@ -108,7 +108,7 @@ public class DayFragment extends Fragment{
 
         //Fill it up
         ScheduleViewBuilder.fillSchedule(getActivity(), timetableContainer, scheduleContainer,
-                courses, true,twentyFourHours);
+                courses, true,twentyFourHours, analytics);
 
         return view;
     }

@@ -48,7 +48,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -252,7 +251,7 @@ public class SplashActivity extends BaseActivity {
             DialogHelper.error(this, error.getErrorStringId());
         }
 
-        Analytics.get().sendScreen("Login");
+        analytics.sendScreen("Login");
     }
 
     /**
@@ -301,7 +300,7 @@ public class SplashActivity extends BaseActivity {
                     passwordPref.set(password);
                     rememberUsernamePref.set(rememberUsername.isChecked());
 
-                    Analytics.get().sendEvent("Login", "Remember Username",
+                    analytics.sendEvent("Login", "Remember Username",
                             String.valueOf(rememberUsername.isChecked()));
 
                     //Dismiss the progress dialog
@@ -319,7 +318,7 @@ public class SplashActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Analytics.get().sendEvent("Login", "Login Error", status.getGAString());
+                            analytics.sendEvent("Login", "Login Error", status.getGAString());
                             progressContainer.setVisibility(View.GONE);
                             DialogHelper.error(SplashActivity.this, status.getErrorStringId());
                         }
@@ -358,7 +357,7 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         protected ConnectionStatus doInBackground(Void... params) {
-            Analytics.get().sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
+            analytics.sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
 
             //If they're already logged in, the connection is OK
             ConnectionStatus status =  autoLogin ? ConnectionStatus.OK : mcGillManager.login();

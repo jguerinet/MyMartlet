@@ -36,6 +36,7 @@ import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
 /**
@@ -60,6 +61,11 @@ public class BaseActivity extends AppCompatActivity {
      */
     @Inject
     protected McGillService mcGillService;
+    /**
+     * {@link Analytics} instance
+     */
+    @Inject
+    protected Analytics analytics;
     /**
      * The {@link LanguageManager} instance
      */

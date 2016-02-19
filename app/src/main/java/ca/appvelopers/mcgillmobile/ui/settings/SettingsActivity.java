@@ -41,7 +41,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
@@ -60,7 +59,7 @@ public class SettingsActivity extends DrawerActivity {
      * Statistics {@link BooleanPreference}
      */
     @Inject
-    @Named(PrefsModule.STATISTICS)
+    @Named(PrefsModule.STATS)
     protected BooleanPreference statsPrefs;
 
     /**
@@ -77,7 +76,7 @@ public class SettingsActivity extends DrawerActivity {
         ButterKnife.bind(this);
         App.component(this).inject(this);
         setTitle(getString(R.string.settings_version, Utils.versionName(this)));
-        Analytics.get().sendScreen("Settings");
+        analytics.sendScreen("Settings");
 
         FormGenerator fg = FormGenerator.bind(this, container);
         final Context context = this;
@@ -100,7 +99,7 @@ public class SettingsActivity extends DrawerActivity {
 
                                         languageManager.set(language);
 
-                                        Analytics.get().sendEvent("Settings", "Language",
+                                        analytics.sendEvent("Settings", "Language",
                                                 languageManager.getCode());
 
                                         //Reload this activity
@@ -124,7 +123,7 @@ public class SettingsActivity extends DrawerActivity {
                                         //Update the instance
                                         homepageManager.set(choice);
 
-                                        Analytics.get().sendEvent("Settings", "HomepageManager",
+                                        analytics.sendEvent("Settings", "HomepageManager",
                                                 homepageManager.getString());
 
                                         //Update the TextView
@@ -171,7 +170,7 @@ public class SettingsActivity extends DrawerActivity {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Analytics.get().sendEvent("About", "Report a Bug", null);
+                        analytics.sendEvent("About", "Report a Bug");
                         Instabug.getInstance().invokeFeedbackSender();
                     }
                 });

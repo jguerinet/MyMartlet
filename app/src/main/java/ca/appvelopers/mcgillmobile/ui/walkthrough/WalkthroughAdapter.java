@@ -53,10 +53,16 @@ public class WalkthroughAdapter extends PagerAdapter {
     @Inject
     protected Context context;
     /**
+     * {@link Analytics} instance
+     */
+    @Inject
+    protected Analytics analytics;
+    /**
      * The {@link HomepageManager} instance
      */
     @Inject
     protected HomepageManager homepagePref;
+
 
     public WalkthroughAdapter(Context context, boolean firstOpen) {
         super();
@@ -119,7 +125,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                                                 homepageView.view().setText(
                                                         homepageManager.getTitleString());
 
-                                                Analytics.get().sendEvent("Walkthrough", "HomepageManager",
+                                                analytics.sendEvent("Walkthrough", "HomepageManager",
                                                         homepageManager.getString());
                                             }
                                         });
@@ -148,7 +154,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                                                 facultyView.view().setText(faculty);
 
                                                 //If the faculty is not empty, send the GA
-                                                Analytics.get().sendEvent("Walkthrough", "Faculty",
+                                                analytics.sendEvent("Walkthrough", "Faculty",
                                                         faculty);
                                             }
                                         });
@@ -157,8 +163,7 @@ public class WalkthroughAdapter extends PagerAdapter {
 
                 break;
             default:
-                throw new IllegalStateException(
-                        String.format("Unknown position %d in walkthrough", position));
+                throw new IllegalStateException("Unknown position " + position + " in walkthrough");
         }
 
         collection.addView(view);

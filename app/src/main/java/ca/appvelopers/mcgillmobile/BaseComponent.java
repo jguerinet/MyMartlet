@@ -58,8 +58,9 @@ public interface BaseComponent {
     void inject(DesktopActivity activity);
     void inject(SettingsActivity activity);
 
-    void inject(McGillManager mcGillManager);
+    void inject(DayFragment fragment);
 
+    void inject(McGillManager mcGillManager);
     void inject(BootReceiver receiver);
 
     void inject(WalkthroughAdapter adapter);

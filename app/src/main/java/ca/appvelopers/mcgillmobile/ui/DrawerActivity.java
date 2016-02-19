@@ -53,7 +53,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.storage.Clear;
 import timber.log.Timber;
@@ -240,7 +239,7 @@ public abstract class DrawerActivity extends BaseActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == DialogInterface.BUTTON_POSITIVE) {
-                            Analytics.get().sendEvent("Logout", "Clicked");
+                            analytics.sendEvent("Logout", "Clicked");
                             Clear.all(rememberUsernamePref, usernamePref, passwordPref,
                                     homepageManager);
                             //Go back to SplashActivity
@@ -256,7 +255,7 @@ public abstract class DrawerActivity extends BaseActivity
      * Shares the app on Facebook
      */
     private void shareOnFacebook() {
-        Analytics.get().sendEvent("facebook", "attempt_post");
+        analytics.sendEvent("facebook", "attempt_post");
 
         //Set up all of the info
         ShareLinkContent content = new ShareLinkContent.Builder()
@@ -274,7 +273,7 @@ public abstract class DrawerActivity extends BaseActivity
                 if (result.getPostId() != null) {
                     //Let the user know he posted successfully
                     Utils.toast(DrawerActivity.this, R.string.social_post_success);
-                    Analytics.get().sendEvent("facebook", "successful_post");
+                    analytics.sendEvent("facebook", "successful_post");
                 } else {
                     Timber.i("Facebook post cancelled");
                 }
@@ -287,9 +286,9 @@ public abstract class DrawerActivity extends BaseActivity
 
             @Override
             public void onError(FacebookException e) {
-                Utils.toast(DrawerActivity.this, R.string.social_post_failure);
                 Timber.e(e, "Error posting to Facebook");
-                Analytics.get().sendEvent("facebook", "failed_post");
+                Utils.toast(DrawerActivity.this, R.string.social_post_failure);
+                analytics.sendEvent("facebook", "failed_post");
             }
         });
         dialog.show(content);

@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Help;
 import timber.log.Timber;
@@ -74,7 +73,7 @@ public class SemesterActivity extends BaseActivity {
         setContentView(R.layout.activity_semester);
         ButterKnife.bind(this);
         setUpToolbar(true);
-        Analytics.get().sendScreen("Transcript - Semester");
+        analytics.sendScreen("Transcript - Semester");
 
         //Get the semester from the intent
         Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);

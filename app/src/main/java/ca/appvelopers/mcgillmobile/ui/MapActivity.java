@@ -64,7 +64,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import timber.log.Timber;
 
@@ -147,7 +146,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
-        Analytics.get().sendScreen("Map");
+        analytics.sendScreen("Map");
 
         //Set up the initial information
         mPlaces = new ArrayList<>();

@@ -41,7 +41,6 @@ import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Person;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 
 /**
  * Displays information about the Appvelopers team
@@ -62,7 +61,7 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
         setUpToolbar(true);
-        Analytics.get().sendScreen("About");
+        analytics.sendScreen("About");
 
         //Set up the list
         list.setLayoutManager(new LinearLayoutManager(this));
@@ -254,14 +253,14 @@ public class AboutActivity extends BaseActivity {
                 linkedIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Analytics.get().sendEvent("About", "Linkedin", getString(person.getName()));
+                        analytics.sendEvent("About", "Linkedin", getString(person.getName()));
                         Utils.openURL(AboutActivity.this, getString(person.getLinkedIn()));
                     }
                 });
                 email.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Analytics.get().sendEvent("About", "Email", getString(person.getName()));
+                        analytics.sendEvent("About", "Email", getString(person.getName()));
 
                         //Send an email :
                         Intent emailIntent = new Intent(Intent.ACTION_SEND)

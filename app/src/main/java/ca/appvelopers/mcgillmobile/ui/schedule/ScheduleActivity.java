@@ -131,7 +131,7 @@ public class ScheduleActivity extends DrawerActivity {
                                 //Refresh the content
                                 refreshCourses();
                             }
-                        });
+                        }, analytics);
                 return true;
             case R.id.action_refresh:
                 refreshCourses();

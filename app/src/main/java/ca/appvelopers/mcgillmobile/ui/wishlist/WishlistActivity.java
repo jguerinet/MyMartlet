@@ -43,7 +43,6 @@ import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -84,7 +83,7 @@ public class WishlistActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
-        Analytics.get().sendScreen("Wishlist");
+        analytics.sendScreen("Wishlist");
 
         //Check if there are any terms to register for
         if (App.getRegisterTerms().isEmpty()) {
@@ -139,7 +138,7 @@ public class WishlistActivity extends DrawerActivity {
                                 mTerm = term;
                                 update();
                             }
-                        });
+                        }, analytics);
                 return true;
             case R.id.action_refresh:
                 updateWishlist();
@@ -164,7 +163,7 @@ public class WishlistActivity extends DrawerActivity {
 
     @OnClick(R.id.course_wishlist)
     protected void removeFromWishlist() {
-        SearchResultsActivity.addToWishlist(this, mAdapter.getCheckedCourses(), false);
+        SearchResultsActivity.addToWishlist(this, mAdapter.getCheckedCourses(), false, analytics);
         //Reload the adapter
         update();
     }

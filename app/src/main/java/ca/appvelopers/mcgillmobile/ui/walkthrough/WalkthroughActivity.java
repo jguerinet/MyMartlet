@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
-import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
@@ -80,7 +79,7 @@ public class WalkthroughActivity extends BaseActivity {
         boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
         boolean firstOpen = getIntent().getBooleanExtra(Constants.FIRST_OPEN, false);
 
-        Analytics.get().sendScreen(email ? "Email Walkthrough" : "Walkthrough");
+        analytics.sendScreen(email ? "Email Walkthrough" : "Walkthrough");
 
         //Load the right adapter
         mAdapter = email ? new EmailWalkthroughAdapter() : new WalkthroughAdapter(this, firstOpen);
@@ -128,7 +127,7 @@ public class WalkthroughActivity extends BaseActivity {
 
     @OnClick(R.id.close)
     protected void close() {
-        Analytics.get().sendEvent("Walkthrough", "Skip");
+        analytics.sendEvent("Walkthrough", "Skip");
         finish();
     }
 }

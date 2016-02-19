@@ -74,8 +74,8 @@ public class SearchResultsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchresults);
         ButterKnife.bind(this);
-        Analytics.get().sendScreen("Search Results");
         setUpToolbar(true);
+        analytics.sendScreen("Search Results");
 
         //Get the info from the intent
         mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
@@ -102,7 +102,7 @@ public class SearchResultsActivity extends BaseActivity {
 
     @OnClick(R.id.course_wishlist)
     void wishlistButton(){
-        addToWishlist(this, mAdapter.getCheckedCourses(), true);
+        addToWishlist(this, mAdapter.getCheckedCourses(), true, analytics);
     }
 
     /**
@@ -180,11 +180,13 @@ public class SearchResultsActivity extends BaseActivity {
     /**
      * Adds/removes the given courses to/from the wishlist
      *
-     * @param activity The calling activity
-     * @param courses  The courses to add/remove
-     * @param add      True if we are adding courses, false if we're removing
+     * @param activity  The calling activity
+     * @param courses   The courses to add/remove
+     * @param add       True if we are adding courses, false if we're removing
+     * @param analytics {@link Analytics} instance
      */
-    public static void addToWishlist(BaseActivity activity, List<Course> courses, boolean add){
+    public static void addToWishlist(BaseActivity activity, List<Course> courses, boolean add,
+            Analytics analytics){
         String toastMessage;
         //If there are none, display error message
         if (courses.isEmpty()) {
@@ -205,7 +207,7 @@ public class SearchResultsActivity extends BaseActivity {
                     }
                 }
 
-                Analytics.get().sendEvent("Search Results", "Add to Wishlist",
+                analytics.sendEvent("Search Results", "Add to Wishlist",
                         String.valueOf(coursesAdded));
 
                 toastMessage = activity.getString(R.string.wishlist_add, coursesAdded);
@@ -214,8 +216,7 @@ public class SearchResultsActivity extends BaseActivity {
                 toastMessage = activity.getString(R.string.wishlist_remove, courses.size());
                 wishlist.removeAll(courses);
 
-                Analytics.get().sendEvent("Wishlist", "Remove",
-                        String.valueOf(courses.size()));
+                analytics.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));
             }
 
             //Save the courses to the App context
