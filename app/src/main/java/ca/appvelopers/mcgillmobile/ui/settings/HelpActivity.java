@@ -80,6 +80,7 @@ public class HelpActivity extends BaseActivity {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        analytics.sendEvent("Help", "McGill Email");
                         //Open the official McGill Guide
                         Utils.openURL(HelpActivity.this,
                                 "http://kb.mcgill.ca/kb/article?ArticleId=4774");

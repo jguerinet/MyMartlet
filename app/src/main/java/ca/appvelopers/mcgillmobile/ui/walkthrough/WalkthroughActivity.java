@@ -19,7 +19,6 @@ package ca.appvelopers.mcgillmobile.ui.walkthrough;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
@@ -44,64 +43,60 @@ public class WalkthroughActivity extends BaseActivity {
      * The ViewPager
      */
     @Bind(R.id.view_pager)
-    protected ViewPager mViewPager;
+    protected ViewPager viewPager;
     /**
      * The ViewPagerIndicator
      */
     @Bind(R.id.indicator)
-    protected CirclePageIndicator mIndicator;
+    protected CirclePageIndicator indicator;
     /**
      * The next button
      */
     @Bind(R.id.next)
-    protected Button mNext;
+    protected Button next;
     /**
      * The back button
      */
     @Bind(R.id.back)
-    protected Button mBack;
+    protected Button back;
     /**
      * Adapter used for the walkthrough
      */
-    private PagerAdapter mAdapter;
+    private WalkthroughAdapter adapter;
     /**
      * Current position in the walkthrough
      */
-    private int mPosition = 0;
+    private int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walkthrough);
         ButterKnife.bind(this);
+        analytics.sendScreen("Walkthrough");
 
-        //Get the info to know what walkthrough to show
-        boolean email = getIntent().getBooleanExtra(Constants.EMAIL, false);
+        //Load the adapter
         boolean firstOpen = getIntent().getBooleanExtra(Constants.FIRST_OPEN, false);
-
-        analytics.sendScreen(email ? "Email Walkthrough" : "Walkthrough");
-
-        //Load the right adapter
-        mAdapter = email ? new EmailWalkthroughAdapter() : new WalkthroughAdapter(this, firstOpen);
-        mViewPager.setAdapter(mAdapter);
+        adapter = new WalkthroughAdapter(this, firstOpen);
+        viewPager.setAdapter(adapter);
 
         //Indicator
-        mIndicator.setViewPager(mViewPager);
-        mIndicator.setStrokeColor(Color.WHITE);
-        mIndicator.setPageColor(Color.GRAY);
-        mIndicator.setFillColor(ContextCompat.getColor(this, R.color.red));
-        mIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        indicator.setViewPager(viewPager);
+        indicator.setStrokeColor(Color.WHITE);
+        indicator.setPageColor(Color.GRAY);
+        indicator.setFillColor(ContextCompat.getColor(this, R.color.red));
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int i, float v, int i2) {}
 
             @Override
             public void onPageSelected(int position) {
-                mPosition = position;
+                WalkthroughActivity.this.position = position;
                 //Hide the back button on the first page
-                mBack.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
+                back.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
                 //Set the right text on the next button if we are on the last page
-                mNext.setText((position == mAdapter.getCount() - 1) ?
+                next.setText((position == adapter.getCount() - 1) ?
                         R.string.start : R.string.next);
             }
 
@@ -111,18 +106,18 @@ public class WalkthroughActivity extends BaseActivity {
     }
 
     @OnClick(R.id.next)
-    protected void next(){
+    protected void next() {
         //We've reached the end of the walkthrough
-        if (mPosition == mAdapter.getCount() - 1) {
+        if (position == adapter.getCount() - 1) {
             finish();
         } else {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
+            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
         }
     }
 
     @OnClick(R.id.back)
     protected void back() {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
     }
 
     @OnClick(R.id.close)
