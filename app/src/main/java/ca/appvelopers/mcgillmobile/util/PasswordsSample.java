@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,10 @@ public class PasswordsSample {
      * Key to use when instantiating Instabug
      */
     public static final String INSTABUG_KEY = "";
+    /**
+     * Key to use when instantiating Instabug for debug and beta builds
+     */
+    public static final String INSTABUG_DEBUG_KEY = "69718687b4084330ca1bac3e4dca18f6";
     /**
      * Twitter Key and secret for when posting to Twitter
      */
