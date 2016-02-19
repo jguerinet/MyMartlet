@@ -257,6 +257,7 @@
     <string name="help_email_walk5">Appuyez sur Suivant</string>
     <string name="help_email_walk6">Votre email est configuré!</string>
     <string name="help_download">Télécharger l’Application Officielle de McGill</string>
+    <string name="help_beta_tester">TODO </string>
 
     <!-- Maps -->
     <string name="map_filter">Filtrer par Catégorie</string>

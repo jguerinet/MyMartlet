@@ -148,7 +148,7 @@
     <string name="settings_language">Language</string>
     <string name="settings_homepage_title">Homepage</string>
     <string name="settings_homepage">Homepage: %s</string>
-    <string name="settings_statistics">Anonymous Usage Statistics</string>
+    <string name="settings_statistics">Anonymous Usage Statistics </string>
     <string name="settings_twentyfourhours">Schedule displays 24 hours</string>
     <string name="homepage_schedule">Schedule</string>
     <string name="homepage_transcript">Transcript</string>
@@ -293,6 +293,7 @@
     <string name="help_email_walk5">Select Next</string>
     <string name="help_email_walk6">Your email is set up!</string>
     <string name="help_download">Download the Official McGill App</string>
+    <string name="help_beta_tester">Become a Beta Tester</string>
 
     <!-- Maps -->
     <string name="map_filter">Filter by Category</string>
