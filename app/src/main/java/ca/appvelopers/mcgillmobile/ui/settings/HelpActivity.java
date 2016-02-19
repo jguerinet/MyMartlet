@@ -38,7 +38,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.FAQ;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
-import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
  * Displays useful information to the user
@@ -81,9 +80,9 @@ public class HelpActivity extends BaseActivity {
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(HelpActivity.this, WalkthroughActivity.class)
-                                .putExtra(Constants.EMAIL, true);
-                        startActivity(intent);
+                        //Open the official McGill Guide
+                        Utils.openURL(HelpActivity.this,
+                                "http://kb.mcgill.ca/kb/article?ArticleId=4774");
                     }
                 });
 
