@@ -23,12 +23,10 @@
     <string name="title_agreement">EULA</string>
 
     <!-- General Strings -->
-    <string name="success">Success!</string>
     <string name="error">Error</string>
     <string name="warning">Warning</string>
     <string name="done">Done</string>
     <string name="refresh">Refresh</string>
-    <string name="submit">Submit</string>
     <string name="error_no_internet">You are not connected to the internet. Please connect to the internet and try again. </string>
     <string name="error_other">An error has occurred. Please try again later.</string>
     <string name="english">English</string>
@@ -103,7 +101,6 @@
     <string name="transcript_CGPA">CGPA: %s</string>
     <string name="transcript_credits">Total Credits: %s</string>
     <string name="transcript_semesters">Semesters: </string>
-    <string name="transcript_error">We are unable to load your transcript. Please try again later.</string>
 
     <!-- Semester Screen -->
     <string name="semester_termCredits">Term Credits: %s</string>

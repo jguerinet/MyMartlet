@@ -23,12 +23,10 @@
     <string name="title_agreement">CLUF</string>
 
     <!-- General Strings -->
-    <string name="success">Succès!</string>
     <string name="error">Erreur</string>
     <string name="warning">Avertissement</string>
     <string name="done">Terminer</string>
     <string name="refresh">Rafraîchir</string>
-    <string name="submit">Soumettre</string>
     <string name="error_no_internet">Vous n\'êtes pas connecté à l\'internet. Veuillez vous connecter à l\'internet et réessayer.</string>
     <string name="error_other">Une erreur est survenue. Veuillez réessayer plus tard.</string>
     <string name="english">Anglais</string>
@@ -102,7 +100,6 @@
     <string name="transcript_CGPA">CGPA: %s</string>
     <string name="transcript_credits">Total des Crédits: %s</string>
     <string name="transcript_semesters">Semestres:</string>
-    <string name="transcript_error">Nous n\'arrivons pas a charger votre bulletin. Veuillez réessayer plus tard.</string>
 
     <!-- Semester Screen -->
     <string name="semester_termCredits">Crédits: %s</string>
