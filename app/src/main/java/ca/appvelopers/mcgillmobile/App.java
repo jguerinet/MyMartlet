@@ -51,7 +51,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Passwords;
-import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 import io.fabric.sdk.android.Fabric;
@@ -78,11 +77,6 @@ public class App extends Application {
      */
     @Inject
     protected UsernamePreference usernamePref;
-    /**
-     * The {@link LanguageManager} instance
-     */
-    @Inject
-    protected LanguageManager languageManager;
     /**
      * The app {@link Context}
      */
