@@ -69,10 +69,6 @@ public class Constants {
      */
     public static final String TRANSCRIPT = "transcript";
     /**
-     * Key used to pass whether or not the user needs to accept the EULA via an intent
-     */
-    public static final String EULA_REQUIRED = "eula_required";
-    /**
      * Key that is true if this is the first time the user is signing in, false otherwise
      */
     public static final String FIRST_OPEN = "first_open";

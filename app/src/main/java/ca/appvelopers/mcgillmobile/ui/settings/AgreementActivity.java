@@ -32,7 +32,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
-import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
  * Displays the EULA
@@ -60,7 +59,7 @@ public class AgreementActivity extends BaseActivity {
         ButterKnife.bind(this);
         App.component(this).inject(this);
 
-        boolean required = getIntent().getBooleanExtra(Constants.EULA_REQUIRED, false);
+        boolean required = getIntent().getBooleanExtra(PrefsModule.EULA, false);
         setUpToolbar(!required);
 
         //Check if we need to display the buttons

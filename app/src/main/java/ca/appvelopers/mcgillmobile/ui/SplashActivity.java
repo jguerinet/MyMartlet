@@ -181,7 +181,7 @@ public class SplashActivity extends BaseActivity {
         if (!eulaPref.get()) {
             //If the user has not accepted the EULA, show it before continuing
             Intent intent = new Intent(this, AgreementActivity.class)
-                    .putExtra(Constants.EULA_REQUIRED, true);
+                    .putExtra(PrefsModule.EULA, true);
             startActivityForResult(intent, AGREEMENT_CODE);
         } else {
             //If they have, go to the next screen
