@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -486,15 +488,10 @@ public class ScheduleActivity extends DrawerActivity {
         @Bind(R.id.day_date)
         protected TextView dateTitle;
         /**
-         * Container for the day's timetable
+         * List to represent the day
          */
-        @Bind(R.id.container_timetable)
-        protected LinearLayout timetableContainer;
-        /**
-         * Container for the day's schedule
-         */
-        @Bind(R.id.container_schedule)
-        protected LinearLayout scheduleContainer;
+        @Bind(android.R.id.list)
+        protected RecyclerView schedule;
         /**
          * The initial date to use as a reference
          */
@@ -518,18 +515,27 @@ public class ScheduleActivity extends DrawerActivity {
         @Override
         public Object instantiateItem(ViewGroup collection, int position) {
             Context context = ScheduleActivity.this;
-            View view = View.inflate(context, R.layout.fragment_day, null);
+            View view = View.inflate(context, R.layout.item_day, null);
             ButterKnife.bind(this, view);
 
             //Get the date for this view
             LocalDate currentDate = getDate(position);
+
+            //Go through the list of courses, find which ones are for the given date
+            List<Course> courses = new ArrayList<>();
+            for (Course course : ScheduleActivity.this.courses) {
+                if (course.isForDate(currentDate)) {
+                    courses.add(course);
+                }
+            }
 
             //Set the titles
             dayTitle.setText(DayUtils.getString(context, currentDate.getDayOfWeek()));
             dateTitle.setText(com.guerinet.utils.DateUtils.getLongDateString(currentDate));
 
             //Fill the schedule up
-            fillSchedule(timetableContainer, scheduleContainer, currentDate, true);
+            schedule.setLayoutManager(new LinearLayoutManager(ScheduleActivity.this));
+            schedule.setAdapter(new DayAdapter(currentDate, courses));
 
             collection.addView(view);
             return view;
