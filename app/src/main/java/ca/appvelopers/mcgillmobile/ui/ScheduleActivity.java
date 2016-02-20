@@ -100,17 +100,26 @@ public class ScheduleActivity extends DrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_schedule);
+        ButterKnife.bind(this);
+        App.component(this).inject(this);
+
         //TODO Use the SavedInstanceState to get the term and courses
         mTerm = App.getDefaultTerm();
         mCourses = new ArrayList<>();
         //TODO
         this.date = getStartingDate();
 
-        //Load the right view
-        View view = loadView(getResources().getConfiguration().orientation);
-        setContentView(view);
-        ButterKnife.bind(this);
-        App.component(this).inject(this);
+        //Title
+        setTitle(mTerm.getString(this));
+
+        //Render the right view based on the orientation
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            renderLandscapeView();
+        } else {
+            renderPortraitView();
+        }
+
 
         //Check if this is the first time the user is using the app
         if (firstOpenPrefs.get()) {
@@ -170,20 +179,6 @@ public class ScheduleActivity extends DrawerActivity {
     }
 
     /**
-     * Reloads the view
-     *
-     * @param orientation The current orientation
-     * @return The view to load
-     */
-    private View loadView(int orientation) {
-        //Title
-        setTitle(mTerm.getString(this));
-
-        //Return the view
-        return renderView(orientation);
-    }
-
-    /**
      * Gets the starting date based on the term and get the concerned classes
      *
      * @return The starting date
@@ -208,6 +203,7 @@ public class ScheduleActivity extends DrawerActivity {
 
     /**
      * Refreshes the list of courses for the given term and the user's transcript
+     *  (only available in portrait mode)
      */
     private void refreshCourses() {
         //Show the user we are refreshing
@@ -236,11 +232,8 @@ public class ScheduleActivity extends DrawerActivity {
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    //Update the view
-                                                    setContentView(loadView(getResources().
-                                                            getConfiguration().orientation));
-
-                                                    //Done refreshing
+                                                    Assert.assertNotNull(viewPager);
+                                                    viewPager.getAdapter().notifyDataSetChanged();
                                                     showToolbarProgress(false);
                                                 }
                                             });
@@ -262,45 +255,6 @@ public class ScheduleActivity extends DrawerActivity {
                 mCourses.add(classItem);
             }
         }
-    }
-
-    /**
-     * Returns the list of courses for a given day and date
-     *
-     * @param date The date
-     * @return The list of courses
-     */
-    public List<Course> getCourses(LocalDate date) {
-        List<Course> courses = new ArrayList<>();
-
-        //Go through the list of courses, find which ones have the same day and
-        //  are for the given date
-        for (Course course : mCourses) {
-            if (course.isForDate(date)) {
-                courses.add(course);
-            }
-        }
-        return courses;
-    }
-
-    /**
-     * Loads, fills and returns the view to use given the orientation
-     *
-     * @param orientation The current screen orientation
-     * @return The view to use
-     */
-    public View renderView(int orientation) {
-        //Inflate the view
-        View view = View.inflate(this, R.layout.activity_schedule, null);
-
-        //Render the right view based on the orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            renderLandscapeView();
-        } else {
-            renderPortraitView();
-        }
-
-        return view;
     }
 
     /**
@@ -340,11 +294,8 @@ public class ScheduleActivity extends DrawerActivity {
                     getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            //Get the classes for today
-            List<Course> courses = getCourses(date.plusDays(i - currentDayIndex));
-
             //Fill the schedule for the current day
-            fillSchedule(this.timetableContainer, scheduleContainer, courses, false);
+            fillSchedule(this.timetableContainer, scheduleContainer, date.plusDays(i - currentDayIndex), false);
 
             //Add the current day to the schedule container
             this.scheduleContainer.addView(scheduleContainer);
@@ -392,12 +343,20 @@ public class ScheduleActivity extends DrawerActivity {
      *
      * @param timetableContainer The container for the timetable
      * @param scheduleContainer  The container for the schedule
-     * @param courses            The list of courses
      * @param clickable          True if the user can click on the courses (portrait),
      *                              false otherwise (landscape)
      */
     public void fillSchedule(LinearLayout timetableContainer, LinearLayout scheduleContainer,
-            List<Course> courses, boolean clickable) {
+            LocalDate date, boolean clickable) {
+        //Go through the list of courses, find which ones have the same day and
+        //  are for the given date
+        List<Course> courses = new ArrayList<>();
+        for (Course course : mCourses) {
+            if (course.isForDate(date)) {
+                courses.add(course);
+            }
+        }
+
         //This will be used of an end time of a course when it is added to the schedule container
         LocalTime currentCourseEndTime = null;
 
@@ -538,7 +497,7 @@ public class ScheduleActivity extends DrawerActivity {
             //Get the first day (offset of 500001 to get the right day)
             firstDayIndex = 500001 + date.getDayOfWeek().getValue();
             //Set the starting date
-             startingDate = date;
+            startingDate = date;
         }
 
         @Override
@@ -555,7 +514,7 @@ public class ScheduleActivity extends DrawerActivity {
             dateTitle.setText(com.guerinet.utils.DateUtils.getLongDateString(currentDate));
 
             //Fill the schedule up
-            fillSchedule(timetableContainer, scheduleContainer, getCourses(currentDate), true);
+            fillSchedule(timetableContainer, scheduleContainer, currentDate, true);
 
             collection.addView(view);
             return view;
@@ -572,7 +531,7 @@ public class ScheduleActivity extends DrawerActivity {
         }
 
         public LocalDate getDate(int position) {
-            return date.plusDays(position - firstDayIndex);
+            return startingDate.plusDays(position - firstDayIndex);
         }
 
         //TODO Do we need this
