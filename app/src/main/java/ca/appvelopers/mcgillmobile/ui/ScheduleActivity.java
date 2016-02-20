@@ -347,15 +347,15 @@ public class ScheduleActivity extends DrawerActivity {
     /**
      * Fills the schedule based on given data
      *
-     * @param timetableContainer The container for the timetable
-     * @param scheduleContainer  The container for the schedule
+     * @param timetableContainer Container for the timetable
+     * @param scheduleContainer  Container for the schedule
+     * @param date               Date to fill the schedule for
      * @param clickable          True if the user can click on the courses (portrait),
-     *                              false otherwise (landscape)
+     *                           false otherwise (landscape)
      */
-    public void fillSchedule(LinearLayout timetableContainer, LinearLayout scheduleContainer,
+    private void fillSchedule(LinearLayout timetableContainer, LinearLayout scheduleContainer,
             LocalDate date, boolean clickable) {
-        //Go through the list of courses, find which ones have the same day and
-        //  are for the given date
+        //Go through the list of courses, find which ones are for the given date
         List<Course> courses = new ArrayList<>();
         for (Course course : this.courses) {
             if (course.isForDate(date)) {
@@ -384,7 +384,7 @@ public class ScheduleActivity extends DrawerActivity {
             timetableContainer.addView(timetableCell);
 
             //Cycle through the half hours
-            for(int min = 0; min < 31; min+= 30){
+            for (int min = 0; min < 31; min+= 30) {
                 //Initialize the current course to null
                 Course currentCourse = null;
 
@@ -393,15 +393,15 @@ public class ScheduleActivity extends DrawerActivity {
 
                 //if currentCourseEndTime = null (no course is being added) or it is equal to
                 //the current time in min (end of a course being added) we need to add a new view
-                if(currentCourseEndTime == null || currentCourseEndTime.equals(currentTime)){
+                if (currentCourseEndTime == null || currentCourseEndTime.equals(currentTime)) {
                     //Reset currentCourseEndTime
                     currentCourseEndTime = null;
 
                     //Check if there is a course at this time
-                    for(Course course : courses){
+                    for (Course course : courses) {
                         //If there is, set the current course to that time, and calculate the
                         //ending time of this course
-                        if(course.getRoundedStartTime().equals(currentTime)){
+                        if (course.getRoundedStartTime().equals(currentTime)) {
                             currentCourse = course;
                             currentCourseEndTime = course.getRoundedEndTime();
                             break;
@@ -411,18 +411,15 @@ public class ScheduleActivity extends DrawerActivity {
                     View scheduleCell;
 
                     //There is a course at this time
-                    if(currentCourse != null){
+                    if (currentCourse != null) {
                         //Inflate the right view
                         scheduleCell = View.inflate(this, R.layout.item_day_class, null);
 
-                        //Quick check
-                        assert(scheduleCell != null);
-
                         //Set up all of the info
-                        TextView code = (TextView)scheduleCell.findViewById(R.id.course_code);
+                        TextView code = (TextView) scheduleCell.findViewById(R.id.course_code);
                         code.setText(currentCourse.getCode());
 
-                        TextView type = (TextView)scheduleCell.findViewById(R.id.course_type);
+                        TextView type = (TextView) scheduleCell.findViewById(R.id.course_type);
                         type.setText(currentCourse.getType());
 
                         TextView courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
@@ -445,7 +442,7 @@ public class ScheduleActivity extends DrawerActivity {
                         scheduleCell.setLayoutParams(lp);
 
                         //Check if we need to make the course clickable
-                        if(clickable){
+                        if (clickable) {
                             //We need a final variable for the onClick listener
                             final Course course = currentCourse;
                             //OnClick: CourseActivity (for a detailed description of the course)
