@@ -540,12 +540,11 @@ public class ScheduleActivity extends DrawerActivity {
             return startingDate.plusDays(position - firstDayIndex);
         }
 
-        //TODO Do we need this
-//        @Override
-//        public int getItemPosition(Object object) {
-//            //This is to force the refreshing of all of the views when the view is reloaded
-//            return POSITION_NONE;
-//        }
+        @Override
+        public int getItemPosition(Object object) {
+            //This is to force the refreshing of all of the views when the view is reloaded
+            return POSITION_NONE;
+        }
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
