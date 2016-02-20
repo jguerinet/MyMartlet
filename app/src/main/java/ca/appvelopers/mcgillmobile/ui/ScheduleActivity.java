@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +61,7 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
@@ -448,8 +451,7 @@ public class ScheduleActivity extends DrawerActivity {
                             scheduleCell.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    DialogHelper.showCourseDialog(ScheduleActivity.this, course,
-                                            analytics);
+                                    showCourseDialog(course);
                                 }
                             });
                         }
@@ -468,6 +470,81 @@ public class ScheduleActivity extends DrawerActivity {
                 }
             }
         }
+    }
+
+    /**
+     * Shows a dialog with course information
+     *
+     * @param course Clicked course
+     */
+    public void showCourseDialog(final Course course) {
+        analytics.sendScreen("Schedule - Course");
+
+        //Inflate the body
+        View layout = View.inflate(this, R.layout.dialog_course, null);
+
+        //Title
+        TextView title = (TextView) layout.findViewById(R.id.course_title);
+        title.setText(course.getTitle());
+
+        //Time
+        TextView time = (TextView) layout.findViewById(R.id.course_time);
+        time.setText(course.getTimeString());
+
+        //Location
+        TextView location = (TextView) layout.findViewById(R.id.course_location);
+        location.setText(course.getLocation());
+
+        //Type
+        TextView type = (TextView) layout.findViewById(R.id.course_type);
+        type.setText(course.getType());
+
+        //Instructor
+        TextView instructor = (TextView) layout.findViewById(R.id.course_instructor);
+        instructor.setText(course.getInstructor());
+
+        //Section
+        TextView section = (TextView) layout.findViewById(R.id.course_section);
+        section.setText(course.getSection());
+
+        //Credits
+        TextView credits = (TextView) layout.findViewById(R.id.course_credits);
+        credits.setText(String.valueOf(course.getCredits()));
+
+        //CRN
+        TextView crn = (TextView) layout.findViewById(R.id.course_crn);
+        crn.setText(String.valueOf(course.getCRN()));
+
+        //Docuum Link
+        TextView docuum = (TextView) layout.findViewById(R.id.course_docuum);
+        docuum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.openURL(ScheduleActivity.this,
+                        Help.getDocuumLink(course.getSubject(), course.getNumber()));
+            }
+        });
+
+        //Show on Map
+        TextView map = (TextView) layout.findViewById(R.id.course_map);
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+            }
+        });
+
+        new AlertDialog.Builder(this)
+                .setTitle(course.getCode())
+                .setView(layout)
+                .setCancelable(true)
+                .setNeutralButton(R.string.done, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     /**
