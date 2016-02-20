@@ -26,7 +26,10 @@ import android.widget.TextView;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +45,7 @@ import ca.appvelopers.mcgillmobile.util.DateUtils;
 public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder> {
     private LocalDate date;
     private List<Course> courses;
+    private Map<LocalTime, List<Course>> schedule;
 
     /**
      * Default Constructor
@@ -51,6 +55,8 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder> {
     public DayAdapter(LocalDate date, List<Course> courses) {
         this.date = date;
         this.courses = courses;
+        schedule = new HashMap<>();
+        update();
     }
 
     @Override
@@ -61,13 +67,46 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        holder.bind(LocalTime.of(8, 0).plusMinutes(position * 30));
+        holder.bind(getTime(position));
     }
 
     @Override
     public int getItemCount() {
         // Every half hour between 8 AM and 10 PM
         return 28;
+    }
+
+    /**
+     * TODO
+     * @param position
+     * @return
+     */
+    public LocalTime getTime(int position) {
+        return LocalTime.of(8, 0).plusMinutes(position * 30);
+    }
+
+    private void update() {
+        //Clear the current schedule
+        schedule.clear();
+
+        //Go through the courses
+        for (Course course : courses) {
+            //Go through the course times, half hour by half hour
+            for (LocalTime time = course.getRoundedStartTime();
+                 course.getRoundedEndTime().isAfter(time); time.plusMinutes(30)) {
+
+                List<Course> timeCourses = schedule.get(time);
+
+                if (timeCourses == null) {
+                    //Make a list for the given time if there is none already, and save it bacl
+                    timeCourses = new ArrayList<>();
+                    schedule.put(time, timeCourses);
+                }
+
+                //Add the course
+                timeCourses.add(course);
+            }
+        }
     }
 
     class Holder extends RecyclerView.ViewHolder {
