@@ -105,7 +105,7 @@
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.schedule.ScheduleActivity"
+            android:name=".ui.ScheduleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 

@@ -21,13 +21,11 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
+import ca.appvelopers.mcgillmobile.ui.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
-import ca.appvelopers.mcgillmobile.ui.schedule.DayFragment;
-import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
-import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleViewBuilder;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughAdapter;
@@ -47,7 +45,6 @@ import dagger.Component;
  */
 @Singleton @Component(modules = {AppModule.class, NetworkModule.class, PrefsModule.class})
 public interface BaseComponent {
-    void inject(ScheduleViewBuilder activity);
     void inject(BaseActivity activity);
     void inject(DrawerActivity activity);
     void inject(SplashActivity activity);
@@ -56,8 +53,6 @@ public interface BaseComponent {
     void inject(MyCoursesActivity activity);
     void inject(DesktopActivity activity);
     void inject(SettingsActivity activity);
-
-    void inject(DayFragment fragment);
 
     void inject(McGillManager mcGillManager);
     void inject(BootReceiver receiver);

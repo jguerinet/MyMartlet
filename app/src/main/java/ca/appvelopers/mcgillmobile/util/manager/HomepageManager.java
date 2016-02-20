@@ -30,9 +30,9 @@ import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.MapActivity;
+import ca.appvelopers.mcgillmobile.ui.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.ebill.EbillActivity;
-import ca.appvelopers.mcgillmobile.ui.schedule.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.search.SearchActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
