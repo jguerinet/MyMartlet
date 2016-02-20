@@ -39,6 +39,7 @@ import junit.framework.Assert;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
+import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.ArrayList;
@@ -57,7 +58,6 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.DateUtils;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -363,6 +363,10 @@ public class ScheduleActivity extends DrawerActivity {
             }
         }
 
+        //Set up the DateTimeFormatter we're going to use for the hours
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern(TwentyFourHourPrefs.get() ? "HH:mm" : "hh a");
+
         //This will be used of an end time of a course when it is added to the schedule container
         LocalTime currentCourseEndTime = null;
 
@@ -373,12 +377,7 @@ public class ScheduleActivity extends DrawerActivity {
 
             //Put the correct time
             TextView time = (TextView) timetableCell.findViewById(R.id.cell_time);
-
-            if(TwentyFourHourPrefs.get()){
-                time.setText(DateUtils.getHourStringTwentyFourHrFmt(hour));
-            }else {
-                time.setText(DateUtils.getHourString(hour));
-            }
+            time.setText(LocalTime.MIDNIGHT.withHour(hour).format(formatter));
 
             //Add it to the right container
             timetableContainer.addView(timetableCell);
