@@ -144,7 +144,7 @@ public class Term implements Serializable {
      *
      * @return Today's corresponding term
      */
-    public static Term getCurrentTerm() {
+    public static Term currentTerm() {
         LocalDate today = LocalDate.now();
         int month = today.getMonthValue();
         int year = today.getYear();

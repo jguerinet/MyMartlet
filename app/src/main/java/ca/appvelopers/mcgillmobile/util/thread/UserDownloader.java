@@ -110,7 +110,7 @@ public abstract class UserDownloader extends Thread {
                 Test.testSchedule();
             } else {
                 //The current term
-                Term currentTerm = Term.getCurrentTerm();
+                Term currentTerm = Term.currentTerm();
                 //List of semesters
                 List<Semester> semesters = App.getTranscript().getSemesters();
 

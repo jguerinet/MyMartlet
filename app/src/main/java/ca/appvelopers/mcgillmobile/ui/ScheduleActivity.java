@@ -116,15 +116,29 @@ public class ScheduleActivity extends DrawerActivity {
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
         App.component(this).inject(this);
+        courses = new ArrayList<>();
 
         //TODO Use the SavedInstanceState to get the term and courses
         term = App.getDefaultTerm();
-        courses = new ArrayList<>();
-        //TODO
-        this.date = getStartingDate();
 
         //Title
         setTitle(term.getString(this));
+
+        //Update the list of courses for this term
+        updateCourses();
+
+        //Date is by default set to today
+        date = LocalDate.now();
+
+        //Check if we are in the current semester
+        if (!term.equals(Term.currentTerm())) {
+            //If not, find the starting date of this semester instead of using today
+            for (Course course : courses) {
+                if (course.getStartDate().isBefore(date)) {
+                    date = course.getStartDate();
+                }
+            }
+        }
 
         //Render the right view based on the orientation
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -132,7 +146,6 @@ public class ScheduleActivity extends DrawerActivity {
         } else {
             renderPortraitView();
         }
-
 
         //Check if this is the first time the user is using the app
         if (firstOpenPrefs.get()) {
@@ -168,6 +181,9 @@ public class ScheduleActivity extends DrawerActivity {
                             public void onTermSelected(Term term) {
                                 ScheduleActivity.this.term = term;
 
+                                //Title
+                                setTitle(term.getString(ScheduleActivity.this));
+
                                 //TODO
 //                                //Restart the schedule view builder with the right date
 //                                mViewBuilder = new ScheduleViewBuilder(ScheduleActivity.this,
@@ -189,29 +205,6 @@ public class ScheduleActivity extends DrawerActivity {
     @Override
     protected @HomepageManager.Homepage int getCurrentPage() {
         return HomepageManager.SCHEDULE;
-    }
-
-    /**
-     * Gets the starting date based on the term and get the concerned classes
-     *
-     * @return The starting date
-     */
-    private LocalDate getStartingDate() {
-        fillCourses();
-
-        //Date is by default set to today
-        LocalDate date = LocalDate.now();
-        //Check if we are in the current semester
-        if (!term.equals(Term.getCurrentTerm())) {
-            //If not, find the starting date of this semester instead of using today
-            for (Course classItem : courses) {
-                if (classItem.getStartDate().isBefore(date)) {
-                    date = classItem.getStartDate();
-                }
-            }
-        }
-
-        return date;
     }
 
     /**
@@ -258,14 +251,14 @@ public class ScheduleActivity extends DrawerActivity {
     }
 
     /**
-     * Fills the class list with the current term's classes
+     * Fills the list of courses with the current term's courses
      */
-    private void fillCourses() {
+    private void updateCourses() {
         //Clear the current course list, add the courses that are for this semester
         courses.clear();
-        for (Course classItem : App.getCourses()) {
-            if (classItem.getTerm().equals(term)) {
-                courses.add(classItem);
+        for (Course course : App.getCourses()) {
+            if (course.getTerm().equals(term)) {
+                courses.add(course);
             }
         }
     }
