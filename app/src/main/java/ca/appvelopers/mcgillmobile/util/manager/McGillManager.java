@@ -87,12 +87,10 @@ public class McGillManager {
      *
      * @param call The call to execute
      * @return The response body in String format
-     * @throws NoInternetException
      * @throws MinervaException
      * @throws IOException
      */
-    public String get(Call<ResponseBody> call) throws NoInternetException, MinervaException,
-            IOException {
+    public String get(Call<ResponseBody> call) throws MinervaException, IOException {
         return get(call, true);
     }
 
@@ -102,12 +100,11 @@ public class McGillManager {
      * @param call      The call to execute
      * @param autoLogin True if we should try to log the user back in if they have been logged out
      * @return The response body in String format
-     * @throws NoInternetException
      * @throws MinervaException
      * @throws IOException
      */
-    public String get(Call<ResponseBody> call, boolean autoLogin) throws NoInternetException,
-            MinervaException, IOException {
+    public String get(Call<ResponseBody> call, boolean autoLogin) throws MinervaException,
+            IOException {
         //Check if the user is connected to the internet
         if (!Utils.isConnected(connectivityManager)) {
             throw new NoInternetException();
