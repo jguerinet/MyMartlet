@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.threeten.bp.LocalDate;
@@ -80,6 +81,16 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder> {
          */
         @Bind(R.id.time)
         protected TextView timeTitle;
+        /**
+         * The course slot
+         */
+        @Bind(R.id.slot)
+        protected LinearLayout slot;
+        /**
+         * Divider between half hours, to hide if there's a course to show
+         */
+        @Bind(R.id.divider)
+        protected LinearLayout divider;
 
         public Holder(View itemView) {
             super(itemView);

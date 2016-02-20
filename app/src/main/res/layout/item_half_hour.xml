@@ -39,11 +39,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/slot">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/line"
+            android:id="@+id/separator"
             android:background="@android:color/black"/>
 
     </LinearLayout>
