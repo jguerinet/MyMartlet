@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/cell_30min_height"
+    android:minHeight="@dimen/cell_30min_height"
+    android:background="@color/grey_light">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/schedule_line"
+            android:id="@+id/time_line"
+            android:layout_gravity="center"
+            android:background="@android:color/black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/time"
+            android:textSize="@dimen/text_small"
+            android:layout_marginLeft="@dimen/padding_micro"
+            android:layout_marginStart="@dimen/padding_micro"
+            android:gravity="center_horizontal"
+            tools:text="10 A.M."/>
+
+    </LinearLayout>
+
+</LinearLayout>
