@@ -69,31 +69,44 @@ import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
  * @since 1.0.0
  */
 public class ScheduleActivity extends DrawerActivity {
+    /**
+     * Timetable container used in the landscape orientation
+     */
     @Nullable @Bind(R.id.container_timetable)
     protected LinearLayout timetableContainer;
+    /**
+     * Schedule container used in the landscape orientation
+     */
     @Nullable @Bind(R.id.container_schedule)
     protected LinearLayout scheduleContainer;
+    /**
+     * {@link ViewPager} used in the portrait orientation
+     */
     @Nullable @Bind(R.id.view_pager)
     protected ViewPager viewPager;
+    /**
+     * The first open {@link BooleanPreference}
+     */
     @Inject
     @Named(PrefsModule.FIRST_OPEN)
     protected BooleanPreference firstOpenPrefs;
     /**
+     * TODO
      * SCHEDULE_24HR {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
     protected BooleanPreference TwentyFourHourPrefs;
     /**
-     * The list of courses
+     * Current {@link Term}
      */
-    private List<Course> mCourses;
+    private Term term;
     /**
-     * The current term
+     * List of courses for the current term
      */
-    private Term mTerm;
+    private List<Course> courses;
     /**
-     * The starting date
+     * Current date (to know which week to show in the landscape orientation)
      */
     private LocalDate date;
 
@@ -105,13 +118,13 @@ public class ScheduleActivity extends DrawerActivity {
         App.component(this).inject(this);
 
         //TODO Use the SavedInstanceState to get the term and courses
-        mTerm = App.getDefaultTerm();
-        mCourses = new ArrayList<>();
+        term = App.getDefaultTerm();
+        courses = new ArrayList<>();
         //TODO
         this.date = getStartingDate();
 
         //Title
-        setTitle(mTerm.getString(this));
+        setTitle(term.getString(this));
 
         //Render the right view based on the orientation
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -150,10 +163,10 @@ public class ScheduleActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogHelper.changeSemester(this, mTerm, false, new DialogHelper.TermCallback() {
+                DialogHelper.changeSemester(this, term, false, new DialogHelper.TermCallback() {
                             @Override
                             public void onTermSelected(Term term) {
-                                mTerm = term;
+                                ScheduleActivity.this.term = term;
 
                                 //TODO
 //                                //Restart the schedule view builder with the right date
@@ -189,9 +202,9 @@ public class ScheduleActivity extends DrawerActivity {
         //Date is by default set to today
         LocalDate date = LocalDate.now();
         //Check if we are in the current semester
-        if (!mTerm.equals(Term.getCurrentTerm())) {
+        if (!term.equals(Term.getCurrentTerm())) {
             //If not, find the starting date of this semester instead of using today
-            for (Course classItem : mCourses) {
+            for (Course classItem : courses) {
                 if (classItem.getStartDate().isBefore(date)) {
                     date = classItem.getStartDate();
                 }
@@ -210,13 +223,13 @@ public class ScheduleActivity extends DrawerActivity {
         showToolbarProgress(true);
 
         //Download the courses for this term
-        new DownloaderThread(this, mcGillService.schedule(mTerm))
+        new DownloaderThread(this, mcGillService.schedule(term))
                 .execute(new DownloaderThread.Callback() {
                     @Override
                     public void onDownloadFinished(String result) {
                         //Parse the courses if there are any
                         if (result != null) {
-                            Parser.parseCourses(mTerm, result);
+                            Parser.parseCourses(term, result);
 
                             //Download the Transcript
                             //  (if ever the user has new semesters on their transcript)
@@ -249,10 +262,10 @@ public class ScheduleActivity extends DrawerActivity {
      */
     private void fillCourses() {
         //Clear the current course list, add the courses that are for this semester
-        mCourses.clear();
+        courses.clear();
         for (Course classItem : App.getCourses()) {
-            if (classItem.getTerm().equals(mTerm)) {
-                mCourses.add(classItem);
+            if (classItem.getTerm().equals(term)) {
+                courses.add(classItem);
             }
         }
     }
@@ -351,7 +364,7 @@ public class ScheduleActivity extends DrawerActivity {
         //Go through the list of courses, find which ones have the same day and
         //  are for the given date
         List<Course> courses = new ArrayList<>();
-        for (Course course : mCourses) {
+        for (Course course : this.courses) {
             if (course.isForDate(date)) {
                 courses.add(course);
             }
