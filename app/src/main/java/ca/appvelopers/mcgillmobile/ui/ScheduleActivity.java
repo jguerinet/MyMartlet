@@ -92,14 +92,13 @@ public class ScheduleActivity extends DrawerActivity {
      */
     @Inject
     @Named(PrefsModule.FIRST_OPEN)
-    protected BooleanPreference firstOpenPrefs;
+    protected BooleanPreference firstOpenPref;
     /**
-     * TODO
-     * SCHEDULE_24HR {@link BooleanPreference}
+     * The time format {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
-    protected BooleanPreference TwentyFourHourPrefs;
+    protected BooleanPreference twentyFourHourPref;
     /**
      * Current {@link Term}
      */
@@ -151,13 +150,13 @@ public class ScheduleActivity extends DrawerActivity {
         }
 
         //Check if this is the first time the user is using the app
-        if (firstOpenPrefs.get()) {
+        if (firstOpenPref.get()) {
             //Show them the walkthrough if it is
             Intent intent = new Intent(this, WalkthroughActivity.class)
                     .putExtra(Constants.FIRST_OPEN, true);
             startActivity(intent);
             //Save the fact that the walkthrough has been seen at least once
-            firstOpenPrefs.set(false);
+            firstOpenPref.set(false);
         }
     }
 
@@ -368,7 +367,7 @@ public class ScheduleActivity extends DrawerActivity {
 
         //Set up the DateTimeFormatter we're going to use for the hours
         DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern(TwentyFourHourPrefs.get() ? "HH:mm" : "hh a");
+                DateTimeFormatter.ofPattern(twentyFourHourPref.get() ? "HH:mm" : "hh a");
 
         //This will be used of an end time of a course when it is added to the schedule container
         LocalTime currentCourseEndTime = null;
