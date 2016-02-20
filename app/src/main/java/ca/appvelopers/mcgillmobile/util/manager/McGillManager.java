@@ -24,6 +24,7 @@ import org.threeten.bp.DayOfWeek;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,9 +39,15 @@ import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 import timber.log.Timber;
 
 /**
@@ -54,31 +61,75 @@ import timber.log.Timber;
 @Singleton
 public class McGillManager {
     /**
-     * The {@link McGillService} instance
+     * {@link HttpLoggingInterceptor} instance to use for OkHttp
      */
-    @Inject
-    protected McGillService mcGillService;
+    protected HttpLoggingInterceptor loggingInterceptor;
     /**
      * {@link ConnectivityManager} instance
      */
-    @Inject
     protected ConnectivityManager connectivityManager;
     /**
      * {@link UsernamePreference} instance
      */
-    @Inject
     protected UsernamePreference usernamePref;
     /**
      * {@link PasswordPreference} passwordPref;
      */
-    @Inject
     protected PasswordPreference passwordPref;
+    /**
+     * The {@link McGillService} instance
+     */
+    protected McGillService mcGillService;
+    /**
+     * {@link OkHttpClient} instance to use
+     */
+    protected OkHttpClient client;
 
 	/**
 	 * Default Constructor
 	 */
     @Inject
-	protected McGillManager() {}
+	protected McGillManager(HttpLoggingInterceptor loggingInterceptor,
+            ConnectivityManager connectivityManager, UsernamePreference usernamePref,
+            PasswordPreference passwordPref) {
+        this.loggingInterceptor = loggingInterceptor;
+        this.connectivityManager = connectivityManager;
+        this.usernamePref = usernamePref;
+        this.passwordPref = passwordPref;
+
+        //Set up the client here in order to have access to the login methods
+        client = new OkHttpClient.Builder()
+                .cookieJar(new CookieJar() {
+                    private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        //Save the cookies per URL host
+                        cookieStore.put(url.host(), cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        //Use the cookies for the given URL host
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies == null ? new ArrayList<Cookie>() : cookies;
+                    }
+                })
+                .addInterceptor(loggingInterceptor)
+                .build();
+
+        mcGillService = new Retrofit.Builder()
+                .client(client)
+                .baseUrl("https://horizon.mcgill.ca/pban1/")
+                .build()
+                .create(McGillService.class);
+    }
+
+    /* GETTERS */
+
+    public McGillService getMcGillService() {
+        return mcGillService;
+    }
 
 	/* HELPERS */
 
