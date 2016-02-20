@@ -327,7 +327,7 @@ public class ScheduleActivity extends DrawerActivity {
 
         //Set up the ViewPager
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(adapter.firstDayIndex);
+        viewPager.setCurrentItem(adapter.startingDateIndex);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {}
@@ -488,22 +488,34 @@ public class ScheduleActivity extends DrawerActivity {
          */
         @Bind(R.id.day_date)
         protected TextView dateTitle;
+        /**
+         * Container for the day's timetable
+         */
         @Bind(R.id.container_timetable)
         protected LinearLayout timetableContainer;
+        /**
+         * Container for the day's schedule
+         */
         @Bind(R.id.container_schedule)
         protected LinearLayout scheduleContainer;
         /**
-         * The index of the first day
+         * The initial date to use as a reference
          */
-        private int firstDayIndex;
         private LocalDate startingDate;
+        /**
+         * The index of the starting date
+         */
+        private int startingDateIndex;
 
+        /**
+         * Default Constructor
+         */
         public ScheduleAdapter() {
             super();
-            //Get the first day (offset of 500001 to get the right day)
-            firstDayIndex = 500001 + date.getDayOfWeek().getValue();
             //Set the starting date
             startingDate = date;
+            //Get the first day (offset of 500001 to get the right day)
+            startingDateIndex = 500001 + date.getDayOfWeek().getValue();
         }
 
         @Override
@@ -537,7 +549,7 @@ public class ScheduleActivity extends DrawerActivity {
         }
 
         public LocalDate getDate(int position) {
-            return startingDate.plusDays(position - firstDayIndex);
+            return startingDate.plusDays(position - startingDateIndex);
         }
 
         @Override
