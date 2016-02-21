@@ -42,6 +42,7 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -116,6 +117,15 @@ public class McGillManager {
                     }
                 })
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        okhttp3.Response response = chain.proceed(chain.request());
+
+                        Timber.e("AFTER CALL");
+                        return response;
+                    }
+                })
                 .build();
 
         mcGillService = new Retrofit.Builder()
