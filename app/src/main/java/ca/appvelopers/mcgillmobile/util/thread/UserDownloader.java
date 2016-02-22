@@ -35,7 +35,6 @@ import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Test;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import timber.log.Timber;
 
 /**
@@ -54,11 +53,6 @@ public abstract class UserDownloader extends Thread {
      */
     @Inject
     protected ConnectivityManager connectivityManager;
-    /**
-     * The {@link McGillManager} instance
-     */
-    @Inject
-    protected McGillManager mcGillManager;
     /**
      * The {@link McGillService} instance
      */
@@ -95,9 +89,8 @@ public abstract class UserDownloader extends Thread {
                 if (Test.LOCAL_TRANSCRIPT) {
                     Test.testTranscript();
                 } else {
-                    Parser.parseTranscript(mcGillManager.get(mcGillService.transcript()));
+                    Parser.parseTranscript(mcGillService.transcript().execute());
                 }
-            } catch (NoInternetException ignored) {
             } catch (MinervaException e) {
                 //TODO
             } catch(IOException e) {
@@ -131,7 +124,7 @@ public abstract class UserDownloader extends Thread {
                         //Download the schedule
                         try {
                             Parser.parseCourses(term,
-                                    mcGillManager.get(mcGillService.schedule(term)));
+                                    mcGillService.schedule(term).execute());
                         } catch (NoInternetException ignored) {
                         } catch (MinervaException e) {
                             //TODO
@@ -156,7 +149,7 @@ public abstract class UserDownloader extends Thread {
 
             //Download the eBill and user info
             try {
-                Parser.parseEbill(mcGillManager.get(mcGillService.ebill()));
+                Parser.parseEbill(mcGillService.ebill().execute());
             } catch (NoInternetException ignored) {
 
             } catch (MinervaException e) {

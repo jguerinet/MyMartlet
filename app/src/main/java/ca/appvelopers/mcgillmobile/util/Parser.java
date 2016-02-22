@@ -27,6 +27,7 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.User;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -57,10 +60,13 @@ public class Parser {
     /**
      * Parses the HTML String to form a transcript
      *
-     * @param html The String to parse
+     * @param response HTTP response
+     * @return TODO
+     * @throws IOException
      */
-    public static String parseTranscript(String html){
+    public static String parseTranscript(Response<ResponseBody> response) throws IOException {
         String error = null;
+        String html = response.body().string();
 
         //Parse the String into a document
         Document transcriptDocument = Jsoup.parse(html);
@@ -394,14 +400,17 @@ public class Parser {
     }
 
     /**
+     * TODO
      * Parses an HTML String to generate a list of classes (from a schedule)
      *
      * @param term The term for these classes
-     * @param html The HTML String to parse
+     * @param response
      * @return The Term String if there were any errors, null if none
+     * @throws IOException
      */
-    public static String parseCourses(Term term, String html){
+    public static String parseCourses(Term term, Response<ResponseBody> response) throws IOException {
         String classError = null;
+        String html = response.body().string();
 
         //Get the list of classes
         List<Course> classItems = App.getCourses();
@@ -571,14 +580,17 @@ public class Parser {
     }
 
     /**
+     * TODO
      * Parses the HTML String to return a list of classes (from a class search result)
      *
      * @param term The term for these classes
-     * @param html The HTML String to parse
+     * @param response
      * @return The list of resulting classes
+     * @throws IOException
      */
-    public static List<Course> parseClassResults(Term term, String html){
+    public static List<Course> parseClassResults(Term term, Response<ResponseBody> response) throws IOException {
         List<Course> classItems = new ArrayList<>();
+        String html = response.body().string();
 
         //Parse the String into a document
         Document document = Jsoup.parse(html, "UTF-8");
@@ -746,13 +758,15 @@ public class Parser {
     }
 
     /**
+     * TODO
      * Parses the Minerva Quick Add/Drop page after registering to check if any errors have occurred
      *
      * @param html    The HTML string
      * @param courses The list of courses the user was trying to register or unregister for/from
      * @return The error String, null if no errors
      */
-    public static String parseRegistrationErrors(String html, List<Course> courses){
+    public static String parseRegistrationErrors(Response<ResponseBody> response, List<Course> courses) throws IOException {
+        String html = response.body().string();
         Map<String, String> errors = new HashMap<>();
 
         Document document = Jsoup.parse(html, "UTF-8");
@@ -803,11 +817,14 @@ public class Parser {
     }
 
     /**
+     * TODO
      * Parses an HTML String into a list of statements
      *
-     * @param html The HTML String
+     * @param repsonse
+     * @throws IOException
      */
-    public static void parseEbill(String html){
+    public static void parseEbill(Response<ResponseBody> repsonse) throws IOException {
+        String html = repsonse.body().string();
         Document doc = Jsoup.parse(html);
         Element table = doc.getElementsByClass("datadisplaytable").first();
 
