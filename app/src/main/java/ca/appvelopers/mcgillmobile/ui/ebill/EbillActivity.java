@@ -25,6 +25,8 @@ import android.view.MenuItem;
 
 import com.guerinet.utils.Utils;
 
+import java.io.IOException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
@@ -33,6 +35,8 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Displays the user's ebill statements
@@ -73,9 +77,13 @@ public class EbillActivity extends DrawerActivity {
                 new DownloaderThread(this, mcGillService.ebill())
                         .execute(new DownloaderThread.Callback() {
                             @Override
-                            public void onDownloadFinished(final String result) {
+                            public void onDownloadFinished(final Response<ResponseBody> result) {
                                 if (result != null) {
-                                    Parser.parseEbill(result);
+                                    try {
+                                        Parser.parseEbill(result);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
 
                                 runOnUiThread(new Runnable() {

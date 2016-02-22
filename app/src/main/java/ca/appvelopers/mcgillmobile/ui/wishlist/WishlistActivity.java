@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.guerinet.utils.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,8 @@ import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Displays the user's wishlist
@@ -236,14 +239,19 @@ public class WishlistActivity extends DrawerActivity {
                             .courseNumber(number)
                             .build();
 
-                    String html = new DownloaderThread(WishlistActivity.this, mcGillService.search(url))
+                    Response<ResponseBody> html = new DownloaderThread(WishlistActivity.this, mcGillService.search(url))
                             .execute();
 
                     if (html != null) {
                         //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
                         //This parses all ClassItems for a given course
                         List<Course> updatedCourses =
-                                Parser.parseClassResults(course.getTerm(), html);
+                                null;
+                        try {
+                            updatedCourses = Parser.parseClassResults(course.getTerm(), html);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                         //Update the course object with an updated class size
                         for (Course updatedClass : updatedCourses) {

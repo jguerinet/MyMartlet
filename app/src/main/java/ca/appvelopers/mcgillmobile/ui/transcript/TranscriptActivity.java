@@ -26,6 +26,8 @@ import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
 
+import java.io.IOException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
@@ -35,6 +37,8 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Shows the user's transcript
@@ -85,10 +89,14 @@ public class TranscriptActivity extends DrawerActivity {
                 new DownloaderThread(this, mcGillService.transcript())
                         .execute(new DownloaderThread.Callback() {
                             @Override
-                            public void onDownloadFinished(final String result) {
+                            public void onDownloadFinished(final Response<ResponseBody> result) {
                                 //Parse the transcript if possible
                                 if (result != null) {
-                                    Parser.parseTranscript(result);
+                                    try {
+                                        Parser.parseTranscript(result);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
 
                                 //Reload the view

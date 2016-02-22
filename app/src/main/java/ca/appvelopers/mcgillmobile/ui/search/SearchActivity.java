@@ -33,6 +33,7 @@ import com.guerinet.utils.Device;
 
 import org.threeten.bp.DayOfWeek;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,8 @@ import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Allows a user to search for courses that they can register for
@@ -289,11 +292,15 @@ public class SearchActivity extends DrawerActivity {
         //Execute the request
         new DownloaderThread(this, mcGillService.search(builder.build())).execute(new DownloaderThread.Callback() {
             @Override
-            public void onDownloadFinished(final String result) {
+            public void onDownloadFinished(final Response<ResponseBody> result) {
                 //If there is a result, parse it
                 final List<Course> courses = new ArrayList<>();
                 if (result != null) {
-                     courses.addAll(Parser.parseClassResults(term, result));
+                    try {
+                        courses.addAll(Parser.parseClassResults(term, result));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 runOnUiThread(new Runnable() {

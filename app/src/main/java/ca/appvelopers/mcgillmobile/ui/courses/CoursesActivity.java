@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,8 @@ import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Shows the user all of the courses the user has taken or is currently registered in
@@ -183,20 +186,28 @@ public class CoursesActivity extends DrawerActivity {
         new DownloaderThread(this, mcGillService.schedule(mTerm))
                 .execute(new DownloaderThread.Callback() {
                     @Override
-                    public void onDownloadFinished(String result) {
+                    public void onDownloadFinished(Response<ResponseBody> result) {
                         //Parse the courses if there are any
                         if (result != null) {
-                            Parser.parseCourses(mTerm, result);
+                            try {
+                                Parser.parseCourses(mTerm, result);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
                             //Download the Transcript
                             //  (if ever the user has new semesters on their transcript)
                             new DownloaderThread(CoursesActivity.this, mcGillService.transcript())
                                     .execute(new DownloaderThread.Callback() {
                                         @Override
-                                        public void onDownloadFinished(String result) {
+                                        public void onDownloadFinished(Response<ResponseBody> result) {
                                             //Parse the transcript if possible
                                             if (result != null) {
-                                                Parser.parseTranscript(result);
+                                                try {
+                                                    Parser.parseTranscript(result);
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
 
                                             runOnUiThread(new Runnable() {
@@ -247,11 +258,16 @@ public class CoursesActivity extends DrawerActivity {
                                                     McGillManager.getRegistrationURL(mTerm, courses, true)))
                                             .execute(new DownloaderThread.Callback() {
                                                 @Override
-                                                public void onDownloadFinished(String result) {
+                                                public void onDownloadFinished(Response<ResponseBody> result) {
                                                     if (result != null) {
                                                         String error =
-                                                                Parser.parseRegistrationErrors(
-                                                                        result, courses);
+                                                                null;
+                                                        try {
+                                                            error = Parser.parseRegistrationErrors(
+                                                                    result, courses);
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
 
                                                         if (error == null) {
                                                             //If there are no errors,

@@ -29,6 +29,7 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -48,9 +49,9 @@ public class DownloaderThread extends Thread {
 	 */
     private Call<ResponseBody> call;
 	/**
-	 * The body response, in String format
+	 * The response
 	 */
-	private String mResult;
+	private Response<ResponseBody> mResult;
 	/**
 	 * The callback to use, if any
 	 */
@@ -74,7 +75,7 @@ public class DownloaderThread extends Thread {
 		synchronized(this) {
 			mResult = null;
 			try{
-                mResult = mcGillManager.get(call);
+                mResult = call.execute();
 			} catch (MinervaException e) {
 				//TODO Broadcast this
 			} catch(Exception e) {
@@ -108,7 +109,7 @@ public class DownloaderThread extends Thread {
 	 *
 	 * @return The response body in String format
 	 */
-	public String execute(){
+	public Response<ResponseBody> execute(){
 		start();
 
 		synchronized(this){
@@ -139,6 +140,6 @@ public class DownloaderThread extends Thread {
 		 *
 		 * @param result The result of the downloader thread
 		 */
-		public abstract void onDownloadFinished(String result);
+		public abstract void onDownloadFinished(Response<ResponseBody> result);
 	}
 }

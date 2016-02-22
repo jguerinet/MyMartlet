@@ -44,6 +44,7 @@ import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +66,8 @@ import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Represents the user's schedule
@@ -221,20 +224,28 @@ public class ScheduleActivity extends DrawerActivity {
         new DownloaderThread(this, mcGillService.schedule(term))
                 .execute(new DownloaderThread.Callback() {
                     @Override
-                    public void onDownloadFinished(String result) {
+                    public void onDownloadFinished(Response<ResponseBody> result) {
                         //Parse the courses if there are any
                         if (result != null) {
-                            Parser.parseCourses(term, result);
+                            try {
+                                Parser.parseCourses(term, result);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
                             //Download the Transcript
                             //  (if ever the user has new semesters on their transcript)
                             new DownloaderThread(ScheduleActivity.this, mcGillService.transcript())
                                     .execute(new DownloaderThread.Callback() {
                                         @Override
-                                        public void onDownloadFinished(String result) {
+                                        public void onDownloadFinished(Response<ResponseBody> result) {
                                             //Parse the transcript if possible
                                             if (result != null) {
-                                                Parser.parseTranscript(result);
+                                                try {
+                                                    Parser.parseTranscript(result);
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
 
                                             runOnUiThread(new Runnable() {

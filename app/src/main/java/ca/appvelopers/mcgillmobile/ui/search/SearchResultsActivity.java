@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.guerinet.utils.dialog.DialogUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,8 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Shows the results of the search from the SearchActivity
@@ -132,13 +135,18 @@ public class SearchResultsActivity extends BaseActivity {
                     McGillManager.getRegistrationURL(term, courses, false)))
                     .execute(new DownloaderThread.Callback() {
                         @Override
-                        public void onDownloadFinished(final String result){
+                        public void onDownloadFinished(final Response<ResponseBody> result){
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run(){
                                     if(result != null){
                                         String error =
-                                                Parser.parseRegistrationErrors(result, courses);
+                                                null;
+                                        try {
+                                            error = Parser.parseRegistrationErrors(result, courses);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
 
                                         //If there are no errors, show the success message
                                         if(error == null){
