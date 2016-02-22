@@ -70,7 +70,7 @@ public class AboutActivity extends BaseActivity {
 
     @OnClick(R.id.github)
     protected void gitHub() {
-        Utils.openURL(this, "https://github.com/jguerinet/MyMartlet-Android/");
+        Utils.openURL(this, "https://github.com/jguerinet/MyMartlet/");
     }
 
     /**
