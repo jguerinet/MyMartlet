@@ -44,6 +44,7 @@ import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -91,8 +92,8 @@ public class McGillManager {
 	 */
     @Inject
 	protected McGillManager(HttpLoggingInterceptor loggingInterceptor,
-            ConnectivityManager connectivityManager, UsernamePreference usernamePref,
-            PasswordPreference passwordPref) {
+            ConnectivityManager connectivityManager, final UsernamePreference usernamePref,
+            final PasswordPreference passwordPref) {
         this.loggingInterceptor = loggingInterceptor;
         this.connectivityManager = connectivityManager;
         this.usernamePref = usernamePref;
@@ -120,9 +121,38 @@ public class McGillManager {
                 .addInterceptor(new Interceptor() {
                     @Override
                     public okhttp3.Response intercept(Chain chain) throws IOException {
-                        okhttp3.Response response = chain.proceed(chain.request());
+                        //Get the request and the response
+                        Request request = chain.request();
+                        okhttp3.Response response = chain.proceed(request);
 
-                        Timber.e("AFTER CALL");
+                        //If this is the login request, don't continue
+                        if (request.method().equalsIgnoreCase("POST")) {
+                            //This is counting on the fact that the only POST request is for login
+                            return response;
+                        }
+
+                        //Go through the cookies
+                        for (String cookie: response.headers().values("Set-Cookie")) {
+                            //Check if one of the cookies is an empty Session Id
+                            if (cookie.contains("SESSID=;")) {
+                                //Try logging in
+                                ConnectionStatus status = login();
+
+                                if (status == ConnectionStatus.OK) {
+                                    //Successfully logged them back in, try retrieving the
+                                    //  stuff again
+                                    return chain.proceed(request);
+                                } else if (status == ConnectionStatus.NO_INTERNET) {
+                                    //No internet: show error
+                                    throw new NoInternetException();
+                                } else if (status == ConnectionStatus.WRONG_INFO) {
+                                    //Wrong credentials: back to login screen
+                                    throw new MinervaException();
+                                }
+                            }
+                        }
+
+                        //If we have the session Id in the cookies, return the original response
                         return response;
                     }
                 })
@@ -216,7 +246,7 @@ public class McGillManager {
 
 		try {
             //Get the login page in order to get the appropriate cookies
-            mcGillService.login().execute();
+//            mcGillService.login().execute();
 
             //Create the POST request with the given username and password
             String response = mcGillService.login(username, password).execute().body().string();

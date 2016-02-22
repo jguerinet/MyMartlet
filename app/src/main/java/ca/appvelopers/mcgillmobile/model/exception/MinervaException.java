@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Appvelopers
+ * Copyright 2014-2016 Appvelopers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,15 @@
 
 package ca.appvelopers.mcgillmobile.model.exception;
 
+import java.io.IOException;
+
 /**
  * Exception caused when the user was logged out of Minerva
  * @author Shabbir Hussain
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class MinervaException extends Exception {
+public class MinervaException extends IOException {
 
 	public MinervaException() {
 		super("User is Logged out from Minerva");

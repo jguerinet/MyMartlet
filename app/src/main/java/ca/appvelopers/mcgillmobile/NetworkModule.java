@@ -21,24 +21,14 @@ import android.net.ConnectivityManager;
 
 import com.squareup.moshi.Moshi;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
-import ca.appvelopers.mcgillmobile.util.Passwords;
+import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.Credentials;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
