@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,6 +36,8 @@ import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.BooleanPreference;
 import com.guerinet.utils.prefs.IntPreference;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -43,13 +46,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
+import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -214,8 +216,7 @@ public class SplashActivity extends BaseActivity {
             minVersionContainer.setVisibility(View.VISIBLE);
         } else if (usernamePref.get() == null || passwordPref.get() == null) {
             //If we are missing some login info, show the login screen with no error message
-            showLoginScreen((ConnectionStatus) getIntent()
-                    .getSerializableExtra(Constants.CONNECTION_STATUS));
+            showLoginScreen(null);
         } else {
             //Try logging the user in and download their info
             new AppInitializer(true).execute();
@@ -225,9 +226,9 @@ public class SplashActivity extends BaseActivity {
     /**
      * Shows the login screen and an eventual error message
      *
-     * @param error The error to display, null if none
+     * @param e The error received when trying to login, null if none
      */
-    private void showLoginScreen(ConnectionStatus error) {
+    private void showLoginScreen(@Nullable IOException e) {
         //Show the login container
         loginContainer.setVisibility(View.VISIBLE);
 
@@ -253,8 +254,9 @@ public class SplashActivity extends BaseActivity {
         rememberUsername.setChecked(rememberUsernamePref.get());
 
         //Check if an error message needs to be displayed, display it if so
-        if (error != null) {
-            DialogHelper.error(this, error.getErrorStringId());
+        if (e != null) {
+            DialogHelper.error(this, (e instanceof MinervaException) ?
+                    R.string.login_error_wrong_data : R.string.error_other);
         }
 
         analytics.sendScreen("Login");
@@ -299,11 +301,9 @@ public class SplashActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final ConnectionStatus status = mcGillManager
-                        .login(username + getString(R.string.login_email), password);
+                try {
+                    mcGillManager.login(username + getString(R.string.login_email), password);
 
-                // If the connection was successful, start the app initializer
-                if (status == ConnectionStatus.OK) {
                     // Store the login info.
                     usernamePref.set(username);
                     passwordPref.set(password);
@@ -322,14 +322,16 @@ public class SplashActivity extends BaseActivity {
                             new AppInitializer(false).execute();
                         }
                     });
-                } else {
+                } catch (final IOException e) {
                     //Else show error dialog
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            analytics.sendEvent("Login", "Login Error", status.getGAString());
                             progressContainer.setVisibility(View.GONE);
-                            DialogHelper.error(SplashActivity.this, status.getErrorStringId());
+                            int error = e instanceof MinervaException ?
+                                    R.string.login_error_wrong_data : R.string.error_other;
+
+                            DialogHelper.error(SplashActivity.this, error);
                         }
                     });
                 }
@@ -340,7 +342,7 @@ public class SplashActivity extends BaseActivity {
     /**
      * Initializes the app by logging the user in and downloading the required information
      */
-    class AppInitializer extends AsyncTask<Void, String, ConnectionStatus> {
+    class AppInitializer extends AsyncTask<Void, String, IOException> {
         /**
          * True if we should auto-login the user, false if they have just logged in
          */
@@ -365,26 +367,27 @@ public class SplashActivity extends BaseActivity {
         }
 
         @Override
-        protected ConnectionStatus doInBackground(Void... params) {
+        protected IOException doInBackground(Void... params) {
             analytics.sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
 
             //If we're auto-logging in and there is no internet, skip everything
             if (autoLogin && !Utils.isConnected(connectivityManager)) {
-                return ConnectionStatus.NO_INTERNET;
+                return null;
             }
 
-            //If they're already logged in, the connection is OK
-            ConnectionStatus status =  autoLogin ? ConnectionStatus.OK : mcGillManager.login();
+            //Try logging them in if needed
+            if (autoLogin) {
+                try {
+                    mcGillManager.login();
+                } catch (IOException e) {
+                    return e;
+                }
+            }
 
             //Check if we need to download everything or only the essential stuff
             //We need to download everything if there is null info
             boolean downloadEverything = App.getTranscript() == null || App.getUser() == null ||
                     App.getEbill() == null;
-
-            //If we did not connect, stop now
-            if (status != ConnectionStatus.OK && status != ConnectionStatus.NO_INTERNET) {
-                return status;
-            }
 
             //If we need to download everything, do it synchronously. If not, do it asynchronously
             UserDownloader userDownloader = new UserDownloader(SplashActivity.this) {
@@ -400,7 +403,7 @@ public class SplashActivity extends BaseActivity {
                 userDownloader.start();
             }
 
-            return status;
+            return null;
         }
 
         @Override
@@ -410,17 +413,17 @@ public class SplashActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(ConnectionStatus status) {
+        protected void onPostExecute(IOException e) {
             //Hide the container
             progressContainer.setVisibility(View.GONE);
 
-            if (status == ConnectionStatus.OK || status == ConnectionStatus.NO_INTERNET) {
+            if (e == null) {
                 //Connection successful: home page
                 startActivity(new Intent(SplashActivity.this, homepageManager.getActivity()));
                 finish();
             } else {
                 //Connection not successful: login
-                showLoginScreen(status);
+                showLoginScreen(e);
             }
         }
     }

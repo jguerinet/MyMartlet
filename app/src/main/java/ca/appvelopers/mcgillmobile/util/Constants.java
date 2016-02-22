@@ -32,21 +32,9 @@ public class Constants {
     /* INTENT KEYS */
 
     /**
-     * Key used to pass a ConnectionStatus via an intent
-     */
-    public static final String CONNECTION_STATUS = "connection_status";
-    /**
      * Key used to pass a semester via an intent
      */
     public static final String SEMESTER = "semester";
-    /**
-     * Key used to pass a date via an intent
-     */
-    public static final String DATE = "date";
-    /**
-     * Key used to pass a date via an intent
-     */
-    public static final String TWENTYFOURHOURS = "twentyfourhours";
     /**
      * Key used to pass a term via an intent
      */
