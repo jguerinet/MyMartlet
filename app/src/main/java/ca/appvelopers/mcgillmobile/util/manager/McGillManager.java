@@ -45,10 +45,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import timber.log.Timber;
 
@@ -167,66 +164,6 @@ public class McGillManager {
     }
 
 	/* HELPERS */
-
-    /**
-     * Performs a GET call to a McGill endpoint, with auto-login if the user has been logged out
-     *
-     * @param call The call to execute
-     * @return The response body in String format
-     * @throws MinervaException
-     * @throws IOException
-     */
-    public String get(Call<ResponseBody> call) throws MinervaException, IOException {
-        return get(call, true);
-    }
-
-    /**
-     * Performs a GET call to a McGill endpoint, with optionally auto-login
-     *
-     * @param call      The call to execute
-     * @param autoLogin True if we should try to log the user back in if they have been logged out
-     * @return The response body in String format
-     * @throws MinervaException
-     * @throws IOException
-     */
-    public String get(Call<ResponseBody> call, boolean autoLogin) throws MinervaException,
-            IOException {
-        //Check if the user is connected to the internet
-        if (!Utils.isConnected(connectivityManager)) {
-            throw new NoInternetException();
-        }
-
-        //Make the call
-        Response<ResponseBody> response = call.execute();
-
-        //Check for Minerva logout
-        List<String> setCookies = response.headers().values("Set-Cookie");
-        for (String cookie: setCookies) {
-            if (cookie.contains("SESSID=;")) {
-                if (autoLogin) {
-                    //We've been logged out of Minerva. Try logging back in if needed
-                    ConnectionStatus status = login();
-
-                    if (status == ConnectionStatus.OK) {
-                        //Successfully logged them back in, try retrieving the stuff again
-                        return get(call.clone(), false);
-                    } else if (status == ConnectionStatus.NO_INTERNET) {
-                        //No internet: show error
-                        throw new NoInternetException();
-                    } else if (status == ConnectionStatus.WRONG_INFO) {
-                        //Wrong credentials: back to login screen
-                        throw new MinervaException();
-                    }
-                } else {
-                    //If not, throw the exception
-                    throw new MinervaException();
-                }
-            }
-        }
-
-        //Return the body in String format
-        return response.body().string();
-    }
 
 	/**
 	 * Attempts to log into Minerva
