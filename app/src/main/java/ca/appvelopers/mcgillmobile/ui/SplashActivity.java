@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -112,6 +113,11 @@ public class SplashActivity extends BaseActivity {
      */
     @Inject
     protected McGillManager mcGillManager;
+    /**
+     * {@link ConnectivityManager} instance
+     */
+    @Inject
+    protected ConnectivityManager connectivityManager;
     /**
      * Remember username {@link BooleanPreference}
      */
@@ -283,6 +289,9 @@ public class SplashActivity extends BaseActivity {
         } else if (TextUtils.isEmpty(password)) {
             DialogHelper.error(this, R.string.login_error_password_empty);
             return;
+        } else if (!Utils.isConnected(connectivityManager)) {
+            DialogHelper.error(this, R.string.error_no_internet);
+            return;
         }
 
         progressContainer.setVisibility(View.VISIBLE);
@@ -358,6 +367,11 @@ public class SplashActivity extends BaseActivity {
         @Override
         protected ConnectionStatus doInBackground(Void... params) {
             analytics.sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
+
+            //If we're auto-logging in and there is no internet, skip everything
+            if (autoLogin && !Utils.isConnected(connectivityManager)) {
+                return ConnectionStatus.NO_INTERNET;
+            }
 
             //If they're already logged in, the connection is OK
             ConnectionStatus status =  autoLogin ? ConnectionStatus.OK : mcGillManager.login();

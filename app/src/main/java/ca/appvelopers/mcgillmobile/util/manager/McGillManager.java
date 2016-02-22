@@ -16,10 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util.manager;
 
-import android.net.ConnectivityManager;
-
-import com.guerinet.utils.Utils;
-
 import org.threeten.bp.DayOfWeek;
 
 import java.io.IOException;
@@ -60,10 +56,6 @@ import timber.log.Timber;
 @Singleton
 public class McGillManager {
     /**
-     * {@link ConnectivityManager} instance
-     */
-    private final ConnectivityManager connectivityManager;
-    /**
      * {@link UsernamePreference} instance
      */
     private final UsernamePreference usernamePref;
@@ -78,16 +70,13 @@ public class McGillManager {
 
 	/**
 	 * Default Constructor
-     * @param loggingInterceptor  {@link HttpLoggingInterceptor} instance
-     * @param connectivityManager {@link ConnectivityManager} instance
-     * @param usernamePref        {@link UsernamePreference} instance
-     * @param passwordPref        {@link PasswordPreference} instance
+     * @param loggingInterceptor {@link HttpLoggingInterceptor} instance
+     * @param usernamePref       {@link UsernamePreference} instance
+     * @param passwordPref       {@link PasswordPreference} instance
      */
     @Inject
 	protected McGillManager(HttpLoggingInterceptor loggingInterceptor,
-            ConnectivityManager connectivityManager, final UsernamePreference usernamePref,
-            final PasswordPreference passwordPref) {
-        this.connectivityManager = connectivityManager;
+            UsernamePreference usernamePref, PasswordPreference passwordPref) {
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
 
@@ -159,6 +148,9 @@ public class McGillManager {
 
     /* GETTERS */
 
+    /**
+     * @return TODO
+     */
     public McGillService getMcGillService() {
         return mcGillService;
     }
@@ -171,11 +163,6 @@ public class McGillManager {
 	 * @return The resulting connection status
 	 */
 	public ConnectionStatus login(String username, String password) {
-        //Don't continue of the user is not connected to the internet
-        if (!Utils.isConnected(connectivityManager)) {
-            return ConnectionStatus.NO_INTERNET;
-        }
-
 		try {
             //Create the POST request with the given username and password
             String response = mcGillService.login(username, password).execute().body().string();
