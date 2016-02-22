@@ -26,11 +26,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.model.ConnectionStatus;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
@@ -43,7 +41,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import timber.log.Timber;
 
 /**
  * All of the connection logic
@@ -116,20 +113,11 @@ public class McGillManager {
                         for (String cookie: response.headers().values("Set-Cookie")) {
                             //Check if one of the cookies is an empty Session Id
                             if (cookie.contains("SESSID=;")) {
-                                //Try logging in
-                                ConnectionStatus status = login();
+                                //Try logging in (if there's an error, it will be thrown)
+                                login();
 
-                                if (status == ConnectionStatus.OK) {
-                                    //Successfully logged them back in, try retrieving the
-                                    //  stuff again
-                                    return chain.proceed(request);
-                                } else if (status == ConnectionStatus.NO_INTERNET) {
-                                    //No internet: show error
-                                    throw new NoInternetException();
-                                } else if (status == ConnectionStatus.WRONG_INFO) {
-                                    //Wrong credentials: back to login screen
-                                    throw new MinervaException();
-                                }
+                                //Successfully logged them back in, try retrieving the data again
+                                return chain.proceed(request);
                             }
                         }
 
@@ -159,33 +147,26 @@ public class McGillManager {
 
 	/**
 	 * Attempts to log into Minerva
-	 *
-	 * @return The resulting connection status
-	 */
-	public ConnectionStatus login(String username, String password) {
-		try {
-            //Create the POST request with the given username and password
-            String response = mcGillService.login(username, password).execute().body().string();
+     * @param username Username to use for the login
+     * @param password Password to use for the login
+     * @throws IOException
+     */
+	public void login(String username, String password) throws IOException {
+        //Create the POST request with the given username and password
+        String response = mcGillService.login(username, password).execute().body().string();
 
-			if (!response.contains("WELCOME")) {
-                //If we're not on the Welcome page, then the user entered wrong info
-				return ConnectionStatus.WRONG_INFO;
-			}
-		} catch (IOException e) {
-			Timber.e(e, "Exception during login");
-			return ConnectionStatus.ERROR_UNKNOWN;
-		}
-
-        return ConnectionStatus.OK;
+        if (!response.contains("WELCOME")) {
+            //If we're not on the Welcome page, then the user entered wrong info
+            throw new MinervaException();
+        }
     }
 
     /**
      * Logs the user in with the stored username and password
-     *
-     * @return The resulting {@link ConnectionStatus}
+     * @throws IOException
      */
-    public ConnectionStatus login() {
-        return login(usernamePref.full(), passwordPref.get());
+    public void login() throws IOException {
+        login(usernamePref.full(), passwordPref.get());
     }
 
     /* URL BUILDERS */
