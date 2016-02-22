@@ -31,7 +31,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Parser;
 import ca.appvelopers.mcgillmobile.util.Test;
@@ -125,7 +124,6 @@ public abstract class UserDownloader extends Thread {
                         try {
                             Parser.parseCourses(term,
                                     mcGillService.schedule(term).execute());
-                        } catch (NoInternetException ignored) {
                         } catch (MinervaException e) {
                             //TODO
                         } catch (IOException e) {
@@ -150,8 +148,6 @@ public abstract class UserDownloader extends Thread {
             //Download the eBill and user info
             try {
                 Parser.parseEbill(mcGillService.ebill().execute());
-            } catch (NoInternetException ignored) {
-
             } catch (MinervaException e) {
                 //TODO
             } catch(Exception e) {

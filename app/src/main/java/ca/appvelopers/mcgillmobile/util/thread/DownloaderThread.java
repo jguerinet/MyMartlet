@@ -19,14 +19,10 @@ package ca.appvelopers.mcgillmobile.util.thread;
 import android.app.Activity;
 import android.content.Context;
 
-import javax.inject.Inject;
-
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.model.exception.NoInternetException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -38,8 +34,6 @@ import timber.log.Timber;
  * @since 2.0.0
  */
 public class DownloaderThread extends Thread {
-    @Inject
-    protected McGillManager mcGillManager;
 	/**
 	 * The calling activity (to show eventual errors)
 	 */
@@ -72,6 +66,7 @@ public class DownloaderThread extends Thread {
 
 	@Override
 	public void run() {
+        //TODO Check internet connection before continuing
 		synchronized(this) {
 			mResult = null;
 			try{
@@ -79,16 +74,14 @@ public class DownloaderThread extends Thread {
 			} catch (MinervaException e) {
 				//TODO Broadcast this
 			} catch(Exception e) {
-				final boolean noInternet = e instanceof NoInternetException;
-				Timber.e(e, noInternet ? "No Internet" : "IOException");
+				Timber.e(e, "IOException");
 
 				//Show an error message if possible
 				if(mActivity != null){
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
 						public void run(){
-							DialogHelper.error(mActivity,
-                                    noInternet ? R.string.error_no_internet : R.string.error_other);
+							DialogHelper.error(mActivity, R.string.error_other);
 						}
 					});
 				}
