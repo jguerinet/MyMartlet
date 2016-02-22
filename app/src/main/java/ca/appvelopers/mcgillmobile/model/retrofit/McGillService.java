@@ -33,11 +33,6 @@ import retrofit2.http.Query;
  * @since 2.2.0
  */
 public interface McGillService {
-    /**
-     * Get the login page to get the necessary cookies
-     */
-    @GET("twbkwbis.P_ValLogin")
-    Call<ResponseBody> login();
 
     /**
      * Creates the POST request that logs the user in

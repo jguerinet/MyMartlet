@@ -245,9 +245,6 @@ public class McGillManager {
         }
 
 		try {
-            //Get the login page in order to get the appropriate cookies
-//            mcGillService.login().execute();
-
             //Create the POST request with the given username and password
             String response = mcGillService.login(username, password).execute().body().string();
 
