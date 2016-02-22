@@ -63,44 +63,39 @@ import timber.log.Timber;
 @Singleton
 public class McGillManager {
     /**
-     * {@link HttpLoggingInterceptor} instance to use for OkHttp
-     */
-    protected HttpLoggingInterceptor loggingInterceptor;
-    /**
      * {@link ConnectivityManager} instance
      */
-    protected ConnectivityManager connectivityManager;
+    private final ConnectivityManager connectivityManager;
     /**
      * {@link UsernamePreference} instance
      */
-    protected UsernamePreference usernamePref;
+    private final UsernamePreference usernamePref;
     /**
      * {@link PasswordPreference} passwordPref;
      */
-    protected PasswordPreference passwordPref;
+    private final PasswordPreference passwordPref;
     /**
      * The {@link McGillService} instance
      */
-    protected McGillService mcGillService;
-    /**
-     * {@link OkHttpClient} instance to use
-     */
-    protected OkHttpClient client;
+    private final McGillService mcGillService;
 
 	/**
 	 * Default Constructor
-	 */
+     * @param loggingInterceptor  {@link HttpLoggingInterceptor} instance
+     * @param connectivityManager {@link ConnectivityManager} instance
+     * @param usernamePref        {@link UsernamePreference} instance
+     * @param passwordPref        {@link PasswordPreference} instance
+     */
     @Inject
 	protected McGillManager(HttpLoggingInterceptor loggingInterceptor,
             ConnectivityManager connectivityManager, final UsernamePreference usernamePref,
             final PasswordPreference passwordPref) {
-        this.loggingInterceptor = loggingInterceptor;
         this.connectivityManager = connectivityManager;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
 
         //Set up the client here in order to have access to the login methods
-        client = new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {
                     private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
