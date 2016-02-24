@@ -164,6 +164,7 @@ public class App extends Application {
                 .setPushNotificationState(Feature.State.DISABLED)
                 .setTrackingUserStepsState(Feature.State.DISABLED)
                 .setUserDataState(Feature.State.ENABLED)
+                .setShouldShowIntroDialog(false)
                 .build();
         Instabug.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
 
