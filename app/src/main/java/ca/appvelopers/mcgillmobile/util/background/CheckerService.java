@@ -31,7 +31,6 @@ import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.Parser;
 import timber.log.Timber;
 
 /**
@@ -89,7 +88,8 @@ public class CheckerService extends IntentService {
 			Transcript oldTranscript = App.getTranscript();
 
 			//Parse the new transcript and get it
-			Parser.parseTranscript(html);
+            //TODO
+//			Parser.parseTranscript(html);
 			Transcript newTranscript = App.getTranscript();
 
 			//Check if the CGPA has changed, alert the user if it has
