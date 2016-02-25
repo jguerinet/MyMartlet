@@ -38,80 +38,67 @@ public class Course implements Serializable {
     /**
      * The term this class is for
      */
-    private Term term;
+    protected Term term;
     /**
      * The course's 4-letter subject (ex: MATH)
      */
-    private String subject;
+    protected final String subject;
     /**
      * The course's number (ex: 263)
      */
-    private String number;
+    protected final String number;
     /**
      * The course title
      */
-    private String title;
+    protected final String title;
     /**
      * The course CRN number
      */
-    private int crn;
+    protected final int crn;
     /**
      * The course section (ex: 001)
      */
-    private String section;
+    protected final String section;
     /**
      * The course's start time
      */
-    private LocalTime startTime;
+    protected final LocalTime startTime;
     /**
      * The course's end time
      */
-    private LocalTime endTime;
+    protected final LocalTime endTime;
     /**
      * The days this course is on
      */
-    private List<DayOfWeek> days;
+    protected final List<DayOfWeek> days;
     /**
      * The course type (ex: lecture, tutorial...)
      */
-    private String type;
+    protected final String type;
     /**
      * The course location (generally building and room number)
      */
-    private String location;
+    protected final String location;
     /**
      * The course's instructor's name
      */
-    private String instructor;
-    /**
-     * The course total capacity (for registration)
-     */
-    private int capacity;
-    /**
-     * The number of seats remaining (for registration)
-     */
-    private int seatsRemaining;
-    /**
-     * The number of waitlist spots remaining
-     */
-    private int waitlistRemaining;
+    protected final String instructor;
     /**
      * The number of credits for this course
      */
-    private double credits;
+    protected final double credits;
     /**
      * The course start date
      */
-    private LocalDate startDate;
+    protected final LocalDate startDate;
     /**
      * The course end date
      */
-    private LocalDate endDate;
+    protected final LocalDate endDate;
 
     /**
      * Constructor used for the user's already registered classes
      *
-     * @param term       The term that this class is for
      * @param subject    The course subject
      * @param number     The course number
      * @param title      The course title
@@ -131,7 +118,6 @@ public class Course implements Serializable {
             LocalTime startTime, LocalTime endTime, List<DayOfWeek> days, String type,
             String location, String instructor, double credits, LocalDate startDate,
             LocalDate endDate) {
-        this.number = number;
         this.subject = subject;
         this.number = number;
         this.title = title;
@@ -146,45 +132,6 @@ public class Course implements Serializable {
         this.credits = credits;
         this.startDate = startDate;
         this.endDate = endDate;
-
-        //These fields are not needed (they are used for the search results)
-        capacity = -1;
-        seatsRemaining = -1;
-        waitlistRemaining = -1;
-    }
-
-    /**
-     * Constructor for course search results
-     *
-     * @param term              The term that this class is for
-     * @param subject           The course subject
-     * @param number            The course number
-     * @param title             The course title
-     * @param crn               The course CRN
-     * @param section           The course section
-     * @param startTime         The course's ending time
-     * @param endTime           The course's starting time
-     * @param days              The days this course is on
-     * @param type              The course type
-     * @param location          The course location
-     * @param instructor        The course instructor
-     * @param credits           The number of credits
-     * @param startDate         THe course's start date
-     * @param endDate           The course's end date
-     * @param capacity          The course capacity
-     * @param seatsRemaining    The number of seats remaining
-     * @param waitlistRemaining The number of waitlist seats remaining
-     */
-    public Course(Term term, String subject, String number, String title, int crn, String section,
-            LocalTime startTime, LocalTime endTime, List<DayOfWeek> days, String type,
-            String location, String instructor, double credits, LocalDate startDate,
-            LocalDate endDate, int capacity, int seatsRemaining, int waitlistRemaining) {
-        this(subject, number, title, crn, section, startTime, endTime, days, type, location,
-                instructor, credits, startDate, endDate);
-
-        this.capacity = capacity;
-        this.seatsRemaining = seatsRemaining;
-        this.waitlistRemaining = waitlistRemaining;
     }
 
 	/* GETTERS */
@@ -286,20 +233,6 @@ public class Course implements Serializable {
      */
     public double getCredits() {
         return credits;
-    }
-
-    /**
-     * @return The number of spots remaining
-     */
-    public int getSeatsRemaining() {
-        return seatsRemaining;
-    }
-
-    /**
-     * @return The number of waitlist spots remaining
-     */
-    public int getWaitlistRemaining() {
-        return waitlistRemaining;
     }
 
     /**
