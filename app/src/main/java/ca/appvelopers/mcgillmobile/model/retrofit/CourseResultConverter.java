@@ -48,7 +48,7 @@ import timber.log.Timber;
 public class CourseResultConverter extends Converter.Factory
         implements Converter<ResponseBody, List<CourseResult>> {
     /**
-     * {@link ParameterizedType} representing a list of statements
+     * {@link ParameterizedType} representing a list of {@link CourseResult}s
      */
     private final ParameterizedType type =
             Types.newParameterizedType(List.class, CourseResult.class);
@@ -57,7 +57,7 @@ public class CourseResultConverter extends Converter.Factory
     public Converter<ResponseBody, ?> responseBodyConverter(Type type,
             Annotation[] annotations, Retrofit retrofit) {
         if (!type.equals(this.type)) {
-            //This can only convert transcripts
+            //This can only convert a list of course results
             return null;
         }
         return new CourseResultConverter();

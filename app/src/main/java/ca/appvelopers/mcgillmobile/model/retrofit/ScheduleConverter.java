@@ -51,7 +51,7 @@ import timber.log.Timber;
 public class ScheduleConverter extends Converter.Factory
         implements Converter<ResponseBody, List<Course>> {
     /**
-     * {@link ParameterizedType} representing a list of courses
+     * {@link ParameterizedType} representing a list of {@link Course}s
      */
     private final ParameterizedType type = Types.newParameterizedType(List.class, Course.class);
 

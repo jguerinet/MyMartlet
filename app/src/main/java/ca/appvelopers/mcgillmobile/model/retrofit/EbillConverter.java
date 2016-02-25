@@ -46,7 +46,7 @@ import timber.log.Timber;
 public class EbillConverter extends Converter.Factory
         implements Converter<ResponseBody, List<Statement>> {
     /**
-     * {@link ParameterizedType} representing a list of statements
+     * {@link ParameterizedType} representing a list of {@link Statement}s
      */
     private final ParameterizedType type = Types.newParameterizedType(List.class, Statement.class);
 
@@ -54,7 +54,7 @@ public class EbillConverter extends Converter.Factory
     public Converter<ResponseBody, ?> responseBodyConverter(Type type,
             Annotation[] annotations, Retrofit retrofit) {
         if (!type.equals(this.type)) {
-            //This can only convert transcripts
+            //This can only convert a list of statements
             return null;
         }
         return new EbillConverter();
