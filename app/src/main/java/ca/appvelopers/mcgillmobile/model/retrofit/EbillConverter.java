@@ -39,7 +39,7 @@ import retrofit2.Retrofit;
 import timber.log.Timber;
 
 /**
- * Retrofit converter to parse the user's transcript
+ * Retrofit converter to parse the user's ebill
  * @author Julien Guerinet
  * @since 2.2.0
  */

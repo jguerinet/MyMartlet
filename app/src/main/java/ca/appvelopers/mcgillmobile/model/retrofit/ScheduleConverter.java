@@ -223,14 +223,14 @@ public class ScheduleConverter extends Converter.Factory
     /**
      * @return A start time that will yield 0 for the rounded start time
      */
-    private static LocalTime getDefaultStartTime() {
+    public static LocalTime getDefaultStartTime() {
         return LocalTime.of(0, 5);
     }
 
     /**
      * @return An end time that will yield 0 for the rounded end time
      */
-    private static LocalTime getDefaultEndTime() {
+    public static LocalTime getDefaultEndTime() {
         return LocalTime.of(0, 55);
     }
 
@@ -252,7 +252,7 @@ public class ScheduleConverter extends Converter.Factory
      * @param dateRange The date range String
      * @return A pair representing the starting and ending dates of the range
      */
-    private static Pair<LocalDate, LocalDate> parseDateRange(String dateRange)
+    public static Pair<LocalDate, LocalDate> parseDateRange(String dateRange)
             throws IllegalArgumentException {
         //Split the range into the 2 date Strings
         String startDate = dateRange.split(" - ")[0];
