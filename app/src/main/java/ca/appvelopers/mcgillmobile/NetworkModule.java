@@ -120,7 +120,7 @@ public class NetworkModule {
     }
 
     /**
-     * @param retrofit The {@link Retrofit} instance to use when connecting to McGill
+     * @param manager {@link McGillManager} instance that has the {@link McGillService} instance
      * @return The {@link McGillService} instance
      */
     @Provides

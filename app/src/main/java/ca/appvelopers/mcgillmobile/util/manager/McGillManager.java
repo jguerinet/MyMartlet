@@ -31,7 +31,12 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.model.retrofit.CourseResultConverter;
+import ca.appvelopers.mcgillmobile.model.retrofit.EbillConverter;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.model.retrofit.RegistrationErrorConverter;
+import ca.appvelopers.mcgillmobile.model.retrofit.ScheduleConverter;
+import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -130,6 +135,11 @@ public class McGillManager {
         mcGillService = new Retrofit.Builder()
                 .client(client)
                 .baseUrl("https://horizon.mcgill.ca/pban1/")
+                .addConverterFactory(new CourseResultConverter())
+                .addConverterFactory(new EbillConverter())
+                .addConverterFactory(new RegistrationErrorConverter())
+                .addConverterFactory(new ScheduleConverter())
+                .addConverterFactory(new TranscriptConverter())
                 .build()
                 .create(McGillService.class);
     }
