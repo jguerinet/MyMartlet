@@ -21,7 +21,6 @@ import android.support.v4.util.Pair;
 import com.squareup.moshi.Types;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.threeten.bp.DayOfWeek;
@@ -84,8 +83,7 @@ public class ScheduleConverter extends Converter.Factory
 //        courses.removeAll(coursesToRemove);
 
         //Parse the body into a Document
-        Document doc = Jsoup.parse(value.string());
-        Elements scheduleTable = doc.getElementsByClass("datadisplaytable");
+        Elements scheduleTable = Jsoup.parse(value.string()).getElementsByClass("datadisplaytable");
 
         //Go through the schedule table
         for (int i = 0; i < scheduleTable.size(); i += 2) {
@@ -242,7 +240,7 @@ public class ScheduleConverter extends Converter.Factory
      * @param date The date String
      * @return The corresponding local date
      */
-    private static LocalDate parseDate(String date) {
+    public static LocalDate parseDate(String date) {
         //Set up the formatter we're going to use to parse these Strings
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US);
         return LocalDate.parse(date, dtf);

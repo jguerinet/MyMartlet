@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.model.retrofit;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -57,8 +56,7 @@ public class TranscriptConverter extends Converter.Factory
     @Override
     public Transcript convert(ResponseBody value) throws IOException {
         //Parse ResponseBody HTML String into a document
-        Document transcriptDocument = Jsoup.parse(value.string());
-        Elements rows = transcriptDocument.getElementsByClass("fieldmediumtext");
+        Elements rows = Jsoup.parse(value.string()).getElementsByClass("fieldmediumtext");
 
         /*
          * Main loop:
