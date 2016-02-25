@@ -129,6 +129,17 @@ public class Term implements Serializable {
     /* STATIC HELPERS */
 
     /**
+     * @param term Term in String format (Ex: 199901 would be Winter 1999)
+     * @return Corresponding {@link Term}
+     */
+    public static Term parseMcGillTerm(String term) {
+        //Split it into the year and the season
+        int year = Integer.parseInt(term.substring(0, 4));
+        @Season.Type String season = Season.getMcGillSeason(term.substring(4));
+        return new Term(season, year);
+    }
+
+    /**
      * Parses a term from a String
      *
      * @param term The term String

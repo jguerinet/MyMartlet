@@ -127,11 +127,10 @@ public class Course implements Serializable {
      * @param startDate  The starting date for this course
      * @param endDate    The ending date for this course
      */
-    public Course(Term term, String subject, String number, String title, int crn, String section,
+    public Course(String subject, String number, String title, int crn, String section,
             LocalTime startTime, LocalTime endTime, List<DayOfWeek> days, String type,
             String location, String instructor, double credits, LocalDate startDate,
             LocalDate endDate) {
-        this.term = term;
         this.number = number;
         this.subject = subject;
         this.number = number;
@@ -180,7 +179,7 @@ public class Course implements Serializable {
             LocalTime startTime, LocalTime endTime, List<DayOfWeek> days, String type,
             String location, String instructor, double credits, LocalDate startDate,
             LocalDate endDate, int capacity, int seatsRemaining, int waitlistRemaining) {
-        this(term, subject, number, title, crn, section, startTime, endTime, days, type, location,
+        this(subject, number, title, crn, section, startTime, endTime, days, type, location,
                 instructor, credits, startDate, endDate);
 
         this.capacity = capacity;
@@ -315,6 +314,15 @@ public class Course implements Serializable {
      */
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    /* SETTERS */
+
+    /**
+     * @param term Course {@link Term}
+     */
+    public void setTerm(Term term) {
+        this.term = term;
     }
 
     /* HELPERS */

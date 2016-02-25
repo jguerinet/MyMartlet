@@ -90,6 +90,25 @@ public final class Season {
     }
 
     /**
+     * Returns the corresponding season to the given season number String
+     *
+     * @param season Season number String
+     * @return Corresponding season
+     */
+    public static @Season.Type String getMcGillSeason(String season) {
+        switch (season) {
+            case "09":
+                return FALL;
+            case "01":
+                return WINTER;
+            case "05":
+                return SUMMER;
+            default:
+                throw new IllegalStateException("Unknown McGill Season: " + season);
+        }
+    }
+
+    /**
      * @param season The season
      * @return The locale-based String representation of the season
      */

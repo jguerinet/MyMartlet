@@ -51,7 +51,7 @@ public class TranscriptConverter extends Converter.Factory
             //This can only convert transcripts
             return null;
         }
-        return super.responseBodyConverter(type, annotations, retrofit);
+        return new TranscriptConverter();
     }
 
     @Override
