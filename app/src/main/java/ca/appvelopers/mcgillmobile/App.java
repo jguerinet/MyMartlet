@@ -42,7 +42,6 @@ import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
@@ -88,10 +87,6 @@ public class App extends Application {
      * User's ebill {@link Statement}s
      */
     private static List<Statement> ebill;
-    /**
-     * {@link User} instance
-     */
-    private static User user;
     /**
      * User's chosen default {@link Term}
      */
@@ -255,16 +250,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The {@link User} info
-     */
-    public static User getUser(){
-        if(user == null){
-            user = Load.user();
-        }
-        return user;
-    }
-
-    /**
      * @return The user's chosen default {@link Term}
      */
     public static Term getDefaultTerm(){
@@ -344,14 +329,6 @@ public class App extends Application {
     public static void setEbill(List<Statement> ebill){
         App.ebill = ebill;
         Save.ebill();
-    }
-
-    /**
-     * @param user The {@link User} info
-     */
-    public static void setUser(User user){
-        App.user = user;
-        Save.user();
     }
 
     /**

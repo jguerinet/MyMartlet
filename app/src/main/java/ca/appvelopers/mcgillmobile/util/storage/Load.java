@@ -29,7 +29,6 @@ import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.User;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import timber.log.Timber;
 
@@ -108,13 +107,6 @@ public class Load {
     public static List<Statement> ebill(){
         List<Statement> statements = (List<Statement>)loadObject("Ebill", Constants.EBILL_FILE);
         return statements == null ? new ArrayList<Statement>() : statements;
-    }
-
-    /**
-     * @return The user's info, null if none
-     */
-    public static User user(){
-        return (User)loadObject("User", Constants.USER_FILE);
     }
 
     /**

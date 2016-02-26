@@ -92,13 +92,6 @@ public class Save {
     }
 
     /**
-     * Saves the user's info
-     */
-    public static void user(){
-        saveObject("User", Constants.USER_FILE, App.getUser());
-    }
-
-    /**
      * Saves the user's default term
      */
     public static void defaultTerm(){
