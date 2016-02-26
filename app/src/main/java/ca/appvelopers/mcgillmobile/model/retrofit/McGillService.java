@@ -16,7 +16,14 @@
 
 package ca.appvelopers.mcgillmobile.model.retrofit;
 
+import java.util.List;
+
+import ca.appvelopers.mcgillmobile.RegistrationError;
+import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.Transcript;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -52,7 +59,7 @@ public interface McGillService {
      * @return The schedule {@link Response}
      */
     @GET("bwskfshd.P_CrseSchdDetl")
-    Call<ResponseBody> schedule(@Query("term_in") Term term);
+    Call<List<Course>> schedule(@Query("term_in") Term term);
 
     /**
      * Retrieves the user's transcript
@@ -60,7 +67,7 @@ public interface McGillService {
      * @return The transcript {@link Response}
      */
     @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
-    Call<ResponseBody> transcript();
+    Call<Transcript> transcript();
 
     /**
      * Retrieves the user's ebill
@@ -68,7 +75,7 @@ public interface McGillService {
      * @return The ebill {@link Response}
      */
     @GET("bztkcbil.pm_viewbills")
-    Call<ResponseBody> ebill();
+    Call<List<Statement>> ebill();
 
     /**
      * Registers or unregisters someone to a list of courses
@@ -77,7 +84,7 @@ public interface McGillService {
      * @return The registration {@link Response}
      */
     @GET("bwckcoms.P_Regs?term_in={url}")
-    Call<ResponseBody> registration(@Path("url") String url);
+    Call<List<RegistrationError>> registration(@Path("url") String url);
 
     /**
      * Searches for a list of classes
@@ -86,5 +93,5 @@ public interface McGillService {
      * @return The search {@link Response}
      */
     @GET("bwskfcls.P_GetCrse?{url}")
-    Call<ResponseBody> search(@Path("url") String url);
+    Call<List<CourseResult>> search(@Path("url") String url);
 }
