@@ -26,20 +26,21 @@ import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Shows the user's transcript
@@ -92,33 +93,7 @@ public class TranscriptActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                showToolbarProgress(true);
-                new DownloaderThread(this, mcGillService.transcript())
-                        .execute(new DownloaderThread.Callback() {
-                            @Override
-                            public void onDownloadFinished(final Response<ResponseBody> result) {
-                                //Parse the transcript if possible
-                                if (result != null) {
-                                    try {
-                                        Parser.parseTranscript(result);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                //Reload the view
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (result != null) {
-                                            update();
-                                        }
-                                        showToolbarProgress(false);
-                                    }
-                                });
-                            }
-                        });
-                return true;
+                refresh();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -128,6 +103,35 @@ public class TranscriptActivity extends DrawerActivity {
     protected @HomepageManager.Homepage
     int getCurrentPage() {
         return HomepageManager.TRANSCRIPT;
+    }
+
+    /**
+     * Refreshes the transcript
+     */
+    private void refresh() {
+        //Check internet
+        if (!Utils.isConnected(connectivityManager.get())) {
+            DialogHelper.error(this, R.string.error_no_internet);
+            return;
+        }
+
+        showToolbarProgress(true);
+
+        mcGillService.transcript().enqueue(new Callback<Transcript>() {
+            @Override
+            public void onResponse(Call<Transcript> call, Response<Transcript> response) {
+                transcriptManager.set(response.body());
+                update();
+                showToolbarProgress(false);
+            }
+
+            @Override
+            public void onFailure(Call<Transcript> call, Throwable t) {
+                Timber.e(t, "Error refreshing transcript");
+                showToolbarProgress(false);
+                DialogHelper.error(TranscriptActivity.this, R.string.error_other);
+            }
+        });
     }
 
     /**
