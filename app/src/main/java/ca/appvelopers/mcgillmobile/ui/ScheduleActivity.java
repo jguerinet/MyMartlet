@@ -44,7 +44,6 @@ import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +56,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
@@ -66,9 +66,10 @@ import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Represents the user's schedule
@@ -141,7 +142,7 @@ public class ScheduleActivity extends DrawerActivity {
         setTitle(term.getString(this));
 
         //Update the list of courses for this term
-        courses = scheduleManager.getTermCourses(term)
+        courses = scheduleManager.getTermCourses(term);
 
         //Date is by default set to today
         date = LocalDate.now();
@@ -228,50 +229,49 @@ public class ScheduleActivity extends DrawerActivity {
      *  (only available in portrait mode)
      */
     private void refreshCourses() {
+        //Check internet connection
+        if (!Utils.isConnected(connectivityManager.get())) {
+            DialogHelper.error(this, R.string.error_no_internet);
+            return;
+        }
+
         //Show the user we are refreshing
         showToolbarProgress(true);
 
         //Download the courses for this term
-        new DownloaderThread(this, mcGillService.schedule(term))
-                .execute(new DownloaderThread.Callback() {
+        mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
+            @Override
+            public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
+                //Set the courses
+                scheduleManager.set(response.body(), term);
+
+                //Download the transcript (if ever the user has new semesters on their transcript)
+                mcGillService.transcript().enqueue(new Callback<Transcript>() {
                     @Override
-                    public void onDownloadFinished(Response<ResponseBody> result) {
-                        //Parse the courses if there are any
-                        if (result != null) {
-                            try {
-                                Parser.parseCourses(term, result);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    public void onResponse(Call<Transcript> call, Response<Transcript> response) {
+                        transcriptManager.set(response.body());
+                        //Update the view
+                        Assert.assertNotNull(viewPager);
+                        viewPager.getAdapter().notifyDataSetChanged();
+                        showToolbarProgress(false);
+                    }
 
-                            //Download the Transcript
-                            //  (if ever the user has new semesters on their transcript)
-                            new DownloaderThread(ScheduleActivity.this, mcGillService.transcript())
-                                    .execute(new DownloaderThread.Callback() {
-                                        @Override
-                                        public void onDownloadFinished(Response<ResponseBody> result) {
-                                            //Parse the transcript if possible
-                                            if (result != null) {
-                                                try {
-                                                    Parser.parseTranscript(result);
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Assert.assertNotNull(viewPager);
-                                                    viewPager.getAdapter().notifyDataSetChanged();
-                                                    showToolbarProgress(false);
-                                                }
-                                            });
-                                        }
-                                    });
-                        }
+                    @Override
+                    public void onFailure(Call<Transcript> call, Throwable t) {
+                        Timber.e(t, "Error refreshing the transcript");
+                        showToolbarProgress(false);
+                        DialogHelper.error(ScheduleActivity.this, R.string.error_other);
                     }
                 });
+            }
+
+            @Override
+            public void onFailure(Call<List<Course>> call, Throwable t) {
+                Timber.e(t, "Error refreshing courses");
+                showToolbarProgress(false);
+                DialogHelper.error(ScheduleActivity.this, R.string.error_other);
+            }
+        });
     }
 
     /**
