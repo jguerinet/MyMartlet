@@ -38,23 +38,18 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
-import com.guerinet.utils.prefs.BooleanPreference;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
-import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
-import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.storage.Clear;
+import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import timber.log.Timber;
 
 /**
@@ -80,26 +75,15 @@ public abstract class DrawerActivity extends BaseActivity
     @Bind(R.id.main)
     protected View mainView;
     /**
-     * Remember username {@link BooleanPreference}
-     */
-    @Inject
-    @Named(PrefsModule.REMEMBER_USERNAME)
-    protected BooleanPreference rememberUsernamePref;
-    /**
-     * {@link UsernamePreference} instance
-     */
-    @Inject
-    protected UsernamePreference usernamePref;
-    /**
-     * {@link PasswordPreference} instance
-     */
-    @Inject
-    protected PasswordPreference passwordPref;
-    /**
      * The {@link HomepageManager} instance
      */
     @Inject
     protected HomepageManager homepageManager;
+    /**
+     * {@link ClearManager} instance
+     */
+    @Inject
+    protected ClearManager clearManager;
     /**
      * The toggle for the drawer inside the action bar
      */
@@ -240,8 +224,7 @@ public abstract class DrawerActivity extends BaseActivity
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == DialogInterface.BUTTON_POSITIVE) {
                             analytics.sendEvent("Logout", "Clicked");
-                            Clear.all(rememberUsernamePref, usernamePref, passwordPref,
-                                    homepageManager);
+                            clearManager.all();
                             //Go back to SplashActivity
                             startActivity(new Intent(DrawerActivity.this, SplashActivity.class));
                             finish();

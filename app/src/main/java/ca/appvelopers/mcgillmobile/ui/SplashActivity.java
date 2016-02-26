@@ -55,7 +55,7 @@ import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import ca.appvelopers.mcgillmobile.util.storage.Clear;
+import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
 import dagger.Lazy;
@@ -120,6 +120,11 @@ public class SplashActivity extends BaseActivity {
      */
     @Inject
     protected ConnectivityManager connectivityManager;
+    /**
+     * {@link ClearManager} instance
+     */
+    @Inject
+    protected ClearManager clearManager;
     /**
      * Remember username {@link BooleanPreference}
      */
@@ -233,7 +238,7 @@ public class SplashActivity extends BaseActivity {
         loginContainer.setVisibility(View.VISIBLE);
 
         //Delete of the previous user's info
-        Clear.all(rememberUsernamePref, usernamePref, passwordPref, homepageManager);
+        clearManager.all();
 
         //Fill out username text if it is present
         usernameView.setText(usernamePref.get());
@@ -386,8 +391,7 @@ public class SplashActivity extends BaseActivity {
 
             //Check if we need to download everything or only the essential stuff
             //We need to download everything if there is null info
-            boolean downloadEverything = App.getTranscript() == null || App.getUser() == null ||
-                    App.getEbill() == null;
+            boolean downloadEverything = App.getTranscript() == null || App.getEbill() == null;
 
             //If we need to download everything, do it synchronously. If not, do it asynchronously
             UserDownloader userDownloader = new UserDownloader(SplashActivity.this) {

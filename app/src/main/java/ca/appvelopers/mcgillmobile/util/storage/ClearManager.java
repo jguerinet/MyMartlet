@@ -22,31 +22,72 @@ import com.guerinet.utils.prefs.BooleanPreference;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
  * Clears objects from internal storage or {@link SharedPreferences}
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Clear {
+@Singleton
+public class ClearManager {
+    /**
+     * Remember Username {@link BooleanPreference}
+     */
+    private final BooleanPreference rememberUsernamePref;
+    /**
+     * {@link UsernamePreference} instance
+     */
+    private final UsernamePreference usernamePref;
+    /**
+     * {@link PasswordPreference} instance
+     */
+    private final PasswordPreference passwordPref;
+    /**
+     * {@link HomepageManager}
+     */
+    private final HomepageManager homepageManager;
+    /**
+     * {@link TranscriptManager} instance
+     */
+    private final TranscriptManager transcriptManager;
 
     /**
-     * Clears all of the user's info
+     * Default Injectable Constructor
      *
-     * @param rememberUsernamePref Remember username {@link BooleanPreference}
+     * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param usernamePref         {@link UsernamePreference} instance
      * @param passwordPref         {@link PasswordPreference} instance
      * @param homepageManager      {@link HomepageManager} instance
+     * @param transcriptManager    {@link TranscriptManager} instance
      */
-    public static void all(BooleanPreference rememberUsernamePref, UsernamePreference usernamePref,
-            PasswordPreference passwordPref, HomepageManager homepageManager) {
+    @Inject
+    protected ClearManager(@Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
+            UsernamePreference usernamePref, PasswordPreference passwordPref,
+            HomepageManager homepageManager, TranscriptManager transcriptManager) {
+        this.rememberUsernamePref = rememberUsernamePref;
+        this.usernamePref = usernamePref;
+        this.passwordPref = passwordPref;
+        this.homepageManager = homepageManager;
+        this.transcriptManager = transcriptManager;
+    }
+
+    /**
+     * Clears all of the user's info
+     */
+    public void all() {
         //If the user had not chosen to remember their username, clear it
         if (!rememberUsernamePref.get()) {
             usernamePref.clear();
@@ -59,13 +100,10 @@ public class Clear {
         App.setCourses(new ArrayList<Course>());
 
         //Transcript
-        App.setTranscript(null);
+        transcriptManager.clear();
 
         //Ebill
         App.setEbill(new ArrayList<Statement>());
-
-        //User Info
-        App.setUser(null);
 
         //HomepageManager
         homepageManager.clear();

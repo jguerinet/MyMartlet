@@ -73,4 +73,13 @@ public class TranscriptManager {
         //Save it to internal storage
         StorageUtils.saveObject(context, transcript, "transcript", "Transcript");
     }
+
+    /**
+     * Clears the stored {@link Transcript}
+     */
+    public synchronized void clear() {
+        //Clear both the local instance and the stored one
+        transcript = null;
+        context.deleteFile("transcript");
+    }
 }
