@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
+import dagger.Lazy;
 
 /**
  * The base class for all activities
@@ -71,6 +73,11 @@ public class BaseActivity extends AppCompatActivity {
      */
     @Inject
     protected LanguageManager languageManager;
+    /**
+     * {@link ConnectivityManager} instance, lazily loaded
+     */
+    @Inject
+    protected Lazy<ConnectivityManager> connectivityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

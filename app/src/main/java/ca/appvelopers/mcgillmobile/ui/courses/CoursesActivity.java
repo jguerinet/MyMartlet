@@ -46,6 +46,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -54,7 +55,10 @@ import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Shows the user all of the courses the user has taken or is currently registered in
@@ -187,52 +191,48 @@ public class CoursesActivity extends DrawerActivity {
      * Refreshes the list of courses for the given term and the user's transcript
      */
     private void refreshCourses() {
+        //Make sure the user is connected to the internet before continuing
+        if (Utils.isConnected(connectivityManager.get())) {
+            DialogHelper.error(this, R.string.error_no_internet);
+            return;
+        }
+
         //Show the user we are refreshing
         showToolbarProgress(true);
 
         //Download the courses for this term
-        new DownloaderThread(this, mcGillService.schedule(mTerm))
-                .execute(new DownloaderThread.Callback() {
+        mcGillService.schedule(mTerm).enqueue(new Callback<List<Course>>() {
+            @Override
+            public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
+                //Set the courses
+                scheduleManager.set(response.body(), mTerm);
+
+                //Download the transcript (if ever the user has new semesters on their transcript)
+                mcGillService.transcript().enqueue(new Callback<Transcript>() {
                     @Override
-                    public void onDownloadFinished(Response<ResponseBody> result) {
-                        //Parse the courses if there are any
-                        if (result != null) {
-                            try {
-                                Parser.parseCourses(mTerm, result);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    public void onResponse(Call<Transcript> call, Response<Transcript> response) {
+                        transcriptManager.set(response.body());
+                        //Update the view
+                        update();
+                        showToolbarProgress(false);
+                    }
 
-                            //Download the Transcript
-                            //  (if ever the user has new semesters on their transcript)
-                            new DownloaderThread(CoursesActivity.this, mcGillService.transcript())
-                                    .execute(new DownloaderThread.Callback() {
-                                        @Override
-                                        public void onDownloadFinished(Response<ResponseBody> result) {
-                                            //Parse the transcript if possible
-                                            if (result != null) {
-                                                try {
-                                                    Parser.parseTranscript(result);
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    //Update the view
-                                                    update();
-
-                                                    //Done refreshing
-                                                    showToolbarProgress(false);
-                                                }
-                                            });
-                                        }
-                                    });
-                        }
+                    @Override
+                    public void onFailure(Call<Transcript> call, Throwable t) {
+                        Timber.e(t, "Error refreshing the transcript");
+                        showToolbarProgress(false);
+                        DialogHelper.error(CoursesActivity.this, R.string.error_other);
                     }
                 });
+            }
+
+            @Override
+            public void onFailure(Call<List<Course>> call, Throwable t) {
+                Timber.e(t, "Error refreshing courses");
+                showToolbarProgress(false);
+                DialogHelper.error(CoursesActivity.this, R.string.error_other);
+            }
+        });
     }
 
     /**
