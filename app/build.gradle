@@ -106,7 +106,7 @@ dependencies {
     compile 'com.google.dagger:dagger:2.0.2'
     apt 'com.google.dagger:dagger-compiler:2.0.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.guerinet:android-utils:1.0.19'
+    compile 'com.guerinet:android-utils:1.0.22'
     compile 'com.guerinet:form-generator:2.1.3'
     compile 'com.instabug.library:instabug:2+'
     compile 'com.jakewharton:butterknife:7.0.1'

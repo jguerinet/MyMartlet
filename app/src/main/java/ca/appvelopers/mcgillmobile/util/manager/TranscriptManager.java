@@ -50,7 +50,7 @@ public class TranscriptManager {
     protected TranscriptManager(Context context) {
         this.context = context;
         //Do not lazy load the transcript because it can be null, load it upfront
-        transcript = StorageUtils.loadObject(context, Transcript.class, "transcript", "Transcript");
+        transcript = (Transcript) StorageUtils.loadObject(context, "transcript", "Transcript");
     }
 
     /**

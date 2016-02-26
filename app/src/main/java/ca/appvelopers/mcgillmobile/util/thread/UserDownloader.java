@@ -22,7 +22,6 @@ import android.net.ConnectivityManager;
 import com.guerinet.utils.Utils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,8 +34,8 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 import timber.log.Timber;
 
 /**
@@ -65,6 +64,11 @@ public abstract class UserDownloader extends Thread {
      */
     @Inject
     protected TranscriptManager transcriptManager;
+    /**
+     * {@link ScheduleManager} instance
+     */
+    @Inject
+    protected ScheduleManager scheduleManager;
     /**
      * True if everything should be downloaded, false otherwise (defaults to false)
      */
@@ -124,25 +128,7 @@ public abstract class UserDownloader extends Thread {
                     //Download the schedule
                     try {
                         List<Course> courses = mcGillService.schedule(term).execute().body();
-
-                        //Go through the courses and set the term
-                        for (Course course : courses) {
-                            course.setTerm(term);
-                        }
-
-                        List<Course> existingCourses = App.getCourses();
-                        List<Course> coursesToRemove = new ArrayList<>();
-                        //Delete all courses for this term
-                        for (Course course : existingCourses) {
-                            if (course.getTerm().equals(term)) {
-                                coursesToRemove.add(course);
-                            }
-                        }
-
-                        //Remove the old ones and add the new ones
-                        existingCourses.removeAll(coursesToRemove);
-                        existingCourses.addAll(courses);
-                        Save.courses();
+                        scheduleManager.set(courses, term);
                     } catch (MinervaException e) {
                         //TODO
                     } catch (IOException e) {
