@@ -73,6 +73,20 @@ public class ScheduleManager {
     }
 
     /**
+     * @param term {@link Term} that the courses should be in
+     * @return All {@link Course}s for the given term
+     */
+    public synchronized List<Course> getTermCourses(Term term) {
+        List<Course> courses = new ArrayList<>();
+        for (Course course : get()) {
+            if (course.getTerm().equals(term)) {
+                courses.add(course);
+            }
+        }
+        return courses;
+    }
+
+    /**
      * @param courses List of {@link Course}s to save
      */
     public synchronized void set(List<Course> courses) {

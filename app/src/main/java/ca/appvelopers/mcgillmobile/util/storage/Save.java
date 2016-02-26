@@ -71,13 +71,6 @@ public class Save {
     }
 
     /**
-     * Saves the user's courses
-     */
-    public static void courses(){
-        saveObject("Courses", Constants.COURSES_FILE, App.getCourses());
-    }
-
-    /**
      * Saves the user's ebill statements
      */
     public static void ebill(){

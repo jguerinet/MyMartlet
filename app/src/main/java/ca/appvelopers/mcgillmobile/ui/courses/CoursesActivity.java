@@ -35,7 +35,6 @@ import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,6 +50,7 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
+import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import okhttp3.ResponseBody;
@@ -83,6 +83,11 @@ public class CoursesActivity extends DrawerActivity {
      */
     @Inject
     protected TranscriptManager transcriptManager;
+    /**
+     * {@link ScheduleManager} instance
+     */
+    @Inject
+    protected ScheduleManager scheduleManager;
     /**
      * The ListView adapter
      */
@@ -167,12 +172,7 @@ public class CoursesActivity extends DrawerActivity {
         }
 
         //Get the list of courses for this term
-        List<Course> courses = new ArrayList<>();
-        for (Course course : App.getCourses()) {
-            if (course.getTerm().equals(mTerm)) {
-                courses.add(course);
-            }
-        }
+        List<Course> courses = scheduleManager.getTermCourses(mTerm);
 
         //Set up the list
         mAdapter = new CoursesAdapter(courses, canUnregister);

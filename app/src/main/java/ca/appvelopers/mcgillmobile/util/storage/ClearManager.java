@@ -29,11 +29,14 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Place;
+import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
@@ -44,10 +47,6 @@ import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 @Singleton
 public class ClearManager {
     /**
-     * Remember Username {@link BooleanPreference}
-     */
-    private final BooleanPreference rememberUsernamePref;
-    /**
      * {@link UsernamePreference} instance
      */
     private final UsernamePreference usernamePref;
@@ -56,6 +55,10 @@ public class ClearManager {
      */
     private final PasswordPreference passwordPref;
     /**
+     * Remember Username {@link BooleanPreference}
+     */
+    private final BooleanPreference rememberUsernamePref;
+    /**
      * {@link HomepageManager}
      */
     private final HomepageManager homepageManager;
@@ -63,25 +66,32 @@ public class ClearManager {
      * {@link TranscriptManager} instance
      */
     private final TranscriptManager transcriptManager;
+    /**
+     * {@link ScheduleManager} instance
+     */
+    private final ScheduleManager scheduleManager;
 
     /**
      * Default Injectable Constructor
      *
-     * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param usernamePref         {@link UsernamePreference} instance
      * @param passwordPref         {@link PasswordPreference} instance
+     * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param homepageManager      {@link HomepageManager} instance
      * @param transcriptManager    {@link TranscriptManager} instance
+     * @param scheduleManager      {@link ScheduleManager} instance
      */
     @Inject
-    protected ClearManager(@Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
-            UsernamePreference usernamePref, PasswordPreference passwordPref,
-            HomepageManager homepageManager, TranscriptManager transcriptManager) {
+    protected ClearManager(UsernamePreference usernamePref, PasswordPreference passwordPref,
+            @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
+            HomepageManager homepageManager, TranscriptManager transcriptManager,
+            ScheduleManager scheduleManager) {
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
         this.transcriptManager = transcriptManager;
+        this.scheduleManager = scheduleManager;
     }
 
     /**
@@ -97,7 +107,7 @@ public class ClearManager {
         passwordPref.clear();
 
         //Schedule
-        App.setCourses(new ArrayList<Course>());
+        scheduleManager.clear();
 
         //Transcript
         transcriptManager.clear();
@@ -118,5 +128,14 @@ public class ClearManager {
         App.setFavoritePlaces(new ArrayList<Place>());
 
         //TODO Clear internal storage
+    }
+
+    /**
+     * Clears all of the config info
+     */
+    private void config() {
+        App.setPlaces(new ArrayList<Place>());
+        App.setPlaceTypes(new ArrayList<PlaceType>());
+        App.setRegisterTerms(new ArrayList<Term>());
     }
 }

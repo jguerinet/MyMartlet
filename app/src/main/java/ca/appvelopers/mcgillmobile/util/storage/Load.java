@@ -86,14 +86,6 @@ public class Load {
     }
 
     /**
-     * @return The user's classes, an empty list if none
-     */
-    public static List<Course> classes(){
-        List<Course> courses = (List<Course>)loadObject("Classes", Constants.COURSES_FILE);
-        return courses == null ? new ArrayList<Course>() : courses;
-    }
-
-    /**
      * @return The user's Ebill statements, and empty list if none
      */
     public static List<Statement> ebill(){

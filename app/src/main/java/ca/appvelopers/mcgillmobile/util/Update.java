@@ -21,14 +21,7 @@ import android.content.Context;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.IntPreference;
 
-import java.util.ArrayList;
-
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
-import ca.appvelopers.mcgillmobile.model.Statement;
-import ca.appvelopers.mcgillmobile.model.Term;
 
 /**
  * Runs any update code
@@ -107,25 +100,5 @@ public class Update {
     private static void update7() {
         //Force the user to re-update all of the information in the app
         clearUserInfo();
-    }
-
-    /**
-     * Clears all of the config info
-     */
-    private static void clearConfig() {
-        App.setPlaces(new ArrayList<Place>());
-        App.setPlaceTypes(new ArrayList<PlaceType>());
-        App.setRegisterTerms(new ArrayList<Term>());
-    }
-
-    /**
-     * Clears all of the downloaded user info
-     */
-    private static void clearUserInfo() {
-        App.getContext().deleteFile(Constants.TRANSCRIPT);
-        App.setCourses(new ArrayList<Course>());
-        App.setEbill(new ArrayList<Statement>());
-        App.getContext().deleteFile(Constants.USER_FILE);
-        App.getContext().deleteFile(Constants.DEFAULT_TERM_FILE);
     }
 }

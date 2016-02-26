@@ -74,10 +74,6 @@ public class App extends Application {
      */
     private static List<Term> registerTerms;
     /**
-     * User's {@link Course}s
-     */
-    private static List<Course> courses;
-    /**
      * User's ebill {@link Statement}s
      */
     private static List<Statement> ebill;
@@ -212,16 +208,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The user's list of {@link Course}s
-     */
-    public static List<Course> getCourses(){
-        if(courses == null){
-            courses = Load.classes();
-        }
-        return courses;
-    }
-
-    /**
      * @return The user's ebill {@link Statement}s
      */
     public static List<Statement> getEbill(){
@@ -285,14 +271,6 @@ public class App extends Application {
     public static void setRegisterTerms(List<Term> terms) {
         App.registerTerms = terms;
         Save.registerTerms();
-    }
-
-    /**
-     * @param courses The user's {@link Course}s
-     */
-    public static void setCourses(List<Course> courses) {
-        App.courses = courses;
-        Save.courses();
     }
 
     /**

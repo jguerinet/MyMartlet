@@ -64,6 +64,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import okhttp3.ResponseBody;
@@ -108,6 +109,11 @@ public class ScheduleActivity extends DrawerActivity {
     @Inject
     protected TranscriptManager transcriptManager;
     /**
+     * {@link ScheduleManager} instance
+     */
+    @Inject
+    protected ScheduleManager scheduleManager;
+    /**
      * Current {@link Term}
      */
     private Term term;
@@ -135,7 +141,7 @@ public class ScheduleActivity extends DrawerActivity {
         setTitle(term.getString(this));
 
         //Update the list of courses for this term
-        updateCourses();
+        courses = scheduleManager.getTermCourses(term)
 
         //Date is by default set to today
         date = LocalDate.now();
@@ -266,19 +272,6 @@ public class ScheduleActivity extends DrawerActivity {
                         }
                     }
                 });
-    }
-
-    /**
-     * Fills the list of courses with the current term's courses
-     */
-    private void updateCourses() {
-        //Clear the current course list, add the courses that are for this semester
-        courses.clear();
-        for (Course course : App.getCourses()) {
-            if (course.getTerm().equals(term)) {
-                courses.add(course);
-            }
-        }
     }
 
     /**
