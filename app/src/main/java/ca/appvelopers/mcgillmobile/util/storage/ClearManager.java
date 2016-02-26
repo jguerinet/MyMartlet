@@ -133,7 +133,7 @@ public class ClearManager {
     /**
      * Clears all of the config info
      */
-    private void config() {
+    public void config() {
         App.setPlaces(new ArrayList<Place>());
         App.setPlaceTypes(new ArrayList<PlaceType>());
         App.setRegisterTerms(new ArrayList<Term>());

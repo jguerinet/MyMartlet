@@ -52,10 +52,10 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
-import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
+import ca.appvelopers.mcgillmobile.util.manager.UpdateManager;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
@@ -166,6 +166,11 @@ public class SplashActivity extends BaseActivity {
     @Inject
     protected PasswordPreference passwordPref;
     /**
+     * {@link UpdateManager} instance
+     */
+    @Inject
+    protected UpdateManager updateManager;
+    /**
      * The {@link HomepageManager} instance
      */
     @Inject
@@ -184,7 +189,7 @@ public class SplashActivity extends BaseActivity {
         App.component(this).inject(this);
 
         //Run the update code, if any
-        Update.update(this, versionPref);
+        updateManager.update();
 
         //Start downloading the config
         new ConfigDownloader(this).start();

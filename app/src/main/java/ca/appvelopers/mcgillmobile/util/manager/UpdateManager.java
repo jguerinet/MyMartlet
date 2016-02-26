@@ -14,34 +14,65 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.util;
+package ca.appvelopers.mcgillmobile.util.manager;
 
 import android.content.Context;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.IntPreference;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
 /**
  * Runs any update code
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Update {
+@Singleton
+public class UpdateManager {
+    /**
+     * App context
+     */
+    private final Context context;
+    /**
+     * Version {@link IntPreference}
+     */
+    private final IntPreference versionPref;
+    /**
+     * {@link ClearManager} instance
+     */
+    private final ClearManager clearManager;
+
+    /**
+     * Default Injectable Constructor
+     *
+     * @param context      App context
+     * @param versionPref  Version {@link IntPreference}
+     * @param clearManager {@link ClearManager} instance
+     */
+    @Inject
+    public UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPreference versionPref,
+            ClearManager clearManager) {
+        this.context = context;
+        this.versionPref = versionPref;
+        this.clearManager = clearManager;
+    }
 
     /**
      * Checks if the app has been updated and runs any update code needed if so
-     *
-     * @param context      App context
-     * @param versionPrefs Version {@link IntPreference}
      */
-    public static void update(Context context, IntPreference versionPrefs) {
+    public void update() {
         //Get the version code
         int code = Utils.versionCode(context);
 
         //Get the current version number
-        int storedVersion = versionPrefs.get();
+        int storedVersion = versionPref.get();
 
         //Stored version is smaller than version number
         if (storedVersion < code) {
@@ -66,7 +97,7 @@ public class Update {
             }
 
             //Store the new version in the SharedPrefs
-            versionPrefs.set(code);
+            versionPref.set(code);
         }
     }
 
@@ -74,10 +105,10 @@ public class Update {
      * v2.1.0
      * - Removed Hungarian notation everywhere -> redownload config and user data
      */
-    private static void update16() {
+    private void update16() {
         //Redownload everything
-        clearConfig();
-        clearUserInfo();
+        clearManager.config();
+        clearManager.all();
         App.setWishlist(null);
         App.setFavoritePlaces(null);
     }
@@ -87,18 +118,18 @@ public class Update {
      * - Object Changes  -> Force the user to reload all of their info
      * - Place changes -> Force the reload of all of the config stuff
      */
-    private static void update13() {
+    private void update13() {
         //Re-download all user info
-        clearConfig();
-        clearUserInfo();
+        clearManager.config();
+        clearManager.all();
     }
 
     /**
      * v1.0.1
      * - Object changes -> Force the reload of all of the info
      */
-    private static void update7() {
+    private void update7() {
         //Force the user to re-update all of the information in the app
-        clearUserInfo();
+        clearManager.all();
     }
 }
