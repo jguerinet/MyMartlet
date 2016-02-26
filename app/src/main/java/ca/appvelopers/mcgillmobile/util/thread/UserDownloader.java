@@ -22,17 +22,19 @@ import android.net.ConnectivityManager;
 import com.guerinet.utils.Utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
-import ca.appvelopers.mcgillmobile.util.Test;
+import ca.appvelopers.mcgillmobile.util.storage.Save;
 import timber.log.Timber;
 
 /**
@@ -64,7 +66,7 @@ public abstract class UserDownloader extends Thread {
     /**
      * Default Constructor
      *
-     * @param context            App context
+     * @param context App context
      */
     public UserDownloader(Context context) {
         App.component(context).inject(this);
@@ -84,59 +86,67 @@ public abstract class UserDownloader extends Thread {
             }
 
             try {
-                if (Test.LOCAL_TRANSCRIPT) {
-                    Test.testTranscript();
-                } else {
-                    Parser.parseTranscript(mcGillService.transcript().execute());
-                }
+                App.setTranscript(mcGillService.transcript().execute().body());
             } catch (MinervaException e) {
                 //TODO
             } catch(IOException e) {
                 Timber.e(e, "Transcript Exception");
             }
 
-            //Semesters
-            if (Test.LOCAL_SCHEDULE) {
-                //Test mode : only one semester to do
-                Test.testSchedule();
-            } else {
-                //The current term
-                Term currentTerm = Term.currentTerm();
-                //List of semesters
-                List<Semester> semesters = App.getTranscript().getSemesters();
+            //The current term
+            Term currentTerm = Term.currentTerm();
+            //List of semesters
+            List<Semester> semesters = App.getTranscript().getSemesters();
 
-                //Go through the semesters
-                for (Semester semester: semesters) {
-                    //Get the term of this semester
-                    Term term = semester.getTerm();
+            //Go through the semesters
+            for (Semester semester: semesters) {
+                //Get the term of this semester
+                Term term = semester.getTerm();
 
-                    //If we are not downloading everything, only download it if it's the
-                    //  current or future term
-                    if (downloadEverything || term.equals(currentTerm) ||
-                            term.isAfter(currentTerm)) {
-                        if (downloadEverything) {
-                            update(context.getString(R.string.downloading_semester,
-                                    term.getString(context)));
+                //If we are not downloading everything, only download it if it's the
+                //  current or future term
+                if (downloadEverything || term.equals(currentTerm) ||
+                        term.isAfter(currentTerm)) {
+                    if (downloadEverything) {
+                        update(context.getString(R.string.downloading_semester,
+                                term.getString(context)));
+                    }
+
+                    //Download the schedule
+                    try {
+                        List<Course> courses = mcGillService.schedule(term).execute().body();
+
+                        //Go through the courses and set the term
+                        for (Course course : courses) {
+                            course.setTerm(term);
                         }
 
-                        //Download the schedule
-                        try {
-                            Parser.parseCourses(term,
-                                    mcGillService.schedule(term).execute());
-                        } catch (MinervaException e) {
-                            //TODO
-                        } catch (IOException e) {
-                            Timber.e("Term: %s", term.getId());
-                            Timber.e(e, "Term Exception");
+                        List<Course> existingCourses = App.getCourses();
+                        List<Course> coursesToRemove = new ArrayList<>();
+                        //Delete all courses for this term
+                        for (Course course : existingCourses) {
+                            if (course.getTerm().equals(term)) {
+                                coursesToRemove.add(course);
+                            }
                         }
+
+                        //Remove the old ones and add the new ones
+                        existingCourses.removeAll(coursesToRemove);
+                        existingCourses.addAll(courses);
+                        Save.courses();
+                    } catch (MinervaException e) {
+                        //TODO
+                    } catch (IOException e) {
+                        Timber.e("Term: %s", term.getId());
+                        Timber.e(e, "Term Exception");
                     }
                 }
+            }
 
-                //TODO Move this
-                //Set the default term if there is none set yet
-                if (App.getDefaultTerm() == null) {
-                    App.setDefaultTerm(currentTerm);
-                }
+            //TODO Move this
+            //Set the default term if there is none set yet
+            if (App.getDefaultTerm() == null) {
+                App.setDefaultTerm(currentTerm);
             }
 
             //Ebill
@@ -146,7 +156,7 @@ public abstract class UserDownloader extends Thread {
 
             //Download the eBill and user info
             try {
-                Parser.parseEbill(mcGillService.ebill().execute());
+                App.setEbill(mcGillService.ebill().execute().body());
             } catch (MinervaException e) {
                 //TODO
             } catch(Exception e) {
