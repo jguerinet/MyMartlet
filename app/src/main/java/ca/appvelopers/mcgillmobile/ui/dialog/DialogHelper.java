@@ -56,6 +56,16 @@ public class DialogHelper {
     }
 
     /**
+     * Shows an error {@link AlertDialog} with one button
+     *
+     * @param context App context
+     * @param message Message String
+     */
+    public static void error(Context context, String message) {
+        DialogUtils.neutral(context, R.string.error, message);
+    }
+
+    /**
      * Shows an alert dialog allowing the user to change their shown semester
      *
      * @param context       The app context

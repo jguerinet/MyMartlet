@@ -19,7 +19,6 @@ package ca.appvelopers.mcgillmobile.ui.courses;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -29,12 +28,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -53,8 +51,6 @@ import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -239,67 +235,79 @@ public class CoursesActivity extends DrawerActivity {
      * Tries to unregister from the given courses
      */
     @OnClick(R.id.course_register)
-    protected void unregister(){
+    protected void unregister() {
         //Get checked courses from adapter
         final List<Course> courses = mAdapter.getCheckedCourses();
 
         if (courses.size() > 10) {
             //Too many courses
-            Toast.makeText(this, R.string.courses_too_many_courses, Toast.LENGTH_SHORT).show();
+            Utils.toast(this, R.string.courses_too_many_courses);
         } else if (courses.isEmpty()) {
             //No courses
-            Toast.makeText(this, R.string.courses_none_selected, Toast.LENGTH_SHORT).show();
+            Utils.toast(this, R.string.courses_none_selected);
         } else {
-            //Ask for confirmation before unregistering
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.unregister_dialog_title)
-                    .setMessage(R.string.unregister_dialog_message)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //Show the user we are loading
-                                    showToolbarProgress(true);
+            DialogUtils.alert(this, R.string.unregister_dialog_title,
+                    R.string.unregister_dialog_message, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
 
-                                    //Run the registration thread
-                                    new DownloaderThread(CoursesActivity.this,
-                                            mcGillService.registration(
-                                                    McGillManager.getRegistrationURL(mTerm, courses, true)))
-                                            .execute(new DownloaderThread.Callback() {
-                                                @Override
-                                                public void onDownloadFinished(Response<ResponseBody> result) {
-                                                    if (result != null) {
-                                                        String error =
-                                                                null;
-                                                        try {
-                                                            error = Parser.parseRegistrationErrors(
-                                                                    result, courses);
-                                                        } catch (IOException e) {
-                                                            e.printStackTrace();
-                                                        }
+                            //Don't continue if the positive button has not been clicked on
+                            if (which != DialogInterface.BUTTON_POSITIVE) {
+                                return;
+                            }
 
-                                                        if (error == null) {
-                                                            //If there are no errors,
-                                                            //  show the success message
-                                                            Toast.makeText(CoursesActivity.this,
-                                                                    R.string.unregistration_success,
-                                                                    Toast.LENGTH_LONG).show();
-                                                        } else {
-                                                            //If not, show the error message
-                                                            DialogUtils.neutral(
-                                                                    CoursesActivity.this,
-                                                                    R.string.unregistration_error,
-                                                                    error);
-                                                        }
+                            //Make sure we are connected to the internet
+                            if (!Utils.isConnected(connectivityManager.get())) {
+                                DialogHelper.error(CoursesActivity.this,
+                                        R.string.error_no_internet);
+                                return;
+                            }
 
-                                                        //Refresh the courses
-                                                        refreshCourses();
-                                                    }
-                                                }
-                                            });
-                                }
-                            })
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show();
+                            //Show the user we are loading
+                            showToolbarProgress(true);
+
+                            //Run the registration thread
+                            mcGillService.registration(
+                                    McGillManager.getRegistrationURL(mTerm, courses, true))
+                                    .enqueue(new Callback<List<RegistrationError>>() {
+                                        @Override
+                                        public void onResponse(Call<List<RegistrationError>> call,
+                                                Response<List<RegistrationError>> response) {
+                                            showToolbarProgress(false);
+
+                                            //If there are no errors, show the success message
+                                            if (response.body() == null ||
+                                                    response.body().isEmpty()) {
+                                                Utils.toast(CoursesActivity.this,
+                                                        R.string.unregistration_success);
+                                                return;
+                                            }
+
+                                            //Prepare the error message String
+                                            String errorMessage = "";
+                                            for (RegistrationError error : response.body()) {
+                                                errorMessage += error.getString(courses);
+                                                errorMessage += "\n";
+                                            }
+
+                                            DialogHelper.error(CoursesActivity.this, errorMessage);
+
+                                            //Refresh the courses
+                                            refreshCourses();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<List<RegistrationError>> call,
+                                                Throwable t) {
+                                            Timber.e(t, "Error unregistering for courses");
+                                            showToolbarProgress(false);
+                                            DialogHelper.error(CoursesActivity.this,
+                                                    R.string.error_other);
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 

@@ -17,8 +17,10 @@
 package ca.appvelopers.mcgillmobile;
 
 import java.io.Serializable;
+import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.Course;
+import timber.log.Timber;
 
 /**
  * Models an error that occurred during registration
@@ -30,7 +32,7 @@ public class RegistrationError implements Serializable {
     /**
      * Course CRN with the error
      */
-    private final String crn;
+    private final int crn;
     /**
      * Error message
      */
@@ -42,23 +44,31 @@ public class RegistrationError implements Serializable {
      * @param crn     Course CRN with the error
      * @param message Error message
      */
-    public RegistrationError(String crn, String message) {
+    public RegistrationError(int crn, String message) {
         this.crn = crn;
         this.message = message;
     }
 
     /**
-     * @return Course CRN with the error
-     */
-    public String getCRN() {
-        return crn;
-    }
-
-    /**
-     * @param course {@link Course} that this error is for
+     * @param courses List of {@link Course}s in order to find the course that the error is for
      * @return String to show to the user explaining the error message
      */
-    public String getString(Course course) {
-        return course.getCode() + " (" + course.getType() + ") - " + message + "\n";
+    public String getString(List<Course> courses) {
+        Course course = null;
+
+        //Find the course this error is for
+        for (Course aCourse : courses) {
+            if (aCourse.getCRN() == crn) {
+                course = aCourse;
+            }
+        }
+
+        //If the course is null, don't continue
+        if (course == null) {
+            Timber.e(new IllegalStateException(), "No course for the registration error");
+            return "";
+        }
+
+        return course.getCode() + " (" + course.getType() + ") - " + message;
     }
 }

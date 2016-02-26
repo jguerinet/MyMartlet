@@ -73,10 +73,10 @@ public class RegistrationErrorConverter extends Converter.Factory
                 for (Element link : document.select("a[href]")) {
                     if (link.toString()
                             .contains("http://www.is.mcgill.ca/whelp/sis_help/rg_errors.htm")) {
-                        String crn = link.parent().parent().child(1).text();
+                        int crn = Integer.parseInt(link.parent().parent().child(1).text());
                         String error = link.text();
                         errors.add(new RegistrationError(crn, error));
-                        Timber.e("(Un)registration error for %s: %s", crn, error);
+                        Timber.e("(Un)registration error for %d: %s", crn, error);
                     }
                 }
             }
