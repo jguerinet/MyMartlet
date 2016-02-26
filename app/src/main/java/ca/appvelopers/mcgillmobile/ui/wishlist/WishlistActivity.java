@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,6 +48,7 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -68,6 +71,11 @@ public class WishlistActivity extends DrawerActivity {
     @Bind(android.R.id.list)
     protected RecyclerView mList;
     /**
+     * {@link TranscriptManager} instance
+     */
+    @Inject
+    protected TranscriptManager transcriptManager;
+    /**
      * The ListView adapter
      */
     private WishlistSearchCourseAdapter mAdapter;
@@ -85,6 +93,7 @@ public class WishlistActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
+        App.component(this).inject(this);
         analytics.sendScreen("Wishlist");
 
         //Check if there are any terms to register for
@@ -140,7 +149,7 @@ public class WishlistActivity extends DrawerActivity {
                                 mTerm = term;
                                 update();
                             }
-                        }, analytics);
+                        }, analytics, transcriptManager);
                 return true;
             case R.id.action_refresh:
                 updateWishlist();

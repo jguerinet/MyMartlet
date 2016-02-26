@@ -36,6 +36,7 @@ import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
  * Helper methods that create dialogs for various situations
@@ -64,7 +65,7 @@ public class DialogHelper {
      * @param analytics     {@link Analytics} instance
      */
     public static void changeSemester(Context context, @Nullable Term term, boolean registerTerms,
-            final TermCallback callback, Analytics analytics) {
+            final TermCallback callback, Analytics analytics, TranscriptManager transcriptManager) {
         analytics.sendScreen("Change Semester");
 
         //Use the default term if no term was sent
@@ -75,7 +76,7 @@ public class DialogHelper {
         List<Term> terms = new ArrayList<>();
         if (!registerTerms) {
             //We are using the user's existing terms
-            for (Semester semester : App.getTranscript().getSemesters()) {
+            for (Semester semester : transcriptManager.get().getSemesters()) {
                 terms.add(semester.getTerm());
             }
         } else {

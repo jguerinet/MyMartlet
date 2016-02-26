@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,6 +51,7 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -76,6 +79,11 @@ public class CoursesActivity extends DrawerActivity {
     @Bind(R.id.courses_empty)
     protected TextView mEmptyView;
     /**
+     * {@link TranscriptManager} instance
+     */
+    @Inject
+    protected TranscriptManager transcriptManager;
+    /**
      * The ListView adapter
      */
     private CoursesAdapter mAdapter;
@@ -89,6 +97,7 @@ public class CoursesActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
+        App.component(this).inject(this);
         analytics.sendScreen("View Courses");
 
         mTerm = App.getDefaultTerm();
@@ -125,7 +134,7 @@ public class CoursesActivity extends DrawerActivity {
                                 update();
                                 refreshCourses();
                             }
-                        }, analytics);
+                        }, analytics, transcriptManager);
                 return true;
             case R.id.action_refresh:
                 refreshCourses();

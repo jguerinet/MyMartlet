@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Transcript;
@@ -85,12 +84,14 @@ public class CheckerService extends IntentService {
 
 		if(html != null){
 			//Get the previous grades
-			Transcript oldTranscript = App.getTranscript();
+            //TODO
+			Transcript oldTranscript = null;
 
 			//Parse the new transcript and get it
             //TODO
 //			Parser.parseTranscript(html);
-			Transcript newTranscript = App.getTranscript();
+            //TODO
+			Transcript newTranscript = null;
 
 			//Check if the CGPA has changed, alert the user if it has
 			if(Math.abs(oldTranscript.getCGPA() - newTranscript.getCGPA()) >= 0.01){

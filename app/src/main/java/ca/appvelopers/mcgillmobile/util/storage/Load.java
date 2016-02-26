@@ -28,7 +28,6 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import timber.log.Timber;
 
@@ -84,13 +83,6 @@ public class Load {
     public static List<Term> registerTerms(){
         List<Term> terms = (List<Term>)loadObject("Register Terms", Constants.REGISTER_TERMS_FILE);
         return terms == null ? new ArrayList<Term>() : terms;
-    }
-
-    /**
-     * @return The user's transcript, null if none
-     */
-    public static Transcript transcript(){
-        return (Transcript)loadObject("Transcript", Constants.TRANSCRIPT_FILE);
     }
 
     /**

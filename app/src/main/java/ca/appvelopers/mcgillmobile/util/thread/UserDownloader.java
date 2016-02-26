@@ -32,6 +32,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -91,8 +92,12 @@ public abstract class UserDownloader extends Thread {
                 update(context.getString(R.string.downloading_transcript));
             }
 
+            //Set the old transcript instance to use for the semesters if ever we don't get to
+            //  download the new one
+            Transcript transcript = transcriptManager.get();
             try {
-                transcriptManager.set(mcGillService.transcript().execute().body());
+                transcript = mcGillService.transcript().execute().body();
+                transcriptManager.set(transcript);
             } catch (MinervaException e) {
                 //TODO
             } catch(IOException e) {
@@ -101,11 +106,9 @@ public abstract class UserDownloader extends Thread {
 
             //The current term
             Term currentTerm = Term.currentTerm();
-            //List of semesters
-            List<Semester> semesters = App.getTranscript().getSemesters();
 
             //Go through the semesters
-            for (Semester semester: semesters) {
+            for (Semester semester: transcript.getSemesters()) {
                 //Get the term of this semester
                 Term term = semester.getTerm();
 

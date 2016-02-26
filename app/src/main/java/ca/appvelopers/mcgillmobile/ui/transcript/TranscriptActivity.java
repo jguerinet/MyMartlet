@@ -28,13 +28,15 @@ import com.guerinet.utils.Utils;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -60,12 +62,18 @@ public class TranscriptActivity extends DrawerActivity {
      */
     @Bind(android.R.id.list)
     protected RecyclerView mList;
+    /**
+     * {@link TranscriptManager} instance
+     */
+    @Inject
+    protected TranscriptManager transcriptManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transcript);
         ButterKnife.bind(this);
+        App.component(this).inject(this);
         analytics.sendScreen("Transcript");
 
         mList.setLayoutManager(new LinearLayoutManager(this));
@@ -126,11 +134,10 @@ public class TranscriptActivity extends DrawerActivity {
      * Updates the view
      */
     private void update() {
-        Transcript transcript = App.getTranscript();
-
         //Reload all of the info
-        mCGPA.setText(getString(R.string.transcript_CGPA, transcript.getCGPA()));
-        mTotalCredits.setText(getString(R.string.transcript_credits, transcript.getTotalCredits()));
-        mList.setAdapter(new TranscriptAdapter(transcript.getSemesters()));
+        mCGPA.setText(getString(R.string.transcript_CGPA, transcriptManager.get().getCGPA()));
+        mTotalCredits.setText(getString(R.string.transcript_credits,
+                transcriptManager.get().getTotalCredits()));
+        mList.setAdapter(new TranscriptAdapter(transcriptManager.get().getSemesters()));
     }
 }

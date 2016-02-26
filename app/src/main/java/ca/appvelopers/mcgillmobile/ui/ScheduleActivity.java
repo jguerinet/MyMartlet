@@ -64,6 +64,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -101,6 +102,11 @@ public class ScheduleActivity extends DrawerActivity {
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
     protected BooleanPreference twentyFourHourPref;
+    /**
+     * {@link TranscriptManager} instance
+     */
+    @Inject
+    protected TranscriptManager transcriptManager;
     /**
      * Current {@link Term}
      */
@@ -196,7 +202,7 @@ public class ScheduleActivity extends DrawerActivity {
                                 //Refresh the content
                                 refreshCourses();
                             }
-                        }, analytics);
+                        }, analytics, transcriptManager);
                 return true;
             case R.id.action_refresh:
                 refreshCourses();

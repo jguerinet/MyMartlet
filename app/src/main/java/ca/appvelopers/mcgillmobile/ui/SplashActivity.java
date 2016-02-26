@@ -55,6 +55,7 @@ import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.util.Update;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
@@ -125,6 +126,11 @@ public class SplashActivity extends BaseActivity {
      */
     @Inject
     protected ClearManager clearManager;
+    /**
+     * {@link TranscriptManager} instance
+     */
+    @Inject
+    protected TranscriptManager transcriptManager;
     /**
      * Remember username {@link BooleanPreference}
      */
@@ -391,7 +397,7 @@ public class SplashActivity extends BaseActivity {
 
             //Check if we need to download everything or only the essential stuff
             //We need to download everything if there is null info
-            boolean downloadEverything = App.getTranscript() == null || App.getEbill() == null;
+            boolean downloadEverything = transcriptManager.get() == null || App.getEbill() == null;
 
             //If we need to download everything, do it synchronously. If not, do it asynchronously
             UserDownloader userDownloader = new UserDownloader(SplashActivity.this) {

@@ -41,8 +41,6 @@ import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
@@ -75,10 +73,6 @@ public class App extends Application {
      * List of {@link Term}s that the user can currently register in
      */
     private static List<Term> registerTerms;
-    /**
-     * User's {@link Transcript}
-     */
-    private static Transcript transcript;
     /**
      * User's {@link Course}s
      */
@@ -218,18 +212,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The user's {@link Transcript}
-     */
-    public static Transcript getTranscript(){
-        synchronized(Constants.TRANSCRIPT_LOCK){
-            if(transcript == null){
-                transcript = Load.transcript();
-            }
-            return transcript;
-        }
-    }
-
-    /**
      * @return The user's list of {@link Course}s
      */
     public static List<Course> getCourses(){
@@ -303,16 +285,6 @@ public class App extends Application {
     public static void setRegisterTerms(List<Term> terms) {
         App.registerTerms = terms;
         Save.registerTerms();
-    }
-
-    /**
-     * @param transcript The user's {@link Transcript}
-     */
-    public static void setTranscript(Transcript transcript) {
-        synchronized (Constants.TRANSCRIPT_LOCK){
-            App.transcript = transcript;
-            Save.transcript();
-        }
     }
 
     /**

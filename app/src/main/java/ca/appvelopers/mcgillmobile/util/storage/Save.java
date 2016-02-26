@@ -71,13 +71,6 @@ public class Save {
     }
 
     /**
-     * Saves the user's transcript
-     */
-    public static void transcript(){
-        saveObject("Transcript", Constants.TRANSCRIPT_FILE, App.getTranscript());
-    }
-
-    /**
      * Saves the user's courses
      */
     public static void courses(){

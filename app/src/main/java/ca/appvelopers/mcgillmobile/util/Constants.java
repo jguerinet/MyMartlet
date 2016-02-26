@@ -22,12 +22,6 @@ package ca.appvelopers.mcgillmobile.util;
  * @since 1.0.0
  */
 public class Constants {
-    /* SYNCHRONIZATION LOCKS*/
-
-    /**
-     * Lock used for the transcript
-     */
-    public static final Object TRANSCRIPT_LOCK = new Object();
 
     /* INTENT KEYS */
 
@@ -54,10 +48,6 @@ public class Constants {
 
     /* INTERNAL STORAGE */
 
-    /**
-     * The file name where the user's transcript is stored
-     */
-    public static final String TRANSCRIPT_FILE = "transcript";
     /**
      * The file name where the user's courses are stored
      */
