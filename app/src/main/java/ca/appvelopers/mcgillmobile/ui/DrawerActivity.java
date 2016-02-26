@@ -48,6 +48,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import timber.log.Timber;
@@ -213,6 +214,23 @@ public abstract class DrawerActivity extends BaseActivity
     protected abstract @HomepageManager.Homepage int getCurrentPage();
 
     /* HELPERS */
+
+    /**
+     * Checks if we can refresh the information on the page and shows the toolbar progress bar if so
+     *
+     * @return True if the content can be refreshed, false otherwise
+     */
+    protected boolean canRefresh() {
+        //Check internet connection
+        if (!Utils.isConnected(connectivityManager.get())) {
+            DialogHelper.error(this, R.string.error_no_internet);
+            return false;
+        }
+
+        showToolbarProgress(true);
+
+        return true;
+    }
 
     /**
      * Logs the user out

@@ -109,13 +109,9 @@ public class TranscriptActivity extends DrawerActivity {
      * Refreshes the transcript
      */
     private void refresh() {
-        //Check internet
-        if (!Utils.isConnected(connectivityManager.get())) {
-            DialogHelper.error(this, R.string.error_no_internet);
+        if (!canRefresh()) {
             return;
         }
-
-        showToolbarProgress(true);
 
         mcGillService.transcript().enqueue(new Callback<Transcript>() {
             @Override

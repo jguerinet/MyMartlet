@@ -229,14 +229,9 @@ public class ScheduleActivity extends DrawerActivity {
      *  (only available in portrait mode)
      */
     private void refreshCourses() {
-        //Check internet connection
-        if (!Utils.isConnected(connectivityManager.get())) {
-            DialogHelper.error(this, R.string.error_no_internet);
+        if (!canRefresh()) {
             return;
         }
-
-        //Show the user we are refreshing
-        showToolbarProgress(true);
 
         //Download the courses for this term
         mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {

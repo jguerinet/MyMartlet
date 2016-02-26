@@ -25,17 +25,20 @@ import android.view.MenuItem;
 
 import com.guerinet.utils.Utils;
 
-import java.io.IOException;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Displays the user's ebill statements
@@ -72,31 +75,7 @@ public class EbillActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                showToolbarProgress(true);
-                new DownloaderThread(this, mcGillService.ebill())
-                        .execute(new DownloaderThread.Callback() {
-                            @Override
-                            public void onDownloadFinished(final Response<ResponseBody> result) {
-                                if (result != null) {
-                                    try {
-                                        Parser.parseEbill(result);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
 
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (result != null) {
-                                            update();
-                                        }
-                                        showToolbarProgress(false);
-                                    }
-                                });
-                            }
-                        });
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -106,6 +85,30 @@ public class EbillActivity extends DrawerActivity {
     protected @HomepageManager.Homepage
     int getCurrentPage() {
         return HomepageManager.EBILL;
+    }
+
+    /**
+     * Refreshes the list of statements
+     */
+    protected void refresh() {
+        if (!canRefresh()) {
+            return;
+        }
+
+        mcGillService.ebill().enqueue(new Callback<List<Statement>>() {
+            @Override
+            public void onResponse(Call<List<Statement>> call, Response<List<Statement>> response) {
+                App.setEbill(response.body());
+                showToolbarProgress(false);
+            }
+
+            @Override
+            public void onFailure(Call<List<Statement>> call, Throwable t) {
+                Timber.e(t, "Error refreshing the ebill");
+                DialogHelper.error(EbillActivity.this, R.string.error_other);
+                showToolbarProgress(false);
+            }
+        });
     }
 
     /**

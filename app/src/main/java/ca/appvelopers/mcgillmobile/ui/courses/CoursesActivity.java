@@ -137,12 +137,12 @@ public class CoursesActivity extends DrawerActivity {
                             public void onTermSelected(Term term) {
                                 mTerm = term;
                                 update();
-                                refreshCourses();
+                                refresh();
                             }
                         }, analytics, transcriptManager);
                 return true;
             case R.id.action_refresh:
-                refreshCourses();
+                refresh();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -186,15 +186,10 @@ public class CoursesActivity extends DrawerActivity {
     /**
      * Refreshes the list of courses for the given term and the user's transcript
      */
-    private void refreshCourses() {
-        //Make sure the user is connected to the internet before continuing
-        if (Utils.isConnected(connectivityManager.get())) {
-            DialogHelper.error(this, R.string.error_no_internet);
+    private void refresh() {
+        if (!canRefresh()) {
             return;
         }
-
-        //Show the user we are refreshing
-        showToolbarProgress(true);
 
         //Download the courses for this term
         mcGillService.schedule(mTerm).enqueue(new Callback<List<Course>>() {
@@ -294,7 +289,7 @@ public class CoursesActivity extends DrawerActivity {
                                             DialogHelper.error(CoursesActivity.this, errorMessage);
 
                                             //Refresh the courses
-                                            refreshCourses();
+                                            refresh();
                                         }
 
                                         @Override
