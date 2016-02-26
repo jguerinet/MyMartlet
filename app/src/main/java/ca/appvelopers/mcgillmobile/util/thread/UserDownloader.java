@@ -34,6 +34,7 @@ import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 import timber.log.Timber;
 
@@ -54,10 +55,15 @@ public abstract class UserDownloader extends Thread {
     @Inject
     protected ConnectivityManager connectivityManager;
     /**
-     * The {@link McGillService} instance
+     * {@link McGillService} instance
      */
     @Inject
     protected McGillService mcGillService;
+    /**
+     * {@link TranscriptManager} instance
+     */
+    @Inject
+    protected TranscriptManager transcriptManager;
     /**
      * True if everything should be downloaded, false otherwise (defaults to false)
      */
@@ -86,7 +92,7 @@ public abstract class UserDownloader extends Thread {
             }
 
             try {
-                App.setTranscript(mcGillService.transcript().execute().body());
+                transcriptManager.set(mcGillService.transcript().execute().body());
             } catch (MinervaException e) {
                 //TODO
             } catch(IOException e) {

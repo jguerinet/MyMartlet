@@ -64,6 +64,10 @@ public class TranscriptManager {
      * @param transcript {@link Transcript} instance to save
      */
     public synchronized void set(Transcript transcript) {
+        //Don't save a null transcript
+        if (transcript == null) {
+            return;
+        }
         //Set the local instance
         this.transcript = transcript;
         //Save it to internal storage
