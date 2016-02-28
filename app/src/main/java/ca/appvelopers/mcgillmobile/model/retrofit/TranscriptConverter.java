@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.model.retrofit;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -67,9 +66,8 @@ public class TranscriptConverter extends Converter.Factory
         double cgpa = -1;
         double totalCredits = -1;
 
-        int index = 0;
-        for (Element row : rows) {
-            String text = row.text();
+        for (int index = 0; index < rows.size(); index ++) {
+            String text = rows.get(index).text();
             //Check the text at the start of the row
             //If it matches one of the tokens, take the corresponding data out
             //of one of the following rows, depending on the HTML layout
@@ -103,7 +101,7 @@ public class TranscriptConverter extends Converter.Factory
                     //Normal Semester that starts with a season name
                     season = Season.getSeason(semesterItems[0]);
                     yearString = semesterItems[1];
-                } else if(text.startsWith("Change")) {
+                } else if (text.startsWith("Change")) {
                     //Change Semester
                     season = Season.getSeason(semesterItems[3]);
                     yearString = semesterItems[4];
@@ -129,7 +127,7 @@ public class TranscriptConverter extends Converter.Factory
                 List<TranscriptCourse> courses = new ArrayList<>();
 
                 //Increment the index before starting the semester loop
-                index ++;
+                int semesterIndex = index + 1;
 
                 //Search rows until the end of the semester is reached
                 //Conditions for end of semester:
@@ -137,7 +135,7 @@ public class TranscriptConverter extends Converter.Factory
                 //2. The words "Fall" "Summer" or "Winter" appear
                 while (true) {
                     //Get the current data row text
-                    text = rows.get(index).text();
+                    text = rows.get(semesterIndex).text();
 
                     if (text.contains("Granted")) {
                         //Student has graduated
@@ -155,7 +153,7 @@ public class TranscriptConverter extends Converter.Factory
                         bachelor = degreeDetails[0];
 
                         //Check if student is full time
-                        if(degreeDetails[1].startsWith("Full-time")){
+                        if (degreeDetails[1].startsWith("Full-time")) {
                             fullTime = true;
                         }
 
@@ -166,14 +164,14 @@ public class TranscriptConverter extends Converter.Factory
                     } else if (text.startsWith("TERM GPA")) {
                         //Term GPA
                         try {
-                            termGPA = Double.parseDouble(rows.get(index + 1).text());
+                            termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
                         } catch (NumberFormatException e) {
                             Timber.e(e, "Transcript Parse Error: Term GPA");
                         }
                     } else if (text.startsWith("TERM TOTALS:")) {
                         //Term Credits
                         try {
-                            termCredits = Double.parseDouble(rows.get(index + 2).text());
+                            termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                         } catch (NumberFormatException e) {
                             Timber.e(e, "Transcript Parse Error: Term Credits");
                         }
@@ -207,38 +205,40 @@ public class TranscriptConverter extends Converter.Factory
                                 }
                             }
 
-                            title = rows.get(index + 2).text();
+                            title = rows.get(semesterIndex + 2).text();
 
                             //Failed courses are missing the earned credits row
                             //Check row to see if earned credit exists
                             try {
-                                credits = Double.parseDouble(rows.get(index + 6).text());
+                                credits = Double.parseDouble(rows.get(semesterIndex + 6).text());
                             } catch (Exception ignored) {}
 
                             //Obtain user's grade
-                            grade = rows.get(index + 4).text();
+                            grade = rows.get(semesterIndex + 4).text();
 
                             //Check for deferred classes
                             if (grade.equals("L")) {
-                                grade = rows.get(index + 13).text();
+                                grade = rows.get(semesterIndex + 13).text();
                             }
 
                             //If average grades haven't been released on minerva, index will be null
                             averageGrade = "";
                             try {
-                                if (rows.get(index + 7).text().matches("[ABCDF].|[ABCDF]")) {
+                                if (rows.get(semesterIndex + 7).text()
+                                        .matches("[ABCDF].|[ABCDF]")) {
                                     //Regex looks for a letter grade
-                                    averageGrade = rows.get(index + 7).text();
-                                } else if (rows.get(index + 6).text().matches("[ABCDF].|[ABCDF]")) {
+                                    averageGrade = rows.get(semesterIndex+ 7).text();
+                                } else if (rows.get(semesterIndex+ 6).text()
+                                        .matches("[ABCDF].|[ABCDF]")) {
                                     //Failed course, average grade appears one row earlier
-                                    averageGrade = rows.get(index + 6).text();
+                                    averageGrade = rows.get(semesterIndex + 6).text();
                                 }
                             } catch (IndexOutOfBoundsException ignored) {}
                         } else {
                             //Extract transfer credit information
-                            if (!rows.get(index + 3).text().matches("[A-Za-z]{4}.*")) {
+                            if (!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")) {
                                 //Individual transferred courses not listed
-                                code = rows.get(index + 2).text();
+                                code = rows.get(semesterIndex + 2).text();
 
                                 //Extract the number of credits granted
                                 try {
@@ -250,14 +250,15 @@ public class TranscriptConverter extends Converter.Factory
                                 //Individual transferred courses listed
                                 try {
                                     //Try checking for the number of credits transferred per course
-                                    code = rows.get(index + 2).text();
-                                    title = rows.get(index + 3).text() + " " +
-                                            rows.get(index + 4).text();
-                                    credits = Double.parseDouble(rows.get(index + 5).text());
+                                    code = rows.get(semesterIndex + 2).text();
+                                    title = rows.get(semesterIndex + 3).text() + " " +
+                                            rows.get(semesterIndex + 4).text();
+                                    credits = Double.parseDouble(rows.get(semesterIndex + 5)
+                                            .text());
                                 } catch (NumberFormatException e) {
                                     //Number of credits per course not listed
                                     try {
-                                        code = rows.get(index + 2).text();
+                                        code = rows.get(semesterIndex+ 2).text();
                                         title = "";
 
                                         credits = getCredits(code);
@@ -265,14 +266,15 @@ public class TranscriptConverter extends Converter.Factory
                                         //Add the course codes for transferred courses
                                         int addedIndex = 3;
                                         boolean first = true;
-                                        while (rows.get(index +
+                                        while (rows.get(semesterIndex +
                                                 addedIndex).text().matches("[A-Za-z]{4}.*")) {
                                             if (!first) {
                                                 title += "\n";
                                             }
                                             first = false;
-                                            title = title + rows.get(index + addedIndex).text() +
-                                                    " " + rows.get(index + addedIndex + 1).text();
+                                            title = title + rows.get(semesterIndex +
+                                                    addedIndex).text() + " " +
+                                                    rows.get(semesterIndex+ addedIndex + 1).text();
                                             addedIndex += 2;
                                         }
                                     } catch (Exception e2) {
@@ -294,11 +296,11 @@ public class TranscriptConverter extends Converter.Factory
                     }
 
                     //Increment the index
-                    index ++;
+                    semesterIndex ++;
 
                     //Reached the end of the transcript, break loop
                     try {
-                        rows.get(index);
+                        rows.get(semesterIndex);
                     } catch (IndexOutOfBoundsException e) {
                         break;
                     }
@@ -314,7 +316,6 @@ public class TranscriptConverter extends Converter.Factory
                 }
 
             }
-            index ++;
         }
 
         return new Transcript(cgpa, totalCredits, semesters);
