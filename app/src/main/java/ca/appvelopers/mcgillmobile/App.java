@@ -36,7 +36,7 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -84,7 +84,7 @@ public class App extends Application {
     /**
      * User's wishlist
      */
-    private static List<Course> wishlist;
+    private static List<CourseResult> wishlist;
     /**
      * User's list of favorite {@link Place}s
      */
@@ -230,7 +230,7 @@ public class App extends Application {
     /**
      * @return The user's wishlist
      */
-    public static List<Course> getWishlist(){
+    public static List<CourseResult> getWishlist(){
         if(wishlist == null){
             wishlist = Load.wishlist();
         }
@@ -292,7 +292,7 @@ public class App extends Application {
     /**
      * @param wishlist The user's wishlist
      */
-    public static void setWishlist(List<Course> wishlist) {
+    public static void setWishlist(List<CourseResult> wishlist) {
         App.wishlist = wishlist;
         Save.wishlist();
     }

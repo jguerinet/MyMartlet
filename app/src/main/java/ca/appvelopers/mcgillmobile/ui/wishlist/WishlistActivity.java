@@ -41,6 +41,7 @@ import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
@@ -49,9 +50,8 @@ import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import okhttp3.ResponseBody;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Displays the user's wishlist
@@ -82,7 +82,7 @@ public class WishlistActivity extends DrawerActivity {
     /**
      * The list of classes to display
      */
-    private List<Course> mCourses;
+    private List<CourseResult> mCourses;
     /**
      * The current term
      */
@@ -202,7 +202,7 @@ public class WishlistActivity extends DrawerActivity {
      * Updates the information of the courses on the current wishlist
      */
     private void updateWishlist() {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, IOException>() {
             private List<TranscriptCourse> mTranscriptCourses;
 
             @Override
@@ -229,7 +229,7 @@ public class WishlistActivity extends DrawerActivity {
             }
 
             @Override
-            protected Void doInBackground(Void... params) {
+            protected IOException doInBackground(Void... params) {
                 //For each course, obtain its Minerva registration page
                 for (TranscriptCourse course : mTranscriptCourses) {
                     //Get the course registration URL
@@ -247,23 +247,12 @@ public class WishlistActivity extends DrawerActivity {
                             .courseNumber(number)
                             .build();
 
-                    Response<ResponseBody> html = new DownloaderThread(WishlistActivity.this, mcGillService.search(url))
-                            .execute();
-
-                    if (html != null) {
-                        //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
-                        //This parses all ClassItems for a given course
-                        List<Course> updatedCourses =
-                                null;
-                        try {
-                            updatedCourses = Parser.parseClassResults(course.getTerm(), html);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        Response<List<CourseResult>> results = mcGillService.search(url).execute();
 
                         //Update the course object with an updated class size
-                        for (Course updatedClass : updatedCourses) {
-                            for (Course wishlistClass : mCourses) {
+                        for (CourseResult updatedClass : results.body()) {
+                            for (CourseResult wishlistClass : mCourses) {
                                 if (wishlistClass.equals(updatedClass)) {
                                     int i = mCourses.indexOf(wishlistClass);
                                     mCourses.remove(wishlistClass);
@@ -271,18 +260,27 @@ public class WishlistActivity extends DrawerActivity {
                                 }
                             }
                         }
+
+                    } catch (IOException e) {
+                        Timber.e(e, "Error updating wishlist");
+                        return e;
                     }
                 }
+
                 return null;
             }
 
             @Override
-            protected void onPostExecute(Void result) {
+            protected void onPostExecute(IOException result) {
                 //Set the new wishlist
                 App.setWishlist(mCourses);
                 //Reload the adapter
                 update();
                 showToolbarProgress(false);
+
+                if (result != null) {
+                    DialogHelper.error(WishlistActivity.this, R.string.error_other);
+                }
             }
         }.execute();
     }

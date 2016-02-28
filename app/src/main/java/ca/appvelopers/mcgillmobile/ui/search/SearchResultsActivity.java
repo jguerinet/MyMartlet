@@ -23,9 +23,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.utils.Utils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,16 +33,20 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistSearchCourseAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Shows the results of the search from the SearchActivity
@@ -81,8 +84,8 @@ public class SearchResultsActivity extends BaseActivity {
 
         //Get the info from the intent
         mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
-        List<Course> courses =
-                (ArrayList<Course>)getIntent().getSerializableExtra(Constants.COURSES);
+        List<CourseResult> courses =
+                (ArrayList<CourseResult>) getIntent().getSerializableExtra(Constants.COURSES);
 
         //Set the title
         setTitle(mTerm.getString(this));
@@ -114,7 +117,8 @@ public class SearchResultsActivity extends BaseActivity {
      * @param term     The concerned term
      * @param courses  The list of courses
      */
-    public static void register(final BaseActivity activity, Term term, final List<Course> courses){
+    public static void register(final BaseActivity activity, Term term,
+            final List<CourseResult> courses) {
         //Too many courses
         if(courses.size() > 10){
             Toast.makeText(activity, activity.getString(R.string.courses_too_many_courses),
@@ -127,60 +131,51 @@ public class SearchResultsActivity extends BaseActivity {
         }
         //Execute registration of checked classes in a new thread
         else if(courses.size() > 0){
-            //Show the user we are refreshing
-            activity.showToolbarProgress(true);
+            //Check that we can continue
+            if (!activity.canRefresh()) {
+                return;
+            }
 
-            new DownloaderThread(activity, activity.getMcGillService().registration(
-                    McGillManager.getRegistrationURL(term, courses, false)))
-                    .execute(new DownloaderThread.Callback() {
-                        @Override
-                        public void onDownloadFinished(final Response<ResponseBody> result){
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run(){
-                                    if(result != null){
-                                        String error =
-                                                null;
-                                        try {
-                                            error = Parser.parseRegistrationErrors(result, courses);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
+            activity.getMcGillService()
+                    .registration(McGillManager.getRegistrationURL(term, courses, false))
+                    .enqueue(new Callback<List<RegistrationError>>() {
+                @Override
+                public void onResponse(Call<List<RegistrationError>> call,
+                        Response<List<RegistrationError>> response) {
+                    activity.showToolbarProgress(false);
 
-                                        //If there are no errors, show the success message
-                                        if(error == null){
-                                            Toast.makeText(activity, R.string.registration_success,
-                                                    Toast.LENGTH_LONG).show();
-                                        }
-                                        //If not, show the error message
-                                        else{
-                                            //Show success messages for the correctly registered
-                                            // courses
-                                            for(Course course : courses){
-                                                error += course.getCode() + " (" + course.getType()
-                                                        + ") - " + activity.getString(
-                                                        R.string.registration_success) + "\n";
-                                            }
+                    //If there are no errors, show the success message
+                    if (response.body() == null || response.body().isEmpty()) {
+                        Utils.toast(activity, R.string.registration_success);
+                        return;
+                    }
 
-                                            //Show an alert dialog with the errors
-                                            DialogUtils.neutral(activity,
-                                                    R.string.registration_error, error);
-                                        }
+                    //Prepare the error message String
+                    String errorMessage = "";
+                    List<Course> errorCourses = new ArrayList<>();
+                    errorCourses.addAll(courses);
+                    for (RegistrationError error : response.body()) {
+                        errorMessage += error.getString(errorCourses);
+                        errorMessage += "\n";
+                    }
 
-                                        //Remove the courses from the wishlist if they were there
-                                        List<Course> wishlist = App.getWishlist();
-                                        wishlist.removeAll(courses);
+                    DialogHelper.error(activity, errorMessage);
 
-                                        //Set the new wishlist
-                                        App.setWishlist(wishlist);
-                                    }
+                    //Remove the courses from the wishlist if they were there
+                    List<CourseResult> wishlist = App.getWishlist();
+                    wishlist.removeAll(courses);
 
-                                    //Stop the refreshing
-                                    activity.showToolbarProgress(false);
-                                }
-                            });
-                        }
-                    });
+                    //Set the new wishlist
+                    App.setWishlist(wishlist);
+                }
+
+                @Override
+                public void onFailure(Call<List<RegistrationError>> call, Throwable t) {
+                    Timber.e(t, "Error (un)registering for courses");
+                    DialogHelper.error(activity, R.string.error_other);
+                    activity.showToolbarProgress(false);
+                }
+            });
         }
     }
 
@@ -192,7 +187,7 @@ public class SearchResultsActivity extends BaseActivity {
      * @param add       True if we are adding courses, false if we're removing
      * @param analytics {@link Analytics} instance
      */
-    public static void addToWishlist(BaseActivity activity, List<Course> courses, boolean add,
+    public static void addToWishlist(BaseActivity activity, List<CourseResult> courses, boolean add,
             Analytics analytics){
         String toastMessage;
         //If there are none, display error message
@@ -202,12 +197,12 @@ public class SearchResultsActivity extends BaseActivity {
         //If not, it's to add a course to the wishlist
         else {
             //Get the wishlist courses
-            List<Course> wishlist = App.getWishlist();
+            List<CourseResult> wishlist = App.getWishlist();
 
             if(add){
                 //Only add it if it's not already part of the wishlist
                 int coursesAdded = 0;
-                for (Course course : courses) {
+                for (CourseResult course : courses) {
                     if (!wishlist.contains(course)) {
                         wishlist.add(course);
                         coursesAdded++;

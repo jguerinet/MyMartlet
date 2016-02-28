@@ -27,6 +27,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.guerinet.utils.Utils;
+
 import junit.framework.Assert;
 
 import java.util.Locale;
@@ -37,6 +39,7 @@ import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 import dagger.Lazy;
@@ -146,4 +149,22 @@ public class BaseActivity extends AppCompatActivity {
         //TODO This shouldn't exist
         return mcGillService;
     }
+
+    /**
+     * Checks if we can refresh the information on the page and shows the toolbar progress bar if so
+     *
+     * @return True if the content can be refreshed, false otherwise
+     */
+    public boolean canRefresh() {
+        //Check internet connection
+        if (!Utils.isConnected(connectivityManager.get())) {
+            DialogHelper.error(this, R.string.error_no_internet);
+            return false;
+        }
+
+        showToolbarProgress(true);
+
+        return true;
+    }
+
 }

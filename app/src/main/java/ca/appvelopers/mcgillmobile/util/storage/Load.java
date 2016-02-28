@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -103,9 +103,10 @@ public class Load {
     /**
      * @return The user's class wishlist, an empty list if none
      */
-    public static List<Course> wishlist(){
-        List<Course> wishlist = (List<Course>)loadObject("Wishlist", Constants.WISHLIST_FILE);
-        return wishlist == null ? new ArrayList<Course>() : wishlist;
+    public static List<CourseResult> wishlist(){
+        List<CourseResult> wishlist = (List<CourseResult>)loadObject("Wishlist",
+                Constants.WISHLIST_FILE);
+        return wishlist == null ? new ArrayList<CourseResult>() : wishlist;
     }
 
     /**

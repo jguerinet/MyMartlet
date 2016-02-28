@@ -31,7 +31,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
@@ -43,16 +43,16 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
 public class WishlistSearchCourseAdapter
         extends RecyclerView.Adapter<WishlistSearchCourseAdapter.CourseHolder> {
     private Context mContext;
-    private List<Course> mCourses;
-    private List<Course> mCheckedCourses;
+    private List<CourseResult> mCourses;
+    private List<CourseResult> mCheckedCourses;
 
-    public WishlistSearchCourseAdapter(Context context, Term term, List<Course> classItems){
+    public WishlistSearchCourseAdapter(Context context, Term term, List<CourseResult> classItems){
         this.mContext = context;
         this.mCourses = new ArrayList<>();
         this.mCheckedCourses = new ArrayList<>();
 
         //Add only the courses for this term
-        for(Course classItem : classItems){
+        for(CourseResult classItem : classItems){
             if(classItem.getTerm().equals(term)){
                 mCourses.add(classItem);
             }
@@ -85,7 +85,7 @@ public class WishlistSearchCourseAdapter
     /**
      * @return The list of checked classes
      */
-    public List<Course> getCheckedCourses(){
+    public List<CourseResult> getCheckedCourses(){
         return mCheckedCourses;
     }
 
@@ -146,7 +146,7 @@ public class WishlistSearchCourseAdapter
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final Course course){
+        public void bind(final CourseResult course){
             mCode.setText(course.getCode());
             mCredits.setText(mContext.getString(R.string.course_credits, course.getCredits()));
             mTitle.setText(course.getTitle());
