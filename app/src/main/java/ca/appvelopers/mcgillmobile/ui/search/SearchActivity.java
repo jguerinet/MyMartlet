@@ -33,7 +33,6 @@ import com.guerinet.utils.Device;
 
 import org.threeten.bp.DayOfWeek;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,16 +41,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.TermAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import ca.appvelopers.mcgillmobile.util.thread.DownloaderThread;
-import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Allows a user to search for courses that they can register for
@@ -288,35 +289,30 @@ public class SearchActivity extends DrawerActivity {
             builder.addDay(DayOfWeek.SUNDAY);
         }
 
+        //Check if we can refresh
+        if (!canRefresh()) {
+            return;
+        }
+
         //Execute the request
-        new DownloaderThread(this, mcGillService.search(builder.build())).execute(new DownloaderThread.Callback() {
+        mcGillService.search(builder.build()).enqueue(new Callback<List<CourseResult>>() {
             @Override
-            public void onDownloadFinished(final Response<ResponseBody> result) {
-                //If there is a result, parse it
-                final List<Course> courses = new ArrayList<>();
-                if (result != null) {
-                    try {
-                        courses.addAll(Parser.parseClassResults(term, result));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            public void onResponse(Call<List<CourseResult>> call,
+                    Response<List<CourseResult>> response) {
+                showToolbarProgress(false);
+                if (response.body() != null) {
+                    Intent intent = new Intent(SearchActivity.this, SearchResultsActivity.class)
+                            .putExtra(Constants.TERM, term)
+                            .putExtra(Constants.COURSES, (ArrayList<CourseResult>) response.body());
+                    startActivity(intent);
                 }
+            }
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (result != null) {
-                            Intent intent = new Intent(SearchActivity.this,
-                                    SearchResultsActivity.class)
-                                    .putExtra(Constants.TERM, term)
-                                    .putExtra(Constants.COURSES, (ArrayList<Course>) courses);
-                            startActivity(intent);
-                        }
-
-                        //Show the user we are downloading new information
-                        showToolbarProgress(false);
-                    }
-                });
+            @Override
+            public void onFailure(Call<List<CourseResult>> call, Throwable t) {
+                Timber.e(t, "Error searching for courses");
+                DialogHelper.error(SearchActivity.this, R.string.error_other);
+                showToolbarProgress(false);
             }
         });
     }
