@@ -27,7 +27,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.model.Course;
-import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
@@ -190,7 +189,7 @@ public class McGillManager {
      * @param dropCourse True if the user is dropping courses, false otherwise
      * @return The proper registration URL
      */
-    public static String getRegistrationURL(Term term, List<CourseResult> classes,
+    public static String getRegistrationURL(Term term, List<Course> classes,
             boolean dropCourse) {
         String registrationURL = term.toString();
 

@@ -136,8 +136,10 @@ public class SearchResultsActivity extends BaseActivity {
                 return;
             }
 
+            List<Course> theCourses = new ArrayList<>();
+            theCourses.addAll(courses);
             activity.getMcGillService()
-                    .registration(McGillManager.getRegistrationURL(term, courses, false))
+                    .registration(McGillManager.getRegistrationURL(term, theCourses, false))
                     .enqueue(new Callback<List<RegistrationError>>() {
                 @Override
                 public void onResponse(Call<List<RegistrationError>> call,

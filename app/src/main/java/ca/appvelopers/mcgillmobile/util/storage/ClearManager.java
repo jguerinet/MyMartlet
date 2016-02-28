@@ -27,7 +27,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -122,7 +122,7 @@ public class ClearManager {
         App.setDefaultTerm(null);
 
         //Wishlist
-        App.setWishlist(new ArrayList<Course>());
+        App.setWishlist(new ArrayList<CourseResult>());
 
         //Favorite places
         App.setFavoritePlaces(new ArrayList<Place>());
