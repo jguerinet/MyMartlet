@@ -81,32 +81,32 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      * Info container used to show the current place's detail
      */
     @Bind(R.id.info_container)
-    protected LinearLayout mInfoContainer;
+    protected LinearLayout infoContainer;
     /**
      * {@link FormGenerator} container for the filter
      */
     @Bind(R.id.container)
-    protected LinearLayout mContainer;
+    protected LinearLayout container;
     /**
      * Current place's title
      */
     @Bind(R.id.place_title)
-    protected TextView mTitle;
+    protected TextView title;
     /**
      * Current place's address
      */
     @Bind(R.id.place_address)
-    protected TextView mAddress;
+    protected TextView address;
     /**
      * Button to get directions to a place
      */
     @Bind(R.id.directions)
-    protected Button mDirections;
+    protected Button directions;
     /**
      * Button to add or remove a place from the user's favorites
      */
     @Bind(R.id.map_favorite)
-    protected Button mFavorite;
+    protected Button favorite;
     /**
      * Primary color for the {@link TextView} drawables
      */
@@ -155,7 +155,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         mSearchString = "";
         mType = new PlaceType(false);
 
-        FormGenerator fg = FormGenerator.bind(this, mContainer);
+        FormGenerator fg = FormGenerator.bind(this, container);
 
         //Set up the place filter
         final TextViewFormItem typeView = fg.text(mType.getString(this, languageManager.get()));
@@ -183,8 +183,8 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                 });
 
         //Tint the drawables for the two buttons
-        Utils.setTint(mDirections, 0, primaryColor);
-        Utils.setTint(mFavorite, 0, primaryColor);
+        Utils.setTint(directions, 0, primaryColor);
+        Utils.setTint(favorite, 0, primaryColor);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         //Get the MapFragment
@@ -310,7 +310,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                         mPlace.mPlace.getName()), Toast.LENGTH_SHORT).show();
 
                 //Change the text to "Add Favorites"
-                mFavorite.setText(R.string.map_favorites_add);
+                favorite.setText(R.string.map_favorites_add);
 
                 //If we are in the favorites category, we need to hide this pin
                 if (mType.getId() == PlaceType.FAVORITES) {
@@ -324,7 +324,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                         mPlace.mPlace.getName()), Toast.LENGTH_SHORT).show();
 
                 //Change the text to "Remove Favorites"
-                mFavorite.setText(getString(R.string.map_favorites_remove));
+                favorite.setText(getString(R.string.map_favorites_remove));
             }
 
             //Save the places
@@ -463,7 +463,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                     .defaultMarker(BitmapDescriptorFactory.HUE_RED));
         }
         //Pull up the info container
-        mInfoContainer.setVisibility(View.VISIBLE);
+        infoContainer.setVisibility(View.VISIBLE);
 
         //Find the concerned place
         mPlace = null;
@@ -483,14 +483,14 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                 .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
         //Set up the info
-        mTitle.setText(mPlace.mPlace.getName());
-        mAddress.setText(mPlace.mPlace.getAddress());
+        title.setText(mPlace.mPlace.getName());
+        address.setText(mPlace.mPlace.getAddress());
 
         //Set up the favorite text
         if (mFavoritePlaces.contains(mPlace.mPlace)) {
-            mFavorite.setText(R.string.map_favorites_remove);
+            favorite.setText(R.string.map_favorites_remove);
         } else {
-            mFavorite.setText(R.string.map_favorites_add);
+            favorite.setText(R.string.map_favorites_add);
         }
 
         return false;
