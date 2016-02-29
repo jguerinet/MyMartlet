@@ -68,19 +68,6 @@ public class ScheduleConverter extends Converter.Factory
     @Override
     public List<Course> convert(ResponseBody value) throws IOException {
         List<Course> courses = new ArrayList<>();
-        //TODO Move this
-
-//        //Get the list of courses
-//        List<Course> courses = App.getCourses();
-//
-//        //Remove all of the courses for this semester
-//        List<Course> coursesToRemove = new ArrayList<>();
-//        for (Course course : courses) {
-//            if (course.getTerm().equals(term)){
-//                coursesToRemove.add(course);
-//            }
-//        }
-//        courses.removeAll(coursesToRemove);
 
         //Parse the body into a Document
         Elements scheduleTable = Jsoup.parse(value.string()).getElementsByClass("datadisplaytable");
