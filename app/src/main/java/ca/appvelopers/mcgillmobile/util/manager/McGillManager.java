@@ -194,65 +194,60 @@ public class McGillManager {
         login(usernamePref.full(), passwordPref.get());
     }
 
-    /* URL BUILDERS */
-
     /**
      * Returns the URL to register for courses for the given parameters
      *
      * @param term       The course term
-     * @param classes    A list of classes to (un)register for
+     * @param courses    A list of courses to (un)register for
      * @param dropCourse True if the user is dropping courses, false otherwise
      * @return The proper registration URL
      */
-    public static String getRegistrationURL(Term term, List<Course> classes,
-            boolean dropCourse) {
-        String registrationURL = term.toString();
+    public static String getRegistrationURL(Term term, List<Course> courses, boolean dropCourse) {
+        //Start the URL with the term
+        String url = term.toString();
 
         //Add random Minerva stuff that is apparently necessary
-        registrationURL += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
+        url += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
                 "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY" +
                 "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY";
 
-        if(dropCourse){
-            for(Course classItem : classes){
-                registrationURL += "&RSTS_IN=DW&assoc_term_in=" + term.toString() +
-                        "&CRN_IN=" + classItem.getCRN() + "&start_date_in=DUMMY&end_date_in=DUMMY" +
-                        "&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&" +
+        if (dropCourse) {
+            for (Course course : courses) {
+                url += "&RSTS_IN=DW&assoc_term_in=" + term.toString() + "&CRN_IN=" +
+                        course.getCRN() + "&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&" +
+                        "CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&" +
                         "TITLE=DUMMY&MESG=DUMMY";
             }
-        }
-        else{
-            registrationURL += "&RSTS_IN=&assoc_term_in=" + term.toString() +
-		            "&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&" +
+        }  else {
+            url += "&RSTS_IN=&assoc_term_in=" + term.toString() + "&CRN_IN=DUMMY&" +
+                    "start_date_in=DUMMY&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&" +
                     "SEC=DUMMYLEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
         }
 
         //Lots of junk
-        for(int i = 0; i < 7; i++){
-            registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
+        for (int i = 0; i < 7; i ++) {
+            url += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
 		            "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&" +
 		            "GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
         }
 
         //More junk
-        registrationURL += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
-                "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&" +
-		        "GMOD=DUMMY&TITLE=DUMMY";
+        url += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY" +
+                "&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY";
 
         //Insert the CRNs into the URL
-        for(Course classItem : classes){
+        for (Course course : courses) {
             //Use a different URL if courses are being dropped
-            if(!dropCourse){
-                registrationURL += "&RSTS_IN=RW&CRN_IN=" + classItem.getCRN();
+            if (!dropCourse) {
+                url += "&RSTS_IN=RW&CRN_IN=" + course.getCRN();
+            } else {
+                url += "&RSTS_IN=&CRN_IN=";
             }
-            else{
-                registrationURL += "&RSTS_IN=&CRN_IN=";
-            }
-            registrationURL += "&assoc_term_in=&start_date_in=&end_date_in=";
+            url += "&assoc_term_in=&start_date_in=&end_date_in=";
         }
 
-        registrationURL += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
-        return registrationURL;
+        url += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
+        return url;
     }
 
 	/**
