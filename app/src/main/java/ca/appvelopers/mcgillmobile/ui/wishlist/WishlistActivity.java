@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.guerinet.utils.Utils;
 
+import org.threeten.bp.DayOfWeek;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -243,9 +245,8 @@ public class WishlistActivity extends DrawerActivity {
 
                     String subject = code[0];
                     String number = code[1];
-                    String url = new McGillManager.SearchURLBuilder(course.getTerm(), subject)
-                            .courseNumber(number)
-                            .build();
+                    String url = McGillManager.getSearchURL(course.getTerm(), subject, number,
+                            "", 0, 0, 0, 0, true, 0, 0, true, new ArrayList<DayOfWeek>());
 
                     try {
                         Response<List<CourseResult>> results = mcGillService.search(url).execute();
