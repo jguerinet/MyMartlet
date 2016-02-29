@@ -62,7 +62,6 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
-import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -523,8 +522,8 @@ public class ScheduleActivity extends DrawerActivity {
         docuum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openURL(ScheduleActivity.this,
-                        Help.getDocuumLink(course.getSubject(), course.getNumber()));
+                Utils.openURL(ScheduleActivity.this, "http://www.docuum.com/mcgill/" +
+                        course.getSubject().toLowerCase() + "/" + course.getNumber());
             }
         });
 

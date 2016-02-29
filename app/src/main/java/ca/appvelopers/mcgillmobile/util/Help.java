@@ -37,15 +37,4 @@ public class Help {
     public static void error(Context context) {
         Utils.toast(context, R.string.error_other);
     }
-
-    /**
-     * Returns the Docuum link for a course
-     *
-     * @param courseName The 4-letter name of the code
-     * @param courseCode The course code number
-     * @return The Docuum URL
-     */
-    public static String getDocuumLink(String courseName, String courseCode) {
-        return "http://www.docuum.com/mcgill/" + courseName.toLowerCase() + "/" + courseCode;
-    }
 }
