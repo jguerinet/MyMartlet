@@ -121,7 +121,6 @@ public class PlaceType implements Serializable {
         return en;
     }
 
-
     /**
      * @param object The object to compare
      * @return True if they have the same name, false otherwise
