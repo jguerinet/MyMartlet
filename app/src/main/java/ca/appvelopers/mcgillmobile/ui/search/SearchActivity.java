@@ -27,9 +27,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.guerinet.utils.Device;
+import com.guerinet.utils.Utils;
 
 import org.threeten.bp.DayOfWeek;
 
@@ -205,26 +205,26 @@ public class SearchActivity extends DrawerActivity {
         //Subject Input
         String subject = mSubject.getText().toString().toUpperCase().trim();
         if (subject.isEmpty()) {
-            Toast.makeText(this, R.string.registration_error_no_faculty, Toast.LENGTH_SHORT).show();
+            Utils.toast(this, R.string.registration_error_no_faculty);
             return;
         } else if(!subject.matches("[A-Za-z]{4}")){
-            Toast.makeText(this, R.string.registration_invalid_subject, Toast.LENGTH_SHORT).show();
+            Utils.toast(this, R.string.registration_invalid_subject);
             return;
         }
 
         //Check that the credits are valid
         int minCredits = 0;
-        int maxCredits = 0;
         try {
             minCredits = Integer.valueOf(mMinCredits.getText().toString());
         } catch (NumberFormatException ignored) {}
 
+        int maxCredits = 0;
         try {
             maxCredits = Integer.valueOf(mMaxCredits.getText().toString());
         } catch (NumberFormatException ignored) {}
 
         if (maxCredits < minCredits) {
-            Toast.makeText(this, R.string.registration_error_credits, Toast.LENGTH_SHORT).show();
+            Utils.toast(this, R.string.registration_error_credits);
             return;
         }
 
@@ -254,40 +254,35 @@ public class SearchActivity extends DrawerActivity {
             endAM = mEndTime.getCurrentHour() < 12;
         }
 
-        McGillManager.SearchURLBuilder builder = new McGillManager.SearchURLBuilder(term, subject)
-                .courseNumber(mNumber.getText().toString())
-                .title(mTitle.getText().toString())
-                .minCredits(minCredits)
-                .maxCredits(maxCredits)
-                .startHour(startHour)
-                .startMinute(startMinute)
-                .startAM(startAM)
-                .endHour(endHour)
-                .endMinute(endMinute)
-                .endAM(endAM);
-
         //Days
-        if(mMonday.isChecked()) {
-            builder.addDay(DayOfWeek.MONDAY);
+        List<DayOfWeek> days = new ArrayList<>();
+
+        if (mMonday.isChecked()) {
+            days.add(DayOfWeek.MONDAY);
         }
-        if(mTuesday.isChecked()) {
-            builder.addDay(DayOfWeek.TUESDAY);
+        if (mTuesday.isChecked()) {
+            days.add(DayOfWeek.TUESDAY);
         }
-        if(mWednesday.isChecked()) {
-            builder.addDay(DayOfWeek.WEDNESDAY);
+        if (mWednesday.isChecked()) {
+            days.add(DayOfWeek.WEDNESDAY);
         }
-        if(mThursday.isChecked()) {
-            builder.addDay(DayOfWeek.THURSDAY);
+        if (mThursday.isChecked()) {
+            days.add(DayOfWeek.THURSDAY);
         }
-        if(mFriday.isChecked()) {
-            builder.addDay(DayOfWeek.FRIDAY);
+        if (mFriday.isChecked()) {
+            days.add(DayOfWeek.FRIDAY);
         }
-        if(mSaturday.isChecked()) {
-            builder.addDay(DayOfWeek.SATURDAY);
+        if (mSaturday.isChecked()) {
+            days.add(DayOfWeek.SATURDAY);
         }
-        if(mSunday.isChecked()) {
-            builder.addDay(DayOfWeek.SUNDAY);
+        if (mSunday.isChecked()) {
+            days.add(DayOfWeek.SUNDAY);
         }
+
+        //Construct the URL
+        String url = McGillManager.getSearchURL(term, subject, mNumber.getText().toString(),
+                mTitle.getText().toString(), minCredits, maxCredits, startHour, startMinute,
+                startAM, endHour, endMinute, endAM, days);
 
         //Check if we can refresh
         if (!canRefresh()) {
@@ -295,7 +290,7 @@ public class SearchActivity extends DrawerActivity {
         }
 
         //Execute the request
-        mcGillService.search(builder.build()).enqueue(new Callback<List<CourseResult>>() {
+        mcGillService.search(url).enqueue(new Callback<List<CourseResult>>() {
             @Override
             public void onResponse(Call<List<CourseResult>> call,
                     Response<List<CourseResult>> response) {

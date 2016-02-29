@@ -250,214 +250,46 @@ public class McGillManager {
         return url;
     }
 
-	/**
-	 * Builder for the course search URL
-	 */
-	public static class SearchURLBuilder {
-		/**
-		 * Course term
-		 */
-		private Term term;
-		/**
-		 * Course subject
-		 */
-		private String subject;
-		/**
-		 * Course number
-		 */
-		private String courseNumber = "";
-		/**
-		 * Course title
-		 */
-		private String title = "";
-		/**
-		 * Course min credit
-		 */
-		private int minCredit = 0;
-		/**
-		 * Course max credit
-		 */
-		private int maxCredit = 0;
-		/**
-		 * Course start hour
-		 */
-		private int startHour = 0;
-		/**
-		 * Course start minute
-		 */
-		private int startMinute = 0;
-		/**
-		 * True if the start time is AM, false otherwise
-		 */
-		private boolean startAM = true;
-		/**
-		 * Course end hour
-		 */
-		private int endHour = 0;
-		/**
-		 * Course end minute
-		 */
-		private int endMinute = 0;
-		/**
-		 * True if the end time is AM, false otherwise
-		 */
-		private boolean endAM = true;
-		/**
-		 * Course days
-		 */
-		private List<DayOfWeek> days = new ArrayList<>();
+    /**
+     * Builds the Course Search URL String
+     *
+     * @return The course search URL to use for this course search
+     */
+    public static String getSearchURL(Term term, String subject, String courseNumber, String title,
+            int minCredit, int maxCredit, int startHour, int startMinute, boolean startAM,
+            int endHour, int endMinute, boolean endAM, List<DayOfWeek> days) {
+        String url = "term_in=" + term.toString() +
+                "&sel_subj=dummy" +
+                "&sel_day=dummy" +
+                "&sel_schd=dummy" +
+                "&sel_insm=dummy" +
+                "&sel_camp=dummy" +
+                "&sel_levl=dummy" +
+                "&sel_sess=dummy" +
+                "&sel_instr=dummy" +
+                "&sel_ptrm=dummy" +
+                "&sel_attr=dummy" +
+                "&sel_subj=" + subject +
+                "&sel_crse=" + courseNumber +
+                "&sel_title=" + title +
+                "&sel_schd=%25" +
+                "&sel_from_cred=" + minCredit +
+                "&sel_to_cred=" + maxCredit +
+                "&sel_levl=%25" +
+                "&sel_ptrm=%25" +
+                "&sel_instr=%25" +
+                "&sel_attr=%25" +
+                "&begin_hh=" + startHour +
+                "&begin_mi=" + startMinute +
+                "&begin_ap=" + (startAM ? 'a' : 'p') +
+                "&end_hh=" + endHour +
+                "&end_mi=" + endMinute +
+                "&end_ap=" + (endAM ? 'a' : 'p');
 
-		/**
-		 * Default Constructor
-		 *
-		 * @param term    Course term
-		 * @param subject Course subject
-		 */
-		public SearchURLBuilder(Term term, String subject) {
-			this.term = term;
-			this.subject = subject;
-		}
+        for (DayOfWeek day : days) {
+            url += "&sel_day=" + DayUtils.getDayChar(day);
+        }
 
-		/* SETTERS */
-
-		/**
-		 * @param courseNumber Course number
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder courseNumber(String courseNumber) {
-			this.courseNumber = courseNumber;
-			return this;
-		}
-
-		/**
-		 * @param title Course title
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder title(String title) {
-			this.title = title;
-			return this;
-		}
-
-		/**
-		 * @param minCredit Course min credits
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder minCredits(int minCredit) {
-			this.minCredit = minCredit;
-			return this;
-		}
-
-		/**
-		 * @param maxCredit Course max credits
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder maxCredits(int maxCredit) {
-			this.maxCredit = maxCredit;
-			return this;
-		}
-
-		/**
-		 * @param startHour Course start hour
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder startHour(int startHour) {
-			this.startHour = startHour;
-			return this;
-		}
-
-		/**
-		 * @param startMinute Course start minute
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder startMinute(int startMinute) {
-			this.startMinute = startMinute;
-			return this;
-		}
-
-		/**
-		 * @param startAM True if the course is AM, false if PM
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder startAM(boolean startAM) {
-			this.startAM = startAM;
-			return this;
-		}
-
-		/**
-		 * @param endHour Course end hour
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder endHour(int endHour) {
-			this.endHour = endHour;
-			return this;
-		}
-
-		/**
-		 * @param endMinute Course end minute
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder endMinute(int endMinute) {
-			this.endMinute = endMinute;
-			return this;
-		}
-
-		/**
-		 * @param endAM True if the ending time is AM, false if PM
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder endAM(boolean endAM) {
-			this.endAM = endAM;
-			return this;
-		}
-
-		/**
-		 * @param day Adds a course day
-		 * @return The builder instance
-		 */
-		public SearchURLBuilder addDay(DayOfWeek day) {
-			this.days.add(day);
-			return this;
-		}
-
-		/**
-		 * Builds the Course Search URL String
-		 *
-		 * @return The course search URL to use for this course search
-		 */
-		public String build() {
-			String url = "term_in=" + term.toString() +
-					"&sel_subj=dummy" +
-					"&sel_day=dummy" +
-					"&sel_schd=dummy" +
-					"&sel_insm=dummy" +
-					"&sel_camp=dummy" +
-					"&sel_levl=dummy" +
-					"&sel_sess=dummy" +
-					"&sel_instr=dummy" +
-					"&sel_ptrm=dummy" +
-					"&sel_attr=dummy" +
-					"&sel_subj=" + subject +
-					"&sel_crse=" + courseNumber +
-					"&sel_title=" + title +
-					"&sel_schd=%25" +
-					"&sel_from_cred=" + minCredit +
-					"&sel_to_cred=" + maxCredit +
-					"&sel_levl=%25" +
-					"&sel_ptrm=%25" +
-					"&sel_instr=%25" +
-					"&sel_attr=%25" +
-					"&begin_hh=" + startHour +
-					"&begin_mi=" + startMinute +
-					"&begin_ap=" + (startAM ? 'a' : 'p') +
-					"&end_hh=" + endHour +
-					"&end_mi=" + endMinute +
-					"&end_ap=" + (endAM ? 'a' : 'p');
-
-            for (DayOfWeek day : days) {
-				url += "&sel_day=" + DayUtils.getDayChar(day);
-			}
-
-			return url;
-		}
-	}
+        return url;
+    }
 }
