@@ -84,9 +84,7 @@ public class Place implements Serializable {
      * @return True if it is part of the type, false otherwise
      */
     public boolean isOfType(PlaceType type) {
-        //TODO
-        return false;
-//        return types.contains(type);
+        return categories.contains(type.getId());
     }
 
     @Override
