@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
+import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 
 import java.util.ArrayList;
@@ -44,6 +45,15 @@ import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
  * @since 1.0.0
  */
 public class DialogHelper {
+
+    /**
+     * Displays a toast with a generic error message
+     *
+     * @param context App context
+     */
+    public static void error(Context context) {
+        Utils.toast(context, R.string.error_other);
+    }
 
     /**
      * Shows an error {@link AlertDialog} with one button
