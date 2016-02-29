@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
+import android.content.Context;
+
 import com.guerinet.utils.dialog.ListDialogInterface;
 
 import java.util.ArrayList;
@@ -45,21 +47,21 @@ public abstract class FacultyListAdapter implements ListDialogInterface {
      *
      * @param currentFaculty Currently selected faculty, an empty String if none
      */
-    public FacultyListAdapter(String currentFaculty) {
+    public FacultyListAdapter(Context context, String currentFaculty) {
         mFaculties = new ArrayList<>();
-        mFaculties.add(Faculty.getString(Faculty.ENVIRONMENTAL_SCIENCES));
-        mFaculties.add(Faculty.getString(Faculty.ARTS));
-        mFaculties.add(Faculty.getString(Faculty.CONTINUING_STUDIES));
-        mFaculties.add(Faculty.getString(Faculty.DENTISTRY));
-        mFaculties.add(Faculty.getString(Faculty.EDUCATION));
-        mFaculties.add(Faculty.getString(Faculty.ENGINEERING));
-        mFaculties.add(Faculty.getString(Faculty.GRADUATE));
-        mFaculties.add(Faculty.getString(Faculty.LAW));
-        mFaculties.add(Faculty.getString(Faculty.MANAGEMENT));
-        mFaculties.add(Faculty.getString(Faculty.MEDICINE));
-        mFaculties.add(Faculty.getString(Faculty.MUSIC));
-        mFaculties.add(Faculty.getString(Faculty.RELIGIOUS_STUDIES));
-        mFaculties.add(Faculty.getString(Faculty.SCIENCE));
+        mFaculties.add(Faculty.getString(context, Faculty.ENVIRONMENTAL_SCIENCES));
+        mFaculties.add(Faculty.getString(context, Faculty.ARTS));
+        mFaculties.add(Faculty.getString(context, Faculty.CONTINUING_STUDIES));
+        mFaculties.add(Faculty.getString(context, Faculty.DENTISTRY));
+        mFaculties.add(Faculty.getString(context, Faculty.EDUCATION));
+        mFaculties.add(Faculty.getString(context, Faculty.ENGINEERING));
+        mFaculties.add(Faculty.getString(context, Faculty.GRADUATE));
+        mFaculties.add(Faculty.getString(context, Faculty.LAW));
+        mFaculties.add(Faculty.getString(context, Faculty.MANAGEMENT));
+        mFaculties.add(Faculty.getString(context, Faculty.MEDICINE));
+        mFaculties.add(Faculty.getString(context, Faculty.MUSIC));
+        mFaculties.add(Faculty.getString(context, Faculty.RELIGIOUS_STUDIES));
+        mFaculties.add(Faculty.getString(context, Faculty.SCIENCE));
 
         //Sort them alphabetically
         Collections.sort(mFaculties, new Comparator<String>() {
@@ -70,7 +72,7 @@ public abstract class FacultyListAdapter implements ListDialogInterface {
         });
 
         //Add undefined to the top of the list
-        mFaculties.add(0, Faculty.getString(Faculty.NONE));
+        mFaculties.add(0, Faculty.getString(context, Faculty.NONE));
 
         //Get the current choice index
         mCurrentChoice = mFaculties.indexOf(currentFaculty);

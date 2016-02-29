@@ -16,13 +16,12 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import android.content.Context;
 import android.support.annotation.IntDef;
-import android.support.annotation.StringRes;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 
 /**
@@ -54,50 +53,42 @@ public class Faculty {
     public static final int SCIENCE = 12;
 
     /**
+     * @param context App context
+     * @param faculty Faculty {@link Type}
      * @return Faculty title
      */
-    public static String getString(@Type int faculty) {
+    public static String getString(Context context, @Type int faculty) {
         switch (faculty) {
             case NONE:
-                return string(R.string.faculty_none);
+                return context.getString(R.string.faculty_none);
             case ENVIRONMENTAL_SCIENCES:
-                return string(R.string.faculty_enviro);
+                return context.getString(R.string.faculty_enviro);
             case ARTS:
-                return string(R.string.faculty_arts);
+                return context.getString(R.string.faculty_arts);
             case CONTINUING_STUDIES:
-                return string(R.string.faculty_continuing_studies);
+                return context.getString(R.string.faculty_continuing_studies);
             case DENTISTRY:
-                return string(R.string.faculty_dentistry);
+                return context.getString(R.string.faculty_dentistry);
             case EDUCATION:
-                return string(R.string.faculty_education);
+                return context.getString(R.string.faculty_education);
             case ENGINEERING:
-                return string(R.string.faculty_engineering);
+                return context.getString(R.string.faculty_engineering);
             case GRADUATE:
-                return string(R.string.faculty_graduate);
+                return context.getString(R.string.faculty_graduate);
             case LAW:
-                return string(R.string.faculty_law);
+                return context.getString(R.string.faculty_law);
             case MANAGEMENT:
-                return string(R.string.faculty_management);
+                return context.getString(R.string.faculty_management);
             case MEDICINE:
-                return string(R.string.faculty_medicine);
+                return context.getString(R.string.faculty_medicine);
             case MUSIC:
-                return string(R.string.faculty_music);
+                return context.getString(R.string.faculty_music);
             case RELIGIOUS_STUDIES:
-                return string(R.string.faculty_religion);
+                return context.getString(R.string.faculty_religion);
             case SCIENCE:
-                return string(R.string.faculty_science);
+                return context.getString(R.string.faculty_science);
             default:
                 throw new IllegalArgumentException("Unknown Faculty");
         }
-    }
-
-    /**
-     * Helper method to get a String from the Strings document
-     *
-     * @param stringId The String Id
-     * @return The corresponding String
-     */
-    private static String string(@StringRes int stringId) {
-        return App.getContext().getString(stringId);
     }
 }

@@ -146,7 +146,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                             @Override
                             public void onClick(View v) {
                                 DialogUtils.list(context, R.string.faculty_title,
-                                        new FacultyListAdapter(facultyView.view()
+                                        new FacultyListAdapter(context, facultyView.view()
                                                 .getText().toString()) {
                                             @Override
                                             public void onFacultySelected(String faculty) {
