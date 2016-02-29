@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,16 +56,18 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import timber.log.Timber;
 
 /**
@@ -113,25 +116,26 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     @BindColor(R.color.red)
     protected @ColorInt int primaryColor;
     /**
+     * {@link PlacesManager} instance
+     */
+    @Inject
+    protected PlacesManager placesManager;
+    /**
      * Fragment containing the map
      */
     private GoogleMap map;
     /**
-     * List of places on the map
+     * Total list of places with their associated markers
      */
-    private List<MapPlace> mPlaces;
+    private List<Pair<Place, Marker>> places;
     /**
-     * List of the user's favorite places
+     * Currently shown map places with their associated markers
      */
-    private List<Place> mFavoritePlaces;
+    private List<Pair<Place, Marker>> shownPlaces;
     /**
-     * Currently shown map places
+     * Currently shown place with its associated marker
      */
-    private List<MapPlace> mCurrentPlaces;
-    /**
-     * Currently shown place
-     */
-    private MapPlace mPlace;
+    private Pair<Place, Marker> place;
     /**
      * Currently selected category
      */
@@ -149,9 +153,8 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         analytics.sendScreen("Map");
 
         //Set up the initial information
-        mPlaces = new ArrayList<>();
-        mCurrentPlaces = new ArrayList<>();
-        mFavoritePlaces = App.getFavoritePlaces();
+        places = new ArrayList<>();
+        shownPlaces = new ArrayList<>();
         mSearchString = "";
         mType = new PlaceType(false);
 
@@ -186,14 +189,13 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         Utils.setTint(directions, 0, primaryColor);
         Utils.setTint(favorite, 0, primaryColor);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
         //Get the MapFragment
-        SupportMapFragment fragment =
-                (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
+        SupportMapFragment fragment = (SupportMapFragment) manager.findFragmentById(R.id.map);
         //If it's null, initialize it and put it in its view
         if (fragment == null) {
             fragment = SupportMapFragment.newInstance();
-            fragmentManager.beginTransaction()
+            manager.beginTransaction()
                     .replace(R.id.map, fragment)
                     .addToBackStack(null)
                     .commit();
@@ -286,11 +288,11 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     @OnClick(R.id.directions)
     protected void directions() {
         //Open Google Maps
-        if (mPlace != null) {
+        if (place != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://maps.google.com/maps?f=d &daddr=" +
-                            mPlace.mMarker.getPosition().latitude + "," +
-                            mPlace.mMarker.getPosition().longitude));
+                            place.second.getPosition().latitude + "," +
+                            place.second.getPosition().longitude));
             startActivity(intent);
         }
     }
@@ -300,35 +302,34 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      */
     @OnClick(R.id.map_favorite)
     protected void favorites() {
-        if (mPlace != null) {
+        if (place != null) {
+            String message;
             //Check if it was in the favorites
-            if (mFavoritePlaces.contains(mPlace.mPlace)) {
-                mFavoritePlaces.remove(mPlace.mPlace);
+            if (placesManager.isFavorite(place.first)) {
+                placesManager.removeFavorite(place.first);
 
-                //Alert the user
-                Toast.makeText(this, getString(R.string.map_favorites_removed,
-                        mPlace.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                //Set the toast message
+                message = getString(R.string.map_favorites_removed, place.first.getName());
 
                 //Change the text to "Add Favorites"
                 favorite.setText(R.string.map_favorites_add);
 
                 //If we are in the favorites category, we need to hide this pin
                 if (mType.getId() == PlaceType.FAVORITES) {
-                    mPlace.mMarker.setVisible(false);
+                    place.second.setVisible(false);
                 }
             } else {
-                mFavoritePlaces.add(mPlace.mPlace);
+                placesManager.addFavorite(place.first);
 
-                //Alert the user
-                Toast.makeText(this, getString(R.string.map_favorites_added,
-                        mPlace.mPlace.getName()), Toast.LENGTH_SHORT).show();
+                //Set the toast message
+                message = getString(R.string.map_favorites_added, place.first.getName());
 
                 //Change the text to "Remove Favorites"
                 favorite.setText(getString(R.string.map_favorites_remove));
             }
 
-            //Save the places
-            App.setFavoritePlaces(mFavoritePlaces);
+            //Alert the user
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -338,10 +339,10 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      * @param place   The place
      * @param visible True if the place should be visible, false otherwise
      */
-    private void showPlace(MapPlace place, boolean visible) {
-        place.mMarker.setVisible(visible);
+    private void showPlace(Pair<Place, Marker> place, boolean visible) {
+        place.second.setVisible(visible);
         if (visible) {
-            mCurrentPlaces.add(place);
+            shownPlaces.add(place);
         }
     }
 
@@ -350,10 +351,10 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      */
     private void filterByCategory() {
         //Reset the current places
-        mCurrentPlaces.clear();
+        shownPlaces.clear();
 
         //Go through the places
-        for (MapPlace place : mPlaces) {
+        for (Pair<Place, Marker> place : places) {
             switch (mType.getId()) {
                 //Show all of the places
                 case PlaceType.ALL:
@@ -361,11 +362,11 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                     break;
                 //Show only the favorite places
                 case PlaceType.FAVORITES:
-                    showPlace(place, mFavoritePlaces.contains(place.mPlace));
+                    showPlace(place, placesManager.isFavorite(place.first));
                     break;
                 //Show the places for the current category
                 default:
-                    showPlace(place, place.mPlace.isOfType(mType));
+                    showPlace(place, place.first.isOfType(mType));
                     break;
             }
         }
@@ -380,39 +381,37 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     private void filterBySearchString() {
         //If there is no search String, just show everything
         if (mSearchString.isEmpty()) {
-            for (MapPlace mapPlace : mCurrentPlaces) {
-                mapPlace.mMarker.setVisible(true);
+            for (Pair<Place, Marker> place : shownPlaces) {
+                place.second.setVisible(true);
             }
             return;
         }
 
-        //Keep track of the number of places you're showing
-        int numberOfPlaces = 0;
-        MapPlace place = null;
-        for (MapPlace mapPlace : mCurrentPlaces) {
-            if (mapPlace.mPlace.getName().toLowerCase().contains(mSearchString.toLowerCase())) {
-                mapPlace.mMarker.setVisible(true);
-                numberOfPlaces ++;
-                place = mapPlace;
-            } else {
-                mapPlace.mMarker.setVisible(false);
+        //Keep track of the shown place if there's only one
+        Marker shownPlace = null;
+        boolean onePlace = false;
+        for (Pair<Place, Marker> mapPlace : shownPlaces) {
+            boolean visible = mapPlace.first.getName().toLowerCase()
+                    .contains(mSearchString.toLowerCase());
+            mapPlace.second.setVisible(visible);
+            if (visible) {
+                //If onePlace is already set, then set it back to false
+                //  since there will be more than 2
+                if (onePlace) {
+                    onePlace = false;
+                }
+
+                if (shownPlace == null) {
+                    //If there's no shown place, set it
+                    shownPlace = mapPlace.second;
+                    onePlace = true;
+                }
             }
         }
 
         //If you're showing only one place, focus on that place
-        if (numberOfPlaces == 1) {
-            focusPlace(place);
-        }
-    }
-
-    /**
-     * Focuses on the given place
-     *
-     * @param place The place
-     */
-    private void focusPlace(MapPlace place) {
-        if (map != null) {
-            map.animateCamera(CameraUpdateFactory.newLatLng(place.mPlace.getCoordinates()));
+        if (onePlace && map != null) {
+            map.animateCamera(CameraUpdateFactory.newLatLng(shownPlace.getPosition()));
         }
     }
 
@@ -438,7 +437,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         //If we don't, it will be requested
 
         //Go through all of the places
-        for (Place place : App.getPlaces()) {
+        for (Place place : placesManager.getPlaces()) {
             //Create a MapPlace for this
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(place.getCoordinates())
@@ -446,7 +445,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                     .visible(true));
 
             //Add it to the list
-            mPlaces.add(new MapPlace(place, marker));
+            places.add(new Pair<>(place, marker));
         }
 
         //Filter
@@ -458,66 +457,39 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     @Override
     public boolean onMarkerClick(Marker marker) {
         //If there was a marker that was selected before set it back to red
-        if (mPlace != null) {
-            mPlace.mMarker.setIcon(BitmapDescriptorFactory
+        if (place != null) {
+            place.second.setIcon(BitmapDescriptorFactory
                     .defaultMarker(BitmapDescriptorFactory.HUE_RED));
         }
         //Pull up the info container
         infoContainer.setVisibility(View.VISIBLE);
 
         //Find the concerned place
-        mPlace = null;
-        for (MapPlace mapPlace : mPlaces) {
-            if (mapPlace.mMarker.equals(marker)) {
-                mPlace = mapPlace;
+        place = null;
+        for (Pair<Place, Marker> mapPlace : places) {
+            if (mapPlace.second.equals(marker)) {
+                place = mapPlace;
+                break;
             }
         }
 
-        if (mPlace == null) {
+        if (place == null) {
             Timber.e("Tapped place marker was not found");
             return false;
         }
 
         //Set it to blue
-        mPlace.mMarker.setIcon(BitmapDescriptorFactory
+        place.second.setIcon(BitmapDescriptorFactory
                 .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
         //Set up the info
-        title.setText(mPlace.mPlace.getName());
-        address.setText(mPlace.mPlace.getAddress());
+        title.setText(place.first.getName());
+        address.setText(place.first.getAddress());
 
         //Set up the favorite text
-        if (mFavoritePlaces.contains(mPlace.mPlace)) {
-            favorite.setText(R.string.map_favorites_remove);
-        } else {
-            favorite.setText(R.string.map_favorites_add);
-        }
+        favorite.setText(placesManager.isFavorite(place.first) ?
+                R.string.map_favorites_remove : R.string.map_favorites_add);
 
         return false;
-    }
-
-    /**
-     * Represents a place with its associated marker on the map
-     */
-    class MapPlace {
-        /**
-         * The place
-         */
-        private Place mPlace;
-        /**
-         * The map marker
-         */
-        private Marker mMarker;
-
-        /**
-         * Default Constructor
-         *
-         * @param place  The place
-         * @param marker The marker
-         */
-        MapPlace(Place place, Marker marker) {
-            this.mPlace = place;
-            this.mMarker = marker;
-        }
     }
 }

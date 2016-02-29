@@ -50,20 +50,6 @@ public class Save {
     }
 
     /**
-     * Saves the places
-     */
-    public static void places(){
-        saveObject("Places", Constants.PLACES_FILE, App.getPlaces());
-    }
-
-    /**
-     * Saves the place types
-     */
-    public static void placeTypes() {
-        saveObject("Place Types", Constants.PLACE_TYPES_FILE, App.getPlaceTypes());
-    }
-
-    /**
      * Saves the terms the user can currently register in
      */
     public static void registerTerms(){
@@ -89,12 +75,5 @@ public class Save {
      */
     public static void wishlist(){
         saveObject("Wishlist", Constants.WISHLIST_FILE, App.getWishlist());
-    }
-
-    /**
-     * Saves the user's favorite places
-     */
-    public static void favoritePlaces(){
-        saveObject("Favorite Places", Constants.FAVORITE_PLACES_FILE, App.getFavoritePlaces());
     }
 }

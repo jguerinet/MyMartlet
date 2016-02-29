@@ -37,6 +37,7 @@ import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
+import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -86,6 +87,11 @@ public class ConfigDownloader extends Thread {
     @Inject
     @Named(PrefsModule.MIN_VERSION)
     protected IntPreference minVersionPref;
+    /**
+     * {@link PlacesManager} instance
+     */
+    @Inject
+    protected PlacesManager placesManager;
 
     /**
      * Default Constructor
@@ -122,7 +128,7 @@ public class ConfigDownloader extends Thread {
                     .execute();
 
             if (response.isSuccess()) {
-                App.setPlaces(response.body());
+                placesManager.setPlaces(response.body());
                 imsPlacesPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {
@@ -136,7 +142,7 @@ public class ConfigDownloader extends Thread {
                     .execute();
 
             if (response.isSuccess()) {
-                App.setPlaceTypes(response.body());
+                placesManager.setPlaceTypes(response.body());
                 imsCategoriesPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {

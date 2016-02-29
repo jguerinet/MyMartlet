@@ -169,7 +169,7 @@ public class PlacesManager {
     /**
      * @param place {@link Place} to save to the favorites
      */
-    public void addFavoritePlace(Place place) {
+    public void addFavorite(Place place) {
         if (!favoritePlaceIds.contains(place.getId())) {
             favoritePlaceIds.add(place.getId());
             favoritePlaces.add(place);
@@ -180,19 +180,37 @@ public class PlacesManager {
     /**
      * @param place {@link Place} to remove from the favorites
      */
-    public void removeFavoritePlace(Place place) {
+    public void removeFavorite(Place place) {
         favoritePlaceIds.remove(place.getId());
         favoritePlaces.remove(place);
         StorageUtils.saveObject(context, favoritePlaceIds, FAVORITE_PLACES, "Favorite Places");
     }
 
     /**
+     * @param place {@link Place} instance
+     * @return True if the passed place is a favorite, false otherwise
+     */
+    public boolean isFavorite(Place place) {
+        return favoritePlaceIds.contains(place.getId());
+    }
+
+    /**
      * Clears the stored favorite {@link Place}s
      */
-    public synchronized void clearFavorites() {
+    public void clearFavorites() {
         //Clear both the local instance and the stored one
         favoritePlaces = new ArrayList<>();
         favoritePlaceIds = new ArrayList<>();
         context.deleteFile(FAVORITE_PLACES);
+    }
+
+    /**
+     * Clears the stored {@link Place}s and {@link PlaceType}s
+     */
+    public void clearPlaces() {
+        placeTypes = new ArrayList<>();
+        places = new ArrayList<>();
+        context.deleteFile(PLACE_TYPES);
+        context.deleteFile(PLACES);
     }
 }

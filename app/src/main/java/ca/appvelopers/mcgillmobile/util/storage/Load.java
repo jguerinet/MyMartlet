@@ -24,8 +24,6 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
-import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -61,23 +59,6 @@ public class Load {
     }
 
     /**
-     * @return The list of places, an empty list if none
-     */
-    public static List<Place> places(){
-        List<Place> places = (List<Place>)loadObject("Places", Constants.PLACES_FILE);
-        return places == null ? new ArrayList<Place>() : places;
-    }
-
-    /**
-     * @return The list of place types, an empty list if none
-     */
-    public static List<PlaceType> placeTypes(){
-        List<PlaceType> types = (List<PlaceType>)loadObject("Place Types",
-                Constants.PLACE_TYPES_FILE);
-        return types == null ? new ArrayList<PlaceType>() : types;
-    }
-
-    /**
      * @return The list of terms that the user can currently register in, an empty list if none
      */
     public static List<Term> registerTerms(){
@@ -107,14 +88,5 @@ public class Load {
         List<CourseResult> wishlist = (List<CourseResult>)loadObject("Wishlist",
                 Constants.WISHLIST_FILE);
         return wishlist == null ? new ArrayList<CourseResult>() : wishlist;
-    }
-
-    /**
-     * @return The user's favorite places, an empty list if none
-     */
-    public static List<Place> favoritePlaces(){
-        List<Place> places = (List<Place>)loadObject("Favorite Places",
-                Constants.FAVORITE_PLACES_FILE);
-        return places == null ? new ArrayList<Place>() : places;
     }
 }

@@ -37,8 +37,6 @@ import java.net.SocketTimeoutException;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.CourseResult;
-import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Passwords;
@@ -62,14 +60,6 @@ public class App extends Application {
      */
     private static Context context;
     /**
-     * List of {@link Place}s
-     */
-    private static List<Place> places;
-    /**
-     * List of {@link PlaceType}s
-     */
-    private static List<PlaceType> placeTypes;
-    /**
      * List of {@link Term}s that the user can currently register in
      */
     private static List<Term> registerTerms;
@@ -85,10 +75,6 @@ public class App extends Application {
      * User's wishlist
      */
     private static List<CourseResult> wishlist;
-    /**
-     * User's list of favorite {@link Place}s
-     */
-    private static List<Place> favoritePlaces;
 
     @Override
     public void onCreate(){
@@ -178,26 +164,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The list of {@link Place}s
-     */
-    public static List<Place> getPlaces(){
-        if(places == null){
-            places = Load.places();
-        }
-        return places;
-    }
-
-    /**
-     * @return The list of {@link PlaceType}s
-     */
-    public static List<PlaceType> getPlaceTypes(){
-        if(placeTypes == null){
-            placeTypes = Load.placeTypes();
-        }
-        return placeTypes;
-    }
-
-    /**
      * @return The list of {@link Term} the user can currently register in
      */
     public static List<Term> getRegisterTerms(){
@@ -237,33 +203,7 @@ public class App extends Application {
         return wishlist;
     }
 
-    /**
-     * @return The user's list of favorite {@link Place}s
-     */
-    public static List<Place> getFavoritePlaces(){
-        if(favoritePlaces == null){
-            favoritePlaces = Load.favoritePlaces();
-        }
-        return favoritePlaces;
-    }
-
     /* SETTERS */
-
-    /**
-     * @param places The list of {@link Place}s
-     */
-    public static void setPlaces(List<Place> places) {
-        App.places = places;
-        Save.places();
-    }
-
-    /**
-     * @param placeTypes The list of {@link PlaceType}s
-     */
-    public static void setPlaceTypes(List<PlaceType> placeTypes) {
-        App.placeTypes = placeTypes;
-        Save.placeTypes();
-    }
 
     /**
      * @param terms The list of {@link Term}s the user can currently register in
@@ -295,14 +235,6 @@ public class App extends Application {
     public static void setWishlist(List<CourseResult> wishlist) {
         App.wishlist = wishlist;
         Save.wishlist();
-    }
-
-    /**
-     * @param places The user's list of favorite {@link Place}s
-     */
-    public static void setFavoritePlaces(List<Place> places) {
-        App.favoritePlaces = places;
-        Save.favoritePlaces();
     }
 
     /* HELPER METHODS */

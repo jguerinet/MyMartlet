@@ -69,18 +69,6 @@ public class Constants {
      */
     public static final String WISHLIST_FILE = "wishlist";
     /**
-     * The file name where the list of places are stored
-     */
-    public static final String PLACES_FILE = "places";
-    /**
-     * The file name where the user's favorite places are stored
-     */
-    public static final String FAVORITE_PLACES_FILE = "favorite_places";
-    /**
-     * The file name where the different place types are stored
-     */
-    public static final String PLACE_TYPES_FILE = "place_types";
-    /**
      * The file name where the list of terms a user can register for are stored
      */
     public static final String REGISTER_TERMS_FILE = "register_terms";

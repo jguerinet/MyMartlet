@@ -25,7 +25,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
@@ -109,8 +108,6 @@ public class UpdateManager {
         //Redownload everything
         clearManager.config();
         clearManager.all();
-        App.setWishlist(null);
-        App.setFavoritePlaces(null);
     }
 
     /**

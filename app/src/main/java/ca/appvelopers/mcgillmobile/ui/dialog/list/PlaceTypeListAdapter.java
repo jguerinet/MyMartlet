@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
+import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 
 /**
  * Displays a list of place types to choose from in the maps section
@@ -51,6 +52,11 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
      */
     @Inject
     protected LanguageManager languageManager;
+    /**
+     * {@link PlacesManager} instance
+     */
+    @Inject
+    protected PlacesManager placesManager;
 
     /**
      * Default Constructor
@@ -62,7 +68,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
         App.component(context).inject(this);
         types = new ArrayList<>();
 
-        for (PlaceType type : App.getPlaceTypes()) {
+        for (PlaceType type : placesManager.getPlaceTypes()) {
             types.add(new Pair<>(type, type.getString(context, languageManager.get())));
         }
 

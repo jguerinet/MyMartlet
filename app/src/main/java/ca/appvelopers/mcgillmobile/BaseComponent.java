@@ -21,6 +21,7 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
+import ca.appvelopers.mcgillmobile.ui.MapActivity;
 import ca.appvelopers.mcgillmobile.ui.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
@@ -55,6 +56,7 @@ public interface BaseComponent {
     void inject(TranscriptActivity activity);
     void inject(CoursesActivity activity);
     void inject(WishlistActivity activity);
+    void inject(MapActivity activity);
     void inject(MyCoursesActivity activity);
     void inject(DesktopActivity activity);
     void inject(SettingsActivity activity);

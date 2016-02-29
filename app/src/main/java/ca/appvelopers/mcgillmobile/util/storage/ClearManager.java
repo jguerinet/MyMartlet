@@ -28,14 +28,13 @@ import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
-import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
@@ -70,6 +69,10 @@ public class ClearManager {
      * {@link ScheduleManager} instance
      */
     private final ScheduleManager scheduleManager;
+    /**
+     * {@link PlacesManager} instance
+     */
+    private final PlacesManager placesManager;
 
     /**
      * Default Injectable Constructor
@@ -85,13 +88,14 @@ public class ClearManager {
     protected ClearManager(UsernamePreference usernamePref, PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
             HomepageManager homepageManager, TranscriptManager transcriptManager,
-            ScheduleManager scheduleManager) {
+            ScheduleManager scheduleManager, PlacesManager placesManager) {
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
         this.transcriptManager = transcriptManager;
         this.scheduleManager = scheduleManager;
+        this.placesManager = placesManager;
     }
 
     /**
@@ -125,7 +129,7 @@ public class ClearManager {
         App.setWishlist(new ArrayList<CourseResult>());
 
         //Favorite places
-        App.setFavoritePlaces(new ArrayList<Place>());
+        placesManager.clearFavorites();
 
         //TODO Clear internal storage
     }
@@ -134,8 +138,7 @@ public class ClearManager {
      * Clears all of the config info
      */
     public void config() {
-        App.setPlaces(new ArrayList<Place>());
-        App.setPlaceTypes(new ArrayList<PlaceType>());
+        placesManager.clearPlaces();
         App.setRegisterTerms(new ArrayList<Term>());
     }
 }
