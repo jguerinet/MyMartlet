@@ -28,7 +28,6 @@ import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 
 /**
  * Entirely manages the schedule (list of {@link Course}s) lifecycle
@@ -43,7 +42,7 @@ public class ScheduleManager {
      */
     private final Context context;
     /**
-     * {@link Transcript} instance
+     * List of {@link Course}s
      */
     private List<Course> courses;
 
