@@ -69,6 +69,10 @@ public class McGillManager {
      * The {@link McGillService} instance
      */
     private final McGillService mcGillService;
+    /**
+     * True if the client has been initialized (in terms of the cookies), false otherwise
+     */
+    private boolean initialized;
 
 	/**
 	 * Default Constructor
@@ -97,6 +101,12 @@ public class McGillManager {
                     public List<Cookie> loadForRequest(HttpUrl url) {
                         //Use the cookies for the given URL host
                         List<Cookie> cookies = cookieStore.get(url.host());
+
+                        //If there are cookies, then it's initialized
+                        if (!initialized && cookies != null) {
+                            initialized = true;
+                        }
+
                         return cookies == null ? new ArrayList<Cookie>() : cookies;
                     }
                 })
@@ -162,6 +172,11 @@ public class McGillManager {
      * @throws IOException
      */
 	public void login(String username, String password) throws IOException {
+        //If it's not initialized, call login with nothing to set up the cookies
+        if (!initialized) {
+            mcGillService.login("", "").execute();
+        }
+
         //Create the POST request with the given username and password
         String response = mcGillService.login(username, password).execute().body().string();
 
