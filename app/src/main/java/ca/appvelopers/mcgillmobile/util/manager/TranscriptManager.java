@@ -33,6 +33,10 @@ import ca.appvelopers.mcgillmobile.model.Transcript;
 @Singleton
 public class TranscriptManager {
     /**
+     * File name
+     */
+    private static final String TRANSCRIPT = "transcript";
+    /**
      * {@link Context} instance
      */
     private final Context context;
@@ -50,7 +54,7 @@ public class TranscriptManager {
     protected TranscriptManager(Context context) {
         this.context = context;
         //Do not lazy load the transcript because it can be null, load it upfront
-        transcript = (Transcript) StorageUtils.loadObject(context, "transcript", "Transcript");
+        transcript = (Transcript) StorageUtils.loadObject(context, TRANSCRIPT, "Transcript");
     }
 
     /**
@@ -71,7 +75,7 @@ public class TranscriptManager {
         //Set the local instance
         this.transcript = transcript;
         //Save it to internal storage
-        StorageUtils.saveObject(context, transcript, "transcript", "Transcript");
+        StorageUtils.saveObject(context, transcript, TRANSCRIPT, "Transcript");
     }
 
     /**
@@ -80,6 +84,6 @@ public class TranscriptManager {
     public synchronized void clear() {
         //Clear both the local instance and the stored one
         transcript = null;
-        context.deleteFile("transcript");
+        context.deleteFile(TRANSCRIPT);
     }
 }

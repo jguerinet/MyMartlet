@@ -38,6 +38,10 @@ import ca.appvelopers.mcgillmobile.model.Term;
 @Singleton
 public class ScheduleManager {
     /**
+     * File name
+     */
+    private static final String COURSES = "courses";
+    /**
      * {@link Context} instance
      */
     private final Context context;
@@ -62,7 +66,7 @@ public class ScheduleManager {
     public synchronized List<Course> get() {
         //If it's null, load it from internal storage
         if (courses == null) {
-            courses = (List<Course>) StorageUtils.loadObject(context, "courses", "Courses");
+            courses = (List<Course>) StorageUtils.loadObject(context, COURSES, "Courses");
             //If they are still null, use an empty list
             if (courses == null) {
                 courses = new ArrayList<>();
@@ -96,7 +100,7 @@ public class ScheduleManager {
         //Set the local instance
         this.courses = courses;
         //Save it to internal storage
-        StorageUtils.saveObject(context, courses, "courses", "Courses");
+        StorageUtils.saveObject(context, courses, COURSES, "Courses");
     }
 
     /**
@@ -129,7 +133,7 @@ public class ScheduleManager {
         this.courses.addAll(courses);
 
         //Save it to internal storage
-        StorageUtils.saveObject(context, this.courses, "courses", "Courses");
+        StorageUtils.saveObject(context, this.courses, COURSES, "Courses");
     }
 
     /**
@@ -138,6 +142,6 @@ public class ScheduleManager {
     public synchronized void clear() {
         //Clear both the local instance and the stored one
         courses = new ArrayList<>();
-        context.deleteFile("courses");
+        context.deleteFile(COURSES);
     }
 }
