@@ -19,10 +19,7 @@ package ca.appvelopers.mcgillmobile.model;
 import android.content.Context;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 
@@ -80,30 +77,6 @@ public class PlaceType implements Serializable {
     }
 
     /* HELPERS */
-
-    /**
-     * TODO
-     * Get the list of types based on a list of Strings
-     *
-     * @param typeStrings The list of Strings
-     * @return The corresponding list of types
-     */
-    public static List<PlaceType> getTypes(String[] typeStrings) {
-        List<PlaceType> types = new ArrayList<>();
-        //Go through the type Strings
-        for (String type : typeStrings) {
-            //Go through the place types
-            for (PlaceType placeType : App.getPlaceTypes()) {
-                //If a type String equals the place type's name, then add it and break the loop
-                if (type.equals(placeType.getId())) {
-                    types.add(placeType);
-                    break;
-                }
-            }
-        }
-
-        return types;
-    }
 
     /**
      * @param context  App context
