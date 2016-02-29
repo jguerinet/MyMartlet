@@ -157,7 +157,7 @@ public class McGillManager {
     /* GETTERS */
 
     /**
-     * @return TODO
+     * @return {@link McGillService} instance
      */
     public McGillService getMcGillService() {
         return mcGillService;
