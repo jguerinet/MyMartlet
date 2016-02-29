@@ -38,10 +38,6 @@ public class Constants {
      */
     public static final String COURSES = "courses";
     /**
-     * Key used to pass a transcript via an intent
-     */
-    public static final String TRANSCRIPT = "transcript";
-    /**
      * Key that is true if this is the first time the user is signing in, false otherwise
      */
     public static final String FIRST_OPEN = "first_open";
@@ -49,17 +45,9 @@ public class Constants {
     /* INTERNAL STORAGE */
 
     /**
-     * The file name where the user's courses are stored
-     */
-    public static final String COURSES_FILE = "courses";
-    /**
      * The file name where the user's ebill is stored
      */
     public static final String EBILL_FILE = "ebill";
-    /**
-     * The file name where the user's info is stored
-     */
-    public static final String USER_FILE = "user_info";
     /**
      * The file name where the user's default term is stored
      */
