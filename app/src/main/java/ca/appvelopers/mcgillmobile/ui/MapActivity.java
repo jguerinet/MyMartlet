@@ -139,11 +139,11 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     /**
      * Currently selected category
      */
-    private PlaceType mType;
+    private PlaceType type;
     /**
      * Current search String
      */
-    private String mSearchString;
+    private String searchString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,13 +155,13 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         //Set up the initial information
         places = new ArrayList<>();
         shownPlaces = new ArrayList<>();
-        mSearchString = "";
-        mType = new PlaceType(false);
+        searchString = "";
+        type = new PlaceType(false);
 
         FormGenerator fg = FormGenerator.bind(this, container);
 
         //Set up the place filter
-        final TextViewFormItem typeView = fg.text(mType.getString(this, languageManager.get()));
+        final TextViewFormItem typeView = fg.text(type.getString(this, languageManager.get()));
 
         typeView.leftIcon(R.drawable.ic_location)
                 .rightIcon(R.drawable.ic_chevron_right, R.color.grey)
@@ -169,13 +169,14 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                     @Override
                     public void onClick(View v) {
                         DialogUtils.list(MapActivity.this, R.string.map_filter,
-                                new PlaceTypeListAdapter(MapActivity.this, mType) {
+                                new PlaceTypeListAdapter(MapActivity.this, type) {
                                     @Override
                                     public void onPlaceTypeSelected(PlaceType type) {
-                                        mType = type;
+                                        MapActivity.this.type = type;
 
                                         //Update the text
-                                        typeView.view().setText(mType.getString(MapActivity.this,
+                                        typeView.view().setText(
+                                                MapActivity.this.type.getString(MapActivity.this,
                                                 languageManager.get()));
 
                                         //Update the filtered places
@@ -230,14 +231,14 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mSearchString = query;
+                searchString = query;
                 filterBySearchString();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                mSearchString = newText;
+                searchString = newText;
                 filterBySearchString();
                 return false;
             }
@@ -247,7 +248,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                mSearchString = "";
+                searchString = "";
                 filterBySearchString();
                 return false;
             }
@@ -315,7 +316,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                 favorite.setText(R.string.map_favorites_add);
 
                 //If we are in the favorites category, we need to hide this pin
-                if (mType.getId() == PlaceType.FAVORITES) {
+                if (type.getId() == PlaceType.FAVORITES) {
                     place.second.setVisible(false);
                 }
             } else {
@@ -355,7 +356,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
 
         //Go through the places
         for (Pair<Place, Marker> place : places) {
-            switch (mType.getId()) {
+            switch (type.getId()) {
                 //Show all of the places
                 case PlaceType.ALL:
                     showPlace(place, true);
@@ -366,7 +367,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                     break;
                 //Show the places for the current category
                 default:
-                    showPlace(place, place.first.isOfType(mType));
+                    showPlace(place, place.first.isOfType(type));
                     break;
             }
         }
@@ -380,7 +381,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      */
     private void filterBySearchString() {
         //If there is no search String, just show everything
-        if (mSearchString.isEmpty()) {
+        if (searchString.isEmpty()) {
             for (Pair<Place, Marker> place : shownPlaces) {
                 place.second.setVisible(true);
             }
@@ -392,7 +393,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         boolean onePlace = false;
         for (Pair<Place, Marker> mapPlace : shownPlaces) {
             boolean visible = mapPlace.first.getName().toLowerCase()
-                    .contains(mSearchString.toLowerCase());
+                    .contains(searchString.toLowerCase());
             mapPlace.second.setVisible(visible);
             if (visible) {
                 //If onePlace is already set, then set it back to false
