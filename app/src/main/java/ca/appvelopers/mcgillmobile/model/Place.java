@@ -29,6 +29,10 @@ import java.util.List;
 public class Place implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
+     * Place Id
+     */
+    protected int id;
+    /**
      * The place name
      */
     protected String name;
@@ -55,6 +59,13 @@ public class Place implements Serializable {
     protected Place() {}
 
     /* GETTERS */
+
+    /**
+     * @return Place Id
+     */
+    public int getId() {
+        return id;
+    }
 
     /**
      * @return The name of this place
@@ -89,13 +100,6 @@ public class Place implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Place)) {
-            return false;
-        }
-
-        Place place = (Place) object;
-        return name.equalsIgnoreCase(place.getName()) &&
-                address.equalsIgnoreCase(place.getAddress()) &&
-                getCoordinates().equals(place.getCoordinates());
+        return object instanceof Place && ((Place) object).getId() == id;
     }
 }
