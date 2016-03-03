@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
@@ -317,8 +319,14 @@ public class SearchActivity extends DrawerActivity {
             @Override
             public void onFailure(Call<List<CourseResult>> call, Throwable t) {
                 Timber.e(t, "Error searching for courses");
-                DialogHelper.error(SearchActivity.this, R.string.error_other);
                 showToolbarProgress(false);
+                //If this is a MinervaException, broadcast it
+                if (t instanceof MinervaException) {
+                    LocalBroadcastManager.getInstance(SearchActivity.this)
+                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                } else {
+                    DialogHelper.error(SearchActivity.this, R.string.error_other);
+                }
             }
         });
     }

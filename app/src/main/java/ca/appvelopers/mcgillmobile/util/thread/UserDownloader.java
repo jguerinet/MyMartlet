@@ -17,7 +17,9 @@
 package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.guerinet.utils.Utils;
 
@@ -34,6 +36,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import timber.log.Timber;
@@ -107,7 +110,10 @@ public abstract class UserDownloader extends Thread {
                 transcript = mcGillService.transcript().execute().body();
                 transcriptManager.set(transcript);
             } catch(IOException e) {
-                if (!(e instanceof MinervaException)) {
+                if (e instanceof MinervaException) {
+                    LocalBroadcastManager.getInstance(context)
+                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                } else {
                     Timber.e(e, "Transcript Exception");
                 }
                 exception = e;
@@ -135,7 +141,10 @@ public abstract class UserDownloader extends Thread {
                         List<Course> courses = mcGillService.schedule(term).execute().body();
                         scheduleManager.set(courses, term);
                     } catch (IOException e) {
-                        if (!(e instanceof MinervaException)) {
+                        if (e instanceof MinervaException) {
+                            LocalBroadcastManager.getInstance(context)
+                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                        } else {
                             Timber.e(e, "Term Exception: %s", term.getId());
                         }
                         exception = e;
@@ -152,7 +161,10 @@ public abstract class UserDownloader extends Thread {
             try {
                 App.setEbill(mcGillService.ebill().execute().body());
             } catch(IOException e) {
-                if (!(e instanceof MinervaException)) {
+                if (e instanceof MinervaException) {
+                    LocalBroadcastManager.getInstance(context)
+                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                } else {
                     Timber.e(e, "Ebill Exception");
                 }
                 exception = e;

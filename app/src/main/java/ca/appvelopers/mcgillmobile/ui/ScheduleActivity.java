@@ -23,6 +23,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -58,6 +59,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
+import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
@@ -261,7 +263,14 @@ public class ScheduleActivity extends DrawerActivity {
                     public void onFailure(Call<Transcript> call, Throwable t) {
                         Timber.e(t, "Error refreshing the transcript");
                         showToolbarProgress(false);
-                        DialogHelper.error(ScheduleActivity.this, R.string.error_other);
+
+                        //If this is a MinervaException, broadcast it
+                        if (t instanceof MinervaException) {
+                            LocalBroadcastManager.getInstance(ScheduleActivity.this)
+                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                        } else {
+                            DialogHelper.error(ScheduleActivity.this, R.string.error_other);
+                        }
                     }
                 });
             }
@@ -270,7 +279,13 @@ public class ScheduleActivity extends DrawerActivity {
             public void onFailure(Call<List<Course>> call, Throwable t) {
                 Timber.e(t, "Error refreshing courses");
                 showToolbarProgress(false);
-                DialogHelper.error(ScheduleActivity.this, R.string.error_other);
+                //If this is a MinervaException, broadcast it
+                if (t instanceof MinervaException) {
+                    LocalBroadcastManager.getInstance(ScheduleActivity.this)
+                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                } else {
+                    DialogHelper.error(ScheduleActivity.this, R.string.error_other);
+                }
             }
         });
     }
