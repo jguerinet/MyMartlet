@@ -68,7 +68,7 @@ public class SettingsActivity extends DrawerActivity {
      */
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
-    protected BooleanPreference TwentyFourHourPrefs;
+    protected BooleanPreference twentyFourHourPrefs;
     /**
      * {@link UsernamePreference} instance
      */
@@ -113,6 +113,17 @@ public class SettingsActivity extends DrawerActivity {
                                         finish();
                                     }
                                 });
+                    }
+                });
+
+        //24hrSchedule
+        fg.aSwitch(R.string.settings_twentyfourhours)
+                .leftIcon(R.drawable.ic_clock)
+                .checked(twentyFourHourPrefs.get())
+                .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        twentyFourHourPrefs.set(isChecked);
                     }
                 });
 
@@ -180,17 +191,6 @@ public class SettingsActivity extends DrawerActivity {
                         Instabug.setUserData("App Language: " + languageManager.getCode());
                         Instabug.setUserEmail(usernamePref.full());
                         Instabug.invoke();
-                    }
-                });
-
-        //24hrSchedule
-        fg.aSwitch(R.string.settings_twentyfourhours)
-                .leftIcon(R.drawable.ic_clock)
-                .checked(TwentyFourHourPrefs.get())
-                .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        TwentyFourHourPrefs.set(isChecked);
                     }
                 });
     }

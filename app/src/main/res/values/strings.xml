@@ -133,7 +133,7 @@
     <string name="settings_homepage_title">Homepage</string>
     <string name="settings_homepage">Homepage: %s</string>
     <string name="settings_statistics">Anonymous Usage Statistics </string>
-    <string name="settings_twentyfourhours">Schedule displays 24 hours</string>
+    <string name="settings_twentyfourhours">Display Schedule in 24 Hour Format</string>
     <string name="homepage_schedule">Schedule</string>
     <string name="homepage_transcript">Transcript</string>
     <string name="homepage_mycourses">MyCourses</string>
