@@ -209,10 +209,8 @@ public class ScheduleActivity extends DrawerActivity {
                         //Title
                         setTitle(term.getString(ScheduleActivity.this));
 
-                        //TODO
-//                                //Restart the schedule view builder with the right date
-//                                mViewBuilder = new ScheduleViewBuilder(ScheduleActivity.this,
-//                                        getStartingDate());
+                        //TODO This only renders the portrait view
+                        renderPortraitView();
 
                         //Refresh the content
                         refreshCourses();
