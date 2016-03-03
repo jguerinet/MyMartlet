@@ -69,6 +69,11 @@ public class SearchActivity extends DrawerActivity {
     @Bind(R.id.search_term)
     protected TextView mTermSelector;
     /**
+     * Container for the term selection
+     */
+    @Bind(R.id.term_container)
+    protected LinearLayout termContainer;
+    /**
      * Course start time
      */
     @Bind(R.id.search_start)
@@ -176,7 +181,8 @@ public class SearchActivity extends DrawerActivity {
 
         //Set the term to the first one
         term = registerTerms.get(0);
-        mTermSelector.setOnClickListener(new View.OnClickListener() {
+        mTermSelector.setText(term.getString(this));
+        termContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogUtils.list(SearchActivity.this, R.string.title_change_semester,
