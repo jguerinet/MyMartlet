@@ -1,5 +1,19 @@
 # Change Log
 
+## Version 2.2.0 (2016-03-02)
+* Completely refactored the downloading and parsing of the info to be quicker and more efficient
+* Made the loading screen much faster 
+* Stopped using Gson, starting using Moshi
+* Added button to become a beta tester in the app
+* Added GitHub button 
+* Now redirecting to the McGill walkthrough for setting up the email 
+* Switched to Instabug 2.0
+* Added some managers for some of the data to make it more synchronous and less error prone
+* Added option to display the schedule in 24 hour format 
+* Removed the user info that was unused 
+* Unified app icon
+* A ton of small bug fixes
+
 ## Version 2.1.0 (2016-02-06)
 * Started using Dagger for dependency injection almost everywhere
 * Removed Hungarian notation from all of the models
