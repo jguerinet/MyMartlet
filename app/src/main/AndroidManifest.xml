@@ -23,6 +23,17 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         tools:node="remove" />
 
+    <!-- Remove the audio recording permission needed for Instabug audio feedback -->
+    <uses-permission
+        android:name="android.permission.RECORD_AUDIO"
+        tools:node="remove"/>"
+
+    <!-- Remove Instabug Push Notification permission -->
+    <uses-permission
+        android:name="com.instabug.library.permission.C2D_MESSAGE"
+        tools:node="remove"/>
+
+
     <application
         android:name=".App"
         android:allowBackup="true"
