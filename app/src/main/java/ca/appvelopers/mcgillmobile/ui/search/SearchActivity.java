@@ -25,11 +25,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.guerinet.utils.Device;
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.dialog.DialogUtils;
 
 import org.threeten.bp.DayOfWeek;
 
@@ -44,8 +45,8 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
-import ca.appvelopers.mcgillmobile.ui.TermAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -64,7 +65,7 @@ public class SearchActivity extends DrawerActivity {
      * Spinner to choose the term
      */
     @Bind(R.id.search_term)
-    protected Spinner mTermSpinner;
+    protected TextView mTermSelector;
     /**
      * Course start time
      */
@@ -146,9 +147,9 @@ public class SearchActivity extends DrawerActivity {
     @Bind(R.id.more_options)
     protected Button mMoreOptionsButton;
     /**
-     * Adapter for the term spinner
+     * {@link Term} selected
      */
-    private TermAdapter mTermAdapter;
+    protected Term term;
     /**
      * True if the user sees all of the options, false otherwise
      */
@@ -171,8 +172,21 @@ public class SearchActivity extends DrawerActivity {
             return;
         }
 
-        mTermAdapter = new TermAdapter(registerTerms);
-        mTermSpinner.setAdapter(mTermAdapter);
+        //Set the term to the first one
+        term = registerTerms.get(0);
+        mTermSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogUtils.list(SearchActivity.this, R.string.title_change_semester,
+                        new TermDialogHelper(SearchActivity.this, term, true) {
+                            @Override
+                            public void onTermSelected(Term term) {
+                                SearchActivity.this.term = term;
+                                mTermSelector.setText(term.getString(SearchActivity.this));
+                            }
+                        });
+            }
+        });
 
         mStartTime.setIs24HourView(false);
         mEndTime.setIs24HourView(false);
@@ -199,9 +213,6 @@ public class SearchActivity extends DrawerActivity {
     @OnClick(R.id.search_button)
     @SuppressWarnings("deprecation, NewApi")
     protected void searchCourses() {
-        //Get the selected term
-        final Term term = mTermAdapter.getItem(mTermSpinner.getSelectedItemPosition());
-
         //Subject Input
         String subject = mSubject.getText().toString().toUpperCase().trim();
         if (subject.isEmpty()) {
