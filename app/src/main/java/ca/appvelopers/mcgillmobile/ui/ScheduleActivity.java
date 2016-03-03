@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
 
 import junit.framework.Assert;
@@ -59,6 +60,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
@@ -192,23 +194,28 @@ public class ScheduleActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogHelper.changeSemester(this, term, false, new DialogHelper.TermCallback() {
-                            @Override
-                            public void onTermSelected(Term term) {
-                                ScheduleActivity.this.term = term;
+                DialogUtils.list(this, R.string.title_change_semester,
+                        new TermDialogHelper(this, term, false) {
+                    @Override
+                    public void onTermSelected(Term term) {
+                        //Set the default term
+                        App.setDefaultTerm(term);
 
-                                //Title
-                                setTitle(term.getString(ScheduleActivity.this));
+                        //Set the instance term
+                        ScheduleActivity.this.term = term;
 
-                                //TODO
+                        //Title
+                        setTitle(term.getString(ScheduleActivity.this));
+
+                        //TODO
 //                                //Restart the schedule view builder with the right date
 //                                mViewBuilder = new ScheduleViewBuilder(ScheduleActivity.this,
 //                                        getStartingDate());
 
-                                //Refresh the content
-                                refreshCourses();
-                            }
-                        }, analytics, transcriptManager);
+                        //Refresh the content
+                        refreshCourses();
+                    }
+                });
                 return true;
             case R.id.action_refresh:
                 refreshCourses();

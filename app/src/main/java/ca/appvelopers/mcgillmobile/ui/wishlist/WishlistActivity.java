@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.dialog.DialogUtils;
 
 import org.threeten.bp.DayOfWeek;
 
@@ -48,6 +49,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -144,14 +146,14 @@ public class WishlistActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogHelper.changeSemester(this, mTerm, true,
-                        new DialogHelper.TermCallback() {
+                DialogUtils.list(this, R.string.title_change_semester,
+                        new TermDialogHelper(this, mTerm, true) {
                             @Override
                             public void onTermSelected(Term term) {
                                 mTerm = term;
                                 update();
                             }
-                        }, analytics, transcriptManager);
+                        });
                 return true;
             case R.id.action_refresh:
                 updateWishlist();

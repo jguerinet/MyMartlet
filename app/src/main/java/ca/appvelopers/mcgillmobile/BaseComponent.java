@@ -28,6 +28,7 @@ import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
@@ -68,6 +69,7 @@ public interface BaseComponent {
     void inject(HomepageListAdapter adapter);
     void inject(LanguageListAdapter adapter);
     void inject(PlaceTypeListAdapter adapter);
+    void inject(TermDialogHelper helper);
 
     void inject(ConfigDownloader downloader);
     void inject(UserDownloader downloader);

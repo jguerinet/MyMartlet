@@ -47,6 +47,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
@@ -131,15 +132,20 @@ public class CoursesActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogHelper.changeSemester(this, mTerm, false,
-                        new DialogHelper.TermCallback() {
+                DialogUtils.list(this, R.string.title_change_semester,
+                        new TermDialogHelper(this, mTerm, false) {
                             @Override
                             public void onTermSelected(Term term) {
+                                //Set the default term
+                                App.setDefaultTerm(term);
+
+                                //Set the instance term
                                 mTerm = term;
+
                                 update();
                                 refresh();
                             }
-                        }, analytics, transcriptManager);
+                        });
                 return true;
             case R.id.action_refresh:
                 refresh();
