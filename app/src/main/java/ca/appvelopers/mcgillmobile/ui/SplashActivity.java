@@ -52,6 +52,7 @@ import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -232,7 +233,7 @@ public class SplashActivity extends BaseActivity {
             minVersionContainer.setVisibility(View.VISIBLE);
         } else if (usernamePref.get() == null || passwordPref.get() == null) {
             //If we are missing some login info, show the login screen with no error message
-            showLoginScreen(null);
+            showLoginScreen((IOException) getIntent().getSerializableExtra(Constants.EXCEPTION));
         } else {
             //Try logging the user in and download their info
             new AppInitializer(true).execute();

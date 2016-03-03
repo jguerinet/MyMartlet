@@ -41,6 +41,10 @@ public class Constants {
      * Key that is true if this is the first time the user is signing in, false otherwise
      */
     public static final String FIRST_OPEN = "first_open";
+    /**
+     * Used to pass the exception to the login screen when there's an error
+     */
+    public static final String EXCEPTION = "exception";
 
     /* INTERNAL STORAGE */
 
@@ -60,4 +64,11 @@ public class Constants {
      * The file name where the list of terms a user can register for are stored
      */
     public static final String REGISTER_TERMS_FILE = "register_terms";
+
+    /* BROADCASTS */
+
+    /**
+     * Broadcasted action when a MinervaException occurs
+     */
+    public static final String BROADCAST_MINERVA = "broadcast_minerva";
 }

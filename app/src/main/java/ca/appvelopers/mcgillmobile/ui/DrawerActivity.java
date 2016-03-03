@@ -49,7 +49,6 @@ import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import timber.log.Timber;
 
 /**
@@ -79,11 +78,6 @@ public abstract class DrawerActivity extends BaseActivity
      */
     @Inject
     protected HomepageManager homepageManager;
-    /**
-     * {@link ClearManager} instance
-     */
-    @Inject
-    protected ClearManager clearManager;
     /**
      * The toggle for the drawer inside the action bar
      */
@@ -120,7 +114,7 @@ public abstract class DrawerActivity extends BaseActivity
         //Set up the drawer
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0);
         drawerToggle.setDrawerIndicatorEnabled(true);
-        drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.addDrawerListener(drawerToggle);
         drawerLayout.setFocusableInTouchMode(false);
         drawer.setNavigationItemSelectedListener(this);
         drawerToggle.syncState();

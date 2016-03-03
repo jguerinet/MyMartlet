@@ -17,10 +17,16 @@
 package ca.appvelopers.mcgillmobile.ui;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -38,10 +44,13 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
+import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import dagger.Lazy;
 
 /**
@@ -77,10 +86,28 @@ public class BaseActivity extends AppCompatActivity {
     @Inject
     protected LanguageManager languageManager;
     /**
+     * {@link ClearManager} instance
+     */
+    @Inject
+    protected ClearManager clearManager;
+    /**
      * {@link ConnectivityManager} instance, lazily loaded
      */
     @Inject
     protected Lazy<ConnectivityManager> connectivityManager;
+    /**
+     * {@link BroadcastReceiver} for any local broadcasts
+     */
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onReceivedBroadcast(intent);
+        }
+    };
+    /**
+     * Intent filter for the broadcast receiver
+     */
+    private final IntentFilter filter = new IntentFilter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +115,21 @@ public class BaseActivity extends AppCompatActivity {
         App.component(this).inject(this);
         //Update locale and config (it sometimes get reset in between activities)
         updateLocale();
+
+        //Add the Minerva broadcast action
+        filter.addAction(Constants.BROADCAST_MINERVA);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
     @Override
@@ -167,4 +209,23 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles the reception of broadcasts. Should be overridden in subclasses that have extra
+     *  receiver actions
+     *
+     * @param intent The broadcasted intent
+     */
+    @CallSuper
+    protected void onReceivedBroadcast(Intent intent) {
+        switch (intent.getAction()) {
+            case Constants.BROADCAST_MINERVA:
+                //Log the user out
+                clearManager.all();
+                //Bring them back to the SplashActivity with an exception
+                Intent intent1 = new Intent(this, SplashActivity.class)
+                        .putExtra(Constants.EXCEPTION, new MinervaException());
+                startActivity(intent1);
+                finish();
+        }
+    }
 }
