@@ -87,6 +87,8 @@ public class UpdateManager {
                         update13();
                     case 15:
                         update16();
+                    case 16:
+                        update17();
                     case 0:
                         //This will never get directly called, it will only be accessed through
                         // another update above
@@ -98,6 +100,17 @@ public class UpdateManager {
             //Store the new version in the SharedPrefs
             versionPref.set(code);
         }
+    }
+
+    /**
+     * v2.2.0
+     * - Redid the entire admin system
+     * - Redid all of the user info parsing, made some changes to the objects
+     */
+    private void update17() {
+        //Redownload everything
+        clearManager.config();
+        clearManager.all();
     }
 
     /**
