@@ -200,11 +200,30 @@ public class ScheduleActivity extends DrawerActivity {
                         new TermDialogHelper(this, term, false) {
                     @Override
                     public void onTermSelected(Term term) {
+                        //If it's the same term as now, do nothing
+                        if (term.equals(ScheduleActivity.this.term)) {
+                            return;
+                        }
+
                         //Set the default term
                         App.setDefaultTerm(term);
 
                         //Set the instance term
                         ScheduleActivity.this.term = term;
+
+                        //Update the courses
+                        courses = scheduleManager.getTermCourses(term);
+
+                        //Check if we are in the current semester
+                        date = LocalDate.now();
+                        if (!term.equals(Term.currentTerm())) {
+                            //If not, find the starting date of this semester instead of using today
+                            for (Course course : courses) {
+                                if (course.getStartDate().isBefore(date)) {
+                                    date = course.getStartDate();
+                                }
+                            }
+                        }
 
                         //Title
                         setTitle(term.getString(ScheduleActivity.this));
