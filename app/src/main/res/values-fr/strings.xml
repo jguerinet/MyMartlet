@@ -196,9 +196,9 @@
     <string name="courses_none_selected">Vous devez choisir au moins un cours.</string>
 
     <!-- About -->
-    <string name="about_github">TODO</string>
-    <string name="contributors_current">TODO</string>
-    <string name="contributors_past">TODO</string>
+    <string name="about_github">Click here to check out the code on GitHub!</string>
+    <string name="contributors_current">Current Contributors</string>
+    <string name="contributors_past">Past Contributors</string>
     <string name="about_email_picker_title">Compléter cette action avec&#8230;</string>
     <string name="about_adnan_role">Développeur Android</string>
     <string name="about_adnan_description">Plus connu comme le mec qui connaît tout le monde sur le campus. En 2014, Adnan a fameusement organisé un évènement de poulet frit qui tient toujours le record du plus petit nombre de cas de salmonelles à un évènement d\'ingénieur.</string>
@@ -233,8 +233,9 @@
     <string name="help_answer3">Cette application existe sur Android et nous sommes en train de développer une version iOS.</string>
     <string name="help_walkthrough">Guide d\'Utilisation</string>
     <string name="help_email_walkthrough">Configurez Votre Email sur Votre Mobile</string>
+    <string name="help_email_walkthrough_info">Note: If you are using Chrome, make sure to Request the Desktop site by clicking on the Menu icon and turning the \"Request Desktop Site\" setting on</string>
     <string name="help_download">Télécharger l’Application Officielle de McGill</string>
-    <string name="help_beta_tester">TODO </string>
+    <string name="help_beta_tester">Become a Beta Tester</string>
 
     <!-- Maps -->
     <string name="map_filter">Filtrer par Catégorie</string>

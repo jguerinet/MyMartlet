@@ -267,6 +267,7 @@
     <string name="help_answer3">This app exists on Android and we are currently developing an iOS.</string>
     <string name="help_walkthrough">User Guide</string>
     <string name="help_email_walkthrough">Set up Your Email on Your Device</string>
+    <string name="help_email_walkthrough_info">Note: If you are using Chrome, make sure to Request the Desktop site by clicking on the Menu icon and turning the \"Request Desktop Site\" setting on.</string>
     <string name="help_download">Download the Official McGill App</string>
     <string name="help_beta_tester">Become a Beta Tester</string>
 

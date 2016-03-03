@@ -16,6 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.ui.settings;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.dialog.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +83,19 @@ public class HelpActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         analytics.sendEvent("Help", "McGill Email");
-                        //Open the official McGill Guide
-                        Utils.openURL(HelpActivity.this,
-                                "http://kb.mcgill.ca/kb/article?ArticleId=4774");
+
+                        //Show the user the info about the Chrome bug
+                        DialogUtils.neutral(HelpActivity.this, -1,
+                                R.string.help_email_walkthrough_info,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //Open the official McGill Guide
+                                        Utils.openURL(HelpActivity.this,
+                                                "http://kb.mcgill.ca/kb/article?ArticleId=4774");
+
+                                    }
+                                });
                     }
                 });
 
