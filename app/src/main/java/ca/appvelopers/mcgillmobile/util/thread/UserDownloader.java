@@ -73,6 +73,10 @@ public abstract class UserDownloader extends Thread {
      * True if everything should be downloaded, false otherwise (defaults to false)
      */
     protected boolean downloadEverything = false;
+    /**
+     * {@link IOException} that potentially occurred during the downloading of info
+     */
+    private IOException exception;
 
     /**
      * Default Constructor
@@ -102,10 +106,11 @@ public abstract class UserDownloader extends Thread {
             try {
                 transcript = mcGillService.transcript().execute().body();
                 transcriptManager.set(transcript);
-            } catch (MinervaException e) {
-                //TODO
             } catch(IOException e) {
-                Timber.e(e, "Transcript Exception");
+                if (!(e instanceof MinervaException)) {
+                    Timber.e(e, "Transcript Exception");
+                }
+                exception = e;
             }
 
             //The current term
@@ -129,11 +134,11 @@ public abstract class UserDownloader extends Thread {
                     try {
                         List<Course> courses = mcGillService.schedule(term).execute().body();
                         scheduleManager.set(courses, term);
-                    } catch (MinervaException e) {
-                        //TODO
                     } catch (IOException e) {
-                        Timber.e("Term: %s", term.getId());
-                        Timber.e(e, "Term Exception");
+                        if (!(e instanceof MinervaException)) {
+                            Timber.e(e, "Term Exception: %s", term.getId());
+                        }
+                        exception = e;
                     }
                 }
             }
@@ -146,10 +151,11 @@ public abstract class UserDownloader extends Thread {
             //Download the eBill and user info
             try {
                 App.setEbill(mcGillService.ebill().execute().body());
-            } catch (MinervaException e) {
-                //TODO
-            } catch(Exception e) {
-                Timber.e(e, "Ebill Exception");
+            } catch(IOException e) {
+                if (!(e instanceof MinervaException)) {
+                    Timber.e(e, "Ebill Exception");
+                }
+                exception = e;
             }
             notify();
         }
@@ -157,8 +163,10 @@ public abstract class UserDownloader extends Thread {
 
     /**
      * Executes the thread synchronously
+     *
+     * @throws IOException
      */
-    public void execute() {
+    public void execute() throws IOException {
         //If we are downloading this synchronously, then we're downloading everything
         downloadEverything = true;
 
@@ -170,6 +178,11 @@ public abstract class UserDownloader extends Thread {
             try {
                 wait();
             } catch(InterruptedException ignored){}
+        }
+
+        //If there's an exception, throw it
+        if (exception != null) {
+            throw exception;
         }
     }
 

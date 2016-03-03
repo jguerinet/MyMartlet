@@ -413,7 +413,12 @@ public class SplashActivity extends BaseActivity {
             };
 
             if (downloadEverything) {
-                userDownloader.execute();
+                try {
+                    userDownloader.execute();
+                } catch (IOException e) {
+                    //If there was an exception, return it
+                    return e;
+                }
             } else {
                 userDownloader.start();
             }
