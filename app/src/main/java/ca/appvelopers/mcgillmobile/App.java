@@ -189,6 +189,11 @@ public class App extends Application {
     public static Term getDefaultTerm(){
         if(defaultTerm == null){
             defaultTerm = Load.defaultTerm();
+
+            //If the default term is still null, use the current term
+            if (defaultTerm == null) {
+                defaultTerm = Term.currentTerm();
+            }
         }
         return defaultTerm;
     }

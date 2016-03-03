@@ -138,12 +138,6 @@ public abstract class UserDownloader extends Thread {
                 }
             }
 
-            //TODO Move this
-            //Set the default term if there is none set yet
-            if (App.getDefaultTerm() == null) {
-                App.setDefaultTerm(currentTerm);
-            }
-
             //Ebill
             if (downloadEverything) {
                 update(context.getString(R.string.downloading_ebill));
