@@ -224,6 +224,14 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onReceivedBroadcast(Intent intent) {
+        //Override the Minerva broadcast to not log the user out since they are already logged out
+        if (!intent.getAction().equals(Constants.BROADCAST_MINERVA)) {
+            super.onReceivedBroadcast(intent);
+        }
+    }
+
     /**
      * Shows the first screen to the user depending on their situation
      */
