@@ -19,12 +19,11 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/logo"
-            android:src="@drawable/logo_small"
+            android:src="@drawable/ic_app"
             android:layout_gravity="center"
-            android:paddingBottom="@dimen/padding_large"
-            android:paddingTop="@dimen/padding_large"
+            android:padding="60dp"
             android:adjustViewBounds="true"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             android:contentDescription="@null"/>
 
         <LinearLayout

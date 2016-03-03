@@ -21,8 +21,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/mymartlet_logo"
-        android:padding="@dimen/padding_medium"
+        android:src="@drawable/ic_app"
+        android:padding="80dp"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/app_name"/>
 
 </LinearLayout>
