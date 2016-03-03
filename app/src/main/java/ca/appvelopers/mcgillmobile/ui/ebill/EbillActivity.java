@@ -79,7 +79,8 @@ public class EbillActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-
+                refresh();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -104,6 +105,7 @@ public class EbillActivity extends DrawerActivity {
             public void onResponse(Call<List<Statement>> call, Response<List<Statement>> response) {
                 App.setEbill(response.body());
                 showToolbarProgress(false);
+                update();
             }
 
             @Override
