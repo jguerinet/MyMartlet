@@ -130,8 +130,6 @@ public class ClearManager {
 
         //Favorite places
         placesManager.clearFavorites();
-
-        //TODO Clear internal storage
     }
 
     /**
