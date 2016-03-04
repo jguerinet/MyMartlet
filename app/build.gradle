@@ -40,8 +40,9 @@ android {
         applicationId "ca.appvelopers.mcgillmobile"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 18
-        versionName "2.2.1"
+        versionCode 17
+        versionName "2.2.0"
+        vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
         debug {
@@ -96,10 +97,11 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:1.12.1@aar') {
         transitive = true;
     }
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.android.support:support-vector-drawable:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'com.facebook.android:facebook-android-sdk:4.10.0'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.google.android.gms:play-services-maps:8.4.0'

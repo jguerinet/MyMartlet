@@ -23,6 +23,7 @@ All contributions are welcome!
 * [Android AppCompat](http://developer.android.com/tools/support-library/features.html#v7-appcompat)
 * [Android Design](http://developer.android.com/tools/support-library/features.html#design)
 * [Android Support v4](http://developer.android.com/tools/support-library/features.html#v4)
+* Android Support Vector Drawable
 * [Android RecyclerView](http://developer.android.com/tools/support-library/features.html#v7-recyclerview)
 * [Crashlytics](http://try.crashlytics.com/sdk-android/)
 * [Facebook](https://github.com/facebook/facebook-android-sdk)
