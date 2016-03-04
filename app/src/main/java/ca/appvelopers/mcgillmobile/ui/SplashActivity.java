@@ -293,7 +293,7 @@ public class SplashActivity extends BaseActivity {
     @OnClick(R.id.version_button)
     protected void downloadNewVersion() {
         //Redirect them to the Play Store
-        Utils.openPlayStoreApp(this, getPackageName());
+        Utils.openPlayStoreApp(this);
     }
 
     /**
