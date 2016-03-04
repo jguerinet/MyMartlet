@@ -141,7 +141,6 @@ public class App extends Application {
 
         //Set up the FormGenerator
         FormGenerator.set(new FormGenerator.Builder()
-                .setDefaultIconColorId(R.color.red)
                 .setDefaultBackground(R.drawable.transparent_redpressed)
                 .setDefaultPaddingSize(R.dimen.padding_small));
     }
