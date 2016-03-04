@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,8 +24,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import com.guerinet.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -89,7 +86,6 @@ public class TranscriptActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.refresh, menu);
-        Utils.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
         return true;
     }
 

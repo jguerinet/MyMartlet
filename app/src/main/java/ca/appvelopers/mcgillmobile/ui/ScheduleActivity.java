@@ -188,7 +188,6 @@ public class ScheduleActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.refresh, menu);
         getMenuInflater().inflate(R.menu.change_semester, menu);
-        Utils.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
         return true;
     }
 

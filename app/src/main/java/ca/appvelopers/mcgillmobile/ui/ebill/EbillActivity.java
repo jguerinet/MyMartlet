@@ -17,15 +17,12 @@
 package ca.appvelopers.mcgillmobile.ui.ebill;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.guerinet.utils.Utils;
 
 import java.util.List;
 
@@ -71,7 +68,6 @@ public class EbillActivity extends DrawerActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.refresh, menu);
-        Utils.setTint(menu.findItem(R.id.action_refresh).getIcon(), Color.WHITE);
         return true;
     }
 

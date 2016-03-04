@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.Pair;
@@ -59,7 +58,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
-import butterknife.BindColor;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -111,11 +109,6 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      */
     @Bind(R.id.map_favorite)
     protected Button favorite;
-    /**
-     * Primary color for the {@link TextView} drawables
-     */
-    @BindColor(R.color.red)
-    protected @ColorInt int primaryColor;
     /**
      * {@link PlacesManager} instance
      */
@@ -187,10 +180,6 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                                 });
                     }
                 });
-
-        //Tint the drawables for the two buttons
-        Utils.setTint(directions, 0, primaryColor);
-        Utils.setTint(favorite, 0, primaryColor);
 
         FragmentManager manager = getSupportFragmentManager();
         //Get the MapFragment
