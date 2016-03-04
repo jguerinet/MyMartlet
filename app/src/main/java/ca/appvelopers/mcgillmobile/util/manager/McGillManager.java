@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -145,11 +145,11 @@ public class McGillManager {
         mcGillService = new Retrofit.Builder()
                 .client(client)
                 .baseUrl("https://horizon.mcgill.ca/pban1/")
-                .addConverterFactory(new CourseResultConverter())
-                .addConverterFactory(new EbillConverter())
-                .addConverterFactory(new RegistrationErrorConverter())
                 .addConverterFactory(new ScheduleConverter())
                 .addConverterFactory(new TranscriptConverter())
+                .addConverterFactory(new EbillConverter())
+                .addConverterFactory(new CourseResultConverter())
+                .addConverterFactory(new RegistrationErrorConverter())
                 .build()
                 .create(McGillService.class);
     }
