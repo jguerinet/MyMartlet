@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -44,21 +46,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/linkedin"
-            android:src="@drawable/ic_linkedin"
+            app:srcCompat="@drawable/ic_linkedin"
             android:tint="@color/red"
             android:background="?android:attr/selectableItemBackground"
             android:padding="@dimen/padding_micro"
-            tools:ignore="contentDescription"/>
+            tools:ignore="MissingPrefix,contentDescription"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/email"
-            android:src="@drawable/ic_email"
+            app:srcCompat="@drawable/ic_email"
             android:tint="@color/red"
             android:background="?android:attr/selectableItemBackground"
             android:padding="@dimen/padding_micro"
-            tools:ignore="contentDescription"/>
+            tools:ignore="MissingPrefix,contentDescription"/>
 
     </LinearLayout>
 
