@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class DayUtils {
                 return DayOfWeek.FRIDAY;
             case 'S':
                 return DayOfWeek.SATURDAY;
-            case 'N':
+            case 'U':
                 return DayOfWeek.SUNDAY;
             default:
                 throw new IllegalStateException("Unknown day character: " + dayChar);
