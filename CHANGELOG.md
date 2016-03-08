@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 2.2.1 (2016-03-08)
+* Fix: Attempt to fix the missing converter for the schedule on some devices
+* Update: Updated to support libraries v23.2.0, now using VectorDrawables everywhere
+
 ## Version 2.2.0 (2016-03-02)
 * Completely refactored the downloading and parsing of the info to be quicker and more efficient
 * Made the loading screen much faster 
