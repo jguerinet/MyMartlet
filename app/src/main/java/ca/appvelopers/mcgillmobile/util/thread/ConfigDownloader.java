@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.guerinet.utils.prefs.IntPreference;
 
 import org.threeten.bp.ZonedDateTime;
 
+import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -118,7 +119,10 @@ public class ConfigDownloader extends Thread {
                 imsConfigPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {
-            Timber.e(e, "Error downloading config");
+            if (!(e instanceof UnknownHostException)) {
+                //Don't report UnknownHosts since we know the host is verified
+                Timber.e(e, "Error downloading config");
+            }
         }
 
         //Places
@@ -132,7 +136,10 @@ public class ConfigDownloader extends Thread {
                 imsPlacesPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {
-            Timber.e(e, "Error downloading places");
+            if (!(e instanceof UnknownHostException)) {
+                //Don't report UnknownHosts since we know the host is verified
+                Timber.e(e, "Error downloading places");
+            }
         }
 
         //Place Categories
@@ -146,7 +153,10 @@ public class ConfigDownloader extends Thread {
                 imsCategoriesPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {
-            Timber.e(e, "Error downloading place categories");
+            if (!(e instanceof UnknownHostException)) {
+                //Don't report UnknownHosts since we know the host is verified
+                Timber.e(e, "Error downloading place categories");
+            }
         }
 
         //Registration Semesters
@@ -160,7 +170,10 @@ public class ConfigDownloader extends Thread {
                 imsRegistrationPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {
-            Timber.e(e, "Error downloading registration terms");
+            if (!(e instanceof UnknownHostException)) {
+                //Don't report UnknownHosts since we know the host is verified
+                Timber.e(e, "Error downloading registration terms");
+            }
         }
     }
 
