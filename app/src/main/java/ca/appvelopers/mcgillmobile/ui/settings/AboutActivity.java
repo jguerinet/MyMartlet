@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,12 +98,12 @@ public class AboutActivity extends BaseActivity {
             //Julien
             items.add(new Person(R.string.about_julien, R.drawable.about_julien,
                     R.string.about_julien_role, R.string.about_julien_description,
-                    R.string.about_julien_linkedin, R.string.about_julien_email));
+                    R.string.about_julien_email, R.string.about_julien_linkedin));
 
             //Shabbir
             items.add(new Person(R.string.about_shabbir, R.drawable.about_shabbir,
                     R.string.about_shabbir_role, R.string.about_shabbir_description,
-                    R.string.about_shabbir_linkedin, R.string.about_shabbir_email));
+                    R.string.about_shabbir_email, R.string.about_shabbir_linkedin));
 
             //Past Contributors
             items.add(R.string.contributors_past);
@@ -111,47 +111,47 @@ public class AboutActivity extends BaseActivity {
             //Adnan
             items.add(new Person(R.string.about_adnan, R.drawable.about_adnan,
                     R.string.about_adnan_role, R.string.about_adnan_description,
-                    R.string.about_adnan_linkedin, R.string.about_adnan_email));
+                    R.string.about_adnan_email, R.string.about_adnan_linkedin));
 
             //Hernan
             items.add(new Person(R.string.about_hernan, R.drawable.about_hernan,
                     R.string.about_hernan_role, R.string.about_hernan_description,
-                    R.string.about_hernan_linkedin, R.string.about_hernan_email));
+                    R.string.about_hernan_email, R.string.about_hernan_linkedin));
 
             //Josh
             items.add(new Person(R.string.about_joshua, R.drawable.about_josh,
                     R.string.about_joshua_role, R.string.about_joshua_description,
-                    R.string.about_joshua_linkedin, R.string.about_joshua_email));
+                    R.string.about_joshua_email, R.string.about_joshua_linkedin));
 
             //Julia
             items.add(new Person(R.string.about_julia, R.drawable.about_julia,
                     R.string.about_julia_role, R.string.about_julia_description,
-                    R.string.about_julia_linkedin, R.string.about_julia_email));
+                    R.string.about_julia_email, R.string.about_julia_linkedin));
 
             //Quang
             items.add(new Person(R.string.about_quang, R.drawable.about_quang,
                     R.string.about_quang_role, R.string.about_quang_description,
-                    R.string.about_quang_linkedin, R.string.about_quang_email));
+                    R.string.about_quang_email, R.string.about_quang_linkedin));
 
             //Ryan
             items.add(new Person(R.string.about_ryan, R.drawable.about_ryan,
                     R.string.about_ryan_role, R.string.about_ryan_description,
-                    R.string.about_ryan_linkedin, R.string.about_ryan_email));
+                    R.string.about_ryan_email, R.string.about_ryan_linkedin));
 
             //Selim
             items.add(new Person(R.string.about_selim, R.drawable.about_selim,
                     R.string.about_selim_role, R.string.about_selim_description,
-                    R.string.about_selim_linkedin, R.string.about_selim_email));
+                    R.string.about_selim_email, R.string.about_selim_linkedin));
 
             //Xavier
             items.add(new Person(R.string.about_xavier, R.drawable.about_xavier,
                     R.string.about_xavier_role, R.string.about_xavier_description,
-                    R.string.about_xavier_linkedin, R.string.about_xavier_email));
+                    R.string.about_xavier_email, R.string.about_xavier_linkedin));
 
             //Yulric
             items.add(new Person(R.string.about_yulric, R.drawable.about_yulric,
                     R.string.about_yulric_role, R.string.about_yulric_description,
-                    R.string.about_yulric_linkedin, R.string.about_yulric_email));
+                    R.string.about_yulric_email, R.string.about_yulric_linkedin));
         }
 
         @Override
