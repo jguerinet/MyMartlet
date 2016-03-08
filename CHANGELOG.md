@@ -1,5 +1,8 @@
 # Change Log
 
+## Version 2.2.2 (2016-03-08)
+* Fix: Fixed crash that happened when trying to update a semester on courses that haven't been loaded from storage yet 
+
 ## Version 2.2.1 (2016-03-08)
 * Fix: Attempt to fix the missing converter for the schedule on some devices
 * Update: Updated to support libraries v23.2.0, now using VectorDrawables everywhere
