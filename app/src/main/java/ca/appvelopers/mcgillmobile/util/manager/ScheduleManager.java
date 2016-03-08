@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,18 +122,18 @@ public class ScheduleManager {
 
         //Get the courses for the current term in the current list of courses
         List<Course> coursesToDelete = new ArrayList<>();
-        for (Course course : this.courses) {
+        for (Course course : get()) {
             if (course.getTerm().equals(term)) {
                 coursesToDelete.add(course);
             }
         }
 
         //Delete all of the old courses, add the new ones
-        this.courses.removeAll(coursesToDelete);
-        this.courses.addAll(courses);
+        get().removeAll(coursesToDelete);
+        get().addAll(courses);
 
         //Save it to internal storage
-        StorageUtils.saveObject(context, this.courses, COURSES, "Courses");
+        StorageUtils.saveObject(context, get(), COURSES, "Courses");
     }
 
     /**
