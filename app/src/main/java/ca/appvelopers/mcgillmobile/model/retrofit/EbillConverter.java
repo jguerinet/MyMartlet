@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,9 +51,9 @@ public class EbillConverter extends Converter.Factory
     private final ParameterizedType type = Types.newParameterizedType(List.class, Statement.class);
 
     @Override
-    public Converter<ResponseBody, ?> responseBodyConverter(Type type,
-            Annotation[] annotations, Retrofit retrofit) {
-        if (!type.equals(this.type)) {
+    public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
+            Retrofit retrofit) {
+        if (!type.toString().equals(this.type.toString())) {
             //This can only convert a list of statements
             return null;
         }
