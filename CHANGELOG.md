@@ -1,5 +1,11 @@
 # Change Log
 
+## Version 2.2.3 (2016-03-08)
+* Fix: Fixed crash when parsing Sunday as the day of the week a course is offered (character was recently changed)
+* Fix: Fixed crash because of wrong order of email and LinkedIn info in the About section 
+* Fix: Fixed crash where list converters would not be found on Android 4.x
+* Update: Started ignoring some unnecessary exceptions when sending crashes to Crashlytics
+
 ## Version 2.2.2 (2016-03-08)
 * Fix: Fixed crash that happened when trying to update a semester on courses that haven't been loaded from storage yet 
 
