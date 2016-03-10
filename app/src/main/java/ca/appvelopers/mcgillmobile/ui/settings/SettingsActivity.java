@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -188,9 +188,10 @@ public class SettingsActivity extends DrawerActivity {
                     @Override
                     public void onClick(View v) {
                         analytics.sendEvent("About", "Report a Bug");
-                        Instabug.setUserData("App Language: " + languageManager.getCode());
-                        Instabug.setUserEmail(usernamePref.full());
-                        Instabug.invoke();
+                        Instabug.getInstance().invokeFeedbackSender();
+//                        Instabug.setUserData("App Language: " + languageManager.getCode());
+//                        Instabug.setUserEmail(usernamePref.full());
+//                        Instabug.invoke();
                     }
                 });
     }

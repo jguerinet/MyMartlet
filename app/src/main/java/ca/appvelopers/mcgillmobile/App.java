@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,11 @@ package ca.appvelopers.mcgillmobile;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
-import com.instabug.library.Feature;
-import com.instabug.library.IBGInvocationEvent;
-import com.instabug.library.IBGInvocationMode;
 import com.instabug.library.Instabug;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.twitter.sdk.android.Twitter;
@@ -36,9 +32,12 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
@@ -55,6 +54,11 @@ public class App extends Application {
      * Dagger {@link BaseComponent}
      */
     private BaseComponent component;
+    /**
+     * {@link UsernamePreference} instance
+     */
+    @Inject
+    protected UsernamePreference usernamePref;
     /**
      * The app {@link Context}
      */
@@ -117,27 +121,41 @@ public class App extends Application {
                 .appModule(new AppModule(this))
                 .build();
 
+        component.inject(this);
+
         //Initialize ATT
         AndroidThreeTen.init(this);
 
         //Set up Instabug
-        new Instabug.Builder(this, BuildConfig.DEBUG ?
+        Instabug.initialize(this, BuildConfig.DEBUG ?
                 Passwords.INSTABUG_DEBUG_KEY : Passwords.INSTABUG_KEY)
-                .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventNone)
-                .setDefaultInvocationMode(IBGInvocationMode.IBGInvocationModeFeedbackSender)
-                .setEmailFieldRequired(true)
-                .setCommentFieldRequired(true)
+                .enableEmailField(true, false)
+                .setDefaultEmail(usernamePref.full())
+                .setCommentIsRequired(true)
                 .setDebugEnabled(false)
-                .setConsoleLogState(Feature.State.ENABLED)
-                .setCrashReportingState(Feature.State.DISABLED)
-                .setInAppMessagingState(Feature.State.DISABLED)
-                .setInstabugLogState(Feature.State.DISABLED)
-                .setPushNotificationState(Feature.State.DISABLED)
-                .setTrackingUserStepsState(Feature.State.DISABLED)
-                .setUserDataState(Feature.State.ENABLED)
-                .setShouldShowIntroDialog(false)
-                .build();
-        Instabug.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
+                .setInvocationEvent(Instabug.IBGInvocationEvent.IBGInvocationEventNone)
+                .setIsTrackingCrashes(false)
+                .setIsTrackingUserSteps(false)
+                .setShowIntroDialog(false)
+                .setWillShowFeedbackSentAlert(true);
+
+//        new Instabug.Builder(this, BuildConfig.DEBUG ?
+//                Passwords.INSTABUG_DEBUG_KEY : Passwords.INSTABUG_KEY)
+//                .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventNone)
+//                .setDefaultInvocationMode(IBGInvocationMode.IBGInvocationModeFeedbackSender)
+//                .setEmailFieldRequired(true)
+//                .setCommentFieldRequired(true)
+//                .setDebugEnabled(false)
+//                .setConsoleLogState(Feature.State.ENABLED)
+//                .setCrashReportingState(Feature.State.DISABLED)
+//                .setInAppMessagingState(Feature.State.DISABLED)
+//                .setInstabugLogState(Feature.State.DISABLED)
+//                .setPushNotificationState(Feature.State.DISABLED)
+//                .setTrackingUserStepsState(Feature.State.DISABLED)
+//                .setUserDataState(Feature.State.ENABLED)
+//                .setShouldShowIntroDialog(false)
+//                .build();
+//        Instabug.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
 
         //Set up the FormGenerator
         FormGenerator.set(new FormGenerator.Builder()

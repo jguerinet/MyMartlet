@@ -110,7 +110,7 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.guerinet:android-utils:1.0.23'
     compile 'com.guerinet:form-generator:2.1.4'
-    compile 'com.instabug.library:instabug:2+'
+    compile 'com.instabug.library:instabugsupport:1+'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.3'
     compile 'com.jakewharton.timber:timber:4.1.1'
