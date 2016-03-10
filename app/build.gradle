@@ -40,8 +40,8 @@ android {
         applicationId "ca.appvelopers.mcgillmobile"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 21
-        versionName "2.2.4"
+        versionCode 22
+        versionName "2.2.5"
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
