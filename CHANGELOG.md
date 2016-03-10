@@ -1,5 +1,8 @@
 # Change Log
 
+## Version 2.2.4 (2016-03-10)
+* Fix: Reverted Instabug to 1.x to fix the multiple crashes that 2.x was causing 
+
 ## Version 2.2.3 (2016-03-08)
 * Fix: Fixed crash when parsing Sunday as the day of the week a course is offered (character was recently changed)
 * Fix: Fixed crash because of wrong order of email and LinkedIn info in the About section 
