@@ -99,15 +99,27 @@ public class McGillManager {
 
                     @Override
                     public List<Cookie> loadForRequest(HttpUrl url) {
-                        //Use the cookies for the given URL host
+                        // Use the cookies for the given URL host
                         List<Cookie> cookies = cookieStore.get(url.host());
 
-                        //If there are cookies, then it's initialized
                         if (!initialized && cookies != null) {
+                            // If there are cookies, then it's initialized
                             initialized = true;
+                        } else if (cookies == null) {
+                            // If there are no cookies, use an empty list
+                            cookies = new ArrayList<>();
                         }
 
-                        return cookies == null ? new ArrayList<Cookie>() : cookies;
+                        List<Cookie> cookiesToUse = new ArrayList<>();
+
+                        // Go through the cookies, remove the proxy ones
+                        for (Cookie cookie : cookies) {
+                            if (!cookie.name().toLowerCase().contains("proxy")) {
+                                cookiesToUse.add(cookie);
+                            }
+                        }
+
+                        return cookiesToUse;
                     }
                 })
                 .addInterceptor(loggingInterceptor)
