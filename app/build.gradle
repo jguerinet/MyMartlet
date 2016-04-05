@@ -94,33 +94,33 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
-    compile('com.twitter.sdk.android:twitter:1.12.1@aar') {
+    compile('com.twitter.sdk.android:twitter:1.13.0@aar') {
         transitive = true;
     }
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
-    compile 'com.android.support:support-v4:23.2.0'
-    compile 'com.android.support:support-vector-drawable:23.2.0'
-    compile 'com.android.support:recyclerview-v7:23.2.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.10.0'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:support-vector-drawable:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.10.1'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
-    compile 'com.google.dagger:dagger:2.0.2'
-    apt 'com.google.dagger:dagger-compiler:2.0.2'
+    compile 'com.google.dagger:dagger:2.2'
+    apt 'com.google.dagger:dagger-compiler:2.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.guerinet:android-utils:1.0.23'
-    compile 'com.guerinet:form-generator:2.1.4'
+    compile 'com.guerinet:android-utils:1.0.29'
+    compile 'com.guerinet:form-generator:2.1.5'
     compile 'com.instabug.library:instabugsupport:1+'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.3'
-    compile 'com.jakewharton.timber:timber:4.1.1'
+    compile 'com.jakewharton.timber:timber:4.1.2'
     compile 'com.squareup.moshi:moshi:1.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.retrofit2:converter-moshi:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:converter-moshi:2.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.0.1'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'org.jsoup:jsoup:1.8.3'
 }

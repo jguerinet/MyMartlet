@@ -114,7 +114,7 @@ public class ConfigDownloader extends Thread {
                     .config(DateUtils.getRFC1123String(imsConfigPref.getDate()))
                     .execute();
 
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 minVersionPref.set(response.body().androidMinVersion);
                 imsConfigPref.set(ZonedDateTime.now());
             }
@@ -131,7 +131,7 @@ public class ConfigDownloader extends Thread {
                     .places(DateUtils.getRFC1123String(imsPlacesPref.getDate()))
                     .execute();
 
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 placesManager.setPlaces(response.body());
                 imsPlacesPref.set(ZonedDateTime.now());
             }
@@ -148,7 +148,7 @@ public class ConfigDownloader extends Thread {
                     .categories(DateUtils.getRFC1123String(imsCategoriesPref.getDate()))
                     .execute();
 
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 placesManager.setPlaceTypes(response.body());
                 imsCategoriesPref.set(ZonedDateTime.now());
             }
@@ -165,7 +165,7 @@ public class ConfigDownloader extends Thread {
                     .registrationTerms(DateUtils.getRFC1123String(imsRegistrationPref.getDate()))
                     .execute();
 
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 App.setRegisterTerms(response.body());
                 imsRegistrationPref.set(ZonedDateTime.now());
             }
