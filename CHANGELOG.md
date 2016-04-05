@@ -1,5 +1,8 @@
 # Change Log
 
+## Version 2.2.5 (2016-04-05)
+* Fix: Fix login issue with regards to the new proxy cookie Minerva sets 
+
 ## Version 2.2.4 (2016-03-10)
 * Fix: Reverted Instabug to 1.x to fix the multiple crashes that 2.x was causing 
 
