@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-beta6'
+        classpath 'com.android.tools.build:gradle:2.0.0-rc2'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
         classpath 'com.google.gms:google-services:2.0.0-beta6'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
