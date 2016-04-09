@@ -19,7 +19,6 @@ package ca.appvelopers.mcgillmobile.ui.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -90,9 +89,9 @@ public class SettingsActivity extends DrawerActivity {
         //Language
         fg.text(languageManager.getString())
                 .leftIcon(R.drawable.ic_language)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         DialogUtils.list(context, R.string.settings_language,
                                 new LanguageListAdapter(SettingsActivity.this) {
                                     @Override
@@ -114,7 +113,8 @@ public class SettingsActivity extends DrawerActivity {
                                     }
                                 });
                     }
-                });
+                })
+                .build();
 
         //24hrSchedule
         fg.aSwitch(R.string.settings_twentyfourhours)
@@ -125,18 +125,20 @@ public class SettingsActivity extends DrawerActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         twentyFourHourPrefs.set(isChecked);
                     }
-                });
+                })
+                .build();
 
         //HomepageManager
-        final TextViewFormItem homepageView = fg.text(homepageManager.getTitleString());
-        homepageView.leftIcon(R.drawable.ic_phone_android)
-                .onClick(new View.OnClickListener() {
+        fg.text(homepageManager.getTitleString())
+                .leftIcon(R.drawable.ic_phone_android)
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final TextViewFormItem item) {
                         DialogUtils.list(context, R.string.settings_homepage_title,
                                 new HomepageListAdapter(SettingsActivity.this) {
                                     @Override
-                                    public void onHomepageSelected(@HomepageManager.Homepage int choice) {
+                                    public void onHomepageSelected(
+                                            @HomepageManager.Homepage int choice) {
                                         //Update the instance
                                         homepageManager.set(choice);
 
@@ -144,11 +146,12 @@ public class SettingsActivity extends DrawerActivity {
                                                 homepageManager.getString());
 
                                         //Update the TextView
-                                        homepageView.view().setText(homepageManager.getTitleString());
+                                        item.view().setText(homepageManager.getTitleString());
                                     }
                                 });
                     }
-                });
+                })
+                .build();
 
         //Statistics
         fg.aSwitch(R.string.settings_statistics)
@@ -159,41 +162,45 @@ public class SettingsActivity extends DrawerActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         statsPrefs.set(isChecked);
                     }
-                });
+                })
+                .build();
 
         //Help
         fg.text(R.string.title_help)
                 .leftIcon(R.drawable.ic_help)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         startActivity(new Intent(context, HelpActivity.class));
                     }
-                });
+                })
+                .build();
 
         //About
         fg.text(R.string.title_about)
                 .leftIcon(R.drawable.ic_info)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         startActivity(new Intent(context, AboutActivity.class));
                     }
-                });
+                })
+                .build();
 
         //Bug Report
         fg.text(R.string.title_report_bug)
                 .leftIcon(R.drawable.ic_bug_report)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         analytics.sendEvent("About", "Report a Bug");
                         Instabug.getInstance().invokeFeedbackSender();
 //                        Instabug.setUserData("App Language: " + languageManager.getCode());
 //                        Instabug.setUserEmail(usernamePref.full());
 //                        Instabug.invoke();
                     }
-                });
+                })
+                .build();
     }
 
     @Override

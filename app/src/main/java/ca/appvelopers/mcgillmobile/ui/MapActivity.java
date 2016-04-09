@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -156,13 +157,12 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         FormGenerator fg = FormGenerator.bind(this, container);
 
         //Set up the place filter
-        final TextViewFormItem typeView = fg.text(type.getString(this, languageManager.get()));
-
-        typeView.leftIcon(R.drawable.ic_location)
-                .rightIcon(R.drawable.ic_chevron_right, R.color.grey)
-                .onClick(new View.OnClickListener() {
+        fg.text(type.getString(this, languageManager.get()))
+                .leftIcon(R.drawable.ic_location)
+                .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final TextViewFormItem item) {
                         DialogUtils.list(MapActivity.this, R.string.map_filter,
                                 new PlaceTypeListAdapter(MapActivity.this, type) {
                                     @Override
@@ -170,8 +170,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                                         MapActivity.this.type = type;
 
                                         //Update the text
-                                        typeView.view().setText(
-                                                MapActivity.this.type.getString(MapActivity.this,
+                                        item.view().setText(type.getString(MapActivity.this,
                                                 languageManager.get()));
 
                                         //Update the filtered places
@@ -179,7 +178,8 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                                     }
                                 });
                     }
-                });
+                })
+                .build();
 
         FragmentManager manager = getSupportFragmentManager();
         //Get the MapFragment

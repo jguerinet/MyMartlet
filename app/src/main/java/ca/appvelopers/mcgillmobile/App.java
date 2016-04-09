@@ -87,7 +87,7 @@ public class App extends Application {
         //Set the static context
         context = this;
 
-        //Set up Timber
+        // Timber
         if (BuildConfig.DEBUG) {
            Timber.plant(new Timber.DebugTree());
         }
@@ -108,7 +108,7 @@ public class App extends Application {
             });
         }
 
-        //Set up The Fabric stuff: Twitter, Crashlytics
+        // Fabric: Twitter, Crashlytics
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Passwords.TWITTER_KEY,
                 Passwords.TWITTER_SECRET);
         @SuppressWarnings("PointlessBooleanExpression")
@@ -116,17 +116,17 @@ public class App extends Application {
                 .disabled(!BuildConfig.REPORT_CRASHES).build()).build();
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
 
-        //Initialize the Dagger component
+        // Dagger
         component = DaggerBaseComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
 
         component.inject(this);
 
-        //Initialize ATT
+        // Android ThreeTen
         AndroidThreeTen.init(this);
 
-        //Set up Instabug
+        // Instabug
         Instabug.initialize(this, BuildConfig.DEBUG ?
                 Passwords.INSTABUG_DEBUG_KEY : Passwords.INSTABUG_KEY)
                 .enableEmailField(true, false)
@@ -157,10 +157,12 @@ public class App extends Application {
 //                .build();
 //        Instabug.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
 
-        //Set up the FormGenerator
+        // FormGenerator
+        int padding = getResources().getDimensionPixelOffset(R.dimen.padding_small);
         FormGenerator.set(new FormGenerator.Builder()
                 .setDefaultBackground(R.drawable.transparent_redpressed)
-                .setDefaultPaddingSize(R.dimen.padding_small));
+                .setDefaultDrawablePaddingSize(padding)
+                .setDefaultPaddingSize(padding));
     }
 
     /* GETTERS */

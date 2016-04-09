@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 
@@ -70,18 +71,19 @@ public class HelpActivity extends BaseActivity {
 
         //EULA
         fg.text(R.string.title_agreement)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         startActivity(new Intent(HelpActivity.this, AgreementActivity.class));
                     }
-                });
+                })
+                .build();
 
         //Email
         fg.text(R.string.help_email_walkthrough)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         analytics.sendEvent("Help", "McGill Email");
 
                         //Show the user the info about the Chrome bug
@@ -97,34 +99,38 @@ public class HelpActivity extends BaseActivity {
                                     }
                                 });
                     }
-                });
+                })
+                .build();
 
         //Help
         fg.text(R.string.help_walkthrough)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         startActivity(new Intent(HelpActivity.this, WalkthroughActivity.class));
                     }
-                });
+                })
+                .build();
 
         //McGill App
         fg.text(R.string.help_download)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         Utils.openPlayStoreApp(HelpActivity.this, "com.mcgill");
                     }
-                });
+                })
+                .build();
 
         //Become Beta Tester
         fg.text(R.string.help_beta_tester)
-                .onClick(new View.OnClickListener() {
+                .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(TextViewFormItem item) {
                         Utils.openURL(HelpActivity.this, "https://betas.to/iRinaygk");
                     }
-                });
+                })
+                .build();
         
         //FAQ
         mList.setLayoutManager(new LinearLayoutManager(this));

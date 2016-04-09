@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui.walkthrough;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.view.Gravity;
 import android.view.View;
@@ -104,16 +105,17 @@ public class WalkthroughAdapter extends PagerAdapter {
                 //HomepageManager Prompt
                 fg.text(R.string.walkthrough_homepage)
                         .gravity(Gravity.CENTER)
-                        .padding(R.dimen.padding_small);
+                        .padding(context.getResources()
+                                .getDimensionPixelOffset(R.dimen.padding_small))
+                        .build();
 
                 //HomepageManager
-                final TextViewFormItem homepageView = fg.text(homepagePref.getTitleString());
-                homepageView
+                fg.text(homepagePref.getTitleString())
                         .leftIcon(R.drawable.ic_phone_android)
-                        .rightIcon(R.drawable.ic_chevron_right, R.color.grey)
-                        .onClick(new View.OnClickListener() {
+                        .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
+                        .onClick(new TextViewFormItem.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
+                            public void onClick(final TextViewFormItem item) {
                                 DialogUtils.list(context, R.string.settings_homepage_title,
                                         new HomepageListAdapter(context) {
                                             @Override
@@ -122,36 +124,39 @@ public class WalkthroughAdapter extends PagerAdapter {
                                                 //Update it
                                                 homepageManager.set(choice);
 
-                                                homepageView.view().setText(
+                                                item.view().setText(
                                                         homepageManager.getTitleString());
 
-                                                analytics.sendEvent("Walkthrough", "HomepageManager",
+                                                analytics.sendEvent("Walkthrough",
+                                                        "HomepageManager",
                                                         homepageManager.getString());
                                             }
                                         });
                             }
-                        });
+                        })
+                        .build();
 
                 //Faculty Prompt
                 fg.text(R.string.walkthrough_faculty)
                         .gravity(Gravity.CENTER)
-                        .padding(R.dimen.padding_small);
+                        .padding(context.getResources()
+                                .getDimensionPixelOffset(R.dimen.padding_small))
+                        .build();
 
                 //Faculty
-                final TextViewFormItem facultyView = fg.text(R.string.faculty_none);
-                facultyView
+                fg.text(R.string.faculty_none)
                         .leftIcon(R.drawable.ic_mycourses)
-                        .rightIcon(R.drawable.ic_chevron_right, R.color.grey)
-                        .onClick(new View.OnClickListener() {
+                        .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
+                        .onClick(new TextViewFormItem.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
+                            public void onClick(final TextViewFormItem item) {
                                 DialogUtils.list(context, R.string.faculty_title,
-                                        new FacultyListAdapter(context, facultyView.view()
-                                                .getText().toString()) {
+                                        new FacultyListAdapter(context,
+                                                item.view().getText().toString()) {
                                             @Override
                                             public void onFacultySelected(String faculty) {
                                                 //Update the view
-                                                facultyView.view().setText(faculty);
+                                                item.view().setText(faculty);
 
                                                 //If the faculty is not empty, send the GA
                                                 analytics.sendEvent("Walkthrough", "Faculty",
@@ -159,7 +164,8 @@ public class WalkthroughAdapter extends PagerAdapter {
                                             }
                                         });
                             }
-                        });
+                        })
+                        .build();
 
                 break;
             default:
