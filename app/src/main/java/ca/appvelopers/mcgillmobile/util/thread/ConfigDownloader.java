@@ -52,7 +52,7 @@ public class ConfigDownloader extends Thread {
      * {@link ConnectivityManager} instance
      */
     @Inject
-    protected ConnectivityManager connectivityManager;
+    protected Context context;
     /**
      * Retrofit {@link ConfigService} instance
      */
@@ -104,7 +104,7 @@ public class ConfigDownloader extends Thread {
     @Override
     public void run() {
         //If we're not connected to the internet, don't continue
-        if (!Utils.isConnected(connectivityManager)) {
+        if (!Utils.isConnected(context)) {
             return;
         }
 

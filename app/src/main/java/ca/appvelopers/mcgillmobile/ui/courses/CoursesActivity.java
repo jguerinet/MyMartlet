@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -274,7 +274,7 @@ public class CoursesActivity extends DrawerActivity {
                             }
 
                             //Make sure we are connected to the internet
-                            if (!Utils.isConnected(connectivityManager.get())) {
+                            if (!Utils.isConnected(CoursesActivity.this)) {
                                 DialogHelper.error(CoursesActivity.this,
                                         R.string.error_no_internet);
                                 return;

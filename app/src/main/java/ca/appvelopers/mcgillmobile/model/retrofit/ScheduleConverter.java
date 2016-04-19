@@ -54,12 +54,15 @@ public class ScheduleConverter extends Converter.Factory
      * {@link ParameterizedType} representing a list of {@link Course}s
      */
     private final ParameterizedType type = Types.newParameterizedType(List.class, Course.class);
+    /**
+     * {@link DateTimeFormatter} instance to parse dates
+     */
     private final DateTimeFormatter dtf;
 
     /**
      * Default Constructor
      */
-    protected ScheduleConverter() {
+    public ScheduleConverter() {
         // Set up the DateTimeFormatter
         dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US);
     }

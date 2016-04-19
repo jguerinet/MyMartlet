@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -75,11 +74,6 @@ public class MyCoursesActivity extends DrawerActivity {
      */
     @Inject
     protected PasswordPreference passwordPref;
-    /**
-     * The {@link ConnectivityManager} instance
-     */
-    @Inject
-    protected ConnectivityManager connectivityManager;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +84,7 @@ public class MyCoursesActivity extends DrawerActivity {
         analytics.sendScreen("MyCourses");
 
         //No internet: not worth trying to load the view
-        if (!Utils.isConnected(connectivityManager)) {
+        if (!Utils.isConnected(this)) {
             DialogHelper.error(this, R.string.error_no_internet);
             return;
         }

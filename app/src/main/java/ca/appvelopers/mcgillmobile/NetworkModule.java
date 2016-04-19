@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 
 package ca.appvelopers.mcgillmobile;
-
-import android.content.Context;
-import android.net.ConnectivityManager;
 
 import com.squareup.moshi.Moshi;
 
@@ -47,15 +44,6 @@ public class NetworkModule {
      */
     public static final String CONFIG = "config";
     public static final String MCGILL = "mcgill";
-
-    /**
-     * @param context App context
-     * @return The {@link ConnectivityManager} instance
-     */
-    @Provides
-    protected ConnectivityManager provideConnectivityManager(Context context) {
-        return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    }
 
     /* OKHTTP */
 

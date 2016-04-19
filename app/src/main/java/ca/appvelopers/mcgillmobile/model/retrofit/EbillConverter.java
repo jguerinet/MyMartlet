@@ -22,6 +22,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -31,6 +32,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import ca.appvelopers.mcgillmobile.model.Statement;
 import okhttp3.ResponseBody;
@@ -49,6 +51,18 @@ public class EbillConverter extends Converter.Factory
      * {@link ParameterizedType} representing a list of {@link Statement}s
      */
     private final ParameterizedType type = Types.newParameterizedType(List.class, Statement.class);
+    /**
+     * {@link DateTimeFormatter} instance to parse dates
+     */
+    private final DateTimeFormatter dtf;
+
+    /**
+     * Default Constructor
+     */
+    public EbillConverter() {
+        // Set up the DateTimeFormatter
+        dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US);
+    }
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
@@ -79,8 +93,8 @@ public class EbillConverter extends Converter.Factory
             Elements cells = rows.get(i).getElementsByTag("td");
 
             //Parse the statement and due dates
-            LocalDate date = ScheduleConverter.parseDate(cells.get(0).text().trim());
-            LocalDate dueDate = ScheduleConverter.parseDate(cells.get(3).text().trim());
+            LocalDate date = LocalDate.parse(cells.get(0).text().trim(), dtf);
+            LocalDate dueDate = LocalDate.parse(cells.get(3).text().trim(), dtf);
 
             //Get the amount String without the $ sign at the beginning
             String amountString = cells.get(5).text().trim().substring(1);

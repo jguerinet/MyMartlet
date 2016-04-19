@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.util.thread;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.guerinet.utils.Utils;
@@ -52,11 +51,6 @@ public abstract class UserDownloader extends Thread {
      */
     @Inject
     protected Context context;
-    /**
-     * {@link ConnectivityManager} instance
-     */
-    @Inject
-    protected ConnectivityManager connectivityManager;
     /**
      * {@link McGillService} instance
      */
@@ -94,7 +88,7 @@ public abstract class UserDownloader extends Thread {
     public void run() {
         synchronized (this) {
             //If we're not connected to the internet, don't continue
-            if (!Utils.isConnected(connectivityManager)) {
+            if (!Utils.isConnected(context)) {
                 return;
             }
 

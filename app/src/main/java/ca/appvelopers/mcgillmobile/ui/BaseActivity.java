@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
@@ -51,7 +50,6 @@ import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
-import dagger.Lazy;
 
 /**
  * The base class for all activities
@@ -90,11 +88,6 @@ public class BaseActivity extends AppCompatActivity {
      */
     @Inject
     protected ClearManager clearManager;
-    /**
-     * {@link ConnectivityManager} instance, lazily loaded
-     */
-    @Inject
-    protected Lazy<ConnectivityManager> connectivityManager;
     /**
      * {@link BroadcastReceiver} for any local broadcasts
      */
@@ -199,7 +192,7 @@ public class BaseActivity extends AppCompatActivity {
      */
     public boolean canRefresh() {
         //Check internet connection
-        if (!Utils.isConnected(connectivityManager.get())) {
+        if (!Utils.isConnected(this)) {
             DialogHelper.error(this, R.string.error_no_internet);
             return false;
         }

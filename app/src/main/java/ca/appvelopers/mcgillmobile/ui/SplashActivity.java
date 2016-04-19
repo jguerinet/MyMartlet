@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.ui;
 
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -117,11 +116,6 @@ public class SplashActivity extends BaseActivity {
      */
     @Inject
     protected McGillManager mcGillManager;
-    /**
-     * {@link ConnectivityManager} instance
-     */
-    @Inject
-    protected ConnectivityManager connectivityManager;
     /**
      * {@link ClearManager} instance
      */
@@ -316,7 +310,7 @@ public class SplashActivity extends BaseActivity {
         } else if (TextUtils.isEmpty(password)) {
             DialogHelper.error(this, R.string.login_error_password_empty);
             return;
-        } else if (!Utils.isConnected(connectivityManager)) {
+        } else if (!Utils.isConnected(this)) {
             DialogHelper.error(this, R.string.error_no_internet);
             return;
         }
@@ -396,7 +390,7 @@ public class SplashActivity extends BaseActivity {
             analytics.sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
 
             //If we're auto-logging in and there is no internet, skip everything
-            if (autoLogin && !Utils.isConnected(connectivityManager)) {
+            if (autoLogin && !Utils.isConnected(SplashActivity.this)) {
                 return null;
             }
 

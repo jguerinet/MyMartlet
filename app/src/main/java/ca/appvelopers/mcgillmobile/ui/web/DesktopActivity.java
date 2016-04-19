@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.ui.web;
 
 import android.annotation.SuppressLint;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -58,11 +57,6 @@ public class DesktopActivity extends DrawerActivity {
      */
     @Inject
     protected PasswordPreference passwordPref;
-    /**
-     * The {@link ConnectivityManager} instance
-     */
-    @Inject
-    protected ConnectivityManager connectivityManager;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +67,7 @@ public class DesktopActivity extends DrawerActivity {
         analytics.sendScreen("Desktop Site");
 
         //If the user is not connected to the internet, don't continue
-        if (!Utils.isConnected(connectivityManager)) {
+        if (!Utils.isConnected(this)) {
             DialogHelper.error(this, R.string.error_no_internet);
             return;
         }
