@@ -54,6 +54,15 @@ public class ScheduleConverter extends Converter.Factory
      * {@link ParameterizedType} representing a list of {@link Course}s
      */
     private final ParameterizedType type = Types.newParameterizedType(List.class, Course.class);
+    private final DateTimeFormatter dtf;
+
+    /**
+     * Default Constructor
+     */
+    protected ScheduleConverter() {
+        // Set up the DateTimeFormatter
+        dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US);
+    }
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
@@ -222,30 +231,19 @@ public class ScheduleConverter extends Converter.Factory
     }
 
     /**
-     * Parses a String into a LocalDate object
-     *
-     * @param date The date String
-     * @return The corresponding local date
-     */
-    public static LocalDate parseDate(String date) {
-        //Set up the formatter we're going to use to parse these Strings
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US);
-        return LocalDate.parse(date, dtf);
-    }
-
-    /**
      * Parses the date range String into 2 dates
      *
      * @param dateRange The date range String
      * @return A pair representing the starting and ending dates of the range
      */
-    public static Pair<LocalDate, LocalDate> parseDateRange(String dateRange)
+    public Pair<LocalDate, LocalDate> parseDateRange(String dateRange)
             throws IllegalArgumentException {
         //Split the range into the 2 date Strings
-        String startDate = dateRange.split(" - ")[0];
-        String endDate = dateRange.split(" - ")[1];
+        String[] dates = dateRange.split("-");
+        String startDate = dates[0].trim();
+        String endDate = dates[1].trim();
 
         //Parse the dates, return them as a pair
-        return new Pair<>(parseDate(startDate), parseDate(endDate));
+        return new Pair<>(LocalDate.parse(startDate, dtf), LocalDate.parse(endDate, dtf));
     }
 }
