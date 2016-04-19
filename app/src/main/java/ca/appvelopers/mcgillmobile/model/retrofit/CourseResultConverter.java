@@ -21,6 +21,8 @@ import android.support.v4.util.Pair;
 import com.squareup.moshi.Types;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -65,9 +68,15 @@ public class CourseResultConverter extends Converter.Factory
 
     @Override
     public List<CourseResult> convert(ResponseBody value) throws IOException {
+        String html = value.string();
         List<CourseResult> courses = new ArrayList<>();
+        Document document = Jsoup.parse(html, "UTF-8");
         //Parse the response body into a list of rows
-        Elements rows = Jsoup.parse(value.string(), "UTF-8").getElementsByClass("dddefault");
+        Elements rows = document.getElementsByClass("dddefault");
+
+        // Parse the term from the page header
+        Element header = document.getElementsByClass("staticheaders").get(0);
+        Term term = Term.parseTerm(header.childNode(2).toString());
 
         int rowNumber = 0;
         boolean loop = true;
@@ -95,45 +104,45 @@ public class CourseResultConverter extends Converter.Factory
             while (true) {
                 try {
                     // Get the HTML row
-                    String rowHTML = rows.get(rowNumber).toString();
-                    rowNumber++;
+                    Element row = rows.get(rowNumber);
 
                     // End condition: Empty row encountered or "Notes
-                    if (rowHTML.contains("&nbsp;") || rowHTML.contains("NOTES:")) {
+                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
+                        rowNumber ++;
                         break;
                     }
 
                     //Get the row text
-                    String row = rows.get(rowNumber).text();
+                    String rowString = row.text();
                     switch (i) {
                         // CRN
                         case 1:
-                            crn = Integer.parseInt(row);
+                            crn = Integer.parseInt(rowString);
                             break;
                         //Subject
                         case 2:
-                            subject = row;
+                            subject = rowString;
                             break;
                         //Number
                         case 3:
-                            number = row;
+                            number = rowString;
                             break;
                         //Type
                         case 5:
-                            type = row;
+                            type = rowString;
                             break;
                         // Number of credits
                         case 6:
-                            credits = Double.parseDouble(row);
+                            credits = Double.parseDouble(rowString);
                             break;
                         // Course title
                         case 7:
                             //Remove the extra period at the end of the course title
-                            title = row.substring(0, row.length() - 1);
+                            title = rowString.substring(0, rowString.length() - 1);
                             break;
                         // Days of the week
                         case 8:
-                            String dayString = row;
+                            String dayString = rowString;
                             //TBA Stuff
                             if (dayString.equals("TBA")) {
                                 i = 10;
@@ -148,7 +157,7 @@ public class CourseResultConverter extends Converter.Factory
                             break;
                         // Time
                         case 9:
-                            String[] times = row.split("-");
+                            String[] times = rowString.split("-");
                             try {
                                 int startHour =
                                         Integer.parseInt(times[0].split(" ")[0].split(":")[0]);
@@ -181,33 +190,33 @@ public class CourseResultConverter extends Converter.Factory
                             break;
                         // Capacity
                         case 10:
-                            capacity = Integer.parseInt(row);
+                            capacity = Integer.parseInt(rowString);
                             break;
                         // Seats remaining
                         case 12:
-                            seatsRemaining = Integer.parseInt(row);
+                            seatsRemaining = Integer.parseInt(rowString);
                             break;
                         // Waitlist remaining
                         case 15:
-                            waitlistRemaining = Integer.parseInt(row);
+                            waitlistRemaining = Integer.parseInt(rowString);
                             break;
                         // Instructor
                         case 16:
-                            instructor = row;
+                            instructor = rowString;
                             break;
                         // Start/end date
                         case 17:
-                            Pair<LocalDate, LocalDate> dates =
-                                    ScheduleConverter.parseDateRange(row);
+                            Pair<LocalDate, LocalDate> dates = parseDateRange(term, rowString);
                             startDate = dates.first;
                             endDate = dates.second;
                             break;
                         // Location
                         case 18:
-                            location = row;
+                            location = rowString;
                             break;
                     }
                     i ++;
+                    rowNumber ++;
                 } catch (IndexOutOfBoundsException e) {
                     loop = false;
                     break;
@@ -219,12 +228,44 @@ public class CourseResultConverter extends Converter.Factory
             if (!subject.equals("ERROR") && !number.equals("ERROR")) {
                 //Create a new course object and add it to list
                 //TODO Should we be parsing the course section?
-                courses.add(new CourseResult(subject, number, title, crn, "", startTime,
+                courses.add(new CourseResult(term, subject, number, title, crn, "", startTime,
                         endTime, days, type, location, instructor, credits, startDate, endDate,
                         capacity, seatsRemaining, waitlistRemaining));
             }
         }
 
         return courses;
+    }
+
+    /**
+     * Parses a String into a LocalDate object
+     *
+     * @param term Current term
+     * @param date The date String
+     * @return The corresponding local date
+     */
+    public LocalDate parseDate(Term term, String date) {
+        String[] dateFields = date.split("/");
+        return LocalDate.of(term.getYear(), Integer.parseInt(dateFields[0]),
+                Integer.parseInt(dateFields[1]));
+    }
+
+    /**
+     * Parses the date range String into 2 dates
+     *
+     * @param term      Current term
+     * @param dateRange The date range String
+     * @return A pair representing the starting and ending dates of the range
+     * @throws IllegalArgumentException
+     */
+    public Pair<LocalDate, LocalDate> parseDateRange(Term term, String dateRange)
+            throws IllegalArgumentException {
+        //Split the range into the 2 date Strings
+        String[] dates = dateRange.split("-");
+        String startDate = dates[0].trim();
+        String endDate = dates[1].trim();
+
+        //Parse the dates, return them as a pair
+        return new Pair<>(parseDate(term, startDate), parseDate(term, endDate));
     }
 }

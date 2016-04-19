@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -252,7 +252,9 @@ public class WishlistActivity extends DrawerActivity {
                             "", 0, 0, 0, 0, true, 0, 0, true, new ArrayList<DayOfWeek>());
 
                     try {
-                        Response<List<CourseResult>> results = mcGillService.search(url).execute();
+                        Response<List<CourseResult>> results = mcGillService.search(
+                                course.getTerm(), subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
+                                new ArrayList<Character>()).execute();
 
                         //Update the course object with an updated class size
                         for (CourseResult updatedClass : results.body()) {

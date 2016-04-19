@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ public class CourseResult extends Course implements Serializable {
     /**
      * Default Constructor
      *
+     * @param term              Current {@link Term}
      * @param subject           The course subject
      * @param number            The course number
      * @param title             The course title
@@ -65,14 +66,15 @@ public class CourseResult extends Course implements Serializable {
      * @param seatsRemaining    The number of seats remaining
      * @param waitlistRemaining The number of waitlist seats remaining
      */
-    public CourseResult(String subject, String number, String title, int crn, String section,
-            LocalTime startTime, LocalTime endTime, List<DayOfWeek> days, String type,
-            String location, String instructor, double credits, LocalDate startDate,
+    public CourseResult(Term term, String subject, String number, String title, int crn,
+            String section, LocalTime startTime, LocalTime endTime, List<DayOfWeek> days,
+            String type, String location, String instructor, double credits, LocalDate startDate,
             LocalDate endDate, int capacity, int seatsRemaining, int waitlistRemaining) {
 
         super(subject, number, title, crn, section, startTime, endTime, days, type, location,
                 instructor, credits, startDate, endDate);
 
+        setTerm(term);
         this.capacity = capacity;
         this.seatsRemaining = seatsRemaining;
         this.waitlistRemaining = waitlistRemaining;

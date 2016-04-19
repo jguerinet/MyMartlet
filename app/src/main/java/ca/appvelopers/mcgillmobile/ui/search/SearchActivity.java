@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,8 +50,8 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -298,18 +298,21 @@ public class SearchActivity extends DrawerActivity {
             days.add(DayOfWeek.SUNDAY);
         }
 
-        //Construct the URL
-        String url = McGillManager.getSearchURL(term, subject, mNumber.getText().toString(),
-                mTitle.getText().toString(), minCredits, maxCredits, startHour, startMinute,
-                startAM, endHour, endMinute, endAM, days);
+        List<Character> dayChars = new ArrayList<>(days.size());
+        for (DayOfWeek day : days) {
+            dayChars.add(DayUtils.getDayChar(day));
+        }
 
-        //Check if we can refresh
+        // Check if we can refresh
         if (!canRefresh()) {
             return;
         }
 
-        //Execute the request
-        mcGillService.search(url).enqueue(new Callback<List<CourseResult>>() {
+        // Execute the request
+        mcGillService.search(term, subject, mNumber.getText().toString(),
+                mTitle.getText().toString(), minCredits, maxCredits, startHour, startMinute,
+                startAM ? "a" : "p", endHour, endMinute, endAM ? "a" : "p", dayChars)
+                .enqueue(new Callback<List<CourseResult>>() {
             @Override
             public void onResponse(Call<List<CourseResult>> call,
                     Response<List<CourseResult>> response) {

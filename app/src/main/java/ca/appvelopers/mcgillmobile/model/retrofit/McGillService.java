@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,9 +89,30 @@ public interface McGillService {
     /**
      * Searches for a list of classes
      *
-     * @param url The end of the search URL
+     * @param term         Term to search in
+     * @param subject      Course subject
+     * @param courseNumber Course number
+     * @param title        Course title
+     * @param minCredits   Course min credits
+     * @param maxCredits   Course max credits
+     * @param startHour    Course start hour
+     * @param startMinute  Course start minute
+     * @param startAM      Course start AM/PM
+     * @param endHour      Course end hour
+     * @param endMinute    Course end minute
+     * @param endAM        Course end AM/PM
+     * @param days         Course days
      * @return The search {@link Response}
      */
-    @GET("bwskfcls.P_GetCrse?{url}")
-    Call<List<CourseResult>> search(@Path("url") String url);
+    @GET("bwskfcls.P_GetCrse_Advanced?rsts=dummy&crn=dummy&sel_subj=dummy&sel_day=dummy&" +
+            "sel_schd=dummy&sel_insm=dummy&sel_camp=dummy&sel_levl=dummy&sel_sess=dummy&" +
+            "sel_instr=dummy&sel_ptrm=dummy&sel_instr=%25&sel_attr=dummy&sel_schd=%25&" +
+            "sel_levl=%25&sel_ptrm=%25&sel_attr=%25&SUB_BTN=Get+Course+Sections&path=1")
+    Call<List<CourseResult>> search(@Query("term_in") Term term, @Query("sel_subj") String subject,
+            @Query("sel_crse") String courseNumber, @Query("sel_title") String title,
+            @Query("sel_from_cred") int minCredits, @Query("sel_to_cred") int maxCredits,
+            @Query("begin_hh") int startHour, @Query("begin_mi") int startMinute,
+            @Query("begin_ap") String startAM, @Query("end_hh") int endHour,
+            @Query("end_mi") int endMinute, @Query("end_ap") String endAM,
+            @Query("sel_day") List<Character> days);
 }

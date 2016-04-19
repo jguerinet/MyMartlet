@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,7 +146,7 @@ public class Term implements Serializable {
      * @return The parsed term
      */
     public static Term parseTerm(String term) {
-        String[] termParts = term.split(" ");
+        String[] termParts = term.trim().split(" ");
         return new Term(Season.getSeason(termParts[0]), Integer.valueOf(termParts[1]));
     }
 
