@@ -303,4 +303,5 @@
     <!-- MyCourses -->
     <string name="storage_permission_granted">You can now start the download again!</string>
     <string name="storage_permission_refused">Download impossible without granting the permission.</string>
+    <string name="schedule_export_schedule">Export</string>
 </resources>

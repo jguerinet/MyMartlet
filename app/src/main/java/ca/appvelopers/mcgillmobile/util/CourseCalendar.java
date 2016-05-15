@@ -37,9 +37,9 @@ import ca.appvelopers.mcgillmobile.model.Course;
  */
 public class CourseCalendar {
 	private static final long serialVersionUID = 1L;
-	
-	//The following is from Outlook. 
-	//Using a timezone is necessary for recurrence rules, as per 
+
+	//The following is from Outlook.
+	//Using a timezone is necessary for recurrence rules, as per
 	//	RFC5445 (page 122).
 	private static final String mTZName = "Eastern Standard Time";
 	private static final String mTZInfo = "BEGIN:VTIMEZONE\n"
@@ -58,12 +58,12 @@ public class CourseCalendar {
 			   + "END:DAYLIGHT\n"
 			   + "END:VTIMEZONE";
 	private static final String mTZID = String.format("TZID=\"%s\"", mTZName);
-	
+
 	private String mPattern;
 	private boolean mRecurring;
 	private boolean mRounded;
 	private List<Course> mClasses;
-	
+
     /**
      * Constructor for the CourseCalendar class
      *
@@ -81,7 +81,7 @@ public class CourseCalendar {
 		this.mRecurring = recurring;
 		this.mRounded = rounded;
 	}
-	
+
 	/**
 	 * Default constructor for the CourseCalendar class.
 	 * Pattern   : SUMMARY contains course code
@@ -105,11 +105,11 @@ public class CourseCalendar {
 	public void writeCalendar(File file) {
 		String prefix = "BEGIN:VCALENDAR" + "\n"
 			          + "VERSION:2.0" + "\n"
-				      + "PRODID:-//MyMartlet//CourseCalendar//" + 
-			               serialVersionUID + "\n" 
+				      + "PRODID:-//MyMartlet//CourseCalendar//" +
+			               serialVersionUID + "\n"
 				      + mTZInfo + "\n";
 		String suffix = "END:VCALENDAR";
-		try {
+        try {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(prefix);
@@ -130,11 +130,11 @@ public class CourseCalendar {
 	 * @return EVENT as String
 	 */
 	public String makeEvent(Course item) {
-		// TODO: Make recurrence and rounding handling more elegant 
+		// TODO: Make recurrence and rounding handling more elegant
 		//       (use lambda?)
-		
+
 		String event;
-		
+
 		//----------------
 		//Parse summary-description request
 		String[] splitted = mPattern.split("-");
@@ -147,13 +147,13 @@ public class CourseCalendar {
 			description = "";
 		}
 		String location = item.getLocation();
-		
+
 		//-----------------
 		//Get start and end date time
-		//NOTES : 
-		// o firstClassBegin and firstClassEnd represent the date-time 
-		// 	 object for the beginning and end of the first lecture of 
-		//	 the course. 
+		//NOTES :
+		// o firstClassBegin and firstClassEnd represent the date-time
+		// 	 object for the beginning and end of the first lecture of
+		//	 the course.
 		// o lastDay is the last day of the semester (used for recurrence)
 		LocalDate startDate;
 		LocalTime startTime, endTime;
@@ -170,15 +170,15 @@ public class CourseCalendar {
 		firstClassEnd   = LocalDateTime.of(startDate, endTime);
 		lastDay = LocalDateTime.of(item.getEndDate(), LocalTime.of(23, 0));
 		if (mRecurring) {
-			event = makeEvent(summary, description, location, firstClassBegin, 
+			event = makeEvent(summary, description, location, firstClassBegin,
 							   firstClassEnd, lastDay);
 		} else {
-			event = makeEvent(summary, description, location, firstClassBegin, 
+			event = makeEvent(summary, description, location, firstClassBegin,
 					           firstClassEnd);
 		}
 		return event;
 	}
-	
+
 	/**
 	 * General EVENT writer WITH weekly recurrence.
 	 * All String parameters may be blank.
@@ -200,7 +200,7 @@ public class CourseCalendar {
                 makeEventLocation(location) + makeEventStamp() + makeEventStart(start) +
                 makeEventEnd(end) + makeEventRecurrence(lastDay) + suffix;
 	}
-	
+
 	/**
 	 * General EVENT writer WITHOUT recurrence.
 	 * All String parameters may be blank.
@@ -221,14 +221,14 @@ public class CourseCalendar {
                 makeEventLocation(location) + makeEventStamp() + makeEventStart(start) +
                 makeEventEnd(end) + suffix;
 	}
-	
+
 	/**
-	 * Parse requested contents  
+	 * Parse requested contents
 	 * Used for Summary and Description properties
-	 *       
-	 * Format: XX 
+	 *
+	 * Format: XX
 	 * X can be any of the symbols below.
-	 *  
+	 *
 	 * Symbol  Meaning           Examples               Method Used
 	 * ------  -------           --------               -----------
 	 * C       Course Code       ECSE 200               getCourseCode
@@ -236,13 +236,13 @@ public class CourseCalendar {
 	 * S       Section           001                    getSection
 	 * Y       Section Type      Lecture                getSectionType
 	 * --------------------------------------------------------------
-	 *  
-	 * NOTES: 
-	 *     o If multiple symbols are used for a single property, they are 
+	 *
+	 * NOTES:
+	 *     o If multiple symbols are used for a single property, they are
 	 * 			separated by a " - ", e.g. "CS" will give : ECSE 200 - 001
 	 * 	   o Parser only acts when it sees a known symbol
 	 * 	   o Lower and upper case are accepted
-	 * 
+	 *
 	 * @param pattern Pattern (see above)
 	 * @param item    Item from which to get code, title, section and/or type
 	 * @return Requested course attributes
@@ -261,7 +261,7 @@ public class CourseCalendar {
 			case 'y': attributes.append(item.getType()); break;
 			}
 		}
-    	
+
     	return attributes.toString();
     }
     
@@ -286,13 +286,13 @@ public class CourseCalendar {
 	/**
 	 * Write SUMMARY property of event
 	 *
-	 * @param name Name/Summary of event 
+	 * @param name Name/Summary of event
 	 * @return SUMMARY property as String
 	 */
 	private String makeEventSummary(String name){
 		return "SUMMARY:" + name + "\n";
 	}
-	
+
 	/**
 	 * Write SUMMARY property of Course
 	 *
@@ -315,7 +315,7 @@ public class CourseCalendar {
 	private String makeEventDescription(String description){
 		return "DESCRIPTION:" + description + "\n";
 	}
-	
+
 	/**
 	 * Write DESCRIPTION property of Course
 	 *
@@ -338,7 +338,7 @@ public class CourseCalendar {
 	private String makeEventLocation(String location){
 		return "LOCATION:" + location + "\n";
 	}
-	
+
 	/**
 	 * Write LOCATION property of Course
 	 *
@@ -350,7 +350,7 @@ public class CourseCalendar {
 		String location = item.getLocation();
 		return makeEventLocation(location);
 	}
-	
+
 	/**
 	 * Write DTSTART property of event
 	 *
@@ -377,7 +377,7 @@ public class CourseCalendar {
 		}
 		return makeEventStart(LocalDateTime.of(item.getStartDate(), startTime));
 	}
-	
+
 	/**
 	 * Write DTEND property of event
 	 *
@@ -388,7 +388,7 @@ public class CourseCalendar {
 		String name = "DTEND";
 		return formatTimeProperty(date,name) + "\n" ;
 	}
-	
+
 	/**
 	 * Write DTEND property of Course
 	 *
@@ -405,7 +405,7 @@ public class CourseCalendar {
 		}
 		return makeEventEnd(LocalDateTime.of(item.getEndDate(), endTime));
 	}
-	
+
 	/**
 	 * Write DTSTAMP property of event
 	 * Stamp should be date created. DateTime constructor returns today's date.
@@ -416,7 +416,7 @@ public class CourseCalendar {
 		String name = "DTSTAMP";
 		return formatTimeProperty(LocalDateTime.now(), name) + "\n";
 	}
-	
+
 	/**
 	 * Write DTSTAMP property given Course
 	 *
@@ -427,7 +427,7 @@ public class CourseCalendar {
 	private String makeEventStamp(Course item){
 		return makeEventStamp();
 	}
-	
+
 	/**
 	 * Write RRULE property of event given an UNTIL date
 	 * The frequency of the recurrence is hard-coded to WEEKLY
@@ -438,7 +438,7 @@ public class CourseCalendar {
 	private String makeEventRecurrence(LocalDateTime lastDay){
 		return "RRULE:FREQ=WEEKLY;UNTIL=" + formatTimeToICS(lastDay)+"Z"+"\n";
 	}
-	
+
 	/**
 	 * Write RRULE property of event given Course using getEndDate()
 	 *
@@ -449,15 +449,15 @@ public class CourseCalendar {
 	private String makeEventRecurrence(Course item){
 		return makeEventRecurrence(LocalDateTime.of(item.getEndDate(), LocalTime.of(23, 0)));
 	}
-	
+
 	/* ICS FORMATTING METHODS */
-	
+
 	/**
 	 * Write general date-time property of event such as DTSTART
 	 *
 	 * @param date Date-time of property
 	 * @param name Property name
-	 * @return Property as String 
+	 * @return Property as String
 	 */
 	private String formatTimeProperty(LocalDateTime date, String name){
 		String property;
@@ -465,23 +465,23 @@ public class CourseCalendar {
 		property = name + ";" + mTZID + ":" + time;
 		return property;
 	}
-	
+
 	/**
 	 * Make ICS-compatible time out of date
 	 * @param date Event to make date out of
 	 * @return Formatted time
 	 */
 	private String formatTimeToICS(LocalDateTime date) {
-        return DateTimeFormatter.ofPattern("YYYYMMddTHHmmss").format(date);
+		return DateTimeFormatter.ofPattern("YYYYMMdd'T'HHmmss").format(date);
 	}
-	
+
     /**
      * This is an example usage for this class.
      *
      * @param classes   The list of classes to be exported
      * @param pattern   Course contents for summary and description separated by
-	 * 				  "-" (see parsePattern()). 
-	 * 		    e.g. CS-T will write Code and Section to Summary 
+	 * 				  "-" (see parsePattern()).
+	 * 		    e.g. CS-T will write Code and Section to Summary
 	 * 				 and Title to Description
 	 * @param recurring Whether to set the event as recurring over the semester
 	 * @param rounded   Whether to use rounded times
@@ -492,7 +492,7 @@ public class CourseCalendar {
     	CourseCalendar courseCal = new CourseCalendar(classes, pattern, recurring, rounded);
     	courseCal.writeCalendar(file);
     }
-    
+
     /**
      * Creates an iCal file with the given classes and save it to the given file
      *

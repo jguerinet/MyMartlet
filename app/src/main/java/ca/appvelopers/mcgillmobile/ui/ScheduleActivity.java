@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
@@ -46,6 +48,7 @@ import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +68,7 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.CourseCalendar;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
@@ -73,6 +77,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
+
+import static android.support.v4.content.FileProvider.getUriForFile;
 
 /**
  * Represents the user's schedule
@@ -188,6 +194,7 @@ public class ScheduleActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.refresh, menu);
         getMenuInflater().inflate(R.menu.change_semester, menu);
+        getMenuInflater().inflate(R.menu.export_schedule, menu);
         return true;
     }
 
@@ -237,6 +244,9 @@ public class ScheduleActivity extends DrawerActivity {
                 return true;
             case R.id.action_refresh:
                 refreshCourses();
+                return true;
+            case R.id.action_export_schedule:
+                exportSchedule();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -304,6 +314,34 @@ public class ScheduleActivity extends DrawerActivity {
                 }
             }
         });
+    }
+
+    private void exportSchedule() {
+        try {
+            File path = new File(getCacheDir(), "ical");
+            path.mkdirs();
+            File tmp = new File(path, "schedule.ics");
+            CourseCalendar.createICalFile(courses, tmp);
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_VIEW);
+            Uri uri = getUriForFile(getApplicationContext(), "ca.appvelopers.mcgillmobile.fileprovider",tmp);
+            i.setDataAndType(uri, "text/calendar");
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            // Verify the intent will resolve to at least one activity
+            if (i.resolveActivity(getPackageManager()) != null) {
+                Intent chooser = Intent.createChooser(i, "Export Schedule");
+                startActivity(chooser);
+                return;
+            } else {
+                Toast.makeText(this, "No calendar app found", Toast.LENGTH_SHORT).show();
+            }
+//            startActivity(i);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Unable to export the schedule", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

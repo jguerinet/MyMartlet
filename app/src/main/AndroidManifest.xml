@@ -148,6 +148,16 @@
             android:authorities="com.facebook.app.FacebookContentProvider828093890556007"
             android:exported="true" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="ca.appvelopers.mcgillmobile.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
