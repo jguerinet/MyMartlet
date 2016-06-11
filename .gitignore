@@ -5,9 +5,6 @@ Thumbs.db
 /build
 /captures
 */signing.properties
-Passwords.java
-google-services.json
-facebook_api.xml
 *.iml
 .idea/libraries
 .idea/shelf
@@ -16,3 +13,8 @@ gradle.xml
 misc.xml
 modules.xml
 workspace.xml
+.name
+
+Passwords.java
+google-services.json
+facebook_api.xml
