@@ -40,15 +40,6 @@ android {
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
 
-    defaultConfig {
-        applicationId "ca.appvelopers.mcgillmobile"
-        minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 23
-        versionName "2.2.6"
-        vectorDrawables.useSupportLibrary = true
-    }
-
     signingConfigs {
         debug {
             storeFile file('../util/debug.keystore')
@@ -63,6 +54,15 @@ android {
             keyAlias props.keyAlias
             keyPassword props.keyPassword
         }
+    }
+
+    defaultConfig {
+        applicationId "ca.appvelopers.mcgillmobile"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 23
+        versionName "2.2.6"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
