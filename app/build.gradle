@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// Setting up the release keystore properties
+def props = new Properties()
+props.load(new FileInputStream(rootProject.file("util/signing.properties")))
+
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -51,7 +55,13 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        release
+
+        release {
+            storeFile file(props.storeFile)
+            storePassword props.storePassword
+            keyAlias props.keyAlias
+            keyPassword props.keyPassword
+        }
     }
     buildTypes {
         debug {
@@ -125,14 +135,4 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.3'
 }
 
-//This needs to be after the dependencies for the GPS 8.4.0 to work
-//   See http://stackoverflow.com/questions/34370603/version-conflict-updating-to-8-4-0
 apply plugin: 'com.google.gms.google-services'
-
-//Setting up the release keystore properties
-def props = new Properties()
-props.load(new FileInputStream(rootProject.file("util/signing.properties")))
-android.signingConfigs.release.storeFile rootProject.file(props.keyStore)
-android.signingConfigs.release.storePassword props.keyStorePassword
-android.signingConfigs.release.keyAlias props.keyAlias
-android.signingConfigs.release.keyPassword props.keyAliasPassword

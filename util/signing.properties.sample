@@ -1,4 +1,4 @@
-keyStore=""
-keyStorePassword=""
-keyAlias=""
-keyAliasPassword=""
+storeFile=HERE
+storePassword=HERE
+keyAlias=HERE
+keyPassword=HERE
