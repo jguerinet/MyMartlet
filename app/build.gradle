@@ -48,6 +48,7 @@ android {
         versionName "2.2.6"
         vectorDrawables.useSupportLibrary = true
     }
+
     signingConfigs {
         debug {
             storeFile file('../util/debug.keystore')
@@ -63,17 +64,20 @@ android {
             keyPassword props.keyPassword
         }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
             buildConfigField 'boolean', 'REPORT_CRASHES', 'false'
             versionNameSuffix "." + defaultConfig.versionCode
         }
+
         beta {
             initWith debug
             signingConfig signingConfigs.release
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
+
         release {
             signingConfig signingConfigs.release
             minifyEnabled false
@@ -90,28 +94,23 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/notice.txt'
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
-    }
-    lintOptions {
-        abortOnError false
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-        transitive = true;
-    }
-    compile('com.twitter.sdk.android:twitter:1.13.0@aar') {
-        transitive = true;
-    }
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.android.support:support-vector-drawable:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
     compile 'com.facebook.android:facebook-android-sdk:4.10.1'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
@@ -131,6 +130,9 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit2:converter-moshi:2.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.1'
+    compile('com.twitter.sdk.android:twitter:1.13.0@aar') {
+        transitive = true;
+    }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'org.jsoup:jsoup:1.8.3'
 }

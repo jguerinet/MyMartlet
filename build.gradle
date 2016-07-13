@@ -21,6 +21,7 @@ buildscript {
         maven { url "http://dl.bintray.com/populov/maven" }
         jcenter()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
