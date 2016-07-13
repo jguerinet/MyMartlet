@@ -22,7 +22,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -138,7 +140,12 @@ public class BaseActivity extends AppCompatActivity {
     private void updateLocale() {
         Locale locale = new Locale(languageManager.getCode());
         Configuration config = getBaseContext().getResources().getConfiguration();
-        config.locale = locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocales(new LocaleList(locale));
+        } else {
+            //noinspection deprecation
+            config.locale = locale;
+        }
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
     }
