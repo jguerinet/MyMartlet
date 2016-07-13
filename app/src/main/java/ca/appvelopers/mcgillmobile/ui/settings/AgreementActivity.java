@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import com.guerinet.utils.prefs.BooleanPreference;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -43,7 +43,7 @@ public class AgreementActivity extends BaseActivity {
     /**
      * The container with the buttons for the initial EULA agreement
      */
-    @Bind(R.id.buttons_container)
+    @BindView(R.id.buttons_container)
     protected LinearLayout mButtons;
     /**
      * EULA {@link BooleanPreference}

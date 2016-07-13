@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
@@ -70,27 +70,27 @@ public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.Course
         /**
          * Course Code
          */
-        @Bind(R.id.course_code)
+        @BindView(R.id.course_code)
         protected TextView mCode;
         /**
          * User grade
          */
-        @Bind(R.id.course_grade)
+        @BindView(R.id.course_grade)
         protected TextView mGrade;
         /**
          * Course title
          */
-        @Bind(R.id.course_title)
+        @BindView(R.id.course_title)
         protected TextView mTitle;
         /**
          * Course credits
          */
-        @Bind(R.id.course_credits)
+        @BindView(R.id.course_credits)
         protected TextView mCredits;
         /**
          * Course average grade
          */
-        @Bind(R.id.course_average)
+        @BindView(R.id.course_average)
         protected TextView mAverageGrade;
 
         public CourseHolder(View itemView) {

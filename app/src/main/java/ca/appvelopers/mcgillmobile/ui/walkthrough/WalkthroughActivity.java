@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import android.widget.Button;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
@@ -42,22 +42,22 @@ public class WalkthroughActivity extends BaseActivity {
     /**
      * The ViewPager
      */
-    @Bind(R.id.view_pager)
+    @BindView(R.id.view_pager)
     protected ViewPager viewPager;
     /**
      * The ViewPagerIndicator
      */
-    @Bind(R.id.indicator)
+    @BindView(R.id.indicator)
     protected CirclePageIndicator indicator;
     /**
      * The next button
      */
-    @Bind(R.id.next)
+    @BindView(R.id.next)
     protected Button next;
     /**
      * The back button
      */
-    @Bind(R.id.back)
+    @BindView(R.id.back)
     protected Button back;
     /**
      * Adapter used for the walkthrough

@@ -38,7 +38,7 @@ import org.threeten.bp.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -66,92 +66,92 @@ public class SearchActivity extends DrawerActivity {
     /**
      * Spinner to choose the term
      */
-    @Bind(R.id.search_term)
+    @BindView(R.id.search_term)
     protected TextView mTermSelector;
     /**
      * Container for the term selection
      */
-    @Bind(R.id.term_container)
+    @BindView(R.id.term_container)
     protected LinearLayout termContainer;
     /**
      * Course start time
      */
-    @Bind(R.id.search_start)
+    @BindView(R.id.search_start)
     protected TimePicker mStartTime;
     /**
      * Course end time
      */
-    @Bind(R.id.search_end)
+    @BindView(R.id.search_end)
     protected TimePicker mEndTime;
     /**
      * Course subject
      */
-    @Bind(R.id.search_subject)
+    @BindView(R.id.search_subject)
     protected EditText mSubject;
     /**
      * Course number
      */
-    @Bind(R.id.search_number)
+    @BindView(R.id.search_number)
     protected EditText mNumber;
     /**
      * Course title
      */
-    @Bind(R.id.search_title)
+    @BindView(R.id.search_title)
     protected EditText mTitle;
     /**
      * Course min credits
      */
-    @Bind(R.id.search_min)
+    @BindView(R.id.search_min)
     protected EditText mMinCredits;
     /**
      * Course max credits
      */
-    @Bind(R.id.search_max)
+    @BindView(R.id.search_max)
     protected EditText mMaxCredits;
     /**
      * Course on Monday
      */
-    @Bind(R.id.search_monday)
+    @BindView(R.id.search_monday)
     protected CheckBox mMonday;
     /**
      * Course on Tuesday
      */
-    @Bind(R.id.search_tuesday)
+    @BindView(R.id.search_tuesday)
     protected CheckBox mTuesday;
     /**
      * Course on Wednesday
      */
-    @Bind(R.id.search_wednesday)
+    @BindView(R.id.search_wednesday)
     protected CheckBox mWednesday;
     /**
      * Course on Thursday
      */
-    @Bind(R.id.search_thursday)
+    @BindView(R.id.search_thursday)
     protected CheckBox mThursday;
     /**
      * Course on Friday
      */
-    @Bind(R.id.search_friday)
+    @BindView(R.id.search_friday)
     protected CheckBox mFriday;
     /**
      * Course on Saturday
      */
-    @Bind(R.id.search_saturday)
+    @BindView(R.id.search_saturday)
     protected CheckBox mSaturday;
     /**
      * Course on Sunday
      */
-    @Bind(R.id.search_sunday)
+    @BindView(R.id.search_sunday)
     protected CheckBox mSunday;
     /**
      * The more options container
      */
-    @Bind(R.id.more_options_container)
+    @BindView(R.id.more_options_container)
     protected LinearLayout mMoreOptionsContainer;
     /**
      * The more options button
      */
-    @Bind(R.id.more_options)
+    @BindView(R.id.more_options)
     protected Button mMoreOptionsButton;
     /**
      * {@link Term} selected

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import com.guerinet.utils.DateUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
@@ -73,17 +73,17 @@ public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHol
         /**
          * Statement date
          */
-        @Bind(R.id.statement_date)
+        @BindView(R.id.statement_date)
         protected TextView mDate;
         /**
          * Statement due date
          */
-        @Bind(R.id.statement_due_date)
+        @BindView(R.id.statement_due_date)
         protected TextView mDueDate;
         /**
          * Statement amount
          */
-        @Bind(R.id.statement_amount)
+        @BindView(R.id.statement_amount)
         protected TextView mAmount;
 
         public StatementHolder(View itemView) {

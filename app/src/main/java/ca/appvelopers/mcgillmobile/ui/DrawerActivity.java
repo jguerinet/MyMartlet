@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ import java.net.URL;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -61,17 +61,17 @@ public abstract class DrawerActivity extends BaseActivity
     /**
      * The drawer layout
      */
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     protected DrawerLayout drawerLayout;
     /**
      * The navigation view
      */
-    @Bind(R.id.drawer)
+    @BindView(R.id.drawer)
     protected NavigationView drawer;
     /**
      * Main content view to fade out and in on page change
      */
-    @Bind(R.id.main)
+    @BindView(R.id.main)
     protected View mainView;
     /**
      * The {@link HomepageManager} instance

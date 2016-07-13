@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
@@ -73,12 +73,12 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
         /**
          * The semester name
          */
-        @Bind(R.id.semester_name)
+        @BindView(R.id.semester_name)
         protected TextView mName;
         /**
          * The user's GPA for this semester
          */
-        @Bind(R.id.semester_gpa)
+        @BindView(R.id.semester_gpa)
         protected TextView mGPA;
 
         public SemesterHolder(View itemView) {

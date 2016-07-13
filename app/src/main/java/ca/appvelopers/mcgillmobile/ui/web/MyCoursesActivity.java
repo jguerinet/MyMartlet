@@ -38,7 +38,7 @@ import com.guerinet.utils.Utils;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -62,7 +62,7 @@ public class MyCoursesActivity extends DrawerActivity {
     /**
      * Main content
      */
-    @Bind(R.id.web_view)
+    @BindView(R.id.web_view)
     protected WebView mWebView;
     /**
      * {@link UsernamePreference} instance
@@ -75,7 +75,8 @@ public class MyCoursesActivity extends DrawerActivity {
     @Inject
     protected PasswordPreference passwordPref;
 
-    @Override @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);

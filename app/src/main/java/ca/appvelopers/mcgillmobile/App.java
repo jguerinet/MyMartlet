@@ -128,7 +128,7 @@ public class App extends Application {
 
         // Instabug
         Instabug.initialize(this, BuildConfig.DEBUG ?
-                Passwords.INSTABUG_DEBUG_KEY : Passwords.INSTABUG_KEY)
+                Passwords.INSTABUG_KEY : Passwords.INSTABUG_KEY)
                 .enableEmailField(true, false)
                 .setDefaultEmail(usernamePref.full())
                 .setCommentIsRequired(true)

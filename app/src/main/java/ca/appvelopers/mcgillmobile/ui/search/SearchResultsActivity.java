@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import com.guerinet.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -60,12 +60,12 @@ public class SearchResultsActivity extends BaseActivity {
     /**
      * The courses list
      */
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     RecyclerView mListView;
     /**
      * The empty view
      */
-    @Bind(R.id.courses_empty)
+    @BindView(R.id.courses_empty)
     TextView mEmptyView;
     /**
      * The adapter for the list of results

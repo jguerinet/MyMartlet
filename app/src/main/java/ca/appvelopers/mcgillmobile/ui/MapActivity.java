@@ -58,7 +58,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -83,32 +83,32 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     /**
      * Info container used to show the current place's detail
      */
-    @Bind(R.id.info_container)
+    @BindView(R.id.info_container)
     protected LinearLayout infoContainer;
     /**
      * {@link FormGenerator} container for the filter
      */
-    @Bind(R.id.container)
+    @BindView(R.id.container)
     protected LinearLayout container;
     /**
      * Current place's title
      */
-    @Bind(R.id.place_title)
+    @BindView(R.id.place_title)
     protected TextView title;
     /**
      * Current place's address
      */
-    @Bind(R.id.place_address)
+    @BindView(R.id.place_address)
     protected TextView address;
     /**
      * Button to get directions to a place
      */
-    @Bind(R.id.directions)
+    @BindView(R.id.directions)
     protected Button directions;
     /**
      * Button to add or remove a place from the user's favorites
      */
-    @Bind(R.id.map_favorite)
+    @BindView(R.id.map_favorite)
     protected Button favorite;
     /**
      * {@link PlacesManager} instance

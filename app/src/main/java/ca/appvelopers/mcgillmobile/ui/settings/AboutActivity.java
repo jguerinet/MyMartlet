@@ -35,7 +35,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
@@ -52,7 +52,7 @@ public class AboutActivity extends BaseActivity {
     /**
      * The list view
      */
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     protected RecyclerView list;
 
     @Override
@@ -208,32 +208,32 @@ public class AboutActivity extends BaseActivity {
             /**
              * Person's name
              */
-            @Bind(R.id.name)
+            @BindView(R.id.name)
             protected TextView name;
             /**
              * Person's picture
              */
-            @Bind(R.id.picture)
+            @BindView(R.id.picture)
             protected ImageView picture;
             /**
              * Person's role
              */
-            @Bind(R.id.role)
+            @BindView(R.id.role)
             protected TextView role;
             /**
              * Person's description
              */
-            @Bind(R.id.description)
+            @BindView(R.id.description)
             protected TextView description;
             /**
              * URL to person's LinkedIn
              */
-            @Bind(R.id.linkedin)
+            @BindView(R.id.linkedin)
             protected ImageView linkedIn;
             /**
              * Person's email
              */
-            @Bind(R.id.email)
+            @BindView(R.id.email)
             protected ImageView email;
 
             public PersonHolder(View itemView) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
@@ -39,32 +39,32 @@ public class SemesterActivity extends BaseActivity {
     /**
      * Semester's bachelor degree
      */
-    @Bind(R.id.semester_bachelor)
+    @BindView(R.id.semester_bachelor)
     protected TextView mBachelor;
     /**
      * Semester program
      */
-    @Bind(R.id.semester_program)
+    @BindView(R.id.semester_program)
     protected TextView mProgram;
     /**
      * Semester GPA
      */
-    @Bind(R.id.semester_GPA)
+    @BindView(R.id.semester_GPA)
     protected TextView mGPA;
     /**
      * Semester credits
      */
-    @Bind(R.id.semester_credits)
+    @BindView(R.id.semester_credits)
     protected TextView mCredits;
     /**
      * User's status during this semester
      */
-    @Bind(R.id.semester_full_time)
+    @BindView(R.id.semester_full_time)
     protected TextView mFullTime;
     /**
      * Courses taken during this semester
      */
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     protected RecyclerView mList;
 
     @Override

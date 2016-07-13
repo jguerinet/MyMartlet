@@ -35,7 +35,7 @@ import com.guerinet.utils.dialog.DialogUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.FAQ;
@@ -52,12 +52,12 @@ public class HelpActivity extends BaseActivity {
     /**
      * {@link FormGenerator} container
      */
-    @Bind(R.id.container)
+    @BindView(R.id.container)
     protected LinearLayout mContainer;
     /**
      * FAQ List
      */
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     protected RecyclerView mList;
 
     @Override
@@ -176,12 +176,12 @@ public class HelpActivity extends BaseActivity {
             /**
              * FAQ question
              */
-            @Bind(R.id.question)
+            @BindView(R.id.question)
             protected TextView mQuestion;
             /**
              * FAQ answer
              */
-            @Bind(R.id.answer)
+            @BindView(R.id.answer)
             protected TextView mAnswer;
 
             public FAQHolder(View itemView) {

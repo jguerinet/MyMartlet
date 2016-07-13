@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -52,17 +52,17 @@ public class TranscriptActivity extends DrawerActivity {
     /**
      * User's CGPA
      */
-    @Bind(R.id.transcript_cgpa)
+    @BindView(R.id.transcript_cgpa)
     protected TextView mCGPA;
     /**
      * User's total credits
      */
-    @Bind(R.id.transcript_credits)
+    @BindView(R.id.transcript_credits)
     protected TextView mTotalCredits;
     /**
      * List of semesters
      */
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     protected RecyclerView mList;
     /**
      * {@link TranscriptManager} instance

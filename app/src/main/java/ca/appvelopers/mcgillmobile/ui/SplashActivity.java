@@ -40,7 +40,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -74,42 +74,42 @@ public class SplashActivity extends BaseActivity {
     /**
      * Container if the min version is not satisfied
      */
-    @Bind(R.id.version_container)
+    @BindView(R.id.version_container)
     protected LinearLayout minVersionContainer;
     /**
      * Container with the login views
      */
-    @Bind(R.id.login_container)
+    @BindView(R.id.login_container)
     protected LinearLayout loginContainer;
     /**
      * Container with the loading progress bar (when signing in or loading info for the first time)
      */
-    @Bind(R.id.progress_container)
+    @BindView(R.id.progress_container)
     protected LinearLayout progressContainer;
     /**
      * The login {@link Button}
      */
-    @Bind(R.id.login_button)
+    @BindView(R.id.login_button)
     protected Button loginButton;
     /**
      * {@link EditText} where the user enters their username
      */
-    @Bind(R.id.login_username)
+    @BindView(R.id.login_username)
     protected EditText usernameView;
     /**
      * {@link EditText} where the user enters their password
      */
-    @Bind(R.id.login_password)
+    @BindView(R.id.login_password)
     protected EditText passwordView;
     /**
      * {@link CheckBox} where the user decides if their username should be remembered
      */
-    @Bind(R.id.login_remember_username)
+    @BindView(R.id.login_remember_username)
     protected CheckBox rememberUsername;
     /**
      * Update text for when downloading everything
      */
-    @Bind(R.id.progress_text)
+    @BindView(R.id.progress_text)
     protected TextView progressText;
     /**
      * The {@link McGillManager} instance

@@ -40,7 +40,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
@@ -61,12 +61,12 @@ public class BaseActivity extends AppCompatActivity {
     /**
      * The toolbar
      */
-    @Nullable @Bind(R.id.toolbar)
+    @Nullable @BindView(R.id.toolbar)
     protected Toolbar toolbar;
     /**
      * The progress bar shown in the toolbar
      */
-    @Nullable @Bind(R.id.toolbar_progress)
+    @Nullable @BindView(R.id.toolbar_progress)
     protected ProgressBar toolbarProgress;
     /**
      * The {@link McGillService} instance

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -83,17 +83,17 @@ public class ScheduleActivity extends DrawerActivity {
     /**
      * Timetable container used in the landscape orientation
      */
-    @Nullable @Bind(R.id.container_timetable)
+    @Nullable @BindView(R.id.container_timetable)
     protected LinearLayout timetableContainer;
     /**
      * Schedule container used in the landscape orientation
      */
-    @Nullable @Bind(R.id.container_schedule)
+    @Nullable @BindView(R.id.container_schedule)
     protected LinearLayout scheduleContainer;
     /**
      * {@link ViewPager} used in the portrait orientation
      */
-    @Nullable @Bind(R.id.view_pager)
+    @Nullable @BindView(R.id.view_pager)
     protected ViewPager viewPager;
     /**
      * The first open {@link BooleanPreference}
@@ -594,22 +594,22 @@ public class ScheduleActivity extends DrawerActivity {
         /**
          * Day title
          */
-        @Bind(R.id.day_title)
+        @BindView(R.id.day_title)
         protected TextView dayTitle;
         /**
          * Date title
          */
-        @Bind(R.id.day_date)
+        @BindView(R.id.day_date)
         protected TextView dateTitle;
         /**
          * Container for the day's timetable
          */
-        @Bind(R.id.container_timetable)
+        @BindView(R.id.container_timetable)
         protected LinearLayout timetableContainer;
         /**
          * Container for the day's schedule
          */
-        @Bind(R.id.container_schedule)
+        @BindView(R.id.container_schedule)
         protected LinearLayout scheduleContainer;
         /**
          * The initial date to use as a reference

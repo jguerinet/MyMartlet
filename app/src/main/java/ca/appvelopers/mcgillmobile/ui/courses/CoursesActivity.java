@@ -37,7 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -70,17 +70,17 @@ public class CoursesActivity extends DrawerActivity {
     /**
      * The ListView for the courses
      */
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     protected RecyclerView mList;
     /**
      * The button to unregister from a course
      */
-    @Bind(R.id.course_register)
+    @BindView(R.id.course_register)
     protected Button mUnregisterButton;
     /**
      * The empty list view
      */
-    @Bind(R.id.courses_empty)
+    @BindView(R.id.courses_empty)
     protected TextView mEmptyView;
     /**
      * {@link TranscriptManager} instance

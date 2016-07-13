@@ -38,7 +38,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
@@ -69,12 +69,12 @@ public class WishlistActivity extends DrawerActivity {
     /**
      * The empty view
      */
-    @Bind(R.id.courses_empty)
+    @BindView(R.id.courses_empty)
     protected TextView mEmptyView;
     /**
      * The wishlist
      */
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     protected RecyclerView mList;
     /**
      * {@link TranscriptManager} instance

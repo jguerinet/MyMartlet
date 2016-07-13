@@ -26,7 +26,7 @@ import com.guerinet.utils.Utils;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -45,7 +45,7 @@ public class DesktopActivity extends DrawerActivity {
     /**
      * The WebView
      */
-    @Bind(R.id.web_view)
+    @BindView(R.id.web_view)
     protected WebView mWebView;
     /**
      * {@link UsernamePreference} instance

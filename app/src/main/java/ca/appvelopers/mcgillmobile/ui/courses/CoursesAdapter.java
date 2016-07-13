@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -43,37 +43,37 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
         /**
          * The course code
          */
-        @Bind(R.id.course_code)
+        @BindView(R.id.course_code)
         TextView mCode;
         /**
          * The course title
          */
-        @Bind(R.id.course_title)
+        @BindView(R.id.course_title)
         TextView mTitle;
         /**
          * The course type
          */
-        @Bind(R.id.course_type)
+        @BindView(R.id.course_type)
         TextView mType;
         /**
          * The course credits
          */
-        @Bind(R.id.course_credits)
+        @BindView(R.id.course_credits)
         TextView mCredits;
         /**
          * The course days
          */
-        @Bind(R.id.course_days)
+        @BindView(R.id.course_days)
         TextView mDays;
         /**
          * The course hours
          */
-        @Bind(R.id.course_hours)
+        @BindView(R.id.course_hours)
         TextView mHours;
         /**
          * The course unregistration check box
          */
-        @Bind(R.id.course_checkbox)
+        @BindView(R.id.course_checkbox)
         CheckBox mCheckBox;
 
         public CourseHolder(View itemView){

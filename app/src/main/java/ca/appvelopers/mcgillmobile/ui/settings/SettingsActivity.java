@@ -32,7 +32,7 @@ import com.instabug.library.Instabug;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -53,7 +53,7 @@ public class SettingsActivity extends DrawerActivity {
     /**
      * The {@link FormGenerator} container
      */
-    @Bind(R.id.container)
+    @BindView(R.id.container)
     protected LinearLayout container;
     /**
      * Statistics {@link BooleanPreference}
