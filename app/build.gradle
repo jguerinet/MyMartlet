@@ -108,33 +108,33 @@ dependencies {
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.android.support:support-vector-drawable:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
         transitive = true;
     }
-    compile 'com.facebook.android:facebook-android-sdk:4.10.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.14.0'
     compile 'com.google.android.gms:play-services-analytics:9.2.1'
     compile 'com.google.android.gms:play-services-maps:9.2.1'
-    compile 'com.google.dagger:dagger:2.2'
-    apt 'com.google.dagger:dagger-compiler:2.2'
+    compile 'com.google.dagger:dagger:2.5'
+    apt 'com.google.dagger:dagger-compiler:2.5'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.guerinet:android-utils:1.0.31'
-    compile 'com.guerinet:form-generator:2.2.2'
+    compile 'com.guerinet:android-utils:1.1.2'
+    compile 'com.guerinet:form-generator:2.2.3'
     compile 'com.instabug.library:instabugsupport:1+'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.3'
     compile 'com.jakewharton.timber:timber:4.1.2'
-    compile 'com.squareup.moshi:moshi:1.1.0'
+    compile 'com.squareup.moshi:moshi:1.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit2:converter-moshi:2.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.1'
-    compile('com.twitter.sdk.android:twitter:1.13.0@aar') {
+    compile('com.twitter.sdk.android:twitter:1.14.1@aar') {
         transitive = true;
     }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
-    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'org.jsoup:jsoup:1.9.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
