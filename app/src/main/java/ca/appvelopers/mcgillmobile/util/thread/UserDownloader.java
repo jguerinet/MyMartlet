@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.net.ssl.SSLException;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
@@ -104,13 +105,7 @@ public abstract class UserDownloader extends Thread {
                 transcript = mcGillService.transcript().execute().body();
                 transcriptManager.set(transcript);
             } catch(IOException e) {
-                if (e instanceof MinervaException) {
-                    LocalBroadcastManager.getInstance(context)
-                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                } else {
-                    Timber.e(e, "Transcript Exception");
-                }
-                exception = e;
+                handleException(e, "Transcript");
             }
 
             //The current term
@@ -135,13 +130,7 @@ public abstract class UserDownloader extends Thread {
                         List<Course> courses = mcGillService.schedule(term).execute().body();
                         scheduleManager.set(courses, term);
                     } catch (IOException e) {
-                        if (e instanceof MinervaException) {
-                            LocalBroadcastManager.getInstance(context)
-                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                        } else {
-                            Timber.e(e, "Term Exception: %s", term.getId());
-                        }
-                        exception = e;
+                        handleException(e, term.getId());
                     }
                 }
             }
@@ -155,16 +144,27 @@ public abstract class UserDownloader extends Thread {
             try {
                 App.setEbill(mcGillService.ebill().execute().body());
             } catch(IOException e) {
-                if (e instanceof MinervaException) {
-                    LocalBroadcastManager.getInstance(context)
-                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                } else {
-                    Timber.e(e, "Ebill Exception");
-                }
-                exception = e;
+                handleException(e, "Ebill");
             }
             notify();
         }
+    }
+
+    /**
+     * Handles any exception while downloading the user info
+     *
+     * @param e       Exception instance
+     * @param section Section that the exception happened in
+     */
+    private void handleException(IOException e, String section) {
+        if (e instanceof MinervaException) {
+            LocalBroadcastManager.getInstance(context)
+                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+        } else if (!(e instanceof SSLException)) {
+            // Don't log SSLExceptions
+            Timber.e(new Exception("Exception: " + section, e), "");
+        }
+        exception = e;
     }
 
     /**
