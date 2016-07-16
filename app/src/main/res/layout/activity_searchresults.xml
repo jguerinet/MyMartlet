@@ -41,7 +41,8 @@
             android:padding="@dimen/padding_micro"
             android:textSize="@dimen/text_medium"
             android:gravity="center"
-            android:id="@+id/course_register"/>
+            android:id="@+id/course_register"
+            android:textColor="@color/red"/>
 
         <Button
             style="?android:attr/borderlessButtonStyle"
@@ -52,7 +53,8 @@
             android:padding="@dimen/padding_micro"
             android:textSize="@dimen/text_medium"
             android:gravity="center"
-            android:id="@+id/course_wishlist"/>
+            android:id="@+id/course_wishlist"
+            android:textColor="@color/red"/>
 
     </LinearLayout>
 
