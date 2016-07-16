@@ -1,5 +1,10 @@
 # Change Log
 
+## Version 2.3.0 (2016-07-16)
+* New: Support for Android Nougat
+* Fixed course search
+* Fixed bug when removing favorite place
+
 ## Version 2.2.5 (2016-04-05)
 * Fix: Fix login issue with regards to the new proxy cookie Minerva sets 
 
