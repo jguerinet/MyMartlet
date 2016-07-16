@@ -91,7 +91,7 @@ public class NetworkModule {
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl("http://mymartlet.herokuapp.com/api/v2/")
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
                 .build();
     }
 
