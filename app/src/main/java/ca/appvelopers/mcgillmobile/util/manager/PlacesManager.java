@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,7 +160,7 @@ public class PlacesManager {
      * @param place {@link Place} to remove from the favorites
      */
     public void removeFavorite(Place place) {
-        getFavoritePlaceIds().remove(place.getId());
+        getFavoritePlaceIds().remove(Integer.valueOf(place.getId()));
         StorageUtils.saveObject(context, getFavoritePlaceIds(), FAVORITE_PLACES, "Favorite Places");
     }
 
