@@ -30,8 +30,6 @@ import android.widget.Toast;
 
 import com.guerinet.utils.dialog.DialogUtils;
 
-import org.threeten.bp.DayOfWeek;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,6 @@ import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -248,14 +245,13 @@ public class WishlistActivity extends DrawerActivity {
 
                     String subject = code[0];
                     String number = code[1];
-                    String url = McGillManager.getSearchURL(course.getTerm(), subject, number,
-                            "", 0, 0, 0, 0, true, 0, 0, true, new ArrayList<DayOfWeek>());
 
                     try {
                         Response<List<CourseResult>> results = mcGillService.search(
                                 course.getTerm(), subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
                                 new ArrayList<Character>()).execute();
 
+                        // TODO Fix fact that this can update courses concurrently
                         //Update the course object with an updated class size
                         for (CourseResult updatedClass : results.body()) {
                             for (CourseResult wishlistClass : mCourses) {
