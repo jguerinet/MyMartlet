@@ -101,15 +101,23 @@ public class CourseResultConverter extends Converter.Factory
             LocalDate endDate = LocalDate.now();
 
             int i = 0;
-            while (true) {
+            courseLoop: while (true) {
                 try {
                     // Get the HTML row
                     Element row = rows.get(rowNumber);
 
-                    // End condition: Empty row encountered or "Notes
-                    if (row.toString().contains("&nbsp;") || row.toString().contains("NOTES:")) {
+                    // End condition: Notes
+                    if (row.toString().contains("NOTES:")) {
+                        // Increment twice to take into account the space after it
+                        rowNumber = rowNumber + 2;
+                        // Decrement the index to take into account the space before it
+                        i --;
+                        continue;
+                    } else if (row.toString().contains("&nbsp;")) {
+                        // Empty row: increment both the row number and the index
                         rowNumber ++;
-                        break;
+                        i ++;
+                        continue;
                     }
 
                     //Get the row text
@@ -214,6 +222,10 @@ public class CourseResultConverter extends Converter.Factory
                         case 18:
                             location = rowString;
                             break;
+                        case 19:
+                            // End of a course, break it off
+                            rowNumber ++;
+                            break courseLoop;
                     }
                     i ++;
                     rowNumber ++;
