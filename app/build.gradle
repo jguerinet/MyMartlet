@@ -107,35 +107,35 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.android.support:support-vector-drawable:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:support-vector-drawable:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
         transitive = true;
     }
-    compile 'com.facebook.android:facebook-android-sdk:4.14.0'
-    compile 'com.google.android.gms:play-services-analytics:9.2.1'
-    compile 'com.google.android.gms:play-services-maps:9.2.1'
-    compile 'com.google.dagger:dagger:2.5'
-    apt 'com.google.dagger:dagger-compiler:2.5'
+    compile 'com.facebook.android:facebook-android-sdk:4.15.0'
+    compile 'com.google.android.gms:play-services-analytics:9.4.0'
+    compile 'com.google.android.gms:play-services-maps:9.4.0'
+    compile 'com.google.dagger:dagger:2.6.1'
+    apt 'com.google.dagger:dagger-compiler:2.6.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.guerinet:android-utils:1.1.2'
+    compile 'com.guerinet:android-utils:1.1.5'
     compile 'com.guerinet:form-generator:2.2.3'
     compile 'com.instabug.library:instabugsupport:1+'
-    compile 'com.jakewharton:butterknife:8.2.1'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
-    compile 'com.jakewharton.threetenabp:threetenabp:1.0.3'
-    compile 'com.jakewharton.timber:timber:4.1.2'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
+    compile 'com.jakewharton.timber:timber:4.3.0'
     compile 'com.squareup.moshi:moshi:1.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.okio:okio:1.9.0'
+    compile 'com.squareup.okio:okio:1.10.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile('com.twitter.sdk.android:twitter:1.14.1@aar') {
+    compile('com.twitter.sdk.android:twitter:2.0.0@aar') {
         transitive = true;
     }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
