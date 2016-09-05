@@ -64,8 +64,8 @@
                     android:singleLine="true"
                     android:gravity="start|center_vertical"
                     android:drawablePadding="@dimen/padding_micro"
-                    android:drawableLeft="@drawable/ic_directions_container"
-                    android:drawableStart="@drawable/ic_directions_container"/>
+                    android:drawableLeft="@drawable/ic_directions"
+                    android:drawableStart="@drawable/ic_directions"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -82,8 +82,8 @@
                     android:singleLine="true"
                     android:gravity="start|center_vertical"
                     android:drawablePadding="@dimen/padding_micro"
-                    android:drawableLeft="@drawable/ic_star_container"
-                    android:drawableStart="@drawable/ic_star_container"/>
+                    android:drawableLeft="@drawable/ic_star"
+                    android:drawableStart="@drawable/ic_star"/>
 
             </LinearLayout>
 
