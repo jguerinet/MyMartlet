@@ -18,12 +18,12 @@ package ca.appvelopers.mcgillmobile.ui.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.guerinet.utils.Utils;
 
@@ -61,56 +61,56 @@ public class SearchResultsActivity extends BaseActivity {
      * The courses list
      */
     @BindView(android.R.id.list)
-    RecyclerView mListView;
+    RecyclerView listView;
     /**
      * The empty view
      */
     @BindView(R.id.courses_empty)
-    TextView mEmptyView;
+    TextView emptyView;
     /**
      * The adapter for the list of results
      */
-    private WishlistSearchCourseAdapter mAdapter;
+    private WishlistSearchCourseAdapter adapter;
     /**
      * The current term
      */
-    private Term mTerm;
+    private Term term;
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchresults);
         ButterKnife.bind(this);
         setUpToolbar(true);
         analytics.sendScreen("Search Results");
 
-        //Get the info from the intent
-        mTerm = (Term)getIntent().getSerializableExtra(Constants.TERM);
+        // Get the info from the intent
+        term = (Term) getIntent().getSerializableExtra(Constants.TERM);
         List<CourseResult> courses =
                 (ArrayList<CourseResult>) getIntent().getSerializableExtra(Constants.COURSES);
 
-        //Set the title
-        setTitle(mTerm.getString(this));
+        // Set the title
+        setTitle(term.getString(this));
 
-        //ListView
-        mAdapter = new WishlistSearchCourseAdapter(this, mTerm, courses);
-        mListView.setLayoutManager(new LinearLayoutManager(this));
-        mListView.setAdapter(mAdapter);
-        if(mAdapter.isEmpty()){
-            mListView.setVisibility(View.GONE);
-            mEmptyView.setVisibility(View.VISIBLE);
+        // ListView
+        adapter = new WishlistSearchCourseAdapter(this, term, courses);
+        listView.setLayoutManager(new LinearLayoutManager(this));
+        listView.setAdapter(adapter);
+        if (adapter.isEmpty()) {
+            listView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
         }
     }
 
     @OnClick(R.id.course_register)
-    void registerButton(){
-        register(this, mTerm, mAdapter.getCheckedCourses());
+    void registerButton() {
+        register(this, term, adapter.getCheckedCourses());
     }
 
     @OnClick(R.id.course_wishlist)
-    void wishlistButton(){
-        addToWishlist(this, mAdapter.getCheckedCourses(), true, analytics);
+    void wishlistButton() {
+        addToWishlist(this, adapter.getCheckedCourses(), true, analytics);
     }
 
     /**
@@ -122,20 +122,16 @@ public class SearchResultsActivity extends BaseActivity {
      */
     public static void register(final BaseActivity activity, Term term,
             final List<CourseResult> courses) {
-        //Too many courses
-        if(courses.size() > 10){
-            Toast.makeText(activity, activity.getString(R.string.courses_too_many_courses),
-                    Toast.LENGTH_SHORT).show();
-        }
-        //No Courses
-        else if(courses.isEmpty()){
-            Toast.makeText(activity, activity.getString(R.string.courses_none_selected),
-                    Toast.LENGTH_SHORT).show();
-        }
-        //Execute registration of checked classes in a new thread
-        else if(courses.size() > 0){
-            //Check that we can continue
+        if (courses.size() > 10) {
+            // Too many courses
+            Utils.toast(activity, R.string.courses_too_many_courses);
+        } else if (courses.isEmpty()) {
+            // No Courses
+            Utils.toast(activity, R.string.courses_none_selected);
+        } else if (courses.size() > 0) {
+            // Execute registration of checked classes in a new thread
             if (!activity.canRefresh()) {
+                // Check that we can continue
                 return;
             }
 
@@ -199,19 +195,18 @@ public class SearchResultsActivity extends BaseActivity {
      * @param analytics {@link Analytics} instance
      */
     public static void addToWishlist(BaseActivity activity, List<CourseResult> courses, boolean add,
-            Analytics analytics){
+            Analytics analytics) {
         String toastMessage;
-        //If there are none, display error message
         if (courses.isEmpty()) {
+            // If there are none, display error message
             toastMessage = activity.getString(R.string.courses_none_selected);
-        }
-        //If not, it's to add a course to the wishlist
-        else {
+        } else {
+            // If not, it's to add a course to the wishlist
             //Get the wishlist courses
             List<CourseResult> wishlist = App.getWishlist();
 
-            if(add){
-                //Only add it if it's not already part of the wishlist
+            if (add) {
+                // Only add it if it's not already part of the wishlist
                 int coursesAdded = 0;
                 for (CourseResult course : courses) {
                     if (!wishlist.contains(course)) {
@@ -224,19 +219,18 @@ public class SearchResultsActivity extends BaseActivity {
                         String.valueOf(coursesAdded));
 
                 toastMessage = activity.getString(R.string.wishlist_add, coursesAdded);
-            }
-            else{
+            } else {
                 toastMessage = activity.getString(R.string.wishlist_remove, courses.size());
                 wishlist.removeAll(courses);
 
                 analytics.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));
             }
 
-            //Save the courses to the App context
+            // Save the courses to the App context
             App.setWishlist(wishlist);
         }
 
-        //Visual feedback of what was just done
-        Toast.makeText(activity, toastMessage, Toast.LENGTH_SHORT).show();
+        // Visual feedback of what was just done
+        Utils.toast(activity, toastMessage);
     }
 }

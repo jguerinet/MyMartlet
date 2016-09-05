@@ -216,7 +216,7 @@ public class McGillManager {
      */
     public static String getRegistrationURL(Term term, List<Course> courses, boolean dropCourse) {
         //Start the URL with the term
-        String url = term.toString();
+        String url = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=" + term.toString();
 
         //Add random Minerva stuff that is apparently necessary
         url += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +

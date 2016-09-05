@@ -31,8 +31,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Retrofit service to use to get information from McGill
@@ -83,8 +83,8 @@ public interface McGillService {
      * @param url The end of the registration URL
      * @return The registration {@link Response}
      */
-    @GET("bwckcoms.P_Regs?term_in={url}")
-    Call<List<RegistrationError>> registration(@Path("url") String url);
+    @GET
+    Call<List<RegistrationError>> registration(@Url String url);
 
     /**
      * Searches for a list of classes
