@@ -78,13 +78,22 @@ public class CourseResultConverter extends Converter.Factory
         Element header = document.getElementsByClass("staticheaders").get(0);
         Term term = Term.parseTerm(header.childNode(2).toString());
 
-        int rowNumber = 0;
-        boolean loop = true;
-        while (loop) {
+        // Get the table in the form of a set of rows
+        Element table = document.getElementsByClass("datadisplaytable").get(0).select("tbody").get(0);
+
+        // Go through the rows in the table
+        for (Element row : table.select("tr")) {
+            // Check that there at least 19 elements in the row
+            Elements rowElements = row.select("td");
+            if (rowElements.size() < 19) {
+                // If there aren't, it must not be a course row
+                continue;
+            }
+
             // Create a new course object with the default values
             double credits = 99;
-            String subject = "ERROR";
-            String number = "ERROR";
+            String subject = null;
+            String number = null;
             String title = "";
             String type = "";
             List<DayOfWeek> days = new ArrayList<>();
@@ -100,42 +109,28 @@ public class CourseResultConverter extends Converter.Factory
             LocalDate startDate = LocalDate.now();
             LocalDate endDate = LocalDate.now();
 
-            int i = 0;
-            courseLoop: while (true) {
-                try {
-                    // Get the HTML row
-                    Element row = rows.get(rowNumber);
-
-                    // End condition: Notes
-                    if (row.toString().contains("NOTES:")) {
-                        // Increment twice to take into account the space after it
-                        rowNumber = rowNumber + 2;
-                        // Decrement the index to take into account the space before it
-                        i --;
-                        continue;
-                    } else if (row.toString().contains("&nbsp;")) {
-                        // Empty row: increment both the row number and the index
-                        rowNumber ++;
-                        i ++;
+            try {
+                for (int i = 0; i < rowElements.size(); i ++) {
+                    if (rowElements.get(i).toString().contains("&nbsp;")) {
+                        // Empty row: continue
                         continue;
                     }
+                    String rowString = rowElements.get(i).text();
 
-                    //Get the row text
-                    String rowString = row.text();
                     switch (i) {
                         // CRN
                         case 1:
                             crn = Integer.parseInt(rowString);
                             break;
-                        //Subject
+                        // Subject
                         case 2:
                             subject = rowString;
                             break;
-                        //Number
+                        // Number
                         case 3:
                             number = rowString;
                             break;
-                        //Type
+                        // Type
                         case 5:
                             type = rowString;
                             break;
@@ -150,16 +145,16 @@ public class CourseResultConverter extends Converter.Factory
                             break;
                         // Days of the week
                         case 8:
-                            String dayString = rowString;
-                            //TBA Stuff
-                            if (dayString.equals("TBA")) {
-                                i = 10;
-                                rowNumber ++;
+                            if (rowString.equals("TBA")) {
+                                // TBA Stuff: no time associated so skip the next one
+                                // and add a dummy to keep the index correct
+                                rowElements.add(9, null);
+                                i ++;
                             } else {
-                                //Day Parsing
-                                dayString = dayString.replace('\u00A0',' ').trim();
-                                for (int k = 0; k < dayString.length(); k ++) {
-                                    days.add(DayUtils.getDay(dayString.charAt(k)));
+                                // Day Parsing
+                                rowString = rowString.replace('\u00A0',' ').trim();
+                                for (int k = 0; k < rowString.length(); k ++) {
+                                    days.add(DayUtils.getDay(rowString.charAt(k)));
                                 }
                             }
                             break;
@@ -222,24 +217,16 @@ public class CourseResultConverter extends Converter.Factory
                         case 18:
                             location = rowString;
                             break;
-                        case 19:
-                            // End of a course, break it off
-                            rowNumber ++;
-                            break courseLoop;
                     }
-                    i ++;
-                    rowNumber ++;
-                } catch (IndexOutOfBoundsException e) {
-                    loop = false;
-                    break;
-                } catch (Exception e) {
-                    Timber.e(e, "Course Results Parser Error");
                 }
+            } catch (Exception e) {
+                Timber.e(e, "Course Results Parser Error");
             }
-            //Don't add any courses with errors
-            if (!subject.equals("ERROR") && !number.equals("ERROR")) {
-                //Create a new course object and add it to list
-                //TODO Should we be parsing the course section?
+
+            // Don't add any courses with errors
+            if (subject != null && number != null) {
+                // Create a new course object and add it to list
+                // TODO Should we be parsing the course section?
                 courses.add(new CourseResult(term, subject, number, title, crn, "", startTime,
                         endTime, days, type, location, instructor, credits, startDate, endDate,
                         capacity, seatsRemaining, waitlistRemaining));
