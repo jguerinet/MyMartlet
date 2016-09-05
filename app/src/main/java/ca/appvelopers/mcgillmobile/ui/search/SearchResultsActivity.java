@@ -16,6 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.ui.search;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
+import com.guerinet.utils.dialog.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +122,7 @@ public class SearchResultsActivity extends BaseActivity {
      * @param term     The concerned term
      * @param courses  The list of courses
      */
-    public static void register(final BaseActivity activity, Term term,
+    public static void register(final BaseActivity activity, final Term term,
             final List<CourseResult> courses) {
         if (courses.size() > 10) {
             // Too many courses
@@ -135,55 +137,71 @@ public class SearchResultsActivity extends BaseActivity {
                 return;
             }
 
-            List<Course> theCourses = new ArrayList<>();
-            theCourses.addAll(courses);
-            activity.getMcGillService()
-                    .registration(McGillManager.getRegistrationURL(term, theCourses, false))
-                    .enqueue(new Callback<List<RegistrationError>>() {
-                @Override
-                public void onResponse(Call<List<RegistrationError>> call,
-                        Response<List<RegistrationError>> response) {
-                    activity.showToolbarProgress(false);
-
-                    //If there are no errors, show the success message
-                    if (response.body() == null || response.body().isEmpty()) {
-                        Utils.toast(activity, R.string.registration_success);
-                        return;
-                    }
-
-                    //Prepare the error message String
-                    String errorMessage = "";
-                    List<Course> errorCourses = new ArrayList<>();
-                    errorCourses.addAll(courses);
-                    for (RegistrationError error : response.body()) {
-                        errorMessage += error.getString(errorCourses);
-                        errorMessage += "\n";
-                    }
-
-                    DialogHelper.error(activity, errorMessage);
-
-                    //Remove the courses from the wishlist if they were there
-                    List<CourseResult> wishlist = App.getWishlist();
-                    wishlist.removeAll(courses);
-
-                    //Set the new wishlist
-                    App.setWishlist(wishlist);
-                }
-
-                @Override
-                public void onFailure(Call<List<RegistrationError>> call, Throwable t) {
-                    Timber.e(t, "Error (un)registering for courses");
-                    activity.showToolbarProgress(false);
-                    //If this is a MinervaException, broadcast it
-                    if (t instanceof MinervaException) {
-                        LocalBroadcastManager.getInstance(activity)
-                                .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                    } else {
-                        DialogHelper.error(activity, R.string.error_other);
-                    }
-                }
-            });
+            // Confirm with the user before continuing
+            DialogUtils.alert(activity, R.string.warning, R.string.registration_disclaimer,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (i == DialogInterface.BUTTON_POSITIVE) {
+                                startRegistration(activity, term, courses);
+                            } else {
+                                activity.showToolbarProgress(false);
+                            }
+                        }
+                    });
         }
+    }
+
+    private static void startRegistration(final BaseActivity activity, Term term,
+            final List<CourseResult> courses) {
+        List<Course> theCourses = new ArrayList<>();
+        theCourses.addAll(courses);
+        activity.getMcGillService()
+                .registration(McGillManager.getRegistrationURL(term, theCourses, false))
+                .enqueue(new Callback<List<RegistrationError>>() {
+                    @Override
+                    public void onResponse(Call<List<RegistrationError>> call,
+                            Response<List<RegistrationError>> response) {
+                        activity.showToolbarProgress(false);
+
+                        //If there are no errors, show the success message
+                        if (response.body() == null || response.body().isEmpty()) {
+                            Utils.toast(activity, R.string.registration_success);
+                            return;
+                        }
+
+                        //Prepare the error message String
+                        String errorMessage = "";
+                        List<Course> errorCourses = new ArrayList<>();
+                        errorCourses.addAll(courses);
+                        for (RegistrationError error : response.body()) {
+                            errorMessage += error.getString(errorCourses);
+                            errorMessage += "\n";
+                        }
+
+                        DialogHelper.error(activity, errorMessage);
+
+                        //Remove the courses from the wishlist if they were there
+                        List<CourseResult> wishlist = App.getWishlist();
+                        wishlist.removeAll(courses);
+
+                        //Set the new wishlist
+                        App.setWishlist(wishlist);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<RegistrationError>> call, Throwable t) {
+                        Timber.e(t, "Error (un)registering for courses");
+                        activity.showToolbarProgress(false);
+                        //If this is a MinervaException, broadcast it
+                        if (t instanceof MinervaException) {
+                            LocalBroadcastManager.getInstance(activity)
+                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                        } else {
+                            DialogHelper.error(activity, R.string.error_other);
+                        }
+                    }
+                });
     }
 
     /**

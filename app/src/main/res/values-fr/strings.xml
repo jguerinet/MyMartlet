@@ -170,6 +170,7 @@
     <string name="registration_hide_options">Montrer Moins d\'Options</string>
     <string name="unregistration_success">Désinscription Réussie!</string>
     <string name="unregistration_error">Erreur de Désinscription</string>
+    <string name="registration_disclaimer">AVERTISSEMENT: Cette fonctionnalité est (très) expérimentale. Vérifiez toujours sur un ordinateur que vous vous êtes bien (dés)inscrit des cours souhaités après l’avoir utilisée. Nous ne prenons aucune responsabilité pour les erreurs d’emploi du temps qui peuvent se produire en utilisant cette fonctionnalité. Appuyez sur OK si vous êtes d’accord</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Bienvenue a MyMartlet, l\'application non officielle pour les étudiants de l\'Université McGill!</string>

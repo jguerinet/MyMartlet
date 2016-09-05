@@ -171,6 +171,7 @@
     <string name="registration_hide_options">Show Fewer Options</string>
     <string name="unregistration_success">Unregistration Successful!</string>
     <string name="unregistration_error">Unregistration Error</string>
+    <string name="registration_disclaimer">WARNING: This feature is (very) experimental. Always check on a computer that you\'ve successfully (un)registered from your desired courses afterwards. We take no responsibility in any schedule errors that can result from using this. Press OK if you agree</string>
 
     <!-- Walkthrough -->
     <string name="walkthrough_welcome">Welcome to MyMartlet, the unofficial app for McGill University students! </string>
