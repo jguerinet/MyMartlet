@@ -1,5 +1,11 @@
 # Change Log
 
+## Version 2.3.1 (2016-09-05)
+* New: Added disclaimer before registering for courses
+* Fixed MyCourses login
+* Fixed drawables on pre-Lollipop
+* Fixed course search
+
 ## Version 2.3.0 (2016-07-16)
 * New: Support for Android Nougat
 * Fixed course search
