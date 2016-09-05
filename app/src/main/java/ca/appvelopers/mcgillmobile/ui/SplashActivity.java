@@ -346,6 +346,11 @@ public class SplashActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            // If for some reason the activity is finishing, don't show this
+                            if (isFinishing()) {
+                                return;
+                            }
+
                             progressContainer.setVisibility(View.GONE);
                             int error = e instanceof MinervaException ?
                                     R.string.login_error_wrong_data : R.string.error_other;
