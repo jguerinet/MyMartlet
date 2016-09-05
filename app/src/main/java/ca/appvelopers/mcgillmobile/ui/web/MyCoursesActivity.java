@@ -157,7 +157,8 @@ public class MyCoursesActivity extends DrawerActivity {
                         "(document.getElementsByName('j_username')[0]).value='" +
                         usernamePref.full() + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
-                        passwordPref.get() + "'; document.forms[0].submit();})()");
+                        passwordPref.get() +
+                        "'; document.getElementsByName('_eventId_proceed')[0].click();})()");
 
                 view.setVisibility(View.VISIBLE);
             }
