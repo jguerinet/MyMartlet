@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
@@ -84,37 +85,37 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      * Info container used to show the current place's detail
      */
     @BindView(R.id.info_container)
-    protected LinearLayout infoContainer;
+    LinearLayout infoContainer;
     /**
      * {@link FormGenerator} container for the filter
      */
     @BindView(R.id.container)
-    protected LinearLayout container;
+    LinearLayout container;
     /**
      * Current place's title
      */
     @BindView(R.id.place_title)
-    protected TextView title;
+    TextView title;
     /**
      * Current place's address
      */
     @BindView(R.id.place_address)
-    protected TextView address;
+    TextView address;
     /**
      * Button to get directions to a place
      */
     @BindView(R.id.directions)
-    protected Button directions;
+    Button directions;
     /**
      * Button to add or remove a place from the user's favorites
      */
     @BindView(R.id.map_favorite)
-    protected Button favorite;
+    Button favorite;
     /**
      * {@link PlacesManager} instance
      */
     @Inject
-    protected PlacesManager placesManager;
+    PlacesManager placesManager;
     /**
      * Fragment containing the map
      */
@@ -155,6 +156,11 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         type = new PlaceType(false);
 
         FormGenerator fg = FormGenerator.bind(this, container);
+
+        // Icon coloring
+        int red = ContextCompat.getColor(this, R.color.red);
+        Utils.setTint(directions, 0, red);
+        Utils.setTint(favorite, 0, red);
 
         //Set up the place filter
         fg.text(type.getString(this, languageManager.get()))
@@ -269,8 +275,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     }
 
     @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
+    protected @HomepageManager.Homepage int getCurrentPage() {
         return HomepageManager.MAP;
     }
 
@@ -278,7 +283,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      * Opens Google Maps with directions to the chosen place
      */
     @OnClick(R.id.directions)
-    protected void directions() {
+    void directions() {
         //Open Google Maps
         if (place != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
@@ -293,7 +298,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      * Adds or remove a place from the user's favorites
      */
     @OnClick(R.id.map_favorite)
-    protected void favorites() {
+    void favorites() {
         if (place != null) {
             String message;
             //Check if it was in the favorites

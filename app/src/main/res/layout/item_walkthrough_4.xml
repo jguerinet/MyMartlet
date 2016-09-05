@@ -2,7 +2,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/padding_small">
@@ -22,10 +21,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_lock"
+            android:tint="@color/red"
             android:padding="@dimen/padding_small"
             android:layout_gravity="center"
-            android:contentDescription="@null"
-            tools:ignore="MissingPrefix"/>
+            android:contentDescription="@null"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -37,10 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_settings"
+            android:tint="@color/red"
             android:padding="@dimen/padding_small"
             android:layout_gravity="center"
-            android:contentDescription="@null"
-            tools:ignore="MissingPrefix"/>
+            android:contentDescription="@null"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -52,10 +51,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_email"
+            android:tint="@color/red"
             android:padding="@dimen/padding_small"
             android:layout_gravity="center"
-            android:contentDescription="@null"
-            tools:ignore="MissingPrefix"/>
+            android:contentDescription="@null"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -67,9 +66,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_help"
+            android:tint="@color/red"
             android:padding="@dimen/padding_small"
             android:layout_gravity="center"
-            tools:ignore="MissingPrefix,contentDescription"/>
+            android:contentDescription="@null"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -81,10 +81,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_bug_report"
+            android:tint="@color/red"
             android:padding="@dimen/padding_small"
             android:layout_gravity="center"
-            android:contentDescription="@null"
-            tools:ignore="MissingPrefix"/>
+            android:contentDescription="@null"/>
 
     </LinearLayout>
 

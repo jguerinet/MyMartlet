@@ -47,18 +47,20 @@
             android:layout_height="wrap_content"
             android:id="@+id/linkedin"
             app:srcCompat="@drawable/ic_linkedin"
+            android:tint="@color/red"
             android:background="?android:attr/selectableItemBackground"
             android:padding="@dimen/padding_micro"
-            tools:ignore="MissingPrefix,contentDescription"/>
+            android:contentDescription="@null"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/email"
             app:srcCompat="@drawable/ic_email"
+            android:tint="@color/red"
             android:background="?android:attr/selectableItemBackground"
             android:padding="@dimen/padding_micro"
-            tools:ignore="MissingPrefix,contentDescription"/>
+            android:contentDescription="@null"/>
 
     </LinearLayout>
 
