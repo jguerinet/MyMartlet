@@ -120,7 +120,7 @@ public class ConfigDownloader extends Thread {
             }
         } catch (Exception e) {
             if (!(e instanceof UnknownHostException)) {
-                //Don't report UnknownHosts since we know the host is verified
+                // Don't report UnknownHosts since we know the host is verified
                 Timber.e(e, "Error downloading config");
             }
         }
@@ -137,8 +137,8 @@ public class ConfigDownloader extends Thread {
             }
         } catch (Exception e) {
             if (!(e instanceof UnknownHostException)) {
-                //Don't report UnknownHosts since we know the host is verified
-                Timber.e(e, "Error downloading places");
+                // Don't report UnknownHosts since we know the host is verified
+                Timber.e(new Exception("Error downloading places", e));
             }
         }
 
