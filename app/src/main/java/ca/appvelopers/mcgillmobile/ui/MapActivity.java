@@ -206,16 +206,16 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search, menu);
 
-        //Get the SearchView
+        // Get the SearchView
         MenuItem item = menu.findItem(R.id.action_search);
         Assert.assertNotNull(getSupportActionBar());
-        final SearchView searchView = new SearchView(getSupportActionBar().getThemedContext());
+        final SearchView searchView = new SearchView(this);
         final int textViewID = searchView.getContext().getResources()
                 .getIdentifier("android:id/search_src_text", null, null);
         final AutoCompleteTextView searchTextView =
                 (AutoCompleteTextView) searchView.findViewById(textViewID);
         try {
-            //Set the cursor to the same color as the text
+            // Set the cursor to the same color as the text
             Field cursorDrawable = TextView.class.getDeclaredField("mCursorDrawableRes");
             cursorDrawable.setAccessible(true);
             cursorDrawable.set(searchTextView, 0);
@@ -223,7 +223,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
             Timber.e(e, "Cannot change color of cursor");
         }
 
-        //Set up the query listener
+        // Set up the query listener
         MenuItemCompat.setActionView(item, searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
