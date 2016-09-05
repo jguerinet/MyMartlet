@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -127,8 +128,7 @@ public class App extends Application {
         AndroidThreeTen.init(this);
 
         // Instabug
-        Instabug.initialize(this, BuildConfig.DEBUG ?
-                Passwords.INSTABUG_KEY : Passwords.INSTABUG_KEY)
+        Instabug.initialize(this, Passwords.INSTABUG_KEY)
                 .enableEmailField(true, false)
                 .setDefaultEmail(usernamePref.full())
                 .setCommentIsRequired(true)
@@ -139,30 +139,13 @@ public class App extends Application {
                 .setShowIntroDialog(false)
                 .setWillShowFeedbackSentAlert(true);
 
-//        new Instabug.Builder(this, BuildConfig.DEBUG ?
-//                Passwords.INSTABUG_DEBUG_KEY : Passwords.INSTABUG_KEY)
-//                .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventNone)
-//                .setDefaultInvocationMode(IBGInvocationMode.IBGInvocationModeFeedbackSender)
-//                .setEmailFieldRequired(true)
-//                .setCommentFieldRequired(true)
-//                .setDebugEnabled(false)
-//                .setConsoleLogState(Feature.State.ENABLED)
-//                .setCrashReportingState(Feature.State.DISABLED)
-//                .setInAppMessagingState(Feature.State.DISABLED)
-//                .setInstabugLogState(Feature.State.DISABLED)
-//                .setPushNotificationState(Feature.State.DISABLED)
-//                .setTrackingUserStepsState(Feature.State.DISABLED)
-//                .setUserDataState(Feature.State.ENABLED)
-//                .setShouldShowIntroDialog(false)
-//                .build();
-//        Instabug.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
-
         // FormGenerator
         int padding = getResources().getDimensionPixelOffset(R.dimen.padding_small);
         FormGenerator.set(new FormGenerator.Builder()
                 .setDefaultBackground(R.drawable.transparent_redpressed)
                 .setDefaultDrawablePaddingSize(padding)
-                .setDefaultPaddingSize(padding));
+                .setDefaultPaddingSize(padding)
+                .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)));
     }
 
     /* GETTERS */
