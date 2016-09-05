@@ -88,16 +88,16 @@ public class WalkthroughAdapter extends PagerAdapter {
             case 2:
                 view = View.inflate(context, R.layout.item_walkthrough_2, null);
                 break;
-            //Horizontal Schedule
-            case 3:
-                view = View.inflate(context, R.layout.item_walkthrough_3, null);
-                break;
+//            //Horizontal Schedule
+//            case 3:
+//                view = View.inflate(context, R.layout.item_walkthrough_3, null);
+//                break;
             //Info
-            case 4:
+            case 3:
                 view = View.inflate(context, R.layout.item_walkthrough_4, null);
                 break;
             //Default HomepageManager / Faculty (first open only)
-            case 5:
+            case 4:
                 view = View.inflate(context, R.layout.item_walkthrough_5, null);
 
                 FormGenerator fg = FormGenerator.bind(context, (LinearLayout) view);
@@ -183,7 +183,7 @@ public class WalkthroughAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return firstOpen ? 6 : 5;
+        return firstOpen ? 5 : 4;
     }
 
     @Override

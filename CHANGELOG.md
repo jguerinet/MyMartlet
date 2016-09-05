@@ -5,6 +5,7 @@
 * Fixed MyCourses login
 * Fixed drawables on pre-Lollipop
 * Fixed course search
+* Removed horizontal schedule page in walkthrough
 
 ## Version 2.3.0 (2016-07-16)
 * New: Support for Android Nougat
