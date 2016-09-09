@@ -32,7 +32,6 @@ All contributions are welcome!
 * [Dagger](http://google.github.io/dagger)
 * [Android Utils](https://github.com/jguerinet/android-utils)
 * [FormGenerator](https://github.com/jguerinet/form-generator)
-* [Instabug](https://instabug.com/sdk-integration#android)
 * [ButterKnife](https://github.com/JakeWharton/butterknife)
 * [ThreeTenABP](https://github.com/JakeWharton/ThreeTenABP)
 * [Timber](https://github.com/JakeWharton/timber)

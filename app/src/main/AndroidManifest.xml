@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="ca.appvelopers.mcgillmobile" >
 
     <!-- (Normal) -->
@@ -17,22 +16,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- (Dangerous) Downloads from MyCourses -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!-- Remove this permission needed by Instabug because it's only used to attach logs -->
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        tools:node="remove" />
-
-    <!-- Remove the audio recording permission needed for Instabug audio feedback -->
-    <uses-permission
-        android:name="android.permission.RECORD_AUDIO"
-        tools:node="remove"/>"
-
-    <!-- Remove Instabug Push Notification permission -->
-    <uses-permission
-        android:name="com.instabug.library.permission.C2D_MESSAGE"
-        tools:node="remove"/>
-
 
     <application
         android:name=".App"

@@ -24,7 +24,6 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
-import com.instabug.library.Instabug;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -126,18 +125,6 @@ public class App extends Application {
 
         // Android ThreeTen
         AndroidThreeTen.init(this);
-
-        // Instabug
-        Instabug.initialize(this, Passwords.INSTABUG_KEY)
-                .enableEmailField(true, false)
-                .setDefaultEmail(usernamePref.full())
-                .setCommentIsRequired(true)
-                .setDebugEnabled(false)
-                .setInvocationEvent(Instabug.IBGInvocationEvent.IBGInvocationEventNone)
-                .setIsTrackingCrashes(false)
-                .setIsTrackingUserSteps(false)
-                .setShowIntroDialog(false)
-                .setWillShowFeedbackSentAlert(true);
 
         // FormGenerator
         int padding = getResources().getDimensionPixelOffset(R.dimen.padding_small);

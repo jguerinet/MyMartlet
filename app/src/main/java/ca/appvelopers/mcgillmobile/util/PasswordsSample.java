@@ -23,10 +23,6 @@ package ca.appvelopers.mcgillmobile.util;
  */
 public class PasswordsSample {
     /**
-     * Instabug Keys
-     */
-    public static final String INSTABUG_KEY = "";
-    /**
      * Twitter Key and secret for when posting to Twitter
      */
     public static final String TWITTER_KEY = "";

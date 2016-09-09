@@ -121,7 +121,6 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.guerinet:android-utils:1.1.5'
     compile 'com.guerinet:form-generator:2.2.3'
-    compile 'com.instabug.library:instabugsupport:1+'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
