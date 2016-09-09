@@ -19,7 +19,6 @@ package ca.appvelopers.mcgillmobile.util.dagger;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.MapActivity;
@@ -38,6 +37,7 @@ import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistActivity;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;

@@ -30,8 +30,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 
 /**
  * Displays the EULA

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model.prefs;
+package ca.appvelopers.mcgillmobile.util.dagger.prefs;
 
 import android.content.SharedPreferences;
 

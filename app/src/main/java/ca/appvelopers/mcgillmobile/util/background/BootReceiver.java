@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.prefs.PasswordPreference;
-import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
-import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 
 /**
  * Automatically (re)starts the alarm if needed when the device is rebooted or the user opts in.
