@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile;
+package ca.appvelopers.mcgillmobile.util.dagger;
 
 import javax.inject.Singleton;
 
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;

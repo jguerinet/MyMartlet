@@ -39,6 +39,8 @@ import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.Passwords;
+import ca.appvelopers.mcgillmobile.util.dagger.AppModule;
+import ca.appvelopers.mcgillmobile.util.dagger.BaseComponent;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 import io.fabric.sdk.android.Fabric;

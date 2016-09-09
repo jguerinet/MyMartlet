@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile;
+package ca.appvelopers.mcgillmobile.util.dagger;
 
 import com.squareup.moshi.Moshi;
 
