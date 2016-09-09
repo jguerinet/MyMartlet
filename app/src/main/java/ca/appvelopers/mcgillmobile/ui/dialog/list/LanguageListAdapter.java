@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
 import android.content.Context;
+import android.util.Pair;
 
 import com.guerinet.utils.dialog.ListDialogInterface;
 
@@ -28,7 +29,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 
 /**
  * Displays the list of languages the app is available in
@@ -38,14 +39,14 @@ import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 @SuppressWarnings("ResourceType")
 public abstract class LanguageListAdapter implements ListDialogInterface {
     /**
-     * The {@link LanguageManager} instance
+     * The {@link LanguagePreference} instance
      */
     @Inject
-    protected LanguageManager languageManager;
+    LanguagePreference languagePref;
     /**
      * List of languages and their String equivalents
      */
-    private List<Integer> languages;
+    private final List<Pair<String, String>> languages;
 
     /**
      * Default Constructor
@@ -53,43 +54,48 @@ public abstract class LanguageListAdapter implements ListDialogInterface {
     public LanguageListAdapter(Context context) {
         App.component(context).inject(this);
         languages = new ArrayList<>();
-        languages.add(LanguageManager.ENGLISH);
-        languages.add(LanguageManager.FRENCH);
+        languages.add(new Pair<>(LanguagePreference.ENGLISH,
+                languagePref.getString(LanguagePreference.ENGLISH)));
+        languages.add(new Pair<>(LanguagePreference.FRENCH,
+                languagePref.getString(LanguagePreference.FRENCH)));
 
-        //Sort them alphabetically
-        Collections.sort(languages, new Comparator<Integer>() {
+        // Sort them alphabetically
+        Collections.sort(languages, new Comparator<Pair<String, String>>() {
             @Override
-            public int compare(Integer lhs, Integer rhs) {
-                return languageManager.getString(lhs)
-                        .compareToIgnoreCase(languageManager.getString(rhs));
+            public int compare(Pair<String, String> o1, Pair<String, String> o2) {
+                return o1.second.compareToIgnoreCase(o2.second);
             }
         });
     }
 
     @Override
     public int getCurrentChoice() {
-        return languages.indexOf(languageManager.get());
+        for (int i = 0; i < languages.size(); i ++) {
+            if (languages.get(i).first.equals(languagePref.get())) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public CharSequence[] getChoices() {
         CharSequence[] titles = new CharSequence[languages.size()];
         for (int i = 0; i < languages.size(); i ++) {
-            titles[i] = languageManager.getString(languages.get(i));
+            titles[i] = languages.get(i).second;
         }
-
         return titles;
     }
 
     @Override
     public void onChoiceSelected(int position) {
-        onLanguageSelected(languages.get(position));
+        onLanguageSelected(languages.get(position).first);
     }
 
     /**
      * Called when a language has been selected
      *
-     * @param language The selected language
+     * @param language Selected language
      */
-    public abstract void onLanguageSelected(@LanguageManager.Language int language);
+    public abstract void onLanguageSelected(String language);
 }

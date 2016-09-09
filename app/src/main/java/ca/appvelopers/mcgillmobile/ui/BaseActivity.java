@@ -50,7 +50,7 @@ import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
 /**
@@ -81,10 +81,10 @@ public class BaseActivity extends AppCompatActivity {
     @Inject
     protected Analytics analytics;
     /**
-     * The {@link LanguageManager} instance
+     * The {@link LanguagePreference} instance
      */
     @Inject
-    protected LanguageManager languageManager;
+    protected LanguagePreference languagePref;
     /**
      * {@link ClearManager} instance
      */
@@ -138,7 +138,7 @@ public class BaseActivity extends AppCompatActivity {
      * Updates the locale
      */
     private void updateLocale() {
-        Locale locale = new Locale(languageManager.getCode());
+        Locale locale = new Locale(languagePref.get());
         Configuration config = getBaseContext().getResources().getConfiguration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             config.setLocales(new LocaleList(locale));

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.PlaceType;
-import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 
 /**
@@ -48,10 +48,10 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
      */
     private int currentChoice;
     /**
-     * The {@link LanguageManager} instance
+     * The {@link LanguagePreference} instance
      */
     @Inject
-    protected LanguageManager languageManager;
+    protected LanguagePreference languagePreference;
     /**
      * {@link PlacesManager} instance
      */
@@ -69,7 +69,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
         types = new ArrayList<>();
 
         for (PlaceType type : placesManager.getPlaceTypes()) {
-            types.add(new Pair<>(type, type.getString(context, languageManager.get())));
+            types.add(new Pair<>(type, type.getString(context, languagePreference.get())));
         }
 
         //Sort them
@@ -82,11 +82,11 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
 
         //Add the favorites option
         PlaceType type = new PlaceType(true);
-        types.add(0, new Pair<>(type, type.getString(context, languageManager.get())));
+        types.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
 
         //Add the All option
         type = new PlaceType(false);
-        types.add(0, new Pair<>(type, type.getString(context, languageManager.get())));
+        types.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
 
         //Find the index of the current choice
         for (int i = 0; i < types.size(); i ++) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import android.content.Context;
 import java.io.Serializable;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 
 /**
  * A type of place that the user can filter by
@@ -83,12 +83,12 @@ public class PlaceType implements Serializable {
      * @param language The current language
      * @return The String to use
      */
-    public String getString(Context context, @LanguageManager.Language int language) {
+    public String getString(Context context, String language) {
         if (id == FAVORITES) {
             return context.getString(R.string.map_favorites);
         } else if(id == ALL) {
             return context.getString(R.string.map_all);
-        } else if (language == LanguageManager.FRENCH) {
+        } else if (language.equals(LanguagePreference.FRENCH)) {
             return fr;
         }
         return en;

@@ -41,6 +41,7 @@ public class PrefsModule {
     public static final String VERSION = "version";
     public static final String MIN_VERSION = "min_version";
     public static final String FIRST_OPEN = "first_open";
+    public static final String LANGUAGE = "language";
     public static final String STATS = "statistics";
     public static final String SCHEDULE_24HR = "24hr Schedule";
     public static final String REMEMBER_USERNAME = "remember_username";

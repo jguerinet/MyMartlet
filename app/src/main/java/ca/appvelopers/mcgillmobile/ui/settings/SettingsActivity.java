@@ -48,7 +48,6 @@ import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
 import timber.log.Timber;
 
 /**
@@ -94,7 +93,7 @@ public class SettingsActivity extends DrawerActivity {
         final Context context = this;
 
         //Language
-        fg.text(languageManager.getString())
+        fg.text(languagePref.getString())
                 .leftIcon(R.drawable.ic_language)
                 .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
@@ -102,19 +101,16 @@ public class SettingsActivity extends DrawerActivity {
                         DialogUtils.list(context, R.string.settings_language,
                                 new LanguageListAdapter(SettingsActivity.this) {
                                     @Override
-                                    public void onLanguageSelected(
-                                            @LanguageManager.Language int language) {
-                                        //Don't continue if it's the selected language
-                                        if (language == languageManager.get()) {
+                                    public void onLanguageSelected(String language) {
+                                        // Don't continue if it's the current language
+                                        if (language.equals(languagePref.get())) {
                                             return;
                                         }
 
-                                        languageManager.set(language);
+                                        languagePref.set(language);
+                                        analytics.sendEvent("Settings", "Language", language);
 
-                                        analytics.sendEvent("Settings", "Language",
-                                                languageManager.getCode());
-
-                                        //Reload this activity
+                                        // Reload this activity
                                         startActivity(new Intent(context, SettingsActivity.class));
                                         finish();
                                     }
@@ -216,7 +212,7 @@ public class SettingsActivity extends DrawerActivity {
                         String sdkVersion = "SDK Version: " + Build.VERSION.SDK_INT;
                         String appVersion = "App Version: " +
                                 Utils.versionName(SettingsActivity.this);
-                        String language = "Language: " + languageManager.getCode();
+                        String language = "Language: " + languagePref.get();
 
                         ConnectivityManager manager = (ConnectivityManager)
                                 getSystemService(Context.CONNECTIVITY_SERVICE);

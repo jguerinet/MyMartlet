@@ -71,16 +71,46 @@ public class UpdateManager {
     }
 
     /**
-     * Checks if the app has been updated and runs any update code needed if so
+     * Runs any update code that would need to run before an activity is loaded
      */
-    public void update() {
-        //G t the version code
+    public void preLaunchUpdate() {
+        // Get the version code
         int code = Utils.versionCode(context);
 
         // Get the current version number
         int storedVersion = versionPref.get();
 
-        //Stored version is smaller than version number
+        // Stored version is smaller than version number
+        if (storedVersion < code) {
+            updateLoop: while (storedVersion < code) {
+                // Find the closest version to the stored one and cascade down through the updates
+                switch (storedVersion) {
+                    case -1:
+                        // First time opening the app, break out of the loop
+                        break updateLoop;
+                    case 24:
+                        preLaunchUpdate25();
+                    case 0:
+                        // This will never get directly called, it will only be accessed through
+                        //  another update above
+                        break updateLoop;
+                }
+                storedVersion ++;
+            }
+        }
+    }
+
+    /**
+     * Checks if the app has been updated and runs any update code needed if so
+     */
+    public void update() {
+        // Get the version code
+        int code = Utils.versionCode(context);
+
+        // Get the current version number
+        int storedVersion = versionPref.get();
+
+        // Stored version is smaller than version number
         if (storedVersion < code) {
             updateLoop: while (storedVersion < code) {
                 // Find the closest version to the stored one and cascade down through the updates
@@ -96,8 +126,6 @@ public class UpdateManager {
                         update16();
                     case 16:
                         update17();
-                    case 24:
-                        update25();
                     case 0:
                         // This will never get directly called, it will only be accessed through
                         //  another update above
@@ -115,14 +143,19 @@ public class UpdateManager {
      * v2.3.2
      * - Changed the way the language pref was being stored
      */
-    private void update25() {
-        // Get the int stored at the current language key
-        int language = sharedPrefs.getInt("language", 0);
+    private void preLaunchUpdate25() {
+        try {
+            // Get the int stored at the current language key
+            int language = sharedPrefs.getInt("language", 0);
 
-        // Store the equivalent language code in its place
-        sharedPrefs.edit()
-                .putString("language", language == 0 ? "en" : "fr")
-                .apply();
+            // Store the equivalent language code in its place
+            sharedPrefs.edit()
+                    .putString("language", language == 0 ? "en" : "fr")
+                    .apply();
+        } catch (Exception ignored) {
+            // This will be happen if for some reason the pre-launch update code already run
+            //  but the launch update code never ran
+        }
     }
 
     /**

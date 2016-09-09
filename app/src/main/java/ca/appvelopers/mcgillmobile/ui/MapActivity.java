@@ -163,7 +163,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         Utils.setTint(favorite, 0, red);
 
         //Set up the place filter
-        fg.text(type.getString(this, languageManager.get()))
+        fg.text(type.getString(this, languagePref.get()))
                 .leftIcon(R.drawable.ic_location)
                 .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
                 .onClick(new TextViewFormItem.OnClickListener() {
@@ -177,7 +177,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
 
                                         //Update the text
                                         item.view().setText(type.getString(MapActivity.this,
-                                                languageManager.get()));
+                                                languagePreference.get()));
 
                                         //Update the filtered places
                                         filterByCategory();

@@ -40,7 +40,8 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.dagger.AppModule;
 import ca.appvelopers.mcgillmobile.util.dagger.BaseComponent;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.dagger.DaggerBaseComponent;
+import ca.appvelopers.mcgillmobile.util.manager.UpdateManager;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 import io.fabric.sdk.android.Fabric;
@@ -57,10 +58,10 @@ public class App extends Application {
      */
     private BaseComponent component;
     /**
-     * {@link UsernamePreference} instance
+     * {@link UpdateManager} instance
      */
     @Inject
-    protected UsernamePreference usernamePref;
+    UpdateManager updateManager;
     /**
      * The app {@link Context}
      */
@@ -135,6 +136,9 @@ public class App extends Application {
                 .setDefaultDrawablePaddingSize(padding)
                 .setDefaultPaddingSize(padding)
                 .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)));
+
+        // Run any pre-launch update
+        updateManager.preLaunchUpdate();
     }
 
     /* GETTERS */
