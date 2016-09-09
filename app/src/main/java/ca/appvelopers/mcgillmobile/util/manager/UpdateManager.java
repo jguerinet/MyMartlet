@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.util.manager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.IntPreference;
@@ -47,6 +48,10 @@ public class UpdateManager {
      * {@link ClearManager} instance
      */
     private final ClearManager clearManager;
+    /**
+     * {@link SharedPreferences} instance
+     */
+    private final SharedPreferences sharedPrefs;
 
     /**
      * Default Injectable Constructor
@@ -54,32 +59,34 @@ public class UpdateManager {
      * @param context      App context
      * @param versionPref  Version {@link IntPreference}
      * @param clearManager {@link ClearManager} instance
+     * @param sharedPrefs  {@link SharedPreferences} instance
      */
     @Inject
-    public UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPreference versionPref,
-            ClearManager clearManager) {
+    UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPreference versionPref,
+            ClearManager clearManager, SharedPreferences sharedPrefs) {
         this.context = context;
         this.versionPref = versionPref;
         this.clearManager = clearManager;
+        this.sharedPrefs = sharedPrefs;
     }
 
     /**
      * Checks if the app has been updated and runs any update code needed if so
      */
     public void update() {
-        //Get the version code
+        //G t the version code
         int code = Utils.versionCode(context);
 
-        //Get the current version number
+        // Get the current version number
         int storedVersion = versionPref.get();
 
         //Stored version is smaller than version number
         if (storedVersion < code) {
             updateLoop: while (storedVersion < code) {
-                //Find the closest version to the stored one and cascade down through the updates
+                // Find the closest version to the stored one and cascade down through the updates
                 switch (storedVersion) {
                     case -1:
-                        //First time opening the app, break out of the loop
+                        // First time opening the app, break out of the loop
                         break updateLoop;
                     case 6:
                         update7();
@@ -89,17 +96,33 @@ public class UpdateManager {
                         update16();
                     case 16:
                         update17();
+                    case 24:
+                        update25();
                     case 0:
-                        //This will never get directly called, it will only be accessed through
-                        // another update above
+                        // This will never get directly called, it will only be accessed through
+                        //  another update above
                         break updateLoop;
                 }
                 storedVersion ++;
             }
 
-            //Store the new version in the SharedPrefs
+            // Store the new version in the SharedPrefs
             versionPref.set(code);
         }
+    }
+
+    /**
+     * v2.3.2
+     * - Changed the way the language pref was being stored
+     */
+    private void update25() {
+        // Get the int stored at the current language key
+        int language = sharedPrefs.getInt("language", 0);
+
+        // Store the equivalent language code in its place
+        sharedPrefs.edit()
+                .putString("language", language == 0 ? "en" : "fr")
+                .apply();
     }
 
     /**
@@ -108,7 +131,7 @@ public class UpdateManager {
      * - Redid all of the user info parsing, made some changes to the objects
      */
     private void update17() {
-        //Redownload everything
+        // Redownload everything
         clearManager.config();
         clearManager.all();
     }
@@ -118,7 +141,7 @@ public class UpdateManager {
      * - Removed Hungarian notation everywhere -> redownload config and user data
      */
     private void update16() {
-        //Redownload everything
+        // Redownload everything
         clearManager.config();
         clearManager.all();
     }
@@ -129,7 +152,7 @@ public class UpdateManager {
      * - Place changes -> Force the reload of all of the config stuff
      */
     private void update13() {
-        //Re-download all user info
+        // Re-download all user info
         clearManager.config();
         clearManager.all();
     }
@@ -139,7 +162,7 @@ public class UpdateManager {
      * - Object changes -> Force the reload of all of the info
      */
     private void update7() {
-        //Force the user to re-update all of the information in the app
+        // Force the user to re-update all of the information in the app
         clearManager.all();
     }
 }
