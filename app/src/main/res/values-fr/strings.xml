@@ -143,6 +143,7 @@
     <string name="homepage_map">Carte du Campus</string>
     <string name="homepage_desktop">Version Bureau</string>
     <string name="settings_version">Version %s</string>
+    <string name="bug_report">Bug Report</string>
 
     <!-- Change Semester Page -->
     <string name="change_semester_default">Mettre par Défaut</string>

@@ -18,6 +18,10 @@ package ca.appvelopers.mcgillmobile.ui.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -27,7 +31,9 @@ import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
-import com.instabug.library.Instabug;
+
+import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,6 +49,7 @@ import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.LanguageManager;
+import timber.log.Timber;
 
 /**
  * Allows the user to change the app settings
@@ -194,10 +201,63 @@ public class SettingsActivity extends DrawerActivity {
                     @Override
                     public void onClick(TextViewFormItem item) {
                         analytics.sendEvent("About", "Report a Bug");
-                        Instabug.getInstance().invokeFeedbackSender();
-//                        Instabug.setUserData("App Language: " + languageManager.getCode());
-//                        Instabug.setUserEmail(usernamePref.full());
-//                        Instabug.invoke();
+
+                        Intent email = new Intent(Intent.ACTION_SEND);
+
+                        // Recipient
+                        email.putExtra(Intent.EXTRA_EMAIL,
+                                new String[]{"julien.guerinet@mail.mcgill.ca"});
+
+                        // Title
+                        email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report));
+
+                        // Content
+                        String device = "Device: " + Utils.device();
+                        String sdkVersion = "SDK Version: " + Build.VERSION.SDK_INT;
+                        String appVersion = "App Version: " +
+                                Utils.versionName(SettingsActivity.this);
+                        String language = "Language: " + languageManager.getCode();
+
+                        ConnectivityManager manager = (ConnectivityManager)
+                                getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo info = manager.getActiveNetworkInfo();
+
+                        String connection = "Connection Type: N/A";
+                        if (info != null) {
+                            connection = "Connection Type: " + info.getTypeName() + " " +
+                                    info.getSubtypeName();
+                        }
+
+                        String content = "===============" +
+                                "\nDebug Info" +
+                                "\n===============" +
+                                "\n" + device +
+                                "\n" + sdkVersion +
+                                "\n" + appVersion +
+                                "\n" + language +
+                                "\n" + connection +
+                                "\n===============\n\n";
+                        email.putExtra(Intent.EXTRA_TEXT, content);
+
+                        // Log everything before printing the logs so it's included
+                        Timber.i(device);
+                        Timber.i(sdkVersion);
+                        Timber.i(appVersion);
+                        Timber.i(language);
+                        Timber.i(connection);
+
+                        // Logs (attachment)
+                        try {
+                            File file = new File(getExternalFilesDir(null), "logs.txt");
+                            Utils.getLogs(file);
+                            email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                        } catch (IOException e) {
+                            Timber.e(new Exception("Error getting logs", e));
+                        }
+
+                        // Code (Email)
+                        email.setType("message/rfc822");
+                        startActivity(Intent.createChooser(email, null));
                     }
                 })
                 .build();

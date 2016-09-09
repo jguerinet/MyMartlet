@@ -144,6 +144,7 @@
     <string name="homepage_map">Campus Map</string>
     <string name="homepage_desktop">Desktop Site</string>
     <string name="settings_version">Version %s</string>
+    <string name="bug_report">Bug Report</string>
 
     <!-- Change Semester Page -->
     <string name="change_semester_default">Set as Default</string>
