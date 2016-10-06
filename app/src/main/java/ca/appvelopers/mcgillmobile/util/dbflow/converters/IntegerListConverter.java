@@ -28,9 +28,10 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 2.4.0
  */
-public class IntegerListConverter extends TypeConverter<String, List<Integer>> {
+@com.raizlabs.android.dbflow.annotation.TypeConverter
+public class IntegerListConverter extends TypeConverter<String, List> {
     @Override
-    public String getDBValue(List<Integer> model) {
+    public String getDBValue(List model) {
         if (model == null) {
             return null;
         }
@@ -49,7 +50,7 @@ public class IntegerListConverter extends TypeConverter<String, List<Integer>> {
     }
 
     @Override
-    public List<Integer> getModelValue(String data) {
+    public List getModelValue(String data) {
         if (data == null) {
             return null;
         }

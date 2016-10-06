@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2016 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,41 +17,56 @@
 package ca.appvelopers.mcgillmobile.model;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
+import timber.log.Timber;
 
 /**
  * A place on the campus map
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Place implements Serializable {
+@Table(database = PlacesDB.class, allFields = true)
+public class Place extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * Place Id
      */
-    protected int id;
+    @PrimaryKey
+    int id;
     /**
      * The place name
      */
-    protected String name;
+    String name;
     /**
-     * The place categories
+     * The place categories in CSV format
      */
-    protected List<Integer> categories;
+    String categoriesList;
     /**
      * The address of this place
      */
-    protected String address;
+    String address;
     /**
      * The latitude coordinate of this place
      */
-    protected double latitude;
+    double latitude;
     /**
      * The longitude coordinate of this place
      */
-    protected double longitude;
+    double longitude;
+    /**
+     * List of categories
+     */
+    @ColumnIgnore
+    private transient List<Integer> categories;
 
     /**
      * Default Moshi Constructor
@@ -89,13 +104,30 @@ public class Place implements Serializable {
     }
 
     /**
+     * @return List of categories, which is loaded if it hasn't been done in the past
+     */
+    private List<Integer> getCategories() {
+        if (categories == null) {
+            categories = new ArrayList<>();
+            for (String character : categoriesList.split(",")) {
+                try {
+                    categories.add(Integer.valueOf(character));
+                } catch (Exception e) {
+                    Timber.e(e, "Cannot convert into number: %s", character);
+                }
+            }
+        }
+        return categories;
+    }
+
+    /**
      * Checks if this place is of the given type
      *
      * @param type The type
      * @return True if it is part of the type, false otherwise
      */
     public boolean isOfType(PlaceType type) {
-        return categories.contains(type.getId());
+        return getCategories().contains(type.getId());
     }
 
     @Override
