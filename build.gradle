@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
+        classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
