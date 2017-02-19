@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import junit.framework.Assert;
 
@@ -433,20 +434,29 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         }
         //If we don't, it will be requested
 
-        //Go through all of the places
-        for (Place place : placesManager.getPlaces()) {
-            //Create a MapPlace for this
-            Marker marker = map.addMarker(new MarkerOptions()
-                    .position(place.getCoordinates())
-                    .draggable(false)
-                    .visible(true));
+        SQLite.select()
+                .from(Place.class)
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
 
-            //Add it to the list
-            places.add(new Pair<>(place, marker));
-        }
+                    for (Place place : tResult) {
+                        // Create a MapPlace for this
+                        Marker marker = map.addMarker(new MarkerOptions()
+                                .position(place.getCoordinates())
+                                .draggable(false)
+                                .visible(true));
 
-        //Filter
-        filterByCategory();
+                        // Add it to the list
+                        places.add(new Pair<>(place, marker));
+                    }
+
+                    // Filter
+                    filterByCategory();
+                })
+                .execute();
 
         map.setOnMarkerClickListener(this);
     }

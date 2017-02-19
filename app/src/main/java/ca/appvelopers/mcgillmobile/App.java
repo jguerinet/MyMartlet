@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
 import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
@@ -119,15 +121,17 @@ public class App extends Application {
                 .disabled(!BuildConfig.REPORT_CRASHES).build()).build();
         Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
 
+        // Android ThreeTen
+        AndroidThreeTen.init(this);
+
         // Dagger
         component = DaggerBaseComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
-
         component.inject(this);
 
-        // Android ThreeTen
-        AndroidThreeTen.init(this);
+        // DBFlow
+        FlowManager.init(new FlowConfig.Builder(this).build());
 
         // FormGenerator
         int padding = getResources().getDimensionPixelOffset(R.dimen.padding_small);
