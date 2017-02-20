@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class Place extends BaseModel implements Serializable {
      * List of categories
      */
     @ColumnIgnore
-    private transient List<Integer> categories;
+    private List<Integer> categories;
 
     /**
      * Default Moshi Constructor
@@ -128,6 +128,21 @@ public class Place extends BaseModel implements Serializable {
      */
     public boolean isOfType(PlaceType type) {
         return getCategories().contains(type.getId());
+    }
+
+    @Override
+    public void save() {
+        // Create the categories String from the list
+        categoriesList = "";
+        for (int i = 0; i < categories.size(); i ++) {
+            int category = categories.get(i);
+            categoriesList += category;
+            if (i != categories.size() - 1) {
+                categoriesList += ",";
+            }
+        }
+
+        super.save();
     }
 
     @Override

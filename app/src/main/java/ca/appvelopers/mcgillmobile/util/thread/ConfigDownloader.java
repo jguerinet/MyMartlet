@@ -153,7 +153,7 @@ public class ConfigDownloader extends Thread {
                                 if (index != -1) {
                                     // Update it
                                     Place newPlace = newPlaces.get(index);
-                                    newPlace.update();
+                                    newPlace.save();
                                     // TODO Set whether this place is a favorite or not
                                     // Delete that place from the body since we've dealt with it
                                     newPlaces.remove(newPlace);
@@ -165,7 +165,7 @@ public class ConfigDownloader extends Thread {
 
                             // Save any new places
                             FastStoreModelTransaction<Place> newPlacesTransaction =
-                                    FastStoreModelTransaction.insertBuilder(
+                                    FastStoreModelTransaction.saveBuilder(
                                             FlowManager.getModelAdapter(Place.class))
                                             .addAll(newPlaces)
                                             .build();
