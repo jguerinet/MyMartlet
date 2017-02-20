@@ -173,7 +173,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                         DialogUtils.list(MapActivity.this, R.string.map_filter,
                                 new PlaceTypeListAdapter(MapActivity.this, type) {
                                     @Override
-                                    public void onPlaceTypeSelected(Category type) {
+                                    public void onCategorySelected(Category type) {
                                         MapActivity.this.type = type;
 
                                         //Update the text

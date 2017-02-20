@@ -23,7 +23,6 @@ import com.guerinet.utils.dialog.ListDialogInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,7 +41,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
     /**
      * List of place types with their associated String
      */
-    private List<Pair<Category, String>> types;
+    private final List<Pair<Category, String>> types;
     /**
      * The current choice
      */
@@ -51,46 +50,42 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
      * The {@link LanguagePreference} instance
      */
     @Inject
-    protected LanguagePreference languagePreference;
+    LanguagePreference languagePreference;
     /**
      * {@link PlacesManager} instance
      */
     @Inject
-    protected PlacesManager placesManager;
+    PlacesManager placesManager;
 
     /**
      * Default Constructor
      *
-     * @param context     App context
-     * @param currentType Currently selected type
+     * @param context         App context
+     * @param currentCategory Currently selected category
      */
-    public PlaceTypeListAdapter(final Context context, Category currentType) {
+    protected PlaceTypeListAdapter(Context context, Category currentCategory) {
         App.component(context).inject(this);
         types = new ArrayList<>();
 
+        // Add all existing categories
         for (Category type : placesManager.getCategories()) {
             types.add(new Pair<>(type, type.getString(context, languagePreference.get())));
         }
 
-        //Sort them
-        Collections.sort(types, new Comparator<Pair<Category, String>>() {
-            @Override
-            public int compare(Pair<Category, String> lhs, Pair<Category, String> rhs) {
-                return lhs.second.compareToIgnoreCase(rhs.second);
-            }
-        });
+        // Sort them
+        Collections.sort(types, (lhs, rhs) -> lhs.second.compareToIgnoreCase(rhs.second));
 
-        //Add the favorites option
+        // Add the favorites option
         Category type = new Category(true);
         types.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
 
-        //Add the All option
+        // Add the All option
         type = new Category(false);
         types.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
 
-        //Find the index of the current choice
+        // Find the index of the current choice
         for (int i = 0; i < types.size(); i ++) {
-            if (types.get(i).first.equals(currentType)) {
+            if (types.get(i).first.equals(currentCategory)) {
                 currentChoice = i;
                 break;
             }
@@ -106,9 +101,9 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
     public CharSequence[] getChoices() {
         CharSequence[] titles = new CharSequence[types.size()];
 
-        //Go through the types
+        // Go through the categories
         for (int i = 0; i < types.size(); i ++) {
-            //Add its title to the list
+            // Add its title to the list
             titles[i] = types.get(i).second;
         }
 
@@ -117,13 +112,13 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
 
     @Override
     public void onChoiceSelected(int position) {
-       onPlaceTypeSelected(types.get(position).first);
+       onCategorySelected(types.get(position).first);
     }
 
     /**
-     * Called when a faculty is selected
+     * Called when a category is selected
      *
      * @param type The {@link Category} selected
      */
-    public abstract void onPlaceTypeSelected(Category type);
+    public abstract void onCategorySelected(Category type);
 }
