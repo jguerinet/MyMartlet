@@ -18,9 +18,9 @@ package ca.appvelopers.mcgillmobile.model.retrofit;
 
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.model.Category;
-import ca.appvelopers.mcgillmobile.model.Place;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.place.Category;
+import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader.Config;
 import retrofit2.Call;
 import retrofit2.http.GET;

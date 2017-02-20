@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package ca.appvelopers.mcgillmobile.util.dbflow.databases;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 
-import ca.appvelopers.mcgillmobile.model.Place;
+import ca.appvelopers.mcgillmobile.model.place.Place;
 
 /**
  * Database that holds a list of {@link Place}s

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model;
+package ca.appvelopers.mcgillmobile.model.place;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;

@@ -26,8 +26,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.model.Category;
-import ca.appvelopers.mcgillmobile.model.Place;
+import ca.appvelopers.mcgillmobile.model.place.Category;
+import ca.appvelopers.mcgillmobile.model.place.Place;
 
 /**
  * Entirely manages the {@link Place}s and {@link Category}s lifecycles

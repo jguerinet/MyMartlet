@@ -29,7 +29,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.Category;
+import ca.appvelopers.mcgillmobile.model.place.Category;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 
