@@ -153,8 +153,11 @@ public class ConfigDownloader extends Thread {
                                 if (index != -1) {
                                     // Update it
                                     Place newPlace = newPlaces.get(index);
-                                    newPlace.save();
-                                    // TODO Set whether this place is a favorite or not
+
+                                    // Set whether the place was a favorite or not
+                                    //  This will automatically save the new place
+                                    newPlace.setFavorite(place.isFavorite());
+
                                     // Delete that place from the body since we've dealt with it
                                     newPlaces.remove(newPlace);
                                 } else {
