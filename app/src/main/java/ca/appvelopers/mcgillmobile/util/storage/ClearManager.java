@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -127,16 +127,12 @@ public class ClearManager {
 
         //Wishlist
         App.setWishlist(new ArrayList<CourseResult>());
-
-        //Favorite places
-        placesManager.clearFavorites();
     }
 
     /**
      * Clears all of the config info
      */
     public void config() {
-        placesManager.clearPlaces();
         App.setRegisterTerms(new ArrayList<Term>());
     }
 }
