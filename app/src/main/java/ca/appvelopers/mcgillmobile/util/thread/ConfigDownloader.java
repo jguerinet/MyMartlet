@@ -25,6 +25,7 @@ import com.guerinet.utils.prefs.DatePreference;
 import com.guerinet.utils.prefs.IntPreference;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 
 import org.threeten.bp.ZonedDateTime;
@@ -41,6 +42,7 @@ import ca.appvelopers.mcgillmobile.model.place.Category;
 import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlaceCategoriesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import retrofit2.Response;
@@ -136,47 +138,10 @@ public class ConfigDownloader extends Thread {
                     .execute();
 
             if (response.isSuccessful()) {
-                List<Place> newPlaces = response.body();
-                SQLite
-                        .select()
-                        .from(Place.class)
-                        .async()
-                        .queryListResultCallback((transaction, tResult) -> {
-                            if (tResult == null) {
-                                return;
-                            }
-
-                            // Go through the existing places
-                            for (Place place : tResult) {
-                                // Check if the place still exists in the received places
-                                int index = newPlaces.indexOf(place);
-                                if (index != -1) {
-                                    // Update it
-                                    Place newPlace = newPlaces.get(index);
-                                    newPlace.save();
-                                    // TODO Set whether this place is a favorite or not
-                                    // Delete that place from the body since we've dealt with it
-                                    newPlaces.remove(newPlace);
-                                } else {
-                                    // Delete the old place
-                                    place.delete();
-                                }
-                            }
-
-                            // Save any new places
-                            FastStoreModelTransaction<Place> newPlacesTransaction =
-                                    FastStoreModelTransaction.saveBuilder(
-                                            FlowManager.getModelAdapter(Place.class))
-                                            .addAll(newPlaces)
-                                            .build();
-                            FlowManager.getDatabase(PlacesDB.class)
-                                    .beginTransactionAsync(newPlacesTransaction)
-                                    .build()
-                                    .execute();
-                        })
-                        .execute();
-
-                imsPlacesPref.set(ZonedDateTime.now());
+                updateDB(Place.class, response.body(), PlacesDB.class, imsPlacesPref, object -> {
+                    // TODO Set whether this place is a favorite or not
+                    object.save();
+                });
             }
         } catch (Exception e) {
             if (!(e instanceof UnknownHostException)) {
@@ -185,15 +150,15 @@ public class ConfigDownloader extends Thread {
             }
         }
 
-        //Place Categories
+        // Categories
         try {
             Response<List<Category>> response = configService
-                    .categories(DateUtils.getRFC1123String(imsCategoriesPref.getDate()))
+                    .categories(null) //DateUtils.getRFC1123String(imsCategoriesPref.getDate()))
                     .execute();
 
             if (response.isSuccessful()) {
-                placesManager.setCategories(response.body());
-                imsCategoriesPref.set(ZonedDateTime.now());
+                updateDB(Category.class, response.body(), PlaceCategoriesDB.class,
+                        imsCategoriesPref, null);
             }
         } catch (Exception e) {
             if (!(e instanceof UnknownHostException)) {
@@ -218,6 +183,82 @@ public class ConfigDownloader extends Thread {
                 Timber.e(e, "Error downloading registration terms");
             }
         }
+    }
+
+    /**
+     * Updates the objects in a DB by updating existing objects, removing old objects, and inserting
+     *  new ones. Will also update the IMS pref
+     *
+     * @param type       Object type
+     * @param newObjects List of new objects/objects to update
+     * @param dbClass    Class of the DB these will be stored in
+     * @param imsPref    IMS pref to update
+     * @param callback   Optional callback to run any update code. If not, save() will be called
+     * @param <T>        Object Type
+     */
+    private <T extends BaseModel> void updateDB(Class<T> type, List<T> newObjects, Class dbClass,
+            DatePreference imsPref, UpdateCallback<T> callback) {
+        SQLite
+                .select()
+                .from(type)
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
+
+                    // Go through the existing objects
+                    for (T oldObject : tResult) {
+                        // Check if the object still exists in the received objects
+                        int index = newObjects.indexOf(oldObject);
+                        if (index != -1) {
+                            // Update it
+                            T newObject = newObjects.get(index);
+
+                            // If there's a callback, use it
+                            if (callback != null) {
+                                callback.update(newObject);
+                            } else {
+                                // If not, call save
+                                newObject.save();
+                            }
+
+                            // Delete that place from the body since we've dealt with it
+                            newObjects.remove(newObject);
+                        } else {
+                            // Delete the old place
+                            oldObject.delete();
+                        }
+                    }
+
+                    // Save any new objects
+                    FastStoreModelTransaction<? extends BaseModel> newObjectsTransaction =
+                            FastStoreModelTransaction.saveBuilder(
+                                    FlowManager.getModelAdapter(type))
+                                    .addAll(newObjects)
+                                    .build();
+                    FlowManager.getDatabase(dbClass)
+                            .beginTransactionAsync(newObjectsTransaction)
+                            .build()
+                            .execute();
+                })
+                .execute();
+
+        imsPref.set(ZonedDateTime.now());
+    }
+
+    /**
+     * Callback used to run update code whenever a DB is updated
+     *
+     * @param <T> Object type
+     */
+    interface UpdateCallback<T extends BaseModel> {
+        /**
+         * Called when update code needs to be run
+         *
+         * @param object Object to update
+         */
+        void update(T object);
     }
 
     /**
