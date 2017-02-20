@@ -41,7 +41,6 @@ public class PlacesManager {
      * File names
      */
     private static final String FAVORITE_PLACES = "favorite_places";
-    private static final String PLACE_TYPES = "place_types";
     /**
      * {@link Context} instance
      */
@@ -50,10 +49,6 @@ public class PlacesManager {
      * List of Ids of the favorite {@link Place}s
      */
     private List<Integer> favoritePlaceIds;
-    /**
-     * List of {@link Category}s
-     */
-    private List<Category> categories;
 
     /**
      * Default Injectable Constructor
@@ -82,34 +77,6 @@ public class PlacesManager {
             }
         }
         return favoritePlaceIds;
-    }
-
-    /**
-     * @return List of {@link Category}s
-     */
-    public List<Category> getCategories() {
-        //Load the place types if necessary
-        if (categories == null) {
-            categories = (List<Category>) StorageUtils.loadObject(context, PLACE_TYPES,
-                    "Place Types");
-
-            if (categories == null) {
-                return new ArrayList<>();
-            }
-        }
-        return categories;
-    }
-
-    /**
-     * @param types List of {@link Category}s to save
-     */
-    public void setCategories(List<Category> types) {
-        //Don't save a null object
-        if (types == null) {
-            return;
-        }
-        this.categories = types;
-        StorageUtils.saveObject(context, types, PLACE_TYPES, "Place Types");
     }
 
     /**
@@ -146,13 +113,5 @@ public class PlacesManager {
         //Clear both the local instance and the stored one
         favoritePlaceIds = new ArrayList<>();
         context.deleteFile(FAVORITE_PLACES);
-    }
-
-    /**
-     * Clears the stored {@link Place}s and {@link Category}s
-     */
-    public void clearPlaces() {
-        categories = new ArrayList<>();
-        context.deleteFile(PLACE_TYPES);
     }
 }
