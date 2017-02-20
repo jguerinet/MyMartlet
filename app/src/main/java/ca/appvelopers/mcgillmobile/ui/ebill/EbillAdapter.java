@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.guerinet.utils.DateUtils;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,19 +40,40 @@ import ca.appvelopers.mcgillmobile.model.Statement;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHolder> {
+class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHolder> {
     /**
-     * The list of statements
+     * List of {@link Statement}s
      */
-    private List<Statement> mStatements;
+    private final List<Statement> mStatements;
 
     /**
      * Default Constructor
-     *
-     * @param statements The list of statements
      */
-    public EbillAdapter(List<Statement> statements) {
-        mStatements = statements;
+    EbillAdapter() {
+        mStatements = new ArrayList<>();
+        update();
+    }
+
+    /**
+     * Updates the list of {@link Statement}s shown
+     */
+    void update() {
+        // Clear existing statements
+        mStatements.clear();
+
+        // Add the other statements asynchronously
+        SQLite
+                .select()
+                .from(Statement.class)
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
+                    mStatements.addAll(tResult);
+                    notifyDataSetChanged();
+                })
+                .execute();
     }
 
     @Override
