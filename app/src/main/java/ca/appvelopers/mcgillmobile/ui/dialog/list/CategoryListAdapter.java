@@ -20,6 +20,7 @@ import android.content.Context;
 import android.support.v4.util.Pair;
 
 import com.guerinet.utils.dialog.ListDialogInterface;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,18 +31,17 @@ import javax.inject.Inject;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.place.Category;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
-import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 
 /**
  * Displays a list of place types to choose from in the maps section
  * @author Julien Guerinet
  * @since 2.1.0
  */
-public abstract class PlaceTypeListAdapter implements ListDialogInterface {
+public abstract class CategoryListAdapter implements ListDialogInterface {
     /**
      * List of place types with their associated String
      */
-    private final List<Pair<Category, String>> types;
+    private final List<Pair<Category, String>> categories;
     /**
      * The current choice
      */
@@ -51,11 +51,6 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
      */
     @Inject
     LanguagePreference languagePreference;
-    /**
-     * {@link PlacesManager} instance
-     */
-    @Inject
-    PlacesManager placesManager;
 
     /**
      * Default Constructor
@@ -63,29 +58,35 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
      * @param context         App context
      * @param currentCategory Currently selected category
      */
-    protected PlaceTypeListAdapter(Context context, Category currentCategory) {
+    protected CategoryListAdapter(Context context, Category currentCategory) {
         App.component(context).inject(this);
-        types = new ArrayList<>();
+        categories = new ArrayList<>();
 
-        // Add all existing categories
-        for (Category type : placesManager.getCategories()) {
-            types.add(new Pair<>(type, type.getString(context, languagePreference.get())));
+        // Get the categories synchronously from the DB
+        List<Category> categories = SQLite.select()
+                .from(Category.class)
+                .queryList();
+
+        // Add them all to the main list
+        for (Category category : categories) {
+            this.categories.add(new Pair<>(category, category.getString(context,
+                    languagePreference.get())));
         }
 
         // Sort them
-        Collections.sort(types, (lhs, rhs) -> lhs.second.compareToIgnoreCase(rhs.second));
+        Collections.sort(this.categories, (lhs, rhs) -> lhs.second.compareToIgnoreCase(rhs.second));
 
         // Add the favorites option
         Category type = new Category(true);
-        types.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
+        this.categories.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
 
         // Add the All option
         type = new Category(false);
-        types.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
+        this.categories.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
 
         // Find the index of the current choice
-        for (int i = 0; i < types.size(); i ++) {
-            if (types.get(i).first.equals(currentCategory)) {
+        for (int i = 0; i < this.categories.size(); i ++) {
+            if (this.categories.get(i).first.equals(currentCategory)) {
                 currentChoice = i;
                 break;
             }
@@ -99,12 +100,12 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
 
     @Override
     public CharSequence[] getChoices() {
-        CharSequence[] titles = new CharSequence[types.size()];
+        CharSequence[] titles = new CharSequence[categories.size()];
 
         // Go through the categories
-        for (int i = 0; i < types.size(); i ++) {
+        for (int i = 0; i < categories.size(); i ++) {
             // Add its title to the list
-            titles[i] = types.get(i).second;
+            titles[i] = categories.get(i).second;
         }
 
         return titles;
@@ -112,7 +113,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
 
     @Override
     public void onChoiceSelected(int position) {
-       onCategorySelected(types.get(position).first);
+       onCategorySelected(categories.get(position).first);
     }
 
     /**

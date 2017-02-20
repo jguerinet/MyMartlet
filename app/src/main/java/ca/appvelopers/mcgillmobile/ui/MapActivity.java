@@ -67,7 +67,8 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.place.Category;
 import ca.appvelopers.mcgillmobile.model.place.Place;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import timber.log.Timber;
@@ -112,6 +113,11 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      */
     @BindView(R.id.map_favorite)
     Button favorite;
+    /**
+     * {@link LanguagePreference} instance
+     */
+    @Inject
+    LanguagePreference languagePreference;
     /**
      * {@link PlacesManager} instance
      */
@@ -171,7 +177,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                     @Override
                     public void onClick(final TextViewFormItem item) {
                         DialogUtils.list(MapActivity.this, R.string.map_filter,
-                                new PlaceTypeListAdapter(MapActivity.this, type) {
+                                new CategoryListAdapter(MapActivity.this, type) {
                                     @Override
                                     public void onCategorySelected(Category type) {
                                         MapActivity.this.type = type;
