@@ -121,6 +121,32 @@ public class Place extends BaseModel implements Serializable {
     }
 
     /**
+     * @return True if this place is in the user's favorites, false otherwise
+     */
+    public boolean isFavorite() {
+        return getCategories().contains(PlaceType.FAVORITES);
+    }
+
+    /* SETTERS */
+
+    /**
+     * @param favorite True if this place should be in the user's favorites, false otherwise
+     */
+    public void setFavorite(boolean favorite) {
+        if (favorite && !getCategories().contains(PlaceType.FAVORITES)) {
+            // Place is now a favorite, add the Id to the list of categories
+            getCategories().add(PlaceType.FAVORITES);
+        } else if (!favorite) {
+            // Place is no longer a favorite, remove the Id from the list of categories
+            getCategories().remove(Integer.valueOf(PlaceType.FAVORITES));
+        }
+        // Save the object back
+        save();
+    }
+
+    /* HELPERS */
+
+    /**
      * Checks if this place is of the given type
      *
      * @param type The type
