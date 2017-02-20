@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,9 @@ import com.guerinet.utils.DateUtils;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.DatePreference;
 import com.guerinet.utils.prefs.IntPreference;
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 
 import org.threeten.bp.ZonedDateTime;
 
@@ -38,6 +41,7 @@ import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -128,10 +132,50 @@ public class ConfigDownloader extends Thread {
         //Places
         try {
             Response<List<Place>> response = configService
-                    .places(DateUtils.getRFC1123String(imsPlacesPref.getDate()))
+                    .places(null) //DateUtils.getRFC1123String(imsPlacesPref.getDate()))
                     .execute();
 
             if (response.isSuccessful()) {
+                List<Place> newPlaces = response.body();
+                SQLite
+                        .select()
+                        .from(Place.class)
+                        .async()
+                        .queryListResultCallback((transaction, tResult) -> {
+                            if (tResult == null) {
+                                return;
+                            }
+
+                            // Go through the existing places
+                            for (Place place : tResult) {
+                                // Check if the place still exists in the received places
+                                int index = newPlaces.indexOf(place);
+                                if (index != -1) {
+                                    // Update it
+                                    Place newPlace = newPlaces.get(index);
+                                    newPlace.update();
+                                    // TODO Set whether this place is a favorite or not
+                                    // Delete that place from the body since we've dealt with it
+                                    newPlaces.remove(newPlace);
+                                } else {
+                                    // Delete the old place
+                                    place.delete();
+                                }
+                            }
+
+                            // Save any new places
+                            FastStoreModelTransaction<Place> newPlacesTransaction =
+                                    FastStoreModelTransaction.insertBuilder(
+                                            FlowManager.getModelAdapter(Place.class))
+                                            .addAll(newPlaces)
+                                            .build();
+                            FlowManager.getDatabase(PlacesDB.class)
+                                    .beginTransactionAsync(newPlacesTransaction)
+                                    .build()
+                                    .execute();
+                        })
+                        .execute();
+
                 placesManager.setPlaces(response.body());
                 imsPlacesPref.set(ZonedDateTime.now());
             }
