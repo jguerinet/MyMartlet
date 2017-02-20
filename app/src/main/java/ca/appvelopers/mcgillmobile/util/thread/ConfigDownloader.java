@@ -176,7 +176,6 @@ public class ConfigDownloader extends Thread {
                         })
                         .execute();
 
-                placesManager.setPlaces(response.body());
                 imsPlacesPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {

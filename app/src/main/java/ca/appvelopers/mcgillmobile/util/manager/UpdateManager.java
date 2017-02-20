@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,6 +137,15 @@ public class UpdateManager {
             // Store the new version in the SharedPrefs
             versionPref.set(code);
         }
+    }
+
+    /**
+     * v2.4.0
+     * - Deletion of old places file, we've moved to DBFlow.
+     */
+    private void updateSomething() {
+        // Delete the old places file
+        context.deleteFile("places");
     }
 
     /**

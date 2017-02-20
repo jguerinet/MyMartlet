@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,17 +40,12 @@ public class PlacesManager {
     /**
      * File names
      */
-    private static final String PLACES = "places";
     private static final String FAVORITE_PLACES = "favorite_places";
     private static final String PLACE_TYPES = "place_types";
     /**
      * {@link Context} instance
      */
     private final Context context;
-    /**
-     * List of {@link Place}s
-     */
-    private List<Place> places;
     /**
      * List of Ids of the favorite {@link Place}s
      */
@@ -71,22 +66,6 @@ public class PlacesManager {
     }
 
     /* GETTERS */
-
-    /**
-     * @return List of {@link Place}s
-     */
-    public List<Place> getPlaces() {
-        //If it's null, load it from internal storage
-        if (places == null) {
-            places = (List<Place>) StorageUtils.loadObject(context, PLACES, "Places");
-
-            //If they are still null, use an empty list
-            if (places == null) {
-                places = new ArrayList<>();
-            }
-        }
-        return places;
-    }
 
     /**
      * @return List of Ids of the favorite {@link Place}s
@@ -119,18 +98,6 @@ public class PlacesManager {
             }
         }
         return placeTypes;
-    }
-
-    /**
-     * @param places List of {@link Place}s to save
-     */
-    public void setPlaces(List<Place> places) {
-        //Don't save a null object
-        if (places == null) {
-            return;
-        }
-        this.places = places;
-        StorageUtils.saveObject(context, places, PLACES, "Places");
     }
 
     /**
@@ -186,8 +153,6 @@ public class PlacesManager {
      */
     public void clearPlaces() {
         placeTypes = new ArrayList<>();
-        places = new ArrayList<>();
         context.deleteFile(PLACE_TYPES);
-        context.deleteFile(PLACES);
     }
 }
