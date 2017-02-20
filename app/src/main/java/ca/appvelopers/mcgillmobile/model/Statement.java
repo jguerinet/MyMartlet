@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,15 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.threeten.bp.LocalDate;
 
 import java.io.Serializable;
+
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 
 /**
  * One statement in the user's ebill
@@ -26,20 +32,31 @@ import java.io.Serializable;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Statement implements Serializable {
+@Table(database = StatementsDB.class, allFields = true)
+public class Statement extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Randomly generated Id for this statement, used as a primary key
+     */
+    @PrimaryKey(autoincrement = true)
+    int id;
 	/**
 	 * Statement date
 	 */
-	private LocalDate date;
+	LocalDate date;
 	/**
 	 * Due date
 	 */
-	private LocalDate dueDate;
+	LocalDate dueDate;
 	/**
 	 * Total amount due or owed
 	 */
-	private double amount;
+	double amount;
+
+    /**
+     * DB Constructor
+     */
+    Statement() {}
 
 	/**
 	 * Default Constructor
