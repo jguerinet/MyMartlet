@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
+import ca.appvelopers.mcgillmobile.model.Category;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 
@@ -42,7 +42,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
     /**
      * List of place types with their associated String
      */
-    private List<Pair<PlaceType, String>> types;
+    private List<Pair<Category, String>> types;
     /**
      * The current choice
      */
@@ -64,28 +64,28 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
      * @param context     App context
      * @param currentType Currently selected type
      */
-    public PlaceTypeListAdapter(final Context context, PlaceType currentType) {
+    public PlaceTypeListAdapter(final Context context, Category currentType) {
         App.component(context).inject(this);
         types = new ArrayList<>();
 
-        for (PlaceType type : placesManager.getPlaceTypes()) {
+        for (Category type : placesManager.getCategories()) {
             types.add(new Pair<>(type, type.getString(context, languagePreference.get())));
         }
 
         //Sort them
-        Collections.sort(types, new Comparator<Pair<PlaceType, String>>() {
+        Collections.sort(types, new Comparator<Pair<Category, String>>() {
             @Override
-            public int compare(Pair<PlaceType, String> lhs, Pair<PlaceType, String> rhs) {
+            public int compare(Pair<Category, String> lhs, Pair<Category, String> rhs) {
                 return lhs.second.compareToIgnoreCase(rhs.second);
             }
         });
 
         //Add the favorites option
-        PlaceType type = new PlaceType(true);
+        Category type = new Category(true);
         types.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
 
         //Add the All option
-        type = new PlaceType(false);
+        type = new Category(false);
         types.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
 
         //Find the index of the current choice
@@ -123,7 +123,7 @@ public abstract class PlaceTypeListAdapter implements ListDialogInterface {
     /**
      * Called when a faculty is selected
      *
-     * @param type The {@link PlaceType} selected
+     * @param type The {@link Category} selected
      */
-    public abstract void onPlaceTypeSelected(PlaceType type);
+    public abstract void onPlaceTypeSelected(Category type);
 }

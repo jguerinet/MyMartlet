@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class PlaceType implements Serializable {
+public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * The user's saved favorite places
@@ -54,14 +54,14 @@ public class PlaceType implements Serializable {
     /**
      * Default Moshi Constructor
      */
-    protected PlaceType() {}
+    protected Category() {}
 
     /**
      * Constructor used to create the Favorites and All types
      *
      * @param favorites True if this is the favorites type, false if this is the all type
      */
-    public PlaceType(boolean favorites) {
+    public Category(boolean favorites) {
         this.id = favorites ? FAVORITES : ALL;
         this.en = null;
         this.fr = null;
@@ -100,6 +100,6 @@ public class PlaceType implements Serializable {
      */
     @Override
     public boolean equals(Object object) {
-        return object instanceof PlaceType && ((PlaceType) object).id == this.id;
+        return object instanceof Category && ((Category) object).id == this.id;
     }
 }

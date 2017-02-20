@@ -26,11 +26,11 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ca.appvelopers.mcgillmobile.model.Category;
 import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
 
 /**
- * Entirely manages the {@link Place}s and {@link PlaceType}s lifecycles
+ * Entirely manages the {@link Place}s and {@link Category}s lifecycles
  * @author Julien Guerinet
  * @since 2.2.0
  */
@@ -51,9 +51,9 @@ public class PlacesManager {
      */
     private List<Integer> favoritePlaceIds;
     /**
-     * List of {@link PlaceType}s
+     * List of {@link Category}s
      */
-    private List<PlaceType> placeTypes;
+    private List<Category> categories;
 
     /**
      * Default Injectable Constructor
@@ -85,30 +85,30 @@ public class PlacesManager {
     }
 
     /**
-     * @return List of {@link PlaceType}s
+     * @return List of {@link Category}s
      */
-    public List<PlaceType> getPlaceTypes() {
+    public List<Category> getCategories() {
         //Load the place types if necessary
-        if (placeTypes == null) {
-            placeTypes = (List<PlaceType>) StorageUtils.loadObject(context, PLACE_TYPES,
+        if (categories == null) {
+            categories = (List<Category>) StorageUtils.loadObject(context, PLACE_TYPES,
                     "Place Types");
 
-            if (placeTypes == null) {
+            if (categories == null) {
                 return new ArrayList<>();
             }
         }
-        return placeTypes;
+        return categories;
     }
 
     /**
-     * @param types List of {@link PlaceType}s to save
+     * @param types List of {@link Category}s to save
      */
-    public void setPlaceTypes(List<PlaceType> types) {
+    public void setCategories(List<Category> types) {
         //Don't save a null object
         if (types == null) {
             return;
         }
-        this.placeTypes = types;
+        this.categories = types;
         StorageUtils.saveObject(context, types, PLACE_TYPES, "Place Types");
     }
 
@@ -149,10 +149,10 @@ public class PlacesManager {
     }
 
     /**
-     * Clears the stored {@link Place}s and {@link PlaceType}s
+     * Clears the stored {@link Place}s and {@link Category}s
      */
     public void clearPlaces() {
-        placeTypes = new ArrayList<>();
+        categories = new ArrayList<>();
         context.deleteFile(PLACE_TYPES);
     }
 }

@@ -65,8 +65,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Category;
 import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
@@ -136,7 +136,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     /**
      * Currently selected category
      */
-    private PlaceType type;
+    private Category type;
     /**
      * Current search String
      */
@@ -154,7 +154,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         places = new ArrayList<>();
         shownPlaces = new ArrayList<>();
         searchString = "";
-        type = new PlaceType(false);
+        type = new Category(false);
 
         FormGenerator fg = FormGenerator.bind(this, container);
 
@@ -173,7 +173,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                         DialogUtils.list(MapActivity.this, R.string.map_filter,
                                 new PlaceTypeListAdapter(MapActivity.this, type) {
                                     @Override
-                                    public void onPlaceTypeSelected(PlaceType type) {
+                                    public void onPlaceTypeSelected(Category type) {
                                         MapActivity.this.type = type;
 
                                         //Update the text
@@ -313,7 +313,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                 favorite.setText(R.string.map_favorites_add);
 
                 //If we are in the favorites category, we need to hide this pin
-                if (type.getId() == PlaceType.FAVORITES) {
+                if (type.getId() == Category.FAVORITES) {
                     place.second.setVisible(false);
                 }
             } else {
@@ -355,11 +355,11 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         for (Pair<Place, Marker> place : places) {
             switch (type.getId()) {
                 //Show all of the places
-                case PlaceType.ALL:
+                case Category.ALL:
                     showPlace(place, true);
                     break;
                 //Show only the favorite places
-                case PlaceType.FAVORITES:
+                case Category.FAVORITES:
                     showPlace(place, placesManager.isFavorite(place.first));
                     break;
                 //Show the places for the current category

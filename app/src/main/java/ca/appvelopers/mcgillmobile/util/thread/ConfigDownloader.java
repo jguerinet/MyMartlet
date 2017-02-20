@@ -36,8 +36,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.model.Category;
 import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
@@ -187,12 +187,12 @@ public class ConfigDownloader extends Thread {
 
         //Place Categories
         try {
-            Response<List<PlaceType>> response = configService
+            Response<List<Category>> response = configService
                     .categories(DateUtils.getRFC1123String(imsCategoriesPref.getDate()))
                     .execute();
 
             if (response.isSuccessful()) {
-                placesManager.setPlaceTypes(response.body());
+                placesManager.setCategories(response.body());
                 imsCategoriesPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {

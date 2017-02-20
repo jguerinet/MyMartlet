@@ -126,7 +126,7 @@ public class Place extends BaseModel implements Serializable {
      * @param type The type
      * @return True if it is part of the type, false otherwise
      */
-    public boolean isOfType(PlaceType type) {
+    public boolean isOfType(Category type) {
         return getCategories().contains(type.getId());
     }
 
