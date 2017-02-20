@@ -19,13 +19,20 @@ package ca.appvelopers.mcgillmobile.util.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.guerinet.utils.StorageUtils;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.IntPreference;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import ca.appvelopers.mcgillmobile.model.Place;
+import ca.appvelopers.mcgillmobile.model.Place_Table;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
@@ -142,10 +149,38 @@ public class UpdateManager {
     /**
      * v2.4.0
      * - Deletion of old places file, we've moved to DBFlow.
+     * - Moved the old favorites file to the place objects directly
      */
+    @SuppressWarnings("unchecked")
     private void updateSomething() {
         // Delete the old places file
         context.deleteFile("places");
+
+        /* TODO Favorite migration is untested code */
+
+        // Get the old favorite place Ids
+        List<Integer> favoritePlaceIds = (List<Integer>) StorageUtils.loadObject(context,
+                "favorite_places", "Favorite Places");
+
+        // If they are null, use an empty list
+        if (favoritePlaceIds == null) {
+            favoritePlaceIds = new ArrayList<>();
+        }
+
+        // Iterate through the place ids to find the corresponding place and set the favorite field
+        for (int favoriteId : favoritePlaceIds) {
+            SQLite.select()
+                    .from(Place.class)
+                    .where(Place_Table.id.eq(favoriteId))
+                    .async()
+                    .querySingleResultCallback((transaction, place) -> {
+                        // If we find a place, set it to be a favorite
+                        if (place != null) {
+                            place.setFavorite(true);
+                        }
+                    })
+                    .execute();
+        }
     }
 
     /**
