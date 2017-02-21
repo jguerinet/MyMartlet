@@ -27,6 +27,6 @@ import ca.appvelopers.mcgillmobile.model.Statement;
  */
 @Database(name = StatementsDB.NAME, version = StatementsDB.VERSION)
 public class StatementsDB {
-    static final String NAME = "Statements";
+    public static final String NAME = "Statements";
     static final int VERSION = 1;
 }
