@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.util.dbflow;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -24,6 +25,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Static methods to help with DB management
@@ -39,10 +42,11 @@ public class DBUtils {
      * @param dbName     Name of the DB
      * @param type       Type of the class
      * @param newObjects List of the new objects to add to the DB
+     * @param callback   Optional callback called when a transaction is finished
      * @param <T>        Object type
      */
     public static <T extends BaseModel> void replaceDB(Context context, String dbName,
-            Class<T> type, List<T> newObjects) {
+            Class<T> type, List<T> newObjects, @Nullable Callback callback) {
         // Delete the old database
         FlowManager.getDatabase(dbName).reset(context);
 
@@ -55,6 +59,17 @@ public class DBUtils {
         // Execute the transaction
         FlowManager.getDatabase(dbName)
                 .beginTransactionAsync(newObjectsTransaction)
+                .success(transaction -> {
+                    if (callback != null) {
+                        callback.onFinish();
+                    }
+                })
+                .error((transaction, error) -> {
+                    Timber.e(error);
+                    if (callback != null) {
+                        callback.onFinish();
+                    }
+                })
                 .build()
                 .execute();
     }
@@ -119,6 +134,17 @@ public class DBUtils {
                     })
                         .execute();
             }
+
+    /**
+     * Callback used when a transaction is finished
+     */
+    public interface Callback {
+        /**
+         * Called when a transaction is finished
+         */
+        void onFinish();
+    }
+
     /**
       * Callback used to run update code whenever a DB is updated
       *

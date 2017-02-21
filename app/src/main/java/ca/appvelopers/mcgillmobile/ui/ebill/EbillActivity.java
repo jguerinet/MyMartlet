@@ -106,9 +106,10 @@ public class EbillActivity extends DrawerActivity {
             @Override
             public void onResponse(Call<List<Statement>> call, Response<List<Statement>> response) {
                 DBUtils.replaceDB(EbillActivity.this, StatementsDB.NAME, Statement.class,
-                        response.body());
-                showToolbarProgress(false);
-                adapter.update();
+                        response.body(), () -> {
+                            showToolbarProgress(false);
+                            adapter.update();
+                        });
             }
 
             @Override
