@@ -28,13 +28,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -104,7 +105,8 @@ public class EbillActivity extends DrawerActivity {
         mcGillService.ebill().enqueue(new Callback<List<Statement>>() {
             @Override
             public void onResponse(Call<List<Statement>> call, Response<List<Statement>> response) {
-                App.setEbill(response.body());
+                DBUtils.replaceDB(EbillActivity.this, StatementsDB.NAME, Statement.class,
+                        response.body());
                 showToolbarProgress(false);
                 adapter.update();
             }

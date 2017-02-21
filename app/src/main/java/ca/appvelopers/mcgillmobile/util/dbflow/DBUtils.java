@@ -44,7 +44,7 @@ public class DBUtils {
     public static <T extends BaseModel> void replaceDB(Context context, String dbName,
             Class<T> type, List<T> newObjects) {
         // Delete the old database
-        context.deleteDatabase(dbName);
+        FlowManager.getDatabase(dbName).reset(context);
 
         // Set up the transaction to save all of the models
         FastStoreModelTransaction<? extends BaseModel> newObjectsTransaction =
