@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.util.dbflow;
 
+import android.content.Context;
+
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -29,6 +31,33 @@ import java.util.List;
  * @since 2.4.0
  */
 public class DBUtils {
+
+    /**
+     * Completely wipes a DB and adds all of the new objects to it
+     *
+     * @param context    App context
+     * @param dbName     Name of the DB
+     * @param type       Type of the class
+     * @param newObjects List of the new objects to add to the DB
+     * @param <T>        Object type
+     */
+    public static <T extends BaseModel> void replaceDB(Context context, String dbName,
+            Class<T> type, List<T> newObjects) {
+        // Delete the old database
+        context.deleteDatabase(dbName);
+
+        // Set up the transaction to save all of the models
+        FastStoreModelTransaction<? extends BaseModel> newObjectsTransaction =
+                FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(type))
+                        .addAll(newObjects)
+                        .build();
+
+        // Execute the transaction
+        FlowManager.getDatabase(dbName)
+                .beginTransactionAsync(newObjectsTransaction)
+                .build()
+                .execute();
+    }
 
     /**
      * Updates the objects in a DB by updating existing objects, removing old objects, and
@@ -82,7 +111,8 @@ public class DBUtils {
                                             FlowManager.getModelAdapter(type))
                                             .addAll(newObjects)
                                             .build();
-                        FlowManager.getDatabase(dbClass)
+
+                            FlowManager.getDatabase(dbClass)
                                 .beginTransactionAsync(newObjectsTransaction)
                                 .build()
                                 .execute();
