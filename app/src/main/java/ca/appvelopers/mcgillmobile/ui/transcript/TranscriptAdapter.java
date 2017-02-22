@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterHolder> {
+class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterHolder> {
     /**
      * List of semesters
      */
@@ -49,7 +49,7 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
      *
      * @param semesters List of semesters
      */
-    public TranscriptAdapter(List<Semester> semesters) {
+    TranscriptAdapter(List<Semester> semesters) {
         mSemesters = semesters;
     }
 
@@ -74,14 +74,14 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Se
          * The semester name
          */
         @BindView(R.id.semester_name)
-        protected TextView mName;
+        TextView mName;
         /**
          * The user's GPA for this semester
          */
         @BindView(R.id.semester_gpa)
-        protected TextView mGPA;
+        TextView mGPA;
 
-        public SemesterHolder(View itemView) {
+        SemesterHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
