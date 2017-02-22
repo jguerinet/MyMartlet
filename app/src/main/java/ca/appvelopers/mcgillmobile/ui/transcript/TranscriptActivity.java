@@ -54,17 +54,17 @@ public class TranscriptActivity extends DrawerActivity {
      * User's CGPA
      */
     @BindView(R.id.transcript_cgpa)
-    TextView mCGPA;
+    TextView cgpa;
     /**
      * User's total credits
      */
     @BindView(R.id.transcript_credits)
-    TextView mTotalCredits;
+    TextView totalCredits;
     /**
      * List of semesters
      */
     @BindView(android.R.id.list)
-    RecyclerView mList;
+    RecyclerView list;
     /**
      * {@link TranscriptManager} instance
      */
@@ -83,9 +83,9 @@ public class TranscriptActivity extends DrawerActivity {
         App.component(this).inject(this);
         analytics.sendScreen("Transcript");
 
-        mList.setLayoutManager(new LinearLayoutManager(this));
+        list.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TranscriptAdapter(this);
-        mList.setAdapter(adapter);
+        list.setAdapter(adapter);
         update();
     }
 
@@ -148,8 +148,8 @@ public class TranscriptActivity extends DrawerActivity {
      */
     private void update() {
         //Reload all of the info
-        mCGPA.setText(getString(R.string.transcript_CGPA, transcriptManager.get().getCGPA()));
-        mTotalCredits.setText(getString(R.string.transcript_credits,
+        cgpa.setText(getString(R.string.transcript_CGPA, transcriptManager.get().getCGPA()));
+        totalCredits.setText(getString(R.string.transcript_credits,
                 transcriptManager.get().getTotalCredits()));
         adapter.update();
     }
