@@ -31,7 +31,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
@@ -53,7 +52,7 @@ public class TranscriptAdapter extends RecyclerViewBaseAdapter {
     /**
      * List of semesters
      */
-    private final List<Semester> mSemesters;
+    private final List<Semester> semesters;
 
     /**
      * Default Constructor
@@ -63,7 +62,7 @@ public class TranscriptAdapter extends RecyclerViewBaseAdapter {
     TranscriptAdapter(Context context) {
         super(null);
         App.component(context).inject(this);
-        mSemesters = new ArrayList<>();
+        semesters = new ArrayList<>();
     }
 
     @Override
@@ -74,43 +73,42 @@ public class TranscriptAdapter extends RecyclerViewBaseAdapter {
 
     @Override
     public int getItemCount() {
-        return mSemesters.size();
+        return semesters.size();
     }
 
     @Override
     public void update() {
         // Clear the existing semesters
-        mSemesters.clear();
+        semesters.clear();
 
         // Add the new ones from the TranscriptManager
-        mSemesters.addAll(transcriptManager.get().getSemesters());
+        semesters.addAll(transcriptManager.get().getSemesters());
 
         notifyDataSetChanged();
     }
 
     class SemesterHolder extends BaseHolder {
         /**
-         * The semester name
+         * Semester name
          */
         @BindView(R.id.semester_name)
-        TextView mName;
+        TextView name;
         /**
-         * The user's GPA for this semester
+         * User's GPA for this semester
          */
         @BindView(R.id.semester_gpa)
-        TextView mGPA;
+        TextView gpa;
 
         SemesterHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
         }
 
         public void bind(int position) {
-            final Semester semester = mSemesters.get(position);
+            final Semester semester = semesters.get(position);
             final Context context = itemView.getContext();
 
-            mName.setText(semester.getSemesterName(context));
-            mGPA.setText(context.getString(R.string.transcript_termGPA,
+            name.setText(semester.getSemesterName(context));
+            gpa.setText(context.getString(R.string.transcript_termGPA,
                     String.valueOf(semester.getGPA())));
 
             //OnClickListener
