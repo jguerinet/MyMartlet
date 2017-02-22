@@ -70,6 +70,10 @@ public class TranscriptActivity extends DrawerActivity {
      */
     @Inject
     TranscriptManager transcriptManager;
+    /**
+     * Adapter for the semester list
+     */
+    private TranscriptAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +84,8 @@ public class TranscriptActivity extends DrawerActivity {
         analytics.sendScreen("Transcript");
 
         mList.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new TranscriptAdapter(this);
+        mList.setAdapter(adapter);
         update();
     }
 
@@ -145,6 +151,6 @@ public class TranscriptActivity extends DrawerActivity {
         mCGPA.setText(getString(R.string.transcript_CGPA, transcriptManager.get().getCGPA()));
         mTotalCredits.setText(getString(R.string.transcript_credits,
                 transcriptManager.get().getTotalCredits()));
-        mList.setAdapter(new TranscriptAdapter(this));
+        adapter.update();
     }
 }
