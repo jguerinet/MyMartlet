@@ -25,34 +25,45 @@ import android.widget.TextView;
 
 import com.guerinet.utils.RecyclerViewBaseAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.transcript.semester.SemesterActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
  * Populates the list of semesters on the transcript page
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class TranscriptAdapter extends RecyclerViewBaseAdapter {
+public class TranscriptAdapter extends RecyclerViewBaseAdapter {
+    /**
+     * {@link TranscriptManager} instance
+     */
+    @Inject
+    TranscriptManager transcriptManager;
     /**
      * List of semesters
      */
-    private List<Semester> mSemesters;
+    private final List<Semester> mSemesters;
 
     /**
      * Default Constructor
      *
-     * @param semesters List of semesters
+     * @param context App context
      */
-    TranscriptAdapter(List<Semester> semesters) {
+    TranscriptAdapter(Context context) {
         super(null);
-        mSemesters = semesters;
+        App.component(context).inject(this);
+        mSemesters = new ArrayList<>();
     }
 
     @Override
@@ -64,6 +75,17 @@ class TranscriptAdapter extends RecyclerViewBaseAdapter {
     @Override
     public int getItemCount() {
         return mSemesters.size();
+    }
+
+    @Override
+    public void update() {
+        // Clear the existing semesters
+        mSemesters.clear();
+
+        // Add the new ones from the TranscriptManager
+        mSemesters.addAll(transcriptManager.get().getSemesters());
+
+        notifyDataSetChanged();
     }
 
     class SemesterHolder extends BaseHolder {

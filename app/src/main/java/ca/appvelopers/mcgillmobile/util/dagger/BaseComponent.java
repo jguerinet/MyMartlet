@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
+import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptAdapter;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughAdapter;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
@@ -68,11 +69,13 @@ public interface BaseComponent {
     void inject(McGillManager mcGillManager);
     void inject(BootReceiver receiver);
 
+    /* Adapters */
     void inject(WalkthroughAdapter adapter);
     void inject(HomepageListAdapter adapter);
     void inject(LanguageListAdapter adapter);
     void inject(PlaceTypeListAdapter adapter);
     void inject(TermDialogHelper helper);
+    void inject(TranscriptAdapter adapter);
 
     void inject(ConfigDownloader downloader);
     void inject(UserDownloader downloader);
