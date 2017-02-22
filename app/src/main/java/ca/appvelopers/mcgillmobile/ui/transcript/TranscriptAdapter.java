@@ -18,11 +18,12 @@ package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.guerinet.utils.RecyclerViewBaseAdapter;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterHolder> {
+class TranscriptAdapter extends RecyclerViewBaseAdapter {
     /**
      * List of semesters
      */
@@ -50,18 +51,14 @@ class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterH
      * @param semesters List of semesters
      */
     TranscriptAdapter(List<Semester> semesters) {
+        super(null);
         mSemesters = semesters;
     }
 
     @Override
-    public SemesterHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new SemesterHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_semester, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(SemesterHolder holder, int position) {
-        holder.bind(mSemesters.get(position));
     }
 
     @Override
@@ -69,7 +66,7 @@ class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterH
         return mSemesters.size();
     }
 
-    class SemesterHolder extends RecyclerView.ViewHolder {
+    class SemesterHolder extends BaseHolder {
         /**
          * The semester name
          */
@@ -86,7 +83,8 @@ class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterH
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final Semester semester) {
+        public void bind(int position) {
+            final Semester semester = mSemesters.get(position);
             final Context context = itemView.getContext();
 
             mName.setText(semester.getSemesterName(context));
