@@ -104,21 +104,17 @@ public class TranscriptAdapter extends RecyclerViewBaseAdapter {
         }
 
         public void bind(int position) {
-            final Semester semester = semesters.get(position);
-            final Context context = itemView.getContext();
+            Semester semester = semesters.get(position);
+            Context context = itemView.getContext();
 
             name.setText(semester.getSemesterName(context));
             gpa.setText(context.getString(R.string.transcript_termGPA,
                     String.valueOf(semester.getGPA())));
 
-            //OnClickListener
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, SemesterActivity.class)
-                            .putExtra(Constants.SEMESTER, semester);
-                    context.startActivity(intent);
-                }
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, SemesterActivity.class)
+                        .putExtra(Constants.SEMESTER, semester);
+                context.startActivity(intent);
             });
 
         }
