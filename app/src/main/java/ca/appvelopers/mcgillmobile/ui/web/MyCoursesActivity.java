@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ public class MyCoursesActivity extends DrawerActivity {
         //Clear any existing cookies
         final CookieManager cookieManager = CookieManager.getInstance();
         if (cookieManager.hasCookies()) {
-            if (Device.isLollipop()) {
+            if (Device.isAtLeastLollipop()) {
                 CookieManager.getInstance().removeAllCookies(null);
             } else{
                 //noinspection deprecation
