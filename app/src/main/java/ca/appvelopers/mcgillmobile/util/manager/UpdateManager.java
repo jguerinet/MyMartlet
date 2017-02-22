@@ -144,8 +144,9 @@ public class UpdateManager {
      * - Deletion of old places file, we've moved to DBFlow.
      */
     private void updateSomething() {
-        // Delete the old places file
+        // Delete the old files
         context.deleteFile("places");
+        context.deleteFile("ebill");
     }
 
     /**
