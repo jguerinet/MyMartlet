@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,25 +54,25 @@ public class TranscriptActivity extends DrawerActivity {
      * User's CGPA
      */
     @BindView(R.id.transcript_cgpa)
-    protected TextView mCGPA;
+    TextView mCGPA;
     /**
      * User's total credits
      */
     @BindView(R.id.transcript_credits)
-    protected TextView mTotalCredits;
+    TextView mTotalCredits;
     /**
      * List of semesters
      */
     @BindView(android.R.id.list)
-    protected RecyclerView mList;
+    RecyclerView mList;
     /**
      * {@link TranscriptManager} instance
      */
     @Inject
-    protected TranscriptManager transcriptManager;
+    TranscriptManager transcriptManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transcript);
         ButterKnife.bind(this);
@@ -100,8 +101,8 @@ public class TranscriptActivity extends DrawerActivity {
     }
 
     @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
+    @HomepageManager.Homepage
+    protected int getCurrentPage() {
         return HomepageManager.TRANSCRIPT;
     }
 
@@ -144,6 +145,6 @@ public class TranscriptActivity extends DrawerActivity {
         mCGPA.setText(getString(R.string.transcript_CGPA, transcriptManager.get().getCGPA()));
         mTotalCredits.setText(getString(R.string.transcript_credits,
                 transcriptManager.get().getTotalCredits()));
-        mList.setAdapter(new TranscriptAdapter(transcriptManager.get().getSemesters()));
+        mList.setAdapter(new TranscriptAdapter(this));
     }
 }
