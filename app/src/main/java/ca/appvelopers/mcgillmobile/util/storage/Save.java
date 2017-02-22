@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,13 +54,6 @@ public class Save {
      */
     public static void registerTerms(){
         saveObject("Register Terms", Constants.REGISTER_TERMS_FILE, App.getRegisterTerms());
-    }
-
-    /**
-     * Saves the user's ebill statements
-     */
-    public static void ebill(){
-        saveObject("Ebill", Constants.EBILL_FILE, App.getEbill());
     }
 
     /**
