@@ -101,6 +101,7 @@ public class TranscriptActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 refresh();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -132,7 +133,7 @@ public class TranscriptActivity extends DrawerActivity {
             public void onFailure(Call<Transcript> call, Throwable t) {
                 Timber.e(t, "Error refreshing transcript");
                 showToolbarProgress(false);
-                //If this is a MinervaException, broadcast it
+                // If this is a MinervaException, broadcast it
                 if (t instanceof MinervaException) {
                     LocalBroadcastManager.getInstance(TranscriptActivity.this)
                             .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
