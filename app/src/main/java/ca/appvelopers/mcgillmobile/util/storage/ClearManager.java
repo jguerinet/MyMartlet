@@ -126,7 +126,7 @@ public class ClearManager {
         transcriptManager.clear();
 
         // Statements
-        context.deleteDatabase(StatementsDB.NAME);
+        context.deleteDatabase(StatementsDB.FULL_NAME);
 
         //HomepageManager
         homepageManager.clear();
