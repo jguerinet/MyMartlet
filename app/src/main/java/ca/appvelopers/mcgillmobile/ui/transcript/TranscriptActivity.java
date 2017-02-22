@@ -147,10 +147,11 @@ public class TranscriptActivity extends DrawerActivity {
      * Updates the view
      */
     private void update() {
-        //Reload all of the info
-        cgpa.setText(getString(R.string.transcript_CGPA, transcriptManager.get().getCGPA()));
+        // Reload all of the info
+        cgpa.setText(getString(R.string.transcript_CGPA,
+                String.valueOf(transcriptManager.get().getCGPA())));
         totalCredits.setText(getString(R.string.transcript_credits,
-                transcriptManager.get().getTotalCredits()));
+                String.valueOf(transcriptManager.get().getTotalCredits())));
         adapter.update();
     }
 }
