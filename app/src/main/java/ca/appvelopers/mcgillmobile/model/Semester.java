@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import android.content.Context;
 
 import java.io.Serializable;
 import java.util.List;
+
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 
 /**
  * Contains information pertaining to each semester such as current program, term credits,

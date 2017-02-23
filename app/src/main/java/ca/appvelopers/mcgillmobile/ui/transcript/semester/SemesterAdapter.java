@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 
 /**
  * Populates the courses list in SemesterActivity

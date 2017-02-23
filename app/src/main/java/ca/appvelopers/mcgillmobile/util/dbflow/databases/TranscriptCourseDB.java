@@ -18,7 +18,7 @@ package ca.appvelopers.mcgillmobile.util.dbflow.databases;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 
 /**
  * Database that holds a list of {@link TranscriptCourse}s

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import android.support.v4.app.NotificationCompat;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import timber.log.Timber;

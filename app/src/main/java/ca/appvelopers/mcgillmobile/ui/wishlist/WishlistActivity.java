@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;

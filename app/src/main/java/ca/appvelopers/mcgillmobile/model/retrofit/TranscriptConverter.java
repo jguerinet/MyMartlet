@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import ca.appvelopers.mcgillmobile.model.Season;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
