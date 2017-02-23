@@ -141,7 +141,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     /**
      * Currently selected category
      */
-    private Category type;
+    private Category category;
     /**
      * Current search String
      */
@@ -159,7 +159,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         places = new ArrayList<>();
         shownPlaces = new ArrayList<>();
         searchString = "";
-        type = new Category(false);
+        category = new Category(false);
 
         FormGenerator fg = FormGenerator.bind(this, container);
 
@@ -169,17 +169,17 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         Utils.setTint(favorite, 0, red);
 
         //Set up the place filter
-        fg.text(type.getString(this, languagePref.get()))
+        fg.text(category.getString(this, languagePref.get()))
                 .leftIcon(R.drawable.ic_location)
                 .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
                 .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
                     public void onClick(final TextViewFormItem item) {
                         DialogUtils.list(MapActivity.this, R.string.map_filter,
-                                new CategoryListAdapter(MapActivity.this, type) {
+                                new CategoryListAdapter(MapActivity.this, category) {
                                     @Override
                                     public void onCategorySelected(Category type) {
-                                        MapActivity.this.type = type;
+                                        MapActivity.this.category = type;
 
                                         //Update the text
                                         item.view().setText(type.getString(MapActivity.this,
@@ -325,7 +325,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
             favorite.setText(buttonTextId);
 
             // If we are in the favorites category, we need to show/hide this pin
-            if (type.getId() == Category.FAVORITES) {
+            if (category.getId() == Category.FAVORITES) {
                 showPlace(place, place.first.isFavorite());
             }
 
@@ -356,16 +356,8 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
 
         //Go through the places
         for (Pair<Place, Marker> place : places) {
-            switch (type.getId()) {
-                //Show all of the places
-                case Category.ALL:
-                    showPlace(place, true);
-                    break;
-                // Show the places for the current category
-                default:
-                    showPlace(place, place.first.isWithinCategory(type));
-                    break;
-            }
+            // Show it if it's part of the given category
+            showPlace(place, place.first.isWithinCategory(category));
         }
 
         //Filter also by the search String if there is one
