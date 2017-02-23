@@ -40,16 +40,11 @@ public class PlacesManager {
     /**
      * File names
      */
-    private static final String FAVORITE_PLACES = "favorite_places";
     private static final String PLACE_TYPES = "place_types";
     /**
      * {@link Context} instance
      */
     private final Context context;
-    /**
-     * List of Ids of the favorite {@link Place}s
-     */
-    private List<Integer> favoritePlaceIds;
     /**
      * List of {@link PlaceType}s
      */
@@ -66,23 +61,6 @@ public class PlacesManager {
     }
 
     /* GETTERS */
-
-    /**
-     * @return List of Ids of the favorite {@link Place}s
-     */
-    public List<Integer> getFavoritePlaceIds() {
-        //Load the favorite place Ids from internal storage if they have not been loaded already
-        if (favoritePlaceIds == null) {
-            favoritePlaceIds = (List<Integer>) StorageUtils.loadObject(context, FAVORITE_PLACES,
-                    "Favorite Places");
-
-            //If they are still null, use an empty list
-            if (favoritePlaceIds == null) {
-                favoritePlaceIds = new ArrayList<>();
-            }
-        }
-        return favoritePlaceIds;
-    }
 
     /**
      * @return List of {@link PlaceType}s
@@ -110,49 +88,5 @@ public class PlacesManager {
         }
         this.placeTypes = types;
         StorageUtils.saveObject(context, types, PLACE_TYPES, "Place Types");
-    }
-
-    /**
-     * @param place {@link Place} to save to the favorites
-     */
-    public void addFavorite(Place place) {
-        if (!getFavoritePlaceIds().contains(place.getId())) {
-            getFavoritePlaceIds().add(place.getId());
-            StorageUtils.saveObject(context, getFavoritePlaceIds(), FAVORITE_PLACES,
-                    "Favorite Places");
-        }
-    }
-
-    /**
-     * @param place {@link Place} to remove from the favorites
-     */
-    public void removeFavorite(Place place) {
-        getFavoritePlaceIds().remove(Integer.valueOf(place.getId()));
-        StorageUtils.saveObject(context, getFavoritePlaceIds(), FAVORITE_PLACES, "Favorite Places");
-    }
-
-    /**
-     * @param place {@link Place} instance
-     * @return True if the passed place is a favorite, false otherwise
-     */
-    public boolean isFavorite(Place place) {
-        return getFavoritePlaceIds().contains(place.getId());
-    }
-
-    /**
-     * Clears the stored favorite {@link Place}s
-     */
-    public void clearFavorites() {
-        //Clear both the local instance and the stored one
-        favoritePlaceIds = new ArrayList<>();
-        context.deleteFile(FAVORITE_PLACES);
-    }
-
-    /**
-     * Clears the stored {@link Place}s and {@link PlaceType}s
-     */
-    public void clearPlaces() {
-        placeTypes = new ArrayList<>();
-        context.deleteFile(PLACE_TYPES);
     }
 }
