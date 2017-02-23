@@ -69,7 +69,6 @@ import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import timber.log.Timber;
 
 /**
@@ -117,11 +116,6 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      */
     @Inject
     LanguagePreference languagePreference;
-    /**
-     * {@link PlacesManager} instance
-     */
-    @Inject
-    PlacesManager placesManager;
     /**
      * Fragment containing the map
      */

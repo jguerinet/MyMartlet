@@ -44,7 +44,6 @@ import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlaceCategoriesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
-import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -94,11 +93,6 @@ public class ConfigDownloader extends Thread {
     @Inject
     @Named(PrefsModule.MIN_VERSION)
     protected IntPreference minVersionPref;
-    /**
-     * {@link PlacesManager} instance
-     */
-    @Inject
-    protected PlacesManager placesManager;
 
     /**
      * Default Constructor
