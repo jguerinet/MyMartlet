@@ -138,10 +138,12 @@ public class ConfigDownloader extends Thread {
                     .execute();
 
             if (response.isSuccessful()) {
-                updateDB(Place.class, response.body(), PlacesDB.class, imsPlacesPref, object -> {
-                    // TODO Set whether this place is a favorite or not
-                    object.save();
-                });
+                updateDB(Place.class, response.body(), PlacesDB.class, imsPlacesPref,
+                        (object, oldObject) -> {
+                            // Set whether the place was a favorite or not
+                            //  This will automatically save the new place
+                            object.setFavorite(oldObject.isFavorite());
+                        });
             }
         } catch (Exception e) {
             if (!(e instanceof UnknownHostException)) {
@@ -217,7 +219,7 @@ public class ConfigDownloader extends Thread {
 
                             // If there's a callback, use it
                             if (callback != null) {
-                                callback.update(newObject);
+                                callback.update(newObject, oldObject);
                             } else {
                                 // If not, call save
                                 newObject.save();
@@ -256,9 +258,10 @@ public class ConfigDownloader extends Thread {
         /**
          * Called when update code needs to be run
          *
-         * @param object Object to update
+         * @param object    Object to update
+         * @param oldObject Object we are updating from
          */
-        void update(T object);
+        void update(T object, T oldObject);
     }
 
     /**

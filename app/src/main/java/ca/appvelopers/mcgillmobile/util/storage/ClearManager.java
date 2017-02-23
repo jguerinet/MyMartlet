@@ -16,9 +16,11 @@
 
 package ca.appvelopers.mcgillmobile.util.storage;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.raizlabs.android.dbflow.config.FlowManager;
 
 import java.util.ArrayList;
 
@@ -33,8 +35,8 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
@@ -45,6 +47,10 @@ import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
  */
 @Singleton
 public class ClearManager {
+    /**
+     * App context
+     */
+    private final Context context;
     /**
      * {@link UsernamePreference} instance
      */
@@ -69,14 +75,11 @@ public class ClearManager {
      * {@link ScheduleManager} instance
      */
     private final ScheduleManager scheduleManager;
-    /**
-     * {@link PlacesManager} instance
-     */
-    private final PlacesManager placesManager;
 
     /**
      * Default Injectable Constructor
      *
+     * @param context              App context
      * @param usernamePref         {@link UsernamePreference} instance
      * @param passwordPref         {@link PasswordPreference} instance
      * @param rememberUsernamePref Remember Username {@link BooleanPreference}
@@ -85,17 +88,18 @@ public class ClearManager {
      * @param scheduleManager      {@link ScheduleManager} instance
      */
     @Inject
-    protected ClearManager(UsernamePreference usernamePref, PasswordPreference passwordPref,
+    protected ClearManager(Context context, UsernamePreference usernamePref,
+            PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
             HomepageManager homepageManager, TranscriptManager transcriptManager,
-            ScheduleManager scheduleManager, PlacesManager placesManager) {
+            ScheduleManager scheduleManager) {
+        this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
         this.transcriptManager = transcriptManager;
         this.scheduleManager = scheduleManager;
-        this.placesManager = placesManager;
     }
 
     /**
@@ -127,15 +131,15 @@ public class ClearManager {
 
         //Wishlist
         App.setWishlist(new ArrayList<CourseResult>());
-
-        //Favorite places
-        placesManager.clearFavorites();
     }
 
     /**
      * Clears all of the config info
      */
     public void config() {
+        // Places
+        FlowManager.getDatabase(PlacesDB.class).reset(context);
+
         App.setRegisterTerms(new ArrayList<Term>());
     }
 }
