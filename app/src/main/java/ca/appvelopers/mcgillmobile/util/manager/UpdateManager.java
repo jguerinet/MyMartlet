@@ -31,8 +31,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.Place_Table;
+import ca.appvelopers.mcgillmobile.model.place.Place;
+import ca.appvelopers.mcgillmobile.model.place.Place_Table;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
@@ -153,8 +153,9 @@ public class UpdateManager {
      */
     @SuppressWarnings("unchecked")
     private void updateSomething() {
-        // Delete the old places file
+        // Delete the old places and place types file
         context.deleteFile("places");
+        context.deleteFile("place_types");
 
         /* TODO Favorite migration is untested code */
 

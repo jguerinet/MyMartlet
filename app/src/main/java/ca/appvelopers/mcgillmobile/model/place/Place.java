@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model;
+package ca.appvelopers.mcgillmobile.model.place;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
@@ -124,7 +124,7 @@ public class Place extends BaseModel implements Serializable {
      * @return True if this place is in the user's favorites, false otherwise
      */
     public boolean isFavorite() {
-        return getCategories().contains(PlaceType.FAVORITES);
+        return getCategories().contains(Category.FAVORITES);
     }
 
     /* SETTERS */
@@ -133,12 +133,12 @@ public class Place extends BaseModel implements Serializable {
      * @param favorite True if this place should be in the user's favorites, false otherwise
      */
     public void setFavorite(boolean favorite) {
-        if (favorite && !getCategories().contains(PlaceType.FAVORITES)) {
+        if (favorite && !getCategories().contains(Category.FAVORITES)) {
             // Place is now a favorite, add the Id to the list of categories
-            getCategories().add(PlaceType.FAVORITES);
+            getCategories().add(Category.FAVORITES);
         } else if (!favorite) {
             // Place is no longer a favorite, remove the Id from the list of categories
-            getCategories().remove(Integer.valueOf(PlaceType.FAVORITES));
+            getCategories().remove(Integer.valueOf(Category.FAVORITES));
         }
         // Save the object back
         save();
@@ -147,13 +147,12 @@ public class Place extends BaseModel implements Serializable {
     /* HELPERS */
 
     /**
-     * Checks if this place is of the given type
-     *
-     * @param type The type
-     * @return True if it is part of the type, false otherwise
+     * @param category {@link Category} to check
+     * @return True if the place is within the given category, false otherwise
      */
-    public boolean isOfType(PlaceType type) {
-        return getCategories().contains(type.getId());
+    public boolean isWithinCategory(Category category) {
+        // Every place is in the all category
+        return category.getId() == Category.ALL || getCategories().contains(category.getId());
     }
 
     @Override

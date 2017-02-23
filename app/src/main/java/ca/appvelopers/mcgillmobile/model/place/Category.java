@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model;
+package ca.appvelopers.mcgillmobile.model.place;
 
 import android.content.Context;
+
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
 
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlaceCategoriesDB;
 
 /**
  * A type of place that the user can filter by
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class PlaceType implements Serializable {
+@Table(database = PlaceCategoriesDB.class, allFields = true)
+public class Category extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * The user's saved favorite places
@@ -39,29 +45,30 @@ public class PlaceType implements Serializable {
      */
     public static final int ALL = -1;
     /**
-     * The type name
+     * Category Id
      */
-    protected int id;
+    @PrimaryKey
+    int id;
     /**
-     * The type English String
+     * Category name in English
      */
-    protected String en;
+    String en;
     /**
-     * The type French String
+     * Category name in French
      */
-    protected String fr;
+    String fr;
 
     /**
      * Default Moshi Constructor
      */
-    protected PlaceType() {}
+    Category() {}
 
     /**
      * Constructor used to create the Favorites and All types
      *
      * @param favorites True if this is the favorites type, false if this is the all type
      */
-    public PlaceType(boolean favorites) {
+    public Category(boolean favorites) {
         this.id = favorites ? FAVORITES : ALL;
         this.en = null;
         this.fr = null;
@@ -80,13 +87,13 @@ public class PlaceType implements Serializable {
 
     /**
      * @param context  App context
-     * @param language The current language
-     * @return The String to use
+     * @param language Current app language
+     * @return String to use
      */
     public String getString(Context context, String language) {
         if (id == FAVORITES) {
             return context.getString(R.string.map_favorites);
-        } else if(id == ALL) {
+        } else if (id == ALL) {
             return context.getString(R.string.map_all);
         } else if (language.equals(LanguagePreference.FRENCH)) {
             return fr;
@@ -95,11 +102,11 @@ public class PlaceType implements Serializable {
     }
 
     /**
-     * @param object The object to compare
-     * @return True if they have the same name, false otherwise
+     * @param object object to compare
+     * @return True if they have the same Id, false otherwise
      */
     @Override
     public boolean equals(Object object) {
-        return object instanceof PlaceType && ((PlaceType) object).id == this.id;
+        return object instanceof Category && ((Category) object).id == this.id;
     }
 }

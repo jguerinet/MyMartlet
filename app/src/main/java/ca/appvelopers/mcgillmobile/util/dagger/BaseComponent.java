@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ import ca.appvelopers.mcgillmobile.ui.MapActivity;
 import ca.appvelopers.mcgillmobile.ui.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
@@ -71,7 +71,7 @@ public interface BaseComponent {
     void inject(WalkthroughAdapter adapter);
     void inject(HomepageListAdapter adapter);
     void inject(LanguageListAdapter adapter);
-    void inject(PlaceTypeListAdapter adapter);
+    void inject(CategoryListAdapter adapter);
     void inject(TermDialogHelper helper);
 
     void inject(ConfigDownloader downloader);
