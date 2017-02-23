@@ -363,7 +363,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                     break;
                 // Show the places for the current category
                 default:
-                    showPlace(place, place.first.isOfType(type));
+                    showPlace(place, place.first.isWithinCategory(type));
                     break;
             }
         }

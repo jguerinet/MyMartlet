@@ -147,13 +147,12 @@ public class Place extends BaseModel implements Serializable {
     /* HELPERS */
 
     /**
-     * Checks if this place is of the given type
-     *
-     * @param type The type
-     * @return True if it is part of the type, false otherwise
+     * @param category {@link Category} to check
+     * @return True if the place is within the given category, false otherwise
      */
-    public boolean isOfType(Category type) {
-        return getCategories().contains(type.getId());
+    public boolean isWithinCategory(Category category) {
+        // Every place is in the all category
+        return category.getId() == Category.ALL || getCategories().contains(category.getId());
     }
 
     @Override
