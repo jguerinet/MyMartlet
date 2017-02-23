@@ -125,10 +125,10 @@ public class ConfigDownloader extends Thread {
             }
         }
 
-        //Places
+        // Places
         try {
             Response<List<Place>> response = configService
-                    .places(null) //DateUtils.getRFC1123String(imsPlacesPref.getDate()))
+                    .places(DateUtils.getRFC1123String(imsPlacesPref.getDate()))
                     .execute();
 
             if (response.isSuccessful()) {
@@ -149,7 +149,7 @@ public class ConfigDownloader extends Thread {
         // Categories
         try {
             Response<List<Category>> response = configService
-                    .categories(null) //DateUtils.getRFC1123String(imsCategoriesPref.getDate()))
+                    .categories(DateUtils.getRFC1123String(imsCategoriesPref.getDate()))
                     .execute();
 
             if (response.isSuccessful()) {
