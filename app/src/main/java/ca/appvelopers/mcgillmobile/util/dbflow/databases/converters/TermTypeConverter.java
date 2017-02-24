@@ -25,6 +25,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
  * @author Julien Guerinet
  * @since 2.4.0
  */
+@com.raizlabs.android.dbflow.annotation.TypeConverter
 public class TermTypeConverter extends TypeConverter<String, Term> {
 
     @Override
