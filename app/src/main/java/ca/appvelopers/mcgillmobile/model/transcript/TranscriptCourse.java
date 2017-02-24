@@ -16,9 +16,14 @@
 
 package ca.appvelopers.mcgillmobile.model.transcript;
 
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import java.io.Serializable;
 
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptCourseDB;
 
 /**
  * A course that is part of the transcript
@@ -26,32 +31,43 @@ import ca.appvelopers.mcgillmobile.model.Term;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class TranscriptCourse implements Serializable{
+@Table(database = TranscriptCourseDB.class, allFields = true)
+public class TranscriptCourse extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Self-managed Id, used as a primary key
+     */
+    @PrimaryKey(autoincrement = true)
+    int id;
     /**
      * Course term
      */
-    private Term term;
+    Term term;
     /**
      * Course code (e.g. ECSE 428)
      */
-    private String code;
+    String code;
     /**
      * Course title
      */
-    private String title;
+    String title;
     /**
      * Course credits
      */
-    private double credits;
+    double credits;
     /**
      * User's grade in this course
      */
-    private String userGrade;
+    String userGrade;
     /**
      * Average grade in this course
      */
-    private String averageGrade;
+    String averageGrade;
+
+    /**
+     * DB Constructor
+     */
+    TranscriptCourse() {}
 
     /**
      * Default Constructor
