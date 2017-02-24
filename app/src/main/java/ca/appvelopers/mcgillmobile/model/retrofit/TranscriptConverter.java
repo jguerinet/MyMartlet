@@ -65,6 +65,7 @@ public class TranscriptConverter extends Converter.Factory
         List<Semester> semesters = new ArrayList<>();
         double cgpa = -1;
         double totalCredits = -1;
+        int semesterId = 0;
 
         for (int index = 0; index < rows.size(); index ++) {
             String text = rows.get(index).text();
@@ -286,8 +287,8 @@ public class TranscriptConverter extends Converter.Factory
                             termCredits = credits;
                         }
 
-                        courses.add(new TranscriptCourse(new Term(season, year), code, title,
-                                credits, grade, averageGrade));
+                        courses.add(new TranscriptCourse(semesterId, new Term(season, year), code,
+                                title, credits, grade, averageGrade));
                     }
 
                     //Breaks the loop if the next semester is reached
@@ -313,6 +314,7 @@ public class TranscriptConverter extends Converter.Factory
                             termCredits, termGPA, fullTime, courses);
 
                     semesters.add(semester);
+                    semesterId ++;
                 }
 
             }

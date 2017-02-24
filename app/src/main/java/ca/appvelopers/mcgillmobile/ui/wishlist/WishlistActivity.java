@@ -223,7 +223,7 @@ public class WishlistActivity extends DrawerActivity {
                     }
                     //Add course if it has not already been added
                     if (!courseExists) {
-                        mTranscriptCourses.add(new TranscriptCourse(course.getTerm(),
+                        mTranscriptCourses.add(new TranscriptCourse(-1, course.getTerm(),
                                 course.getCode(), course.getTitle(), course.getCredits(), "N/A",
                                 "N/A"));
                     }

@@ -22,6 +22,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
 
+import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptCourseDB;
 
@@ -39,6 +40,10 @@ public class TranscriptCourse extends BaseModel implements Serializable {
      */
     @PrimaryKey(autoincrement = true)
     int id;
+    /**
+     * Id of the {@link Semester} this is for
+     */
+    int semesterId;
     /**
      * Course term
      */
@@ -72,6 +77,7 @@ public class TranscriptCourse extends BaseModel implements Serializable {
     /**
      * Default Constructor
      *
+     * @param semesterId   Id of the semester this belongs to
      * @param term         Course term
      * @param code         Course code
      * @param title        Course title
@@ -79,8 +85,9 @@ public class TranscriptCourse extends BaseModel implements Serializable {
      * @param userGrade    User's grade
      * @param averageGrade Course average grade
      */
-    public TranscriptCourse(Term term, String code, String title, double credits, String userGrade,
-            String averageGrade) {
+    public TranscriptCourse(int semesterId, Term term, String code, String title, double credits,
+            String userGrade, String averageGrade) {
+        this.semesterId = semesterId;
         this.term = term;
         this.code = code;
         this.title = title;
