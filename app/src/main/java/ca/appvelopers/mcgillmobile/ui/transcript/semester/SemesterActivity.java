@@ -41,32 +41,32 @@ public class SemesterActivity extends BaseActivity {
      * Semester's bachelor degree
      */
     @BindView(R.id.semester_bachelor)
-    protected TextView mBachelor;
+    TextView bachelor;
     /**
      * Semester program
      */
     @BindView(R.id.semester_program)
-    protected TextView mProgram;
+    TextView program;
     /**
      * Semester GPA
      */
     @BindView(R.id.semester_GPA)
-    protected TextView mGPA;
+    TextView gpa;
     /**
      * Semester credits
      */
     @BindView(R.id.semester_credits)
-    protected TextView mCredits;
+    TextView credits;
     /**
      * User's status during this semester
      */
     @BindView(R.id.semester_full_time)
-    protected TextView mFullTime;
+    TextView fullTime;
     /**
      * Courses taken during this semester
      */
     @BindView(android.R.id.list)
-    protected RecyclerView mList;
+    RecyclerView list;
     /**
      * Adapter for the list of courses
      */
@@ -80,31 +80,32 @@ public class SemesterActivity extends BaseActivity {
         setUpToolbar(true);
         analytics.sendScreen("Transcript - Semester");
 
-        //Get the semester from the intent
+        // Get the semester from the intent
         Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);
 
         if (semester == null) {
             DialogHelper.error(this);
-            Timber.e(new IllegalArgumentException(), "Semester was null");
+            Timber.e(new IllegalArgumentException("Semester was null"));
             finish();
             return;
         }
 
-        //Set the title as this current semester
+        // Set the title as this current semester
         setTitle(semester.getSemesterName(this));
 
-        //Set the info up
-        mBachelor.setText(semester.getBachelor());
-        mProgram.setText(semester.getProgram());
-        mGPA.setText(getString(R.string.transcript_termGPA, String.valueOf(semester.getGPA())));
-        mCredits.setText(getString(R.string.semester_termCredits, semester.getCredits()));
-        mFullTime.setText(semester.isFullTime() ?
+        // Set the info up
+        bachelor.setText(semester.getBachelor());
+        program.setText(semester.getProgram());
+        gpa.setText(getString(R.string.transcript_termGPA, String.valueOf(semester.getGPA())));
+        credits.setText(getString(R.string.semester_termCredits, String.valueOf(
+                semester.getCredits())));
+        fullTime.setText(semester.isFullTime() ?
                 R.string.semester_fullTime : R.string.semester_partTime);
 
-        //Set up the courses list
-        mList.setLayoutManager(new LinearLayoutManager(this));
+        // Set up the courses list
+        list.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SemesterAdapter(semester.getId());
-        mList.setAdapter(adapter);
+        list.setAdapter(adapter);
     }
 
     @Override
