@@ -18,10 +18,13 @@ package ca.appvelopers.mcgillmobile.model;
 
 import android.content.Context;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
 import java.io.Serializable;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse_Table;
 
 /**
  * Contains information pertaining to each semester such as current program, term credits,
@@ -32,6 +35,10 @@ import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
  */
 public class Semester implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Id if this semester
+     */
+    private int id;
     /**
      * The semester term
      */
@@ -59,7 +66,7 @@ public class Semester implements Serializable {
     /**
      * The list of courses taken during this semester
      */
-    private List<TranscriptCourse> courses;
+    private transient List<TranscriptCourse> courses;
 
     /**
      * Default Constructor
@@ -71,17 +78,15 @@ public class Semester implements Serializable {
      * @param gpa          Semester GPA
      * @param fullTime     True if the user was a full-time student during this semester,
      *                     false otherwise
-     * @param courses      The list of courses taken during this semester
      */
     public Semester(Term term, String program, String bachelor, double credits, double gpa,
-            boolean fullTime, List<TranscriptCourse> courses) {
+            boolean fullTime) {
         this.term = term;
         this.program = program;
         this.bachelor = bachelor;
         this.credits = credits;
         this.gpa = gpa;
         this.fullTime = fullTime;
-        this.courses = courses;
     }
 
     /* GETTERS */
@@ -140,6 +145,12 @@ public class Semester implements Serializable {
      * @return The semester's courses
      */
     public List<TranscriptCourse> getCourses() {
+        if (courses == null) {
+            courses = SQLite.select()
+                    .from(TranscriptCourse.class)
+                    .where(TranscriptCourse_Table.semesterId.eq(id))
+                    .queryList();
+        }
         return courses;
     }
 }

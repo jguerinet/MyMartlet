@@ -125,7 +125,7 @@ public class TranscriptConverter extends Converter.Factory
                 double termCredits = 0;
                 double termGPA = 0.0;
                 boolean fullTime = false;
-                List<TranscriptCourse> courses = new ArrayList<>();
+                boolean hasCourse = false;
 
                 //Increment the index before starting the semester loop
                 int semesterIndex = index + 1;
@@ -287,8 +287,12 @@ public class TranscriptConverter extends Converter.Factory
                             termCredits = credits;
                         }
 
-                        courses.add(new TranscriptCourse(semesterId, new Term(season, year), code,
-                                title, credits, grade, averageGrade));
+                        // There is at least one course
+                        hasCourse = true;
+
+                        TranscriptCourse course = new TranscriptCourse(semesterId,
+                                new Term(season, year), code, title, credits, grade, averageGrade);
+                        course.save();
                     }
 
                     //Breaks the loop if the next semester is reached
@@ -307,11 +311,11 @@ public class TranscriptConverter extends Converter.Factory
                     }
                 }
 
-                //Check if there are any courses associated with the semester
-                //If not, don't add the semester to the list of semesters
-                if (!courses.isEmpty()) {
+                // Check if there are any courses associated with the semester
+                //  If not, don't add the semester to the list of semesters
+                if (hasCourse) {
                     Semester semester = new Semester(new Term(season, year), program, bachelor,
-                            termCredits, termGPA, fullTime, courses);
+                            termCredits, termGPA, fullTime);
 
                     semesters.add(semester);
                     semesterId ++;
