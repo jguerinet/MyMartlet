@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui.transcript.semester;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
@@ -66,9 +67,13 @@ public class SemesterActivity extends BaseActivity {
      */
     @BindView(android.R.id.list)
     protected RecyclerView mList;
+    /**
+     * Adapter for the list of courses
+     */
+    private SemesterAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_semester);
         ButterKnife.bind(this);
@@ -98,6 +103,13 @@ public class SemesterActivity extends BaseActivity {
 
         //Set up the courses list
         mList.setLayoutManager(new LinearLayoutManager(this));
-        mList.setAdapter(new SemesterAdapter(semester.getCourses()));
+        adapter = new SemesterAdapter(semester.getId());
+        mList.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.update();
     }
 }

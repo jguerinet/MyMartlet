@@ -17,99 +17,125 @@
 package ca.appvelopers.mcgillmobile.ui.transcript.semester;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.guerinet.utils.RecyclerViewBaseAdapter;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse_Table;
 
 /**
  * Populates the courses list in SemesterActivity
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.CourseHolder> {
+class SemesterAdapter extends RecyclerViewBaseAdapter {
+    /**
+     * Id of the semester we are currently looking at
+     */
+    private final int semesterId;
     /**
      * List of courses
      */
-    private List<TranscriptCourse> mCourses;
+    private final List<TranscriptCourse> courses;
 
     /**
      * Default Constructor
      *
-     * @param courses Courses to display
+     * @param semesterId Id of the {@link Semester} we are currently looking at
      */
-    public SemesterAdapter(List<TranscriptCourse> courses) {
-        mCourses = courses;
+    SemesterAdapter(int semesterId) {
+        super(null);
+        this.semesterId = semesterId;
+        this.courses = new ArrayList<>();
     }
 
     @Override
-    public CourseHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new CourseHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_transcript_course, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(CourseHolder holder, int position) {
-        holder.bind(mCourses.get(position));
+    public int getItemCount() {
+        return courses.size();
     }
 
     @Override
-    public int getItemCount() {
-        return mCourses.size();
+    public void update() {
+        courses.clear();
+
+        // Get all of the courses from the DB
+        SQLite.select()
+                .from(TranscriptCourse.class)
+                .where(TranscriptCourse_Table.semesterId.eq(semesterId))
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
+                    courses.addAll(tResult);
+                    notifyDataSetChanged();
+                })
+                .execute();
     }
 
-    class CourseHolder extends RecyclerView.ViewHolder {
+    class CourseHolder extends BaseHolder {
         /**
          * Course Code
          */
         @BindView(R.id.course_code)
-        protected TextView mCode;
+        TextView code;
         /**
          * User grade
          */
         @BindView(R.id.course_grade)
-        protected TextView mGrade;
+        TextView grade;
         /**
          * Course title
          */
         @BindView(R.id.course_title)
-        protected TextView mTitle;
+        TextView title;
         /**
          * Course credits
          */
         @BindView(R.id.course_credits)
-        protected TextView mCredits;
+        TextView credits;
         /**
          * Course average grade
          */
         @BindView(R.id.course_average)
-        protected TextView mAverageGrade;
+        TextView averageGrade;
 
-        public CourseHolder(View itemView) {
+        CourseHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
         }
 
-        public void bind(TranscriptCourse course) {
+        @Override
+        public void bind(int position) {
+            TranscriptCourse course = courses.get(position);
             Context context = itemView.getContext();
 
-            mCode.setText(course.getCourseCode());
-            mGrade.setText(course.getUserGrade());
-            mTitle.setText(course.getCourseTitle());
-            mCredits.setText(context.getString(R.string.course_credits, course.getCredits()));
+            code.setText(course.getCourseCode());
+            grade.setText(course.getUserGrade());
+            title.setText(course.getCourseTitle());
+            credits.setText(context.getString(R.string.course_credits,
+                    String.valueOf(course.getCredits())));
 
-            //Don't display average if it does not exist
+            // Don't display average if it does not exist
             if (!course.getAverageGrade().equals("")) {
-                mAverageGrade.setText(
-                        context.getString(R.string.course_average, course.getAverageGrade()));
+                averageGrade.setText(context.getString(R.string.course_average,
+                        course.getAverageGrade()));
             }
         }
     }

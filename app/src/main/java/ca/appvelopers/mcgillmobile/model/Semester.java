@@ -92,6 +92,13 @@ public class Semester implements Serializable {
     /* GETTERS */
 
     /**
+     * @return Semester Id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
      * @return Semester term
      */
     public Term getTerm() {

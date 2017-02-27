@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,7 +126,7 @@ dependencies {
     compile 'com.google.dagger:dagger:2.6.1'
     apt 'com.google.dagger:dagger-compiler:2.6.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.guerinet:android-utils:1.1.5'
+    compile 'com.guerinet:android-utils:1.2.0'
     compile 'com.guerinet:form-generator:2.2.3'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
