@@ -18,17 +18,12 @@ package ca.appvelopers.mcgillmobile.model;
 
 import android.content.Context;
 
-import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
-import java.util.List;
 
-import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
-import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse_Table;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.SemesterDB;
 
 /**
@@ -70,11 +65,6 @@ public class Semester extends BaseModel implements Serializable {
      * True if the user was a full-time student during this semester, false otherwise
      */
     boolean fullTime;
-    /**
-     * The list of courses taken during this semester
-     */
-    @ColumnIgnore
-    private transient List<TranscriptCourse> courses;
 
     /**
      * DB Constructor
@@ -161,18 +151,5 @@ public class Semester extends BaseModel implements Serializable {
      */
     public boolean isFullTime() {
         return fullTime;
-    }
-
-    /**
-     * @return The semester's courses
-     */
-    public List<TranscriptCourse> getCourses() {
-        if (courses == null) {
-            courses = SQLite.select()
-                    .from(TranscriptCourse.class)
-                    .where(TranscriptCourse_Table.semesterId.eq(id))
-                    .queryList();
-        }
-        return courses;
     }
 }
