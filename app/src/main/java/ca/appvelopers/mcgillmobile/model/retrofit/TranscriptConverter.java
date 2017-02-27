@@ -292,6 +292,7 @@ public class TranscriptConverter extends Converter.Factory
 
                         TranscriptCourse course = new TranscriptCourse(semesterId,
                                 new Term(season, year), code, title, credits, grade, averageGrade);
+                        // TODO We can't save here
                         course.save();
                     }
 
@@ -316,6 +317,7 @@ public class TranscriptConverter extends Converter.Factory
                 if (hasCourse) {
                     Semester semester = new Semester(semesterId, new Term(season, year), program,
                             bachelor, termCredits, termGPA, fullTime);
+                    // TODO We can't save here
                     semester.save();
                     semesterId ++;
                 }
