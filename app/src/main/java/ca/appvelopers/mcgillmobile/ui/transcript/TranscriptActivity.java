@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -144,6 +144,6 @@ public class TranscriptActivity extends DrawerActivity {
         mCGPA.setText(getString(R.string.transcript_CGPA, transcriptManager.get().getCGPA()));
         mTotalCredits.setText(getString(R.string.transcript_credits,
                 transcriptManager.get().getTotalCredits()));
-        mList.setAdapter(new TranscriptAdapter(transcriptManager.get().getSemesters()));
+        mList.setAdapter(new TranscriptAdapter());
     }
 }

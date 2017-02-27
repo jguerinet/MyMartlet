@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,18 @@ package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.guerinet.utils.RecyclerViewBaseAdapter;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.transcript.semester.SemesterActivity;
@@ -38,71 +40,77 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.SemesterHolder> {
+class TranscriptAdapter extends RecyclerViewBaseAdapter {
     /**
-     * List of semesters
+     * List of {@link Semester}s
      */
-    private List<Semester> mSemesters;
+    private final List<Semester> semesters;
 
     /**
      * Default Constructor
-     *
-     * @param semesters List of semesters
      */
-    public TranscriptAdapter(List<Semester> semesters) {
-        mSemesters = semesters;
+    TranscriptAdapter() {
+        super(null);
+        this.semesters = new ArrayList<>();
     }
 
     @Override
-    public SemesterHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new SemesterHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_semester, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(SemesterHolder holder, int position) {
-        holder.bind(mSemesters.get(position));
+    public int getItemCount() {
+        return semesters.size();
     }
 
     @Override
-    public int getItemCount() {
-        return mSemesters.size();
+    public void update() {
+        semesters.clear();
+        SQLite.select()
+                .from(Semester.class)
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
+                    semesters.addAll(tResult);
+                    notifyDataSetChanged();
+                })
+                .execute();
     }
 
-    class SemesterHolder extends RecyclerView.ViewHolder {
+    class SemesterHolder extends BaseHolder {
         /**
          * The semester name
          */
         @BindView(R.id.semester_name)
-        protected TextView mName;
+        TextView name;
         /**
          * The user's GPA for this semester
          */
         @BindView(R.id.semester_gpa)
-        protected TextView mGPA;
+        TextView gpa;
 
-        public SemesterHolder(View itemView) {
+        SemesterHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final Semester semester) {
-            final Context context = itemView.getContext();
+        @Override
+        public void bind(int position) {
+            Semester semester = semesters.get(position);
+            Context context = itemView.getContext();
 
-            mName.setText(semester.getSemesterName(context));
-            mGPA.setText(context.getString(R.string.transcript_termGPA,
+            name.setText(semester.getSemesterName(context));
+            gpa.setText(context.getString(R.string.transcript_termGPA,
                     String.valueOf(semester.getGPA())));
 
-            //OnClickListener
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, SemesterActivity.class)
-                            .putExtra(Constants.SEMESTER, semester);
-                    context.startActivity(intent);
-                }
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, SemesterActivity.class)
+                        .putExtra(Constants.SEMESTER, semester.getId());
+                context.startActivity(intent);
             });
-
         }
     }
 }
