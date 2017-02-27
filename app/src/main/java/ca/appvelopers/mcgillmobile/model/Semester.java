@@ -18,13 +18,18 @@ package ca.appvelopers.mcgillmobile.model;
 
 import android.content.Context;
 
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse_Table;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.SemesterDB;
 
 /**
  * Contains information pertaining to each semester such as current program, term credits,
@@ -33,40 +38,48 @@ import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse_Table;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Semester implements Serializable {
+@Table(database = SemesterDB.class, allFields = true)
+public class Semester extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * Id if this semester
      */
-    private int id;
+    @PrimaryKey(autoincrement = true)
+    int id;
     /**
      * The semester term
      */
-    private Term term;
+    Term term;
     /**
      * The user's program for this semester
      */
-    private String program;
+    String program;
     /**
      * The user's bachelor name for this semester
      */
-    private String bachelor;
+    String bachelor;
     /**
      * The number of credits for this semester
      */
-    private double credits;
+    double credits;
     /**
      * The semester GPA
      */
-    private double gpa;
+    double gpa;
     /**
      * True if the user was a full-time student during this semester, false otherwise
      */
-    private boolean fullTime;
+    boolean fullTime;
     /**
      * The list of courses taken during this semester
      */
+    @ColumnIgnore
     private transient List<TranscriptCourse> courses;
+
+    /**
+     * DB Constructor
+     */
+    Semester() {}
 
     /**
      * Default Constructor
