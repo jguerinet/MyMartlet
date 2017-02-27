@@ -108,7 +108,7 @@ class TranscriptAdapter extends RecyclerViewBaseAdapter {
 
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, SemesterActivity.class)
-                        .putExtra(Constants.SEMESTER, semester.getId());
+                        .putExtra(Constants.ID, semester.getId());
                 context.startActivity(intent);
             });
         }

@@ -22,10 +22,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.Semester_Table;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -80,8 +83,11 @@ public class SemesterActivity extends BaseActivity {
         setUpToolbar(true);
         analytics.sendScreen("Transcript - Semester");
 
-        // Get the semester from the intent
-        Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);
+        // Try finding the semester
+        Semester semester = SQLite.select()
+                .from(Semester.class)
+                .where(Semester_Table.id.eq(getIntent().getIntExtra(Constants.ID, -1)))
+                .querySingle();
 
         if (semester == null) {
             DialogHelper.error(this);

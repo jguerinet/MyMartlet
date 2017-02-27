@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,10 @@ public class Constants {
 
     /* INTENT KEYS */
 
+    /**
+     * Passes an Id via an intent
+     */
+    public static final String ID = "id";
     /**
      * Key used to pass a semester via an intent
      */
