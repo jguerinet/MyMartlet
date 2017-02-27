@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -257,7 +257,7 @@ public class SearchActivity extends DrawerActivity {
         int endMinute;
         boolean endAM;
 
-        if (Device.isMarshmallow()) {
+        if (Device.isAtLeastMarshmallow()) {
             startHour = mStartTime.getHour() % 12;
             startMinute = mStartTime.getMinute();
             startAM = mStartTime.getHour() < 12;
@@ -373,7 +373,7 @@ public class SearchActivity extends DrawerActivity {
     @SuppressWarnings("deprecation, NewApi")
     private void reset() {
         //Reset all of the views
-        if (Device.isMarshmallow()) {
+        if (Device.isAtLeastMarshmallow()) {
             mStartTime.setHour(0);
             mStartTime.setMinute(0);
             mEndTime.setHour(0);
