@@ -314,10 +314,9 @@ public class TranscriptConverter extends Converter.Factory
                 // Check if there are any courses associated with the semester
                 //  If not, don't add the semester to the list of semesters
                 if (hasCourse) {
-                    Semester semester = new Semester(new Term(season, year), program, bachelor,
-                            termCredits, termGPA, fullTime);
-
-                    semesters.add(semester);
+                    Semester semester = new Semester(semesterId, new Term(season, year), program,
+                            bachelor, termCredits, termGPA, fullTime);
+                    semester.save();
                     semesterId ++;
                 }
 

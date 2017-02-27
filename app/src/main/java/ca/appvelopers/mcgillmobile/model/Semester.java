@@ -44,7 +44,7 @@ public class Semester extends BaseModel implements Serializable {
     /**
      * Id if this semester
      */
-    @PrimaryKey(autoincrement = true)
+    @PrimaryKey
     int id;
     /**
      * The semester term
@@ -84,6 +84,7 @@ public class Semester extends BaseModel implements Serializable {
     /**
      * Default Constructor
      *
+     * @param semesterId   Id of the current semester
      * @param term         Semester term
      * @param program      Semester's program name
      * @param bachelor     Semester's bachelor name
@@ -92,8 +93,9 @@ public class Semester extends BaseModel implements Serializable {
      * @param fullTime     True if the user was a full-time student during this semester,
      *                     false otherwise
      */
-    public Semester(Term term, String program, String bachelor, double credits, double gpa,
-            boolean fullTime) {
+    public Semester(int semesterId, Term term, String program, String bachelor, double credits,
+            double gpa, boolean fullTime) {
+        this.id = semesterId;
         this.term = term;
         this.program = program;
         this.bachelor = bachelor;
