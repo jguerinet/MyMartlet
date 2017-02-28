@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,16 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 
 /**
  * The user's unofficial transcript
@@ -26,20 +33,32 @@ import java.util.List;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Transcript implements Serializable {
+@Table(database = TranscriptDB.class, allFields = true)
+public class Transcript extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Transcript Id
+     */
+    @PrimaryKey(autoincrement = true)
+    int id;
     /**
      * User's cumulative GPA
      */
-    private double cgpa;
+    double cgpa;
     /**
      * User's total number of credits
      */
-    private double totalCredits;
+    double totalCredits;
     /**
      * List of semesters
      */
-    private List<Semester> semesters;
+    @ColumnIgnore
+    private transient List<Semester> semesters;
+
+    /**
+     * DB Constructor
+     */
+    Transcript() {}
 
     /**
      * Default Constructor
