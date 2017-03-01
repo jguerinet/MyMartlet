@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class LanguagePreference extends StringPreference {
      */
     @Inject
     LanguagePreference(SharedPreferences prefs, Context context) {
-        super(prefs, PrefsModule.LANGUAGE, ENGLISH);
+        super(prefs, "language", ENGLISH);
         this.context = context;
     }
 
