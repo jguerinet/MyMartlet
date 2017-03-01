@@ -39,7 +39,6 @@ import javax.inject.Inject;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.dagger.AppModule;
 import ca.appvelopers.mcgillmobile.util.dagger.BaseComponent;
 import ca.appvelopers.mcgillmobile.util.dagger.DaggerBaseComponent;
@@ -114,8 +113,8 @@ public class App extends Application {
         }
 
         // Fabric: Twitter, Crashlytics
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(Passwords.TWITTER_KEY,
-                Passwords.TWITTER_SECRET);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(BuildConfig.TWITTER_KEY,
+                BuildConfig.TWITTER_SECRET);
         @SuppressWarnings("PointlessBooleanExpression")
         Crashlytics crashlytics = new Crashlytics.Builder().core(new CrashlyticsCore.Builder()
                 .disabled(!BuildConfig.REPORT_CRASHES).build()).build();
