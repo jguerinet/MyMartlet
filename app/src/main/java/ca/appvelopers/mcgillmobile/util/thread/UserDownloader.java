@@ -35,7 +35,6 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter;
@@ -44,7 +43,6 @@ import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -64,11 +62,6 @@ public abstract class UserDownloader extends Thread {
      */
     @Inject
     protected McGillService mcGillService;
-    /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    protected TranscriptManager transcriptManager;
     /**
      * {@link ScheduleManager} instance
      */
@@ -105,9 +98,6 @@ public abstract class UserDownloader extends Thread {
                 update(context.getString(R.string.downloading_transcript));
             }
 
-            //Set the old transcript instance to use for the semesters if ever we don't get to
-            //  download the new one
-            Transcript transcript = transcriptManager.get();
             try {
                 TranscriptConverter.TranscriptResponse transcriptResponse =
                         mcGillService.transcript().execute().body();
