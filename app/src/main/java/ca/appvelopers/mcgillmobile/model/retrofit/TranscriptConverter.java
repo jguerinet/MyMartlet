@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.Season;
@@ -362,6 +363,9 @@ public class TranscriptConverter extends Converter.Factory
             this.transcript = transcript;
             this.semesters = semesters;
             this.courses = courses;
+
+            // Inverse the semesters to get them in reverse chronological order
+            Collections.reverse(this.semesters);
         }
     }
 }
