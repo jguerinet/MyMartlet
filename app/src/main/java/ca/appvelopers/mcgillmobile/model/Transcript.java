@@ -16,14 +16,11 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
-import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
 
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 
@@ -49,11 +46,6 @@ public class Transcript extends BaseModel implements Serializable {
      * User's total number of credits
      */
     double totalCredits;
-    /**
-     * List of semesters
-     */
-    @ColumnIgnore
-    private transient List<Semester> semesters;
 
     /**
      * DB Constructor
@@ -65,14 +57,10 @@ public class Transcript extends BaseModel implements Serializable {
      *
      * @param cgpa         CGPA
      * @param totalCredits Total number of credits
-     * @param semesters    List of semesters
      */
-    public Transcript(double cgpa, double totalCredits, List<Semester> semesters) {
+    public Transcript(double cgpa, double totalCredits) {
         this.cgpa = cgpa;
         this.totalCredits = totalCredits;
-        this.semesters = semesters;
-        //Store the semesters in reverse chronological order
-        Collections.reverse(this.semesters);
     }
 
     /* GETTERS */
@@ -89,12 +77,5 @@ public class Transcript extends BaseModel implements Serializable {
      */
     public double getTotalCredits() {
         return totalCredits;
-    }
-
-    /**
-     * @return The semesters (in reverse chronological order)
-     */
-    public List<Semester> getSemesters() {
-        return semesters;
     }
 }

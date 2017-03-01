@@ -322,7 +322,7 @@ public class TranscriptConverter extends Converter.Factory
             }
         }
 
-        return new TranscriptResponse(new Transcript(cgpa, totalCredits, null), semesters, courses);
+        return new TranscriptResponse(new Transcript(cgpa, totalCredits), semesters, courses);
     }
 
     /**

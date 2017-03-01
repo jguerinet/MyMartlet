@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.guerinet.utils.Utils;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.io.IOException;
 import java.util.List;
@@ -118,8 +119,11 @@ public abstract class UserDownloader extends Thread {
             //The current term
             Term currentTerm = Term.currentTerm();
 
-            //Go through the semesters
-            for (Semester semester: transcript.getSemesters()) {
+            // Go through the semesters
+            List<Semester> semesters = SQLite.select()
+                    .from(Semester.class)
+                    .queryList();
+            for (Semester semester: semesters) {
                 //Get the term of this semester
                 Term term = semester.getTerm();
 
