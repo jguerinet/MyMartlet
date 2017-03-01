@@ -41,7 +41,7 @@ import timber.log.Timber;
  * @since 2.2.0
  */
 public class TranscriptConverter extends Converter.Factory
-        implements Converter<ResponseBody, Transcript> {
+        implements Converter<ResponseBody, TranscriptConverter.TranscriptResponse> {
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type,
             Annotation[] annotations, Retrofit retrofit) {
@@ -53,7 +53,7 @@ public class TranscriptConverter extends Converter.Factory
     }
 
     @Override
-    public Transcript convert(ResponseBody value) throws IOException {
+    public TranscriptResponse convert(ResponseBody value) throws IOException {
         //Parse ResponseBody HTML String into a document
         Elements rows = Jsoup.parse(value.string()).getElementsByClass("fieldmediumtext");
 
@@ -321,7 +321,7 @@ public class TranscriptConverter extends Converter.Factory
             }
         }
 
-        return new Transcript(cgpa, totalCredits, semesters);
+        return new TranscriptResponse(new Transcript(cgpa, totalCredits, null), semesters, courses);
     }
 
     /**
