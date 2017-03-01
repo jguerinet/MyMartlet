@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.transcript;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,32 +54,38 @@ public class TranscriptActivity extends DrawerActivity {
      * User's CGPA
      */
     @BindView(R.id.transcript_cgpa)
-    protected TextView mCGPA;
+    TextView cgpa;
     /**
      * User's total credits
      */
     @BindView(R.id.transcript_credits)
-    protected TextView mTotalCredits;
+    TextView totalCredits;
     /**
      * List of semesters
      */
     @BindView(android.R.id.list)
-    protected RecyclerView mList;
+    RecyclerView list;
     /**
      * {@link TranscriptManager} instance
      */
     @Inject
-    protected TranscriptManager transcriptManager;
+    TranscriptManager transcriptManager;
+    /**
+     * Adapter for the semester list
+     */
+    private TranscriptAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transcript);
         ButterKnife.bind(this);
         App.component(this).inject(this);
         analytics.sendScreen("Transcript");
 
-        mList.setLayoutManager(new LinearLayoutManager(this));
+        list.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new TranscriptAdapter(this);
+        list.setAdapter(adapter);
         update();
     }
 
@@ -94,14 +101,15 @@ public class TranscriptActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 refresh();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
+    @HomepageManager.Homepage
+    protected int getCurrentPage() {
         return HomepageManager.TRANSCRIPT;
     }
 
@@ -125,7 +133,7 @@ public class TranscriptActivity extends DrawerActivity {
             public void onFailure(Call<Transcript> call, Throwable t) {
                 Timber.e(t, "Error refreshing transcript");
                 showToolbarProgress(false);
-                //If this is a MinervaException, broadcast it
+                // If this is a MinervaException, broadcast it
                 if (t instanceof MinervaException) {
                     LocalBroadcastManager.getInstance(TranscriptActivity.this)
                             .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
@@ -140,10 +148,11 @@ public class TranscriptActivity extends DrawerActivity {
      * Updates the view
      */
     private void update() {
-        //Reload all of the info
-        mCGPA.setText(getString(R.string.transcript_CGPA, transcriptManager.get().getCGPA()));
-        mTotalCredits.setText(getString(R.string.transcript_credits,
-                transcriptManager.get().getTotalCredits()));
-        mList.setAdapter(new TranscriptAdapter(transcriptManager.get().getSemesters()));
+        // Reload all of the info
+        cgpa.setText(getString(R.string.transcript_CGPA,
+                String.valueOf(transcriptManager.get().getCGPA())));
+        totalCredits.setText(getString(R.string.transcript_credits,
+                String.valueOf(transcriptManager.get().getTotalCredits())));
+        adapter.update();
     }
 }
