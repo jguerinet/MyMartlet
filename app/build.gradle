@@ -16,7 +16,7 @@
 
 // Setting up the release keystore properties
 def props = new Properties()
-props.load(new FileInputStream(rootProject.file("util/signing.properties")))
+props.load(new FileInputStream(rootProject.file("util/private.properties")))
 
 buildscript {
     repositories {
