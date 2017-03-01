@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import com.guerinet.utils.prefs.StringPreference;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.R;
 
@@ -30,6 +31,7 @@ import ca.appvelopers.mcgillmobile.R;
  * @author Julien Guerinet
  * @since 2.0.4
  */
+@Singleton
 public class LanguagePreference extends StringPreference {
     /**
      * English language code

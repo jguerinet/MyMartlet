@@ -37,7 +37,7 @@ public class PasswordPreference extends StringPreference {
      * @param prefs {@link SharedPreferences} instance
      */
     @Inject
-    public PasswordPreference(SharedPreferences prefs) {
+    PasswordPreference(SharedPreferences prefs) {
         super(prefs, "password", null);
     }
 
