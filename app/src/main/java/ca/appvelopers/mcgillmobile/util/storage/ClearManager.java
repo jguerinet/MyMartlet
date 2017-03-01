@@ -39,7 +39,6 @@ import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
  * Clears objects from internal storage or {@link SharedPreferences}
@@ -69,10 +68,6 @@ public class ClearManager {
      */
     private final HomepageManager homepageManager;
     /**
-     * {@link TranscriptManager} instance
-     */
-    private final TranscriptManager transcriptManager;
-    /**
      * {@link ScheduleManager} instance
      */
     private final ScheduleManager scheduleManager;
@@ -85,22 +80,18 @@ public class ClearManager {
      * @param passwordPref         {@link PasswordPreference} instance
      * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param homepageManager      {@link HomepageManager} instance
-     * @param transcriptManager    {@link TranscriptManager} instance
      * @param scheduleManager      {@link ScheduleManager} instance
-     * @param placesManager        {@link PlacesManager} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
-            HomepageManager homepageManager, TranscriptManager transcriptManager,
-            ScheduleManager scheduleManager) {
+            HomepageManager homepageManager, ScheduleManager scheduleManager) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
-        this.transcriptManager = transcriptManager;
         this.scheduleManager = scheduleManager;
     }
 
