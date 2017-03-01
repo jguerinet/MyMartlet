@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.util.dbflow.databases.converters;
+package ca.appvelopers.mcgillmobile.util.dbflow.converters;
 
 import com.raizlabs.android.dbflow.converter.TypeConverter;
 
