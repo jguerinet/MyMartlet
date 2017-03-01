@@ -124,11 +124,11 @@
         <!-- Facebook -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/FACEBOOK_APP_ID" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider828093890556007"
+            android:authorities="@string/FACEBOOK_PROVIDER"
             android:exported="true" />
 
         <activity
