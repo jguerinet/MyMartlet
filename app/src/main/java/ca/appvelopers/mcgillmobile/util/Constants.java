@@ -49,10 +49,6 @@ public class Constants {
     /* INTERNAL STORAGE */
 
     /**
-     * The file name where the user's ebill is stored
-     */
-    public static final String EBILL_FILE = "ebill";
-    /**
      * The file name where the user's default term is stored
      */
     public static final String DEFAULT_TERM_FILE = "default_term";

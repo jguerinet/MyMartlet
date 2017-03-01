@@ -68,6 +68,7 @@ public interface BaseComponent {
     void inject(McGillManager mcGillManager);
     void inject(BootReceiver receiver);
 
+    /* Adapters */
     void inject(WalkthroughAdapter adapter);
     void inject(HomepageListAdapter adapter);
     void inject(LanguageListAdapter adapter);

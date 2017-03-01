@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +54,10 @@ public class EbillActivity extends DrawerActivity {
      */
     @BindView(android.R.id.list)
     protected RecyclerView mList;
+    /**
+     * Adapter for the list of {@link Statement}s
+     */
+    private EbillAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +67,8 @@ public class EbillActivity extends DrawerActivity {
         analytics.sendScreen("Ebill");
 
         mList.setLayoutManager(new LinearLayoutManager(this));
-        update();
+        adapter = new EbillAdapter();
+        mList.setAdapter(adapter);
     }
 
     @Override
@@ -99,9 +105,11 @@ public class EbillActivity extends DrawerActivity {
         mcGillService.ebill().enqueue(new Callback<List<Statement>>() {
             @Override
             public void onResponse(Call<List<Statement>> call, Response<List<Statement>> response) {
-                App.setEbill(response.body());
-                showToolbarProgress(false);
-                update();
+                DBUtils.replaceDB(EbillActivity.this, StatementsDB.NAME, Statement.class,
+                        response.body(), () -> {
+                            showToolbarProgress(false);
+                            adapter.update();
+                        });
             }
 
             @Override
@@ -117,12 +125,5 @@ public class EbillActivity extends DrawerActivity {
                 }
             }
         });
-    }
-
-    /**
-     * Updates the view
-     */
-    private void update() {
-        mList.setAdapter(new EbillAdapter(App.getEbill()));
     }
 }

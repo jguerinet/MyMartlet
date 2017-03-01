@@ -153,9 +153,10 @@ public class UpdateManager {
      */
     @SuppressWarnings("unchecked")
     private void updateSomething() {
-        // Delete the old places and place types file
+        // Delete the old files
         context.deleteFile("places");
         context.deleteFile("place_types");
+        context.deleteFile("ebill");
 
         /* TODO Favorite migration is untested code */
 

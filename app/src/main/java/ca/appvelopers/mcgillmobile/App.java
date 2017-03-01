@@ -173,16 +173,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The user's ebill {@link Statement}s
-     */
-    public static List<Statement> getEbill(){
-        if(ebill == null){
-            ebill = Load.ebill();
-        }
-        return ebill;
-    }
-
-    /**
      * @return The user's chosen default {@link Term}
      */
     public static Term getDefaultTerm(){
@@ -215,14 +205,6 @@ public class App extends Application {
     public static void setRegisterTerms(List<Term> terms) {
         App.registerTerms = terms;
         Save.registerTerms();
-    }
-
-    /**
-     * @param ebill The user's ebill {@link Statement}s
-     */
-    public static void setEbill(List<Statement> ebill){
-        App.ebill = ebill;
-        Save.ebill();
     }
 
     /**

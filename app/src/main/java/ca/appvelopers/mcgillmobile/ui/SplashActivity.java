@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -410,7 +411,8 @@ public class SplashActivity extends BaseActivity {
 
             //Check if we need to download everything or only the essential stuff
             //We need to download everything if there is null info
-            boolean downloadEverything = transcriptManager.get() == null || App.getEbill() == null;
+            boolean downloadEverything = transcriptManager.get() == null ||
+                    !getDatabasePath(StatementsDB.FULL_NAME).exists();
 
             //If we need to download everything, do it synchronously. If not, do it asynchronously
             UserDownloader userDownloader = new UserDownloader(SplashActivity.this) {

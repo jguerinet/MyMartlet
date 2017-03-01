@@ -29,11 +29,14 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.transcript.semester.SemesterActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
  * Populates the list of semesters on the transcript page
@@ -83,12 +86,12 @@ class TranscriptAdapter extends RecyclerViewBaseAdapter {
 
     class SemesterHolder extends BaseHolder {
         /**
-         * The semester name
+         * Semester name
          */
         @BindView(R.id.semester_name)
         TextView name;
         /**
-         * The user's GPA for this semester
+         * User's GPA for this semester
          */
         @BindView(R.id.semester_gpa)
         TextView gpa;
