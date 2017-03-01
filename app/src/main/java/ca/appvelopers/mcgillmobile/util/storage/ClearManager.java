@@ -30,11 +30,11 @@ import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
-import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
@@ -86,6 +86,7 @@ public class ClearManager {
      * @param homepageManager      {@link HomepageManager} instance
      * @param transcriptManager    {@link TranscriptManager} instance
      * @param scheduleManager      {@link ScheduleManager} instance
+     * @param placesManager        {@link PlacesManager} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
@@ -120,8 +121,8 @@ public class ClearManager {
         //Transcript
         transcriptManager.clear();
 
-        //Ebill
-        App.setEbill(new ArrayList<Statement>());
+        // Statements
+        context.deleteDatabase(StatementsDB.FULL_NAME);
 
         //HomepageManager
         homepageManager.clear();

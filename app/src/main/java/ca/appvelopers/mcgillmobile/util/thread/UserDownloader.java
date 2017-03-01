@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,13 +32,17 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -140,10 +144,12 @@ public abstract class UserDownloader extends Thread {
                 update(context.getString(R.string.downloading_ebill));
             }
 
-            //Download the eBill and user info
+            // Download the ebill
             try {
-                App.setEbill(mcGillService.ebill().execute().body());
-            } catch(IOException e) {
+                Response<List<Statement>> response = mcGillService.ebill().execute();
+                DBUtils.replaceDB(context, StatementsDB.NAME, Statement.class, response.body(),
+                        null);
+            } catch (IOException e) {
                 handleException(e, "Ebill");
             }
             notify();

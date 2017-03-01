@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,10 +48,6 @@ public class Constants {
 
     /* INTERNAL STORAGE */
 
-    /**
-     * The file name where the user's ebill is stored
-     */
-    public static final String EBILL_FILE = "ebill";
     /**
      * The file name where the user's default term is stored
      */

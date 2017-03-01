@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import java.util.List;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
-import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import timber.log.Timber;
@@ -64,14 +63,6 @@ public class Load {
     public static List<Term> registerTerms(){
         List<Term> terms = (List<Term>)loadObject("Register Terms", Constants.REGISTER_TERMS_FILE);
         return terms == null ? new ArrayList<Term>() : terms;
-    }
-
-    /**
-     * @return The user's Ebill statements, and empty list if none
-     */
-    public static List<Statement> ebill(){
-        List<Statement> statements = (List<Statement>)loadObject("Ebill", Constants.EBILL_FILE);
-        return statements == null ? new ArrayList<Statement>() : statements;
     }
 
     /**
