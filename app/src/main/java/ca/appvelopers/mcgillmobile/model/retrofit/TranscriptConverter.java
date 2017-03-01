@@ -46,8 +46,8 @@ public class TranscriptConverter extends Converter.Factory
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type,
             Annotation[] annotations, Retrofit retrofit) {
-        if (!type.equals(Transcript.class)) {
-            //This can only convert transcripts
+        if (!type.equals(TranscriptResponse.class)) {
+            // This can only convert transcripts
             return null;
         }
         return new TranscriptConverter();
