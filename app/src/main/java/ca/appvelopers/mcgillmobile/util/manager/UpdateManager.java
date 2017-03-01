@@ -157,6 +157,7 @@ public class UpdateManager {
         context.deleteFile("places");
         context.deleteFile("place_types");
         context.deleteFile("ebill");
+        context.deleteFile("transcript");
 
         /* TODO Favorite migration is untested code */
 
