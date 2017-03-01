@@ -140,7 +140,7 @@
         <!-- Fabric -->
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="@string/fabric_api_key" />
+            android:value="9ef346d3600f30642b3786c89e29e900fec629ee" />
 
         <!-- Google Maps -->
         <meta-data

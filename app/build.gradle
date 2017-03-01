@@ -112,7 +112,6 @@ android {
 android.buildTypes.each { type ->
     type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey
     type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret
-    type.resValue 'string', 'fabric_api_key', props.fabricApiKey
     type.resValue 'string', 'facebook_app_id', props.facebookAppId
     type.resValue 'string', 'facebook_provider', 'com.facebook.app.FacebookContentProvider' +
             props.facebookAppId

@@ -2,7 +2,6 @@ storeFile=HERE
 storePassword=HERE
 keyAlias=HERE
 keyPassword=HERE
-fabricApiKey="HERE"
 twitterKey="HERE"
 twitterSecret="HERE"
 facebookAppId="HERE"
