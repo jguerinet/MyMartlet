@@ -352,4 +352,20 @@ public class TranscriptConverter extends Converter.Factory
         creditArray = creditArray[1].split("credits");
         return Double.parseDouble(creditArray[0]);
     }
+
+    /**
+     * Response object with all of the parsed info
+     */
+    public static class TranscriptResponse {
+        public final Transcript transcript;
+        public final List<Semester> semesters;
+        public final List<TranscriptCourse> courses;
+
+        private TranscriptResponse(Transcript transcript, List<Semester> semesters,
+                List<TranscriptCourse> courses) {
+            this.transcript = transcript;
+            this.semesters = semesters;
+            this.courses = courses;
+        }
+    }
 }
