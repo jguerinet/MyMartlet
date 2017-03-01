@@ -4,7 +4,7 @@
 Thumbs.db
 /build
 /captures
-*/signing.properties
+util/private.properties
 *.iml
 .idea/libraries
 .idea/shelf
