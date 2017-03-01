@@ -63,6 +63,7 @@ public class TranscriptConverter extends Converter.Factory
          * Once a match is found, the value in the appropriate row will be saved to a variable
          */
         List<Semester> semesters = new ArrayList<>();
+        List<TranscriptCourse> courses = new ArrayList<>();
         double cgpa = -1;
         double totalCredits = -1;
         int semesterId = 0;
@@ -289,11 +290,8 @@ public class TranscriptConverter extends Converter.Factory
 
                         // There is at least one course
                         hasCourse = true;
-
-                        TranscriptCourse course = new TranscriptCourse(semesterId,
-                                new Term(season, year), code, title, credits, grade, averageGrade);
-                        // TODO We can't save here
-                        course.save();
+                        courses.add(new TranscriptCourse(semesterId, new Term(season, year), code,
+                                title, credits, grade, averageGrade));
                     }
 
                     //Breaks the loop if the next semester is reached
@@ -315,10 +313,8 @@ public class TranscriptConverter extends Converter.Factory
                 // Check if there are any courses associated with the semester
                 //  If not, don't add the semester to the list of semesters
                 if (hasCourse) {
-                    Semester semester = new Semester(semesterId, new Term(season, year), program,
-                            bachelor, termCredits, termGPA, fullTime);
-                    // TODO We can't save here
-                    semester.save();
+                    semesters.add(new Semester(semesterId, new Term(season, year), program,
+                            bachelor, termCredits, termGPA, fullTime));
                     semesterId ++;
                 }
 
