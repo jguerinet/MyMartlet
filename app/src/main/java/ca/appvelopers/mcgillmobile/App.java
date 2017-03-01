@@ -149,7 +149,7 @@ public class App extends Application {
 
     /**
      * @param context App context
-     * @return The {@link BaseComponent} instance
+     * @return {@link BaseComponent} instance
      */
     public static BaseComponent component(Context context) {
         return ((App) context.getApplicationContext()).component;
