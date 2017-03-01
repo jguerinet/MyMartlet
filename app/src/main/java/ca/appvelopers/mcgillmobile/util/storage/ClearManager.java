@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.raizlabs.android.dbflow.config.FlowManager;
 
 import java.util.ArrayList;
 
@@ -34,8 +35,8 @@ import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
@@ -74,10 +75,6 @@ public class ClearManager {
      * {@link ScheduleManager} instance
      */
     private final ScheduleManager scheduleManager;
-    /**
-     * {@link PlacesManager} instance
-     */
-    private final PlacesManager placesManager;
 
     /**
      * Default Injectable Constructor
@@ -96,7 +93,7 @@ public class ClearManager {
             PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
             HomepageManager homepageManager, TranscriptManager transcriptManager,
-            ScheduleManager scheduleManager, PlacesManager placesManager) {
+            ScheduleManager scheduleManager) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
@@ -104,7 +101,6 @@ public class ClearManager {
         this.homepageManager = homepageManager;
         this.transcriptManager = transcriptManager;
         this.scheduleManager = scheduleManager;
-        this.placesManager = placesManager;
     }
 
     /**
@@ -136,16 +132,15 @@ public class ClearManager {
 
         //Wishlist
         App.setWishlist(new ArrayList<CourseResult>());
-
-        //Favorite places
-        placesManager.clearFavorites();
     }
 
     /**
      * Clears all of the config info
      */
     public void config() {
-        placesManager.clearPlaces();
+        // Places
+        FlowManager.getDatabase(PlacesDB.class).reset(context);
+
         App.setRegisterTerms(new ArrayList<Term>());
     }
 }

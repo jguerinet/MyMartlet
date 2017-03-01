@@ -18,15 +18,15 @@ package ca.appvelopers.mcgillmobile.util.dbflow.databases;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 
-import ca.appvelopers.mcgillmobile.model.place.Place;
+import ca.appvelopers.mcgillmobile.model.place.Category;
 
 /**
- * Database that holds a list of {@link Place}s
+ * Database that holds a list of {@link Category}s
  * @author Julien Guerinet
  * @since 2.4.0
  */
-@Database(name = PlacesDB.NAME, version = PlacesDB.VERSION)
-public class PlacesDB {
-    static final String NAME = "Places";
+@Database(name = PlaceCategoriesDB.NAME, version = PlaceCategoriesDB.VERSION)
+public class PlaceCategoriesDB {
+    static final String NAME = "PlaceCategories";
     static final int VERSION = 1;
 }

@@ -35,7 +35,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,11 +64,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Place;
-import ca.appvelopers.mcgillmobile.model.PlaceType;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.PlaceTypeListAdapter;
+import ca.appvelopers.mcgillmobile.model.place.Category;
+import ca.appvelopers.mcgillmobile.model.place.Place;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.PlacesManager;
 import timber.log.Timber;
 
 /**
@@ -113,10 +112,10 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     @BindView(R.id.map_favorite)
     Button favorite;
     /**
-     * {@link PlacesManager} instance
+     * {@link LanguagePreference} instance
      */
     @Inject
-    PlacesManager placesManager;
+    LanguagePreference languagePreference;
     /**
      * Fragment containing the map
      */
@@ -136,7 +135,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     /**
      * Currently selected category
      */
-    private PlaceType type;
+    private Category category;
     /**
      * Current search String
      */
@@ -154,7 +153,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         places = new ArrayList<>();
         shownPlaces = new ArrayList<>();
         searchString = "";
-        type = new PlaceType(false);
+        category = new Category(false);
 
         FormGenerator fg = FormGenerator.bind(this, container);
 
@@ -164,17 +163,17 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         Utils.setTint(favorite, 0, red);
 
         //Set up the place filter
-        fg.text(type.getString(this, languagePref.get()))
+        fg.text(category.getString(this, languagePref.get()))
                 .leftIcon(R.drawable.ic_location)
                 .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
                 .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
                     public void onClick(final TextViewFormItem item) {
                         DialogUtils.list(MapActivity.this, R.string.map_filter,
-                                new PlaceTypeListAdapter(MapActivity.this, type) {
+                                new CategoryListAdapter(MapActivity.this, category) {
                                     @Override
-                                    public void onPlaceTypeSelected(PlaceType type) {
-                                        MapActivity.this.type = type;
+                                    public void onCategorySelected(Category type) {
+                                        MapActivity.this.category = type;
 
                                         //Update the text
                                         item.view().setText(type.getString(MapActivity.this,
@@ -301,33 +300,31 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     @OnClick(R.id.map_favorite)
     void favorites() {
         if (place != null) {
-            String message;
-            //Check if it was in the favorites
-            if (placesManager.isFavorite(place.first)) {
-                placesManager.removeFavorite(place.first);
+            int toastMessageId;
+            int buttonTextId;
 
-                //Set the toast message
-                message = getString(R.string.map_favorites_removed, place.first.getName());
-
-                //Change the text to "Add Favorites"
-                favorite.setText(R.string.map_favorites_add);
-
-                //If we are in the favorites category, we need to hide this pin
-                if (type.getId() == PlaceType.FAVORITES) {
-                    place.second.setVisible(false);
-                }
+            // Choose the right Strings depending on whether this place was in the favorites
+            if (place.first.isFavorite()) {
+                toastMessageId = R.string.map_favorites_removed;
+                buttonTextId = R.string.map_favorites_add;
             } else {
-                placesManager.addFavorite(place.first);
-
-                //Set the toast message
-                message = getString(R.string.map_favorites_added, place.first.getName());
-
-                //Change the text to "Remove Favorites"
-                favorite.setText(getString(R.string.map_favorites_remove));
+                toastMessageId = R.string.map_favorites_added;
+                buttonTextId = R.string.map_favorites_remove;
             }
 
-            //Alert the user
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            // Inverse the current favorite setting
+            place.first.setFavorite(!place.first.isFavorite());
+
+            // Change the button text
+            favorite.setText(buttonTextId);
+
+            // If we are in the favorites category, we need to show/hide this pin
+            if (category.getId() == Category.FAVORITES) {
+                showPlace(place, place.first.isFavorite());
+            }
+
+            // Alert the user
+            Utils.toast(this, getString(toastMessageId, place.first.getName()));
         }
     }
 
@@ -353,20 +350,8 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
 
         //Go through the places
         for (Pair<Place, Marker> place : places) {
-            switch (type.getId()) {
-                //Show all of the places
-                case PlaceType.ALL:
-                    showPlace(place, true);
-                    break;
-                //Show only the favorite places
-                case PlaceType.FAVORITES:
-                    showPlace(place, placesManager.isFavorite(place.first));
-                    break;
-                //Show the places for the current category
-                default:
-                    showPlace(place, place.first.isOfType(type));
-                    break;
-            }
+            // Show it if it's part of the given category
+            showPlace(place, place.first.isWithinCategory(category));
         }
 
         //Filter also by the search String if there is one
@@ -494,8 +479,8 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         address.setText(place.first.getAddress());
 
         //Set up the favorite text
-        favorite.setText(placesManager.isFavorite(place.first) ?
-                R.string.map_favorites_remove : R.string.map_favorites_add);
+        favorite.setText(place.first.isFavorite() ? R.string.map_favorites_remove :
+                R.string.map_favorites_add);
 
         return false;
     }
