@@ -26,12 +26,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import javax.inject.Inject;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter.TranscriptResponse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
@@ -39,7 +40,6 @@ import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,11 +66,6 @@ public class TranscriptActivity extends DrawerActivity {
      */
     @BindView(android.R.id.list)
     RecyclerView list;
-    /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    TranscriptManager transcriptManager;
     /**
      * Adapter used for the list of semesters
      */
@@ -151,10 +146,12 @@ public class TranscriptActivity extends DrawerActivity {
      */
     private void update() {
         // Reload all of the info
-        cgpa.setText(getString(R.string.transcript_CGPA, String.valueOf(
-                transcriptManager.get().getCGPA())));
-        totalCredits.setText(getString(R.string.transcript_credits, String.valueOf(
-                transcriptManager.get().getTotalCredits())));
+        Transcript transcript = SQLite.select().from(Transcript.class).querySingle();
+        if (transcript != null) {
+            cgpa.setText(getString(R.string.transcript_CGPA, String.valueOf(transcript.getCGPA())));
+            totalCredits.setText(getString(R.string.transcript_credits, String.valueOf(
+                    transcript.getTotalCredits())));
+        }
         adapter.update();
     }
 }
