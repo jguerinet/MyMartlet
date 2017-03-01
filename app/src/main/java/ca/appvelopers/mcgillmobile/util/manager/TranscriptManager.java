@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,20 +62,6 @@ public class TranscriptManager {
      */
     public synchronized Transcript get() {
         return transcript;
-    }
-
-    /**
-     * @param transcript {@link Transcript} instance to save
-     */
-    public synchronized void set(Transcript transcript) {
-        //Don't save a null transcript
-        if (transcript == null) {
-            return;
-        }
-        //Set the local instance
-        this.transcript = transcript;
-        //Save it to internal storage
-        StorageUtils.saveObject(context, transcript, TRANSCRIPT, "Transcript");
     }
 
     /**
