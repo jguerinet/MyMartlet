@@ -63,13 +63,4 @@ public class TranscriptManager {
     public synchronized Transcript get() {
         return transcript;
     }
-
-    /**
-     * Clears the stored {@link Transcript}
-     */
-    public synchronized void clear() {
-        //Clear both the local instance and the stored one
-        transcript = null;
-        context.deleteFile(TRANSCRIPT);
-    }
 }

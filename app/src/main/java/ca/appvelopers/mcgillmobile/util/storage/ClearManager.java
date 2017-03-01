@@ -34,8 +34,9 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
-import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -118,8 +119,8 @@ public class ClearManager {
         //Schedule
         scheduleManager.clear();
 
-        //Transcript
-        transcriptManager.clear();
+        // Transcript
+        TranscriptDB.clearTranscript(context);
 
         // Statements
         context.deleteDatabase(StatementsDB.FULL_NAME);

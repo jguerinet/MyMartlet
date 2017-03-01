@@ -57,4 +57,11 @@ public class TranscriptDB {
         DBUtils.replaceDB(context, TranscriptCoursesDB.NAME, TranscriptCourse.class,
                 response.courses, null);
     }
+
+    public static void clearTranscript(Context context) {
+        // Clear all associated DBs
+        context.deleteDatabase(TranscriptDB.FULL_NAME);
+        context.deleteDatabase(SemestersDB.FULL_NAME);
+        context.deleteDatabase(TranscriptCoursesDB.FULL_NAME);
+    }
 }
