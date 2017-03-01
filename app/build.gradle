@@ -108,6 +108,13 @@ android {
     }
 }
 
+// Set the Twitter keys from the properties filed
+android.buildTypes.each { type ->
+    type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey
+    type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret
+
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.0'
