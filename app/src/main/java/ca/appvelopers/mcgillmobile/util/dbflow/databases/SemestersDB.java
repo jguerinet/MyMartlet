@@ -25,8 +25,9 @@ import ca.appvelopers.mcgillmobile.model.Semester;
  * @author Julien Guerinet
  * @since 2.4.0
  */
-@Database(name = SemesterDB.NAME, version = SemesterDB.VERSION)
-public class SemesterDB {
+@Database(name = SemestersDB.NAME, version = SemestersDB.VERSION)
+public class SemestersDB {
     static final String NAME = "Semesters";
+    public static final String FULL_NAME = NAME + ".db";
     static final int VERSION = 1;
 }

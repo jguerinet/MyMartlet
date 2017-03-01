@@ -24,7 +24,7 @@ import java.io.Serializable;
 
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptCourseDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptCoursesDB;
 
 /**
  * A course that is part of the transcript
@@ -32,7 +32,7 @@ import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptCourseDB;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Table(database = TranscriptCourseDB.class, allFields = true)
+@Table(database = TranscriptCoursesDB.class, allFields = true)
 public class TranscriptCourse extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

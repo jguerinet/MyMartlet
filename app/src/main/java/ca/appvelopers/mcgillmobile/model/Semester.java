@@ -24,7 +24,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
 
-import ca.appvelopers.mcgillmobile.util.dbflow.databases.SemesterDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.SemestersDB;
 
 /**
  * Contains information pertaining to each semester such as current program, term credits,
@@ -33,7 +33,7 @@ import ca.appvelopers.mcgillmobile.util.dbflow.databases.SemesterDB;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Table(database = SemesterDB.class, allFields = true)
+@Table(database = SemestersDB.class, allFields = true)
 public class Semester extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

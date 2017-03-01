@@ -36,6 +36,7 @@ import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
 @Database(name = TranscriptDB.NAME, version = TranscriptDB.VERSION)
 public class TranscriptDB {
     static final String NAME = "Transcript";
+    public static final String FULL_NAME = NAME + ".db";
     static final int VERSION = 1;
 
     /**
@@ -50,10 +51,10 @@ public class TranscriptDB {
                 Collections.singletonList(response.transcript), null);
 
         // Replace the Semesters
-        DBUtils.replaceDB(context, SemesterDB.NAME, Semester.class, response.semesters, null);
+        DBUtils.replaceDB(context, SemestersDB.NAME, Semester.class, response.semesters, null);
 
         // Replace the classes
-        DBUtils.replaceDB(context, TranscriptCourseDB.NAME, TranscriptCourse.class,
+        DBUtils.replaceDB(context, TranscriptCoursesDB.NAME, TranscriptCourse.class,
                 response.courses, null);
     }
 }

@@ -25,8 +25,9 @@ import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
  * @author Julien Guerinet
  * @since 2.4.0
  */
-@Database(name = TranscriptCourseDB.NAME, version = TranscriptCourseDB.VERSION)
-public class TranscriptCourseDB {
+@Database(name = TranscriptCoursesDB.NAME, version = TranscriptCoursesDB.VERSION)
+public class TranscriptCoursesDB {
     static final String NAME = "TranscriptCourses";
+    public static final String FULL_NAME = NAME + ".db";
     static final int VERSION = 1;
 }
