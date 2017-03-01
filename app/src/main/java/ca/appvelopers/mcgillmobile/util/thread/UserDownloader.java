@@ -37,9 +37,11 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Response;
@@ -106,8 +108,9 @@ public abstract class UserDownloader extends Thread {
             //  download the new one
             Transcript transcript = transcriptManager.get();
             try {
-                transcript = mcGillService.transcript().execute().body();
-                transcriptManager.set(transcript);
+                TranscriptConverter.TranscriptResponse transcriptResponse =
+                        mcGillService.transcript().execute().body();
+                TranscriptDB.saveTranscript(context, transcriptResponse);
             } catch(IOException e) {
                 handleException(e, "Transcript");
             }

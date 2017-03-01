@@ -16,9 +16,17 @@
 
 package ca.appvelopers.mcgillmobile.util.dbflow.databases;
 
+import android.content.Context;
+
 import com.raizlabs.android.dbflow.annotation.Database;
 
+import java.util.Collections;
+
+import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Transcript;
+import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter.TranscriptResponse;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
+import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
 
 /**
  * Database that holds the {@link Transcript}
@@ -29,4 +37,23 @@ import ca.appvelopers.mcgillmobile.model.Transcript;
 public class TranscriptDB {
     static final String NAME = "Transcript";
     static final int VERSION = 1;
+
+    /**
+     * Saves all of the info from the {@link TranscriptResponse} to the appropriate DBs
+     *
+     * @param context  App context
+     * @param response Received {@link TranscriptResponse}
+     */
+    public static void saveTranscript(Context context, TranscriptResponse response) {
+        // Replace the Transcript
+        DBUtils.replaceDB(context, TranscriptDB.NAME, Transcript.class,
+                Collections.singletonList(response.transcript), null);
+
+        // Replace the Semesters
+        DBUtils.replaceDB(context, SemesterDB.NAME, Semester.class, response.semesters, null);
+
+        // Replace the classes
+        DBUtils.replaceDB(context, TranscriptCourseDB.NAME, TranscriptCourse.class,
+                response.courses, null);
+    }
 }

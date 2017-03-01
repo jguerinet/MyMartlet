@@ -32,11 +32,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
+import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter.TranscriptResponse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Call;
@@ -121,16 +122,17 @@ public class TranscriptActivity extends DrawerActivity {
             return;
         }
 
-        mcGillService.transcript().enqueue(new Callback<Transcript>() {
+        mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
             @Override
-            public void onResponse(Call<Transcript> call, Response<Transcript> response) {
-                transcriptManager.set(response.body());
+            public void onResponse(Call<TranscriptResponse> call,
+                    Response<TranscriptResponse> response) {
+                TranscriptDB.saveTranscript(TranscriptActivity.this, response.body());
                 update();
                 showToolbarProgress(false);
             }
 
             @Override
-            public void onFailure(Call<Transcript> call, Throwable t) {
+            public void onFailure(Call<TranscriptResponse> call, Throwable t) {
                 Timber.e(t, "Error refreshing transcript");
                 showToolbarProgress(false);
                 // If this is a MinervaException, broadcast it

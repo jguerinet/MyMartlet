@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,12 +45,13 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
+import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter.TranscriptResponse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
@@ -207,17 +208,18 @@ public class CoursesActivity extends DrawerActivity {
                 scheduleManager.set(response.body(), mTerm);
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(new Callback<Transcript>() {
+                mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
                     @Override
-                    public void onResponse(Call<Transcript> call, Response<Transcript> response) {
-                        transcriptManager.set(response.body());
-                        //Update the view
+                    public void onResponse(Call<TranscriptResponse> call,
+                            Response<TranscriptResponse> response) {
+                        TranscriptDB.saveTranscript(CoursesActivity.this, response.body());
+                        // Update the view
                         update();
                         showToolbarProgress(false);
                     }
 
                     @Override
-                    public void onFailure(Call<Transcript> call, Throwable t) {
+                    public void onFailure(Call<TranscriptResponse> call, Throwable t) {
                         Timber.e(t, "Error refreshing the transcript");
                         showToolbarProgress(false);
 
