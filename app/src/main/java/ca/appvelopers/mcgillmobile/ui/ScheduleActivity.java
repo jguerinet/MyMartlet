@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,6 +66,7 @@ import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -261,8 +262,8 @@ public class ScheduleActivity extends DrawerActivity {
         mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
-                //Set the courses
-                scheduleManager.set(response.body(), term);
+                // Set the courses
+                CoursesDB.setCourses(term, response.body());
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(new Callback<Transcript>() {

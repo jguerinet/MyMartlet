@@ -20,6 +20,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
@@ -86,10 +87,11 @@ public class DBUtils {
      * @param <T>        Object Type
      */
     public static <T extends BaseModel> void updateDB(Class<T> type, List<T> newObjects, 
-            Class dbClass, UpdateCallback<T> callback) {
+            SQLCondition condition, Class dbClass, UpdateCallback<T> callback) {
                 SQLite
                         .select()
                         .from(type)
+                        .where(condition)
                         .async()
                         .queryListResultCallback((transaction, tResult) -> {
                             if (tResult == null) {
@@ -150,7 +152,7 @@ public class DBUtils {
       *
       * @param <T> Object type
       */
-    interface UpdateCallback<T extends BaseModel> {
+    public interface UpdateCallback<T extends BaseModel> {
             /**
               * Called when update code needs to be run
               *

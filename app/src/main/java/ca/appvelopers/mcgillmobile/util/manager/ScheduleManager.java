@@ -90,39 +90,6 @@ public class ScheduleManager {
     }
 
     /**
-     * Saves a list of courses for the given term, replacing all courses for this term
-     *
-     * @param courses List of {@link Course}s
-     * @param term    Course {@link Term}
-     */
-    public synchronized void set(List<Course> courses, Term term) {
-        //Don't continue if we don't have all the necessary info
-        if (courses == null || term == null) {
-            return;
-        }
-
-        //Set the term on the passed list of courses
-        for (Course course : courses) {
-            course.setTerm(term);
-        }
-
-        //Get the courses for the current term in the current list of courses
-        List<Course> coursesToDelete = new ArrayList<>();
-        for (Course course : get()) {
-            if (course.getTerm().equals(term)) {
-                coursesToDelete.add(course);
-            }
-        }
-
-        //Delete all of the old courses, add the new ones
-        get().removeAll(coursesToDelete);
-        get().addAll(courses);
-
-        //Save it to internal storage
-        StorageUtils.saveObject(context, get(), COURSES, "Courses");
-    }
-
-    /**
      * Clears the stored {@link Course}s
      */
     public synchronized void clear() {
