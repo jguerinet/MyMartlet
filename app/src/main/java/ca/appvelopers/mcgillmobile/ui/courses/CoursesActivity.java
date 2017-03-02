@@ -54,7 +54,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,11 +87,6 @@ public class CoursesActivity extends DrawerActivity {
      */
     @Inject
     protected TranscriptManager transcriptManager;
-    /**
-     * {@link ScheduleManager} instance
-     */
-    @Inject
-    protected ScheduleManager scheduleManager;
     /**
      * The ListView adapter
      */
@@ -180,16 +174,14 @@ public class CoursesActivity extends DrawerActivity {
             mUnregisterButton.setVisibility(View.GONE);
         }
 
-        //Get the list of courses for this term
-        List<Course> courses = scheduleManager.getTermCourses(mTerm);
-
         //Set up the list
-        mAdapter = new CoursesAdapter(courses, canUnregister);
+        mAdapter = new CoursesAdapter(mTerm, canUnregister);
         mList.setAdapter(mAdapter);
 
         //Show the empty view if needed
-        mList.setVisibility(courses.isEmpty() ? View.GONE : View.VISIBLE);
-        mEmptyView.setVisibility(courses.isEmpty() ? View.VISIBLE : View.GONE);
+        // TODO Move this to the adapter
+//        mList.setVisibility(courses.isEmpty() ? View.GONE : View.VISIBLE);
+//        mEmptyView.setVisibility(courses.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     /**

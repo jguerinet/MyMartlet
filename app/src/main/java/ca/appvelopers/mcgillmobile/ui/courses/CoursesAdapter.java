@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Course_Table;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
 /**
@@ -122,11 +126,11 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
     /**
      * The list of courses
      */
-    private List<Course> mCourses;
+    private final List<Course> mCourses;
     /**
      * The list of checked courses
      */
-    private List<Course> mCheckedCourses;
+    private final List<Course> mCheckedCourses;
     /**
      * True if the user can unregister from these courses, false otherwise
      */
@@ -135,13 +139,27 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
     /**
      * Default Constructor
      *
-     * @param courses       The list of courses
+     * @param term          {@link Term} we are currently looking at
      * @param canUnregister True if the user can unregister from these courses, false otherwise
      */
-    public CoursesAdapter(List<Course> courses, boolean canUnregister){
-        this.mCourses = courses;
-        this.mCheckedCourses = new ArrayList<>();
-        this.mCanUnregister = canUnregister;
+    public CoursesAdapter(Term term, boolean canUnregister){
+        mCanUnregister = canUnregister;
+        mCourses = new ArrayList<>();
+        mCheckedCourses = new ArrayList<>();
+
+        // Get the courses asynchronously
+        SQLite.select()
+                .from(Course.class)
+                .where(Course_Table.term.eq(term))
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
+                    mCourses.addAll(tResult);
+                    notifyDataSetChanged();
+                })
+                .execute();
     }
 
     @Override
