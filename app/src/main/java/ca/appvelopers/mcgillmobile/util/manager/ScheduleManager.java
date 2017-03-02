@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,20 +87,6 @@ public class ScheduleManager {
             }
         }
         return courses;
-    }
-
-    /**
-     * @param courses List of {@link Course}s to save
-     */
-    public synchronized void set(List<Course> courses) {
-        //Don't save a null object
-        if (courses == null) {
-            return;
-        }
-        //Set the local instance
-        this.courses = courses;
-        //Save it to internal storage
-        StorageUtils.saveObject(context, courses, COURSES, "Courses");
     }
 
     /**
