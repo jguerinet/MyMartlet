@@ -34,10 +34,10 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
-import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
@@ -71,10 +71,6 @@ public class ClearManager {
      * {@link TranscriptManager} instance
      */
     private final TranscriptManager transcriptManager;
-    /**
-     * {@link ScheduleManager} instance
-     */
-    private final ScheduleManager scheduleManager;
 
     /**
      * Default Injectable Constructor
@@ -85,22 +81,18 @@ public class ClearManager {
      * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param homepageManager      {@link HomepageManager} instance
      * @param transcriptManager    {@link TranscriptManager} instance
-     * @param scheduleManager      {@link ScheduleManager} instance
-     * @param placesManager        {@link PlacesManager} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
-            HomepageManager homepageManager, TranscriptManager transcriptManager,
-            ScheduleManager scheduleManager) {
+            HomepageManager homepageManager, TranscriptManager transcriptManager) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
         this.transcriptManager = transcriptManager;
-        this.scheduleManager = scheduleManager;
     }
 
     /**
@@ -116,7 +108,7 @@ public class ClearManager {
         passwordPref.clear();
 
         //Schedule
-        scheduleManager.clear();
+        context.deleteDatabase(CoursesDB.FULL_NAME);
 
         //Transcript
         transcriptManager.clear();

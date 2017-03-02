@@ -88,13 +88,4 @@ public class ScheduleManager {
         }
         return courses;
     }
-
-    /**
-     * Clears the stored {@link Course}s
-     */
-    public synchronized void clear() {
-        //Clear both the local instance and the stored one
-        courses = new ArrayList<>();
-        context.deleteFile(COURSES);
-    }
 }
