@@ -107,6 +107,8 @@ public class CoursesActivity extends DrawerActivity {
         term = App.getDefaultTerm();
 
         list.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CoursesAdapter(emptyView);
+        list.setAdapter(adapter);
 
         //Remove this button
         findViewById(R.id.course_wishlist).setVisibility(View.GONE);
@@ -174,9 +176,8 @@ public class CoursesActivity extends DrawerActivity {
             unregisterButton.setVisibility(View.GONE);
         }
 
-        //Set up the list
-        adapter = new CoursesAdapter(emptyView, term, canUnregister);
-        list.setAdapter(adapter);
+        // Update the list
+        adapter.update(term, canUnregister);
     }
 
     /**

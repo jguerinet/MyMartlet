@@ -52,34 +52,17 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
     /**
      * True if the user can unregister from these courses, false otherwise
      */
-    private final boolean canUnregister;
+    private boolean canUnregister;
 
     /**
      * Default Constructor
      *
      * @param emptyView     View to show if there are no {@link Course}s
-     * @param term          {@link Term} we are currently looking at
-     * @param canUnregister True if the user can unregister from these courses, false otherwise
      */
-    CoursesAdapter(TextView emptyView, Term term, boolean canUnregister) {
+    CoursesAdapter(TextView emptyView) {
         super(emptyView);
-        this.canUnregister = canUnregister;
         courses = new ArrayList<>();
         checkedCourses = new ArrayList<>();
-
-        // Get the courses asynchronously
-        SQLite.select()
-                .from(Course.class)
-                .where(Course_Table.term.eq(term))
-                .async()
-                .queryListResultCallback((transaction, tResult) -> {
-                    if (tResult == null) {
-                        tResult = new ArrayList<>();
-                    }
-                    courses.addAll(tResult);
-                    update();
-                })
-                .execute();
     }
 
     @Override
@@ -93,10 +76,25 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
         return courses.size();
     }
 
-    @Override
-    public void update() {
-        showEmptyView(courses.isEmpty());
-        notifyDataSetChanged();
+    public void update(Term term, boolean canUnregister) {
+        this.canUnregister = canUnregister;
+        courses.clear();
+        checkedCourses.clear();
+
+        // Get the courses asynchronously
+        SQLite.select()
+                .from(Course.class)
+                .where(Course_Table.term.eq(term))
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        tResult = new ArrayList<>();
+                    }
+                    courses.addAll(tResult);
+                    showEmptyView(courses.isEmpty());
+                    notifyDataSetChanged();
+                })
+                .execute();
     }
 
     /**
