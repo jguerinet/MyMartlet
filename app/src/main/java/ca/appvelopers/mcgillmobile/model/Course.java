@@ -358,11 +358,7 @@ public class Course extends BaseModel implements Serializable {
     @Override
     public void save() {
         // Create the day String from the days
-        daysString = "";
-        for (DayOfWeek day : getDays()) {
-            daysString += DayUtils.getDayChar(day);
-        }
-
+        daysString = DayUtils.getDayStrings(getDays());
         super.save();
     }
 
