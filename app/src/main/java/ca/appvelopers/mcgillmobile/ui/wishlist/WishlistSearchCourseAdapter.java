@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,17 +46,10 @@ public class WishlistSearchCourseAdapter
     private List<CourseResult> mCourses;
     private List<CourseResult> mCheckedCourses;
 
-    public WishlistSearchCourseAdapter(Context context, Term term, List<CourseResult> classItems){
+    public WishlistSearchCourseAdapter(Context context) {
         this.mContext = context;
         this.mCourses = new ArrayList<>();
         this.mCheckedCourses = new ArrayList<>();
-
-        //Add only the courses for this term
-        for(CourseResult classItem : classItems){
-            if(classItem.getTerm().equals(term)){
-                mCourses.add(classItem);
-            }
-        }
     }
 
     @Override
@@ -73,6 +66,17 @@ public class WishlistSearchCourseAdapter
     @Override
     public int getItemCount(){
         return mCourses.size();
+    }
+
+    public void update(Term term, List<CourseResult> courses) {
+        mCourses.clear();
+        // Add only the courses for this term
+        for(CourseResult course : courses){
+            if(course.getTerm().equals(term)){
+                mCourses.add(course);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     /**

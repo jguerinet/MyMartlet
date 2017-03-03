@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guerinet.utils.dialog.DialogUtils;
@@ -36,9 +32,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -49,7 +43,7 @@ import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
-import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
+import ca.appvelopers.mcgillmobile.ui.search.RegistrationView;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -63,16 +57,6 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class WishlistActivity extends DrawerActivity {
-    /**
-     * The empty view
-     */
-    @BindView(R.id.courses_empty)
-    protected TextView mEmptyView;
-    /**
-     * The wishlist
-     */
-    @BindView(android.R.id.list)
-    protected RecyclerView mList;
     /**
      * {@link TranscriptManager} instance
      */
@@ -90,6 +74,7 @@ public class WishlistActivity extends DrawerActivity {
      * The current term
      */
     private Term mTerm;
+    RegistrationView registrationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,13 +87,13 @@ public class WishlistActivity extends DrawerActivity {
         //Check if there are any terms to register for
         if (App.getRegisterTerms().isEmpty()) {
             //Hide all of the main content, show explanatory text, and return the view
-            mEmptyView.setText(R.string.registration_no_semesters);
-            mEmptyView.setVisibility(View.VISIBLE);
-            mList.setVisibility(View.GONE);
+//            mEmptyView.setText(R.string.registration_no_semesters);
+//            mEmptyView.setVisibility(View.VISIBLE);
+//            mList.setVisibility(View.GONE);
             return;
         }
 
-        mList.setLayoutManager(new LinearLayoutManager(this));
+        registrationView = new RegistrationView(this, false);
 
         //Load the first registration term
         mTerm = App.getRegisterTerms().get(0);
@@ -130,8 +115,7 @@ public class WishlistActivity extends DrawerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!App.getRegisterTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.refresh, menu);
-
-            //Allow user to change the semester if there is more than 1 semester
+            // Allow user to change the semester if there is more than 1 semester
             if (App.getRegisterTerms().size() > 1) {
                 getMenuInflater().inflate(R.menu.change_semester, menu);
             }
@@ -161,24 +145,10 @@ public class WishlistActivity extends DrawerActivity {
         }
     }
 
+    @HomepageManager.Homepage
     @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
+    protected int getCurrentPage() {
         return HomepageManager.WISHLIST;
-    }
-
-    @OnClick(R.id.course_register)
-    protected void register() {
-        SearchResultsActivity.register(this, mTerm, mAdapter.getCheckedCourses());
-        //Reload the adapter
-        update();
-    }
-
-    @OnClick(R.id.course_wishlist)
-    protected void removeFromWishlist() {
-        SearchResultsActivity.addToWishlist(this, mAdapter.getCheckedCourses(), false, analytics);
-        //Reload the adapter
-        update();
     }
 
     /**
@@ -187,16 +157,11 @@ public class WishlistActivity extends DrawerActivity {
     private void update() {
         //Only load the info if there is info to load
         if (!App.getRegisterTerms().isEmpty()) {
-            //Set the title
+            // Set the title
             setTitle(mTerm.getString(this));
 
-            //Reload the adapter
-            mAdapter = new WishlistSearchCourseAdapter(this, mTerm, mCourses);
-            mList.setAdapter(mAdapter);
-
-            //If there are no classes, show the empty view
-            mList.setVisibility(mAdapter.isEmpty() ? View.GONE : View.VISIBLE);
-            mEmptyView.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
+            // Reload the adapter
+            registrationView.update(mTerm, mCourses);
         }
     }
 

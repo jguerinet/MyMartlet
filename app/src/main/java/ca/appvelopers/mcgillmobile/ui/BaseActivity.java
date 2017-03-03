@@ -79,7 +79,7 @@ public class BaseActivity extends AppCompatActivity {
      * {@link McGillService} instance
      */
     @Inject
-    McGillService mcGillService;
+    protected McGillService mcGillService;
     /**
      * {@link LanguagePreference} instance
      */

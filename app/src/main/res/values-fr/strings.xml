@@ -187,8 +187,8 @@
     <string name="walkthrough_email">Ajoutez votre email McGill sur votre appareil en allant dans Réglages -&gt; Aide -&gt; Configurer votre Email</string>
 
     <!-- Courses List / Wishlist -->
-    <string name="wishlist_remove">%s cour(s) enlevés de la liste d\'envies</string>
-    <string name="wishlist_add">%s cour(s) ajoutés à la liste d\'envies</string>
+    <string name="wishlist_remove">%d cour(s) enlevés de la liste d\'envies</string>
+    <string name="wishlist_add">%d cour(s) ajoutés à la liste d\'envies</string>
     <string name="courses_empty">Aucun Cours Disponibles</string>
     <string name="courses_register">S\'inscrire</string>
     <string name="courses_unregister">Se Désinscrire</string>

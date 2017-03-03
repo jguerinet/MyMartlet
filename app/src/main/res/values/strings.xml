@@ -188,8 +188,8 @@
     <string name="walkthrough_email">Set up your McGill email account on your device by going to Settings -&gt; Help -&gt; Set up your Email</string>
 
     <!-- Courses List / Wishlist -->
-    <string name="wishlist_remove">Removed %s course(s) from the wishlist</string>
-    <string name="wishlist_add">Added %s course(s) to the wishlist</string>
+    <string name="wishlist_remove">Removed %d course(s) from the wishlist</string>
+    <string name="wishlist_add">Added %d course(s) to the wishlist</string>
     <string name="courses_empty">No Courses Available</string>
     <string name="courses_register">Register</string>
     <string name="courses_unregister">Unregister</string>
