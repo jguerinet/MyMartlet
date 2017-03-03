@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.guerinet.utils.RecyclerViewBaseAdapter;
@@ -109,37 +108,37 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
 
     class CourseHolder extends BaseHolder implements View.OnClickListener {
         /**
-         * The course code
+         * Course code
          */
         @BindView(R.id.course_code)
         TextView code;
         /**
-         * The course title
+         * Course title
          */
         @BindView(R.id.course_title)
         TextView title;
         /**
-         * The course type
+         * Course type
          */
         @BindView(R.id.course_type)
         TextView type;
         /**
-         * The course credits
+         * Course credits
          */
         @BindView(R.id.course_credits)
         TextView credits;
         /**
-         * The course days
+         * Course days
          */
         @BindView(R.id.course_days)
         TextView days;
         /**
-         * The course hours
+         * Course hours
          */
         @BindView(R.id.course_hours)
         TextView hours;
         /**
-         * The course unregistration check box
+         * Course unregistration check box
          */
         @BindView(R.id.course_checkbox)
         CheckBox checkBox;
@@ -159,24 +158,20 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
             days.setText(DayUtils.getDayStrings(course.getDays()));
             hours.setText(course.getTimeString());
 
-            //Show the check box if the user can unregister
+            // Show the check box if the user can unregister
             checkBox.setVisibility(canUnregister ? View.VISIBLE : View.GONE);
-            //Only set the view selectable if the user can unregister
+            // Only set the view selectable if the user can unregister
             itemView.setClickable(canUnregister);
-            if(canUnregister){
-                //Remove any other listeners
+            if (canUnregister) {
+                // Remove any other listeners
                 checkBox.setOnCheckedChangeListener(null);
                 checkBox.setChecked(checkedCourses.contains(course));
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked){
-                        //If it becomes checked, add it to the list. If not, remove it
-                        if(checked){
-                            checkedCourses.add(course);
-                        }
-                        else{
-                            checkedCourses.remove(course);
-                        }
+                checkBox.setOnCheckedChangeListener((compoundButton, checked) -> {
+                    // If it becomes checked, add it to the list. If not, remove it
+                    if (checked) {
+                        checkedCourses.add(course);
+                    } else {
+                        checkedCourses.remove(course);
                     }
                 });
             }
