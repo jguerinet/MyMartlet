@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.FacultyListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.FacultiesAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -154,7 +154,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                     .leftIcon(R.drawable.ic_mycourses)
                     .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
                     .onClick(item -> DialogUtils.list(context, R.string.faculty_title,
-                            new FacultyListAdapter(context, item.view().getText().toString()) {
+                            new FacultiesAdapter(context, item.view().getText().toString()) {
                                 @Override
                                 public void onFacultySelected(String faculty) {
                                     // Update the view
