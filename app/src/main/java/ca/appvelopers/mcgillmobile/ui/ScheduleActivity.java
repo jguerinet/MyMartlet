@@ -37,6 +37,7 @@ import android.widget.TextView;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import junit.framework.Assert;
 
@@ -57,6 +58,7 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Course_Table;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
@@ -68,7 +70,6 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -114,11 +115,6 @@ public class ScheduleActivity extends DrawerActivity {
     @Inject
     protected TranscriptManager transcriptManager;
     /**
-     * {@link ScheduleManager} instance
-     */
-    @Inject
-    protected ScheduleManager scheduleManager;
-    /**
      * Current {@link Term}
      */
     private Term term;
@@ -145,8 +141,8 @@ public class ScheduleActivity extends DrawerActivity {
         //Title
         setTitle(term.getString(this));
 
-        //Update the list of courses for this term
-        courses = scheduleManager.getTermCourses(term);
+        // Update the list of courses for this term
+        getCourses();
 
         //Date is by default set to today
         date = LocalDate.now();
@@ -212,7 +208,7 @@ public class ScheduleActivity extends DrawerActivity {
                         ScheduleActivity.this.term = term;
 
                         //Update the courses
-                        courses = scheduleManager.getTermCourses(term);
+                        getCourses();
 
                         //Check if we are in the current semester
                         date = LocalDate.now();
@@ -247,6 +243,20 @@ public class ScheduleActivity extends DrawerActivity {
     @Override
     protected @HomepageManager.Homepage int getCurrentPage() {
         return HomepageManager.SCHEDULE;
+    }
+
+    /**
+     * Gets the courses for the given {@link Term}
+     */
+    private void getCourses() {
+        // Clear the current courses
+        courses.clear();
+
+        // Get the new courses for the current term
+        courses.addAll(SQLite.select()
+                .from(Course.class)
+                .where(Course_Table.term.eq(term))
+                .queryList());
     }
 
     /**

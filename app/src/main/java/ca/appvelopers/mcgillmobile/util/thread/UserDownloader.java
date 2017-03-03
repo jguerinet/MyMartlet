@@ -41,7 +41,6 @@ import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -67,11 +66,6 @@ public abstract class UserDownloader extends Thread {
      */
     @Inject
     protected TranscriptManager transcriptManager;
-    /**
-     * {@link ScheduleManager} instance
-     */
-    @Inject
-    protected ScheduleManager scheduleManager;
     /**
      * True if everything should be downloaded, false otherwise (defaults to false)
      */
