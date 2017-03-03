@@ -37,11 +37,11 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
 /**
- * The adapter used for the list of courses
+ * Adapter used for the list of {@link Course}s
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class CoursesAdapter extends RecyclerViewBaseAdapter {
+class CoursesAdapter extends RecyclerViewBaseAdapter {
     /**
      * List of {@link Course}s to show
      */
@@ -62,7 +62,7 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
      * @param term          {@link Term} we are currently looking at
      * @param canUnregister True if the user can unregister from these courses, false otherwise
      */
-    public CoursesAdapter(TextView emptyView, Term term, boolean canUnregister) {
+    CoursesAdapter(TextView emptyView, Term term, boolean canUnregister) {
         super(emptyView);
         this.canUnregister = canUnregister;
         courses = new ArrayList<>();
@@ -103,7 +103,7 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
     /**
      * @return The list of checked classes
      */
-    public List<Course> getCheckedCourses(){
+    List<Course> getCheckedCourses(){
         return this.checkedCourses;
     }
 
@@ -144,7 +144,7 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
         @BindView(R.id.course_checkbox)
         CheckBox checkBox;
 
-        public CourseHolder(View itemView){
+        CourseHolder(View itemView){
             super(itemView);
             itemView.setOnClickListener(this);
         }
