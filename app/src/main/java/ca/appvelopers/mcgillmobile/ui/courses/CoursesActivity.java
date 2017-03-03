@@ -152,6 +152,12 @@ public class CoursesActivity extends DrawerActivity {
         }
     }
 
+    @HomepageManager.Homepage
+    @Override
+    protected int getCurrentPage() {
+        return HomepageManager.COURSES;
+    }
+
     /**
      * Updates all of the info in the view
      */
@@ -295,11 +301,5 @@ public class CoursesActivity extends DrawerActivity {
                                 });
                     });
         }
-    }
-
-    @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
-        return HomepageManager.COURSES;
     }
 }
