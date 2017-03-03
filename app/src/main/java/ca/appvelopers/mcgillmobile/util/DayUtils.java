@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.util;
 
-import android.content.Context;
+import android.support.annotation.StringRes;
 
 import org.threeten.bp.DayOfWeek;
 
@@ -85,41 +85,30 @@ public class DayUtils {
     }
 
     /**
-     * Returns the String for this given day
+     * Returns the String Id for this given day
      *
-     * @param context App context
-     * @param day     Day
-     * @return The corresponding String
+     * @param day Day
+     * @return Corresponding String Id
      */
-    public static String getString(Context context, DayOfWeek day) {
-        int stringId;
-
+    public static @StringRes int getStringId(DayOfWeek day) {
         switch (day) {
             case MONDAY:
-                stringId = R.string.monday;
-                break;
+                return R.string.monday;
             case TUESDAY:
-                stringId = R.string.tuesday;
-                break;
+                return R.string.tuesday;
             case WEDNESDAY:
-                stringId = R.string.wednesday;
-                break;
+                return R.string.wednesday;
             case THURSDAY:
-                stringId = R.string.thursday;
-                break;
+                return R.string.thursday;
             case FRIDAY:
-                stringId = R.string.friday;
-                break;
+                return R.string.friday;
             case SATURDAY:
-                stringId = R.string.saturday;
-                break;
+                return R.string.saturday;
             case SUNDAY:
-                stringId = R.string.sunday;
-                break;
+                return R.string.sunday;
             default:
                 throw new IllegalStateException("Unknown day " + day);
         }
-        return context.getString(stringId);
     }
 
     /**
