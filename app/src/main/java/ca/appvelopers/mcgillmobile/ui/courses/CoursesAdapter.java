@@ -43,17 +43,17 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
  */
 public class CoursesAdapter extends RecyclerViewBaseAdapter {
     /**
-     * The list of courses
+     * List of {@link Course}s to show
      */
-    private final List<Course> mCourses;
+    private final List<Course> courses;
     /**
-     * The list of checked courses
+     * List of checked {@link Course}s
      */
-    private final List<Course> mCheckedCourses;
+    private final List<Course> checkedCourses;
     /**
      * True if the user can unregister from these courses, false otherwise
      */
-    private boolean mCanUnregister;
+    private final boolean canUnregister;
 
     /**
      * Default Constructor
@@ -64,9 +64,9 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
      */
     public CoursesAdapter(TextView emptyView, Term term, boolean canUnregister) {
         super(emptyView);
-        mCanUnregister = canUnregister;
-        mCourses = new ArrayList<>();
-        mCheckedCourses = new ArrayList<>();
+        this.canUnregister = canUnregister;
+        courses = new ArrayList<>();
+        checkedCourses = new ArrayList<>();
 
         // Get the courses asynchronously
         SQLite.select()
@@ -77,7 +77,7 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
                     if (tResult == null) {
                         tResult = new ArrayList<>();
                     }
-                    mCourses.addAll(tResult);
+                    courses.addAll(tResult);
                     update();
                 })
                 .execute();
@@ -91,12 +91,12 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
 
     @Override
     public int getItemCount(){
-        return mCourses.size();
+        return courses.size();
     }
 
     @Override
     public void update() {
-        showEmptyView(mCourses.isEmpty());
+        showEmptyView(courses.isEmpty());
         notifyDataSetChanged();
     }
 
@@ -104,7 +104,7 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
      * @return The list of checked classes
      */
     public List<Course> getCheckedCourses(){
-        return this.mCheckedCourses;
+        return this.checkedCourses;
     }
 
     class CourseHolder extends BaseHolder implements View.OnClickListener {
@@ -112,37 +112,37 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
          * The course code
          */
         @BindView(R.id.course_code)
-        TextView mCode;
+        TextView code;
         /**
          * The course title
          */
         @BindView(R.id.course_title)
-        TextView mTitle;
+        TextView title;
         /**
          * The course type
          */
         @BindView(R.id.course_type)
-        TextView mType;
+        TextView type;
         /**
          * The course credits
          */
         @BindView(R.id.course_credits)
-        TextView mCredits;
+        TextView credits;
         /**
          * The course days
          */
         @BindView(R.id.course_days)
-        TextView mDays;
+        TextView days;
         /**
          * The course hours
          */
         @BindView(R.id.course_hours)
-        TextView mHours;
+        TextView hours;
         /**
          * The course unregistration check box
          */
         @BindView(R.id.course_checkbox)
-        CheckBox mCheckBox;
+        CheckBox checkBox;
 
         public CourseHolder(View itemView){
             super(itemView);
@@ -150,32 +150,32 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
         }
 
         public void bind(int position){
-            Course course = mCourses.get(position);
-            mCode.setText(course.getCode());
-            mTitle.setText(course.getTitle());
-            mType.setText(course.getType());
-            mCredits.setText(itemView.getContext().getString(
+            Course course = courses.get(position);
+            code.setText(course.getCode());
+            title.setText(course.getTitle());
+            type.setText(course.getType());
+            credits.setText(itemView.getContext().getString(
                     R.string.course_credits, course.getCredits()));
-            mDays.setText(DayUtils.getDayStrings(course.getDays()));
-            mHours.setText(course.getTimeString());
+            days.setText(DayUtils.getDayStrings(course.getDays()));
+            hours.setText(course.getTimeString());
 
             //Show the check box if the user can unregister
-            mCheckBox.setVisibility(mCanUnregister ? View.VISIBLE : View.GONE);
+            checkBox.setVisibility(canUnregister ? View.VISIBLE : View.GONE);
             //Only set the view selectable if the user can unregister
-            itemView.setClickable(mCanUnregister);
-            if(mCanUnregister){
+            itemView.setClickable(canUnregister);
+            if(canUnregister){
                 //Remove any other listeners
-                mCheckBox.setOnCheckedChangeListener(null);
-                mCheckBox.setChecked(mCheckedCourses.contains(course));
-                mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+                checkBox.setOnCheckedChangeListener(null);
+                checkBox.setChecked(checkedCourses.contains(course));
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean checked){
                         //If it becomes checked, add it to the list. If not, remove it
                         if(checked){
-                            mCheckedCourses.add(course);
+                            checkedCourses.add(course);
                         }
                         else{
-                            mCheckedCourses.remove(course);
+                            checkedCourses.remove(course);
                         }
                     }
                 });
@@ -184,7 +184,7 @@ public class CoursesAdapter extends RecyclerViewBaseAdapter {
 
         @Override
         public void onClick(View v){
-            mCheckBox.setChecked(!mCheckBox.isChecked());
+            checkBox.setChecked(!checkBox.isChecked());
         }
     }
 }
