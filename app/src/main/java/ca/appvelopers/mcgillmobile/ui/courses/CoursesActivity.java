@@ -253,74 +253,71 @@ public class CoursesActivity extends DrawerActivity {
             Utils.toast(this, R.string.courses_none_selected);
         } else {
             DialogUtils.alert(this, R.string.unregister_dialog_title,
-                    R.string.unregister_dialog_message, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                    R.string.unregister_dialog_message, (dialog, which) -> {
+                        dialog.dismiss();
 
-                            //Don't continue if the positive button has not been clicked on
-                            if (which != DialogInterface.BUTTON_POSITIVE) {
-                                return;
-                            }
-
-                            //Make sure we are connected to the internet
-                            if (!Utils.isConnected(CoursesActivity.this)) {
-                                DialogHelper.error(CoursesActivity.this,
-                                        R.string.error_no_internet);
-                                return;
-                            }
-
-                            //Show the user we are loading
-                            showToolbarProgress(true);
-
-                            //Run the registration thread
-                            mcGillService.registration(
-                                    McGillManager.getRegistrationURL(term, courses, true))
-                                    .enqueue(new Callback<List<RegistrationError>>() {
-                                        @Override
-                                        public void onResponse(Call<List<RegistrationError>> call,
-                                                Response<List<RegistrationError>> response) {
-                                            showToolbarProgress(false);
-
-                                            //If there are no errors, show the success message
-                                            if (response.body() == null ||
-                                                    response.body().isEmpty()) {
-                                                Utils.toast(CoursesActivity.this,
-                                                        R.string.unregistration_success);
-                                                return;
-                                            }
-
-                                            //Prepare the error message String
-                                            String errorMessage = "";
-                                            for (RegistrationError error : response.body()) {
-                                                errorMessage += error.getString(courses);
-                                                errorMessage += "\n";
-                                            }
-
-                                            DialogHelper.error(CoursesActivity.this, errorMessage);
-
-                                            //Refresh the courses
-                                            refresh();
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<List<RegistrationError>> call,
-                                                Throwable t) {
-                                            Timber.e(t, "Error unregistering for courses");
-                                            showToolbarProgress(false);
-                                            //If this is a MinervaException, broadcast it
-                                            if (t instanceof MinervaException) {
-                                                LocalBroadcastManager
-                                                        .getInstance(CoursesActivity.this)
-                                                        .sendBroadcast(new Intent(
-                                                                Constants.BROADCAST_MINERVA));
-                                            } else {
-                                                DialogHelper.error(CoursesActivity.this,
-                                                        R.string.error_other);
-                                            }
-                                        }
-                                    });
+                        //Don't continue if the positive button has not been clicked on
+                        if (which != DialogInterface.BUTTON_POSITIVE) {
+                            return;
                         }
+
+                        //Make sure we are connected to the internet
+                        if (!Utils.isConnected(CoursesActivity.this)) {
+                            DialogHelper.error(CoursesActivity.this,
+                                    R.string.error_no_internet);
+                            return;
+                        }
+
+                        //Show the user we are loading
+                        showToolbarProgress(true);
+
+                        //Run the registration thread
+                        mcGillService.registration(
+                                McGillManager.getRegistrationURL(term, courses, true))
+                                .enqueue(new Callback<List<RegistrationError>>() {
+                                    @Override
+                                    public void onResponse(Call<List<RegistrationError>> call,
+                                            Response<List<RegistrationError>> response) {
+                                        showToolbarProgress(false);
+
+                                        //If there are no errors, show the success message
+                                        if (response.body() == null ||
+                                                response.body().isEmpty()) {
+                                            Utils.toast(CoursesActivity.this,
+                                                    R.string.unregistration_success);
+                                            return;
+                                        }
+
+                                        //Prepare the error message String
+                                        String errorMessage = "";
+                                        for (RegistrationError error : response.body()) {
+                                            errorMessage += error.getString(courses);
+                                            errorMessage += "\n";
+                                        }
+
+                                        DialogHelper.error(CoursesActivity.this, errorMessage);
+
+                                        //Refresh the courses
+                                        refresh();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<List<RegistrationError>> call,
+                                            Throwable t) {
+                                        Timber.e(t, "Error unregistering for courses");
+                                        showToolbarProgress(false);
+                                        //If this is a MinervaException, broadcast it
+                                        if (t instanceof MinervaException) {
+                                            LocalBroadcastManager
+                                                    .getInstance(CoursesActivity.this)
+                                                    .sendBroadcast(new Intent(
+                                                            Constants.BROADCAST_MINERVA));
+                                        } else {
+                                            DialogHelper.error(CoursesActivity.this,
+                                                    R.string.error_other);
+                                        }
+                                    }
+                                });
                     });
         }
     }
