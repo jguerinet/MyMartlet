@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui.courses;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +23,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.guerinet.utils.RecyclerViewBaseAdapter;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Course_Table;
@@ -42,7 +41,7 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHolder> {
+public class CoursesAdapter extends RecyclerViewBaseAdapter {
     /**
      * The list of courses
      */
@@ -59,10 +58,12 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
     /**
      * Default Constructor
      *
+     * @param emptyView     View to show if there are no {@link Course}s
      * @param term          {@link Term} we are currently looking at
      * @param canUnregister True if the user can unregister from these courses, false otherwise
      */
-    public CoursesAdapter(Term term, boolean canUnregister){
+    public CoursesAdapter(TextView emptyView, Term term, boolean canUnregister) {
+        super(emptyView);
         mCanUnregister = canUnregister;
         mCourses = new ArrayList<>();
         mCheckedCourses = new ArrayList<>();
@@ -74,10 +75,10 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
                 .async()
                 .queryListResultCallback((transaction, tResult) -> {
                     if (tResult == null) {
-                        return;
+                        tResult = new ArrayList<>();
                     }
                     mCourses.addAll(tResult);
-                    notifyDataSetChanged();
+                    update();
                 })
                 .execute();
     }
@@ -89,13 +90,14 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
     }
 
     @Override
-    public void onBindViewHolder(CourseHolder courseHolder, int i){
-        courseHolder.bind(mCourses.get(i));
+    public int getItemCount(){
+        return mCourses.size();
     }
 
     @Override
-    public int getItemCount(){
-        return mCourses.size();
+    public void update() {
+        showEmptyView(mCourses.isEmpty());
+        notifyDataSetChanged();
     }
 
     /**
@@ -105,7 +107,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
         return this.mCheckedCourses;
     }
 
-    class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class CourseHolder extends BaseHolder implements View.OnClickListener {
         /**
          * The course code
          */
@@ -144,11 +146,11 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
 
         public CourseHolder(View itemView){
             super(itemView);
-            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
-        public void bind(final Course course){
+        public void bind(int position){
+            Course course = mCourses.get(position);
             mCode.setText(course.getCode());
             mTitle.setText(course.getTitle());
             mType.setText(course.getType());

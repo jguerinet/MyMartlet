@@ -175,13 +175,8 @@ public class CoursesActivity extends DrawerActivity {
         }
 
         //Set up the list
-        mAdapter = new CoursesAdapter(mTerm, canUnregister);
+        mAdapter = new CoursesAdapter(mEmptyView, mTerm, canUnregister);
         mList.setAdapter(mAdapter);
-
-        //Show the empty view if needed
-        // TODO Move this to the adapter
-//        mList.setVisibility(courses.isEmpty() ? View.GONE : View.VISIBLE);
-//        mEmptyView.setVisibility(courses.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     /**
