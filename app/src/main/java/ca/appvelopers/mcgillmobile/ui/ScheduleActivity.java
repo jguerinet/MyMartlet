@@ -58,7 +58,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
@@ -66,9 +65,10 @@ import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter.TranscriptResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -107,11 +107,6 @@ public class ScheduleActivity extends DrawerActivity {
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
     protected BooleanPreference twentyFourHourPref;
-    /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    protected TranscriptManager transcriptManager;
     /**
      * {@link ScheduleManager} instance
      */
@@ -265,30 +260,31 @@ public class ScheduleActivity extends DrawerActivity {
                 scheduleManager.set(response.body(), term);
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(new Callback<Transcript>() {
-                    @Override
-                    public void onResponse(Call<Transcript> call, Response<Transcript> response) {
-                        transcriptManager.set(response.body());
-                        //Update the view
-                        Assert.assertNotNull(viewPager);
-                        viewPager.getAdapter().notifyDataSetChanged();
-                        showToolbarProgress(false);
-                    }
+                mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
+                            @Override
+                            public void onResponse(Call<TranscriptResponse> call,
+                                    Response<TranscriptResponse> response) {
+                                TranscriptDB.saveTranscript(ScheduleActivity.this, response.body());
+                                // Update the view
+                                Assert.assertNotNull(viewPager);
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                showToolbarProgress(false);
+                            }
 
-                    @Override
-                    public void onFailure(Call<Transcript> call, Throwable t) {
-                        Timber.e(t, "Error refreshing the transcript");
-                        showToolbarProgress(false);
+                            @Override
+                            public void onFailure(Call<TranscriptResponse> call, Throwable t) {
+                                Timber.e(t, "Error refreshing the transcript");
+                                showToolbarProgress(false);
 
-                        //If this is a MinervaException, broadcast it
-                        if (t instanceof MinervaException) {
-                            LocalBroadcastManager.getInstance(ScheduleActivity.this)
-                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                        } else {
-                            DialogHelper.error(ScheduleActivity.this, R.string.error_other);
-                        }
-                    }
-                });
+                                //If this is a MinervaException, broadcast it
+                                if (t instanceof MinervaException) {
+                                    LocalBroadcastManager.getInstance(ScheduleActivity.this)
+                                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                                } else {
+                                    DialogHelper.error(ScheduleActivity.this, R.string.error_other);
+                                }
+                            }
+                        });
             }
 
             @Override

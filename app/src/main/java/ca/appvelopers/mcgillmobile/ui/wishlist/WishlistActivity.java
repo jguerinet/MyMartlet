@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -44,15 +42,14 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -73,11 +70,6 @@ public class WishlistActivity extends DrawerActivity {
      */
     @BindView(android.R.id.list)
     protected RecyclerView mList;
-    /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    protected TranscriptManager transcriptManager;
     /**
      * The ListView adapter
      */
@@ -223,7 +215,7 @@ public class WishlistActivity extends DrawerActivity {
                     }
                     //Add course if it has not already been added
                     if (!courseExists) {
-                        mTranscriptCourses.add(new TranscriptCourse(course.getTerm(),
+                        mTranscriptCourses.add(new TranscriptCourse(-1, course.getTerm(),
                                 course.getCode(), course.getTitle(), course.getCredits(), "N/A",
                                 "N/A"));
                     }
