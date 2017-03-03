@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,8 @@
 package ca.appvelopers.mcgillmobile.ui.search;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -41,12 +39,12 @@ import ca.appvelopers.mcgillmobile.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistSearchCourseAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -193,13 +191,7 @@ public class SearchResultsActivity extends BaseActivity {
                     public void onFailure(Call<List<RegistrationError>> call, Throwable t) {
                         Timber.e(t, "Error (un)registering for courses");
                         activity.showToolbarProgress(false);
-                        //If this is a MinervaException, broadcast it
-                        if (t instanceof MinervaException) {
-                            LocalBroadcastManager.getInstance(activity)
-                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                        } else {
-                            DialogHelper.error(activity, R.string.error_other);
-                        }
+                        Help.handleException(activity, t);
                     }
                 });
     }
