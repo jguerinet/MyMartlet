@@ -153,8 +153,8 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
             code.setText(course.getCode());
             title.setText(course.getTitle());
             type.setText(course.getType());
-            credits.setText(itemView.getContext().getString(
-                    R.string.course_credits, course.getCredits()));
+            credits.setText(itemView.getContext().getString(R.string.course_credits,
+                    String.valueOf(course.getCredits())));
             days.setText(DayUtils.getDayStrings(course.getDays()));
             hours.setText(course.getTimeString());
 
