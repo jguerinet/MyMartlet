@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package ca.appvelopers.mcgillmobile.ui.settings;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -41,19 +42,19 @@ import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
  */
 public class AgreementActivity extends BaseActivity {
     /**
-     * The container with the buttons for the initial EULA agreement
+     * Container with the buttons for the initial EULA agreement
      */
     @BindView(R.id.buttons_container)
-    protected LinearLayout mButtons;
+    LinearLayout buttons;
     /**
      * EULA {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.EULA)
-    protected BooleanPreference eulaPref;
+    BooleanPreference eulaPref;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement);
         ButterKnife.bind(this);
@@ -62,21 +63,21 @@ public class AgreementActivity extends BaseActivity {
         boolean required = getIntent().getBooleanExtra(PrefsModule.EULA, false);
         setUpToolbar(!required);
 
-        //Check if we need to display the buttons
+        // Check if we need to display the buttons
         if (required) {
-            mButtons.setVisibility(View.VISIBLE);
+            buttons.setVisibility(View.VISIBLE);
         }
     }
 
     @OnClick(R.id.button_agree)
-    protected void agree() {
+    void agree() {
         eulaPref.set(true);
         setResult(RESULT_OK);
         finish();
     }
 
     @OnClick(R.id.button_decline)
-    protected void decline() {
+    void decline() {
         eulaPref.set(false);
         setResult(RESULT_CANCELED);
         finish();
