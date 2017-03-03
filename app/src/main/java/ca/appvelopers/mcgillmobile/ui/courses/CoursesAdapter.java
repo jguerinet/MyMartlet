@@ -84,13 +84,13 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
     }
 
     @Override
-    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new CourseHolder(LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_course, viewGroup, false));
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return courses.size();
     }
 
@@ -101,10 +101,10 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
     }
 
     /**
-     * @return The list of checked classes
+     * @return The list of checked {@link Course}s
      */
-    List<Course> getCheckedCourses(){
-        return this.checkedCourses;
+    List<Course> getCheckedCourses() {
+        return checkedCourses;
     }
 
     class CourseHolder extends BaseHolder implements View.OnClickListener {
@@ -144,12 +144,12 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
         @BindView(R.id.course_checkbox)
         CheckBox checkBox;
 
-        CourseHolder(View itemView){
+        CourseHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
         }
 
-        public void bind(int position){
+        public void bind(int position) {
             Course course = courses.get(position);
             code.setText(course.getCode());
             title.setText(course.getTitle());
@@ -183,7 +183,7 @@ class CoursesAdapter extends RecyclerViewBaseAdapter {
         }
 
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
             checkBox.setChecked(!checkBox.isChecked());
         }
     }
