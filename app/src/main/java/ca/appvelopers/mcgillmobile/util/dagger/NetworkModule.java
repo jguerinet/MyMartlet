@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import com.squareup.moshi.Moshi;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.model.retrofit.ConfigService;
-import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
+import ca.appvelopers.mcgillmobile.util.retrofit.ConfigService;
+import ca.appvelopers.mcgillmobile.util.retrofit.McGillService;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
