@@ -43,6 +43,68 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
  * @since 1.0.0
  */
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHolder> {
+    /**
+     * The list of courses
+     */
+    private final List<Course> mCourses;
+    /**
+     * The list of checked courses
+     */
+    private final List<Course> mCheckedCourses;
+    /**
+     * True if the user can unregister from these courses, false otherwise
+     */
+    private boolean mCanUnregister;
+
+    /**
+     * Default Constructor
+     *
+     * @param term          {@link Term} we are currently looking at
+     * @param canUnregister True if the user can unregister from these courses, false otherwise
+     */
+    public CoursesAdapter(Term term, boolean canUnregister){
+        mCanUnregister = canUnregister;
+        mCourses = new ArrayList<>();
+        mCheckedCourses = new ArrayList<>();
+
+        // Get the courses asynchronously
+        SQLite.select()
+                .from(Course.class)
+                .where(Course_Table.term.eq(term))
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
+                    mCourses.addAll(tResult);
+                    notifyDataSetChanged();
+                })
+                .execute();
+    }
+
+    @Override
+    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+        return new CourseHolder(LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.item_course, viewGroup, false));
+    }
+
+    @Override
+    public void onBindViewHolder(CourseHolder courseHolder, int i){
+        courseHolder.bind(mCourses.get(i));
+    }
+
+    @Override
+    public int getItemCount(){
+        return mCourses.size();
+    }
+
+    /**
+     * @return The list of checked classes
+     */
+    public List<Course> getCheckedCourses(){
+        return this.mCheckedCourses;
+    }
+
     class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         /**
          * The course code
@@ -122,66 +184,5 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHo
         public void onClick(View v){
             mCheckBox.setChecked(!mCheckBox.isChecked());
         }
-    }
-    /**
-     * The list of courses
-     */
-    private final List<Course> mCourses;
-    /**
-     * The list of checked courses
-     */
-    private final List<Course> mCheckedCourses;
-    /**
-     * True if the user can unregister from these courses, false otherwise
-     */
-    private boolean mCanUnregister;
-
-    /**
-     * Default Constructor
-     *
-     * @param term          {@link Term} we are currently looking at
-     * @param canUnregister True if the user can unregister from these courses, false otherwise
-     */
-    public CoursesAdapter(Term term, boolean canUnregister){
-        mCanUnregister = canUnregister;
-        mCourses = new ArrayList<>();
-        mCheckedCourses = new ArrayList<>();
-
-        // Get the courses asynchronously
-        SQLite.select()
-                .from(Course.class)
-                .where(Course_Table.term.eq(term))
-                .async()
-                .queryListResultCallback((transaction, tResult) -> {
-                    if (tResult == null) {
-                        return;
-                    }
-                    mCourses.addAll(tResult);
-                    notifyDataSetChanged();
-                })
-                .execute();
-    }
-
-    @Override
-    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i){
-        return new CourseHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_course, viewGroup, false));
-    }
-
-    @Override
-    public void onBindViewHolder(CourseHolder courseHolder, int i){
-        courseHolder.bind(mCourses.get(i));
-    }
-
-    @Override
-    public int getItemCount(){
-        return mCourses.size();
-    }
-
-    /**
-     * @return The list of checked classes
-     */
-    public List<Course> getCheckedCourses(){
-        return this.mCheckedCourses;
     }
 }
