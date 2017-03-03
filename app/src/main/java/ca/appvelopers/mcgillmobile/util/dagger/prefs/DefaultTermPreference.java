@@ -34,6 +34,11 @@ import ca.appvelopers.mcgillmobile.model.Term;
 @Singleton
 public class DefaultTermPreference extends StringPreference {
     /**
+     * Default {@link Term}
+     */
+    private Term defaultTerm;
+
+    /**
      * Default Injectable Constructor
      *
      * @param prefs SharedPreferences instance
@@ -47,18 +52,31 @@ public class DefaultTermPreference extends StringPreference {
      * @param term {@link Term} to save
      */
     public void setTerm(Term term) {
+        defaultTerm = term;
         set(term.getId());
     }
 
     /**
      * @return Stored default {@link Term}, the current term if none stored
      */
+    @NonNull
     public Term getTerm() {
-        String term = get();
-        if (term == null) {
-            // If there is no default term, use today
-            return Term.currentTerm();
+        if (defaultTerm == null) {
+            String term = get();
+            if (term == null) {
+                // If there is no default term, use today
+                defaultTerm = Term.currentTerm();
+            } else {
+                defaultTerm = Term.parseTerm(term);
+            }
         }
-        return Term.parseTerm(term);
+        return defaultTerm;
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        // Clear the instance
+        defaultTerm = null;
     }
 }
