@@ -23,7 +23,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +36,7 @@ import android.widget.TextView;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import junit.framework.Assert;
 
@@ -57,17 +57,17 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Course_Table;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter.TranscriptResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -108,11 +108,6 @@ public class ScheduleActivity extends DrawerActivity {
     @Named(PrefsModule.SCHEDULE_24HR)
     protected BooleanPreference twentyFourHourPref;
     /**
-     * {@link ScheduleManager} instance
-     */
-    @Inject
-    protected ScheduleManager scheduleManager;
-    /**
      * Current {@link Term}
      */
     private Term term;
@@ -139,8 +134,8 @@ public class ScheduleActivity extends DrawerActivity {
         //Title
         setTitle(term.getString(this));
 
-        //Update the list of courses for this term
-        courses = scheduleManager.getTermCourses(term);
+        // Update the list of courses for this term
+        getCourses();
 
         //Date is by default set to today
         date = LocalDate.now();
@@ -206,7 +201,7 @@ public class ScheduleActivity extends DrawerActivity {
                         ScheduleActivity.this.term = term;
 
                         //Update the courses
-                        courses = scheduleManager.getTermCourses(term);
+                        getCourses();
 
                         //Check if we are in the current semester
                         date = LocalDate.now();
@@ -244,6 +239,20 @@ public class ScheduleActivity extends DrawerActivity {
     }
 
     /**
+     * Gets the courses for the given {@link Term}
+     */
+    private void getCourses() {
+        // Clear the current courses
+        courses.clear();
+
+        // Get the new courses for the current term
+        courses.addAll(SQLite.select()
+                .from(Course.class)
+                .where(Course_Table.term.eq(term))
+                .queryList());
+    }
+
+    /**
      * Refreshes the list of courses for the given term and the user's transcript
      *  (only available in portrait mode)
      */
@@ -256,8 +265,8 @@ public class ScheduleActivity extends DrawerActivity {
         mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
-                //Set the courses
-                scheduleManager.set(response.body(), term);
+                // Set the courses
+                CoursesDB.setCourses(term, response.body());
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
@@ -271,33 +280,20 @@ public class ScheduleActivity extends DrawerActivity {
                                 showToolbarProgress(false);
                             }
 
-                            @Override
-                            public void onFailure(Call<TranscriptResponse> call, Throwable t) {
-                                Timber.e(t, "Error refreshing the transcript");
-                                showToolbarProgress(false);
-
-                                //If this is a MinervaException, broadcast it
-                                if (t instanceof MinervaException) {
-                                    LocalBroadcastManager.getInstance(ScheduleActivity.this)
-                                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                                } else {
-                                    DialogHelper.error(ScheduleActivity.this, R.string.error_other);
-                                }
-                            }
-                        });
+                    @Override
+                    public void onFailure(Call<TranscriptResponse> call, Throwable t) {
+                        Timber.e(t, "Error refreshing the transcript");
+                        showToolbarProgress(false);
+                        Help.handleException(ScheduleActivity.this, t);
+                    }
+                });
             }
 
             @Override
             public void onFailure(Call<List<Course>> call, Throwable t) {
                 Timber.e(t, "Error refreshing courses");
                 showToolbarProgress(false);
-                //If this is a MinervaException, broadcast it
-                if (t instanceof MinervaException) {
-                    LocalBroadcastManager.getInstance(ScheduleActivity.this)
-                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                } else {
-                    DialogHelper.error(ScheduleActivity.this, R.string.error_other);
-                }
+                Help.handleException(ScheduleActivity.this, t);
             }
         });
     }

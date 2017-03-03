@@ -34,11 +34,11 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 
 /**
  * Clears objects from internal storage or {@link SharedPreferences}
@@ -67,10 +67,6 @@ public class ClearManager {
      * {@link HomepageManager}
      */
     private final HomepageManager homepageManager;
-    /**
-     * {@link ScheduleManager} instance
-     */
-    private final ScheduleManager scheduleManager;
 
     /**
      * Default Injectable Constructor
@@ -80,19 +76,17 @@ public class ClearManager {
      * @param passwordPref         {@link PasswordPreference} instance
      * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param homepageManager      {@link HomepageManager} instance
-     * @param scheduleManager      {@link ScheduleManager} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
-            HomepageManager homepageManager, ScheduleManager scheduleManager) {
+            HomepageManager homepageManager) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
-        this.scheduleManager = scheduleManager;
     }
 
     /**
@@ -108,7 +102,7 @@ public class ClearManager {
         passwordPref.clear();
 
         //Schedule
-        scheduleManager.clear();
+        context.deleteDatabase(CoursesDB.FULL_NAME);
 
         // Transcript
         TranscriptDB.clearTranscript(context);

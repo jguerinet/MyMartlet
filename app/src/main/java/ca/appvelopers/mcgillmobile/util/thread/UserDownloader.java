@@ -38,9 +38,9 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter;
 import retrofit2.Response;
@@ -62,11 +62,6 @@ public abstract class UserDownloader extends Thread {
      */
     @Inject
     protected McGillService mcGillService;
-    /**
-     * {@link ScheduleManager} instance
-     */
-    @Inject
-    protected ScheduleManager scheduleManager;
     /**
      * True if everything should be downloaded, false otherwise (defaults to false)
      */
@@ -129,7 +124,7 @@ public abstract class UserDownloader extends Thread {
                     //Download the schedule
                     try {
                         List<Course> courses = mcGillService.schedule(term).execute().body();
-                        scheduleManager.set(courses, term);
+                        CoursesDB.setCourses(term, courses);
                     } catch (IOException e) {
                         handleException(e, term.getId());
                     }

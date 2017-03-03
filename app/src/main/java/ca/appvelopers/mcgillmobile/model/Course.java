@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,21 @@
 package ca.appvelopers.mcgillmobile.model;
 
 import com.guerinet.utils.DateUtils;
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.util.DayUtils;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import timber.log.Timber;
 
 /**
@@ -33,68 +40,84 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Course implements Serializable {
+@Table(database = CoursesDB.class, allFields = true)
+public class Course extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Unique Id for this course
+     */
+    @PrimaryKey(autoincrement = true)
+    int id;
     /**
      * The term this class is for
      */
-    protected Term term;
+    Term term;
     /**
      * The course's 4-letter subject (ex: MATH)
      */
-    protected final String subject;
+    String subject;
     /**
      * The course's number (ex: 263)
      */
-    protected final String number;
+    String number;
     /**
      * The course title
      */
-    protected final String title;
+    String title;
     /**
      * The course CRN number
      */
-    protected final int crn;
+    int crn;
     /**
      * The course section (ex: 001)
      */
-    protected final String section;
+    String section;
     /**
      * The course's start time
      */
-    protected final LocalTime startTime;
+    LocalTime startTime;
     /**
      * The course's end time
      */
-    protected final LocalTime endTime;
+    LocalTime endTime;
+    /**
+     * Days in the String format for the DB
+     */
+    String daysString;
     /**
      * The days this course is on
      */
-    protected final List<DayOfWeek> days;
+    @ColumnIgnore
+    private List<DayOfWeek> days;
     /**
      * The course type (ex: lecture, tutorial...)
      */
-    protected final String type;
+    String type;
     /**
      * The course location (generally building and room number)
      */
-    protected final String location;
+    String location;
     /**
      * The course's instructor's name
      */
-    protected final String instructor;
+    String instructor;
     /**
      * The number of credits for this course
      */
-    protected final double credits;
+    double credits;
     /**
      * The course start date
      */
-    protected final LocalDate startDate;
+    LocalDate startDate;
     /**
      * The course end date
      */
-    protected final LocalDate endDate;
+    LocalDate endDate;
+
+    /**
+     * DB Constructor
+     */
+    Course() {}
 
     /**
      * Constructor used for the user's already registered classes
@@ -204,6 +227,14 @@ public class Course implements Serializable {
      * @return The days this course is on
      */
     public List<DayOfWeek> getDays() {
+        if (days == null) {
+            days = new ArrayList<>();
+            if (daysString != null) {
+                for (char day : daysString.toCharArray()) {
+                    days.add(DayUtils.getDay(day));
+                }
+            }
+        }
         return days;
     }
 
@@ -299,7 +330,7 @@ public class Course implements Serializable {
     public boolean isForDate(LocalDate date) {
         //Check if the date is within the date range and the course is offered on that day
         return !date.isBefore(startDate) && !date.isAfter(endDate) &&
-                days.contains(date.getDayOfWeek());
+                getDays().contains(date.getDayOfWeek());
     }
 
     /**
@@ -322,6 +353,13 @@ public class Course implements Serializable {
     public String getDateString() {
         return DateUtils.getMediumDateString(startDate) + " - " +
                 DateUtils.getMediumDateString(endDate);
+    }
+
+    @Override
+    public void save() {
+        // Create the day String from the days
+        daysString = DayUtils.getDayStrings(getDays());
+        super.save();
     }
 
     /**

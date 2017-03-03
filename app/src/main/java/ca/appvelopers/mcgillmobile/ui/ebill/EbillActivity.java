@@ -16,9 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.ui.ebill;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -30,10 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Statement;
-import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
-import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -116,13 +112,7 @@ public class EbillActivity extends DrawerActivity {
             public void onFailure(Call<List<Statement>> call, Throwable t) {
                 Timber.e(t, "Error refreshing the ebill");
                 showToolbarProgress(false);
-                //If this is a MinervaException, broadcast it
-                if (t instanceof MinervaException) {
-                    LocalBroadcastManager.getInstance(EbillActivity.this)
-                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                } else {
-                    DialogHelper.error(EbillActivity.this, R.string.error_other);
-                }
+                Help.handleException(EbillActivity.this, t);
             }
         });
     }

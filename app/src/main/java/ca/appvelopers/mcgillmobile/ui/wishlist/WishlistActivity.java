@@ -16,10 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.ui.wishlist;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -42,13 +40,11 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
-import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
-import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -271,16 +267,7 @@ public class WishlistActivity extends DrawerActivity {
                 //Reload the adapter
                 update();
                 showToolbarProgress(false);
-
-                if (result != null) {
-                    //If this is a MinervaException, broadcast it
-                    if (result instanceof MinervaException) {
-                        LocalBroadcastManager.getInstance(WishlistActivity.this)
-                                .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                    } else {
-                        DialogHelper.error(WishlistActivity.this, R.string.error_other);
-                    }
-                }
+                Help.handleException(WishlistActivity.this, result);
             }
         }.execute();
     }

@@ -17,9 +17,8 @@
 package ca.appvelopers.mcgillmobile.ui.courses;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -35,8 +34,6 @@ import com.guerinet.utils.dialog.DialogUtils;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,15 +42,14 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
-import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter.TranscriptResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,47 +64,51 @@ import timber.log.Timber;
  */
 public class CoursesActivity extends DrawerActivity {
     /**
-     * The ListView for the courses
+     * {@link Course}s list
      */
     @BindView(android.R.id.list)
-    protected RecyclerView mList;
+    RecyclerView list;
     /**
-     * The button to unregister from a course
+     * Button to unregister from a course
      */
     @BindView(R.id.course_register)
-    protected Button mUnregisterButton;
+    Button unregisterButton;
     /**
-     * The empty list view
+     * Empty list view
      */
     @BindView(R.id.courses_empty)
-    protected TextView mEmptyView;
+    TextView emptyView;
     /**
-     * {@link ScheduleManager} instance
+     * Adapter for the list of courses
      */
-    @Inject
-    protected ScheduleManager scheduleManager;
+    private CoursesAdapter adapter;
     /**
-     * The ListView adapter
+     * Current {@link Term} shown
      */
-    private CoursesAdapter mAdapter;
-    /**
-     * The current term shown
-     */
-    private Term mTerm;
+    private Term term;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
         App.component(this).inject(this);
         analytics.sendScreen("View Courses");
 
-        mTerm = App.getDefaultTerm();
+        term = App.getDefaultTerm();
 
-        mList.setLayoutManager(new LinearLayoutManager(this));
+        list.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CoursesAdapter(emptyView);
+        list.setAdapter(adapter);
 
-        //Remove this button
+        // Format the unregister button
+        unregisterButton.setText(R.string.courses_unregister);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        unregisterButton.setLayoutParams(params);
+
+        // Remove this button
         findViewById(R.id.course_wishlist).setVisibility(View.GONE);
     }
 
@@ -130,14 +130,14 @@ public class CoursesActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
                 DialogUtils.list(this, R.string.title_change_semester,
-                        new TermDialogHelper(this, mTerm, false) {
+                        new TermDialogHelper(this, term, false) {
                             @Override
                             public void onTermSelected(Term term) {
-                                //Set the default term
+                                // Set the default term
                                 App.setDefaultTerm(term);
 
-                                //Set the instance term
-                                mTerm = term;
+                                // Set the instance term
+                                CoursesActivity.this.term = term;
 
                                 update();
                                 refresh();
@@ -152,38 +152,27 @@ public class CoursesActivity extends DrawerActivity {
         }
     }
 
+    @HomepageManager.Homepage
+    @Override
+    protected int getCurrentPage() {
+        return HomepageManager.COURSES;
+    }
+
     /**
      * Updates all of the info in the view
      */
     private void update() {
-        //Set the title
-        setTitle(mTerm.getString(this));
+        // Set the title
+        setTitle(term.getString(this));
 
-        //User can unregister if the current term is in the list of terms to register for
-        boolean canUnregister = App.getRegisterTerms().contains(mTerm);
+        // User can unregister if the current term is in the list of terms to register for
+        boolean canUnregister = App.getRegisterTerms().contains(term);
 
-        //Change the text and the visibility if we are in the list of currently registered courses
-        if (canUnregister) {
-            mUnregisterButton.setVisibility(View.VISIBLE);
-            mUnregisterButton.setText(R.string.courses_unregister);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            mUnregisterButton.setLayoutParams(params);
-        } else {
-            mUnregisterButton.setVisibility(View.GONE);
-        }
+        // Change the text and the visibility if we are in the list of currently registered courses
+        unregisterButton.setVisibility(canUnregister ? View.VISIBLE : View.GONE);
 
-        //Get the list of courses for this term
-        List<Course> courses = scheduleManager.getTermCourses(mTerm);
-
-        //Set up the list
-        mAdapter = new CoursesAdapter(courses, canUnregister);
-        mList.setAdapter(mAdapter);
-
-        //Show the empty view if needed
-        mList.setVisibility(courses.isEmpty() ? View.GONE : View.VISIBLE);
-        mEmptyView.setVisibility(courses.isEmpty() ? View.VISIBLE : View.GONE);
+        // Update the list
+        adapter.update(term, canUnregister);
     }
 
     /**
@@ -194,12 +183,12 @@ public class CoursesActivity extends DrawerActivity {
             return;
         }
 
-        //Download the courses for this term
-        mcGillService.schedule(mTerm).enqueue(new Callback<List<Course>>() {
+        // Download the courses for this term
+        mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
-                //Set the courses
-                scheduleManager.set(response.body(), mTerm);
+                // Set the courses
+                CoursesDB.setCourses(term, response.body());
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
@@ -216,14 +205,7 @@ public class CoursesActivity extends DrawerActivity {
                     public void onFailure(Call<TranscriptResponse> call, Throwable t) {
                         Timber.e(t, "Error refreshing the transcript");
                         showToolbarProgress(false);
-
-                        //If this is a MinervaException, broadcast it
-                        if (t instanceof MinervaException) {
-                            LocalBroadcastManager.getInstance(CoursesActivity.this)
-                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                        } else {
-                            DialogHelper.error(CoursesActivity.this, R.string.error_other);
-                        }
+                        Help.handleException(CoursesActivity.this, t);
                     }
                 });
             }
@@ -232,13 +214,7 @@ public class CoursesActivity extends DrawerActivity {
             public void onFailure(Call<List<Course>> call, Throwable t) {
                 Timber.e(t, "Error refreshing courses");
                 showToolbarProgress(false);
-                //If this is a MinervaException, broadcast it
-                if (t instanceof MinervaException) {
-                    LocalBroadcastManager.getInstance(CoursesActivity.this)
-                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                } else {
-                    DialogHelper.error(CoursesActivity.this, R.string.error_other);
-                }
+                Help.handleException(CoursesActivity.this, t);
             }
         });
     }
@@ -248,92 +224,71 @@ public class CoursesActivity extends DrawerActivity {
      */
     @OnClick(R.id.course_register)
     protected void unregister() {
-        //Get checked courses from adapter
-        final List<Course> courses = mAdapter.getCheckedCourses();
+        // Get checked courses from adapter
+        final List<Course> courses = adapter.getCheckedCourses();
 
         if (courses.size() > 10) {
-            //Too many courses
+            // Too many courses
             Utils.toast(this, R.string.courses_too_many_courses);
-        } else if (courses.isEmpty()) {
-            //No courses
-            Utils.toast(this, R.string.courses_none_selected);
-        } else {
-            DialogUtils.alert(this, R.string.unregister_dialog_title,
-                    R.string.unregister_dialog_message, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-
-                            //Don't continue if the positive button has not been clicked on
-                            if (which != DialogInterface.BUTTON_POSITIVE) {
-                                return;
-                            }
-
-                            //Make sure we are connected to the internet
-                            if (!Utils.isConnected(CoursesActivity.this)) {
-                                DialogHelper.error(CoursesActivity.this,
-                                        R.string.error_no_internet);
-                                return;
-                            }
-
-                            //Show the user we are loading
-                            showToolbarProgress(true);
-
-                            //Run the registration thread
-                            mcGillService.registration(
-                                    McGillManager.getRegistrationURL(mTerm, courses, true))
-                                    .enqueue(new Callback<List<RegistrationError>>() {
-                                        @Override
-                                        public void onResponse(Call<List<RegistrationError>> call,
-                                                Response<List<RegistrationError>> response) {
-                                            showToolbarProgress(false);
-
-                                            //If there are no errors, show the success message
-                                            if (response.body() == null ||
-                                                    response.body().isEmpty()) {
-                                                Utils.toast(CoursesActivity.this,
-                                                        R.string.unregistration_success);
-                                                return;
-                                            }
-
-                                            //Prepare the error message String
-                                            String errorMessage = "";
-                                            for (RegistrationError error : response.body()) {
-                                                errorMessage += error.getString(courses);
-                                                errorMessage += "\n";
-                                            }
-
-                                            DialogHelper.error(CoursesActivity.this, errorMessage);
-
-                                            //Refresh the courses
-                                            refresh();
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<List<RegistrationError>> call,
-                                                Throwable t) {
-                                            Timber.e(t, "Error unregistering for courses");
-                                            showToolbarProgress(false);
-                                            //If this is a MinervaException, broadcast it
-                                            if (t instanceof MinervaException) {
-                                                LocalBroadcastManager
-                                                        .getInstance(CoursesActivity.this)
-                                                        .sendBroadcast(new Intent(
-                                                                Constants.BROADCAST_MINERVA));
-                                            } else {
-                                                DialogHelper.error(CoursesActivity.this,
-                                                        R.string.error_other);
-                                            }
-                                        }
-                                    });
-                        }
-                    });
+            return;
         }
-    }
 
-    @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
-        return HomepageManager.COURSES;
+        if (courses.isEmpty()) {
+            // No courses
+            Utils.toast(this, R.string.courses_none_selected);
+            return;
+        }
+
+        DialogUtils.alert(this, R.string.unregister_dialog_title,
+                R.string.unregister_dialog_message, (dialog, which) -> {
+                    dialog.dismiss();
+
+                    // Don't continue if the positive button has not been clicked on
+                    if (which != DialogInterface.BUTTON_POSITIVE) {
+                        return;
+                    }
+
+                    if (!canRefresh()) {
+                        return;
+                    }
+
+                    // Run the registration thread
+                    mcGillService.registration(McGillManager.getRegistrationURL(term, courses,
+                            true))
+                            .enqueue(new Callback<List<RegistrationError>>() {
+                                @Override
+                                public void onResponse(Call<List<RegistrationError>> call,
+                                        Response<List<RegistrationError>> response) {
+                                    showToolbarProgress(false);
+
+                                    // If there are no errors, show the success message
+                                    if (response.body() == null || response.body().isEmpty()) {
+                                        Utils.toast(CoursesActivity.this,
+                                                R.string.unregistration_success);
+                                        return;
+                                    }
+
+                                    // Prepare the error message String
+                                    String errorMessage = "";
+                                    for (RegistrationError error : response.body()) {
+                                        errorMessage += error.getString(courses);
+                                        errorMessage += "\n";
+                                    }
+
+                                    DialogHelper.error(CoursesActivity.this, errorMessage);
+
+                                    // Refresh the courses
+                                    refresh();
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<RegistrationError>> call,
+                                        Throwable t) {
+                                    Timber.e(t, "Error unregistering for courses");
+                                    showToolbarProgress(false);
+                                    Help.handleException(CoursesActivity.this, t);
+                                }
+                            });
+                    });
     }
 }
