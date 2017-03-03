@@ -36,13 +36,13 @@ import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
-import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
+import ca.appvelopers.mcgillmobile.util.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter;
 import retrofit2.Response;
 import timber.log.Timber;
 

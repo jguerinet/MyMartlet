@@ -24,9 +24,9 @@ import java.util.Collections;
 
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter.TranscriptResponse;
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter.TranscriptResponse;
 
 /**
  * Database that holds the {@link Transcript}
