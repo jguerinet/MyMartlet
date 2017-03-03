@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.walkthrough;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -33,8 +34,7 @@ import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
- * Displays the walkthrough the first time the user opens the app
- *  (it can also be seen from the settings or be used to show the email walkthrough)
+ * Displays the walkthrough the first time the user opens the app or through the app settings
  * @author Julien Guerinet
  * @since 1.0.0
  */
@@ -43,22 +43,22 @@ public class WalkthroughActivity extends BaseActivity {
      * The ViewPager
      */
     @BindView(R.id.view_pager)
-    protected ViewPager viewPager;
+    ViewPager viewPager;
     /**
      * The ViewPagerIndicator
      */
     @BindView(R.id.indicator)
-    protected CirclePageIndicator indicator;
+    CirclePageIndicator indicator;
     /**
      * The next button
      */
     @BindView(R.id.next)
-    protected Button next;
+    Button next;
     /**
      * The back button
      */
     @BindView(R.id.back)
-    protected Button back;
+    Button back;
     /**
      * Adapter used for the walkthrough
      */
@@ -69,18 +69,18 @@ public class WalkthroughActivity extends BaseActivity {
     private int position = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walkthrough);
         ButterKnife.bind(this);
         analytics.sendScreen("Walkthrough");
 
-        //Load the adapter
+        // Load the adapter
         boolean firstOpen = getIntent().getBooleanExtra(Constants.FIRST_OPEN, false);
         adapter = new WalkthroughAdapter(this, firstOpen);
         viewPager.setAdapter(adapter);
 
-        //Indicator
+        // Indicator
         indicator.setViewPager(viewPager);
         indicator.setStrokeColor(Color.WHITE);
         indicator.setPageColor(Color.GRAY);
@@ -93,9 +93,9 @@ public class WalkthroughActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 WalkthroughActivity.this.position = position;
-                //Hide the back button on the first page
+                // Hide the back button on the first page
                 back.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
-                //Set the right text on the next button if we are on the last page
+                // Set the right text on the next button if we are on the last page
                 next.setText((position == adapter.getCount() - 1) ?
                         R.string.start : R.string.next);
             }
@@ -106,8 +106,8 @@ public class WalkthroughActivity extends BaseActivity {
     }
 
     @OnClick(R.id.next)
-    protected void next() {
-        //We've reached the end of the walkthrough
+    void next() {
+        // We've reached the end of the walkthrough
         if (position == adapter.getCount() - 1) {
             finish();
         } else {
@@ -116,12 +116,12 @@ public class WalkthroughActivity extends BaseActivity {
     }
 
     @OnClick(R.id.back)
-    protected void back() {
+    void back() {
         viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
     }
 
     @OnClick(R.id.close)
-    protected void close() {
+    void close() {
         analytics.sendEvent("Walkthrough", "Skip");
         finish();
     }

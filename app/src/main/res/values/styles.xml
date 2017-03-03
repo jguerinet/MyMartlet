@@ -55,4 +55,10 @@
     <style name="Theme.MyMartlet.Drawer" parent="Theme.MyMartlet">
         <item name="android:windowAnimationStyle">@null</item>
     </style>
+
+    <style name="EULATitle">
+        <item name="android:paddingTop">@dimen/padding_micro</item>
+        <item name="android:paddingBottom">@dimen/padding_micro</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
 </resources>

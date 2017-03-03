@@ -26,8 +26,8 @@ import ca.appvelopers.mcgillmobile.ui.ScheduleActivity;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguagesAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
@@ -70,8 +70,8 @@ public interface BaseComponent {
 
     /* Adapters */
     void inject(WalkthroughAdapter adapter);
-    void inject(HomepageListAdapter adapter);
-    void inject(LanguageListAdapter adapter);
+    void inject(HomepagesAdapter adapter);
+    void inject(LanguagesAdapter adapter);
     void inject(CategoryListAdapter adapter);
     void inject(TermDialogHelper helper);
 
