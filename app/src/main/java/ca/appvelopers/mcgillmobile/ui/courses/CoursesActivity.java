@@ -190,19 +190,19 @@ public class CoursesActivity extends DrawerActivity {
             return;
         }
 
-        //Download the courses for this term
+        // Download the courses for this term
         mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                 // Set the courses
                 CoursesDB.setCourses(term, response.body());
 
-                //Download the transcript (if ever the user has new semesters on their transcript)
+                // Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(new Callback<Transcript>() {
                     @Override
                     public void onResponse(Call<Transcript> call, Response<Transcript> response) {
                         transcriptManager.set(response.body());
-                        //Update the view
+                        // Update the view
                         update();
                         showToolbarProgress(false);
                     }
