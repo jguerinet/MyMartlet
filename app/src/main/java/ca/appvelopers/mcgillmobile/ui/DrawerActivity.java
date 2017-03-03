@@ -78,7 +78,7 @@ public abstract class DrawerActivity extends BaseActivity
      * {@link HomepageManager} instance
      */
     @Inject
-    HomepageManager homepageManager;
+    protected HomepageManager homepageManager;
     /**
      * Toggle for the drawer inside the action bar
      */

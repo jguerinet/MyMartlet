@@ -84,12 +84,12 @@ public class BaseActivity extends AppCompatActivity {
      * {@link LanguagePreference} instance
      */
     @Inject
-    LanguagePreference languagePref;
+    protected LanguagePreference languagePref;
     /**
      * {@link ClearManager} instance
      */
     @Inject
-    ClearManager clearManager;
+    protected ClearManager clearManager;
     /**
      * BroadcastReceiver for any local broadcasts
      */
