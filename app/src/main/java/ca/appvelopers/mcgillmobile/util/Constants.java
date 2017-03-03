@@ -49,10 +49,6 @@ public class Constants {
     /* INTERNAL STORAGE */
 
     /**
-     * The file name where the user's default term is stored
-     */
-    public static final String DEFAULT_TERM_FILE = "default_term";
-    /**
      * The file name where the user's wishlist is stored
      */
     public static final String WISHLIST_FILE = "wishlist";

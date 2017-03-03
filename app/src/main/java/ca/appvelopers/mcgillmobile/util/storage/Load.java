@@ -66,13 +66,6 @@ public class Load {
     }
 
     /**
-     * @return The user's chosen default term, null if none
-     */
-    public static Term defaultTerm(){
-        return (Term)loadObject("Default Term", Constants.DEFAULT_TERM_FILE);
-    }
-
-    /**
      * @return The user's class wishlist, an empty list if none
      */
     public static List<CourseResult> wishlist(){
