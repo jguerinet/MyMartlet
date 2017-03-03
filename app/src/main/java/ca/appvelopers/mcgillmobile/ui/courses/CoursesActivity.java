@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
@@ -92,6 +93,11 @@ public class CoursesActivity extends DrawerActivity {
      */
     @Inject
     protected ScheduleManager scheduleManager;
+    /**
+     * {@link RegisterTermPreference} instance
+     */
+    @Inject
+    RegisterTermPreference registerTermPref;
     /**
      * The ListView adapter
      */
@@ -165,7 +171,7 @@ public class CoursesActivity extends DrawerActivity {
         setTitle(mTerm.getString(this));
 
         //User can unregister if the current term is in the list of terms to register for
-        boolean canUnregister = App.getRegisterTerms().contains(mTerm);
+        boolean canUnregister = registerTermPref.getTerms().contains(mTerm);
 
         //Change the text and the visibility if we are in the list of currently registered courses
         if (canUnregister) {

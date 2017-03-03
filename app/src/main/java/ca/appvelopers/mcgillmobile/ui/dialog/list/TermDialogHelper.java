@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
@@ -54,6 +55,11 @@ public abstract class TermDialogHelper implements ListDialogInterface {
      */
     @Inject
     protected Analytics analytics;
+    /**
+     * {@link RegisterTermPreference} instance
+     */
+    @Inject
+    RegisterTermPreference registerTermPref;
     /**
      * List of {@link Term}s to choose from
      */
@@ -83,8 +89,8 @@ public abstract class TermDialogHelper implements ListDialogInterface {
                 terms.add(semester.getTerm());
             }
         } else {
-            //We are using the registration terms
-            terms.addAll(App.getRegisterTerms());
+            // We are using the registration terms
+            terms.addAll(registerTermPref.getTerms());
         }
 
         //Sort them chronologically

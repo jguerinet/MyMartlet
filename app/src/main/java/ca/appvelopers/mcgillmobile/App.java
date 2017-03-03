@@ -162,16 +162,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The list of {@link Term} the user can currently register in
-     */
-    public static List<Term> getRegisterTerms(){
-        if(registerTerms == null){
-            registerTerms = Load.registerTerms();
-        }
-        return registerTerms;
-    }
-
-    /**
      * @return The user's chosen default {@link Term}
      */
     public static Term getDefaultTerm(){
