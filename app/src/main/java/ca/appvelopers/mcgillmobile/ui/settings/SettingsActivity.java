@@ -43,7 +43,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguagesAdapter;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -93,7 +93,7 @@ public class SettingsActivity extends DrawerActivity {
         fg.text(languagePref.getString())
                 .leftIcon(R.drawable.ic_language)
                 .onClick(item -> DialogUtils.list(this, R.string.settings_language,
-                        new LanguageListAdapter(this) {
+                        new LanguagesAdapter(this) {
                             @Override
                             public void onLanguageSelected(String language) {
                                 // Don't continue if it's the current language

@@ -35,7 +35,7 @@ import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
  * @author Julien Guerinet
  * @since 2.0.0
  */
-public abstract class LanguageListAdapter implements ListDialogInterface {
+public abstract class LanguagesAdapter implements ListDialogInterface {
     /**
      * {@link LanguagePreference} instance
      */
@@ -51,7 +51,7 @@ public abstract class LanguageListAdapter implements ListDialogInterface {
      *
      * @param context App context
      */
-    protected LanguageListAdapter(Context context) {
+    protected LanguagesAdapter(Context context) {
         App.component(context).inject(this);
         languages = new ArrayList<>();
         addLanguage(LanguagePreference.ENGLISH);
