@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.ui.courses;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -97,7 +98,7 @@ public class CoursesActivity extends DrawerActivity {
     private Term term;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
@@ -110,7 +111,7 @@ public class CoursesActivity extends DrawerActivity {
         adapter = new CoursesAdapter(emptyView);
         list.setAdapter(adapter);
 
-        //Remove this button
+        // Remove this button
         findViewById(R.id.course_wishlist).setVisibility(View.GONE);
     }
 
@@ -135,10 +136,10 @@ public class CoursesActivity extends DrawerActivity {
                         new TermDialogHelper(this, term, false) {
                             @Override
                             public void onTermSelected(Term term) {
-                                //Set the default term
+                                // Set the default term
                                 App.setDefaultTerm(term);
 
-                                //Set the instance term
+                                // Set the instance term
                                 CoursesActivity.this.term = term;
 
                                 update();
