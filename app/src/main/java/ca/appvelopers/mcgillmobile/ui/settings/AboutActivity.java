@@ -20,7 +20,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -41,7 +43,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Person;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 
 /**
@@ -239,28 +240,85 @@ public class AboutActivity extends BaseActivity {
                 Person person = (Person) items.get(position);
                 Context context = itemView.getContext();
 
-                name.setText(person.getName());
+                name.setText(person.name);
 
                 Picasso.with(context)
-                        .load(person.getPictureId())
+                        .load(person.pictureId)
                         .into(picture);
 
-                role.setText(person.getRole());
-                description.setText(person.getDescription());
+                role.setText(person.role);
+                description.setText(person.description);
                 linkedIn.setOnClickListener(view -> {
-                    analytics.sendEvent("About", "Linkedin", getString(person.getName()));
-                    Utils.openURL(context, getString(person.getLinkedIn()));
+                    analytics.sendEvent("About", "Linkedin", getString(person.name));
+                    Utils.openURL(context, getString(person.linkedIn));
                 });
                 email.setOnClickListener(view -> {
-                    analytics.sendEvent("About", "Email", getString(person.getName()));
+                    analytics.sendEvent("About", "Email", getString(person.name));
 
                     // Send an email
                     Intent intent = new Intent(Intent.ACTION_SEND)
-                            .putExtra(Intent.EXTRA_EMAIL, new String[] {
-                                    getString(person.getEmail())})
+                            .putExtra(Intent.EXTRA_EMAIL, new String[] {getString(person.email)})
                             .setType("message/rfc822");
                     startActivity(Intent.createChooser(intent, null));
                 });
+            }
+        }
+
+        /**
+         * One person for the About page
+         * @author Julien Guerinet
+         * @since 2.0.0
+         */
+        class Person {
+            /**
+             * Person's name
+             */
+            @StringRes
+            private final int name;
+            /**
+             * Person's picture
+             */
+            @DrawableRes
+            private final int pictureId;
+            /**
+             * Person's role
+             */
+            @StringRes
+            private final int role;
+            /**
+             * A short description about the person
+             */
+            @StringRes
+            private final int description;
+            /**
+             * Person's email
+             */
+            @StringRes
+            private final int email;
+            /**
+             * URL to the person's LinkedIn
+             */
+            @StringRes
+            private final int linkedIn;
+
+            /**
+             * Default Constructor
+             *
+             * @param name        Person's name
+             * @param pictureId   Person's picture
+             * @param role        Person's role
+             * @param description A short description about the person
+             * @param email       Person's email
+             * @param linkedIn    URL to the person's LinkedIn
+             */
+            private Person(@StringRes int name, @DrawableRes int pictureId, @StringRes int role,
+                    @StringRes int description, @StringRes int email, @StringRes int linkedIn) {
+                this.name = name;
+                this.pictureId = pictureId;
+                this.role = role;
+                this.description = description;
+                this.email = email;
+                this.linkedIn = linkedIn;
             }
         }
     }

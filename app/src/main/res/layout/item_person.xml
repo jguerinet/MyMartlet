@@ -45,7 +45,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/linkedin"
+            android:id="@+id/linkedIn"
             app:srcCompat="@drawable/ic_linkedin"
             android:tint="@color/red"
             android:background="?android:attr/selectableItemBackground"
