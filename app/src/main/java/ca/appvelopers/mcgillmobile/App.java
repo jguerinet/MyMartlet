@@ -199,14 +199,6 @@ public class App extends Application {
     /* SETTERS */
 
     /**
-     * @param terms The list of {@link Term}s the user can currently register in
-     */
-    public static void setRegisterTerms(List<Term> terms) {
-        App.registerTerms = terms;
-        Save.registerTerms();
-    }
-
-    /**
      * @param term The user's chosen default {@link Term}
      */
     public static void setDefaultTerm(Term term){
