@@ -32,7 +32,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
  * @since 2.4.0
  */
 @Singleton
-public class DefaultTermPreference extends StringPreference {
+class DefaultTermPreference extends StringPreference {
     /**
      * Default Injectable Constructor
      *
@@ -43,5 +43,22 @@ public class DefaultTermPreference extends StringPreference {
         super(prefs, "default_term", null);
     }
 
+    /**
+     * @param term {@link Term} to save
+     */
+    public void setTerm(Term term) {
+        set(term.getId());
+    }
 
+    /**
+     * @return Stored default {@link Term}, the current term if none stored
+     */
+    public Term getTerm() {
+        String term = get();
+        if (term == null) {
+            // If there is no default term, use today
+            return Term.currentTerm();
+        }
+        return Term.parseTerm(term);
+    }
 }
