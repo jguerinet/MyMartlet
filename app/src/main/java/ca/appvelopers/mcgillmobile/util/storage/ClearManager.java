@@ -31,11 +31,12 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
-import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -64,6 +65,10 @@ public class ClearManager {
      */
     private final BooleanPreference rememberUsernamePref;
     /**
+     * {@link DefaultTermPreference} instance
+     */
+    private final DefaultTermPreference defaultTermPref;
+    /**
      * {@link HomepageManager}
      */
     private final HomepageManager homepageManager;
@@ -86,14 +91,14 @@ public class ClearManager {
      * @param homepageManager      {@link HomepageManager} instance
      * @param transcriptManager    {@link TranscriptManager} instance
      * @param scheduleManager      {@link ScheduleManager} instance
-     * @param placesManager        {@link PlacesManager} instance
+     * @param defaultTermPref      {@link DefaultTermPreference} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
             HomepageManager homepageManager, TranscriptManager transcriptManager,
-            ScheduleManager scheduleManager) {
+            ScheduleManager scheduleManager, DefaultTermPreference defaultTermPref) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
@@ -101,6 +106,7 @@ public class ClearManager {
         this.homepageManager = homepageManager;
         this.transcriptManager = transcriptManager;
         this.scheduleManager = scheduleManager;
+        this.defaultTermPref = defaultTermPref;
     }
 
     /**
@@ -127,8 +133,8 @@ public class ClearManager {
         //HomepageManager
         homepageManager.clear();
 
-        //Default Term
-        App.setDefaultTerm(null);
+        // Default Term
+        defaultTermPref.clear();
 
         //Wishlist
         App.setWishlist(new ArrayList<CourseResult>());

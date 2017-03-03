@@ -32,7 +32,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
  * @since 2.4.0
  */
 @Singleton
-class DefaultTermPreference extends StringPreference {
+public class DefaultTermPreference extends StringPreference {
     /**
      * Default Injectable Constructor
      *

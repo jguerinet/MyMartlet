@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
@@ -82,6 +83,11 @@ public class CoursesActivity extends DrawerActivity {
      */
     @BindView(R.id.courses_empty)
     protected TextView mEmptyView;
+    /**
+     * {@link DefaultTermPreference} instance
+     */
+    @Inject
+    DefaultTermPreference defaultTermPref;
     /**
      * {@link TranscriptManager} instance
      */
@@ -138,8 +144,8 @@ public class CoursesActivity extends DrawerActivity {
                         new TermDialogHelper(this, mTerm, false) {
                             @Override
                             public void onTermSelected(Term term) {
-                                //Set the default term
-                                App.setDefaultTerm(term);
+                                // Set the default term
+                                defaultTermPref.setTerm(term);
 
                                 //Set the instance term
                                 mTerm = term;

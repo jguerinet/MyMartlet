@@ -207,14 +207,6 @@ public class App extends Application {
     }
 
     /**
-     * @param term The user's chosen default {@link Term}
-     */
-    public static void setDefaultTerm(Term term){
-        App.defaultTerm = term;
-        Save.defaultTerm();
-    }
-
-    /**
      * @param wishlist The user's wishlist
      */
     public static void setWishlist(List<CourseResult> wishlist) {
