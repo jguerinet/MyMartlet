@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;

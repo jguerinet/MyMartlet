@@ -18,9 +18,9 @@ package ca.appvelopers.mcgillmobile.util.retrofit;
 
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;

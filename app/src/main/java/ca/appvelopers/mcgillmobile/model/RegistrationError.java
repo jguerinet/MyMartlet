@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile;
+package ca.appvelopers.mcgillmobile.model;
 
 import java.io.Serializable;
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.model.Course;
 import timber.log.Timber;
 
 /**

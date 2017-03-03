@@ -29,7 +29,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.RegistrationError;
+import ca.appvelopers.mcgillmobile.model.RegistrationError;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
