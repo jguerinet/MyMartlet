@@ -6,7 +6,9 @@ This is an unofficial McGill app, and is not affiliated with McGill University w
 
 ## Contributions
 Have a feature request? Make an issue! If you want to implement it yourself, just fork the repo, make the changes, and submit a PR. 
-If you do fork the repo, make sure to rename signing.properties.sample to signing.properties, google-services-sample.json to google-services.json, facebook_api_sample.xml to facebook_api.xml, and PasswordsSample to Passwords or else the project will not build. 
+
+If you do fork the repo, make sure to copy signing.properties.sample to signing.properties and google-services-sample.json to google-services.json or else the project will not build.
+
 All contributions are welcome!
 
 ## Branches
@@ -55,7 +57,7 @@ All contributions are welcome!
 See the [Change Log](CHANGELOG.md).
 
 ## Copyright
-	 Copyright 2014-2016 Julien Guerinet
+	 Copyright 2014-2017 Julien Guerinet
 
 	 Licensed under the Apache License, Version 2.0 (the "License");
 	 you may not use this file except in compliance with the License.

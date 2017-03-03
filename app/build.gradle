@@ -16,7 +16,7 @@
 
 // Setting up the release keystore properties
 def props = new Properties()
-props.load(new FileInputStream(rootProject.file("util/signing.properties")))
+props.load(new FileInputStream(rootProject.file("util/private.properties")))
 
 buildscript {
     repositories {
@@ -106,6 +106,15 @@ android {
     lintOptions {
         warning 'MissingTranslation'
     }
+}
+
+// Set the Twitter keys from the properties filed
+android.buildTypes.each { type ->
+    type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey
+    type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret
+    type.resValue 'string', 'facebook_app_id', props.facebookAppId
+    type.resValue 'string', 'facebook_provider', 'com.facebook.app.FacebookContentProvider' +
+            props.facebookAppId
 }
 
 dependencies {

@@ -329,7 +329,7 @@ public class ScheduleActivity extends DrawerActivity {
             //Set up the day name
             dayView = View.inflate(this, R.layout.fragment_day_name, null);
             TextView dayViewTitle = (TextView) dayView.findViewById(R.id.day_name);
-            dayViewTitle.setText(DayUtils.getString(this, day));
+            dayViewTitle.setText(DayUtils.getStringId(day));
             scheduleContainer.addView(dayView);
 
             //Set up the schedule container for that one day
@@ -637,7 +637,7 @@ public class ScheduleActivity extends DrawerActivity {
             LocalDate currentDate = getDate(position);
 
             //Set the titles
-            dayTitle.setText(DayUtils.getString(context, currentDate.getDayOfWeek()));
+            dayTitle.setText(DayUtils.getStringId(currentDate.getDayOfWeek()));
             dateTitle.setText(com.guerinet.utils.DateUtils.getLongDateString(currentDate));
 
             //Fill the schedule up
