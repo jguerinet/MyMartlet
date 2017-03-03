@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.ui.search;
+package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,7 +45,6 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.ui.wishlist.RegistrationAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -62,7 +61,7 @@ import static ca.appvelopers.mcgillmobile.R.string.courses_remove_wishlist;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class RegistrationHelper {
+public class WishlistHelper {
     /**
      * Empty view
      */
@@ -96,7 +95,7 @@ public class RegistrationHelper {
     /**
      * The adapter for the list of results
      */
-    private final RegistrationAdapter adapter;
+    private final WishlistAdapter adapter;
     /**
      * The current term
      */
@@ -108,14 +107,14 @@ public class RegistrationHelper {
      * @param activity Calling activity instance
      * @param add      True if the user can add courses to the wishlist, false otherwise
      */
-    public RegistrationHelper(BaseActivity activity, View container, boolean add) {
+    public WishlistHelper(BaseActivity activity, View container, boolean add) {
         this.activity = activity;
         this.add = add;
         ButterKnife.bind(this, container);
         App.component(activity).inject(this);
 
         list.setLayoutManager(new LinearLayoutManager(activity));
-        adapter = new RegistrationAdapter(emptyView);
+        adapter = new WishlistAdapter(emptyView);
         list.setAdapter(adapter);
 
         // Change the button text if this is to remove courses

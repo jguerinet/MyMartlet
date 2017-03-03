@@ -40,7 +40,7 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class RegistrationAdapter extends RecyclerViewBaseAdapter {
+public class WishlistAdapter extends RecyclerViewBaseAdapter {
     /**
      * List of {@link CourseResult}s currently being shown
      */
@@ -57,7 +57,7 @@ public class RegistrationAdapter extends RecyclerViewBaseAdapter {
     /**
      * Default Constructor
      */
-    public RegistrationAdapter(TextView emptyView) {
+    public WishlistAdapter(TextView emptyView) {
         super(emptyView);
         this.emptyView = emptyView;
         courses = new ArrayList<>();

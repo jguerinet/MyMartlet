@@ -44,7 +44,6 @@ import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
-import ca.appvelopers.mcgillmobile.ui.search.RegistrationHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
@@ -69,9 +68,9 @@ public class WishlistActivity extends DrawerActivity {
     @Nullable
     private Term term;
     /**
-     * {@link RegistrationHelper} instance
+     * {@link WishlistHelper} instance
      */
-    RegistrationHelper registrationHelper;
+    WishlistHelper wishlistHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +81,7 @@ public class WishlistActivity extends DrawerActivity {
         analytics.sendScreen("Wishlist");
 
         // Set up the view
-        registrationHelper = new RegistrationHelper(this, mainView, false);
+        wishlistHelper = new WishlistHelper(this, mainView, false);
 
         // Load the first registration term if there is one
         if (!App.getRegisterTerms().isEmpty()) {
@@ -145,7 +144,7 @@ public class WishlistActivity extends DrawerActivity {
             setTitle(term.getString(this));
         }
         // Reload the adapter
-        registrationHelper.update(term, App.getWishlist());
+        wishlistHelper.update(term, App.getWishlist());
     }
 
     /**

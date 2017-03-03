@@ -29,6 +29,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
+import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
 
 /**
@@ -60,6 +61,6 @@ public class SearchResultsActivity extends BaseActivity {
         // Set the title
         setTitle(term.getString(this));
 
-        new RegistrationHelper(this, main, true).update(term, courses);
+        new WishlistHelper(this, main, true).update(term, courses);
     }
 }
