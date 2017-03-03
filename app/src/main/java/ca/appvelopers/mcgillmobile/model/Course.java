@@ -330,7 +330,7 @@ public class Course extends BaseModel implements Serializable {
     public boolean isForDate(LocalDate date) {
         //Check if the date is within the date range and the course is offered on that day
         return !date.isBefore(startDate) && !date.isAfter(endDate) &&
-                days.contains(date.getDayOfWeek());
+                getDays().contains(date.getDayOfWeek());
     }
 
     /**
