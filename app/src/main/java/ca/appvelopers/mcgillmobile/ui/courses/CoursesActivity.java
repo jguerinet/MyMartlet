@@ -68,33 +68,33 @@ import timber.log.Timber;
  */
 public class CoursesActivity extends DrawerActivity {
     /**
-     * The ListView for the courses
+     * {@link Course}s list
      */
     @BindView(android.R.id.list)
-    protected RecyclerView mList;
+    RecyclerView list;
     /**
-     * The button to unregister from a course
+     * Button to unregister from a course
      */
     @BindView(R.id.course_register)
-    protected Button mUnregisterButton;
+    Button unregisterButton;
     /**
-     * The empty list view
+     * Empty list view
      */
     @BindView(R.id.courses_empty)
-    protected TextView mEmptyView;
+    TextView emptyView;
     /**
      * {@link TranscriptManager} instance
      */
     @Inject
-    protected TranscriptManager transcriptManager;
+    TranscriptManager transcriptManager;
     /**
-     * The ListView adapter
+     * Adapter for the {@link Course}s list
      */
-    private CoursesAdapter mAdapter;
+    private CoursesAdapter adapter;
     /**
-     * The current term shown
+     * Current {@link Term} shown
      */
-    private Term mTerm;
+    private Term term;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,9 +104,9 @@ public class CoursesActivity extends DrawerActivity {
         App.component(this).inject(this);
         analytics.sendScreen("View Courses");
 
-        mTerm = App.getDefaultTerm();
+        term = App.getDefaultTerm();
 
-        mList.setLayoutManager(new LinearLayoutManager(this));
+        list.setLayoutManager(new LinearLayoutManager(this));
 
         //Remove this button
         findViewById(R.id.course_wishlist).setVisibility(View.GONE);
@@ -130,14 +130,14 @@ public class CoursesActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
                 DialogUtils.list(this, R.string.title_change_semester,
-                        new TermDialogHelper(this, mTerm, false) {
+                        new TermDialogHelper(this, term, false) {
                             @Override
                             public void onTermSelected(Term term) {
                                 //Set the default term
                                 App.setDefaultTerm(term);
 
                                 //Set the instance term
-                                mTerm = term;
+                                CoursesActivity.this.term = term;
 
                                 update();
                                 refresh();
@@ -157,26 +157,26 @@ public class CoursesActivity extends DrawerActivity {
      */
     private void update() {
         //Set the title
-        setTitle(mTerm.getString(this));
+        setTitle(term.getString(this));
 
         //User can unregister if the current term is in the list of terms to register for
-        boolean canUnregister = App.getRegisterTerms().contains(mTerm);
+        boolean canUnregister = App.getRegisterTerms().contains(term);
 
         //Change the text and the visibility if we are in the list of currently registered courses
         if (canUnregister) {
-            mUnregisterButton.setVisibility(View.VISIBLE);
-            mUnregisterButton.setText(R.string.courses_unregister);
+            unregisterButton.setVisibility(View.VISIBLE);
+            unregisterButton.setText(R.string.courses_unregister);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            mUnregisterButton.setLayoutParams(params);
+            unregisterButton.setLayoutParams(params);
         } else {
-            mUnregisterButton.setVisibility(View.GONE);
+            unregisterButton.setVisibility(View.GONE);
         }
 
         //Set up the list
-        mAdapter = new CoursesAdapter(mEmptyView, mTerm, canUnregister);
-        mList.setAdapter(mAdapter);
+        adapter = new CoursesAdapter(emptyView, term, canUnregister);
+        list.setAdapter(adapter);
     }
 
     /**
@@ -188,11 +188,11 @@ public class CoursesActivity extends DrawerActivity {
         }
 
         //Download the courses for this term
-        mcGillService.schedule(mTerm).enqueue(new Callback<List<Course>>() {
+        mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                 // Set the courses
-                CoursesDB.setCourses(mTerm, response.body());
+                CoursesDB.setCourses(term, response.body());
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(new Callback<Transcript>() {
@@ -241,7 +241,7 @@ public class CoursesActivity extends DrawerActivity {
     @OnClick(R.id.course_register)
     protected void unregister() {
         //Get checked courses from adapter
-        final List<Course> courses = mAdapter.getCheckedCourses();
+        final List<Course> courses = adapter.getCheckedCourses();
 
         if (courses.size() > 10) {
             //Too many courses
@@ -273,7 +273,7 @@ public class CoursesActivity extends DrawerActivity {
 
                             //Run the registration thread
                             mcGillService.registration(
-                                    McGillManager.getRegistrationURL(mTerm, courses, true))
+                                    McGillManager.getRegistrationURL(term, courses, true))
                                     .enqueue(new Callback<List<RegistrationError>>() {
                                         @Override
                                         public void onResponse(Call<List<RegistrationError>> call,
