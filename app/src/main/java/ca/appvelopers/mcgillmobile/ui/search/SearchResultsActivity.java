@@ -18,10 +18,12 @@ package ca.appvelopers.mcgillmobile.ui.search;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
@@ -35,13 +37,17 @@ import ca.appvelopers.mcgillmobile.util.Constants;
  * @since 1.0.0
  */
 public class SearchResultsActivity extends BaseActivity {
-    RegistrationView registrationView;
+    /**
+     * Main view
+     */
+    @BindView(R.id.main)
+    LinearLayout main;
 
     @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_searchresults);
+        setContentView(R.layout.view_courses);
         ButterKnife.bind(this);
         setUpToolbar(true);
         analytics.sendScreen("Search Results");
@@ -51,11 +57,9 @@ public class SearchResultsActivity extends BaseActivity {
         List<CourseResult> courses =
                 (ArrayList<CourseResult>) getIntent().getSerializableExtra(Constants.COURSES);
 
-        registrationView = new RegistrationView(this, true);
-
         // Set the title
         setTitle(term.getString(this));
 
-        registrationView.update(term, courses);
+        new RegistrationHelper(this, main, true).update(term, courses);
     }
 }

@@ -80,7 +80,7 @@ public class CoursesActivity extends DrawerActivity {
     /**
      * The empty list view
      */
-    @BindView(R.id.courses_empty)
+    @BindView(android.R.id.empty)
     protected TextView mEmptyView;
     /**
      * {@link TranscriptManager} instance

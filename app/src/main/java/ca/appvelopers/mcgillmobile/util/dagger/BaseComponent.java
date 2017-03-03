@@ -29,6 +29,7 @@ import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
+import ca.appvelopers.mcgillmobile.ui.search.RegistrationHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.SettingsActivity;
 import ca.appvelopers.mcgillmobile.ui.transcript.TranscriptActivity;
@@ -79,4 +80,6 @@ public interface BaseComponent {
 
     void inject(ConfigDownloader downloader);
     void inject(UserDownloader downloader);
+
+    void inject(RegistrationHelper helper);
 }

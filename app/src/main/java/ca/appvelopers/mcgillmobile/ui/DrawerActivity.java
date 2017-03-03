@@ -73,7 +73,7 @@ public abstract class DrawerActivity extends BaseActivity
      * Main content view to fade out and in on page change
      */
     @BindView(R.id.main)
-    View mainView;
+    protected View mainView;
     /**
      * {@link HomepageManager} instance
      */

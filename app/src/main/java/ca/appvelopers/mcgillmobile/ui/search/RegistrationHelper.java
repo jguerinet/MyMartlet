@@ -21,7 +21,8 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
@@ -29,6 +30,8 @@ import com.guerinet.utils.dialog.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +45,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistSearchCourseAdapter;
+import ca.appvelopers.mcgillmobile.ui.wishlist.RegistrationAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -52,12 +55,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
+import static ca.appvelopers.mcgillmobile.R.string.courses_remove_wishlist;
+
 /**
  * Shows the results of the search from the SearchActivity
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class RegistrationView extends LinearLayout {
+public class RegistrationHelper {
     /**
      * Empty view
      */
@@ -67,32 +72,56 @@ public class RegistrationView extends LinearLayout {
      * Courses list
      */
     @BindView(android.R.id.list)
-    RecyclerView listView;
+    RecyclerView list;
+    @BindView(R.id.course_wishlist)
+    Button wishlistButton;
+    /**
+     * {@link McGillService} instance
+     */
+    @Inject
     McGillService mcGillService;
+    /**
+     * {@link Analytics} instance
+     */
+    @Inject
     Analytics analytics;
+    /**
+     * Calling activity instance
+     */
     private final BaseActivity activity;
+    /**
+     * True if the user can add courses to the wishlist, false if they can remove them
+     */
     private final boolean add;
     /**
      * The adapter for the list of results
      */
-    private final WishlistSearchCourseAdapter adapter;
+    private final RegistrationAdapter adapter;
     /**
      * The current term
      */
     private Term term;
 
-    public RegistrationView(BaseActivity activity, boolean add) {
-        super(activity);
+    /**
+     * Default Constructor
+     *
+     * @param activity Calling activity instance
+     * @param add      True if the user can add courses to the wishlist, false otherwise
+     */
+    public RegistrationHelper(BaseActivity activity, View container, boolean add) {
         this.activity = activity;
         this.add = add;
-        // TODO
-//        setContentView(R.layout.activity_searchresults);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this, container);
+        App.component(activity).inject(this);
 
-        // ListView
-        listView.setLayoutManager(new LinearLayoutManager(activity));
-        adapter = new WishlistSearchCourseAdapter(activity);
-        listView.setAdapter(adapter);
+        list.setLayoutManager(new LinearLayoutManager(activity));
+        adapter = new RegistrationAdapter(emptyView);
+        list.setAdapter(adapter);
+
+        // Change the button text if this is to remove courses
+        if (!add) {
+            wishlistButton.setText(courses_remove_wishlist);
+        }
     }
 
     public void update(Term term, List<CourseResult> courses) {
@@ -105,10 +134,10 @@ public class RegistrationView extends LinearLayout {
         List<CourseResult> courses = adapter.getCheckedCourses();
         if (courses.size() > 10) {
             // Too many courses
-            Utils.toast(getContext(), R.string.courses_too_many_courses);
+            Utils.toast(activity, R.string.courses_too_many_courses);
         } else if (courses.isEmpty()) {
             // No Courses
-            Utils.toast(getContext(), R.string.courses_none_selected);
+            Utils.toast(activity, R.string.courses_none_selected);
         } else if (courses.size() > 0) {
             // Execute registration of checked classes in a new thread
             if (!activity.canRefresh()) {
@@ -117,7 +146,7 @@ public class RegistrationView extends LinearLayout {
             }
 
             // Confirm with the user before continuing
-            DialogUtils.alert(getContext(), R.string.warning, R.string.registration_disclaimer,
+            DialogUtils.alert(activity, R.string.warning, R.string.registration_disclaimer,
                     (dialogInterface, i) -> {
                         if (i == DialogInterface.BUTTON_POSITIVE) {
                             register(courses);
@@ -130,7 +159,7 @@ public class RegistrationView extends LinearLayout {
 
     @OnClick(R.id.course_wishlist)
     void wishlistButton() {
-        addToWishlist(adapter.getCheckedCourses());
+        updateWishlist(adapter.getCheckedCourses());
     }
 
     private void register(final List<CourseResult> courses) {
@@ -145,7 +174,7 @@ public class RegistrationView extends LinearLayout {
 
                         // If there are no errors, show the success message
                         if (response.body() == null || response.body().isEmpty()) {
-                            Utils.toast(getContext(), R.string.registration_success);
+                            Utils.toast(activity, R.string.registration_success);
 
                             // Remove the courses from the wishlist if they were there
                             List<CourseResult> wishlist = App.getWishlist();
@@ -165,7 +194,7 @@ public class RegistrationView extends LinearLayout {
                             errorMessage += "\n";
                         }
 
-                        DialogHelper.error(getContext(), errorMessage);
+                        DialogHelper.error(activity, errorMessage);
                     }
 
                     @Override
@@ -174,10 +203,10 @@ public class RegistrationView extends LinearLayout {
                         activity.showToolbarProgress(false);
                         // If this is a MinervaException, broadcast it
                         if (t instanceof MinervaException) {
-                            LocalBroadcastManager.getInstance(getContext())
+                            LocalBroadcastManager.getInstance(activity)
                                     .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
                         } else {
-                            DialogHelper.error(getContext(), R.string.error_other);
+                            DialogHelper.error(activity, R.string.error_other);
                         }
                     }
                 });
@@ -188,7 +217,7 @@ public class RegistrationView extends LinearLayout {
      *
      * @param courses List of {@link CourseResult}s to add/remove
      */
-    private void addToWishlist(List<CourseResult> courses) {
+    private void updateWishlist(List<CourseResult> courses) {
         String toastMessage;
         if (courses.isEmpty()) {
             // If there are none, display error message
@@ -211,10 +240,11 @@ public class RegistrationView extends LinearLayout {
                 analytics.sendEvent("Search Results", "Add to Wishlist",
                         String.valueOf(coursesAdded));
 
-                toastMessage = getContext().getString(R.string.wishlist_add, coursesAdded);
+                toastMessage = activity.getString(R.string.wishlist_add, coursesAdded);
             } else {
-                toastMessage = getContext().getString(R.string.wishlist_remove, courses.size());
+                toastMessage = activity.getString(R.string.wishlist_remove, courses.size());
                 wishlist.removeAll(courses);
+                update(term, wishlist);
 
                 analytics.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));
             }
@@ -224,6 +254,6 @@ public class RegistrationView extends LinearLayout {
         }
 
         // Visual feedback of what was just done
-        Utils.toast(getContext(), toastMessage);
+        Utils.toast(activity, toastMessage);
     }
 }
