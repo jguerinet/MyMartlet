@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguageListAdapter;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
@@ -123,7 +123,7 @@ public class SettingsActivity extends DrawerActivity {
         fg.text(homepageManager.getTitleString())
                 .leftIcon(R.drawable.ic_phone_android)
                 .onClick(item -> DialogUtils.list(this, R.string.settings_homepage_title,
-                        new HomepageListAdapter(this) {
+                        new HomepagesAdapter(this) {
                             @Override
                             public void onHomepageSelected(@HomepageManager.Homepage int choice) {
                                 // Update the instance

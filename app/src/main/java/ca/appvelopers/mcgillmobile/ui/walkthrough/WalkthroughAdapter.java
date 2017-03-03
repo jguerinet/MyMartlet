@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.FacultyListAdapter;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepageListAdapter;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
@@ -62,7 +62,7 @@ public class WalkthroughAdapter extends PagerAdapter {
      * The {@link HomepageManager} instance
      */
     @Inject
-    protected HomepageManager homepagePref;
+    protected HomepageManager homepageManager;
 
 
     public WalkthroughAdapter(Context context, boolean firstOpen) {
@@ -110,14 +110,14 @@ public class WalkthroughAdapter extends PagerAdapter {
                         .build();
 
                 //HomepageManager
-                fg.text(homepagePref.getTitleString())
+                fg.text(homepageManager.getTitleString())
                         .leftIcon(R.drawable.ic_phone_android)
                         .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
                         .onClick(new TextViewFormItem.OnClickListener() {
                             @Override
                             public void onClick(final TextViewFormItem item) {
                                 DialogUtils.list(context, R.string.settings_homepage_title,
-                                        new HomepageListAdapter(context) {
+                                        new HomepagesAdapter(context) {
                                             @Override
                                             public void onHomepageSelected(
                                                     @HomepageManager.Homepage int choice) {
