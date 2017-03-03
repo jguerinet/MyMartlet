@@ -9,22 +9,20 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/default_margin"
-        android:paddingRight="@dimen/default_margin">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin">
 
             <TextView
+                style="@style/EULATitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/eula_title"
-                android:textSize="@dimen/text_medium"
-                android:paddingTop="@dimen/padding_micro"
-                android:paddingBottom="@dimen/padding_micro"/>
+                android:text="@string/eula_title"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -32,12 +30,10 @@
                 android:text="@string/eula_description"/>
 
             <TextView
+                style="@style/EULATitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/eula_parties"
-                android:textSize="@dimen/text_medium"
-                android:paddingTop="@dimen/padding_micro"
-                android:paddingBottom="@dimen/padding_micro"/>
+                android:text="@string/eula_parties"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -45,12 +41,10 @@
                 android:text="@string/eula_parties_description"/>
 
             <TextView
+                style="@style/EULATitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/eula_privacy"
-                android:textSize="@dimen/text_medium"
-                android:paddingTop="@dimen/padding_micro"
-                android:paddingBottom="@dimen/padding_micro"/>
+                android:text="@string/eula_privacy"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -58,12 +52,10 @@
                 android:text="@string/eula_privacy_description"/>
 
             <TextView
+                style="@style/EULATitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/eula_content"
-                android:textSize="@dimen/text_medium"
-                android:paddingTop="@dimen/padding_micro"
-                android:paddingBottom="@dimen/padding_micro"/>
+                android:text="@string/eula_content"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -71,12 +63,10 @@
                 android:text="@string/eula_content_description"/>
 
             <TextView
+                style="@style/EULATitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/eula_license"
-                android:textSize="@dimen/text_medium"
-                android:paddingTop="@dimen/padding_micro"
-                android:paddingBottom="@dimen/padding_micro"/>
+                android:text="@string/eula_license"/>
 
             <TextView
                 android:layout_width="match_parent"

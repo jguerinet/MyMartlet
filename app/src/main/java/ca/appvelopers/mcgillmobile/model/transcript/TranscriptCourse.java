@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model;
+package ca.appvelopers.mcgillmobile.model.transcript;
+
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
+
+import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptCoursesDB;
 
 /**
  * A course that is part of the transcript
@@ -24,36 +32,52 @@ import java.io.Serializable;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class TranscriptCourse implements Serializable{
+@Table(database = TranscriptCoursesDB.class, allFields = true)
+public class TranscriptCourse extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Self-managed Id, used as a primary key
+     */
+    @PrimaryKey(autoincrement = true)
+    int id;
+    /**
+     * Id of the {@link Semester} this is for
+     */
+    int semesterId;
     /**
      * Course term
      */
-    private Term term;
+    Term term;
     /**
      * Course code (e.g. ECSE 428)
      */
-    private String code;
+    String code;
     /**
      * Course title
      */
-    private String title;
+    String title;
     /**
      * Course credits
      */
-    private double credits;
+    double credits;
     /**
      * User's grade in this course
      */
-    private String userGrade;
+    String userGrade;
     /**
      * Average grade in this course
      */
-    private String averageGrade;
+    String averageGrade;
+
+    /**
+     * DB Constructor
+     */
+    TranscriptCourse() {}
 
     /**
      * Default Constructor
      *
+     * @param semesterId   Id of the semester this belongs to
      * @param term         Course term
      * @param code         Course code
      * @param title        Course title
@@ -61,8 +85,9 @@ public class TranscriptCourse implements Serializable{
      * @param userGrade    User's grade
      * @param averageGrade Course average grade
      */
-    public TranscriptCourse(Term term, String code, String title, double credits, String userGrade,
-            String averageGrade) {
+    public TranscriptCourse(int semesterId, Term term, String code, String title, double credits,
+            String userGrade, String averageGrade) {
+        this.semesterId = semesterId;
         this.term = term;
         this.code = code;
         this.title = title;

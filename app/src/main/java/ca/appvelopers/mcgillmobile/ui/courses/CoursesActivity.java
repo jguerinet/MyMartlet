@@ -34,25 +34,23 @@ import com.guerinet.utils.dialog.DialogUtils;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter.TranscriptResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,12 +79,7 @@ public class CoursesActivity extends DrawerActivity {
     @BindView(R.id.courses_empty)
     TextView emptyView;
     /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    TranscriptManager transcriptManager;
-    /**
-     * Adapter for the {@link Course}s list
+     * Adapter for the list of courses
      */
     private CoursesAdapter adapter;
     /**
@@ -197,18 +190,19 @@ public class CoursesActivity extends DrawerActivity {
                 // Set the courses
                 CoursesDB.setCourses(term, response.body());
 
-                // Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(new Callback<Transcript>() {
+                //Download the transcript (if ever the user has new semesters on their transcript)
+                mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
                     @Override
-                    public void onResponse(Call<Transcript> call, Response<Transcript> response) {
-                        transcriptManager.set(response.body());
+                    public void onResponse(Call<TranscriptResponse> call,
+                            Response<TranscriptResponse> response) {
+                        TranscriptDB.saveTranscript(CoursesActivity.this, response.body());
                         // Update the view
                         update();
                         showToolbarProgress(false);
                     }
 
                     @Override
-                    public void onFailure(Call<Transcript> call, Throwable t) {
+                    public void onFailure(Call<TranscriptResponse> call, Throwable t) {
                         Timber.e(t, "Error refreshing the transcript");
                         showToolbarProgress(false);
                         Help.handleException(CoursesActivity.this, t);

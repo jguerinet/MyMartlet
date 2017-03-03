@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model.retrofit;
+package ca.appvelopers.mcgillmobile.util.retrofit;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -23,13 +23,14 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ca.appvelopers.mcgillmobile.model.Season;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -41,19 +42,19 @@ import timber.log.Timber;
  * @since 2.2.0
  */
 public class TranscriptConverter extends Converter.Factory
-        implements Converter<ResponseBody, Transcript> {
+        implements Converter<ResponseBody, TranscriptConverter.TranscriptResponse> {
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type,
             Annotation[] annotations, Retrofit retrofit) {
-        if (!type.equals(Transcript.class)) {
-            //This can only convert transcripts
+        if (!type.equals(TranscriptResponse.class)) {
+            // This can only convert transcripts
             return null;
         }
         return new TranscriptConverter();
     }
 
     @Override
-    public Transcript convert(ResponseBody value) throws IOException {
+    public TranscriptResponse convert(ResponseBody value) throws IOException {
         //Parse ResponseBody HTML String into a document
         Elements rows = Jsoup.parse(value.string()).getElementsByClass("fieldmediumtext");
 
@@ -63,8 +64,10 @@ public class TranscriptConverter extends Converter.Factory
          * Once a match is found, the value in the appropriate row will be saved to a variable
          */
         List<Semester> semesters = new ArrayList<>();
+        List<TranscriptCourse> courses = new ArrayList<>();
         double cgpa = -1;
         double totalCredits = -1;
+        int semesterId = 0;
 
         for (int index = 0; index < rows.size(); index ++) {
             String text = rows.get(index).text();
@@ -124,7 +127,7 @@ public class TranscriptConverter extends Converter.Factory
                 double termCredits = 0;
                 double termGPA = 0.0;
                 boolean fullTime = false;
-                List<TranscriptCourse> courses = new ArrayList<>();
+                boolean hasCourse = false;
 
                 //Increment the index before starting the semester loop
                 int semesterIndex = index + 1;
@@ -286,8 +289,10 @@ public class TranscriptConverter extends Converter.Factory
                             termCredits = credits;
                         }
 
-                        courses.add(new TranscriptCourse(new Term(season, year), code, title,
-                                credits, grade, averageGrade));
+                        // There is at least one course
+                        hasCourse = true;
+                        courses.add(new TranscriptCourse(semesterId, new Term(season, year), code,
+                                title, credits, grade, averageGrade));
                     }
 
                     //Breaks the loop if the next semester is reached
@@ -306,19 +311,18 @@ public class TranscriptConverter extends Converter.Factory
                     }
                 }
 
-                //Check if there are any courses associated with the semester
-                //If not, don't add the semester to the list of semesters
-                if (!courses.isEmpty()) {
-                    Semester semester = new Semester(new Term(season, year), program, bachelor,
-                            termCredits, termGPA, fullTime, courses);
-
-                    semesters.add(semester);
+                // Check if there are any courses associated with the semester
+                //  If not, don't add the semester to the list of semesters
+                if (hasCourse) {
+                    semesters.add(new Semester(semesterId, new Term(season, year), program,
+                            bachelor, termCredits, termGPA, fullTime));
+                    semesterId ++;
                 }
 
             }
         }
 
-        return new Transcript(cgpa, totalCredits, semesters);
+        return new TranscriptResponse(new Transcript(cgpa, totalCredits), semesters, courses);
     }
 
     /**
@@ -344,5 +348,24 @@ public class TranscriptConverter extends Converter.Factory
         String[] creditArray = credits.split("-");
         creditArray = creditArray[1].split("credits");
         return Double.parseDouble(creditArray[0]);
+    }
+
+    /**
+     * Response object with all of the parsed info
+     */
+    public static class TranscriptResponse {
+        public final Transcript transcript;
+        public final List<Semester> semesters;
+        public final List<TranscriptCourse> courses;
+
+        private TranscriptResponse(Transcript transcript, List<Semester> semesters,
+                List<TranscriptCourse> courses) {
+            this.transcript = transcript;
+            this.semesters = semesters;
+            this.courses = courses;
+
+            // Inverse the semesters to get them in reverse chronological order
+            Collections.reverse(this.semesters);
+        }
     }
 }

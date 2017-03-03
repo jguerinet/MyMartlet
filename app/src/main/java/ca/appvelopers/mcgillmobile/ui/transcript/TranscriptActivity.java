@@ -24,7 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import javax.inject.Inject;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,8 +33,9 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter.TranscriptResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,12 +63,7 @@ public class TranscriptActivity extends DrawerActivity {
     @BindView(android.R.id.list)
     RecyclerView list;
     /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    TranscriptManager transcriptManager;
-    /**
-     * Adapter for the semester list
+     * Adapter used for the list of semesters
      */
     private TranscriptAdapter adapter;
 
@@ -80,7 +76,7 @@ public class TranscriptActivity extends DrawerActivity {
         analytics.sendScreen("Transcript");
 
         list.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TranscriptAdapter(this);
+        adapter = new TranscriptAdapter();
         list.setAdapter(adapter);
         update();
     }
@@ -117,16 +113,17 @@ public class TranscriptActivity extends DrawerActivity {
             return;
         }
 
-        mcGillService.transcript().enqueue(new Callback<Transcript>() {
+        mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
             @Override
-            public void onResponse(Call<Transcript> call, Response<Transcript> response) {
-                transcriptManager.set(response.body());
+            public void onResponse(Call<TranscriptResponse> call,
+                    Response<TranscriptResponse> response) {
+                TranscriptDB.saveTranscript(TranscriptActivity.this, response.body());
                 update();
                 showToolbarProgress(false);
             }
 
             @Override
-            public void onFailure(Call<Transcript> call, Throwable t) {
+            public void onFailure(Call<TranscriptResponse> call, Throwable t) {
                 Timber.e(t, "Error refreshing transcript");
                 showToolbarProgress(false);
                 Help.handleException(TranscriptActivity.this, t);
@@ -139,10 +136,12 @@ public class TranscriptActivity extends DrawerActivity {
      */
     private void update() {
         // Reload all of the info
-        cgpa.setText(getString(R.string.transcript_CGPA,
-                String.valueOf(transcriptManager.get().getCGPA())));
-        totalCredits.setText(getString(R.string.transcript_credits,
-                String.valueOf(transcriptManager.get().getTotalCredits())));
+        Transcript transcript = SQLite.select().from(Transcript.class).querySingle();
+        if (transcript != null) {
+            cgpa.setText(getString(R.string.transcript_CGPA, String.valueOf(transcript.getCGPA())));
+            totalCredits.setText(getString(R.string.transcript_credits, String.valueOf(
+                    transcript.getTotalCredits())));
+        }
         adapter.update();
     }
 }

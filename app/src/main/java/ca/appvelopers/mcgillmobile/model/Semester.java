@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,13 @@ package ca.appvelopers.mcgillmobile.model;
 
 import android.content.Context;
 
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import java.io.Serializable;
-import java.util.List;
+
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.SemestersDB;
 
 /**
  * Contains information pertaining to each semester such as current program, term credits,
@@ -28,40 +33,48 @@ import java.util.List;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class Semester implements Serializable {
+@Table(database = SemestersDB.class, allFields = true)
+public class Semester extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Id if this semester
+     */
+    @PrimaryKey
+    int id;
     /**
      * The semester term
      */
-    private Term term;
+    Term term;
     /**
      * The user's program for this semester
      */
-    private String program;
+    String program;
     /**
      * The user's bachelor name for this semester
      */
-    private String bachelor;
+    String bachelor;
     /**
      * The number of credits for this semester
      */
-    private double credits;
+    double credits;
     /**
      * The semester GPA
      */
-    private double gpa;
+    double gpa;
     /**
      * True if the user was a full-time student during this semester, false otherwise
      */
-    private boolean fullTime;
+    boolean fullTime;
+
     /**
-     * The list of courses taken during this semester
+     * DB Constructor
      */
-    private List<TranscriptCourse> courses;
+    Semester() {}
 
     /**
      * Default Constructor
      *
+     * @param semesterId   Id of the current semester
      * @param term         Semester term
      * @param program      Semester's program name
      * @param bachelor     Semester's bachelor name
@@ -69,20 +82,26 @@ public class Semester implements Serializable {
      * @param gpa          Semester GPA
      * @param fullTime     True if the user was a full-time student during this semester,
      *                     false otherwise
-     * @param courses      The list of courses taken during this semester
      */
-    public Semester(Term term, String program, String bachelor, double credits, double gpa,
-            boolean fullTime, List<TranscriptCourse> courses) {
+    public Semester(int semesterId, Term term, String program, String bachelor, double credits,
+            double gpa, boolean fullTime) {
+        this.id = semesterId;
         this.term = term;
         this.program = program;
         this.bachelor = bachelor;
         this.credits = credits;
         this.gpa = gpa;
         this.fullTime = fullTime;
-        this.courses = courses;
     }
 
     /* GETTERS */
+
+    /**
+     * @return Semester Id
+     */
+    public int getId() {
+        return id;
+    }
 
     /**
      * @return Semester term
@@ -132,12 +151,5 @@ public class Semester implements Serializable {
      */
     public boolean isFullTime() {
         return fullTime;
-    }
-
-    /**
-     * @return The semester's courses
-     */
-    public List<TranscriptCourse> getCourses() {
-        return courses;
     }
 }

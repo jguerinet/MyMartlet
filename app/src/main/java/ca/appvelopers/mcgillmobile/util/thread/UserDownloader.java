@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.guerinet.utils.Utils;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,14 +35,14 @@ import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dbflow.DBUtils;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
+import ca.appvelopers.mcgillmobile.util.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -61,11 +62,6 @@ public abstract class UserDownloader extends Thread {
      */
     @Inject
     protected McGillService mcGillService;
-    /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    protected TranscriptManager transcriptManager;
     /**
      * True if everything should be downloaded, false otherwise (defaults to false)
      */
@@ -97,12 +93,10 @@ public abstract class UserDownloader extends Thread {
                 update(context.getString(R.string.downloading_transcript));
             }
 
-            //Set the old transcript instance to use for the semesters if ever we don't get to
-            //  download the new one
-            Transcript transcript = transcriptManager.get();
             try {
-                transcript = mcGillService.transcript().execute().body();
-                transcriptManager.set(transcript);
+                TranscriptConverter.TranscriptResponse transcriptResponse =
+                        mcGillService.transcript().execute().body();
+                TranscriptDB.saveTranscript(context, transcriptResponse);
             } catch(IOException e) {
                 handleException(e, "Transcript");
             }
@@ -110,8 +104,11 @@ public abstract class UserDownloader extends Thread {
             //The current term
             Term currentTerm = Term.currentTerm();
 
-            //Go through the semesters
-            for (Semester semester: transcript.getSemesters()) {
+            // Go through the semesters
+            List<Semester> semesters = SQLite.select()
+                    .from(Semester.class)
+                    .queryList();
+            for (Semester semester: semesters) {
                 //Get the term of this semester
                 Term term = semester.getTerm();
 

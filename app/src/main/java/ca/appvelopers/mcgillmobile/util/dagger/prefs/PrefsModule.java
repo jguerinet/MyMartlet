@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ public class PrefsModule {
     public static final String VERSION = "version";
     public static final String MIN_VERSION = "min_version";
     public static final String FIRST_OPEN = "first_open";
-    public static final String LANGUAGE = "language";
     public static final String STATS = "statistics";
     public static final String SCHEDULE_24HR = "24hr Schedule";
     public static final String REMEMBER_USERNAME = "remember_username";
@@ -60,7 +59,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(VERSION)
-    protected IntPreference provideVersion(SharedPreferences prefs) {
+    IntPreference provideVersion(SharedPreferences prefs) {
         return new IntPreference(prefs, VERSION, -1);
     }
 
@@ -71,7 +70,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(MIN_VERSION)
-    protected IntPreference provideMinVersion(SharedPreferences prefs) {
+    IntPreference provideMinVersion(SharedPreferences prefs) {
         return new IntPreference(prefs, MIN_VERSION, -1);
     }
 
@@ -82,7 +81,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(FIRST_OPEN)
-    protected BooleanPreference provideFirstOpen(SharedPreferences prefs) {
+    BooleanPreference provideFirstOpen(SharedPreferences prefs) {
         return new BooleanPreference(prefs, FIRST_OPEN, true);
     }
 
@@ -93,7 +92,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(STATS)
-    protected BooleanPreference provideStatistics(SharedPreferences prefs) {
+    BooleanPreference provideStatistics(SharedPreferences prefs) {
         return new BooleanPreference(prefs, STATS, true);
     }
 
@@ -104,7 +103,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(SCHEDULE_24HR)
-    protected BooleanPreference provideScheduleTime(SharedPreferences prefs) {
+    BooleanPreference provideScheduleTime(SharedPreferences prefs) {
         return new BooleanPreference(prefs, SCHEDULE_24HR, false);
     }
 
@@ -115,7 +114,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(REMEMBER_USERNAME)
-    protected BooleanPreference provideRememberUsername(SharedPreferences prefs) {
+    BooleanPreference provideRememberUsername(SharedPreferences prefs) {
         return new BooleanPreference(prefs, REMEMBER_USERNAME, true);
     }
 
@@ -126,7 +125,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(EULA)
-    protected BooleanPreference provideEULA(SharedPreferences prefs) {
+    BooleanPreference provideEULA(SharedPreferences prefs) {
         return new BooleanPreference(prefs, EULA, false);
     }
 
@@ -137,7 +136,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(SEAT_CHECKER)
-    protected BooleanPreference provideSeatChecker(SharedPreferences prefs) {
+    BooleanPreference provideSeatChecker(SharedPreferences prefs) {
         return new BooleanPreference(prefs, SEAT_CHECKER, false);
     }
 
@@ -148,7 +147,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(GRADE_CHECKER)
-    protected BooleanPreference provideGradeChecker(SharedPreferences prefs) {
+    BooleanPreference provideGradeChecker(SharedPreferences prefs) {
         return new BooleanPreference(prefs, GRADE_CHECKER, false);
     }
 
@@ -159,7 +158,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(IMS_CONFIG)
-    protected DatePreference provideIMSConfig(SharedPreferences prefs) {
+    DatePreference provideIMSConfig(SharedPreferences prefs) {
         return new DatePreference(prefs, IMS_CONFIG, null);
     }
 
@@ -170,7 +169,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(IMS_PLACES)
-    protected DatePreference provideIMSPlaces(SharedPreferences prefs) {
+    DatePreference provideIMSPlaces(SharedPreferences prefs) {
         return new DatePreference(prefs, IMS_PLACES, null);
     }
 
@@ -181,7 +180,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(IMS_CATEGORIES)
-    protected DatePreference provideIMSCategories(SharedPreferences prefs) {
+    DatePreference provideIMSCategories(SharedPreferences prefs) {
         return new DatePreference(prefs, IMS_CATEGORIES, null);
     }
 
@@ -192,7 +191,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(IMS_REGISTRATION)
-    protected DatePreference provideIMSRegistration(SharedPreferences prefs) {
+    DatePreference provideIMSRegistration(SharedPreferences prefs) {
         return new DatePreference(prefs, IMS_REGISTRATION, null);
     }
 }

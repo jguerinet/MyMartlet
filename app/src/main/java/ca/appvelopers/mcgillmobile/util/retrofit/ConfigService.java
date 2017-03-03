@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model.retrofit;
+package ca.appvelopers.mcgillmobile.util.retrofit;
 
 import java.util.List;
 

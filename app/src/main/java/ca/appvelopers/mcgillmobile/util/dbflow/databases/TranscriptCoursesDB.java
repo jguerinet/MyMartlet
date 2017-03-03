@@ -14,27 +14,20 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.util.dbflow.converters;
+package ca.appvelopers.mcgillmobile.util.dbflow.databases;
 
-import com.raizlabs.android.dbflow.converter.TypeConverter;
+import com.raizlabs.android.dbflow.annotation.Database;
 
-import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 
 /**
- * Converts a {@link Term} to a String for a DB and vice-versa
+ * Database that holds a list of {@link TranscriptCourse}s
  * @author Julien Guerinet
  * @since 2.4.0
  */
-@com.raizlabs.android.dbflow.annotation.TypeConverter
-public class TermTypeConverter extends TypeConverter<String, Term> {
-
-    @Override
-    public String getDBValue(Term model) {
-        return model.getId();
-    }
-
-    @Override
-    public Term getModelValue(String data) {
-        return Term.parseTerm(data);
-    }
+@Database(name = TranscriptCoursesDB.NAME, version = TranscriptCoursesDB.VERSION)
+public class TranscriptCoursesDB {
+    static final String NAME = "TranscriptCourses";
+    public static final String FULL_NAME = NAME + ".db";
+    static final int VERSION = 1;
 }

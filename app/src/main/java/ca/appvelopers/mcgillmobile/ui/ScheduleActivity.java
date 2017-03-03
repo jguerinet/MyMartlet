@@ -59,7 +59,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Course_Table;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -67,8 +66,9 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter.TranscriptResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -107,11 +107,6 @@ public class ScheduleActivity extends DrawerActivity {
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
     protected BooleanPreference twentyFourHourPref;
-    /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    protected TranscriptManager transcriptManager;
     /**
      * Current {@link Term}
      */
@@ -274,18 +269,19 @@ public class ScheduleActivity extends DrawerActivity {
                 CoursesDB.setCourses(term, response.body());
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(new Callback<Transcript>() {
-                    @Override
-                    public void onResponse(Call<Transcript> call, Response<Transcript> response) {
-                        transcriptManager.set(response.body());
-                        //Update the view
-                        Assert.assertNotNull(viewPager);
-                        viewPager.getAdapter().notifyDataSetChanged();
-                        showToolbarProgress(false);
-                    }
+                mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
+                            @Override
+                            public void onResponse(Call<TranscriptResponse> call,
+                                    Response<TranscriptResponse> response) {
+                                TranscriptDB.saveTranscript(ScheduleActivity.this, response.body());
+                                // Update the view
+                                Assert.assertNotNull(viewPager);
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                showToolbarProgress(false);
+                            }
 
                     @Override
-                    public void onFailure(Call<Transcript> call, Throwable t) {
+                    public void onFailure(Call<TranscriptResponse> call, Throwable t) {
                         Timber.e(t, "Error refreshing the transcript");
                         showToolbarProgress(false);
                         Help.handleException(ScheduleActivity.this, t);
@@ -329,7 +325,7 @@ public class ScheduleActivity extends DrawerActivity {
             //Set up the day name
             dayView = View.inflate(this, R.layout.fragment_day_name, null);
             TextView dayViewTitle = (TextView) dayView.findViewById(R.id.day_name);
-            dayViewTitle.setText(DayUtils.getString(this, day));
+            dayViewTitle.setText(DayUtils.getStringId(day));
             scheduleContainer.addView(dayView);
 
             //Set up the schedule container for that one day
@@ -637,7 +633,7 @@ public class ScheduleActivity extends DrawerActivity {
             LocalDate currentDate = getDate(position);
 
             //Set the titles
-            dayTitle.setText(DayUtils.getString(context, currentDate.getDayOfWeek()));
+            dayTitle.setText(DayUtils.getStringId(currentDate.getDayOfWeek()));
             dateTitle.setText(com.guerinet.utils.DateUtils.getLongDateString(currentDate));
 
             //Fill the schedule up
