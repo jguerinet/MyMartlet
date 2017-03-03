@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,10 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.CompoundButton;
+import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 
 import com.guerinet.formgenerator.FormGenerator;
-import com.guerinet.formgenerator.TextViewFormItem;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
@@ -60,28 +59,27 @@ public class SettingsActivity extends DrawerActivity {
      * The {@link FormGenerator} container
      */
     @BindView(R.id.container)
-    protected LinearLayout container;
+    LinearLayout container;
     /**
-     * Statistics {@link BooleanPreference}
+     * Statistics BooleanPreference
      */
     @Inject
     @Named(PrefsModule.STATS)
-    protected BooleanPreference statsPrefs;
-
+    BooleanPreference statsPref;
     /**
-     * SCHEDULE_24HR {@link BooleanPreference}
+     * 24 hour time BooleanPreference
      */
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
-    protected BooleanPreference twentyFourHourPrefs;
+    BooleanPreference twentyFourHourPref;
     /**
      * {@link UsernamePreference} instance
      */
     @Inject
-    protected UsernamePreference usernamePref;
+    UsernamePreference usernamePref;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
@@ -90,178 +88,143 @@ public class SettingsActivity extends DrawerActivity {
         analytics.sendScreen("Settings");
 
         FormGenerator fg = FormGenerator.bind(this, container);
-        final Context context = this;
 
-        //Language
+        // Language
         fg.text(languagePref.getString())
                 .leftIcon(R.drawable.ic_language)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        DialogUtils.list(context, R.string.settings_language,
-                                new LanguageListAdapter(SettingsActivity.this) {
-                                    @Override
-                                    public void onLanguageSelected(String language) {
-                                        // Don't continue if it's the current language
-                                        if (language.equals(languagePref.get())) {
-                                            return;
-                                        }
+                .onClick(item -> DialogUtils.list(this, R.string.settings_language,
+                        new LanguageListAdapter(this) {
+                            @Override
+                            public void onLanguageSelected(String language) {
+                                // Don't continue if it's the current language
+                                if (language.equals(languagePref.get())) {
+                                    return;
+                                }
 
-                                        languagePref.set(language);
-                                        analytics.sendEvent("Settings", "Language", language);
+                                languagePref.set(language);
+                                analytics.sendEvent("Settings", "Language", language);
 
-                                        // Reload this activity
-                                        startActivity(new Intent(context, SettingsActivity.class));
-                                        finish();
-                                    }
-                                });
-                    }
-                })
+                                // Reload this activity
+                                startActivity(new Intent(SettingsActivity.this,
+                                        SettingsActivity.class));
+                                finish();
+                            }
+                        }))
                 .build();
 
-        //24hrSchedule
+        // 24 hour time preference
         fg.aSwitch(R.string.settings_twentyfourhours)
                 .leftIcon(R.drawable.ic_clock)
-                .checked(twentyFourHourPrefs.get())
-                .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        twentyFourHourPrefs.set(isChecked);
-                    }
-                })
+                .checked(twentyFourHourPref.get())
+                .onCheckChanged((buttonView, isChecked) -> twentyFourHourPref.set(isChecked))
                 .build();
 
-        //HomepageManager
+        // Homepage choice
         fg.text(homepageManager.getTitleString())
                 .leftIcon(R.drawable.ic_phone_android)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(final TextViewFormItem item) {
-                        DialogUtils.list(context, R.string.settings_homepage_title,
-                                new HomepageListAdapter(SettingsActivity.this) {
-                                    @Override
-                                    public void onHomepageSelected(
-                                            @HomepageManager.Homepage int choice) {
-                                        //Update the instance
-                                        homepageManager.set(choice);
+                .onClick(item -> DialogUtils.list(this, R.string.settings_homepage_title,
+                        new HomepageListAdapter(this) {
+                            @Override
+                            public void onHomepageSelected(@HomepageManager.Homepage int choice) {
+                                // Update the instance
+                                homepageManager.set(choice);
 
-                                        analytics.sendEvent("Settings", "HomepageManager",
-                                                homepageManager.getString());
+                                analytics.sendEvent("Settings", "HomepageManager",
+                                        homepageManager.getString());
 
-                                        //Update the TextView
-                                        item.view().setText(homepageManager.getTitleString());
-                                    }
-                                });
-                    }
-                })
+                                // Update the TextView
+                                item.view().setText(homepageManager.getTitleString());
+                            }
+                        }))
                 .build();
 
-        //Statistics
+        // Statistics
         fg.aSwitch(R.string.settings_statistics)
                 .leftIcon(R.drawable.ic_trending_up)
-                .checked(statsPrefs.get())
-                .onCheckChanged(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        statsPrefs.set(isChecked);
-                    }
-                })
+                .checked(statsPref.get())
+                .onCheckChanged((buttonView, isChecked) -> statsPref.set(isChecked))
                 .build();
 
-        //Help
+        // Help
         fg.text(R.string.title_help)
                 .leftIcon(R.drawable.ic_help)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        startActivity(new Intent(context, HelpActivity.class));
-                    }
-                })
+                .onClick(item -> startActivity(new Intent(this, HelpActivity.class)))
                 .build();
 
-        //About
+        // About
         fg.text(R.string.title_about)
                 .leftIcon(R.drawable.ic_info)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        startActivity(new Intent(context, AboutActivity.class));
-                    }
-                })
+                .onClick(item -> startActivity(new Intent(this, AboutActivity.class)))
                 .build();
 
-        //Bug Report
+        // Bug Report
         fg.text(R.string.title_report_bug)
                 .leftIcon(R.drawable.ic_bug_report)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        analytics.sendEvent("About", "Report a Bug");
+                .onClick(item -> {
+                    analytics.sendEvent("About", "Report a Bug");
 
-                        Intent email = new Intent(Intent.ACTION_SEND);
+                    Intent intent = new Intent(Intent.ACTION_SEND);
 
-                        // Recipient
-                        email.putExtra(Intent.EXTRA_EMAIL,
-                                new String[]{"julien.guerinet@mail.mcgill.ca"});
+                    // Recipient
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]
+                            {"julien.guerinet@mail.mcgill.ca"});
 
-                        // Title
-                        email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report));
+                    // Title
+                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report));
 
-                        // Content
-                        String device = "Device: " + Utils.device();
-                        String sdkVersion = "SDK Version: " + Build.VERSION.SDK_INT;
-                        String appVersion = "App Version: " +
-                                Utils.versionName(SettingsActivity.this);
-                        String language = "Language: " + languagePref.get();
+                    // Content
+                    String device = "Device: " + Utils.device();
+                    String sdkVersion = "SDK Version: " + Build.VERSION.SDK_INT;
+                    String appVersion = "App Version: " + Utils.versionName(this);
+                    String language = "Language: " + languagePref.get();
 
-                        ConnectivityManager manager = (ConnectivityManager)
-                                getSystemService(Context.CONNECTIVITY_SERVICE);
-                        NetworkInfo info = manager.getActiveNetworkInfo();
+                    ConnectivityManager manager = (ConnectivityManager)
+                            getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo info = manager.getActiveNetworkInfo();
 
-                        String connection = "Connection Type: N/A";
-                        if (info != null) {
-                            connection = "Connection Type: " + info.getTypeName() + " " +
-                                    info.getSubtypeName();
-                        }
-
-                        String content = "===============" +
-                                "\nDebug Info" +
-                                "\n===============" +
-                                "\n" + device +
-                                "\n" + sdkVersion +
-                                "\n" + appVersion +
-                                "\n" + language +
-                                "\n" + connection +
-                                "\n===============\n\n";
-                        email.putExtra(Intent.EXTRA_TEXT, content);
-
-                        // Log everything before printing the logs so it's included
-                        Timber.i(device);
-                        Timber.i(sdkVersion);
-                        Timber.i(appVersion);
-                        Timber.i(language);
-                        Timber.i(connection);
-
-                        // Logs (attachment)
-                        try {
-                            File file = new File(getExternalFilesDir(null), "logs.txt");
-                            Utils.getLogs(file);
-                            email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-                        } catch (IOException e) {
-                            Timber.e(new Exception("Error getting logs", e));
-                        }
-
-                        // Code (Email)
-                        email.setType("message/rfc822");
-                        startActivity(Intent.createChooser(email, null));
+                    String connection = "Connection Type: N/A";
+                    if (info != null) {
+                        connection = "Connection Type: " + info.getTypeName() + " " +
+                                info.getSubtypeName();
                     }
+
+                    String content = "===============" +
+                            "\nDebug Info" +
+                            "\n===============" +
+                            "\n" + device +
+                            "\n" + sdkVersion +
+                            "\n" + appVersion +
+                            "\n" + language +
+                            "\n" + connection +
+                            "\n===============\n\n";
+                    intent.putExtra(Intent.EXTRA_TEXT, content);
+
+                    // Log everything before printing the logs so it's included
+                    Timber.i(device);
+                    Timber.i(sdkVersion);
+                    Timber.i(appVersion);
+                    Timber.i(language);
+                    Timber.i(connection);
+
+                    // Logs (attachment)
+                    try {
+                        File file = new File(getExternalFilesDir(null), "logs.txt");
+                        Utils.getLogs(file);
+                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                    } catch (IOException e) {
+                        Timber.e(new Exception("Error getting logs", e));
+                    }
+
+                    // Code (Email)
+                    intent.setType("message/rfc822");
+                    startActivity(Intent.createChooser(intent, null));
                 })
                 .build();
     }
 
+    @HomepageManager.Homepage
     @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
+    protected int getCurrentPage() {
         return HomepageManager.SETTINGS;
     }
 }
