@@ -115,7 +115,7 @@ public class CoursesActivity extends DrawerActivity {
         App.component(this).inject(this);
         analytics.sendScreen("View Courses");
 
-        mTerm = App.getDefaultTerm();
+        mTerm = defaultTermPref.getTerm();
 
         mList.setLayoutManager(new LinearLayoutManager(this));
 

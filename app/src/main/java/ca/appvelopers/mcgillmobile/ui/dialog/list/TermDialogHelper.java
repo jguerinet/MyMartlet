@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
@@ -55,6 +56,10 @@ public abstract class TermDialogHelper implements ListDialogInterface {
     @Inject
     protected Analytics analytics;
     /**
+     * {@link DefaultTermPreference} instance
+     */
+    DefaultTermPreference defaultTermPref;
+    /**
      * List of {@link Term}s to choose from
      */
     private final List<Term> terms;
@@ -74,7 +79,7 @@ public abstract class TermDialogHelper implements ListDialogInterface {
         analytics.sendScreen("Change Semester");
 
         //Use the default term if no term was sent
-        this.currentTerm = currentTerm == null ? App.getDefaultTerm() : currentTerm;
+        this.currentTerm = currentTerm == null ? defaultTermPref.getTerm() : currentTerm;
 
         terms = new ArrayList<>();
         if (!registration) {

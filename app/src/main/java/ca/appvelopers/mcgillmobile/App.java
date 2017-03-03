@@ -76,10 +76,6 @@ public class App extends Application {
      */
     private static List<Statement> ebill;
     /**
-     * User's chosen default {@link Term}
-     */
-    private static Term defaultTerm;
-    /**
      * User's wishlist
      */
     private static List<CourseResult> wishlist;
@@ -169,21 +165,6 @@ public class App extends Application {
             registerTerms = Load.registerTerms();
         }
         return registerTerms;
-    }
-
-    /**
-     * @return The user's chosen default {@link Term}
-     */
-    public static Term getDefaultTerm(){
-        if(defaultTerm == null){
-            defaultTerm = Load.defaultTerm();
-
-            //If the default term is still null, use the current term
-            if (defaultTerm == null) {
-                defaultTerm = Term.currentTerm();
-            }
-        }
-        return defaultTerm;
     }
 
     /**
