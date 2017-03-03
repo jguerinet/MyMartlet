@@ -108,6 +108,13 @@ public class CoursesActivity extends DrawerActivity {
         adapter = new CoursesAdapter(emptyView);
         list.setAdapter(adapter);
 
+        // Format the unregister button
+        unregisterButton.setText(R.string.courses_unregister);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        unregisterButton.setLayoutParams(params);
+
         // Remove this button
         findViewById(R.id.course_wishlist).setVisibility(View.GONE);
     }
@@ -162,23 +169,14 @@ public class CoursesActivity extends DrawerActivity {
      * Updates all of the info in the view
      */
     private void update() {
-        //Set the title
+        // Set the title
         setTitle(term.getString(this));
 
-        //User can unregister if the current term is in the list of terms to register for
+        // User can unregister if the current term is in the list of terms to register for
         boolean canUnregister = App.getRegisterTerms().contains(term);
 
-        //Change the text and the visibility if we are in the list of currently registered courses
-        if (canUnregister) {
-            unregisterButton.setVisibility(View.VISIBLE);
-            unregisterButton.setText(R.string.courses_unregister);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            unregisterButton.setLayoutParams(params);
-        } else {
-            unregisterButton.setVisibility(View.GONE);
-        }
+        // Change the text and the visibility if we are in the list of currently registered courses
+        unregisterButton.setVisibility(canUnregister ? View.VISIBLE : View.GONE);
 
         // Update the list
         adapter.update(term, canUnregister);
