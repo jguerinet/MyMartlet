@@ -58,14 +58,6 @@ public class Load {
     }
 
     /**
-     * @return The list of terms that the user can currently register in, an empty list if none
-     */
-    public static List<Term> registerTerms(){
-        List<Term> terms = (List<Term>)loadObject("Register Terms", Constants.REGISTER_TERMS_FILE);
-        return terms == null ? new ArrayList<Term>() : terms;
-    }
-
-    /**
      * @return The user's chosen default term, null if none
      */
     public static Term defaultTerm(){
