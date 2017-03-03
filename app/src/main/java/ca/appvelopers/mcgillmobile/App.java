@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.facebook.FacebookSdk;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
 import com.jakewharton.threetenabp.AndroidThreeTen;
@@ -139,6 +140,9 @@ public class App extends Application {
                 .setDefaultDrawablePaddingSize(padding)
                 .setDefaultPaddingSize(padding)
                 .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)));
+
+        // Facebook
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         // Run any pre-launch update
         updateManager.preLaunchUpdate();
