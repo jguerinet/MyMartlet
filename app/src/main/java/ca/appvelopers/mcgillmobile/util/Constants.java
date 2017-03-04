@@ -26,9 +26,9 @@ public class Constants {
     /* INTENT KEYS */
 
     /**
-     * Key used to pass a semester via an intent
+     * Passes an Id via an intent
      */
-    public static final String SEMESTER = "semester";
+    public static final String ID = "id";
     /**
      * Key used to pass a term via an intent
      */
@@ -48,10 +48,6 @@ public class Constants {
 
     /* INTERNAL STORAGE */
 
-    /**
-     * The file name where the user's default term is stored
-     */
-    public static final String DEFAULT_TERM_FILE = "default_term";
     /**
      * The file name where the user's wishlist is stored
      */

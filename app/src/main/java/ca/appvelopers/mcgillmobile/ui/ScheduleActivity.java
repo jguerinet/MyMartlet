@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +36,7 @@ import android.widget.TextView;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import junit.framework.Assert;
 
@@ -57,18 +57,19 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Course_Table;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
+import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter.TranscriptResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -108,15 +109,10 @@ public class ScheduleActivity extends DrawerActivity {
     @Named(PrefsModule.SCHEDULE_24HR)
     protected BooleanPreference twentyFourHourPref;
     /**
-     * {@link TranscriptManager} instance
+     * {@link DefaultTermPreference} instance
      */
     @Inject
-    protected TranscriptManager transcriptManager;
-    /**
-     * {@link ScheduleManager} instance
-     */
-    @Inject
-    protected ScheduleManager scheduleManager;
+    DefaultTermPreference defaultTermPref;
     /**
      * Current {@link Term}
      */
@@ -139,13 +135,13 @@ public class ScheduleActivity extends DrawerActivity {
         courses = new ArrayList<>();
 
         //TODO Use the SavedInstanceState to get the term and courses
-        term = App.getDefaultTerm();
+        term = defaultTermPref.getTerm();
 
         //Title
         setTitle(term.getString(this));
 
-        //Update the list of courses for this term
-        courses = scheduleManager.getTermCourses(term);
+        // Update the list of courses for this term
+        getCourses();
 
         //Date is by default set to today
         date = LocalDate.now();
@@ -204,14 +200,14 @@ public class ScheduleActivity extends DrawerActivity {
                             return;
                         }
 
-                        //Set the default term
-                        App.setDefaultTerm(term);
+                        // Set the default term
+                        defaultTermPref.setTerm(term);
 
                         //Set the instance term
                         ScheduleActivity.this.term = term;
 
                         //Update the courses
-                        courses = scheduleManager.getTermCourses(term);
+                        getCourses();
 
                         //Check if we are in the current semester
                         date = LocalDate.now();
@@ -249,6 +245,20 @@ public class ScheduleActivity extends DrawerActivity {
     }
 
     /**
+     * Gets the courses for the given {@link Term}
+     */
+    private void getCourses() {
+        // Clear the current courses
+        courses.clear();
+
+        // Get the new courses for the current term
+        courses.addAll(SQLite.select()
+                .from(Course.class)
+                .where(Course_Table.term.eq(term))
+                .queryList());
+    }
+
+    /**
      * Refreshes the list of courses for the given term and the user's transcript
      *  (only available in portrait mode)
      */
@@ -261,32 +271,26 @@ public class ScheduleActivity extends DrawerActivity {
         mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
-                //Set the courses
-                scheduleManager.set(response.body(), term);
+                // Set the courses
+                CoursesDB.setCourses(term, response.body());
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(new Callback<Transcript>() {
-                    @Override
-                    public void onResponse(Call<Transcript> call, Response<Transcript> response) {
-                        transcriptManager.set(response.body());
-                        //Update the view
-                        Assert.assertNotNull(viewPager);
-                        viewPager.getAdapter().notifyDataSetChanged();
-                        showToolbarProgress(false);
-                    }
+                mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
+                            @Override
+                            public void onResponse(Call<TranscriptResponse> call,
+                                    Response<TranscriptResponse> response) {
+                                TranscriptDB.saveTranscript(ScheduleActivity.this, response.body());
+                                // Update the view
+                                Assert.assertNotNull(viewPager);
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                showToolbarProgress(false);
+                            }
 
                     @Override
-                    public void onFailure(Call<Transcript> call, Throwable t) {
+                    public void onFailure(Call<TranscriptResponse> call, Throwable t) {
                         Timber.e(t, "Error refreshing the transcript");
                         showToolbarProgress(false);
-
-                        //If this is a MinervaException, broadcast it
-                        if (t instanceof MinervaException) {
-                            LocalBroadcastManager.getInstance(ScheduleActivity.this)
-                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                        } else {
-                            DialogHelper.error(ScheduleActivity.this, R.string.error_other);
-                        }
+                        Help.handleException(ScheduleActivity.this, t);
                     }
                 });
             }
@@ -295,13 +299,7 @@ public class ScheduleActivity extends DrawerActivity {
             public void onFailure(Call<List<Course>> call, Throwable t) {
                 Timber.e(t, "Error refreshing courses");
                 showToolbarProgress(false);
-                //If this is a MinervaException, broadcast it
-                if (t instanceof MinervaException) {
-                    LocalBroadcastManager.getInstance(ScheduleActivity.this)
-                            .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                } else {
-                    DialogHelper.error(ScheduleActivity.this, R.string.error_other);
-                }
+                Help.handleException(ScheduleActivity.this, t);
             }
         });
     }
@@ -333,7 +331,7 @@ public class ScheduleActivity extends DrawerActivity {
             //Set up the day name
             dayView = View.inflate(this, R.layout.fragment_day_name, null);
             TextView dayViewTitle = (TextView) dayView.findViewById(R.id.day_name);
-            dayViewTitle.setText(DayUtils.getString(this, day));
+            dayViewTitle.setText(DayUtils.getStringId(day));
             scheduleContainer.addView(dayView);
 
             //Set up the schedule container for that one day
@@ -641,7 +639,7 @@ public class ScheduleActivity extends DrawerActivity {
             LocalDate currentDate = getDate(position);
 
             //Set the titles
-            dayTitle.setText(DayUtils.getString(context, currentDate.getDayOfWeek()));
+            dayTitle.setText(DayUtils.getStringId(currentDate.getDayOfWeek()));
             dateTitle.setText(com.guerinet.utils.DateUtils.getLongDateString(currentDate));
 
             //Fill the schedule up

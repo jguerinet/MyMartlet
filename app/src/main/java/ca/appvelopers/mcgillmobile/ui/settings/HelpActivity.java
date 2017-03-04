@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
 
 package ca.appvelopers.mcgillmobile.ui.settings;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.guerinet.formgenerator.FormGenerator;
-import com.guerinet.formgenerator.TextViewFormItem;
+import com.guerinet.utils.RecyclerViewBaseAdapter;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 
@@ -38,7 +39,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.FAQ;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 
@@ -50,115 +50,89 @@ import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
  */
 public class HelpActivity extends BaseActivity {
     /**
-     * {@link FormGenerator} container
+     * FormGenerator container
      */
     @BindView(R.id.container)
-    protected LinearLayout mContainer;
+    LinearLayout container;
     /**
      * FAQ List
      */
     @BindView(android.R.id.list)
-    protected RecyclerView mList;
+    RecyclerView list;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
         ButterKnife.bind(this);
         setUpToolbar(true);
 
-        FormGenerator fg = FormGenerator.bind(this, mContainer);
+        FormGenerator fg = FormGenerator.bind(this, container);
 
-        //EULA
+        // EULA
         fg.text(R.string.title_agreement)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        startActivity(new Intent(HelpActivity.this, AgreementActivity.class));
-                    }
-                })
+                .onClick(item -> startActivity(new Intent(this, AgreementActivity.class)))
                 .build();
 
-        //Email
+        // Email
         fg.text(R.string.help_email_walkthrough)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        analytics.sendEvent("Help", "McGill Email");
+                .onClick(item -> {
+                    analytics.sendEvent("Help", "McGill Email");
 
-                        //Show the user the info about the Chrome bug
-                        DialogUtils.neutral(HelpActivity.this, -1,
-                                R.string.help_email_walkthrough_info,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //Open the official McGill Guide
-                                        Utils.openURL(HelpActivity.this,
-                                                "http://kb.mcgill.ca/kb/article?ArticleId=4774");
+                    // Show the user the info about the Chrome bug
+                    DialogUtils.neutral(this, -1, R.string.help_email_walkthrough_info,
+                            (dialog, which) -> {
+                                // Open the official McGill Guide
+                                Utils.openURL(this,
+                                        "http://kb.mcgill.ca/kb/article?ArticleId=4774");
 
-                                    }
-                                });
-                    }
+                            });
                 })
                 .build();
 
-        //Help
+        // Help
         fg.text(R.string.help_walkthrough)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        startActivity(new Intent(HelpActivity.this, WalkthroughActivity.class));
-                    }
-                })
+                .onClick(item -> startActivity(new Intent(this, WalkthroughActivity.class)))
                 .build();
 
-        //McGill App
+        // McGill App
         fg.text(R.string.help_download)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        Utils.openPlayStoreApp(HelpActivity.this, "com.mcgill");
-                    }
-                })
+                .onClick(item -> Utils.openPlayStoreApp(this, "com.mcgill"))
                 .build();
 
-        //Become Beta Tester
+        // Become Beta Tester
         fg.text(R.string.help_beta_tester)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(TextViewFormItem item) {
-                        Utils.openURL(HelpActivity.this, "https://betas.to/iRinaygk");
-                    }
-                })
+                .onClick(item -> Utils.openURL(this, "https://betas.to/iRinaygk"))
                 .build();
         
-        //FAQ
-        mList.setLayoutManager(new LinearLayoutManager(this));
-        mList.setAdapter(new FAQAdapter());
+        // FAQ
+        list.setLayoutManager(new LinearLayoutManager(this));
+        list.setAdapter(new FAQAdapter());
     }
 
     /**
      * Adapter used to display the FAQs
      */
-    class FAQAdapter extends RecyclerView.Adapter<FAQAdapter.FAQHolder> {
+    class FAQAdapter extends RecyclerViewBaseAdapter {
         /**
-         * The list of FAQs
+         * List of FAQs
          */
-        private List<FAQ> mFAQs;
+        private final List<Pair<Integer, Integer>> faqs;
 
         /**
          * Default Constructor
          */
-        public FAQAdapter() {
-            mFAQs = new ArrayList<>();
-            mFAQs.add(new FAQ(R.string.help_question1, R.string.help_answer1));
-            mFAQs.add(new FAQ(R.string.help_question2, R.string.help_answer2));
-            mFAQs.add(new FAQ(R.string.help_question3, R.string.help_answer3));
+        private FAQAdapter() {
+            super(null);
+            faqs = new ArrayList<>();
+            faqs.add(new Pair<>(R.string.help_question1, R.string.help_answer1));
+            faqs.add(new Pair<>(R.string.help_question2, R.string.help_answer2));
+            faqs.add(new Pair<>(R.string.help_question3, R.string.help_answer3));
         }
 
         @Override
         public int getItemCount() {
-            return mFAQs.size();
+            return faqs.size();
         }
 
         @Override
@@ -167,31 +141,27 @@ public class HelpActivity extends BaseActivity {
                     .inflate(R.layout.item_faq, viewGroup, false));
         }
 
-        @Override
-        public void onBindViewHolder(FAQHolder faqHolder, int i) {
-            faqHolder.bind(mFAQs.get(i));
-        }
-
-        class FAQHolder extends RecyclerView.ViewHolder {
+        class FAQHolder extends BaseHolder {
             /**
              * FAQ question
              */
             @BindView(R.id.question)
-            protected TextView mQuestion;
+            TextView question;
             /**
              * FAQ answer
              */
             @BindView(R.id.answer)
-            protected TextView mAnswer;
+            TextView answer;
 
-            public FAQHolder(View itemView) {
+            FAQHolder(View itemView) {
                 super(itemView);
-                ButterKnife.bind(this, itemView);
             }
 
-            public void bind(FAQ item) {
-                mQuestion.setText(item.getQuestion());
-                mAnswer.setText(item.getAnswer());
+            @Override
+            public void bind(int position) {
+                Pair<Integer, Integer> faq = faqs.get(position);
+                question.setText(faq.first);
+                answer.setText(faq.second);
             }
         }
     }

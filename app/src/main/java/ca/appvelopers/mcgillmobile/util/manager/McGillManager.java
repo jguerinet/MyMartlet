@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,15 +29,15 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.model.retrofit.CourseResultConverter;
-import ca.appvelopers.mcgillmobile.model.retrofit.EbillConverter;
-import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
-import ca.appvelopers.mcgillmobile.model.retrofit.RegistrationErrorConverter;
-import ca.appvelopers.mcgillmobile.model.retrofit.ScheduleConverter;
-import ca.appvelopers.mcgillmobile.model.retrofit.TranscriptConverter;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.retrofit.CourseResultConverter;
+import ca.appvelopers.mcgillmobile.util.retrofit.EbillConverter;
+import ca.appvelopers.mcgillmobile.util.retrofit.McGillService;
+import ca.appvelopers.mcgillmobile.util.retrofit.RegistrationErrorConverter;
+import ca.appvelopers.mcgillmobile.util.retrofit.ScheduleConverter;
+import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;

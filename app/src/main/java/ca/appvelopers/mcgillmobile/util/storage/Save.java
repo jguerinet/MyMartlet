@@ -50,13 +50,6 @@ public class Save {
     }
 
     /**
-     * Saves the user's default term
-     */
-    public static void defaultTerm(){
-        saveObject("Default Term", Constants.DEFAULT_TERM_FILE, App.getDefaultTerm());
-    }
-
-    /**
      * Saves the user's wishlist
      */
     public static void wishlist(){

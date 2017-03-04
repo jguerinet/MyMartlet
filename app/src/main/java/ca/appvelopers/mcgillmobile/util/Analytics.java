@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ public class Analytics {
      * @param statsPref Statistics {@link BooleanPreference}
      */
     @Inject
-    protected Analytics(Context context, @Named(PrefsModule.STATS) BooleanPreference statsPref) {
-        //Set up the tracker
+    Analytics(Context context, @Named(PrefsModule.STATS) BooleanPreference statsPref) {
+        // Set up the tracker
         tracker = GoogleAnalytics.getInstance(context).newTracker(R.xml.global_tracker);
         this.statsPref = statsPref;
     }
@@ -120,7 +120,7 @@ public class Analytics {
             return;
         }
 
-        //Set the screen name and send it
+        // Set the screen name and send it
         tracker.setScreenName(screenName);
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
         Timber.i("GA Screen: %s", screenName);

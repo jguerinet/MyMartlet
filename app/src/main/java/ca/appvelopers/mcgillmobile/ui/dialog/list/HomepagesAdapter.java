@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
 import android.content.Context;
+import android.util.Pair;
 
 import com.guerinet.utils.dialog.ListDialogInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,83 +30,88 @@ import javax.inject.Inject;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import ca.appvelopers.mcgillmobile.util.manager.HomepageManager.Homepage;
 
 /**
+ * Displays the available homepages
  * @author Julien Guerinet
  * @since 2.0.0
  */
 @SuppressWarnings("ResourceType")
-public abstract class HomepageListAdapter implements ListDialogInterface {
+public abstract class HomepagesAdapter implements ListDialogInterface {
     /**
-     * Current {@link HomepageManager} instance
+     * {@link HomepageManager} instance
      */
     @Inject
-    protected HomepageManager homepageManager;
+    HomepageManager homepageManager;
     /**
      * {@link Analytics} instance
      */
     @Inject
-    protected Analytics analytics;
+    Analytics analytics;
     /**
      * The list of homepages
      */
-    private List<Integer> homepages;
+    private final List<Pair<Integer, String>> homepages;
 
     /**
      * Default Constructor
      *
      * @param context App context
      */
-    public HomepageListAdapter(Context context) {
+    protected HomepagesAdapter(Context context) {
         App.component(context).inject(this);
-
-        //Set up the list of homepages
         homepages = new ArrayList<>();
-        homepages.add(HomepageManager.SCHEDULE);
-        homepages.add(HomepageManager.TRANSCRIPT);
-        homepages.add(HomepageManager.MY_COURSES);
-        homepages.add(HomepageManager.COURSES);
-        homepages.add(HomepageManager.WISHLIST);
-        homepages.add(HomepageManager.SEARCH_COURSES);
-        homepages.add(HomepageManager.EBILL);
-        homepages.add(HomepageManager.MAP);
-        homepages.add(HomepageManager.DESKTOP);
-        homepages.add(HomepageManager.SETTINGS);
+        addHomepage(HomepageManager.SCHEDULE);
+        addHomepage(HomepageManager.TRANSCRIPT);
+        addHomepage(HomepageManager.MY_COURSES);
+        addHomepage(HomepageManager.COURSES);
+        addHomepage(HomepageManager.WISHLIST);
+        addHomepage(HomepageManager.SEARCH_COURSES);
+        addHomepage(HomepageManager.EBILL);
+        addHomepage(HomepageManager.MAP);
+        addHomepage(HomepageManager.DESKTOP);
+        addHomepage(HomepageManager.SETTINGS);
 
-        //Sort them alphabetically
-        Collections.sort(homepages, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer lhs, Integer rhs) {
-                return homepageManager.getString(lhs)
-                        .compareToIgnoreCase(homepageManager.getString(rhs));
-            }
-        });
+        // Sort them alphabetically
+        Collections.sort(homepages, (lhs, rhs) -> lhs.second.compareToIgnoreCase(rhs.second));
     }
 
     @Override
     public int getCurrentChoice() {
-        return homepages.indexOf(homepageManager.get());
+        for (int i = 0; i < homepages.size(); i ++) {
+            if (homepages.get(i).first == homepageManager.get()) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public CharSequence[] getChoices() {
         CharSequence[] titles = new CharSequence[homepages.size()];
         for (int i = 0; i < homepages.size(); i ++) {
-            titles[i] = homepageManager.getString(homepages.get(i));
+            titles[i] = homepages.get(i).second;
         }
-
         return titles;
     }
 
     @Override
     public void onChoiceSelected(int position) {
-        onHomepageSelected(homepages.get(position));
+        onHomepageSelected(homepages.get(position).first);
     }
 
     /**
-     * Called when a homepageManager has been selected
-     *
-     * @param homepage The selected homepageManager
+     * @param homepage {@link Homepage} to add
      */
-    public abstract void onHomepageSelected(@HomepageManager.Homepage int homepage);
+    private void addHomepage(@Homepage int homepage) {
+        homepages.add(new Pair<>(homepage, homepageManager.getString(homepage)));
+    }
+
+    /**
+     * Called when a homepage has been selected
+     *
+     * @param homepage The selected {@link Homepage}
+     */
+    public abstract void onHomepageSelected(@Homepage int homepage);
 }

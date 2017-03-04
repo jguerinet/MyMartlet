@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public class AppModule {
     /**
      * App context
      */
-    private Context context;
+    private final Context context;
 
     /**
      * Default Constructor
@@ -56,7 +56,7 @@ public class AppModule {
      */
     @Provides
     @Singleton
-    protected Context provideContext() {
+    Context provideContext() {
         return context;
     }
 
@@ -66,26 +66,26 @@ public class AppModule {
      */
     @Provides
     @Singleton
-    protected SharedPreferences provideSharedPrefs(Context context) {
+    SharedPreferences provideSharedPrefs(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     /**
-     * @return The {@link Moshi} singleton instance
+     * @return {@link Moshi} singleton instance
      */
     @Provides
     @Singleton
-    protected Moshi provideMoshi() {
+    Moshi provideMoshi() {
         return new Moshi.Builder()
                 .build();
     }
 
     /**
      * @param context App context
-     * @return The {@link InputMethodManager}
+     * @return {@link InputMethodManager} instance
      */
     @Provides
-    protected InputMethodManager provideInputMethodManager(Context context) {
+    InputMethodManager provideInputMethodManager(Context context) {
         return (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 }

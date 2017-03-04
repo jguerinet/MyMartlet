@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Appvelopers
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,8 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.SplashActivity;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import timber.log.Timber;
 
 /**
@@ -105,47 +102,48 @@ public class CheckerService extends IntentService {
 			}
 
 			//Go through the new transcript's semesters
-			for(Semester semester : newTranscript.getSemesters()){
-				//Find the equivalent semester on the old transcript
-				//  Don't use it if there aren't the same amount of courses (during add/drop)
-				Semester foundSemester = null;
-				for(Semester oldSemester : oldTranscript.getSemesters()){
-					if(oldSemester.getTerm().equals(semester.getTerm()) &&
-							oldSemester.getCourses().size() == semester.getCourses().size()){
-						foundSemester = oldSemester;
-						//Go through the new semester's courses
-						for(TranscriptCourse course : semester.getCourses()){
-							//Find an equivalent in the old semester
-							TranscriptCourse foundCourse = null;
-							for(TranscriptCourse oldCourse : oldSemester.getCourses()){
-								if(course.getCourseCode().equals(oldCourse.getCourseCode())){
-									foundCourse = oldCourse;
-									//Alert the user if the grade has changed
-									if(!course.getUserGrade().equals(oldCourse.getUserGrade())){
-                                        //TODO
-										Intent intent = new Intent(this, SplashActivity.class)
-//												.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT)
-												.putExtra(Constants.TERM, semester.getTerm());
-										//TODO Use a String
-										createNotification(intent, "Your Grades are updated",
-												GRADES_ID);
-									}
-									break;
-								}
-							}
-							//If the course has been found, we can remove it from the old transcript
-							if(foundCourse != null){
-								oldSemester.getCourses().remove(foundCourse);
-							}
-						}
-						break;
-					}
-				}
-				//If the semester has been found, we can remove it from the old transcript
-				if(foundSemester != null){
-					oldTranscript.getSemesters().remove(foundSemester);
-				}
-			}
+            // TODO
+//			for(Semester semester : newTranscript.getSemesters()){
+//				//Find the equivalent semester on the old transcript
+//				//  Don't use it if there aren't the same amount of courses (during add/drop)
+//				Semester foundSemester = null;
+//				for(Semester oldSemester : oldTranscript.getSemesters()){
+//					if(oldSemester.getTerm().equals(semester.getTerm()) &&
+//							oldSemester.getCourses().size() == semester.getCourses().size()){
+//						foundSemester = oldSemester;
+//						//Go through the new semester's courses
+//						for(TranscriptCourse course : semester.getCourses()){
+//							//Find an equivalent in the old semester
+//							TranscriptCourse foundCourse = null;
+//							for(TranscriptCourse oldCourse : oldSemester.getCourses()){
+//								if(course.getCourseCode().equals(oldCourse.getCourseCode())){
+//									foundCourse = oldCourse;
+//									//Alert the user if the grade has changed
+//									if(!course.getUserGrade().equals(oldCourse.getUserGrade())){
+//                                        //TODO
+//										Intent intent = new Intent(this, SplashActivity.class)
+////												.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT)
+//												.putExtra(Constants.TERM, semester.getTerm());
+//										//TODO Use a String
+//										createNotification(intent, "Your Grades are updated",
+//												GRADES_ID);
+//									}
+//									break;
+//								}
+//							}
+//							//If the course has been found, we can remove it from the old transcript
+//							if(foundCourse != null){
+//								oldSemester.getCourses().remove(foundCourse);
+//							}
+//						}
+//						break;
+//					}
+//				}
+//				//If the semester has been found, we can remove it from the old transcript
+//				if(foundSemester != null){
+//					oldTranscript.getSemesters().remove(foundSemester);
+//				}
+//			}
 		}
 	}
 	

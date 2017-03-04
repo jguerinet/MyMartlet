@@ -24,45 +24,34 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.guerinet.utils.RecyclerViewBaseAdapter;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.ui.transcript.semester.SemesterActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
  * Populates the list of semesters on the transcript page
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class TranscriptAdapter extends RecyclerViewBaseAdapter {
+class TranscriptAdapter extends RecyclerViewBaseAdapter {
     /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    TranscriptManager transcriptManager;
-    /**
-     * List of semesters
+     * List of {@link Semester}s
      */
     private final List<Semester> semesters;
 
     /**
      * Default Constructor
-     *
-     * @param context App context
      */
-    TranscriptAdapter(Context context) {
+    TranscriptAdapter() {
         super(null);
-        App.component(context).inject(this);
-        semesters = new ArrayList<>();
+        this.semesters = new ArrayList<>();
     }
 
     @Override
@@ -78,13 +67,18 @@ public class TranscriptAdapter extends RecyclerViewBaseAdapter {
 
     @Override
     public void update() {
-        // Clear the existing semesters
         semesters.clear();
-
-        // Add the new ones from the TranscriptManager
-        semesters.addAll(transcriptManager.get().getSemesters());
-
-        notifyDataSetChanged();
+        SQLite.select()
+                .from(Semester.class)
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
+                    semesters.addAll(tResult);
+                    notifyDataSetChanged();
+                })
+                .execute();
     }
 
     class SemesterHolder extends BaseHolder {
@@ -103,6 +97,7 @@ public class TranscriptAdapter extends RecyclerViewBaseAdapter {
             super(itemView);
         }
 
+        @Override
         public void bind(int position) {
             Semester semester = semesters.get(position);
             Context context = itemView.getContext();
@@ -113,10 +108,9 @@ public class TranscriptAdapter extends RecyclerViewBaseAdapter {
 
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, SemesterActivity.class)
-                        .putExtra(Constants.SEMESTER, semester);
+                        .putExtra(Constants.ID, semester.getId());
                 context.startActivity(intent);
             });
-
         }
     }
 }

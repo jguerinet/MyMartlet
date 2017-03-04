@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.guerinet.utils.dialog.ListDialogInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,10 +35,9 @@ import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
  * @author Julien Guerinet
  * @since 2.0.0
  */
-@SuppressWarnings("ResourceType")
-public abstract class LanguageListAdapter implements ListDialogInterface {
+public abstract class LanguagesAdapter implements ListDialogInterface {
     /**
-     * The {@link LanguagePreference} instance
+     * {@link LanguagePreference} instance
      */
     @Inject
     LanguagePreference languagePref;
@@ -50,22 +48,17 @@ public abstract class LanguageListAdapter implements ListDialogInterface {
 
     /**
      * Default Constructor
+     *
+     * @param context App context
      */
-    public LanguageListAdapter(Context context) {
+    protected LanguagesAdapter(Context context) {
         App.component(context).inject(this);
         languages = new ArrayList<>();
-        languages.add(new Pair<>(LanguagePreference.ENGLISH,
-                languagePref.getString(LanguagePreference.ENGLISH)));
-        languages.add(new Pair<>(LanguagePreference.FRENCH,
-                languagePref.getString(LanguagePreference.FRENCH)));
+        addLanguage(LanguagePreference.ENGLISH);
+        addLanguage(LanguagePreference.FRENCH);
 
         // Sort them alphabetically
-        Collections.sort(languages, new Comparator<Pair<String, String>>() {
-            @Override
-            public int compare(Pair<String, String> o1, Pair<String, String> o2) {
-                return o1.second.compareToIgnoreCase(o2.second);
-            }
-        });
+        Collections.sort(languages, (o1, o2) -> o1.second.compareToIgnoreCase(o2.second));
     }
 
     @Override
@@ -90,6 +83,13 @@ public abstract class LanguageListAdapter implements ListDialogInterface {
     @Override
     public void onChoiceSelected(int position) {
         onLanguageSelected(languages.get(position).first);
+    }
+
+    /**
+     * @param language Language to add to the list
+     */
+    private void addLanguage(String language) {
+        languages.add(new Pair<>(language, languagePref.getString(language)));
     }
 
     /**

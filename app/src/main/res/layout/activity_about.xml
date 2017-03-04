@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include layout="@layout/toolbar"/>
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/github"
         android:text="@string/about_github"
-        android:padding="@dimen/padding_small"
-        android:gravity="center"
-        android:textStyle="italic"
-        android:background="?android:attr/selectableItemBackground"/>
-
-    <include layout="@layout/line"/>
+        android:gravity="center"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@android:id/list"/>
+
 </LinearLayout>

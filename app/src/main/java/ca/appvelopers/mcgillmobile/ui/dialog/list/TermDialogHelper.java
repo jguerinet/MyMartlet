@@ -19,6 +19,7 @@ package ca.appvelopers.mcgillmobile.ui.dialog.list;
 import android.content.Context;
 
 import com.guerinet.utils.dialog.ListDialogInterface;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,8 +32,8 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
  * {@link ListDialogInterface} implementation for a list of terms
@@ -46,15 +47,15 @@ public abstract class TermDialogHelper implements ListDialogInterface {
     @Inject
     protected Context context;
     /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    protected TranscriptManager transcriptManager;
-    /**
      * {@link Analytics} instance
      */
     @Inject
     protected Analytics analytics;
+    /**
+     * {@link DefaultTermPreference} instance
+     */
+    @Inject
+    DefaultTermPreference defaultTermPref;
     /**
      * {@link RegisterTermPreference} instance
      */
@@ -80,12 +81,16 @@ public abstract class TermDialogHelper implements ListDialogInterface {
         analytics.sendScreen("Change Semester");
 
         //Use the default term if no term was sent
-        this.currentTerm = currentTerm == null ? App.getDefaultTerm() : currentTerm;
+        this.currentTerm = currentTerm == null ? defaultTermPref.getTerm() : currentTerm;
 
         terms = new ArrayList<>();
         if (!registration) {
-            //We are using the user's existing terms
-            for (Semester semester : transcriptManager.get().getSemesters()) {
+            List<Semester> semesters = SQLite.select()
+                    .from(Semester.class)
+                    .queryList();
+
+            // We are using the user's existing terms
+            for (Semester semester : semesters) {
                 terms.add(semester.getTerm());
             }
         } else {
