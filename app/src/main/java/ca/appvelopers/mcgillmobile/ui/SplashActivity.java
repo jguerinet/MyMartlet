@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.BooleanPreference;
 import com.guerinet.utils.prefs.IntPreference;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.io.IOException;
 
@@ -45,6 +46,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.Transcript;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
@@ -55,7 +57,6 @@ import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import ca.appvelopers.mcgillmobile.util.manager.UpdateManager;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
@@ -122,11 +123,6 @@ public class SplashActivity extends BaseActivity {
      */
     @Inject
     protected ClearManager clearManager;
-    /**
-     * {@link TranscriptManager} instance
-     */
-    @Inject
-    protected TranscriptManager transcriptManager;
     /**
      * Remember username {@link BooleanPreference}
      */
@@ -409,10 +405,11 @@ public class SplashActivity extends BaseActivity {
                 }
             }
 
-            //Check if we need to download everything or only the essential stuff
-            //We need to download everything if there is null info
-            boolean downloadEverything = transcriptManager.get() == null ||
-                    !getDatabasePath(StatementsDB.FULL_NAME).exists();
+            // Check if we need to download everything or only the essential stuff
+            //  We need to download everything if there is null info
+            boolean downloadEverything =
+                    SQLite.select().from(Transcript.class).querySingle() == null ||
+                            !getDatabasePath(StatementsDB.FULL_NAME).exists();
 
             //If we need to download everything, do it synchronously. If not, do it asynchronously
             UserDownloader userDownloader = new UserDownloader(SplashActivity.this) {

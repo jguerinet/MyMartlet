@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,154 +16,168 @@
 
 package ca.appvelopers.mcgillmobile.ui.courses;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.guerinet.utils.RecyclerViewBaseAdapter;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
+import ca.appvelopers.mcgillmobile.model.Course_Table;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
 /**
- * The adapter used for the list of courses
+ * Adapter used for the list of {@link Course}s
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseHolder> {
-    class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+class CoursesAdapter extends RecyclerViewBaseAdapter {
+    /**
+     * List of {@link Course}s to show
+     */
+    private final List<Course> courses;
+    /**
+     * List of checked {@link Course}s
+     */
+    private final List<Course> checkedCourses;
+    /**
+     * True if the user can unregister from these courses, false otherwise
+     */
+    private boolean canUnregister;
+
+    /**
+     * Default Constructor
+     *
+     * @param emptyView     View to show if there are no {@link Course}s
+     */
+    CoursesAdapter(TextView emptyView) {
+        super(emptyView);
+        courses = new ArrayList<>();
+        checkedCourses = new ArrayList<>();
+    }
+
+    @Override
+    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        return new CourseHolder(LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.item_course, viewGroup, false));
+    }
+
+    @Override
+    public int getItemCount() {
+        return courses.size();
+    }
+
+    public void update(Term term, boolean canUnregister) {
+        this.canUnregister = canUnregister;
+        courses.clear();
+        checkedCourses.clear();
+
+        // Get the courses asynchronously
+        SQLite.select()
+                .from(Course.class)
+                .where(Course_Table.term.eq(term))
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        tResult = new ArrayList<>();
+                    }
+                    courses.addAll(tResult);
+                    showEmptyView(courses.isEmpty());
+                    notifyDataSetChanged();
+                })
+                .execute();
+    }
+
+    /**
+     * @return The list of checked {@link Course}s
+     */
+    List<Course> getCheckedCourses() {
+        return checkedCourses;
+    }
+
+    class CourseHolder extends BaseHolder implements View.OnClickListener {
         /**
-         * The course code
+         * Course code
          */
         @BindView(R.id.course_code)
-        TextView mCode;
+        TextView code;
         /**
-         * The course title
+         * Course title
          */
         @BindView(R.id.course_title)
-        TextView mTitle;
+        TextView title;
         /**
-         * The course type
+         * Course type
          */
         @BindView(R.id.course_type)
-        TextView mType;
+        TextView type;
         /**
-         * The course credits
+         * Course credits
          */
         @BindView(R.id.course_credits)
-        TextView mCredits;
+        TextView credits;
         /**
-         * The course days
+         * Course days
          */
         @BindView(R.id.course_days)
-        TextView mDays;
+        TextView days;
         /**
-         * The course hours
+         * Course hours
          */
         @BindView(R.id.course_hours)
-        TextView mHours;
+        TextView hours;
         /**
-         * The course unregistration check box
+         * Course unregistration check box
          */
         @BindView(R.id.course_checkbox)
-        CheckBox mCheckBox;
+        CheckBox checkBox;
 
-        public CourseHolder(View itemView){
+        CourseHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
-        public void bind(final Course course){
-            mCode.setText(course.getCode());
-            mTitle.setText(course.getTitle());
-            mType.setText(course.getType());
-            mCredits.setText(itemView.getContext().getString(
-                    R.string.course_credits, course.getCredits()));
-            mDays.setText(DayUtils.getDayStrings(course.getDays()));
-            mHours.setText(course.getTimeString());
+        public void bind(int position) {
+            Course course = courses.get(position);
+            code.setText(course.getCode());
+            title.setText(course.getTitle());
+            type.setText(course.getType());
+            credits.setText(itemView.getContext().getString(R.string.course_credits,
+                    String.valueOf(course.getCredits())));
+            days.setText(DayUtils.getDayStrings(course.getDays()));
+            hours.setText(course.getTimeString());
 
-            //Show the check box if the user can unregister
-            mCheckBox.setVisibility(mCanUnregister ? View.VISIBLE : View.GONE);
-            //Only set the view selectable if the user can unregister
-            itemView.setClickable(mCanUnregister);
-            if(mCanUnregister){
-                //Remove any other listeners
-                mCheckBox.setOnCheckedChangeListener(null);
-                mCheckBox.setChecked(mCheckedCourses.contains(course));
-                mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked){
-                        //If it becomes checked, add it to the list. If not, remove it
-                        if(checked){
-                            mCheckedCourses.add(course);
-                        }
-                        else{
-                            mCheckedCourses.remove(course);
-                        }
+            // Show the check box if the user can unregister
+            checkBox.setVisibility(canUnregister ? View.VISIBLE : View.GONE);
+            // Only set the view selectable if the user can unregister
+            itemView.setClickable(canUnregister);
+            if (canUnregister) {
+                // Remove any other listeners
+                checkBox.setOnCheckedChangeListener(null);
+                checkBox.setChecked(checkedCourses.contains(course));
+                checkBox.setOnCheckedChangeListener((compoundButton, checked) -> {
+                    // If it becomes checked, add it to the list. If not, remove it
+                    if (checked) {
+                        checkedCourses.add(course);
+                    } else {
+                        checkedCourses.remove(course);
                     }
                 });
             }
         }
 
         @Override
-        public void onClick(View v){
-            mCheckBox.setChecked(!mCheckBox.isChecked());
+        public void onClick(View v) {
+            checkBox.setChecked(!checkBox.isChecked());
         }
-    }
-    /**
-     * The list of courses
-     */
-    private List<Course> mCourses;
-    /**
-     * The list of checked courses
-     */
-    private List<Course> mCheckedCourses;
-    /**
-     * True if the user can unregister from these courses, false otherwise
-     */
-    private boolean mCanUnregister;
-
-    /**
-     * Default Constructor
-     *
-     * @param courses       The list of courses
-     * @param canUnregister True if the user can unregister from these courses, false otherwise
-     */
-    public CoursesAdapter(List<Course> courses, boolean canUnregister){
-        this.mCourses = courses;
-        this.mCheckedCourses = new ArrayList<>();
-        this.mCanUnregister = canUnregister;
-    }
-
-    @Override
-    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int i){
-        return new CourseHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_course, viewGroup, false));
-    }
-
-    @Override
-    public void onBindViewHolder(CourseHolder courseHolder, int i){
-        courseHolder.bind(mCourses.get(i));
-    }
-
-    @Override
-    public int getItemCount(){
-        return mCourses.size();
-    }
-
-    /**
-     * @return The list of checked classes
-     */
-    public List<Course> getCheckedCourses(){
-        return this.mCheckedCourses;
     }
 }

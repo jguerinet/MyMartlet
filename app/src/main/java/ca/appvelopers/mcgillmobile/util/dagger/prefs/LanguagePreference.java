@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import com.guerinet.utils.prefs.StringPreference;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.R;
 
@@ -30,6 +31,7 @@ import ca.appvelopers.mcgillmobile.R;
  * @author Julien Guerinet
  * @since 2.0.4
  */
+@Singleton
 public class LanguagePreference extends StringPreference {
     /**
      * English language code
@@ -52,7 +54,7 @@ public class LanguagePreference extends StringPreference {
      */
     @Inject
     LanguagePreference(SharedPreferences prefs, Context context) {
-        super(prefs, PrefsModule.LANGUAGE, ENGLISH);
+        super(prefs, "language", ENGLISH);
         this.context = context;
     }
 

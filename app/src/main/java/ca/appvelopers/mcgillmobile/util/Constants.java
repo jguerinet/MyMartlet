@@ -26,9 +26,9 @@ public class Constants {
     /* INTENT KEYS */
 
     /**
-     * Key used to pass a semester via an intent
+     * Passes an Id via an intent
      */
-    public static final String SEMESTER = "semester";
+    public static final String ID = "id";
     /**
      * Key used to pass a term via an intent
      */

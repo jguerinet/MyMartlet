@@ -35,11 +35,11 @@ import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.ScheduleManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 
 /**
  * Clears objects from internal storage or {@link SharedPreferences}
@@ -72,14 +72,6 @@ public class ClearManager {
      * {@link HomepageManager}
      */
     private final HomepageManager homepageManager;
-    /**
-     * {@link TranscriptManager} instance
-     */
-    private final TranscriptManager transcriptManager;
-    /**
-     * {@link ScheduleManager} instance
-     */
-    private final ScheduleManager scheduleManager;
 
     /**
      * Default Injectable Constructor
@@ -89,23 +81,18 @@ public class ClearManager {
      * @param passwordPref         {@link PasswordPreference} instance
      * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param homepageManager      {@link HomepageManager} instance
-     * @param transcriptManager    {@link TranscriptManager} instance
-     * @param scheduleManager      {@link ScheduleManager} instance
      * @param defaultTermPref      {@link DefaultTermPreference} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
-            HomepageManager homepageManager, TranscriptManager transcriptManager,
-            ScheduleManager scheduleManager, DefaultTermPreference defaultTermPref) {
+            HomepageManager homepageManager, DefaultTermPreference defaultTermPref) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
-        this.transcriptManager = transcriptManager;
-        this.scheduleManager = scheduleManager;
         this.defaultTermPref = defaultTermPref;
     }
 
@@ -122,10 +109,10 @@ public class ClearManager {
         passwordPref.clear();
 
         //Schedule
-        scheduleManager.clear();
+        context.deleteDatabase(CoursesDB.FULL_NAME);
 
-        //Transcript
-        transcriptManager.clear();
+        // Transcript
+        TranscriptDB.clearTranscript(context);
 
         // Statements
         context.deleteDatabase(StatementsDB.FULL_NAME);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package ca.appvelopers.mcgillmobile.model.retrofit;
+package ca.appvelopers.mcgillmobile.util.retrofit;
 
 import java.util.List;
 
-import ca.appvelopers.mcgillmobile.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.Transcript;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -67,7 +66,7 @@ public interface McGillService {
      * @return The transcript {@link Response}
      */
     @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
-    Call<Transcript> transcript();
+    Call<TranscriptConverter.TranscriptResponse> transcript();
 
     /**
      * Retrieves the user's ebill

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,11 +46,11 @@ import butterknife.BindView;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.model.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
+import ca.appvelopers.mcgillmobile.util.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
 /**
