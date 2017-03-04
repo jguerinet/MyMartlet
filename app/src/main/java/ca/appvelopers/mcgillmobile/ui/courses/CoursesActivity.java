@@ -47,6 +47,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
@@ -86,6 +87,11 @@ public class CoursesActivity extends DrawerActivity {
      */
     @Inject
     DefaultTermPreference defaultTermPref;
+    /**
+     * {@link RegisterTermPreference} instance
+     */
+    @Inject
+    RegisterTermPreference registerTermPref;
     /**
      * Adapter for the list of courses
      */
@@ -173,8 +179,8 @@ public class CoursesActivity extends DrawerActivity {
         // Set the title
         setTitle(term.getString(this));
 
-        // User can unregister if the current term is in the list of terms to register for
-        boolean canUnregister = App.getRegisterTerms().contains(term);
+        //User can unregister if the current term is in the list of terms to register for
+        boolean canUnregister = registerTermPref.getTerms().contains(term);
 
         // Change the text and the visibility if we are in the list of currently registered courses
         unregisterButton.setVisibility(canUnregister ? View.VISIBLE : View.GONE);

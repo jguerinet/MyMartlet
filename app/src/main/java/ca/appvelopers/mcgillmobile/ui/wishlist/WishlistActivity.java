@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,6 +47,7 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -67,6 +70,11 @@ public class WishlistActivity extends DrawerActivity {
     @BindView(android.R.id.list)
     protected RecyclerView mList;
     /**
+     * {@link RegisterTermPreference} instance
+     */
+    @Inject
+    RegisterTermPreference registerTermPref;
+    /**
      * The ListView adapter
      */
     private WishlistSearchCourseAdapter mAdapter;
@@ -88,7 +96,8 @@ public class WishlistActivity extends DrawerActivity {
         analytics.sendScreen("Wishlist");
 
         //Check if there are any terms to register for
-        if (App.getRegisterTerms().isEmpty()) {
+        List<Term> registerTerms = registerTermPref.getTerms();
+        if (registerTerms.isEmpty()) {
             //Hide all of the main content, show explanatory text, and return the view
             mEmptyView.setText(R.string.registration_no_semesters);
             mEmptyView.setVisibility(View.VISIBLE);
@@ -99,7 +108,7 @@ public class WishlistActivity extends DrawerActivity {
         mList.setLayoutManager(new LinearLayoutManager(this));
 
         //Load the first registration term
-        mTerm = App.getRegisterTerms().get(0);
+        mTerm = registerTerms.get(0);
 
         //Load the wishlist
         mCourses = App.getWishlist();
@@ -116,11 +125,11 @@ public class WishlistActivity extends DrawerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!App.getRegisterTerms().isEmpty()) {
+        if (!registerTermPref.getTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.refresh, menu);
 
             //Allow user to change the semester if there is more than 1 semester
-            if (App.getRegisterTerms().size() > 1) {
+            if (registerTermPref.getTerms().size() > 1) {
                 getMenuInflater().inflate(R.menu.change_semester, menu);
             }
             return true;
@@ -174,7 +183,7 @@ public class WishlistActivity extends DrawerActivity {
      */
     private void update() {
         //Only load the info if there is info to load
-        if (!App.getRegisterTerms().isEmpty()) {
+        if (!registerTermPref.getTerms().isEmpty()) {
             //Set the title
             setTitle(mTerm.getString(this));
 

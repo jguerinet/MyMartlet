@@ -167,6 +167,7 @@ public class UpdateManager {
         context.deleteFile("place_types");
         context.deleteFile("ebill");
         context.deleteFile("transcript");
+        context.deleteFile("register_terms");
 
         // Switch the default term's save location
         Term term = (Term) StorageUtils.loadObject(context, "default_term", "Default Term");

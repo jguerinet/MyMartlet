@@ -52,10 +52,6 @@ public class Constants {
      * The file name where the user's wishlist is stored
      */
     public static final String WISHLIST_FILE = "wishlist";
-    /**
-     * The file name where the list of terms a user can register for are stored
-     */
-    public static final String REGISTER_TERMS_FILE = "register_terms";
 
     /* BROADCASTS */
 

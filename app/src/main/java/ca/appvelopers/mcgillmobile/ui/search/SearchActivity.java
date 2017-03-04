@@ -37,10 +37,11 @@ import org.threeten.bp.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
@@ -48,6 +49,7 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import retrofit2.Call;
@@ -152,6 +154,11 @@ public class SearchActivity extends DrawerActivity {
     @BindView(R.id.more_options)
     protected Button mMoreOptionsButton;
     /**
+     * {@link RegisterTermPreference} instance
+     */
+    @Inject
+    RegisterTermPreference registerTermPref;
+    /**
      * {@link Term} selected
      */
     protected Term term;
@@ -167,8 +174,8 @@ public class SearchActivity extends DrawerActivity {
         ButterKnife.bind(this);
         analytics.sendScreen("Registration");
 
-        //Check if there are any terms to register for
-        List<Term> registerTerms = App.getRegisterTerms();
+        // Check if there are any terms to register for
+        List<Term> registerTerms = registerTermPref.getTerms();
         if (registerTerms.isEmpty()) {
             //Hide all of the search related stuff, show explanatory text, and return
             findViewById(R.id.search_empty).setVisibility(View.VISIBLE);
@@ -335,7 +342,7 @@ public class SearchActivity extends DrawerActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //Only inflate the menu if there are semesters to register for
-        if (!App.getRegisterTerms().isEmpty()) {
+        if (!registerTermPref.getTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.reset, menu);
             return true;
         }

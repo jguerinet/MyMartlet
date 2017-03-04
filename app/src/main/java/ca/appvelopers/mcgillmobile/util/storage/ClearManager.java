@@ -34,6 +34,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
@@ -72,6 +73,10 @@ public class ClearManager {
      * {@link HomepageManager}
      */
     private final HomepageManager homepageManager;
+    /**
+     * {@link RegisterTermPreference} instance
+     */
+    private final RegisterTermPreference registerTermPref;
 
     /**
      * Default Injectable Constructor
@@ -82,18 +87,21 @@ public class ClearManager {
      * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param homepageManager      {@link HomepageManager} instance
      * @param defaultTermPref      {@link DefaultTermPreference} instance
+     * @param registerTermPref     {@link RegisterTermPreference} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
-            HomepageManager homepageManager, DefaultTermPreference defaultTermPref) {
+            HomepageManager homepageManager, DefaultTermPreference defaultTermPref,
+            RegisterTermPreference registerTermPref) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
         this.defaultTermPref = defaultTermPref;
+        this.registerTermPref = registerTermPref;
     }
 
     /**
@@ -134,6 +142,7 @@ public class ClearManager {
         // Places
         FlowManager.getDatabase(PlacesDB.class).reset(context);
 
-        App.setRegisterTerms(new ArrayList<Term>());
+        // Register terms
+        registerTermPref.clear();
     }
 }

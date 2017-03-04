@@ -158,16 +158,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The list of {@link Term} the user can currently register in
-     */
-    public static List<Term> getRegisterTerms(){
-        if(registerTerms == null){
-            registerTerms = Load.registerTerms();
-        }
-        return registerTerms;
-    }
-
-    /**
      * @return The user's wishlist
      */
     public static List<CourseResult> getWishlist(){
@@ -178,14 +168,6 @@ public class App extends Application {
     }
 
     /* SETTERS */
-
-    /**
-     * @param terms The list of {@link Term}s the user can currently register in
-     */
-    public static void setRegisterTerms(List<Term> terms) {
-        App.registerTerms = terms;
-        Save.registerTerms();
-    }
 
     /**
      * @param wishlist The user's wishlist

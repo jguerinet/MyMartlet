@@ -33,6 +33,7 @@ import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 
 /**
  * {@link ListDialogInterface} implementation for a list of terms
@@ -53,7 +54,13 @@ public abstract class TermDialogHelper implements ListDialogInterface {
     /**
      * {@link DefaultTermPreference} instance
      */
+    @Inject
     DefaultTermPreference defaultTermPref;
+    /**
+     * {@link RegisterTermPreference} instance
+     */
+    @Inject
+    RegisterTermPreference registerTermPref;
     /**
      * List of {@link Term}s to choose from
      */
@@ -87,8 +94,8 @@ public abstract class TermDialogHelper implements ListDialogInterface {
                 terms.add(semester.getTerm());
             }
         } else {
-            //We are using the registration terms
-            terms.addAll(App.getRegisterTerms());
+            // We are using the registration terms
+            terms.addAll(registerTermPref.getTerms());
         }
 
         //Sort them chronologically
