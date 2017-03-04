@@ -41,6 +41,7 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.place.Category;
 import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlaceCategoriesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.retrofit.ConfigService;
@@ -93,6 +94,10 @@ public class ConfigDownloader extends Thread {
     @Inject
     @Named(PrefsModule.MIN_VERSION)
     protected IntPreference minVersionPref;
+    /**
+     * {@link RegisterTermPreference} instance
+     */
+    RegisterTermPreference registerTermPref;
 
     /**
      * Default Constructor
@@ -170,7 +175,7 @@ public class ConfigDownloader extends Thread {
                     .execute();
 
             if (response.isSuccessful()) {
-                App.setRegisterTerms(response.body());
+                registerTermPref.setTerms(response.body());
                 imsRegistrationPref.set(ZonedDateTime.now());
             }
         } catch (Exception e) {

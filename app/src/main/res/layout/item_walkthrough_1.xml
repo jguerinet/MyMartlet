@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,32 +23,29 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/map"
+            android:src="@drawable/map"
             android:adjustViewBounds="true"
             android:layout_marginBottom="@dimen/padding_double"
-            android:contentDescription="@string/title_map"
-            tools:ignore="MissingPrefix"/>
+            android:contentDescription="@string/title_map"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/schedule"
+            android:src="@drawable/schedule"
             android:adjustViewBounds="true"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_single"
             android:layout_marginBottom="@dimen/padding_single"
-            android:contentDescription="@string/title_schedule"
-            tools:ignore="MissingPrefix"/>
+            android:contentDescription="@string/title_schedule"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/transcript"
+            android:src="@drawable/transcript"
             android:adjustViewBounds="true"
             android:layout_gravity="end"
             android:layout_marginTop="@dimen/padding_double"
-            android:contentDescription="@string/title_transcript"
-            tools:ignore="MissingPrefix"/>
+            android:contentDescription="@string/title_transcript"/>
 
     </FrameLayout>
 

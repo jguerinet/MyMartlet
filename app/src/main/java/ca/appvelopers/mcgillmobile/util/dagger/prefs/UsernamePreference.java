@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class UsernamePreference extends StringPreference {
      * @param context App context
      */
     @Inject
-    public UsernamePreference(SharedPreferences prefs, Context context) {
+    UsernamePreference(SharedPreferences prefs, Context context) {
         super(prefs, "username", null);
         emailSuffix = context.getString(R.string.login_email);
     }

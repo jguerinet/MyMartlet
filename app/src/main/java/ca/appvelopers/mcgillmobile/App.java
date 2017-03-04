@@ -77,10 +77,6 @@ public class App extends Application {
      */
     private static List<Statement> ebill;
     /**
-     * User's chosen default {@link Term}
-     */
-    private static Term defaultTerm;
-    /**
      * User's wishlist
      */
     private static List<CourseResult> wishlist;
@@ -152,7 +148,7 @@ public class App extends Application {
 
     /**
      * @param context App context
-     * @return The {@link BaseComponent} instance
+     * @return {@link BaseComponent} instance
      */
     public static BaseComponent component(Context context) {
         return ((App) context.getApplicationContext()).component;
@@ -166,31 +162,6 @@ public class App extends Application {
     }
 
     /**
-     * @return The list of {@link Term} the user can currently register in
-     */
-    public static List<Term> getRegisterTerms(){
-        if(registerTerms == null){
-            registerTerms = Load.registerTerms();
-        }
-        return registerTerms;
-    }
-
-    /**
-     * @return The user's chosen default {@link Term}
-     */
-    public static Term getDefaultTerm(){
-        if(defaultTerm == null){
-            defaultTerm = Load.defaultTerm();
-
-            //If the default term is still null, use the current term
-            if (defaultTerm == null) {
-                defaultTerm = Term.currentTerm();
-            }
-        }
-        return defaultTerm;
-    }
-
-    /**
      * @return The user's wishlist
      */
     public static List<CourseResult> getWishlist(){
@@ -201,22 +172,6 @@ public class App extends Application {
     }
 
     /* SETTERS */
-
-    /**
-     * @param terms The list of {@link Term}s the user can currently register in
-     */
-    public static void setRegisterTerms(List<Term> terms) {
-        App.registerTerms = terms;
-        Save.registerTerms();
-    }
-
-    /**
-     * @param term The user's chosen default {@link Term}
-     */
-    public static void setDefaultTerm(Term term){
-        App.defaultTerm = term;
-        Save.defaultTerm();
-    }
 
     /**
      * @param wishlist The user's wishlist

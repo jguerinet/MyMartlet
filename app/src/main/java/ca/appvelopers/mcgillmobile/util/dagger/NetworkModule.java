@@ -18,7 +18,6 @@ package ca.appvelopers.mcgillmobile.util.dagger;
 
 import com.squareup.moshi.Moshi;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -38,40 +37,29 @@ import timber.log.Timber;
  * @since 2.0.4
  */
 @Module(includes = AppModule.class)
-public class NetworkModule {
-    /**
-     * Injection Names
-     */
-    public static final String CONFIG = "config";
-    public static final String MCGILL = "mcgill";
+class NetworkModule {
 
     /* OKHTTP */
 
     /**
-     * @return The {@link HttpLoggingInterceptor} instance for HTTP logging
+     * @return {@link HttpLoggingInterceptor} instance for HTTP logging
      */
     @Provides
     @Singleton
-    protected HttpLoggingInterceptor provideLoggingInterceptor() {
+    HttpLoggingInterceptor provideLoggingInterceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(
-                new HttpLoggingInterceptor.Logger() {
-                    @Override
-                    public void log(String message) {
-                        Timber.tag("OkHttp").i(message);
-                    }
-                });
+                message -> Timber.tag("OkHttp").i(message));
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
         return interceptor;
     }
 
     /**
      * @param interceptor The {@link HttpLoggingInterceptor} instance
-     * @return The {@link OkHttpClient} instance for the config server
+     * @return {@link OkHttpClient} instance for the config server
      */
     @Provides
     @Singleton
-    @Named(CONFIG)
-    public OkHttpClient provideConfigOkHttpClient(HttpLoggingInterceptor interceptor) {
+    OkHttpClient provideConfigOkHttpClient(HttpLoggingInterceptor interceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build();
@@ -86,8 +74,7 @@ public class NetworkModule {
      */
     @Provides
     @Singleton
-    @Named(CONFIG)
-    public Retrofit provideConfigRetrofit(@Named(CONFIG) OkHttpClient client, Moshi moshi) {
+    Retrofit provideConfigRetrofit(OkHttpClient client, Moshi moshi) {
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl("http://mymartlet.herokuapp.com/api/v2/")
@@ -98,22 +85,22 @@ public class NetworkModule {
     /* RETROFIT SERVICES */
 
     /**
-     * @param retrofit The {@link Retrofit} instance to use for the config server
-     * @return The {@link ConfigService} instance
+     * @param retrofit {@link Retrofit} instance to use for the config server
+     * @return {@link ConfigService} instance
      */
     @Provides
     @Singleton
-    public ConfigService provideConfigService(@Named(CONFIG) Retrofit retrofit) {
+    ConfigService provideConfigService(Retrofit retrofit) {
         return retrofit.create(ConfigService.class);
     }
 
     /**
      * @param manager {@link McGillManager} instance that has the {@link McGillService} instance
-     * @return The {@link McGillService} instance
+     * @return {@link McGillService} instance
      */
     @Provides
     @Singleton
-    public McGillService provideMcGillService(McGillManager manager) {
+    McGillService provideMcGillService(McGillManager manager) {
         return manager.getMcGillService();
     }
 }

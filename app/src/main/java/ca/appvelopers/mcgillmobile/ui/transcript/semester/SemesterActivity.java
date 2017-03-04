@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,18 @@
 package ca.appvelopers.mcgillmobile.ui.transcript.semester;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.Semester_Table;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -40,64 +44,79 @@ public class SemesterActivity extends BaseActivity {
      * Semester's bachelor degree
      */
     @BindView(R.id.semester_bachelor)
-    protected TextView mBachelor;
+    TextView bachelor;
     /**
      * Semester program
      */
     @BindView(R.id.semester_program)
-    protected TextView mProgram;
+    TextView program;
     /**
      * Semester GPA
      */
     @BindView(R.id.semester_GPA)
-    protected TextView mGPA;
+    TextView gpa;
     /**
      * Semester credits
      */
     @BindView(R.id.semester_credits)
-    protected TextView mCredits;
+    TextView credits;
     /**
      * User's status during this semester
      */
     @BindView(R.id.semester_full_time)
-    protected TextView mFullTime;
+    TextView fullTime;
     /**
      * Courses taken during this semester
      */
     @BindView(android.R.id.list)
-    protected RecyclerView mList;
+    RecyclerView list;
+    /**
+     * Adapter for the list of courses
+     */
+    private SemesterAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_semester);
         ButterKnife.bind(this);
         setUpToolbar(true);
         analytics.sendScreen("Transcript - Semester");
 
-        //Get the semester from the intent
-        Semester semester = (Semester) getIntent().getSerializableExtra(Constants.SEMESTER);
+        // Try finding the semester
+        Semester semester = SQLite.select()
+                .from(Semester.class)
+                .where(Semester_Table.id.eq(getIntent().getIntExtra(Constants.ID, -1)))
+                .querySingle();
 
         if (semester == null) {
             DialogHelper.error(this);
-            Timber.e(new IllegalArgumentException(), "Semester was null");
+            Timber.e(new IllegalArgumentException("Semester was null"));
             finish();
             return;
         }
 
-        //Set the title as this current semester
+        // Set the title as this current semester
         setTitle(semester.getSemesterName(this));
 
-        //Set the info up
-        mBachelor.setText(semester.getBachelor());
-        mProgram.setText(semester.getProgram());
-        mGPA.setText(getString(R.string.transcript_termGPA, String.valueOf(semester.getGPA())));
-        mCredits.setText(getString(R.string.semester_termCredits, semester.getCredits()));
-        mFullTime.setText(semester.isFullTime() ?
+        // Set the info up
+        bachelor.setText(semester.getBachelor());
+        program.setText(semester.getProgram());
+        gpa.setText(getString(R.string.transcript_termGPA, String.valueOf(semester.getGPA())));
+        credits.setText(getString(R.string.semester_termCredits, String.valueOf(
+                semester.getCredits())));
+        fullTime.setText(semester.isFullTime() ?
                 R.string.semester_fullTime : R.string.semester_partTime);
 
-        //Set up the courses list
-        mList.setLayoutManager(new LinearLayoutManager(this));
-        mList.setAdapter(new SemesterAdapter(semester.getCourses()));
+        // Set up the courses list
+        list.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new SemesterAdapter(semester.getId());
+        list.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.update();
     }
 }

@@ -50,20 +50,6 @@ public class Save {
     }
 
     /**
-     * Saves the terms the user can currently register in
-     */
-    public static void registerTerms(){
-        saveObject("Register Terms", Constants.REGISTER_TERMS_FILE, App.getRegisterTerms());
-    }
-
-    /**
-     * Saves the user's default term
-     */
-    public static void defaultTerm(){
-        saveObject("Default Term", Constants.DEFAULT_TERM_FILE, App.getDefaultTerm());
-    }
-
-    /**
      * Saves the user's wishlist
      */
     public static void wishlist(){

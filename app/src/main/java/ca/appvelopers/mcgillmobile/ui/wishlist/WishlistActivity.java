@@ -16,11 +16,12 @@
 
 package ca.appvelopers.mcgillmobile.ui.wishlist;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -39,14 +40,14 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.TranscriptCourse;
-import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
+import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
-import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
+import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
+import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
-import ca.appvelopers.mcgillmobile.util.manager.TranscriptManager;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -61,7 +62,7 @@ public class WishlistActivity extends DrawerActivity {
      * {@link TranscriptManager} instance
      */
     @Inject
-    protected TranscriptManager transcriptManager;
+    RegisterTermPreference registerTermPref;
     /**
      * The current term, null if none possible (no semesters to register for)
      */
@@ -84,8 +85,8 @@ public class WishlistActivity extends DrawerActivity {
         wishlistHelper = new WishlistHelper(this, mainView, false);
 
         // Load the first registration term if there is one
-        if (!App.getRegisterTerms().isEmpty()) {
-            term = App.getRegisterTerms().get(0);
+        if (!registerTermPref.getTerms().isEmpty()) {
+            term = registerTermPref.getTerms().get(0);
         }
     }
 
@@ -97,10 +98,11 @@ public class WishlistActivity extends DrawerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!App.getRegisterTerms().isEmpty()) {
+        if (!registerTermPref.getTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.refresh, menu);
+
             // Allow user to change the semester if there is more than 1 semester
-            if (App.getRegisterTerms().size() > 1) {
+            if (registerTermPref.getTerms().size() > 1) {
                 getMenuInflater().inflate(R.menu.change_semester, menu);
             }
             return true;
@@ -171,7 +173,7 @@ public class WishlistActivity extends DrawerActivity {
                     }
                     //Add course if it has not already been added
                     if (!courseExists) {
-                        mTranscriptCourses.add(new TranscriptCourse(course.getTerm(),
+                        mTranscriptCourses.add(new TranscriptCourse(-1, course.getTerm(),
                                 course.getCode(), course.getTitle(), course.getCredits(), "N/A",
                                 "N/A"));
                     }
@@ -227,16 +229,7 @@ public class WishlistActivity extends DrawerActivity {
                 //Reload the adapter
                 update();
                 showToolbarProgress(false);
-
-                if (result != null) {
-                    //If this is a MinervaException, broadcast it
-                    if (result instanceof MinervaException) {
-                        LocalBroadcastManager.getInstance(WishlistActivity.this)
-                                .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
-                    } else {
-                        DialogHelper.error(WishlistActivity.this, R.string.error_other);
-                    }
-                }
+                Help.handleException(WishlistActivity.this, result);
             }
         }.execute();
     }
