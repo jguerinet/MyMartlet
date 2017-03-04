@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,7 +34,6 @@ import android.view.View;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
@@ -59,27 +60,27 @@ import timber.log.Timber;
 public abstract class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     /**
-     * The drawer layout
+     * Drawer layout
      */
     @BindView(R.id.drawer_layout)
-    protected DrawerLayout drawerLayout;
+    DrawerLayout drawerLayout;
     /**
-     * The navigation view
+     * Navigation view
      */
     @BindView(R.id.drawer)
-    protected NavigationView drawer;
+    NavigationView drawer;
     /**
      * Main content view to fade out and in on page change
      */
     @BindView(R.id.main)
     protected View mainView;
     /**
-     * The {@link HomepageManager} instance
+     * {@link HomepageManager} instance
      */
     @Inject
     protected HomepageManager homepageManager;
     /**
-     * The toggle for the drawer inside the action bar
+     * Toggle for the drawer inside the action bar
      */
     private ActionBarDrawerToggle drawerToggle;
     /**
@@ -92,15 +93,13 @@ public abstract class DrawerActivity extends BaseActivity
     private CallbackManager facebookCallbackManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.component(this).inject(this);
 
         handler = new Handler();
 
-        //Initialize the Facebook SDK
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        //Set up the Facebook callback manager
+        // Set up the Facebook callback manager
         facebookCallbackManager = CallbackManager.Factory.create();
     }
 
@@ -108,10 +107,10 @@ public abstract class DrawerActivity extends BaseActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        //Set up the toolbar
+        // Set up the toolbar
         setUpToolbar(false);
 
-        //Set up the drawer
+        // Set up the drawer
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0);
         drawerToggle.setDrawerIndicatorEnabled(true);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -119,10 +118,10 @@ public abstract class DrawerActivity extends BaseActivity
         drawer.setNavigationItemSelectedListener(this);
         drawerToggle.syncState();
 
-        //Check the current item
+        // Check the current item
         drawer.getMenu().findItem(homepageManager.getMenuId(getCurrentPage())).setChecked(true);
 
-        //Fade in the main view
+        // Fade in the main view
         mainView.setAlpha(0);
         mainView.animate().alpha(1).setDuration(250);
     }
@@ -130,7 +129,7 @@ public abstract class DrawerActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            //Open the menu if it's not open
+            // Open the menu if it's not open
             drawerLayout.openDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -155,7 +154,7 @@ public abstract class DrawerActivity extends BaseActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.facebook:
                 shareOnFacebook();
@@ -167,32 +166,28 @@ public abstract class DrawerActivity extends BaseActivity
                 logout();
                 return true;
             default:
-                @HomepageManager.Homepage int homepage =
-                        homepageManager.getHomepage(item.getItemId());
+                int homepage = homepageManager.getHomepage(item.getItemId());
 
-                //If it's the same as the current homepage, close the drawer and don't continue
+                // If it's the same as the current homepage, close the drawer and don't continue
                 if (homepage == getCurrentPage()) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }
 
-                //Try to get one of the activities to open
+                // Try to get one of the activities to open
                 final Class activity = homepageManager.getActivity(homepage);
 
-                //If it's not the currently opened activity, launch it after a short delay
+                // If it's not the currently opened activity, launch it after a short delay
                 //  so that the user sees the drawer closing
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(DrawerActivity.this, activity));
-                        finish();
-                    }
+                handler.postDelayed(() -> {
+                    startActivity(new Intent(this, activity));
+                    finish();
                 }, 250);
 
-                //Fade out the main view
+                // Fade out the main view
                 mainView.animate().alpha(0).setDuration(150);
 
-                //Close the drawer
+                // Close the drawer
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 return true;
@@ -204,7 +199,8 @@ public abstract class DrawerActivity extends BaseActivity
     /**
      * @return The page in the drawer that this activity represents
      */
-    protected abstract @HomepageManager.Homepage int getCurrentPage();
+    @HomepageManager.Homepage
+    protected abstract int getCurrentPage();
 
     /* HELPERS */
 
@@ -213,18 +209,15 @@ public abstract class DrawerActivity extends BaseActivity
      */
     private void logout() {
         DialogUtils.alert(this, R.string.warning, R.string.logout_dialog_message,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == DialogInterface.BUTTON_POSITIVE) {
-                            analytics.sendEvent("Logout", "Clicked");
-                            clearManager.all();
-                            //Go back to SplashActivity
-                            startActivity(new Intent(DrawerActivity.this, SplashActivity.class));
-                            finish();
-                        }
-                        dialog.dismiss();
+                (dialog, which) -> {
+                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                        analytics.sendEvent("Logout", "Clicked");
+                        clearManager.all();
+                        // Go back to SplashActivity
+                        startActivity(new Intent(this, SplashActivity.class));
+                        finish();
                     }
+                    dialog.dismiss();
                 });
     }
 
@@ -234,7 +227,7 @@ public abstract class DrawerActivity extends BaseActivity
     private void shareOnFacebook() {
         analytics.sendEvent("facebook", "attempt_post");
 
-        //Set up all of the info
+        // Set up all of the info
         ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentTitle(getString(R.string.social_facebook_title, "Android"))
                 .setContentDescription(getString(R.string.social_facebook_description_android))
@@ -242,13 +235,13 @@ public abstract class DrawerActivity extends BaseActivity
                 .setImageUrl(Uri.parse(getString(R.string.social_facebook_image)))
                 .build();
 
-        //Show the dialog
+        // Show the dialog
         ShareDialog dialog = new ShareDialog(this);
         dialog.registerCallback(facebookCallbackManager, new FacebookCallback<Sharer.Result>() {
             @Override
             public void onSuccess(Sharer.Result result) {
                 if (result.getPostId() != null) {
-                    //Let the user know he posted successfully
+                    // Let the user know they posted successfully
                     Utils.toast(DrawerActivity.this, R.string.social_post_success);
                     analytics.sendEvent("facebook", "successful_post");
                 } else {

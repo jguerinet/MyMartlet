@@ -37,6 +37,7 @@ import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughAdapter;
 import ca.appvelopers.mcgillmobile.ui.web.DesktopActivity;
 import ca.appvelopers.mcgillmobile.ui.web.MyCoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistActivity;
+import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistHelper;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
@@ -79,4 +80,6 @@ public interface BaseComponent {
 
     void inject(ConfigDownloader downloader);
     void inject(UserDownloader downloader);
+
+    void inject(WishlistHelper helper);
 }

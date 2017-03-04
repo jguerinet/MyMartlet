@@ -18,12 +18,9 @@ package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guerinet.utils.dialog.DialogUtils;
@@ -34,9 +31,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
@@ -45,7 +40,6 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
-import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -60,32 +54,19 @@ import timber.log.Timber;
  */
 public class WishlistActivity extends DrawerActivity {
     /**
-     * The empty view
-     */
-    @BindView(R.id.courses_empty)
-    protected TextView mEmptyView;
-    /**
-     * The wishlist
-     */
-    @BindView(android.R.id.list)
-    protected RecyclerView mList;
-    /**
      * {@link RegisterTermPreference} instance
      */
     @Inject
     RegisterTermPreference registerTermPref;
     /**
-     * The ListView adapter
+     * The current term, null if none possible (no semesters to register for)
      */
-    private WishlistSearchCourseAdapter mAdapter;
+    @Nullable
+    private Term term;
     /**
-     * The list of classes to display
+     * {@link WishlistHelper} instance
      */
-    private List<CourseResult> mCourses;
-    /**
-     * The current term
-     */
-    private Term mTerm;
+    WishlistHelper wishlistHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,26 +76,13 @@ public class WishlistActivity extends DrawerActivity {
         App.component(this).inject(this);
         analytics.sendScreen("Wishlist");
 
-        //Check if there are any terms to register for
-        List<Term> registerTerms = registerTermPref.getTerms();
-        if (registerTerms.isEmpty()) {
-            //Hide all of the main content, show explanatory text, and return the view
-            mEmptyView.setText(R.string.registration_no_semesters);
-            mEmptyView.setVisibility(View.VISIBLE);
-            mList.setVisibility(View.GONE);
-            return;
+        // Set up the view
+        wishlistHelper = new WishlistHelper(this, mainView, false);
+
+        // Load the first registration term if there is one
+        if (!registerTermPref.getTerms().isEmpty()) {
+            term = registerTermPref.getTerms().get(0);
         }
-
-        mList.setLayoutManager(new LinearLayoutManager(this));
-
-        //Load the first registration term
-        mTerm = registerTerms.get(0);
-
-        //Load the wishlist
-        mCourses = App.getWishlist();
-
-        //Update the wishlist
-        updateWishlist();
     }
 
     @Override
@@ -128,7 +96,7 @@ public class WishlistActivity extends DrawerActivity {
         if (!registerTermPref.getTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.refresh, menu);
 
-            //Allow user to change the semester if there is more than 1 semester
+            // Allow user to change the semester if there is more than 1 semester
             if (registerTermPref.getTerms().size() > 1) {
                 getMenuInflater().inflate(R.menu.change_semester, menu);
             }
@@ -142,65 +110,45 @@ public class WishlistActivity extends DrawerActivity {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
                 DialogUtils.list(this, R.string.title_change_semester,
-                        new TermDialogHelper(this, mTerm, true) {
+                        new TermDialogHelper(this, term, true) {
                             @Override
-                            public void onTermSelected(Term term) {
-                                mTerm = term;
+                            public void onTermSelected(Term newTerm) {
+                                term = newTerm;
                                 update();
                             }
                         });
                 return true;
             case R.id.action_refresh:
-                updateWishlist();
+                refresh();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    @HomepageManager.Homepage
     @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
+    protected int getCurrentPage() {
         return HomepageManager.WISHLIST;
-    }
-
-    @OnClick(R.id.course_register)
-    protected void register() {
-        SearchResultsActivity.register(this, mTerm, mAdapter.getCheckedCourses());
-        //Reload the adapter
-        update();
-    }
-
-    @OnClick(R.id.course_wishlist)
-    protected void removeFromWishlist() {
-        SearchResultsActivity.addToWishlist(this, mAdapter.getCheckedCourses(), false, analytics);
-        //Reload the adapter
-        update();
     }
 
     /**
      * Updates the view
      */
     private void update() {
-        //Only load the info if there is info to load
-        if (!registerTermPref.getTerms().isEmpty()) {
-            //Set the title
-            setTitle(mTerm.getString(this));
-
-            //Reload the adapter
-            mAdapter = new WishlistSearchCourseAdapter(this, mTerm, mCourses);
-            mList.setAdapter(mAdapter);
-
-            //If there are no classes, show the empty view
-            mList.setVisibility(mAdapter.isEmpty() ? View.GONE : View.VISIBLE);
-            mEmptyView.setVisibility(mAdapter.isEmpty() ? View.VISIBLE : View.GONE);
+        if (term != null) {
+            // Set the title if there is a term
+            setTitle(term.getString(this));
         }
+        // Reload the adapter
+        wishlistHelper.update(term, App.getWishlist());
     }
 
     /**
-     * Updates the information of the courses on the current wishlist
+     * Refreshes the course info on the current wishlist
      */
-    private void updateWishlist() {
+    private void refresh() {
+        final List<CourseResult> mCourses = App.getWishlist();
         new AsyncTask<Void, Void, IOException>() {
             private List<TranscriptCourse> mTranscriptCourses;
 
@@ -246,7 +194,7 @@ public class WishlistActivity extends DrawerActivity {
                     try {
                         Response<List<CourseResult>> results = mcGillService.search(
                                 course.getTerm(), subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
-                                new ArrayList<Character>()).execute();
+                                new ArrayList<>()).execute();
 
                         // TODO Fix fact that this can update courses concurrently
                         //Update the course object with an updated class size

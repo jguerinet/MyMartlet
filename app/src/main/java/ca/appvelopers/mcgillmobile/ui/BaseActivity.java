@@ -16,7 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.ui;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -58,30 +57,31 @@ import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
     /**
-     * The toolbar
+     * Toolbar, null if none
      */
-    @Nullable @BindView(R.id.toolbar)
-    protected Toolbar toolbar;
+    @Nullable
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     /**
-     * The progress bar shown in the toolbar
+     * Progress bar shown in the toolbar
      */
-    @Nullable @BindView(R.id.toolbar_progress)
+    @Nullable
+    @BindView(R.id.toolbar_progress)
     protected ProgressBar toolbarProgress;
-    /**
-     * The {@link McGillService} instance
-     */
-    @Inject
-    protected McGillService mcGillService;
     /**
      * {@link Analytics} instance
      */
     @Inject
     protected Analytics analytics;
     /**
-     * The {@link LanguagePreference} instance
+     * {@link McGillService} instance
+     */
+    @Inject
+    protected McGillService mcGillService;
+    /**
+     * {@link LanguagePreference} instance
      */
     @Inject
     protected LanguagePreference languagePref;
@@ -91,7 +91,7 @@ public class BaseActivity extends AppCompatActivity {
     @Inject
     protected ClearManager clearManager;
     /**
-     * {@link BroadcastReceiver} for any local broadcasts
+     * BroadcastReceiver for any local broadcasts
      */
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -105,13 +105,13 @@ public class BaseActivity extends AppCompatActivity {
     private final IntentFilter filter = new IntentFilter();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.component(this).inject(this);
-        //Update locale and config (it sometimes get reset in between activities)
+        // Update locale and config (it sometimes get reset in between activities)
         updateLocale();
 
-        //Add the Minerva broadcast action
+        // Add the Minerva broadcast action
         filter.addAction(Constants.BROADCAST_MINERVA);
     }
 
@@ -130,7 +130,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        //Update locale and config (it gets reset when a configuration is changed)
+        // Update locale and config (it gets reset when a configuration is changed)
         updateLocale();
     }
 
@@ -152,13 +152,14 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //Go back if the home button is clicked
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                // Go back if the home button is clicked
+                onBackPressed();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -170,7 +171,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void setUpToolbar(boolean homeAsUp) {
         Assert.assertNotNull(toolbar);
 
-        //Set is as the action bar
+        // Set is as the action bar
         setSupportActionBar(toolbar);
 
         Assert.assertNotNull(getSupportActionBar());
@@ -198,14 +199,13 @@ public class BaseActivity extends AppCompatActivity {
      * @return True if the content can be refreshed, false otherwise
      */
     public boolean canRefresh() {
-        //Check internet connection
+        // Check internet connection
         if (!Utils.isConnected(this)) {
             DialogHelper.error(this, R.string.error_no_internet);
             return false;
         }
 
         showToolbarProgress(true);
-
         return true;
     }
 
@@ -219,9 +219,9 @@ public class BaseActivity extends AppCompatActivity {
     protected void onReceivedBroadcast(Intent intent) {
         switch (intent.getAction()) {
             case Constants.BROADCAST_MINERVA:
-                //Log the user out
+                // Log the user out
                 clearManager.all();
-                //Bring them back to the SplashActivity with an exception
+                // Bring them back to the SplashActivity with an exception
                 Intent intent1 = new Intent(this, SplashActivity.class)
                         .putExtra(Constants.EXCEPTION, new MinervaException());
                 startActivity(intent1);
