@@ -19,9 +19,6 @@ package ca.appvelopers.mcgillmobile.ui.wishlist;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -43,10 +40,8 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
-import ca.appvelopers.mcgillmobile.ui.search.SearchResultsActivity;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
-import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import retrofit2.Response;
 import timber.log.Timber;
@@ -59,7 +54,7 @@ import timber.log.Timber;
  */
 public class WishlistActivity extends DrawerActivity {
     /**
-     * {@link TranscriptManager} instance
+     * {@link RegisterTermPreference} instance
      */
     @Inject
     RegisterTermPreference registerTermPref;
