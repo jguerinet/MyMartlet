@@ -32,6 +32,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.Analytics;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 
 /**
  * {@link ListDialogInterface} implementation for a list of terms
@@ -49,6 +50,10 @@ public abstract class TermDialogHelper implements ListDialogInterface {
      */
     @Inject
     protected Analytics analytics;
+    /**
+     * {@link DefaultTermPreference} instance
+     */
+    DefaultTermPreference defaultTermPref;
     /**
      * List of {@link Term}s to choose from
      */
@@ -69,7 +74,7 @@ public abstract class TermDialogHelper implements ListDialogInterface {
         analytics.sendScreen("Change Semester");
 
         //Use the default term if no term was sent
-        this.currentTerm = currentTerm == null ? App.getDefaultTerm() : currentTerm;
+        this.currentTerm = currentTerm == null ? defaultTermPref.getTerm() : currentTerm;
 
         terms = new ArrayList<>();
         if (!registration) {

@@ -34,6 +34,8 @@ import com.guerinet.utils.dialog.DialogUtils;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,6 +48,7 @@ import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -79,6 +82,11 @@ public class CoursesActivity extends DrawerActivity {
     @BindView(R.id.courses_empty)
     TextView emptyView;
     /**
+     * {@link DefaultTermPreference} instance
+     */
+    @Inject
+    DefaultTermPreference defaultTermPref;
+    /**
      * Adapter for the list of courses
      */
     private CoursesAdapter adapter;
@@ -95,7 +103,7 @@ public class CoursesActivity extends DrawerActivity {
         App.component(this).inject(this);
         analytics.sendScreen("View Courses");
 
-        term = App.getDefaultTerm();
+        term = defaultTermPref.getTerm();
 
         list.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CoursesAdapter(emptyView);
@@ -134,7 +142,7 @@ public class CoursesActivity extends DrawerActivity {
                             @Override
                             public void onTermSelected(Term term) {
                                 // Set the default term
-                                App.setDefaultTerm(term);
+                                defaultTermPref.setTerm(term);
 
                                 // Set the instance term
                                 CoursesActivity.this.term = term;

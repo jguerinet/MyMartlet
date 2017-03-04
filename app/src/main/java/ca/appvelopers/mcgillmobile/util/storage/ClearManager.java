@@ -31,6 +31,7 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
@@ -64,6 +65,10 @@ public class ClearManager {
      */
     private final BooleanPreference rememberUsernamePref;
     /**
+     * {@link DefaultTermPreference} instance
+     */
+    private final DefaultTermPreference defaultTermPref;
+    /**
      * {@link HomepageManager}
      */
     private final HomepageManager homepageManager;
@@ -76,17 +81,19 @@ public class ClearManager {
      * @param passwordPref         {@link PasswordPreference} instance
      * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param homepageManager      {@link HomepageManager} instance
+     * @param defaultTermPref      {@link DefaultTermPreference} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
-            HomepageManager homepageManager) {
+            HomepageManager homepageManager, DefaultTermPreference defaultTermPref) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
+        this.defaultTermPref = defaultTermPref;
     }
 
     /**
@@ -113,8 +120,8 @@ public class ClearManager {
         //HomepageManager
         homepageManager.clear();
 
-        //Default Term
-        App.setDefaultTerm(null);
+        // Default Term
+        defaultTermPref.clear();
 
         //Wishlist
         App.setWishlist(new ArrayList<CourseResult>());

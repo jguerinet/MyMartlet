@@ -63,6 +63,7 @@ import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
@@ -108,6 +109,11 @@ public class ScheduleActivity extends DrawerActivity {
     @Named(PrefsModule.SCHEDULE_24HR)
     protected BooleanPreference twentyFourHourPref;
     /**
+     * {@link DefaultTermPreference} instance
+     */
+    @Inject
+    DefaultTermPreference defaultTermPref;
+    /**
      * Current {@link Term}
      */
     private Term term;
@@ -129,7 +135,7 @@ public class ScheduleActivity extends DrawerActivity {
         courses = new ArrayList<>();
 
         //TODO Use the SavedInstanceState to get the term and courses
-        term = App.getDefaultTerm();
+        term = defaultTermPref.getTerm();
 
         //Title
         setTitle(term.getString(this));
@@ -194,8 +200,8 @@ public class ScheduleActivity extends DrawerActivity {
                             return;
                         }
 
-                        //Set the default term
-                        App.setDefaultTerm(term);
+                        // Set the default term
+                        defaultTermPref.setTerm(term);
 
                         //Set the instance term
                         ScheduleActivity.this.term = term;

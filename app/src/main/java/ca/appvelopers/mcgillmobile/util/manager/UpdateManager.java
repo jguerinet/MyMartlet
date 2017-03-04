@@ -31,8 +31,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.model.place.Place_Table;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
@@ -59,22 +61,29 @@ public class UpdateManager {
      * {@link SharedPreferences} instance
      */
     private final SharedPreferences sharedPrefs;
+    /**
+     * {@link DefaultTermPreference} instance
+     */
+    private final DefaultTermPreference defaultTermPref;
 
     /**
      * Default Injectable Constructor
      *
-     * @param context      App context
-     * @param versionPref  Version {@link IntPreference}
-     * @param clearManager {@link ClearManager} instance
-     * @param sharedPrefs  {@link SharedPreferences} instance
+     * @param context         App context
+     * @param versionPref     Version {@link IntPreference}
+     * @param clearManager    {@link ClearManager} instance
+     * @param sharedPrefs     {@link SharedPreferences} instance
+     * @param defaultTermPref {@link DefaultTermPreference} instance
      */
     @Inject
     UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPreference versionPref,
-            ClearManager clearManager, SharedPreferences sharedPrefs) {
+            ClearManager clearManager, SharedPreferences sharedPrefs,
+            DefaultTermPreference defaultTermPref) {
         this.context = context;
         this.versionPref = versionPref;
         this.clearManager = clearManager;
         this.sharedPrefs = sharedPrefs;
+        this.defaultTermPref = defaultTermPref;
     }
 
     /**
@@ -158,6 +167,12 @@ public class UpdateManager {
         context.deleteFile("place_types");
         context.deleteFile("ebill");
         context.deleteFile("transcript");
+
+        // Switch the default term's save location
+        Term term = (Term) StorageUtils.loadObject(context, "default_term", "Default Term");
+        if (term != null) {
+            defaultTermPref.setTerm(term);
+        }
 
         /* TODO Favorite migration is untested code */
 
