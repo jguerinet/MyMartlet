@@ -22,15 +22,10 @@ import android.content.SharedPreferences;
 import com.guerinet.utils.prefs.BooleanPreference;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.model.CourseResult;
-import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
@@ -40,6 +35,7 @@ import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlacesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.WishlistDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
 /**
@@ -131,8 +127,8 @@ public class ClearManager {
         // Default Term
         defaultTermPref.clear();
 
-        //Wishlist
-        App.setWishlist(new ArrayList<CourseResult>());
+        // Wishlist
+        context.deleteDatabase(WishlistDB.FULL_NAME);
     }
 
     /**
