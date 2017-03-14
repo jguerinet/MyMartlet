@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.model;
 
+import com.raizlabs.android.dbflow.annotation.Table;
+
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
@@ -23,58 +25,64 @@ import org.threeten.bp.LocalTime;
 import java.io.Serializable;
 import java.util.List;
 
+import ca.appvelopers.mcgillmobile.util.dbflow.databases.WishlistDB;
+
 /**
  * A course in the user's schedule or one that a user can register for
  * @author Quang Dao
  * @author Julien Guerinet
  * @since 1.0.0
  */
+@Table(database = WishlistDB.class, allFields = true)
 public class CourseResult extends Course implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * The course total capacity (for registration)
      */
-    private final int capacity;
+    int capacity;
     /**
      * The number of seats remaining (for registration)
      */
-    private final int seatsRemaining;
+    int seatsRemaining;
     /**
      * The number of waitlist spots remaining
      */
-    private final int waitlistRemaining;
+    int waitlistRemaining;
+
+    /**
+     * DB Constructor
+     */
+    CourseResult() {}
 
     /**
      * Default Constructor
      *
      * @param term              Current {@link Term}
-     * @param subject           The course subject
-     * @param number            The course number
-     * @param title             The course title
-     * @param crn               The course CRN
-     * @param section           The course section
-     * @param startTime         The course's ending time
-     * @param endTime           The course's starting time
-     * @param days              The days this course is on
-     * @param type              The course type
-     * @param location          The course location
-     * @param instructor        The course instructor
-     * @param credits           The number of credits
-     * @param startDate         THe course's start date
-     * @param endDate           The course's end date
-     * @param capacity          The course capacity
-     * @param seatsRemaining    The number of seats remaining
-     * @param waitlistRemaining The number of waitlist seats remaining
+     * @param subject           Course subject
+     * @param number            Course number
+     * @param title             Course title
+     * @param crn               Course CRN
+     * @param section           Course section
+     * @param startTime         Course's ending time
+     * @param endTime           Course's starting time
+     * @param days              Days this course is on
+     * @param type              Course type
+     * @param location          Course location
+     * @param instructor        Course instructor
+     * @param credits           Number of credits
+     * @param startDate         Course's start date
+     * @param endDate           Course's end date
+     * @param capacity          Course capacity
+     * @param seatsRemaining    Number of seats remaining
+     * @param waitlistRemaining Number of waitlist seats remaining
      */
     public CourseResult(Term term, String subject, String number, String title, int crn,
             String section, LocalTime startTime, LocalTime endTime, List<DayOfWeek> days,
             String type, String location, String instructor, double credits, LocalDate startDate,
             LocalDate endDate, int capacity, int seatsRemaining, int waitlistRemaining) {
-
         super(subject, number, title, crn, section, startTime, endTime, days, type, location,
                 instructor, credits, startDate, endDate);
-
-        setTerm(term);
+        this.term = term;
         this.capacity = capacity;
         this.seatsRemaining = seatsRemaining;
         this.waitlistRemaining = waitlistRemaining;
