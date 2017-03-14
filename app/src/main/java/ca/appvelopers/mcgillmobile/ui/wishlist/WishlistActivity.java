@@ -16,16 +16,16 @@
 
 package ca.appvelopers.mcgillmobile.ui.wishlist;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,15 +34,15 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.CourseResult_Table;
 import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import retrofit2.Call;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -66,7 +66,15 @@ public class WishlistActivity extends DrawerActivity {
     /**
      * {@link WishlistHelper} instance
      */
-    WishlistHelper wishlistHelper;
+    private WishlistHelper wishlistHelper;
+    /**
+     * Keeps track of the number of concurrent update calls that are currently being executed
+     */
+    private int updateCount;
+    /**
+     * UI handler
+     */
+    private Handler mainHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,84 +156,129 @@ public class WishlistActivity extends DrawerActivity {
      * Refreshes the course info on the current wishlist
      */
     private void refresh() {
-        final List<CourseResult> mCourses = App.getWishlist();
-        new AsyncTask<Void, Void, IOException>() {
-            private List<TranscriptCourse> mTranscriptCourses;
+        showToolbarProgress(true);
 
-            @Override
-            protected void onPreExecute() {
-                showToolbarProgress(true);
-
-                //Sort Courses into TranscriptCourses
-                mTranscriptCourses = new ArrayList<>();
-                for (Course course : mCourses) {
-                    boolean courseExists = false;
-                    //Check if course exists in list
-                    for (TranscriptCourse addedCourse : mTranscriptCourses) {
-                        if (addedCourse.getCourseCode().equals(course.getCode())) {
-                            courseExists = true;
+        // Go through the user's wishlist
+        SQLite.select()
+                .from(CourseResult.class)
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        tResult = new ArrayList<>();
+                    }
+                    List<CourseHolder> holders = new ArrayList<>();
+                    for (CourseResult course : tResult) {
+                        CourseHolder holder = new CourseHolder(course);
+                        if (!holders.contains(holder)) {
+                            holders.add(holder);
                         }
                     }
-                    //Add course if it has not already been added
-                    if (!courseExists) {
-                        mTranscriptCourses.add(new TranscriptCourse(-1, course.getTerm(),
-                                course.getCode(), course.getTitle(), course.getCredits(), "N/A",
-                                "N/A"));
-                    }
-                }
+                    mainHandler.post(() -> performUpdateCalls(holders));
+                })
+                .execute();
+
+    }
+
+    /**
+     * Makes the necessary calls to update the list of given courses
+     *
+     * @param courses List of {@link CourseHolder}s to update, which represent the wishlist
+     */
+    private void performUpdateCalls(List<CourseHolder> courses) {
+        if (courses.isEmpty()) {
+            // If there are no courses, don't continue
+            showToolbarProgress(false);
+            return;
+        }
+
+        // Set the update count to the number of courses
+        updateCount = courses.size();
+        for (CourseHolder course : courses) {
+            // Get the course registration URL
+            String code[] = course.code.split(" ");
+            if (code.length < 2) {
+                //TODO: Get a String for this
+                Utils.toast(this, "Cannot update " + course.code);
+                finalizeUpdate();
+                continue;
             }
 
-            @Override
-            protected IOException doInBackground(Void... params) {
-                //For each course, obtain its Minerva registration page
-                for (TranscriptCourse course : mTranscriptCourses) {
-                    //Get the course registration URL
-                    String code[] = course.getCourseCode().split(" ");
-                    if (code.length < 2) {
-                        //TODO: Get a String for this
-                        Toast.makeText(WishlistActivity.this, "Cannot update " +
-                                        course.getCourseCode(), Toast.LENGTH_SHORT).show();
-                        continue;
-                    }
+            String subject = code[0];
+            String number = code[1];
 
-                    String subject = code[0];
-                    String number = code[1];
-
-                    try {
-                        Response<List<CourseResult>> results = mcGillService.search(
-                                course.getTerm(), subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
-                                new ArrayList<>()).execute();
-
-                        // TODO Fix fact that this can update courses concurrently
-                        //Update the course object with an updated class size
-                        for (CourseResult updatedClass : results.body()) {
-                            for (CourseResult wishlistClass : mCourses) {
-                                if (wishlistClass.equals(updatedClass)) {
-                                    int i = mCourses.indexOf(wishlistClass);
-                                    mCourses.remove(wishlistClass);
-                                    mCourses.add(i, updatedClass);
-                                }
-                            }
+            mcGillService.search(course.term, subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
+                    new ArrayList<>()).enqueue(new retrofit2.Callback<List<CourseResult>>() {
+                @Override
+                public void onResponse(Call<List<CourseResult>> call,
+                        Response<List<CourseResult>> response) {
+                    // Go through the received courses, check if they are on the user's wishlist
+                    for (CourseResult course : response.body()) {
+                        long count = SQLite.selectCountOf()
+                                .from(CourseResult.class)
+                                .where(CourseResult_Table.id.eq(course.getId()))
+                                .count();
+                        if (count != 0) {
+                            course.save();
                         }
-
-                    } catch (IOException e) {
-                        Timber.e(e, "Error updating wishlist");
-                        return e;
                     }
+                    finalizeUpdate();
                 }
 
-                return null;
-            }
+                @Override
+                public void onFailure(Call<List<CourseResult>> call, Throwable t) {
+                    Timber.e(t, "Error updating wishlist");
+                    Help.handleException(WishlistActivity.this, t);
+                    finalizeUpdate();
+                }
+            });
+        }
+    }
 
-            @Override
-            protected void onPostExecute(IOException result) {
-                //Set the new wishlist
-                App.setWishlist(mCourses);
-                //Reload the adapter
-                update();
-                showToolbarProgress(false);
-                Help.handleException(WishlistActivity.this, result);
+    /**
+     * Finalizes an update call and determine whether UI action is necessary depending on where
+     *  we are in the update process
+     */
+    private void finalizeUpdate() {
+        // Decrement the update count;
+        updateCount --;
+
+        // If there are no more updates to wait for, hide the progress bar and reload the adapter
+        if (updateCount == 0) {
+            update();
+            showToolbarProgress(false);
+        }
+    }
+
+    /**
+     * {@link CourseResult} holder to update the user's wishlist
+     */
+    private class CourseHolder {
+        /**
+         * Course term
+         */
+        private final Term term;
+        /**
+         * Course code
+         */
+        private final String code;
+
+        /**
+         * Default Constructor
+         *
+         * @param course {@link CourseResult} instance to hold the information for
+         */
+        private CourseHolder(CourseResult course) {
+            term = course.getTerm();
+            code = course.getCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof CourseHolder)) {
+                return false;
             }
-        }.execute();
+            CourseHolder holder = (CourseHolder) obj;
+            return holder.term.equals(term) && holder.code.equals(code);
+        }
     }
 }
