@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.CourseResult_Table;
 import ca.appvelopers.mcgillmobile.model.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
@@ -229,20 +231,19 @@ public class WishlistHelper {
             // If there are none, display error message
             toastMessage = activity.getString(R.string.courses_none_selected);
         } else {
-            // Get the term from the first course (they will all be in the same term)
-            Term term = courses.get(0).getTerm();
-            // If not, it's to add/remove a course to/from the wishlist
-            //  Get the wishlist courses
-            List<CourseResult> wishlist = App.getWishlist();
-
             if (add) {
                 // Only add it if it's not already part of the wishlist
                 int coursesAdded = 0;
                 for (CourseResult course : courses) {
-                    if (!wishlist.contains(course)) {
-                        wishlist.add(course);
+                    // Check if the course exists already
+                    long count = SQLite.select()
+                            .from(CourseResult.class)
+                            .where(CourseResult_Table.id.eq(course.getId()))
+                            .count();
+                    if (count != 0) {
                         coursesAdded ++;
                     }
+                    course.save();
                 }
 
                 analytics.sendEvent("Search Results", "Add to Wishlist",
@@ -251,14 +252,14 @@ public class WishlistHelper {
                 toastMessage = activity.getString(R.string.wishlist_add, coursesAdded);
             } else {
                 toastMessage = activity.getString(R.string.wishlist_remove, courses.size());
-                wishlist.removeAll(courses);
-                update(term);
+                for (Course course : courses) {
+                    course.delete();
+                }
+                // Get the term from the first course (they will all be in the same term)
+                update(courses.get(0).getTerm());
 
                 analytics.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));
             }
-
-            // Save the courses to the App context
-            App.setWishlist(wishlist);
         }
 
         // Visual feedback of what was just done
