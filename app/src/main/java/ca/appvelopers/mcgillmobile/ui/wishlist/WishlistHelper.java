@@ -72,6 +72,9 @@ public class WishlistHelper {
      */
     @BindView(android.R.id.list)
     RecyclerView list;
+    /**
+     * Add/Remove to/from wishlist button
+     */
     @BindView(R.id.course_wishlist)
     Button wishlistButton;
     /**
