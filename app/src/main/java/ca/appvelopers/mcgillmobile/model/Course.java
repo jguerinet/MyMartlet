@@ -46,8 +46,8 @@ public class Course extends BaseModel implements Serializable {
     /**
      * Unique Id for this course
      */
-    @PrimaryKey(autoincrement = true)
-    int id;
+    @PrimaryKey
+    String id;
     /**
      * The term this class is for
      */
@@ -357,6 +357,8 @@ public class Course extends BaseModel implements Serializable {
 
     @Override
     public void save() {
+        // Create the Id from the term and the crn
+        id = term.toString() + crn;
         // Create the day String from the days
         daysString = DayUtils.getDayStrings(getDays());
         super.save();
