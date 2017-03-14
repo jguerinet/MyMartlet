@@ -160,6 +160,13 @@ public class Course extends BaseModel implements Serializable {
 	/* GETTERS */
 
     /**
+     * @return Course Id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
      * @return The course term
      */
     public Term getTerm() {
@@ -355,10 +362,19 @@ public class Course extends BaseModel implements Serializable {
                 DateUtils.getMediumDateString(endDate);
     }
 
+    /**
+     * Sets the Id
+     */
+    void setId() {
+        if (id == null) {
+            id = term.toString() + crn;
+        }
+    }
+
     @Override
     public void save() {
         // Create the Id from the term and the crn
-        id = term.toString() + crn;
+        setId();
         // Create the day String from the days
         daysString = DayUtils.getDayStrings(getDays());
         super.save();

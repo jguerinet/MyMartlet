@@ -83,6 +83,8 @@ public class CourseResult extends Course implements Serializable {
         super(subject, number, title, crn, section, startTime, endTime, days, type, location,
                 instructor, credits, startDate, endDate);
         this.term = term;
+        // Set the Id now
+        setId();
         this.capacity = capacity;
         this.seatsRemaining = seatsRemaining;
         this.waitlistRemaining = waitlistRemaining;
