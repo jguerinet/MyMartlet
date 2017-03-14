@@ -185,11 +185,9 @@ public class WishlistHelper {
                             Utils.toast(activity, R.string.registration_success);
 
                             // Remove the courses from the wishlist if they were there
-                            List<CourseResult> wishlist = App.getWishlist();
-                            wishlist.removeAll(courses);
-
-                            // Set the new wishlist
-                            App.setWishlist(wishlist);
+                            for (CourseResult course : courses) {
+                                course.delete();
+                            }
                             return;
                         }
 
