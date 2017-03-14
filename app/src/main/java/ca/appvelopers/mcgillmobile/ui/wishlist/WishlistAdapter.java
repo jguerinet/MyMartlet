@@ -25,6 +25,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.guerinet.utils.RecyclerViewBaseAdapter;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.CourseResult_Table;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
 
@@ -40,7 +42,7 @@ import ca.appvelopers.mcgillmobile.util.DayUtils;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class WishlistAdapter extends RecyclerViewBaseAdapter {
+class WishlistAdapter extends RecyclerViewBaseAdapter {
     /**
      * List of {@link CourseResult}s currently being shown
      */
@@ -57,7 +59,7 @@ public class WishlistAdapter extends RecyclerViewBaseAdapter {
     /**
      * Default Constructor
      */
-    public WishlistAdapter(TextView emptyView) {
+    WishlistAdapter(TextView emptyView) {
         super(emptyView);
         this.emptyView = emptyView;
         courses = new ArrayList<>();
@@ -76,35 +78,49 @@ public class WishlistAdapter extends RecyclerViewBaseAdapter {
     }
 
     /**
-     * Updates the list
-     *
-     * @param term    {@link Term} the courses should be in, null if none
-     * @param courses List of {@link CourseResult}s to take from
+     * @param courses List of {@link CourseResult}s to display
      */
-    public void update(@Nullable Term term, List<CourseResult> courses) {
+    public void update(List<CourseResult> courses) {
         this.courses.clear();
+        this.courses.addAll(courses);
+        showEmptyView(courses.isEmpty());
+    }
 
-        // Check if there are any terms to register for
+    /**
+     * @param term Term the wishlist courses should be in, null if no wishlist semesters available
+     */
+    public void update(@Nullable Term term) {
+        courses.clear();
+
         if (term == null) {
-            // Hide all of the main content and show explanatory text
+            // Hide all of the main content and show explanatory text if the term is null
             emptyView.setText(R.string.registration_no_semesters);
             showEmptyView(true);
-        } else {
-            // Add only the courses for this term
-            for (CourseResult course : courses) {
-                if (course.getTerm().equals(term)) {
-                    this.courses.add(course);
-                }
-            }
-            showEmptyView(this.courses.isEmpty());
+            notifyDataSetChanged();
+            return;
         }
-        notifyDataSetChanged();
+
+        // Get the wishlist
+        SQLite.select()
+                .from(CourseResult.class)
+                .where(CourseResult_Table.term.eq(term))
+                .async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        tResult = new ArrayList<>();
+                    }
+                    // Add the courses and update the view
+                    courses.addAll(tResult);
+                    showEmptyView(courses.isEmpty());
+                    notifyDataSetChanged();
+                })
+                .execute();
     }
 
     /**
      * @return The list of checked {@link CourseResult}s
      */
-    public List<CourseResult> getCheckedCourses() {
+    List<CourseResult> getCheckedCourses() {
         return checkedCourses;
     }
 

@@ -209,12 +209,13 @@ public class McGillManager {
     /**
      * Returns the URL to register for courses for the given parameters
      *
-     * @param term       The course term
      * @param courses    A list of courses to (un)register for
      * @param dropCourse True if the user is dropping courses, false otherwise
      * @return The proper registration URL
      */
-    public static String getRegistrationURL(Term term, List<Course> courses, boolean dropCourse) {
+    public static String getRegistrationURL(List<? extends Course> courses, boolean dropCourse) {
+        // Get the term from the first course (they'll all have the same term
+        Term term = courses.get(0).getTerm();
         //Start the URL with the term
         String url = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=" + term.toString();
 

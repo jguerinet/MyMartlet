@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,8 +54,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
-
-import static ca.appvelopers.mcgillmobile.R.string.courses_remove_wishlist;
 
 /**
  * Shows the results of the search from the SearchActivity
@@ -99,10 +98,6 @@ public class WishlistHelper {
      * The adapter for the list of results
      */
     private final WishlistAdapter adapter;
-    /**
-     * The current term
-     */
-    private Term term;
 
     /**
      * Default Constructor
@@ -122,13 +117,26 @@ public class WishlistHelper {
 
         // Change the button text if this is to remove courses
         if (!add) {
-            wishlistButton.setText(courses_remove_wishlist);
+            wishlistButton.setText(R.string.courses_remove_wishlist);
         }
     }
 
-    public void update(Term term, List<CourseResult> courses) {
-        this.term = term;
-        adapter.update(term, courses);
+    /**
+     * Update method for search results
+     *
+     * @param courses List of {@link CourseResult}s to display
+     */
+    public void update(List<CourseResult> courses) {
+        adapter.update(courses);
+    }
+
+    /**
+     * Update method for the wishlist
+     *
+     * @param term {@link Term} that the courses should be in, null if none
+     */
+    public void update(@Nullable Term term) {
+        adapter.update(term);
     }
 
     @OnClick(R.id.course_register)
@@ -165,9 +173,7 @@ public class WishlistHelper {
     }
 
     private void register(final List<CourseResult> courses) {
-        List<Course> theCourses = new ArrayList<>();
-        theCourses.addAll(courses);
-        mcGillService.registration(McGillManager.getRegistrationURL(term, theCourses, false))
+        mcGillService.registration(McGillManager.getRegistrationURL(courses, false))
                 .enqueue(new Callback<List<RegistrationError>>() {
                     @Override
                     public void onResponse(Call<List<RegistrationError>> call,
@@ -225,7 +231,9 @@ public class WishlistHelper {
             // If there are none, display error message
             toastMessage = activity.getString(R.string.courses_none_selected);
         } else {
-            // If not, it's to add a course to the wishlist
+            // Get the term from the first course (they will all be in the same term)
+            Term term = courses.get(0).getTerm();
+            // If not, it's to add/remove a course to/from the wishlist
             //  Get the wishlist courses
             List<CourseResult> wishlist = App.getWishlist();
 
@@ -246,7 +254,7 @@ public class WishlistHelper {
             } else {
                 toastMessage = activity.getString(R.string.wishlist_remove, courses.size());
                 wishlist.removeAll(courses);
-                update(term, wishlist);
+                update(term);
 
                 analytics.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));
             }

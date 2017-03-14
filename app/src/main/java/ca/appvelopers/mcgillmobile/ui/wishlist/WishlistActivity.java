@@ -141,7 +141,7 @@ public class WishlistActivity extends DrawerActivity {
             setTitle(term.getString(this));
         }
         // Reload the adapter
-        wishlistHelper.update(term, App.getWishlist());
+        wishlistHelper.update(term);
     }
 
     /**
