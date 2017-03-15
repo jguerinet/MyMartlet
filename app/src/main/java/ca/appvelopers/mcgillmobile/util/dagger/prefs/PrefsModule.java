@@ -142,13 +142,13 @@ public class PrefsModule {
 
     /**
      * @param prefs {@link SharedPreferences} instance
-     * @return True if we should be checking grades for the user, false otherwise
+     * @return Frequency at which we should be checking for the user's grades
      */
     @Provides
     @Singleton
     @Named(GRADE_CHECKER)
-    BooleanPreference provideGradeChecker(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, GRADE_CHECKER, false);
+    CheckerPref provideGradeChecker(SharedPreferences prefs) {
+        return new CheckerPref(prefs, GRADE_CHECKER);
     }
 
     /**
