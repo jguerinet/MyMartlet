@@ -94,9 +94,9 @@ public abstract class CheckerFrequenciesAdapter implements ListDialogInterface {
     }
 
     /**
-     * Called when a homepage has been selected
+     * Called when a frequency has been selected
      *
-     * @param homepage The selected {@link CheckerPreference.Frequency}
+     * @param frequency The selected {@link CheckerPreference.Frequency}
      */
-    public abstract void onFrequencySelected(@CheckerPreference.Frequency String homepage);
+    public abstract void onFrequencySelected(@CheckerPreference.Frequency String frequency);
 }

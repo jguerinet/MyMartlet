@@ -42,10 +42,11 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
+import ca.appvelopers.mcgillmobile.ui.dialog.list.CheckerFrequenciesAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguagesAdapter;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.CheckerPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import timber.log.Timber;
 
@@ -73,10 +74,11 @@ public class SettingsActivity extends DrawerActivity {
     @Named(PrefsModule.SCHEDULE_24HR)
     BooleanPreference twentyFourHourPref;
     /**
-     * {@link UsernamePreference} instance
+     * Grade {@link CheckerPreference} instance
      */
     @Inject
-    UsernamePreference usernamePref;
+    @Named(PrefsModule.GRADE_CHECKER)
+    CheckerPreference gradeCheckerPref;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,6 +136,28 @@ public class SettingsActivity extends DrawerActivity {
 
                                 // Update the TextView
                                 item.view().setText(homepageManager.getTitleString());
+                            }
+                        }))
+                .build();
+
+        // Grade Checking
+        // TODO Dialog title, Icon + what happens when they change this?
+        fg.text(gradeCheckerPref.getString())
+                .onClick(item -> DialogUtils.list(this, R.string.settings_homepage_title,
+                        new CheckerFrequenciesAdapter(this, gradeCheckerPref) {
+                            @Override
+                            public void onFrequencySelected(
+                                    @CheckerPreference.Frequency String frequency) {
+                                // Update the pref
+                                gradeCheckerPref.set(frequency);
+
+                                analytics.sendEvent("Settings", "Grade Checking Frequency",
+                                        frequency);
+
+                                // Update the view
+                                item.view().setText(gradeCheckerPref.getString());
+
+                                // TODO Do something with regards to the scheduling of the service
                             }
                         }))
                 .build();

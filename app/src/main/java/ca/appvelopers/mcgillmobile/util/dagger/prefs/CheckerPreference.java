@@ -40,15 +40,21 @@ public class CheckerPreference extends StringPreference {
     public static final String TWELVE_HOURS = "TWELVE_HOURS";
     public static final String SIX_HOURS = "SIX_HOURS";
     public static final String HOURLY = "HOURLY";
+    /**
+     * App context
+     */
+    private final Context context;
 
     /**
      * Default Constructor
      *
-     * @param prefs {@link SharedPreferences} instance
-     * @param key   Key under which the pref should be stored
+     * @param prefs   {@link SharedPreferences} instance
+     * @param key     Key under which the pref should be stored
+     * @param context App context
      */
-    CheckerPreference(@NonNull SharedPreferences prefs, @NonNull String key) {
+    CheckerPreference(@NonNull SharedPreferences prefs, @NonNull String key, Context context) {
         super(prefs, key, NEVER);
+        this.context = context;
     }
 
     @Override
@@ -61,6 +67,13 @@ public class CheckerPreference extends StringPreference {
     public String get() {
         //noinspection WrongConstant
         return super.get();
+    }
+
+    /**
+     * @return Title String of the current frequency
+     */
+    public String getString() {
+        return getFrequencyString(context, get());
     }
 
     /**
