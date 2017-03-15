@@ -147,8 +147,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(GRADE_CHECKER)
-    CheckerPref provideGradeChecker(SharedPreferences prefs) {
-        return new CheckerPref(prefs, GRADE_CHECKER);
+    CheckerPreference provideGradeChecker(SharedPreferences prefs) {
+        return new CheckerPreference(prefs, GRADE_CHECKER);
     }
 
     /**

@@ -27,7 +27,7 @@ import com.guerinet.utils.prefs.StringPreference;
  * @author Julien Guerinet
  * @since 2.4.0
  */
-public class CheckerPref extends StringPreference {
+public class CheckerPreference extends StringPreference {
     /**
      * Different checking frequencies
      */
@@ -46,7 +46,7 @@ public class CheckerPref extends StringPreference {
      * @param prefs {@link SharedPreferences} instance
      * @param key   Key under which the pref should be stored
      */
-    CheckerPref(@NonNull SharedPreferences prefs, @NonNull String key) {
+    CheckerPreference(@NonNull SharedPreferences prefs, @NonNull String key) {
         super(prefs, key, NEVER);
     }
 
