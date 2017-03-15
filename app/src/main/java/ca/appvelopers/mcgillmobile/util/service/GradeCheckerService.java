@@ -60,22 +60,6 @@ public class GradeCheckerService extends IntentService {
 		Timber.i("Service started");
 
         //TODO
-//		//Check the grades if needed
-//		if(Load.gradeChecker()){
-//			checkGrades();
-//		}
-//
-//		//Check the seats if needed
-//		if(Load.seatChecker()){
-//			checkSeats();
-//		}
-	}
-	
-	/**
-	 * Downloads the user's transcript to check for new or changed grades
-	 */
-	private void checkGrades(){
-        //TODO
 //		String html = new DownloaderThread(this, McGillManager.TRANSCRIPT_URL).execute();
         String html = null;
 
@@ -93,10 +77,10 @@ public class GradeCheckerService extends IntentService {
 			//Check if the CGPA has changed, alert the user if it has
 			if(Math.abs(oldTranscript.getCGPA() - newTranscript.getCGPA()) >= 0.01){
                 //TODO
-				Intent intent = new Intent(this, SplashActivity.class);
+				Intent anIntent = new Intent(this, SplashActivity.class);
 //						.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT);
 				//TODO Use String here
-				createNotification(intent, "Your new CGPA is " + newTranscript.getCGPA(),
+				createNotification(anIntent, "Your new CGPA is " + newTranscript.getCGPA(),
 						GRADES_ID);
 				return;
 			}
