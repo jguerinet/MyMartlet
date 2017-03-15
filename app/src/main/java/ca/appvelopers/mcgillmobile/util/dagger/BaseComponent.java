@@ -41,6 +41,7 @@ import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistHelper;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
+import ca.appvelopers.mcgillmobile.util.service.ConfigDownloadService;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
 import dagger.Component;
@@ -71,12 +72,13 @@ public interface BaseComponent {
     void inject(McGillManager mcGillManager);
     void inject(BootReceiver receiver);
 
-    /* Adapters */
     void inject(WalkthroughAdapter adapter);
     void inject(HomepagesAdapter adapter);
     void inject(LanguagesAdapter adapter);
     void inject(CategoryListAdapter adapter);
     void inject(TermDialogHelper helper);
+
+    void inject(ConfigDownloadService service);
 
     void inject(ConfigDownloader downloader);
     void inject(UserDownloader downloader);

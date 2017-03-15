@@ -20,6 +20,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.BaseModelQueriable;
+import com.raizlabs.android.dbflow.sql.language.From;
 import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -86,56 +88,63 @@ public class DBUtils {
      * @param callback   Optional callback to run any update code. If not, save() will be called
      * @param <T>        Object Type
      */
-    public static <T extends BaseModel> void updateDB(Class<T> type, List<T> newObjects, 
-            SQLCondition condition, Class dbClass, UpdateCallback<T> callback) {
-                SQLite
-                        .select()
-                        .from(type)
-                        .where(condition)
-                        .async()
-                        .queryListResultCallback((transaction, tResult) -> {
-                            if (tResult == null) {
-                                return;
+    public static <T extends BaseModel> void updateDB(Class<T> type, List<T> newObjects,
+            @Nullable SQLCondition condition, Class dbClass, UpdateCallback<T> callback) {
+        From<T> select = SQLite.select()
+                .from(type);
+
+        BaseModelQueriable<T> query;
+        if (condition != null) {
+            // Add the conditions if necessary
+            query = select.where(condition);
+        } else {
+            query = select.where();
+        }
+
+        query.async()
+                .queryListResultCallback((transaction, tResult) -> {
+                    if (tResult == null) {
+                        return;
+                    }
+
+                    // Go through the existing objects
+                    for (T oldObject : tResult) {
+                        // Check if the object still exists in the received objects
+                        int index = newObjects.indexOf(oldObject);
+                        if (index != -1) {
+                            // Update it
+                            T newObject = newObjects.get(index);
+
+                            // If there's a callback, use it
+                            if (callback != null) {
+                                callback.update(newObject, oldObject);
+                            } else {
+                                // If not, call save
+                                newObject.save();
                             }
 
-                            // Go through the existing objects
-                            for (T oldObject : tResult) {
-                                // Check if the object still exists in the received objects
-                                int index = newObjects.indexOf(oldObject);
-                                if (index != -1) {
-                                    // Update it
-                                    T newObject = newObjects.get(index);
+                            // Delete that place from the body since we've dealt with it
+                            newObjects.remove(newObject);
+                        } else {
+                            // Delete the old place
+                            oldObject.delete();
+                        }
+                    }
 
-                                    // If there's a callback, use it
-                                    if (callback != null) {
-                                        callback.update(newObject);
-                                    } else {
-                                        // If not, call save
-                                        newObject.save();
-                                    }
+                    // Save any new objects
+                    FastStoreModelTransaction<? extends BaseModel> newObjectsTransaction =
+                            FastStoreModelTransaction.saveBuilder(
+                                    FlowManager.getModelAdapter(type))
+                                    .addAll(newObjects)
+                                    .build();
 
-                                    // Delete that place from the body since we've dealt with it
-                                    newObjects.remove(newObject);
-                                } else {
-                                    // Delete the old place
-                                    oldObject.delete();
-                                }
-                            }
-
-                            // Save any new objects
-                            FastStoreModelTransaction<? extends BaseModel> newObjectsTransaction =
-                                    FastStoreModelTransaction.saveBuilder(
-                                            FlowManager.getModelAdapter(type))
-                                            .addAll(newObjects)
-                                            .build();
-
-                            FlowManager.getDatabase(dbClass)
-                                .beginTransactionAsync(newObjectsTransaction)
-                                .build()
-                                .execute();
-                    })
+                    FlowManager.getDatabase(dbClass)
+                        .beginTransactionAsync(newObjectsTransaction)
+                        .build()
                         .execute();
-            }
+            })
+                .execute();
+    }
 
     /**
      * Callback used when a transaction is finished
@@ -148,16 +157,17 @@ public class DBUtils {
     }
 
     /**
-      * Callback used to run update code whenever a DB is updated
-      *
-      * @param <T> Object type
-      */
+     * Callback used to run update code whenever a DB is updated
+     *
+     * @param <T> Object type
+     */
     public interface UpdateCallback<T extends BaseModel> {
-            /**
-              * Called when update code needs to be run
-              *
-              * @param object Object to update
-              */
-            void update(T object);
+        /**
+         * Called when update code needs to be run
+         *
+         * @param object    Object to update
+         * @param oldObject Object we are updating from
+         */
+        void update(T object, T oldObject);
     }
 }
