@@ -58,8 +58,8 @@ import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.manager.UpdateManager;
+import ca.appvelopers.mcgillmobile.util.service.ConfigDownloadService;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
-import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
 import dagger.Lazy;
 
@@ -183,8 +183,8 @@ public class SplashActivity extends BaseActivity {
         //Run the update code, if any
         updateManager.update();
 
-        //Start downloading the config
-        new ConfigDownloader(this).start();
+        // Start downloading the config
+        startService(new Intent(this, ConfigDownloadService.class));
 
         if (!eulaPref.get()) {
             //If the user has not accepted the EULA, show it before continuing

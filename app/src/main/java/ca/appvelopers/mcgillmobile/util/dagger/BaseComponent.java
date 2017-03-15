@@ -42,7 +42,6 @@ import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
 import ca.appvelopers.mcgillmobile.util.service.ConfigDownloadService;
-import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
 import dagger.Component;
 
@@ -80,7 +79,6 @@ public interface BaseComponent {
 
     void inject(ConfigDownloadService service);
 
-    void inject(ConfigDownloader downloader);
     void inject(UserDownloader downloader);
 
     void inject(WishlistHelper helper);
