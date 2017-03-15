@@ -25,8 +25,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.model.Transcript;
-import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import timber.log.Timber;
 
 /**
@@ -36,20 +34,9 @@ import timber.log.Timber;
  * @since 2.0.0
  */
 public class SeatCheckerService extends IntentService {
-	/**
-	 * The notification Id used for the grade checker notifications
-	 */
-	private static final int GRADES_ID = 100;
-	/**
-	 * The notification Id used for the seat checker notification
-	 */
-	private static final int SEATS_ID = 200;
 
-	/**
-	 * Default Constructor
-	 */
 	public SeatCheckerService() {
-		super("GradeCheckerService");
+		super("SeatCheckerService");
 	}
 
 	/**
@@ -59,98 +46,6 @@ public class SeatCheckerService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		Timber.i("Service started");
 
-        //TODO
-//		//Check the grades if needed
-//		if(Load.gradeChecker()){
-//			checkGrades();
-//		}
-//
-//		//Check the seats if needed
-//		if(Load.seatChecker()){
-//			checkSeats();
-//		}
-	}
-	
-	/**
-	 * Downloads the user's transcript to check for new or changed grades
-	 */
-	private void checkGrades(){
-        //TODO
-//		String html = new DownloaderThread(this, McGillManager.TRANSCRIPT_URL).execute();
-        String html = null;
-
-		if(html != null){
-			//Get the previous grades
-            //TODO
-			Transcript oldTranscript = null;
-
-			//Parse the new transcript and get it
-            //TODO
-//			Parser.parseTranscript(html);
-            //TODO
-			Transcript newTranscript = null;
-
-			//Check if the CGPA has changed, alert the user if it has
-			if(Math.abs(oldTranscript.getCGPA() - newTranscript.getCGPA()) >= 0.01){
-                //TODO
-				Intent intent = new Intent(this, SplashActivity.class);
-//						.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT);
-				//TODO Use String here
-				createNotification(intent, "Your new CGPA is " + newTranscript.getCGPA(),
-						GRADES_ID);
-				return;
-			}
-
-			//Go through the new transcript's semesters
-            // TODO
-//			for(Semester semester : newTranscript.getSemesters()){
-//				//Find the equivalent semester on the old transcript
-//				//  Don't use it if there aren't the same amount of courses (during add/drop)
-//				Semester foundSemester = null;
-//				for(Semester oldSemester : oldTranscript.getSemesters()){
-//					if(oldSemester.getTerm().equals(semester.getTerm()) &&
-//							oldSemester.getCourses().size() == semester.getCourses().size()){
-//						foundSemester = oldSemester;
-//						//Go through the new semester's courses
-//						for(TranscriptCourse course : semester.getCourses()){
-//							//Find an equivalent in the old semester
-//							TranscriptCourse foundCourse = null;
-//							for(TranscriptCourse oldCourse : oldSemester.getCourses()){
-//								if(course.getCourseCode().equals(oldCourse.getCourseCode())){
-//									foundCourse = oldCourse;
-//									//Alert the user if the grade has changed
-//									if(!course.getUserGrade().equals(oldCourse.getUserGrade())){
-//                                        //TODO
-//										Intent intent = new Intent(this, SplashActivity.class)
-////												.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT)
-//												.putExtra(Constants.TERM, semester.getTerm());
-//										//TODO Use a String
-//										createNotification(intent, "Your Grades are updated",
-//												GRADES_ID);
-//									}
-//									break;
-//								}
-//							}
-//							//If the course has been found, we can remove it from the old transcript
-//							if(foundCourse != null){
-//								oldSemester.getCourses().remove(foundCourse);
-//							}
-//						}
-//						break;
-//					}
-//				}
-//				//If the semester has been found, we can remove it from the old transcript
-//				if(foundSemester != null){
-//					oldTranscript.getSemesters().remove(foundSemester);
-//				}
-//			}
-		}
-	}
-	
-	/**
-	 * Queries minerva to check for new seat openings
-	 */
-	private void checkSeats(){
 		//TODO Do this better: merge with WishlistActivity ? When do we send a notification ?
 //		List<Course> wishlistClasses = App.getWishlist();
 //
