@@ -445,8 +445,16 @@ public class SplashActivity extends BaseActivity {
             progressContainer.setVisibility(View.GONE);
 
             if (e == null) {
-                //Connection successful: home page
-                startActivity(new Intent(SplashActivity.this, homepageManager.getActivity()));
+                // Connection successful: home page (or specific page if there's one in the intent
+                int page = getIntent().getIntExtra(Constants.ID, -1);
+                Class aClass;
+                if (page != -1) {
+                    //noinspection WrongConstant
+                    aClass = homepageManager.getActivity(page);
+                } else {
+                    aClass = homepageManager.getActivity();
+                }
+                startActivity(new Intent(SplashActivity.this, aClass));
                 finish();
             } else {
                 //Connection not successful: login
