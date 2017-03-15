@@ -16,6 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.util.dagger;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -87,5 +88,14 @@ public class AppModule {
     @Provides
     InputMethodManager provideInputMethodManager(Context context) {
         return (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+    }
+
+    /**
+     * @param context App context
+     * @return {@link NotificationManager} instance
+     */
+    @Provides
+    NotificationManager provideNotificationManager(Context context) {
+        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 }

@@ -41,6 +41,7 @@ import ca.appvelopers.mcgillmobile.ui.wishlist.WishlistHelper;
 import ca.appvelopers.mcgillmobile.util.background.BootReceiver;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.manager.McGillManager;
+import ca.appvelopers.mcgillmobile.util.service.GradeCheckerService;
 import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
 import dagger.Component;
@@ -80,6 +81,8 @@ public interface BaseComponent {
 
     void inject(ConfigDownloader downloader);
     void inject(UserDownloader downloader);
+
+    void inject(GradeCheckerService service);
 
     void inject(WishlistHelper helper);
 }

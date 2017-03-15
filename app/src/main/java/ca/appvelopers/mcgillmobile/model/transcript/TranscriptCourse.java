@@ -99,6 +99,13 @@ public class TranscriptCourse extends BaseModel implements Serializable {
     /* GETTERS */
 
     /**
+     * @return Course Id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
      * @return Course term
      */
     public Term getTerm() {
