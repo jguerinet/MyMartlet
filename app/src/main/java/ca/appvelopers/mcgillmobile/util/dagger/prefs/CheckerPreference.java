@@ -16,6 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.util.dagger.prefs;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
@@ -60,5 +61,30 @@ public class CheckerPreference extends StringPreference {
     public String get() {
         //noinspection WrongConstant
         return super.get();
+    }
+
+    /**
+     * @param context   App context
+     * @param frequency Frequency type
+     * @return Title String for the given frequency
+     */
+    public static String getFrequencyString(Context context, @Frequency String frequency) {
+        // TODO Strings
+        switch (frequency) {
+            case CheckerPreference.NEVER:
+                return "Never";
+            case CheckerPreference.WEEKLY:
+                return "Weekly";
+            case CheckerPreference.DAILY:
+                return "Daily";
+            case CheckerPreference.TWELVE_HOURS:
+                return "Every 12 hours";
+            case CheckerPreference.SIX_HOURS:
+                return "Every 6 hours";
+            case CheckerPreference.HOURLY:
+                return "Hourly";
+            default:
+                throw new IllegalArgumentException("Unknown frequency: " + frequency);
+        }
     }
 }

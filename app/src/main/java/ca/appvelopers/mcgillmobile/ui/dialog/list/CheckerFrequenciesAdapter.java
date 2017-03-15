@@ -16,6 +16,7 @@
 
 package ca.appvelopers.mcgillmobile.ui.dialog.list;
 
+import android.content.Context;
 import android.util.Pair;
 
 import com.guerinet.utils.dialog.ListDialogInterface;
@@ -45,17 +46,18 @@ public abstract class CheckerFrequenciesAdapter implements ListDialogInterface {
     /**
      * Default Constructor
      *
+     * @param context     App context
      * @param checkerPref {@link CheckerPreference} instance this is for
      */
-    protected CheckerFrequenciesAdapter(CheckerPreference checkerPref) {
+    protected CheckerFrequenciesAdapter(Context context, CheckerPreference checkerPref) {
         this.checkerPref = checkerPref;
         frequencies = new ArrayList<>();
-        addFrequency(CheckerPreference.NEVER);
-        addFrequency(CheckerPreference.WEEKLY);
-        addFrequency(CheckerPreference.DAILY);
-        addFrequency(CheckerPreference.TWELVE_HOURS);
-        addFrequency(CheckerPreference.SIX_HOURS);
-        addFrequency(CheckerPreference.HOURLY);
+        addFrequency(context, CheckerPreference.NEVER);
+        addFrequency(context, CheckerPreference.WEEKLY);
+        addFrequency(context, CheckerPreference.DAILY);
+        addFrequency(context, CheckerPreference.TWELVE_HOURS);
+        addFrequency(context, CheckerPreference.SIX_HOURS);
+        addFrequency(context, CheckerPreference.HOURLY);
     }
 
     @Override
@@ -83,34 +85,12 @@ public abstract class CheckerFrequenciesAdapter implements ListDialogInterface {
     }
 
     /**
+     * @param context   App context
      * @param frequency {@link CheckerPreference.Frequency} to add
      */
-    private void addFrequency(@CheckerPreference.Frequency String frequency) {
-        String title;
-        // TODO Strings
-        switch (frequency) {
-            case CheckerPreference.NEVER:
-                title = "Never";
-                break;
-            case CheckerPreference.WEEKLY:
-                title = "Weekly";
-                break;
-            case CheckerPreference.DAILY:
-                title = "Daily";
-                break;
-            case CheckerPreference.TWELVE_HOURS:
-                title = "Every 12 hours";
-                break;
-            case CheckerPreference.SIX_HOURS:
-                title = "Every 6 hours";
-                break;
-            case CheckerPreference.HOURLY:
-                title = "Hourly";
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown frequency: " + frequency);
-        }
-        frequencies.add(new Pair<>(frequency, title));
+    private void addFrequency(Context context, @CheckerPreference.Frequency String frequency) {
+        frequencies.add(new Pair<>(frequency,
+                CheckerPreference.getFrequencyString(context, frequency)));
     }
 
     /**
