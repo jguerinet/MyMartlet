@@ -123,6 +123,7 @@
         </receiver>
 
         <service android:name=".util.service.GradeCheckerService" />
+        <service android:name=".util.service.SeatCheckerService" />
 
         <!-- Facebook -->
         <meta-data
