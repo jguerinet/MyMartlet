@@ -126,7 +126,7 @@ public abstract class UserDownloader extends Thread {
                         List<Course> courses = mcGillService.schedule(term).execute().body();
                         CoursesDB.setCourses(term, courses);
                     } catch (IOException e) {
-                        handleException(e, term.getId());
+                        handleException(e, term.toString());
                     }
                 }
             }

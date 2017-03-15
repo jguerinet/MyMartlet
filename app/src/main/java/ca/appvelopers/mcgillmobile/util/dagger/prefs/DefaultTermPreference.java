@@ -53,7 +53,7 @@ public class DefaultTermPreference extends StringPreference {
      */
     public void setTerm(Term term) {
         defaultTerm = term;
-        set(term.getId());
+        set(term.toString());
     }
 
     /**

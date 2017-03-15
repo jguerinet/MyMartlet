@@ -77,7 +77,7 @@ public class RegisterTermPreference extends StringPreference {
         // Create the String to store in the SharedPrefs
         String termsString = "";
         for (int i = 0; i < terms.size(); i ++) {
-            termsString += terms.get(i).getId();
+            termsString += terms.get(i).toString();
 
             // Add comma if this isn't the last item
             if (i != terms.size() - 1) {

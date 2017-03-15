@@ -22,7 +22,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
 
-import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptCoursesDB;
 
@@ -36,14 +35,10 @@ import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptCoursesDB;
 public class TranscriptCourse extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
-     * Self-managed Id, used as a primary key
+     * Id, used as a primary key (term + course code)
      */
-    @PrimaryKey(autoincrement = true)
-    int id;
-    /**
-     * Id of the {@link Semester} this is for
-     */
-    int semesterId;
+    @PrimaryKey
+    String id;
     /**
      * Course term
      */
@@ -77,7 +72,6 @@ public class TranscriptCourse extends BaseModel implements Serializable {
     /**
      * Default Constructor
      *
-     * @param semesterId   Id of the semester this belongs to
      * @param term         Course term
      * @param code         Course code
      * @param title        Course title
@@ -85,9 +79,9 @@ public class TranscriptCourse extends BaseModel implements Serializable {
      * @param userGrade    User's grade
      * @param averageGrade Course average grade
      */
-    public TranscriptCourse(int semesterId, Term term, String code, String title, double credits,
-            String userGrade, String averageGrade) {
-        this.semesterId = semesterId;
+    public TranscriptCourse(Term term, String code, String title, double credits, String userGrade,
+            String averageGrade) {
+        this.id = term.toString() + code;
         this.term = term;
         this.code = code;
         this.title = title;
@@ -101,7 +95,7 @@ public class TranscriptCourse extends BaseModel implements Serializable {
     /**
      * @return Course Id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 

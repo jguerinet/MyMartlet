@@ -55,7 +55,7 @@ public class TranscriptConverter extends Converter.Factory
 
     @Override
     public TranscriptResponse convert(ResponseBody value) throws IOException {
-        //Parse ResponseBody HTML String into a document
+        // Parse ResponseBody HTML String into a document
         Elements rows = Jsoup.parse(value.string()).getElementsByClass("fieldmediumtext");
 
         /*
@@ -67,38 +67,37 @@ public class TranscriptConverter extends Converter.Factory
         List<TranscriptCourse> courses = new ArrayList<>();
         double cgpa = -1;
         double totalCredits = -1;
-        int semesterId = 0;
 
         for (int index = 0; index < rows.size(); index ++) {
             String text = rows.get(index).text();
-            //Check the text at the start of the row
-            //If it matches one of the tokens, take the corresponding data out
-            //of one of the following rows, depending on the HTML layout
+            // Check the text at the start of the row
+            // If it matches one of the tokens, take the corresponding data out
+            //  of one of the following rows, depending on the HTML layout
 
             if (text.startsWith("CUM GPA")) {
-                //CGPA
+                // CGPA
                 try {
                     cgpa = Double.parseDouble(rows.get(index + 1).text());
                 } catch (NumberFormatException e) {
                     Timber.e(e, "Transcript Parse Error: CGPA");
                 }
             } else if(text.startsWith("TOTAL CREDITS:")) {
-                //Credits
+                // Credits
                 try {
                     totalCredits = Double.parseDouble(rows.get(index + 1).text());
                 } catch (NumberFormatException e) {
                     Timber.e(e, "Transcript Parse Error: Total Credits");
                 }
             } else if (isSemesterStart(text)) {
-                //Semester
+                // Semester
 
-                //Divide the semester info into separate items
+                // Divide the semester info into separate items
                 String[] semesterItems = text.trim().split("\\s+");
 
                 @Season.Type String season;
                 String yearString;
 
-                //Find the right season and year, making sure to get the right array index
+                // Find the right season and year, making sure to get the right array index
                 if (text.startsWith(Season.FALL) || text.startsWith(Season.WINTER) ||
                         text.startsWith(Season.SUMMER) ) {
                     //Normal Semester that starts with a season name
@@ -116,12 +115,13 @@ public class TranscriptConverter extends Converter.Factory
 
                 int year = -1;
                 try {
-                    //Parse the semester year
+                    // Parse the semester year
                     year = Integer.valueOf(yearString);
                 } catch (NumberFormatException e) {
                     Timber.e(e, "Transcript Parse Error: Semester Year");
                 }
 
+                Term term = new Term(season, year);
                 String program = "";
                 String bachelor = "";
                 double termCredits = 0;
@@ -129,50 +129,50 @@ public class TranscriptConverter extends Converter.Factory
                 boolean fullTime = false;
                 boolean hasCourse = false;
 
-                //Increment the index before starting the semester loop
+                // Increment the index before starting the semester loop
                 int semesterIndex = index + 1;
 
-                //Search rows until the end of the semester is reached
-                //Conditions for end of semester:
-                //1. End of transcript is reached
-                //2. The words "Fall" "Summer" or "Winter" appear
+                // Search rows until the end of the semester is reached
+                // Conditions for end of semester:
+                //  1. End of transcript is reached
+                //  2. The words "Fall" "Summer" or "Winter" appear
                 while (true) {
-                    //Get the current data row text
+                    // Get the current data row text
                     text = rows.get(semesterIndex).text();
 
                     if (text.contains("Granted")) {
-                        //Student has graduated
+                        // Student has graduated
                         break;
                     } else if (text.startsWith("Dip") || text.startsWith("Bachelor") ||
                             text.startsWith("Master") || text.startsWith("Doctor")) {
-                        //Semester Info
+                        // Semester Info
 
-                        //Example string:
-                        //"Bachelor&nbps;of&nbsp;Engineering"<br>
-                        //"Full-time&nbsp;Year&nbsp;0"<br>
-                        //"Electrical&nbsp;Engineering"
+                        // Example string:
+                        //  "Bachelor&nbps;of&nbsp;Engineering"<br>
+                        //  "Full-time&nbsp;Year&nbsp;0"<br>
+                        //  "Electrical&nbsp;Engineering"
 
                         String[] degreeDetails = text.split(" ");
                         bachelor = degreeDetails[0];
 
-                        //Check if student is full time
+                        // Check if student is full time
                         if (degreeDetails[1].startsWith("Full-time")) {
                             fullTime = true;
                         }
 
-                        //Skip first two lines: these are for bachelor and full time/part time
+                        // Skip first two lines: these are for bachelor and full time/part time
                         for (int i = 2; i < degreeDetails.length; i ++) {
                             program += degreeDetails[i] + " ";
                         }
                     } else if (text.startsWith("TERM GPA")) {
-                        //Term GPA
+                        // Term GPA
                         try {
                             termGPA = Double.parseDouble(rows.get(semesterIndex + 1).text());
                         } catch (NumberFormatException e) {
                             Timber.e(e, "Transcript Parse Error: Term GPA");
                         }
                     } else if (text.startsWith("TERM TOTALS:")) {
-                        //Term Credits
+                        // Term Credits
                         try {
                             termCredits = Double.parseDouble(rows.get(semesterIndex + 2).text());
                         } catch (NumberFormatException e) {
@@ -181,27 +181,27 @@ public class TranscriptConverter extends Converter.Factory
                     } else if(text.matches("[A-Za-z]{4} [0-9]{3}.*") ||
                             text.matches("[A-Za-z]{3}[0-9] [0-9]{3}") ||
                             text.startsWith("Credits/Exemptions")) {
-                        //Course Info
+                        // Course Info
                         String title = "";
                         String code = "";
                         String grade = "N/A";
                         String averageGrade = "";
                         double credits = -1;
 
-                        //Extract course information if row contains a course code
-                        //Regex looks for a string in the form "ABCD ###"
+                        // Extract course information if row contains a course code
+                        //  Regex looks for a string in the form "ABCD ###"
                         if (text.matches("[A-Za-z]{4} [0-9]{3}.*") ||
                                 text.matches("[A-Za-z]{3}[0-9] [0-9]{3}")) {
                             if (text.matches("[A-Za-z]{4} [0-9]{3}")) {
-                                //One semester courses are in the form ABCD ###
+                                // One semester courses are in the form ABCD ###
                                 code = text;
                             } else if (text.matches("[A-Za-z]{3}[0-9] [0-9]{3}")) {
-                                //Some courses have the form ABC#
+                                // Some courses have the form ABC#
                                 code = text;
                             } else {
-                                //Multi semester courses are in the form ABCD ###D#
+                                // Multi semester courses are in the form ABCD ###D#
                                 try {
-                                    //Extract first seven characters from string
+                                    // Extract first seven characters from string
                                     code = text.substring(0, 10);
                                 } catch (Exception e) {
                                     Timber.e(e, "Transcript Parse Error: Course Code");
@@ -210,63 +210,64 @@ public class TranscriptConverter extends Converter.Factory
 
                             title = rows.get(semesterIndex + 2).text();
 
-                            //Failed courses are missing the earned credits row
-                            //Check row to see if earned credit exists
+                            // Failed courses are missing the earned credits row
+                            //  Check row to see if earned credit exists
                             try {
                                 credits = Double.parseDouble(rows.get(semesterIndex + 6).text());
                             } catch (Exception ignored) {}
 
-                            //Obtain user's grade
+                            // Obtain user's grade
                             grade = rows.get(semesterIndex + 4).text();
 
-                            //Check for deferred classes
+                            // Check for deferred classes
                             if (grade.equals("L")) {
                                 grade = rows.get(semesterIndex + 13).text();
                             }
 
-                            //If average grades haven't been released on minerva, index will be null
+                            // If average grades haven't been released on Minerva,
+                            //  index will be null
                             averageGrade = "";
                             try {
                                 if (rows.get(semesterIndex + 7).text()
                                         .matches("[ABCDF].|[ABCDF]")) {
-                                    //Regex looks for a letter grade
+                                    // Regex looks for a letter grade
                                     averageGrade = rows.get(semesterIndex+ 7).text();
                                 } else if (rows.get(semesterIndex+ 6).text()
                                         .matches("[ABCDF].|[ABCDF]")) {
-                                    //Failed course, average grade appears one row earlier
+                                    // Failed course, average grade appears one row earlier
                                     averageGrade = rows.get(semesterIndex + 6).text();
                                 }
                             } catch (IndexOutOfBoundsException ignored) {}
                         } else {
-                            //Extract transfer credit information
+                            // Extract transfer credit information
                             if (!rows.get(semesterIndex + 3).text().matches("[A-Za-z]{4}.*")) {
-                                //Individual transferred courses not listed
+                                // Individual transferred courses not listed
                                 code = rows.get(semesterIndex + 2).text();
 
-                                //Extract the number of credits granted
+                                // Extract the number of credits granted
                                 try {
                                     credits = getCredits(code);
                                 } catch (Exception e) {
                                     Timber.e(e, "Transcript Parse Error: Credits");
                                 }
                             } else {
-                                //Individual transferred courses listed
+                                // Individual transferred courses listed
                                 try {
-                                    //Try checking for the number of credits transferred per course
+                                    // Try checking for the number of credits transferred per course
                                     code = rows.get(semesterIndex + 2).text();
                                     title = rows.get(semesterIndex + 3).text() + " " +
                                             rows.get(semesterIndex + 4).text();
                                     credits = Double.parseDouble(rows.get(semesterIndex + 5)
                                             .text());
                                 } catch (NumberFormatException e) {
-                                    //Number of credits per course not listed
+                                    // Number of credits per course not listed
                                     try {
                                         code = rows.get(semesterIndex+ 2).text();
                                         title = "";
 
                                         credits = getCredits(code);
 
-                                        //Add the course codes for transferred courses
+                                        // Add the course codes for transferred courses
                                         int addedIndex = 3;
                                         boolean first = true;
                                         while (rows.get(semesterIndex +
@@ -291,19 +292,19 @@ public class TranscriptConverter extends Converter.Factory
 
                         // There is at least one course
                         hasCourse = true;
-                        courses.add(new TranscriptCourse(semesterId, new Term(season, year), code,
-                                title, credits, grade, averageGrade));
+                        courses.add(new TranscriptCourse(term, code, title, credits, grade,
+                                averageGrade));
                     }
 
-                    //Breaks the loop if the next semester is reached
+                    // Breaks the loop if the next semester is reached
                     if (isSemesterStart(text)) {
                         break;
                     }
 
-                    //Increment the index
+                    // Increment the index
                     semesterIndex ++;
 
-                    //Reached the end of the transcript, break loop
+                    // Reached the end of the transcript, break loop
                     try {
                         rows.get(semesterIndex);
                     } catch (IndexOutOfBoundsException e) {
@@ -314,11 +315,9 @@ public class TranscriptConverter extends Converter.Factory
                 // Check if there are any courses associated with the semester
                 //  If not, don't add the semester to the list of semesters
                 if (hasCourse) {
-                    semesters.add(new Semester(semesterId, new Term(season, year), program,
-                            bachelor, termCredits, termGPA, fullTime));
-                    semesterId ++;
+                    semesters.add(new Semester(term, program, bachelor, termCredits, termGPA,
+                            fullTime));
                 }
-
             }
         }
 
@@ -341,7 +340,7 @@ public class TranscriptConverter extends Converter.Factory
      *
      * @param credits String to extract the credits from
      * @return Number of credits
-     * @throws Exception
+     * @throws Exception Thrown if an error occurred while getting the credits
      */
     private double getCredits(String credits) throws Exception {
         credits = credits.replaceAll("\\s", "");

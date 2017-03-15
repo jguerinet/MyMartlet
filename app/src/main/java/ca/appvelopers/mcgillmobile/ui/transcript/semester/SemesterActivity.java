@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
 import ca.appvelopers.mcgillmobile.model.Semester_Table;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.BaseActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -86,7 +87,8 @@ public class SemesterActivity extends BaseActivity {
         // Try finding the semester
         Semester semester = SQLite.select()
                 .from(Semester.class)
-                .where(Semester_Table.id.eq(getIntent().getIntExtra(Constants.ID, -1)))
+                .where(Semester_Table.term.eq(Term.parseTerm(getIntent()
+                        .getStringExtra(Constants.ID))))
                 .querySingle();
 
         if (semester == null) {
@@ -110,7 +112,7 @@ public class SemesterActivity extends BaseActivity {
 
         // Set up the courses list
         list.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SemesterAdapter(semester.getId());
+        adapter = new SemesterAdapter(semester.getTerm());
         list.setAdapter(adapter);
     }
 

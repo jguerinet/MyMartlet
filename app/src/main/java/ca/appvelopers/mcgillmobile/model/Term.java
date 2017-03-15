@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,16 +32,17 @@ public class Term implements Serializable {
     /**
      * Term season
      */
-    protected @Season.Type String season;
+    @Season.Type
+    private String season;
     /**
      * Term year
      */
-    protected int year;
+    private int year;
 
     /**
      * Moshi Constructor
      */
-    protected Term() {}
+    Term() {}
 
     /**
      * Default Constructor
@@ -55,13 +56,6 @@ public class Term implements Serializable {
     }
 
     /* GETTERS */
-
-    /**
-     * @return Term season
-     */
-    public @Season.Type String getSeason() {
-        return season;
-    }
 
     /**
      * @return Term year
@@ -80,24 +74,17 @@ public class Term implements Serializable {
      */
     @SuppressWarnings("SimplifiableIfStatement")
     public boolean isAfter(Term term) {
-        if (year > term.getYear()) {
-            //Year after
+        if (year > term.year) {
+            // Year after
             return true;
-        } else if (year < term.getYear()) {
-            //Year Before
+        } else if (year < term.year) {
+            // Year Before
             return false;
         } else {
-            //Same year: check the semesters
+            // Same year: check the semesters
             return Integer.valueOf(Season.getSeasonNumber(season)) >
-                    Integer.valueOf(Season.getSeasonNumber(term.getSeason()));
+                    Integer.valueOf(Season.getSeasonNumber(term.season));
         }
-    }
-
-    /**
-     * @return Term Id, for parsing errors
-     */
-    public String getId() {
-        return season + " " + year;
     }
 
     /**
@@ -123,7 +110,7 @@ public class Term implements Serializable {
         }
 
         Term term = (Term) object;
-        return season.equals(term.getSeason()) && year == term.getYear();
+        return season.equals(term.season) && year == term.year;
     }
 
     /* STATIC HELPERS */
@@ -132,22 +119,14 @@ public class Term implements Serializable {
      * @param term Term in String format (Ex: 199901 would be Winter 1999)
      * @return Corresponding {@link Term}
      */
-    public static Term parseMcGillTerm(String term) {
+    public static Term parseTerm(String term) {
+        if (term == null) {
+            return null;
+        }
         //Split it into the year and the season
         int year = Integer.parseInt(term.substring(0, 4));
         @Season.Type String season = Season.getMcGillSeason(term.substring(4));
         return new Term(season, year);
-    }
-
-    /**
-     * Parses a term from a String
-     *
-     * @param term The term String
-     * @return The parsed term
-     */
-    public static Term parseTerm(String term) {
-        String[] termParts = term.trim().split(" ");
-        return new Term(Season.getSeason(termParts[0]), Integer.valueOf(termParts[1]));
     }
 
     /**

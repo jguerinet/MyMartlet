@@ -30,7 +30,7 @@ public class TermTypeConverter extends TypeConverter<String, Term> {
 
     @Override
     public String getDBValue(Term model) {
-        return model.getId();
+        return model.toString();
     }
 
     @Override

@@ -37,13 +37,9 @@ import ca.appvelopers.mcgillmobile.util.dbflow.databases.SemestersDB;
 public class Semester extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
-     * Id if this semester
-     */
-    @PrimaryKey
-    int id;
-    /**
      * The semester term
      */
+    @PrimaryKey
     Term term;
     /**
      * The user's program for this semester
@@ -74,7 +70,6 @@ public class Semester extends BaseModel implements Serializable {
     /**
      * Default Constructor
      *
-     * @param semesterId   Id of the current semester
      * @param term         Semester term
      * @param program      Semester's program name
      * @param bachelor     Semester's bachelor name
@@ -83,9 +78,8 @@ public class Semester extends BaseModel implements Serializable {
      * @param fullTime     True if the user was a full-time student during this semester,
      *                     false otherwise
      */
-    public Semester(int semesterId, Term term, String program, String bachelor, double credits,
+    public Semester(Term term, String program, String bachelor, double credits,
             double gpa, boolean fullTime) {
-        this.id = semesterId;
         this.term = term;
         this.program = program;
         this.bachelor = bachelor;
@@ -95,13 +89,6 @@ public class Semester extends BaseModel implements Serializable {
     }
 
     /* GETTERS */
-
-    /**
-     * @return Semester Id
-     */
-    public int getId() {
-        return id;
-    }
 
     /**
      * @return Semester term

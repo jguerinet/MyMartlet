@@ -31,6 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Semester;
+import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse;
 import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse_Table;
 
@@ -41,9 +42,9 @@ import ca.appvelopers.mcgillmobile.model.transcript.TranscriptCourse_Table;
  */
 class SemesterAdapter extends RecyclerViewBaseAdapter {
     /**
-     * Id of the semester we are currently looking at
+     * {@link Term} of the semester we are currently looking at
      */
-    private final int semesterId;
+    private final Term term;
     /**
      * List of courses
      */
@@ -52,11 +53,11 @@ class SemesterAdapter extends RecyclerViewBaseAdapter {
     /**
      * Default Constructor
      *
-     * @param semesterId Id of the {@link Semester} we are currently looking at
+     * @param term {@link Term} of the {@link Semester} we are looking at
      */
-    SemesterAdapter(int semesterId) {
+    SemesterAdapter(Term term) {
         super(null);
-        this.semesterId = semesterId;
+        this.term = term;
         this.courses = new ArrayList<>();
     }
 
@@ -78,7 +79,7 @@ class SemesterAdapter extends RecyclerViewBaseAdapter {
         // Get all of the courses from the DB
         SQLite.select()
                 .from(TranscriptCourse.class)
-                .where(TranscriptCourse_Table.semesterId.eq(semesterId))
+                .where(TranscriptCourse_Table.term.eq(term))
                 .async()
                 .queryListResultCallback((transaction, tResult) -> {
                     if (tResult == null) {
