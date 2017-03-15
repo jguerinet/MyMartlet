@@ -122,7 +122,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".util.background.CheckerService" />
+        <service android:name=".util.service.GradeCheckerService" />
 
         <!-- Facebook -->
         <meta-data

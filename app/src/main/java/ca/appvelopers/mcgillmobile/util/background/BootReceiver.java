@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
+import ca.appvelopers.mcgillmobile.util.service.GradeCheckerService;
 
 /**
  * Automatically (re)starts the alarm if needed when the device is rebooted or the user opts in.
@@ -119,7 +120,7 @@ public class BootReceiver extends BroadcastReceiver {
 	 * @return The pending intent
 	 */
 	private static PendingIntent getPendingIntent(Context context){
-		Intent intent = new Intent(context, CheckerService.class);
+		Intent intent = new Intent(context, GradeCheckerService.class);
 		return PendingIntent.getService(context, 0, intent, 0);
 	}
 }
