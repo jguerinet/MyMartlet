@@ -26,11 +26,10 @@ buildscript {
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
     }
 }
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'io.fabric'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -62,7 +61,7 @@ android {
 
     defaultConfig {
         applicationId "ca.appvelopers.mcgillmobile"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 25
         versionName "2.3.2"
@@ -119,40 +118,40 @@ android.buildTypes.each { type ->
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:support-v4:25.3.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
-    compile 'com.facebook.android:facebook-android-sdk:4.15.0'
-    compile "com.github.Raizlabs.DBFlow:dbflow:3.1.1"
-    compile "com.github.Raizlabs.DBFlow:dbflow-core:3.1.1"
-    apt "com.github.Raizlabs.DBFlow:dbflow-processor:3.1.1"
-    compile 'com.google.android.gms:play-services-analytics:9.4.0'
-    compile 'com.google.android.gms:play-services-maps:9.4.0'
-    compile 'com.google.dagger:dagger:2.6.1'
-    apt 'com.google.dagger:dagger-compiler:2.6.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.20.0'
+    compile 'com.github.Raizlabs.DBFlow:dbflow:4.0.0-beta5'
+    compile 'com.github.Raizlabs.DBFlow:dbflow-core:4.0.0-beta5'
+    annotationProcessor 'com.github.Raizlabs.DBFlow:dbflow-processor:4.0.0-beta5'
+    compile 'com.google.android.gms:play-services-analytics:10.2.1'
+    compile 'com.google.android.gms:play-services-maps:10.2.1'
+    compile 'com.google.dagger:dagger:2.10'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.guerinet:android-utils:1.2.0'
-    compile 'com.guerinet:form-generator:2.2.3'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
-    compile 'com.jakewharton.timber:timber:4.3.0'
-    compile 'com.squareup.moshi:moshi:1.2.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.okio:okio:1.10.0'
+    compile 'com.guerinet:android-utils:1.2.1'
+    compile 'com.guerinet:form-generator:3.1.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+    compile 'com.jakewharton.timber:timber:4.5.1'
+    compile 'com.squareup.moshi:moshi:1.4.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okio:okio:1.11.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile('com.twitter.sdk.android:twitter:2.0.0@aar') {
+    compile 'com.squareup.retrofit2:converter-moshi:2.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true;
     }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
-    compile 'org.jsoup:jsoup:1.9.1'
+    compile 'org.jsoup:jsoup:1.10.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -90,7 +90,8 @@ public class SettingsActivity extends DrawerActivity {
         FormGenerator fg = FormGenerator.bind(this, container);
 
         // Language
-        fg.text(languagePref.getString())
+        fg.text()
+                .text(languagePref.getString())
                 .leftIcon(R.drawable.ic_language)
                 .onClick(item -> DialogUtils.list(this, R.string.settings_language,
                         new LanguagesAdapter(this) {
@@ -113,14 +114,16 @@ public class SettingsActivity extends DrawerActivity {
                 .build();
 
         // 24 hour time preference
-        fg.aSwitch(R.string.settings_twentyfourhours)
+        fg.aSwitch()
+                .text(R.string.settings_twentyfourhours)
                 .leftIcon(R.drawable.ic_clock)
                 .checked(twentyFourHourPref.get())
                 .onCheckChanged((buttonView, isChecked) -> twentyFourHourPref.set(isChecked))
                 .build();
 
         // Homepage choice
-        fg.text(homepageManager.getTitleString())
+        fg.text()
+                .text(homepageManager.getTitleString())
                 .leftIcon(R.drawable.ic_phone_android)
                 .onClick(item -> DialogUtils.list(this, R.string.settings_homepage_title,
                         new HomepagesAdapter(this) {
@@ -139,26 +142,30 @@ public class SettingsActivity extends DrawerActivity {
                 .build();
 
         // Statistics
-        fg.aSwitch(R.string.settings_statistics)
+        fg.aSwitch()
+                .text(R.string.settings_statistics)
                 .leftIcon(R.drawable.ic_trending_up)
                 .checked(statsPref.get())
                 .onCheckChanged((buttonView, isChecked) -> statsPref.set(isChecked))
                 .build();
 
         // Help
-        fg.text(R.string.title_help)
+        fg.text()
+                .text(R.string.title_help)
                 .leftIcon(R.drawable.ic_help)
                 .onClick(item -> startActivity(new Intent(this, HelpActivity.class)))
                 .build();
 
         // About
-        fg.text(R.string.title_about)
+        fg.text()
+                .text(R.string.title_about)
                 .leftIcon(R.drawable.ic_info)
                 .onClick(item -> startActivity(new Intent(this, AboutActivity.class)))
                 .build();
 
         // Bug Report
-        fg.text(R.string.title_report_bug)
+        fg.text()
+                .text(R.string.title_report_bug)
                 .leftIcon(R.drawable.ic_bug_report)
                 .onClick(item -> {
                     analytics.sendEvent("About", "Report a Bug");

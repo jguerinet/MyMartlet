@@ -118,13 +118,15 @@ public class WalkthroughAdapter extends PagerAdapter {
             FormGenerator fg = FormGenerator.bind(context, container);
 
             // HomepageManager Prompt
-            fg.text(R.string.walkthrough_homepage)
+            fg.text()
+                    .text(R.string.walkthrough_homepage)
                     .gravity(Gravity.CENTER)
                     .padding(context.getResources().getDimensionPixelOffset(R.dimen.padding_small))
                     .build();
 
             // HomepageManager
-            fg.text(homepageManager.getTitleString())
+            fg.text()
+                    .text(homepageManager.getTitleString())
                     .leftIcon(R.drawable.ic_phone_android)
                     .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
                     .onClick(item -> DialogUtils.list(context, R.string.settings_homepage_title,
@@ -144,13 +146,15 @@ public class WalkthroughAdapter extends PagerAdapter {
                     .build();
 
             // Faculty Prompt
-            fg.text(R.string.walkthrough_faculty)
+            fg.text()
+                    .text(R.string.walkthrough_faculty)
                     .gravity(Gravity.CENTER)
                     .padding(context.getResources().getDimensionPixelOffset(R.dimen.padding_small))
                     .build();
 
             // Faculty
-            fg.text(R.string.faculty_none)
+            fg.text()
+                    .text(R.string.faculty_none)
                     .leftIcon(R.drawable.ic_mycourses)
                     .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
                     .onClick(item -> DialogUtils.list(context, R.string.faculty_title,

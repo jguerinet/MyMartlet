@@ -372,12 +372,12 @@ public class Course extends BaseModel implements Serializable {
     }
 
     @Override
-    public void save() {
+    public boolean save() {
         // Create the Id from the term and the crn
         setId();
         // Create the day String from the days
         daysString = DayUtils.getDayStrings(getDays());
-        super.save();
+        return super.save();
     }
 
     /**

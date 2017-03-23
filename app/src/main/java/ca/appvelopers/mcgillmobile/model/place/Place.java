@@ -156,7 +156,7 @@ public class Place extends BaseModel implements Serializable {
     }
 
     @Override
-    public void save() {
+    public boolean save() {
         // Create the categories String from the list
         categoriesList = "";
         for (int i = 0; i < categories.size(); i ++) {
@@ -167,7 +167,7 @@ public class Place extends BaseModel implements Serializable {
             }
         }
 
-        super.save();
+        return super.save();
     }
 
     @Override

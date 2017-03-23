@@ -70,12 +70,14 @@ public class HelpActivity extends BaseActivity {
         FormGenerator fg = FormGenerator.bind(this, container);
 
         // EULA
-        fg.text(R.string.title_agreement)
+        fg.text()
+                .text(R.string.title_agreement)
                 .onClick(item -> startActivity(new Intent(this, AgreementActivity.class)))
                 .build();
 
         // Email
-        fg.text(R.string.help_email_walkthrough)
+        fg.text()
+                .text(R.string.help_email_walkthrough)
                 .onClick(item -> {
                     analytics.sendEvent("Help", "McGill Email");
 
@@ -91,17 +93,20 @@ public class HelpActivity extends BaseActivity {
                 .build();
 
         // Help
-        fg.text(R.string.help_walkthrough)
+        fg.text()
+                .text(R.string.help_walkthrough)
                 .onClick(item -> startActivity(new Intent(this, WalkthroughActivity.class)))
                 .build();
 
         // McGill App
-        fg.text(R.string.help_download)
+        fg.text()
+                .text(R.string.help_download)
                 .onClick(item -> Utils.openPlayStoreApp(this, "com.mcgill"))
                 .build();
 
         // Become Beta Tester
-        fg.text(R.string.help_beta_tester)
+        fg.text()
+                .text(R.string.help_beta_tester)
                 .onClick(item -> Utils.openURL(this, "https://betas.to/iRinaygk"))
                 .build();
         
