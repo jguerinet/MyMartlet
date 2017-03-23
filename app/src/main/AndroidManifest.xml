@@ -122,6 +122,10 @@
             </intent-filter>
         </receiver>
 
+        <!-- Services -->
+
+        <service android:name=".util.service.ConfigDownloadService"/>
+
         <service android:name=".util.background.CheckerService" />
 
         <!-- Facebook -->

@@ -21,7 +21,7 @@ import java.util.List;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.place.Category;
 import ca.appvelopers.mcgillmobile.model.place.Place;
-import ca.appvelopers.mcgillmobile.util.thread.ConfigDownloader.Config;
+import ca.appvelopers.mcgillmobile.util.service.ConfigDownloadService;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -38,7 +38,7 @@ public interface ConfigService {
      * @return Config variables
      */
     @GET("config")
-    Call<Config> config(@Header("If-Modified-Since") String ifModifiedSince);
+    Call<ConfigDownloadService.Config> config(@Header("If-Modified-Since") String ifModifiedSince);
 
     /**
      * @param ifModifiedSince If-Modified-Since date to add, null if none
