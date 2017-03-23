@@ -18,6 +18,7 @@ package ca.appvelopers.mcgillmobile.ui.wishlist;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.CourseResult;
+import ca.appvelopers.mcgillmobile.model.CourseResult_Table;
 import ca.appvelopers.mcgillmobile.model.RegistrationError;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
@@ -53,8 +56,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
-
-import static ca.appvelopers.mcgillmobile.R.string.courses_remove_wishlist;
 
 /**
  * Shows the results of the search from the SearchActivity
@@ -72,6 +73,9 @@ public class WishlistHelper {
      */
     @BindView(android.R.id.list)
     RecyclerView list;
+    /**
+     * Add/Remove to/from wishlist button
+     */
     @BindView(R.id.course_wishlist)
     Button wishlistButton;
     /**
@@ -96,10 +100,6 @@ public class WishlistHelper {
      * The adapter for the list of results
      */
     private final WishlistAdapter adapter;
-    /**
-     * The current term
-     */
-    private Term term;
 
     /**
      * Default Constructor
@@ -119,13 +119,26 @@ public class WishlistHelper {
 
         // Change the button text if this is to remove courses
         if (!add) {
-            wishlistButton.setText(courses_remove_wishlist);
+            wishlistButton.setText(R.string.courses_remove_wishlist);
         }
     }
 
-    public void update(Term term, List<CourseResult> courses) {
-        this.term = term;
-        adapter.update(term, courses);
+    /**
+     * Update method for search results
+     *
+     * @param courses List of {@link CourseResult}s to display
+     */
+    public void update(List<CourseResult> courses) {
+        adapter.update(courses);
+    }
+
+    /**
+     * Update method for the wishlist
+     *
+     * @param term {@link Term} that the courses should be in, null if none
+     */
+    public void update(@Nullable Term term) {
+        adapter.update(term);
     }
 
     @OnClick(R.id.course_register)
@@ -162,9 +175,7 @@ public class WishlistHelper {
     }
 
     private void register(final List<CourseResult> courses) {
-        List<Course> theCourses = new ArrayList<>();
-        theCourses.addAll(courses);
-        mcGillService.registration(McGillManager.getRegistrationURL(term, theCourses, false))
+        mcGillService.registration(McGillManager.getRegistrationURL(courses, false))
                 .enqueue(new Callback<List<RegistrationError>>() {
                     @Override
                     public void onResponse(Call<List<RegistrationError>> call,
@@ -176,11 +187,9 @@ public class WishlistHelper {
                             Utils.toast(activity, R.string.registration_success);
 
                             // Remove the courses from the wishlist if they were there
-                            List<CourseResult> wishlist = App.getWishlist();
-                            wishlist.removeAll(courses);
-
-                            // Set the new wishlist
-                            App.setWishlist(wishlist);
+                            for (CourseResult course : courses) {
+                                course.delete();
+                            }
                             return;
                         }
 
@@ -222,18 +231,19 @@ public class WishlistHelper {
             // If there are none, display error message
             toastMessage = activity.getString(R.string.courses_none_selected);
         } else {
-            // If not, it's to add a course to the wishlist
-            //  Get the wishlist courses
-            List<CourseResult> wishlist = App.getWishlist();
-
             if (add) {
                 // Only add it if it's not already part of the wishlist
                 int coursesAdded = 0;
                 for (CourseResult course : courses) {
-                    if (!wishlist.contains(course)) {
-                        wishlist.add(course);
+                    // Check if the course exists already
+                    long count = SQLite.select()
+                            .from(CourseResult.class)
+                            .where(CourseResult_Table.id.eq(course.getId()))
+                            .count();
+                    if (count != 0) {
                         coursesAdded ++;
                     }
+                    course.save();
                 }
 
                 analytics.sendEvent("Search Results", "Add to Wishlist",
@@ -242,14 +252,14 @@ public class WishlistHelper {
                 toastMessage = activity.getString(R.string.wishlist_add, coursesAdded);
             } else {
                 toastMessage = activity.getString(R.string.wishlist_remove, courses.size());
-                wishlist.removeAll(courses);
-                update(term, wishlist);
+                for (Course course : courses) {
+                    course.delete();
+                }
+                // Get the term from the first course (they will all be in the same term)
+                update(courses.get(0).getTerm());
 
                 analytics.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));
             }
-
-            // Save the courses to the App context
-            App.setWishlist(wishlist);
         }
 
         // Visual feedback of what was just done

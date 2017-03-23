@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.github.ben-manes.versions'
+package ca.appvelopers.mcgillmobile.util.dbflow.databases;
 
-buildscript {
-    repositories {
-        maven { url "http://dl.bintray.com/populov/maven" }
-        jcenter()
-    }
+import com.raizlabs.android.dbflow.annotation.Database;
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
-        classpath 'com.google.gms:google-services:3.0.0'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
+import ca.appvelopers.mcgillmobile.model.CourseResult;
 
-allprojects {
-    repositories {
-        maven { url "http://dl.bintray.com/populov/maven" }
-        jcenter()
-    }
+/**
+ * Database that holds a list of {@link CourseResult}s that comprise the user's wishlist
+ * @author Julien Guerinet
+ * @since 2.4.0
+ */
+@Database(name = WishlistDB.NAME, version = WishlistDB.VERSION)
+public class WishlistDB {
+    public static final String NAME = "Wishlist";
+    public static final String FULL_NAME = NAME + ".db";
+    static final int VERSION = 1;
 }

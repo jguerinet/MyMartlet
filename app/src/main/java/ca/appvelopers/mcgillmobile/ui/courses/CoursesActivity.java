@@ -47,9 +47,9 @@ import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.Help;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -267,8 +267,7 @@ public class CoursesActivity extends DrawerActivity {
                     }
 
                     // Run the registration thread
-                    mcGillService.registration(McGillManager.getRegistrationURL(term, courses,
-                            true))
+                    mcGillService.registration(McGillManager.getRegistrationURL(courses, true))
                             .enqueue(new Callback<List<RegistrationError>>() {
                                 @Override
                                 public void onResponse(Call<List<RegistrationError>> call,

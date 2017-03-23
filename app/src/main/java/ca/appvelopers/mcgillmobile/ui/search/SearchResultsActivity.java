@@ -58,9 +58,8 @@ public class SearchResultsActivity extends BaseActivity {
         List<CourseResult> courses =
                 (ArrayList<CourseResult>) getIntent().getSerializableExtra(Constants.COURSES);
 
-        // Set the title
+        // Set the title and the content
         setTitle(term.getString(this));
-
-        new WishlistHelper(this, main, true).update(term, courses);
+        new WishlistHelper(this, main, true).update(courses);
     }
 }

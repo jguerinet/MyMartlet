@@ -33,19 +33,13 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.SocketTimeoutException;
-import java.util.List;
 
 import javax.inject.Inject;
 
-import ca.appvelopers.mcgillmobile.model.CourseResult;
-import ca.appvelopers.mcgillmobile.model.Statement;
-import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.util.dagger.AppModule;
 import ca.appvelopers.mcgillmobile.util.dagger.BaseComponent;
 import ca.appvelopers.mcgillmobile.util.dagger.DaggerBaseComponent;
 import ca.appvelopers.mcgillmobile.util.manager.UpdateManager;
-import ca.appvelopers.mcgillmobile.util.storage.Load;
-import ca.appvelopers.mcgillmobile.util.storage.Save;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
@@ -64,29 +58,10 @@ public class App extends Application {
      */
     @Inject
     UpdateManager updateManager;
-    /**
-     * The app {@link Context}
-     */
-    private static Context context;
-    /**
-     * List of {@link Term}s that the user can currently register in
-     */
-    private static List<Term> registerTerms;
-    /**
-     * User's ebill {@link Statement}s
-     */
-    private static List<Statement> ebill;
-    /**
-     * User's wishlist
-     */
-    private static List<CourseResult> wishlist;
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
-
-        //Set the static context
-        context = this;
 
         // Timber
         if (BuildConfig.DEBUG) {
@@ -152,33 +127,6 @@ public class App extends Application {
      */
     public static BaseComponent component(Context context) {
         return ((App) context.getApplicationContext()).component;
-    }
-
-    /**
-     * @return The app {@link Context}
-     */
-    public static Context getContext() {
-        return context;
-    }
-
-    /**
-     * @return The user's wishlist
-     */
-    public static List<CourseResult> getWishlist(){
-        if(wishlist == null){
-            wishlist = Load.wishlist();
-        }
-        return wishlist;
-    }
-
-    /* SETTERS */
-
-    /**
-     * @param wishlist The user's wishlist
-     */
-    public static void setWishlist(List<CourseResult> wishlist) {
-        App.wishlist = wishlist;
-        Save.wishlist();
     }
 
     /* HELPER METHODS */
