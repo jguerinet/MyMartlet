@@ -188,11 +188,6 @@ public class BaseActivity extends AppCompatActivity {
         toolbarProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-    public McGillService getMcGillService() {
-        //TODO This shouldn't exist
-        return mcGillService;
-    }
-
     /**
      * Checks if we can refresh the information on the page and shows the toolbar progress bar if so
      *
