@@ -33,6 +33,7 @@ import com.guerinet.utils.prefs.BooleanPreference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,7 +44,6 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguagesAdapter;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
@@ -88,30 +88,6 @@ public class SettingsActivity extends DrawerActivity {
         analytics.sendScreen("Settings");
 
         FormGenerator fg = FormGenerator.bind(this, container);
-
-        // Language
-        fg.text()
-                .text(languagePref.getString())
-                .leftIcon(R.drawable.ic_language)
-                .onClick(item -> DialogUtils.list(this, R.string.settings_language,
-                        new LanguagesAdapter(this) {
-                            @Override
-                            public void onLanguageSelected(String language) {
-                                // Don't continue if it's the current language
-                                if (language.equals(languagePref.get())) {
-                                    return;
-                                }
-
-                                languagePref.set(language);
-                                analytics.sendEvent("Settings", "Language", language);
-
-                                // Reload this activity
-                                startActivity(new Intent(SettingsActivity.this,
-                                        SettingsActivity.class));
-                                finish();
-                            }
-                        }))
-                .build();
 
         // 24 hour time preference
         fg.aSwitch()
@@ -183,7 +159,7 @@ public class SettingsActivity extends DrawerActivity {
                     String device = "Device: " + Utils.device();
                     String sdkVersion = "SDK Version: " + Build.VERSION.SDK_INT;
                     String appVersion = "App Version: " + Utils.versionName(this);
-                    String language = "Language: " + languagePref.get();
+                    String language = "Language: " + Locale.getDefault().getLanguage();
 
                     ConnectivityManager manager = (ConnectivityManager)
                             getSystemService(Context.CONNECTIVITY_SERVICE);

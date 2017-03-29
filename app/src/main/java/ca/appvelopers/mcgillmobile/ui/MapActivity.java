@@ -57,8 +57,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,7 +65,6 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.place.Category;
 import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import timber.log.Timber;
 
@@ -111,11 +108,6 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
      */
     @BindView(R.id.map_favorite)
     Button favorite;
-    /**
-     * {@link LanguagePreference} instance
-     */
-    @Inject
-    LanguagePreference languagePreference;
     /**
      * Fragment containing the map
      */
@@ -164,7 +156,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
 
         //Set up the place filter
         fg.text()
-                .text(category.getString(this, languagePref.get()))
+                .text(category.getString(this))
                 .leftIcon(R.drawable.ic_location)
                 .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
                 .onClick(new TextViewFormItem.OnClickListener() {
@@ -177,8 +169,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                                         MapActivity.this.category = type;
 
                                         //Update the text
-                                        item.view().setText(type.getString(MapActivity.this,
-                                                languagePreference.get()));
+                                        item.view().setText(type.getString(MapActivity.this));
 
                                         //Update the filtered places
                                         filterByCategory();

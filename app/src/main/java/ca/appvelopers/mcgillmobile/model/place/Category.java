@@ -23,9 +23,9 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import ca.appvelopers.mcgillmobile.R;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.PlaceCategoriesDB;
 
 /**
@@ -43,7 +43,7 @@ public class Category extends BaseModel implements Serializable {
     /**
      * All of the places
      */
-    public static final int ALL = -1;
+    static final int ALL = -1;
     /**
      * Category Id
      */
@@ -87,15 +87,14 @@ public class Category extends BaseModel implements Serializable {
 
     /**
      * @param context  App context
-     * @param language Current app language
      * @return String to use
      */
-    public String getString(Context context, String language) {
+    public String getString(Context context) {
         if (id == FAVORITES) {
             return context.getString(R.string.map_favorites);
         } else if (id == ALL) {
             return context.getString(R.string.map_all);
-        } else if (language.equals(LanguagePreference.FRENCH)) {
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("fr").getLanguage())) {
             return fr;
         }
         return en;

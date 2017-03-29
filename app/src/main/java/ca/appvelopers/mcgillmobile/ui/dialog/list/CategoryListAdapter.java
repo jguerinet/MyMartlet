@@ -26,11 +26,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.model.place.Category;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 
 /**
  * Displays a list of place types to choose from in the maps section
@@ -46,11 +43,6 @@ public abstract class CategoryListAdapter implements ListDialogInterface {
      * The current choice
      */
     private int currentChoice;
-    /**
-     * The {@link LanguagePreference} instance
-     */
-    @Inject
-    LanguagePreference languagePreference;
 
     /**
      * Default Constructor
@@ -69,8 +61,7 @@ public abstract class CategoryListAdapter implements ListDialogInterface {
 
         // Add them all to the main list
         for (Category category : categories) {
-            this.categories.add(new Pair<>(category, category.getString(context,
-                    languagePreference.get())));
+            this.categories.add(new Pair<>(category, category.getString(context)));
         }
 
         // Sort them
@@ -78,11 +69,11 @@ public abstract class CategoryListAdapter implements ListDialogInterface {
 
         // Add the favorites option
         Category type = new Category(true);
-        this.categories.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
+        this.categories.add(0, new Pair<>(type, type.getString(context)));
 
         // Add the All option
         type = new Category(false);
-        this.categories.add(0, new Pair<>(type, type.getString(context, languagePreference.get())));
+        this.categories.add(0, new Pair<>(type, type.getString(context)));
 
         // Find the index of the current choice
         for (int i = 0; i < this.categories.size(); i ++) {

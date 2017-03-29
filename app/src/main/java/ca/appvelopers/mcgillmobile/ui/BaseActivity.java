@@ -20,10 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -37,8 +34,6 @@ import com.guerinet.utils.Utils;
 
 import junit.framework.Assert;
 
-import java.util.Locale;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -48,7 +43,6 @@ import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.util.Analytics;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.LanguagePreference;
 import ca.appvelopers.mcgillmobile.util.retrofit.McGillService;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
@@ -81,11 +75,6 @@ public class BaseActivity extends AppCompatActivity {
     @Inject
     protected McGillService mcGillService;
     /**
-     * {@link LanguagePreference} instance
-     */
-    @Inject
-    protected LanguagePreference languagePref;
-    /**
      * {@link ClearManager} instance
      */
     @Inject
@@ -108,8 +97,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.component(this).inject(this);
-        // Update locale and config (it sometimes get reset in between activities)
-        updateLocale();
 
         // Add the Minerva broadcast action
         filter.addAction(Constants.BROADCAST_MINERVA);
@@ -125,29 +112,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Update locale and config (it gets reset when a configuration is changed)
-        updateLocale();
-    }
-
-    /**
-     * Updates the locale
-     */
-    private void updateLocale() {
-        Locale locale = new Locale(languagePref.get());
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            config.setLocales(new LocaleList(locale));
-        } else {
-            //noinspection deprecation
-            config.locale = locale;
-        }
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
     }
 
     @Override

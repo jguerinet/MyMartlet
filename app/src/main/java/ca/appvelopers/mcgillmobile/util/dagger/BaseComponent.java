@@ -27,7 +27,6 @@ import ca.appvelopers.mcgillmobile.ui.SplashActivity;
 import ca.appvelopers.mcgillmobile.ui.courses.CoursesActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
-import ca.appvelopers.mcgillmobile.ui.dialog.list.LanguagesAdapter;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.search.SearchActivity;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
@@ -73,7 +72,6 @@ public interface BaseComponent {
 
     void inject(WalkthroughAdapter adapter);
     void inject(HomepagesAdapter adapter);
-    void inject(LanguagesAdapter adapter);
     void inject(CategoryListAdapter adapter);
     void inject(TermDialogHelper helper);
 
