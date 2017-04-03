@@ -16,8 +16,6 @@
 
 package ca.appvelopers.mcgillmobile.util.manager;
 
-import org.threeten.bp.DayOfWeek;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +27,6 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.util.DayUtils;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.retrofit.CourseResultConverter;
@@ -41,7 +38,6 @@ import ca.appvelopers.mcgillmobile.util.retrofit.TranscriptConverter;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -80,24 +76,25 @@ public class McGillManager {
 
 	/**
 	 * Default Constructor
+     *
      * @param loggingInterceptor {@link HttpLoggingInterceptor} instance
      * @param usernamePref       {@link UsernamePreference} instance
      * @param passwordPref       {@link PasswordPreference} instance
      */
     @Inject
-	protected McGillManager(HttpLoggingInterceptor loggingInterceptor,
-            UsernamePreference usernamePref, PasswordPreference passwordPref) {
+	McGillManager(HttpLoggingInterceptor loggingInterceptor, UsernamePreference usernamePref,
+            PasswordPreference passwordPref) {
         this.usernamePref = usernamePref;
         this.passwordPref = passwordPref;
 
-        //Set up the client here in order to have access to the login methods
+        // Set up the client here in order to have access to the login methods
         OkHttpClient client = new OkHttpClient.Builder()
                 .cookieJar(new CookieJar() {
                     private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
                     @Override
                     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                        //Save the cookies per URL host
+                        // Save the cookies per URL host
                         cookieStore.put(url.host(), cookies);
                     }
 
@@ -127,34 +124,31 @@ public class McGillManager {
                     }
                 })
                 .addInterceptor(loggingInterceptor)
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public okhttp3.Response intercept(Chain chain) throws IOException {
-                        //Get the request and the response
-                        Request request = chain.request();
-                        okhttp3.Response response = chain.proceed(request);
+                .addInterceptor(chain -> {
+                    // Get the request and the response
+                    Request request = chain.request();
+                    okhttp3.Response response = chain.proceed(request);
 
-                        //If this is the login request, don't continue
-                        if (request.method().equalsIgnoreCase("POST")) {
-                            //This is counting on the fact that the only POST request is for login
-                            return response;
-                        }
-
-                        //Go through the cookies
-                        for (String cookie: response.headers().values("Set-Cookie")) {
-                            //Check if one of the cookies is an empty Session Id
-                            if (cookie.contains("SESSID=;")) {
-                                //Try logging in (if there's an error, it will be thrown)
-                                login();
-
-                                //Successfully logged them back in, try retrieving the data again
-                                return chain.proceed(request);
-                            }
-                        }
-
-                        //If we have the session Id in the cookies, return the original response
+                    // If this is the login request, don't continue
+                    if (request.method().equalsIgnoreCase("POST")) {
+                        // This is counting on the fact that the only POST request is for login
                         return response;
                     }
+
+                    // Go through the cookies
+                    for (String cookie: response.headers().values("Set-Cookie")) {
+                        // Check if one of the cookies is an empty Session Id
+                        if (cookie.contains("SESSID=;")) {
+                            // Try logging in (if there's an error, it will be thrown)
+                            login();
+
+                            // Successfully logged them back in, try retrieving the data again
+                            return chain.proceed(request);
+                        }
+                    }
+
+                    // If we have the session Id in the cookies, return the original response
+                    return response;
                 })
                 .build();
 
@@ -181,6 +175,12 @@ public class McGillManager {
 
 	/* HELPERS */
 
+    /**
+     * Handles determining whether the login was successful or not
+     *
+     * @param response Received response from the call
+     * @throws IOException Thrown if there was an error during the login
+     */
 	private void handleLogin(Response<ResponseBody> response) throws IOException {
         // Create the POST request with the given username and password
         String responseString = response.body().string();
@@ -191,24 +191,8 @@ public class McGillManager {
         }
     }
 
-	/**
-	 * Attempts to log into Minerva
-     * @param username Username to use for the login
-     * @param password Password to use for the login
-     * @throws IOException
-     */
-	public void login(String username, String password) throws IOException {
-        // If it's not initialized, call login with nothing to set up the cookies
-        if (!initialized) {
-            mcGillService.login("", "").execute();
-        }
-
-        // Create the POST request with the given username and password and handle the response
-        handleLogin(mcGillService.login(username, password).execute());
-    }
-
     /**
-     * Attempts to log into  Minerva asynchronously
+     * Attempts to log into Minerva asynchronously
      *
      * @param username Inputted username
      * @param password Inputted password
@@ -236,10 +220,16 @@ public class McGillManager {
 
     /**
      * Logs the user in with the stored username and password
-     * @throws IOException
+     * @throws IOException Thrown if there was an error during login
      */
     public void login() throws IOException {
-        login(usernamePref.full(), passwordPref.get());
+        // If it's not initialized, call login with nothing to set up the cookies
+        if (!initialized) {
+            mcGillService.login("", "").execute();
+        }
+
+        // Create the POST request with the given username and password and handle the response
+        handleLogin(mcGillService.login(usernamePref.full(), passwordPref.get()).execute());
     }
 
     /**
@@ -252,10 +242,10 @@ public class McGillManager {
     public static String getRegistrationURL(List<? extends Course> courses, boolean dropCourse) {
         // Get the term from the first course (they'll all have the same term
         Term term = courses.get(0).getTerm();
-        //Start the URL with the term
+        // Start the URL with the term
         String url = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=" + term.toString();
 
-        //Add random Minerva stuff that is apparently necessary
+        // Add random Minerva stuff that is apparently necessary
         url += "&RSTS_IN=DUMMY&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
                 "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY" +
                 "&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY&REG_BTN=DUMMY&MESG=DUMMY";
@@ -273,20 +263,20 @@ public class McGillManager {
                     "SEC=DUMMYLEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
         }
 
-        //Lots of junk
+        // Lots of junk
         for (int i = 0; i < 7; i ++) {
             url += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY" +
 		            "&end_date_in=DUMMY&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&" +
 		            "GMOD=DUMMY&TITLE=DUMMY&MESG=DUMMY";
         }
 
-        //More junk
+        // More junk
         url += "&RSTS_IN=&assoc_term_in=DUMMY&CRN_IN=DUMMY&start_date_in=DUMMY&end_date_in=DUMMY" +
                 "&SUBJ=DUMMY&CRSE=DUMMY&SEC=DUMMY&LEVL=DUMMY&CRED=DUMMY&GMOD=DUMMY&TITLE=DUMMY";
 
-        //Insert the CRNs into the URL
+        // Insert the CRNs into the URL
         for (Course course : courses) {
-            //Use a different URL if courses are being dropped
+            // Use a different URL if courses are being dropped
             if (!dropCourse) {
                 url += "&RSTS_IN=RW&CRN_IN=" + course.getCRN();
             } else {
@@ -296,49 +286,6 @@ public class McGillManager {
         }
 
         url += "&regs_row=9&wait_row=0&add_row=10&REG_BTN=Submit+Changes";
-        return url;
-    }
-
-    /**
-     * Builds the Course Search URL String
-     *
-     * @return The course search URL to use for this course search
-     */
-    public static String getSearchURL(Term term, String subject, String courseNumber, String title,
-            int minCredit, int maxCredit, int startHour, int startMinute, boolean startAM,
-            int endHour, int endMinute, boolean endAM, List<DayOfWeek> days) {
-        String url = "term_in=" + term.toString() +
-                "&sel_subj=dummy" +
-                "&sel_day=dummy" +
-                "&sel_schd=dummy" +
-                "&sel_insm=dummy" +
-                "&sel_camp=dummy" +
-                "&sel_levl=dummy" +
-                "&sel_sess=dummy" +
-                "&sel_instr=dummy" +
-                "&sel_ptrm=dummy" +
-                "&sel_attr=dummy" +
-                "&sel_subj=" + subject +
-                "&sel_crse=" + courseNumber +
-                "&sel_title=" + title +
-                "&sel_schd=%25" +
-                "&sel_from_cred=" + minCredit +
-                "&sel_to_cred=" + maxCredit +
-                "&sel_levl=%25" +
-                "&sel_ptrm=%25" +
-                "&sel_instr=%25" +
-                "&sel_attr=%25" +
-                "&begin_hh=" + startHour +
-                "&begin_mi=" + startMinute +
-                "&begin_ap=" + (startAM ? 'a' : 'p') +
-                "&end_hh=" + endHour +
-                "&end_mi=" + endMinute +
-                "&end_ap=" + (endAM ? 'a' : 'p');
-
-        for (DayOfWeek day : days) {
-            url += "&sel_day=" + DayUtils.getDayChar(day);
-        }
-
         return url;
     }
 }
