@@ -170,21 +170,25 @@ public abstract class DrawerActivity extends BaseActivity
                 // Try to get one of the activities to open
                 final Class activity = homepageManager.getActivity(homepage);
 
-                // If it's not the currently opened activity, launch it after a short delay
-                //  so that the user sees the drawer closing
-                handler.postDelayed(() -> {
-                    startActivity(new Intent(this, activity));
-                    finish();
-                }, 250);
-
-                // Fade out the main view
-                mainView.animate().alpha(0).setDuration(150);
+                switchDrawerActivity(new Intent(this, activity));
 
                 // Close the drawer
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 return true;
         }
+    }
+
+    protected void switchDrawerActivity(Intent intent) {
+        // If it's not the currently opened activity, launch it after a short delay
+        //  so that the user sees the drawer closing
+        handler.postDelayed(() -> {
+            startActivity(intent);
+            finish();
+        }, 250);
+
+        // Fade out the main view
+        mainView.animate().alpha(0).setDuration(150);
     }
 
     /* ABSTRACT */

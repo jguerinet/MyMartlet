@@ -123,6 +123,7 @@
     <string name="course_crn">CRN: </string>
     <string name="course_docuum">View Course on Docuum</string>
     <string name="course_map">Show on Map</string>
+    <string name="error_place_not_found">Place %s not found on map, developer has been notified</string>
 
     <!-- eBill Screen -->
     <string name="ebill_statement_date">Statement Date: %s</string>

@@ -59,6 +59,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Course_Table;
 import ca.appvelopers.mcgillmobile.model.Term;
+import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
@@ -533,7 +534,33 @@ public class ScheduleActivity extends DrawerActivity {
         holder.docuum.setOnClickListener(v -> Utils.openURL(this, "http://www.docuum.com/mcgill/" +
                 course.getSubject().toLowerCase() + "/" + course.getNumber()));
         holder.map.setOnClickListener(v -> {
-            // TODO
+            // Try to find a place that has the right name
+            SQLite.select()
+                    .from(Place.class)
+                    .async()
+                    .queryListResultCallback((transaction, tResult) -> {
+                        String location = course.getLocation().toLowerCase();
+                        Place place = null;
+                        for (Place aPlace : tResult) {
+                            if (location.contains(aPlace.getCourseName().toLowerCase())) {
+                                // If the course location contains the place course name, we've
+                                //  found it
+                                place = aPlace;
+                                break;
+                            }
+                        }
+
+                        if (place == null) {
+                            // Tell the user
+                            Utils.toast(ScheduleActivity.this, getString(
+                                    R.string.error_place_not_found, course.getLocation()));
+                        } else {
+                            // Open the map to the given place
+                            Intent intent = new Intent(ScheduleActivity.this, MapActivity.class)
+                                    .putExtra(Constants.ID, place.getId());
+                            handler.post(() -> switchDrawerActivity(intent));
+                        }
+                    });
         });
 
         new AlertDialog.Builder(this)

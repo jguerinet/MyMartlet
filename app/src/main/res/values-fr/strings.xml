@@ -122,6 +122,7 @@
     <string name="course_crn">CRN: </string>
     <string name="course_docuum">Voir Cours sur Docuum</string>
     <string name="course_map">Voir sur la Carte</string>
+    <string name="error_place_not_found">Endroit %s non trouvé sur la carte, le développeur a été averti.</string>
 
     <!-- eBill Screen -->
     <string name="ebill_statement_date">Date de Déclaration: %s</string>
