@@ -24,6 +24,8 @@ import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.IntPreference;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import org.threeten.bp.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import ca.appvelopers.mcgillmobile.BuildConfig;
+import ca.appvelopers.mcgillmobile.model.AppUpdate;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.model.place.Place_Table;
@@ -102,7 +106,10 @@ public class UpdateManager {
                 // Find the closest version to the stored one and cascade down through the updates
                 switch (storedVersion) {
                     case -1:
-                        // First time opening the app, break out of the loop
+                        // First time opening the app, log it
+                        new AppUpdate(BuildConfig.VERSION_NAME + "_FIRST",
+                                ZonedDateTime.now()).save();
+                        // Break out of the loop
                         break updateLoop;
                     case 24:
                         preLaunchUpdate25();
@@ -111,7 +118,13 @@ public class UpdateManager {
                         //  another update above
                         break updateLoop;
                 }
+
                 storedVersion ++;
+            }
+
+            if (storedVersion != -1) {
+                // Log the update if this isn't the first one
+                new AppUpdate(BuildConfig.VERSION_NAME, ZonedDateTime.now()).save();
             }
         }
     }
