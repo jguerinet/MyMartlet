@@ -197,8 +197,7 @@ public class WishlistActivity extends DrawerActivity {
             // Get the course registration URL
             String code[] = course.code.split(" ");
             if (code.length < 2) {
-                //TODO: Get a String for this
-                Utils.toast(this, "Cannot update " + course.code);
+                Utils.toast(this, getString(R.string.error_cannot_update, course.code));
                 finalizeUpdate();
                 continue;
             }

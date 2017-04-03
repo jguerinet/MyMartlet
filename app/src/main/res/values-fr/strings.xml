@@ -196,6 +196,7 @@
     <string name="courses_remove_wishlist">Enlever</string>
     <string name="courses_too_many_courses">Vous devez choisir moins de 10 cours. </string>
     <string name="courses_none_selected">Vous devez choisir au moins un cours.</string>
+    <string name="error_cannot_update">Mis à jour de %s impossible</string>
 
     <!-- About -->
     <string name="about_github">Click here to check out the code on GitHub!</string>
