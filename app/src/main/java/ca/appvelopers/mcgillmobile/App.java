@@ -33,12 +33,9 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.SocketTimeoutException;
 
-import javax.inject.Inject;
-
 import ca.appvelopers.mcgillmobile.util.dagger.AppModule;
 import ca.appvelopers.mcgillmobile.util.dagger.BaseComponent;
 import ca.appvelopers.mcgillmobile.util.dagger.DaggerBaseComponent;
-import ca.appvelopers.mcgillmobile.util.manager.UpdateManager;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
@@ -52,11 +49,6 @@ public class App extends Application {
      * Dagger {@link BaseComponent}
      */
     private BaseComponent component;
-    /**
-     * {@link UpdateManager} instance
-     */
-    @Inject
-    UpdateManager updateManager;
 
     @Override
     public void onCreate() {
@@ -110,9 +102,6 @@ public class App extends Application {
                 .setDefaultDrawablePaddingSize(padding)
                 .setDefaultPaddingSize(padding)
                 .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)));
-
-        // Run any pre-launch update
-        updateManager.preLaunchUpdate();
     }
 
     /* GETTERS */

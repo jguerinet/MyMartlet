@@ -17,30 +17,15 @@
 package ca.appvelopers.mcgillmobile.util.manager;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
-import com.guerinet.utils.StorageUtils;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.IntPreference;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-
-import org.threeten.bp.ZonedDateTime;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import ca.appvelopers.mcgillmobile.BuildConfig;
-import ca.appvelopers.mcgillmobile.model.AppUpdate;
-import ca.appvelopers.mcgillmobile.model.Term;
-import ca.appvelopers.mcgillmobile.model.place.Place;
-import ca.appvelopers.mcgillmobile.model.place.Place_Table;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
-import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 
 /**
  * Runs any update code
@@ -57,76 +42,17 @@ public class UpdateManager {
      * Version {@link IntPreference}
      */
     private final IntPreference versionPref;
-    /**
-     * {@link ClearManager} instance
-     */
-    private final ClearManager clearManager;
-    /**
-     * {@link SharedPreferences} instance
-     */
-    private final SharedPreferences sharedPrefs;
-    /**
-     * {@link DefaultTermPreference} instance
-     */
-    private final DefaultTermPreference defaultTermPref;
 
     /**
      * Default Injectable Constructor
      *
-     * @param context         App context
-     * @param versionPref     Version {@link IntPreference}
-     * @param clearManager    {@link ClearManager} instance
-     * @param sharedPrefs     {@link SharedPreferences} instance
-     * @param defaultTermPref {@link DefaultTermPreference} instance
+     * @param context     App context
+     * @param versionPref Version {@link IntPreference}
      */
     @Inject
-    UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPreference versionPref,
-            ClearManager clearManager, SharedPreferences sharedPrefs,
-            DefaultTermPreference defaultTermPref) {
+    UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPreference versionPref) {
         this.context = context;
         this.versionPref = versionPref;
-        this.clearManager = clearManager;
-        this.sharedPrefs = sharedPrefs;
-        this.defaultTermPref = defaultTermPref;
-    }
-
-    /**
-     * Runs any update code that would need to run before an activity is loaded
-     */
-    public void preLaunchUpdate() {
-        // Get the version code
-        int code = Utils.versionCode(context);
-
-        // Get the current version number
-        int storedVersion = versionPref.get();
-
-        // Stored version is smaller than version number
-        if (storedVersion < code) {
-            updateLoop: while (storedVersion < code) {
-                // Find the closest version to the stored one and cascade down through the updates
-                switch (storedVersion) {
-                    case -1:
-                        // First time opening the app, log it
-                        new AppUpdate(BuildConfig.VERSION_NAME + "_FIRST",
-                                ZonedDateTime.now()).save();
-                        // Break out of the loop
-                        break updateLoop;
-                    case 24:
-                        preLaunchUpdate25();
-                    case 0:
-                        // This will never get directly called, it will only be accessed through
-                        //  another update above
-                        break updateLoop;
-                }
-
-                storedVersion ++;
-            }
-
-            if (storedVersion != -1) {
-                // Log the update if this isn't the first one
-                new AppUpdate(BuildConfig.VERSION_NAME, ZonedDateTime.now()).save();
-            }
-        }
     }
 
     /**
@@ -147,14 +73,6 @@ public class UpdateManager {
                     case -1:
                         // First time opening the app, break out of the loop
                         break updateLoop;
-                    case 6:
-                        update7();
-                    case 12:
-                        update13();
-                    case 15:
-                        update16();
-                    case 16:
-                        update17();
                     case 0:
                         // This will never get directly called, it will only be accessed through
                         //  another update above
@@ -166,112 +84,5 @@ public class UpdateManager {
             // Store the new version in the SharedPrefs
             versionPref.set(code);
         }
-    }
-
-    /**
-     * v2.4.0
-     * - Deletion of old places file, we've moved to DBFlow.
-     * - Moved the old favorites file to the place objects directly
-     */
-    @SuppressWarnings("unchecked")
-    private void updateSomething() {
-        // Delete the old files
-        context.deleteFile("places");
-        context.deleteFile("place_types");
-        context.deleteFile("ebill");
-        context.deleteFile("transcript");
-        context.deleteFile("register_terms");
-
-        // Switch the default term's save location
-        Term term = (Term) StorageUtils.loadObject(context, "default_term", "Default Term");
-        if (term != null) {
-            defaultTermPref.setTerm(term);
-        }
-
-        /* TODO Favorite migration is untested code */
-
-        // Get the old favorite place Ids
-        List<Integer> favoritePlaceIds = (List<Integer>) StorageUtils.loadObject(context,
-                "favorite_places", "Favorite Places");
-
-        // If they are null, use an empty list
-        if (favoritePlaceIds == null) {
-            favoritePlaceIds = new ArrayList<>();
-        }
-
-        // Iterate through the place ids to find the corresponding place and set the favorite field
-        for (int favoriteId : favoritePlaceIds) {
-            SQLite.select()
-                    .from(Place.class)
-                    .where(Place_Table.id.eq(favoriteId))
-                    .async()
-                    .querySingleResultCallback((transaction, place) -> {
-                        // If we find a place, set it to be a favorite
-                        if (place != null) {
-                            place.setFavorite(true);
-                        }
-                    })
-                    .execute();
-        }
-    }
-
-    /**
-     * v2.3.2
-     * - Changed the way the language pref was being stored
-     */
-    private void preLaunchUpdate25() {
-        try {
-            // Get the int stored at the current language key
-            int language = sharedPrefs.getInt("language", 0);
-
-            // Store the equivalent language code in its place
-            sharedPrefs.edit()
-                    .putString("language", language == 0 ? "en" : "fr")
-                    .apply();
-        } catch (Exception ignored) {
-            // This will be happen if for some reason the pre-launch update code already run
-            //  but the launch update code never ran
-        }
-    }
-
-    /**
-     * v2.2.0
-     * - Redid the entire admin system
-     * - Redid all of the user info parsing, made some changes to the objects
-     */
-    private void update17() {
-        // Redownload everything
-        clearManager.config();
-        clearManager.all();
-    }
-
-    /**
-     * v2.1.0
-     * - Removed Hungarian notation everywhere -> redownload config and user data
-     */
-    private void update16() {
-        // Redownload everything
-        clearManager.config();
-        clearManager.all();
-    }
-
-    /**
-     * v2.0.1
-     * - Object Changes  -> Force the user to reload all of their info
-     * - Place changes -> Force the reload of all of the config stuff
-     */
-    private void update13() {
-        // Re-download all user info
-        clearManager.config();
-        clearManager.all();
-    }
-
-    /**
-     * v1.0.1
-     * - Object changes -> Force the reload of all of the info
-     */
-    private void update7() {
-        // Force the user to re-update all of the information in the app
-        clearManager.all();
     }
 }
