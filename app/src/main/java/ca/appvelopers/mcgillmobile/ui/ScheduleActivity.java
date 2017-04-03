@@ -17,7 +17,6 @@
 package ca.appvelopers.mcgillmobile.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -26,6 +25,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,8 +63,8 @@ import ca.appvelopers.mcgillmobile.ui.dialog.list.TermDialogHelper;
 import ca.appvelopers.mcgillmobile.ui.walkthrough.WalkthroughActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.DayUtils;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.Help;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.CoursesDB;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.TranscriptDB;
@@ -76,7 +76,7 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 /**
- * Represents the user's schedule
+ * Displays the user's schedule
  * @author Julien Guerinet
  * @since 1.0.0
  */
@@ -84,30 +84,33 @@ public class ScheduleActivity extends DrawerActivity {
     /**
      * Timetable container used in the landscape orientation
      */
-    @Nullable @BindView(R.id.container_timetable)
-    protected LinearLayout timetableContainer;
+    @Nullable
+    @BindView(R.id.container_timetable)
+    LinearLayout timetableContainer;
     /**
      * Schedule container used in the landscape orientation
      */
-    @Nullable @BindView(R.id.container_schedule)
-    protected LinearLayout scheduleContainer;
+    @Nullable
+    @BindView(R.id.container_schedule)
+    LinearLayout scheduleContainer;
     /**
-     * {@link ViewPager} used in the portrait orientation
+     * ViewPager used in the portrait orientation
      */
-    @Nullable @BindView(R.id.view_pager)
-    protected ViewPager viewPager;
+    @Nullable
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
     /**
      * The first open {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.FIRST_OPEN)
-    protected BooleanPreference firstOpenPref;
+    BooleanPreference firstOpenPref;
     /**
      * The time format {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
-    protected BooleanPreference twentyFourHourPref;
+    BooleanPreference twentyFourHourPref;
     /**
      * {@link DefaultTermPreference} instance
      */
@@ -127,56 +130,49 @@ public class ScheduleActivity extends DrawerActivity {
     private LocalDate date;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
         App.component(this).inject(this);
         courses = new ArrayList<>();
 
-        //TODO Use the SavedInstanceState to get the term and courses
-        term = defaultTermPref.getTerm();
-
-        //Title
-        setTitle(term.getString(this));
-
-        // Update the list of courses for this term
-        getCourses();
-
-        //Date is by default set to today
-        date = LocalDate.now();
-
-        //Check if we are in the current semester
-        if (!term.equals(Term.currentTerm())) {
-            //If not, find the starting date of this semester instead of using today
-            for (Course course : courses) {
-                if (course.getStartDate().isBefore(date)) {
-                    date = course.getStartDate();
-                }
-            }
+        if (savedInstanceState != null) {
+            term = (Term) savedInstanceState.get(Constants.TERM);
         }
 
-        //Render the right view based on the orientation
+        if (term == null) {
+            // Use the default term if there was no saved term
+            term = defaultTermPref.getTerm();
+        }
+
+        // Title
+        setTitle(term.getString(this));
+
+        // Update the list of courses for this term and the starting date
+        updateCoursesAndDate();
+
+        // Render the right view based on the orientation
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             renderLandscapeView();
         } else {
             renderPortraitView();
         }
 
-        //Check if this is the first time the user is using the app
+        // Check if this is the first time the user is using the app
         if (firstOpenPref.get()) {
-            //Show them the walkthrough if it is
+            // Show them the walkthrough if it is
             Intent intent = new Intent(this, WalkthroughActivity.class)
                     .putExtra(Constants.FIRST_OPEN, true);
             startActivity(intent);
-            //Save the fact that the walkthrough has been seen at least once
+            // Save the fact that the walkthrough has been seen at least once
             firstOpenPref.set(false);
         }
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        //Only show the menu in portrait mode
+        // Only show the menu in portrait mode
         return getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE;
     }
 
@@ -194,39 +190,28 @@ public class ScheduleActivity extends DrawerActivity {
                 DialogUtils.list(this, R.string.title_change_semester,
                         new TermDialogHelper(this, term, false) {
                     @Override
-                    public void onTermSelected(Term term) {
-                        //If it's the same term as now, do nothing
-                        if (term.equals(ScheduleActivity.this.term)) {
+                    public void onTermSelected(Term newTerm) {
+                        // If it's the same term as now, do nothing
+                        if (newTerm.equals(term)) {
                             return;
                         }
+
+                        // Set the instance term
+                        term = newTerm;
 
                         // Set the default term
                         defaultTermPref.setTerm(term);
 
-                        //Set the instance term
-                        ScheduleActivity.this.term = term;
+                        // Update the courses
+                        updateCoursesAndDate();
 
-                        //Update the courses
-                        getCourses();
-
-                        //Check if we are in the current semester
-                        date = LocalDate.now();
-                        if (!term.equals(Term.currentTerm())) {
-                            //If not, find the starting date of this semester instead of using today
-                            for (Course course : courses) {
-                                if (course.getStartDate().isBefore(date)) {
-                                    date = course.getStartDate();
-                                }
-                            }
-                        }
-
-                        //Title
-                        setTitle(term.getString(ScheduleActivity.this));
+                        // Title
+                        setTitle(newTerm.getString(ScheduleActivity.this));
 
                         //TODO This only renders the portrait view
                         renderPortraitView();
 
-                        //Refresh the content
+                        // Refresh the content
                         refreshCourses();
                     }
                 });
@@ -240,6 +225,13 @@ public class ScheduleActivity extends DrawerActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save the term
+        outState.putSerializable(Constants.TERM, term);
+    }
+
+    @Override
     protected @HomepageManager.Homepage int getCurrentPage() {
         return HomepageManager.SCHEDULE;
     }
@@ -247,7 +239,7 @@ public class ScheduleActivity extends DrawerActivity {
     /**
      * Gets the courses for the given {@link Term}
      */
-    private void getCourses() {
+    private void updateCoursesAndDate() {
         // Clear the current courses
         courses.clear();
 
@@ -256,6 +248,19 @@ public class ScheduleActivity extends DrawerActivity {
                 .from(Course.class)
                 .where(Course_Table.term.eq(term))
                 .queryList());
+
+        // Date is by default set to today
+        date = LocalDate.now();
+
+        // Check if we are in the current semester
+        if (!term.equals(Term.currentTerm())) {
+            // If not, find the starting date of this semester instead of using today
+            for (Course course : courses) {
+                if (course.getStartDate().isBefore(date)) {
+                    date = course.getStartDate();
+                }
+            }
+        }
     }
 
     /**
@@ -267,14 +272,14 @@ public class ScheduleActivity extends DrawerActivity {
             return;
         }
 
-        //Download the courses for this term
+        // Download the courses for this term
         mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                 // Set the courses
                 CoursesDB.setCourses(term, response.body());
 
-                //Download the transcript (if ever the user has new semesters on their transcript)
+                // Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
                             @Override
                             public void onResponse(Call<TranscriptResponse> call,
@@ -308,46 +313,47 @@ public class ScheduleActivity extends DrawerActivity {
      * Renders the landscape view
      */
     private void renderLandscapeView() {
-        //Make sure that the necessary views are present in the layout
+        // Make sure that the necessary views are present in the layout
         Assert.assertNotNull(timetableContainer);
         Assert.assertNotNull(scheduleContainer);
 
-        //Leave space at the top for the day names
+        // Leave space at the top for the day names
         View dayView = View.inflate(this, R.layout.fragment_day_name, null);
-        //Black line to separate the timetable from the schedule
+        // Black line to separate the timetable from the schedule
         View dayViewLine = dayView.findViewById(R.id.day_line);
         dayViewLine.setVisibility(View.VISIBLE);
 
-        //Add the day view to the top of the timetable
+        // Add the day view to the top of the timetable
         timetableContainer.addView(dayView);
 
-        //Find the index of the given date
+        // Find the index of the given date
         int currentDayIndex = date.getDayOfWeek().getValue();
 
-        //Go through the 7 days of the week
+        // Go through the 7 days of the week
         for (int i = 1; i < 8; i ++) {
             DayOfWeek day = DayOfWeek.of(i);
 
-            //Set up the day name
+            // Set up the day name
             dayView = View.inflate(this, R.layout.fragment_day_name, null);
             TextView dayViewTitle = (TextView) dayView.findViewById(R.id.day_name);
             dayViewTitle.setText(DayUtils.getStringId(day));
             scheduleContainer.addView(dayView);
 
-            //Set up the schedule container for that one day
+            // Set up the schedule container for that one day
             LinearLayout scheduleContainer = new LinearLayout(this);
             scheduleContainer.setOrientation(LinearLayout.VERTICAL);
             scheduleContainer.setLayoutParams(new LinearLayout.LayoutParams(
                     getResources().getDimensionPixelSize(R.dimen.cell_landscape_width),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            //Fill the schedule for the current day
-            fillSchedule(this.timetableContainer, scheduleContainer, date.plusDays(i - currentDayIndex), false);
+            // Fill the schedule for the current day
+            fillSchedule(this.timetableContainer, scheduleContainer,
+                    date.plusDays(i - currentDayIndex), false);
 
-            //Add the current day to the schedule container
+            // Add the current day to the schedule container
             this.scheduleContainer.addView(scheduleContainer);
 
-            //Line
+            // Line
             View line = new View(this);
             line.setBackgroundColor(Color.BLACK);
             line.setLayoutParams(new ViewGroup.LayoutParams(
@@ -361,12 +367,12 @@ public class ScheduleActivity extends DrawerActivity {
      * Renders the portrait view
      */
     private void renderPortraitView() {
-        //Make sure the views are there
+        // Make sure the views are there
         Assert.assertNotNull(viewPager);
 
         final ScheduleAdapter adapter = new ScheduleAdapter();
 
-        //Set up the ViewPager
+        // Set up the ViewPager
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(adapter.startingDateIndex);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -396,7 +402,7 @@ public class ScheduleActivity extends DrawerActivity {
      */
     private void fillSchedule(LinearLayout timetableContainer, LinearLayout scheduleContainer,
             LocalDate date, boolean clickable) {
-        //Go through the list of courses, find which ones are for the given date
+        // Go through the list of courses, find which ones are for the given date
         List<Course> courses = new ArrayList<>();
         for (Course course : this.courses) {
             if (course.isForDate(date)) {
@@ -404,43 +410,43 @@ public class ScheduleActivity extends DrawerActivity {
             }
         }
 
-        //Set up the DateTimeFormatter we're going to use for the hours
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern(twentyFourHourPref.get() ? "HH:mm" : "hh a");
+        // Set up the DateTimeFormatter we're going to use for the hours
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(twentyFourHourPref.get() ?
+                "HH:mm" : "hh a");
 
-        //This will be used of an end time of a course when it is added to the schedule container
+        // This will be used of an end time of a course when it is added to the schedule container
         LocalTime currentCourseEndTime = null;
 
-        //Cycle through the hours
-        for (int hour = 8; hour < 22; hour++) {
-            //Start inflating a timetable cell
+        // Cycle through the hours
+        for (int hour = 8; hour < 22; hour ++) {
+            // Start inflating a timetable cell
             View timetableCell = View.inflate(this, R.layout.item_day_timetable, null);
 
-            //Put the correct time
+            // Put the correct time
             TextView time = (TextView) timetableCell.findViewById(R.id.cell_time);
             time.setText(LocalTime.MIDNIGHT.withHour(hour).format(formatter));
 
-            //Add it to the right container
+            // Add it to the right container
             timetableContainer.addView(timetableCell);
 
-            //Cycle through the half hours
+            // Cycle through the half hours
             for (int min = 0; min < 31; min+= 30) {
-                //Initialize the current course to null
+                // Initialize the current course to null
                 Course currentCourse = null;
 
-                //Get the current time
+                // Get the current time
                 LocalTime currentTime = LocalTime.of(hour, min);
 
-                //if currentCourseEndTime = null (no course is being added) or it is equal to
-                //the current time in min (end of a course being added) we need to add a new view
+                // if currentCourseEndTime = null (no course is being added) or it is equal to
+                //  the current time in min (end of a course being added) we need to add a new view
                 if (currentCourseEndTime == null || currentCourseEndTime.equals(currentTime)) {
-                    //Reset currentCourseEndTime
+                    // Reset currentCourseEndTime
                     currentCourseEndTime = null;
 
-                    //Check if there is a course at this time
+                    // Check if there is a course at this time
                     for (Course course : courses) {
-                        //If there is, set the current course to that time, and calculate the
-                        //ending time of this course
+                        // If there is, set the current course to that time, and calculate the
+                        //  ending time of this course
                         if (course.getRoundedStartTime().equals(currentTime)) {
                             currentCourse = course;
                             currentCourseEndTime = course.getRoundedEndTime();
@@ -450,12 +456,12 @@ public class ScheduleActivity extends DrawerActivity {
 
                     View scheduleCell;
 
-                    //There is a course at this time
+                    // There is a course at this time
                     if (currentCourse != null) {
-                        //Inflate the right view
+                        // Inflate the right view
                         scheduleCell = View.inflate(this, R.layout.item_day_class, null);
 
-                        //Set up all of the info
+                        // Set up all of the info
                         TextView code = (TextView) scheduleCell.findViewById(R.id.course_code);
                         code.setText(currentCourse.getCode());
 
@@ -469,41 +475,33 @@ public class ScheduleActivity extends DrawerActivity {
                                 (TextView)scheduleCell.findViewById(R.id.course_location);
                         location.setText(currentCourse.getLocation());
 
-                        //Find out how long this course is in terms of blocks of 30 min
+                        // Find out how long this course is in terms of blocks of 30 min
                         int length = (int) ChronoUnit.MINUTES.between(
                                 currentCourse.getRoundedStartTime(),
                                 currentCourse.getRoundedEndTime()) / 30;
 
-                        //Set the height of the view depending on this height
+                        // Set the height of the view depending on this height
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 (int) getResources()
                                         .getDimension(R.dimen.cell_30min_height) * length);
                         scheduleCell.setLayoutParams(lp);
 
-                        //Check if we need to make the course clickable
+                        // Check if we need to make the course clickable
                         if (clickable) {
-                            //We need a final variable for the onClick listener
+                            // We need a final variable for the onClick listener
                             final Course course = currentCourse;
-                            //OnClick: CourseActivity (for a detailed description of the course)
-                            scheduleCell.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    showCourseDialog(course);
-                                }
-                            });
-                        }
-                        else{
+                            // OnClick: CourseActivity (for a detailed description of the course)
+                            scheduleCell.setOnClickListener(v -> showCourseDialog(course));
+                        } else {
                             scheduleCell.setClickable(false);
                         }
-
-                    }
-                    else{
-                        //Inflate the empty view
+                    } else {
+                        // Inflate the empty view
                         scheduleCell = View.inflate(this, R.layout.item_day_empty, null);
                     }
 
-                    //Add the given view to the schedule container
+                    // Add the given view to the schedule container
                     scheduleContainer.addView(scheduleCell);
                 }
             }
@@ -518,97 +516,114 @@ public class ScheduleActivity extends DrawerActivity {
     public void showCourseDialog(final Course course) {
         analytics.sendScreen("Schedule - Course");
 
-        //Inflate the body
+        // Inflate the body
         View layout = View.inflate(this, R.layout.dialog_course, null);
+        CourseDialogHolder holder = new CourseDialogHolder();
+        ButterKnife.bind(holder, layout);
 
-        //Title
-        TextView title = (TextView) layout.findViewById(R.id.course_title);
-        title.setText(course.getTitle());
-
-        //Time
-        TextView time = (TextView) layout.findViewById(R.id.course_time);
-        time.setText(course.getTimeString());
-
-        //Location
-        TextView location = (TextView) layout.findViewById(R.id.course_location);
-        location.setText(course.getLocation());
-
-        //Type
-        TextView type = (TextView) layout.findViewById(R.id.course_type);
-        type.setText(course.getType());
-
-        //Instructor
-        TextView instructor = (TextView) layout.findViewById(R.id.course_instructor);
-        instructor.setText(course.getInstructor());
-
-        //Section
-        TextView section = (TextView) layout.findViewById(R.id.course_section);
-        section.setText(course.getSection());
-
-        //Credits
-        TextView credits = (TextView) layout.findViewById(R.id.course_credits);
-        credits.setText(String.valueOf(course.getCredits()));
-
-        //CRN
-        TextView crn = (TextView) layout.findViewById(R.id.course_crn);
-        crn.setText(String.valueOf(course.getCRN()));
-
-        //Docuum Link
-        TextView docuum = (TextView) layout.findViewById(R.id.course_docuum);
-        docuum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openURL(ScheduleActivity.this, "http://www.docuum.com/mcgill/" +
-                        course.getSubject().toLowerCase() + "/" + course.getNumber());
-            }
-        });
-
-        //Show on Map
-        TextView map = (TextView) layout.findViewById(R.id.course_map);
-        map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO
-            }
+        // Set the info
+        holder.title.setText(course.getTitle());
+        holder.time.setText(course.getTimeString());
+        holder.location.setText(course.getLocation());
+        holder.type.setText(course.getType());
+        holder.instructor.setText(course.getInstructor());
+        holder.section.setText(course.getSection());
+        holder.credits.setText(String.valueOf(course.getCredits()));
+        holder.crn.setText(String.valueOf(course.getCRN()));
+        holder.docuum.setOnClickListener(v -> Utils.openURL(this, "http://www.docuum.com/mcgill/" +
+                course.getSubject().toLowerCase() + "/" + course.getNumber()));
+        holder.map.setOnClickListener(v -> {
+            // TODO
         });
 
         new AlertDialog.Builder(this)
                 .setTitle(course.getCode())
                 .setView(layout)
                 .setCancelable(true)
-                .setNeutralButton(R.string.done, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNeutralButton(R.string.done, (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
     /**
-     * The adapter used for the ViewPager in the portrait view of the schedule
+     * Holder for the course dialog views
      */
-    protected class ScheduleAdapter extends PagerAdapter {
+    class CourseDialogHolder {
+        /**
+         * Course title
+         */
+        @BindView(R.id.course_title)
+        TextView title;
+        /**
+         * Course time
+         */
+        @BindView(R.id.course_time)
+        TextView time;
+        /**
+         * Course location
+         */
+        @BindView(R.id.course_location)
+        TextView location;
+        /**
+         * Course type
+         */
+        @BindView(R.id.course_type)
+        TextView type;
+        /**
+         * Course instructor
+         */
+        @BindView(R.id.course_instructor)
+        TextView instructor;
+        /**
+         * Course section
+         */
+        @BindView(R.id.course_section)
+        TextView section;
+        /**
+         * Course credits
+         */
+        @BindView(R.id.course_credits)
+        TextView credits;
+        /**
+         * Course CRN
+         */
+        @BindView(R.id.course_crn)
+        TextView crn;
+        /**
+         * Link to course on Docuum
+         */
+        @BindView(R.id.course_docuum)
+        View docuum;
+        /**
+         * Link to show course building on the map
+         */
+        @BindView(R.id.course_map)
+        View map;
+    }
+
+    /**
+     * Adapter used for the ViewPager in the portrait view of the schedule
+     */
+    class ScheduleAdapter extends PagerAdapter {
         /**
          * Day title
          */
         @BindView(R.id.day_title)
-        protected TextView dayTitle;
+        TextView dayTitle;
         /**
          * Date title
          */
         @BindView(R.id.day_date)
-        protected TextView dateTitle;
+        TextView dateTitle;
         /**
          * Container for the day's timetable
          */
         @BindView(R.id.container_timetable)
-        protected LinearLayout timetableContainer;
+        LinearLayout timetableContainer;
         /**
          * Container for the day's schedule
          */
         @BindView(R.id.container_schedule)
-        protected LinearLayout scheduleContainer;
+        LinearLayout scheduleContainer;
         /**
          * The initial date to use as a reference
          */
@@ -621,28 +636,29 @@ public class ScheduleActivity extends DrawerActivity {
         /**
          * Default Constructor
          */
-        public ScheduleAdapter() {
+        private ScheduleAdapter() {
             super();
-            //Set the starting date
+            // Set the starting date
             startingDate = date;
-            //Get the first day (offset of 500001 to get the right day)
+            // Get the first day (offset of 500001 to get the right day)
             startingDateIndex = 500001 + date.getDayOfWeek().getValue();
         }
 
         @Override
         public Object instantiateItem(ViewGroup collection, int position) {
             Context context = ScheduleActivity.this;
-            View view = View.inflate(context, R.layout.fragment_day, null);
+            View view = LayoutInflater.from(context).inflate(R.layout.fragment_day, collection,
+                    false);
             ButterKnife.bind(this, view);
 
-            //Get the date for this view
+            // Get the date for this view
             LocalDate currentDate = getDate(position);
 
-            //Set the titles
+            // Set the titles
             dayTitle.setText(DayUtils.getStringId(currentDate.getDayOfWeek()));
             dateTitle.setText(com.guerinet.utils.DateUtils.getLongDateString(currentDate));
 
-            //Fill the schedule up
+            // Fill the schedule up
             fillSchedule(timetableContainer, scheduleContainer, currentDate, true);
 
             collection.addView(view);
@@ -659,13 +675,13 @@ public class ScheduleActivity extends DrawerActivity {
             return 1000000;
         }
 
-        public LocalDate getDate(int position) {
+        private LocalDate getDate(int position) {
             return startingDate.plusDays(position - startingDateIndex);
         }
 
         @Override
         public int getItemPosition(Object object) {
-            //This is to force the refreshing of all of the views when the view is reloaded
+            // This is to force the refreshing of all of the views when the view is reloaded
             return POSITION_NONE;
         }
 
