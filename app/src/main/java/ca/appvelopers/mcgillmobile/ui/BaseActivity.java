@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -80,6 +81,10 @@ public class BaseActivity extends AppCompatActivity {
     @Inject
     protected ClearManager clearManager;
     /**
+     * Handler for posting delayed actions
+     */
+    protected Handler handler;
+    /**
      * BroadcastReceiver for any local broadcasts
      */
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -100,6 +105,8 @@ public class BaseActivity extends AppCompatActivity {
 
         // Add the Minerva broadcast action
         filter.addAction(Constants.BROADCAST_MINERVA);
+
+        handler = new Handler();
     }
 
     @Override

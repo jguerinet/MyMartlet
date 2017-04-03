@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -62,6 +61,10 @@ import ca.appvelopers.mcgillmobile.util.service.ConfigDownloadService;
 import ca.appvelopers.mcgillmobile.util.storage.ClearManager;
 import ca.appvelopers.mcgillmobile.util.thread.UserDownloader;
 import dagger.Lazy;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * First activity that is opened when the app is started
@@ -174,21 +177,7 @@ public class SplashActivity extends BaseActivity {
         ButterKnife.bind(this);
         App.component(this).inject(this);
 
-        //Run the update code, if any
-        updateManager.update();
-
-        // Start downloading the config
-        startService(new Intent(this, ConfigDownloadService.class));
-
-        if (!eulaPref.get()) {
-            //If the user has not accepted the EULA, show it before continuing
-            Intent intent = new Intent(this, AgreementActivity.class)
-                    .putExtra(PrefsModule.EULA, true);
-            startActivityForResult(intent, AGREEMENT_CODE);
-        } else {
-            //If they have, go to the next screen
-            showNextScreen();
-        }
+        new AppInitializer().execute();
     }
 
     @Override
@@ -196,10 +185,10 @@ public class SplashActivity extends BaseActivity {
         switch (requestCode) {
             case AGREEMENT_CODE:
                 if (resultCode == RESULT_OK) {
-                    //If they agreed, run the config downloader
+                    // If they agreed, go to the next screen
                     showNextScreen();
                 } else {
-                    //If not, close the app
+                    // If not, close the app
                     finish();
                 }
                 break;
@@ -222,14 +211,14 @@ public class SplashActivity extends BaseActivity {
      */
     private void showNextScreen() {
         if (minVersionPref.get() > Utils.versionCode(this)) {
-            //If we don't have the min required version, show the right container
+            // If we don't have the min required version, show the right container
             minVersionContainer.setVisibility(View.VISIBLE);
         } else if (usernamePref.get() == null || passwordPref.get() == null) {
-            //If we are missing some login info, show the login screen with no error message
+            // If we are missing some login info, show the login screen with no error message
             showLoginScreen((IOException) getIntent().getSerializableExtra(Constants.EXCEPTION));
         } else {
-            //Try logging the user in and download their info
-            new AppInitializer(true).execute();
+            // Try logging the user in and download their info
+            new AutoLogin(true).execute();
         }
     }
 
@@ -239,31 +228,28 @@ public class SplashActivity extends BaseActivity {
      * @param e The error received when trying to login, null if none
      */
     private void showLoginScreen(@Nullable IOException e) {
-        //Show the login container
+        // Show the login container
         loginContainer.setVisibility(View.VISIBLE);
 
-        //Delete of the previous user's info
+        // Delete of the previous user's info
         clearManager.all();
 
-        //Fill out username text if it is present
+        // Fill out username text if it is present
         usernameView.setText(usernamePref.get());
 
-        //Set it to that when clicking the IME Action button it tries to log you in directly
-        passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_GO) {
-                    loginButton.performClick();
-                    return true;
-                }
-                return false;
+        // Set it to that when clicking the IME Action button it tries to log you in directly
+        passwordView.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                loginButton.performClick();
+                return true;
             }
+            return false;
         });
 
-        //Remember Me box checked based on user's previous preference
+        // Remember Me box checked based on user's previous preference
         rememberUsername.setChecked(rememberUsernamePref.get());
 
-        //Check if an error message needs to be displayed, display it if so
+        // Check if an error message needs to be displayed, display it if so
         if (e != null) {
             DialogHelper.error(this, (e instanceof MinervaException) ?
                     R.string.login_error_wrong_data : R.string.error_other);
@@ -277,7 +263,7 @@ public class SplashActivity extends BaseActivity {
      */
     @OnClick(R.id.version_button)
     protected void downloadNewVersion() {
-        //Redirect them to the Play Store
+        // Redirect them to the Play Store
         Utils.openPlayStoreApp(this);
     }
 
@@ -286,15 +272,15 @@ public class SplashActivity extends BaseActivity {
      */
     @OnClick(R.id.login_button)
     protected void login() {
-        //Hide the keyboard
+        // Hide the keyboard
         usernameView.clearFocus();
         imm.get().hideSoftInputFromWindow(usernameView.getWindowToken(), 0);
 
-        //Get the inputted username and password
+        // Get the inputted username and password
         final String username = usernameView.getText().toString().trim();
         final String password = passwordView.getText().toString().trim();
 
-        //Check that both of them are not empty, create appropriate error messages if so
+        // Check that both of them are not empty, create appropriate error messages if so
         if (TextUtils.isEmpty(username)) {
             DialogHelper.error(this, R.string.login_error_username_empty);
             return;
@@ -308,56 +294,78 @@ public class SplashActivity extends BaseActivity {
 
         progressContainer.setVisibility(View.VISIBLE);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mcGillManager.login(username + getString(R.string.login_email), password);
+        mcGillManager.login(username + getString(R.string.login_email), password,
+                new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call,
+                            Response<ResponseBody> response) {
+                        // Store the login info
+                        usernamePref.set(username);
+                        passwordPref.set(password);
+                        rememberUsernamePref.set(rememberUsername.isChecked());
 
-                    // Store the login info.
-                    usernamePref.set(username);
-                    passwordPref.set(password);
-                    rememberUsernamePref.set(rememberUsername.isChecked());
+                        analytics.sendEvent("Login", "Remember Username",
+                                String.valueOf(rememberUsername.isChecked()));
 
-                    analytics.sendEvent("Login", "Remember Username",
-                            String.valueOf(rememberUsername.isChecked()));
-
-                    //Dismiss the progress dialog
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                        handler.post(() -> {
+                            // Hide the login container
                             loginContainer.setVisibility(View.GONE);
 
-                            //Start the downloading of information
-                            new AppInitializer(false).execute();
-                        }
-                    });
-                } catch (final IOException e) {
-                    //Else show error dialog
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                            // Start the downloading of information
+                            new AutoLogin(false).execute();
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        int error = t instanceof MinervaException ?
+                                R.string.login_error_wrong_data : R.string.error_other;
+
+                        handler.post(() -> {
                             // If for some reason the activity is finishing, don't show this
                             if (isFinishing()) {
                                 return;
                             }
-
                             progressContainer.setVisibility(View.GONE);
-                            int error = e instanceof MinervaException ?
-                                    R.string.login_error_wrong_data : R.string.error_other;
-
                             DialogHelper.error(SplashActivity.this, error);
-                        }
-                    });
-                }
+                        });
+                    }
+                });
+    }
+
+    /**
+     * Initializes the app by starting the config download and running through update code
+     */
+    private class AppInitializer extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // Run any update code
+            updateManager.update();
+
+            // Start downloading the config
+            startService(new Intent(SplashActivity.this, ConfigDownloadService.class));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (!eulaPref.get()) {
+                // If the user has not accepted the EULA, show it before continuing
+                Intent intent = new Intent(SplashActivity.this, AgreementActivity.class)
+                        .putExtra(PrefsModule.EULA, true);
+                startActivityForResult(intent, AGREEMENT_CODE);
+            } else {
+                // If they have, go to the next screen
+                showNextScreen();
             }
-        }).start();
+        }
     }
 
     /**
      * Initializes the app by logging the user in and downloading the required information
      */
-    class AppInitializer extends AsyncTask<Void, String, IOException> {
+    private class AutoLogin extends AsyncTask<Void, String, IOException> {
         /**
          * True if we should auto-login the user, false if they have just logged in
          */
@@ -368,16 +376,16 @@ public class SplashActivity extends BaseActivity {
          *
          * @param autoLogin True if we should auto-login the user, false if they have just logged in
          */
-        public AppInitializer(boolean autoLogin) {
+        private AutoLogin(boolean autoLogin) {
             this.autoLogin = autoLogin;
         }
 
         @Override
         protected void onPreExecute() {
-            //Show the progress container
+            // Show the progress container
             progressContainer.setVisibility(View.VISIBLE);
 
-            //Reset the text (if it was set during a previous login attempt
+            // Reset the text (if it was set during a previous login attempt)
             progressText.setText("");
         }
 
@@ -385,12 +393,12 @@ public class SplashActivity extends BaseActivity {
         protected IOException doInBackground(Void... params) {
             analytics.sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
 
-            //If we're auto-logging in and there is no internet, skip everything
+            // If we're auto-logging in and there is no internet, skip everything
             if (autoLogin && !Utils.isConnected(SplashActivity.this)) {
                 return null;
             }
 
-            //Try logging them in if needed
+            // Try logging them in if needed
             if (autoLogin) {
                 try {
                     mcGillManager.login();
@@ -405,7 +413,7 @@ public class SplashActivity extends BaseActivity {
                     SQLite.select().from(Transcript.class).querySingle() == null ||
                             !getDatabasePath(StatementsDB.FULL_NAME).exists();
 
-            //If we need to download everything, do it synchronously. If not, do it asynchronously
+            // If we need to download everything, do it synchronously. If not, do it asynchronously
             UserDownloader userDownloader = new UserDownloader(SplashActivity.this) {
                 @Override
                 public void update(String section) {
@@ -417,33 +425,32 @@ public class SplashActivity extends BaseActivity {
                 try {
                     userDownloader.execute();
                 } catch (IOException e) {
-                    //If there was an exception, return it
+                    // If there was an exception, return it
                     return e;
                 }
             } else {
                 userDownloader.start();
             }
-
             return null;
         }
 
         @Override
         protected void onProgressUpdate(String... progress) {
-            //Update the TextView
+            // Update the TextView
             progressText.setText(progress[0]);
         }
 
         @Override
         protected void onPostExecute(IOException e) {
-            //Hide the container
+            // Hide the container
             progressContainer.setVisibility(View.GONE);
 
             if (e == null) {
-                //Connection successful: home page
+                // Connection successful: home page
                 startActivity(new Intent(SplashActivity.this, homepageManager.getActivity()));
                 finish();
             } else {
-                //Connection not successful: login
+                // Connection not successful: login
                 showLoginScreen(e);
             }
         }

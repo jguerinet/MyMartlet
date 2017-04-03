@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -84,10 +83,6 @@ public abstract class DrawerActivity extends BaseActivity
      */
     private ActionBarDrawerToggle drawerToggle;
     /**
-     * Handler for posting delayed actions
-     */
-    private Handler handler;
-    /**
      * Callback manager used for Facebook
      */
     private CallbackManager facebookCallbackManager;
@@ -96,8 +91,6 @@ public abstract class DrawerActivity extends BaseActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.component(this).inject(this);
-
-        handler = new Handler();
 
         // Set up the Facebook callback manager
         facebookCallbackManager = CallbackManager.Factory.create();

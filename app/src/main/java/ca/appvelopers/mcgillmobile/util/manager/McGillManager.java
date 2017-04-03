@@ -44,7 +44,11 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -177,6 +181,16 @@ public class McGillManager {
 
 	/* HELPERS */
 
+	private void handleLogin(Response<ResponseBody> response) throws IOException {
+        // Create the POST request with the given username and password
+        String responseString = response.body().string();
+
+        if (!responseString.contains("WELCOME")) {
+            // If we're not on the Welcome page, then the user entered wrong info
+            throw new MinervaException();
+        }
+    }
+
 	/**
 	 * Attempts to log into Minerva
      * @param username Username to use for the login
@@ -184,18 +198,40 @@ public class McGillManager {
      * @throws IOException
      */
 	public void login(String username, String password) throws IOException {
-        //If it's not initialized, call login with nothing to set up the cookies
+        // If it's not initialized, call login with nothing to set up the cookies
         if (!initialized) {
             mcGillService.login("", "").execute();
         }
 
-        //Create the POST request with the given username and password
-        String response = mcGillService.login(username, password).execute().body().string();
+        // Create the POST request with the given username and password and handle the response
+        handleLogin(mcGillService.login(username, password).execute());
+    }
 
-        if (!response.contains("WELCOME")) {
-            //If we're not on the Welcome page, then the user entered wrong info
-            throw new MinervaException();
-        }
+    /**
+     * Attempts to log into  Minerva asynchronously
+     *
+     * @param username Inputted username
+     * @param password Inputted password
+     * @param callback Callback
+     */
+    public void login(String username, String password, Callback<ResponseBody> callback) {
+        mcGillService.login(username, password).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    handleLogin(response);
+                    // If login goes smoothly, call the given callback
+                    callback.onResponse(call, response);
+                } catch (IOException e) {
+                    callback.onFailure(call, e);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callback.onFailure(call, t);
+            }
+        });
     }
 
     /**
