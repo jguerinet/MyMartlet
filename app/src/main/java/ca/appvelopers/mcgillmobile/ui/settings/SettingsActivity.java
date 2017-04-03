@@ -24,15 +24,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.widget.LinearLayout;
 
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -41,12 +45,16 @@ import javax.inject.Named;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ca.appvelopers.mcgillmobile.App;
+import ca.appvelopers.mcgillmobile.BuildConfig;
 import ca.appvelopers.mcgillmobile.R;
+import ca.appvelopers.mcgillmobile.model.AppUpdate;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.HomepagesAdapter;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
+import okio.BufferedSink;
+import okio.Okio;
 import timber.log.Timber;
 
 /**
@@ -189,14 +197,44 @@ public class SettingsActivity extends DrawerActivity {
                     Timber.i(language);
                     Timber.i(connection);
 
+                    ArrayList<Uri> uriList = new ArrayList<>();
+
                     // Logs (attachment)
                     try {
                         File file = new File(getExternalFilesDir(null), "logs.txt");
                         Utils.getLogs(file);
-                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                        uriList.add(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +
+                                ".fileProvider", file));
                     } catch (IOException e) {
                         Timber.e(new Exception("Error getting logs", e));
                     }
+
+                    // Update logs (attachment)
+                    try {
+                        List<AppUpdate> appUpdates = SQLite.select()
+                                .from(AppUpdate.class)
+                                .queryList();
+
+                        // Create the file that will hold the update logs
+                        File file = new File(getExternalFilesDir(null), "update_logs.log");
+
+                        // Create the Okio bugger to write the logs
+                        BufferedSink sink = Okio.buffer(Okio.sink(file));
+
+                        for (AppUpdate update : appUpdates) {
+                            // Write the updates to the file
+                            sink.writeUtf8("Version: " + update.getVersion() + "\nDate: " +
+                                    update.getTimestamp().toString() + "\n\n");
+                        }
+                        sink.flush();
+
+                        uriList.add(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +
+                                ".fileProvider", file));
+                    } catch (Exception e) {
+                        Timber.e(e, "Error attaching update logs to feedback/bug report email");
+                    }
+
+                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
 
                     // Code (Email)
                     intent.setType("message/rfc822");
