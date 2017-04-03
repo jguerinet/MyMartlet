@@ -77,104 +77,98 @@ public class SplashActivity extends BaseActivity {
      * Container if the min version is not satisfied
      */
     @BindView(R.id.version_container)
-    protected LinearLayout minVersionContainer;
+    LinearLayout minVersionContainer;
     /**
      * Container with the login views
      */
     @BindView(R.id.login_container)
-    protected LinearLayout loginContainer;
+    LinearLayout loginContainer;
     /**
      * Container with the loading progress bar (when signing in or loading info for the first time)
      */
     @BindView(R.id.progress_container)
-    protected LinearLayout progressContainer;
+    LinearLayout progressContainer;
     /**
      * The login {@link Button}
      */
     @BindView(R.id.login_button)
-    protected Button loginButton;
+    Button loginButton;
     /**
      * {@link EditText} where the user enters their username
      */
     @BindView(R.id.login_username)
-    protected EditText usernameView;
+    EditText usernameView;
     /**
      * {@link EditText} where the user enters their password
      */
     @BindView(R.id.login_password)
-    protected EditText passwordView;
+    EditText passwordView;
     /**
      * {@link CheckBox} where the user decides if their username should be remembered
      */
     @BindView(R.id.login_remember_username)
-    protected CheckBox rememberUsername;
+    CheckBox rememberUsername;
     /**
      * Update text for when downloading everything
      */
     @BindView(R.id.progress_text)
-    protected TextView progressText;
+    TextView progressText;
     /**
      * The {@link McGillManager} instance
      */
     @Inject
-    protected McGillManager mcGillManager;
+    McGillManager mcGillManager;
     /**
      * {@link ClearManager} instance
      */
     @Inject
-    protected ClearManager clearManager;
+    ClearManager clearManager;
     /**
      * Remember username {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.REMEMBER_USERNAME)
-    protected BooleanPreference rememberUsernamePref;
-    /**
-     * Version {@link IntPreference}
-     */
-    @Inject
-    @Named(PrefsModule.VERSION)
-    protected IntPreference versionPref;
+    BooleanPreference rememberUsernamePref;
     /**
      * Min version {@link IntPreference}
      */
     @Inject
     @Named(PrefsModule.MIN_VERSION)
-    protected IntPreference minVersionPref;
+    IntPreference minVersionPref;
     /**
      * EULA {@link BooleanPreference}
      */
     @Inject
     @Named(PrefsModule.EULA)
-    protected BooleanPreference eulaPref;
+    BooleanPreference eulaPref;
     /**
      * {@link UsernamePreference} instance
      */
     @Inject
-    protected UsernamePreference usernamePref;
+    UsernamePreference usernamePref;
     /**
      * {@link PasswordPreference} instance
      */
     @Inject
-    protected PasswordPreference passwordPref;
+    PasswordPreference passwordPref;
     /**
      * {@link UpdateManager} instance
      */
     @Inject
-    protected UpdateManager updateManager;
+    UpdateManager updateManager;
     /**
      * The {@link HomepageManager} instance
      */
     @Inject
-    protected HomepageManager homepageManager;
+    HomepageManager homepageManager;
     /**
      * The {@link InputMethodManager}
      */
     @Inject
-    protected Lazy<InputMethodManager> imm;
+    Lazy<InputMethodManager> imm;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
