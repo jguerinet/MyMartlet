@@ -25,6 +25,7 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
 import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.twitter.sdk.android.Twitter;
@@ -91,6 +92,9 @@ public class App extends Application {
                 .appModule(new AppModule(this))
                 .build();
         component.inject(this);
+
+        // Hawk
+        Hawk.init(this).build();
 
         // DBFlow
         FlowManager.init(new FlowConfig.Builder(this).build());
