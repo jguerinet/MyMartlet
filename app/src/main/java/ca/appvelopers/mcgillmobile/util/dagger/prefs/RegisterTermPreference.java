@@ -55,6 +55,7 @@ public class RegisterTermPreference extends StringPreference {
      */
     public List<Term> getTerms() {
         if (registerTerms == null) {
+            registerTerms = new ArrayList<>();
             String[] termsStrings = get().split(",");
             for (String term : termsStrings) {
                 registerTerms.add(Term.parseTerm(term));
