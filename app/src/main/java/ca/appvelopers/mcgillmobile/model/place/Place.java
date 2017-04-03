@@ -55,6 +55,10 @@ public class Place extends BaseModel implements Serializable {
      */
     String address;
     /**
+     * Name of the place when listed under a course location
+     */
+    String courseName;
+    /**
      * The latitude coordinate of this place
      */
     double latitude;
@@ -71,7 +75,7 @@ public class Place extends BaseModel implements Serializable {
     /**
      * Default Moshi Constructor
      */
-    protected Place() {}
+    Place() {}
 
     /* GETTERS */
 
@@ -94,6 +98,13 @@ public class Place extends BaseModel implements Serializable {
      */
     public String getAddress() {
         return address;
+    }
+
+    /**
+     * @return Name of the place when listed under a course location
+     */
+    public String getCourseName() {
+        return courseName;
     }
 
     /**
