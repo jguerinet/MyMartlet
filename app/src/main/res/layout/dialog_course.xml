@@ -160,8 +160,7 @@
             android:textColor="@android:color/black"
             android:text="@string/course_map"
             android:gravity="center"
-            android:padding="@dimen/padding_micro"
-            android:visibility="gone"/>
+            android:padding="@dimen/padding_micro"/>
 
         </LinearLayout>
 
