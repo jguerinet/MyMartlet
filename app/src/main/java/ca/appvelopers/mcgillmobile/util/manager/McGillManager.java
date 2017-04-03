@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.util.manager;
 
+import com.orhanobut.hawk.Hawk;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ import javax.inject.Singleton;
 import ca.appvelopers.mcgillmobile.model.Course;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.retrofit.CourseResultConverter;
 import ca.appvelopers.mcgillmobile.util.retrofit.EbillConverter;
@@ -62,10 +64,6 @@ public class McGillManager {
      */
     private final UsernamePreference usernamePref;
     /**
-     * {@link PasswordPreference} passwordPref;
-     */
-    private final PasswordPreference passwordPref;
-    /**
      * The {@link McGillService} instance
      */
     private final McGillService mcGillService;
@@ -79,13 +77,10 @@ public class McGillManager {
      *
      * @param loggingInterceptor {@link HttpLoggingInterceptor} instance
      * @param usernamePref       {@link UsernamePreference} instance
-     * @param passwordPref       {@link PasswordPreference} instance
      */
     @Inject
-	McGillManager(HttpLoggingInterceptor loggingInterceptor, UsernamePreference usernamePref,
-            PasswordPreference passwordPref) {
+	McGillManager(HttpLoggingInterceptor loggingInterceptor, UsernamePreference usernamePref) {
         this.usernamePref = usernamePref;
-        this.passwordPref = passwordPref;
 
         // Set up the client here in order to have access to the login methods
         OkHttpClient client = new OkHttpClient.Builder()
@@ -229,7 +224,8 @@ public class McGillManager {
         }
 
         // Create the POST request with the given username and password and handle the response
-        handleLogin(mcGillService.login(usernamePref.full(), passwordPref.get()).execute());
+        handleLogin(mcGillService.login(usernamePref.full(), Hawk.get(PrefsModule.Hawk.PASSWORD))
+                .execute());
     }
 
     /**

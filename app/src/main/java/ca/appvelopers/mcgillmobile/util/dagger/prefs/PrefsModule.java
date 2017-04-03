@@ -30,7 +30,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Dagger module for the {@link SharedPreferences} values
+ * Dagger module for the SharedPreferences values
  * @author Julien Guerinet
  * @since 2.0.4
  */
@@ -51,6 +51,11 @@ public class PrefsModule {
     public static final String IMS_PLACES = "ims_places";
     public static final String IMS_CATEGORIES = "ims_categories";
     public static final String IMS_REGISTRATION = "ims_registration";
+
+    /* HAWK PREFERENCE NAMES */
+    public class Hawk {
+        public static final String PASSWORD = "password";
+    }
 
     /**
      * @param prefs {@link SharedPreferences} instance

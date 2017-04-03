@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.guerinet.utils.Utils;
+import com.orhanobut.hawk.Hawk;
 
 import javax.inject.Inject;
 
@@ -32,7 +33,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
@@ -52,11 +53,6 @@ public class DesktopActivity extends DrawerActivity {
      */
     @Inject
     protected UsernamePreference usernamePref;
-    /**
-     * {@link PasswordPreference} instance
-     */
-    @Inject
-    protected PasswordPreference passwordPref;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     public void onCreate(Bundle savedInstanceState) {
@@ -83,7 +79,8 @@ public class DesktopActivity extends DrawerActivity {
             public void onPageFinished(WebView view, String url) {
                 view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
                         usernamePref.full() + "';document.getElementById('password').value='" +
-                        passwordPref.get() + "'; document.LoginForm.submit(); })()");
+                        Hawk.get(PrefsModule.Hawk.PASSWORD) +
+                        "'; document.LoginForm.submit(); })()");
                 view.setVisibility(View.VISIBLE);
             }
         });

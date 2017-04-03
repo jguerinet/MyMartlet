@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import javax.inject.Inject;
@@ -27,7 +28,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.DefaultTermPreference;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.RegisterTermPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
@@ -54,10 +54,6 @@ public class ClearManager {
      */
     private final UsernamePreference usernamePref;
     /**
-     * {@link PasswordPreference} instance
-     */
-    private final PasswordPreference passwordPref;
-    /**
      * Remember Username {@link BooleanPreference}
      */
     private final BooleanPreference rememberUsernamePref;
@@ -79,7 +75,6 @@ public class ClearManager {
      *
      * @param context              App context
      * @param usernamePref         {@link UsernamePreference} instance
-     * @param passwordPref         {@link PasswordPreference} instance
      * @param rememberUsernamePref Remember Username {@link BooleanPreference}
      * @param homepageManager      {@link HomepageManager} instance
      * @param defaultTermPref      {@link DefaultTermPreference} instance
@@ -87,14 +82,12 @@ public class ClearManager {
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
-            PasswordPreference passwordPref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
             HomepageManager homepageManager, DefaultTermPreference defaultTermPref,
             RegisterTermPreference registerTermPref) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
-        this.passwordPref = passwordPref;
         this.homepageManager = homepageManager;
         this.defaultTermPref = defaultTermPref;
         this.registerTermPref = registerTermPref;
@@ -109,8 +102,8 @@ public class ClearManager {
             usernamePref.clear();
         }
 
-        //Password
-        passwordPref.clear();
+        // Password
+        Hawk.delete(PrefsModule.Hawk.PASSWORD);
 
         //Schedule
         context.deleteDatabase(CoursesDB.FULL_NAME);

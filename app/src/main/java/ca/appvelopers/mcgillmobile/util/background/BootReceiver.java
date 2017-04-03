@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.guerinet.utils.prefs.BooleanPreference;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.Calendar;
 
@@ -30,7 +31,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ca.appvelopers.mcgillmobile.App;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 
@@ -47,11 +47,6 @@ public class BootReceiver extends BroadcastReceiver {
     @Inject
     protected UsernamePreference usernamePref;
     /**
-     * {@link PasswordPreference} instance
-     */
-    @Inject
-    protected PasswordPreference passwordPref;
-    /**
      * Seat checker {@link BooleanPreference}
      */
     @Inject
@@ -67,8 +62,8 @@ public class BootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
         App.component(context).inject(this);
-        setAlarm(context, usernamePref.get(), passwordPref.get(), seatCheckerPref.get(),
-                gradeCheckerPref.get());
+        setAlarm(context, usernamePref.get(), Hawk.get(PrefsModule.Hawk.PASSWORD),
+                seatCheckerPref.get(), gradeCheckerPref.get());
 	}
 
 	/**

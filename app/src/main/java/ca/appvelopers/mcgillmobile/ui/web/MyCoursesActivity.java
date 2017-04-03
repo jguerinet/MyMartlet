@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.guerinet.utils.Device;
 import com.guerinet.utils.Utils;
+import com.orhanobut.hawk.Hawk;
 
 import javax.inject.Inject;
 
@@ -44,7 +45,7 @@ import ca.appvelopers.mcgillmobile.App;
 import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.ui.DrawerActivity;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
+import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 
@@ -69,11 +70,6 @@ public class MyCoursesActivity extends DrawerActivity {
      */
     @Inject
     protected UsernamePreference usernamePref;
-    /**
-     * {@link PasswordPreference} instance
-     */
-    @Inject
-    protected PasswordPreference passwordPref;
 
     @Override
     @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
@@ -157,7 +153,7 @@ public class MyCoursesActivity extends DrawerActivity {
                         "(document.getElementsByName('j_username')[0]).value='" +
                         usernamePref.full() + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
-                        passwordPref.get() +
+                        Hawk.get(PrefsModule.Hawk.PASSWORD) +
                         "'; document.getElementsByName('_eventId_proceed')[0].click();})()");
 
                 view.setVisibility(View.VISIBLE);

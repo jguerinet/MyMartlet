@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.BooleanPreference;
 import com.guerinet.utils.prefs.IntPreference;
+import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.io.IOException;
@@ -50,7 +51,6 @@ import ca.appvelopers.mcgillmobile.model.exception.MinervaException;
 import ca.appvelopers.mcgillmobile.ui.dialog.DialogHelper;
 import ca.appvelopers.mcgillmobile.ui.settings.AgreementActivity;
 import ca.appvelopers.mcgillmobile.util.Constants;
-import ca.appvelopers.mcgillmobile.util.dagger.prefs.PasswordPreference;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.PrefsModule;
 import ca.appvelopers.mcgillmobile.util.dagger.prefs.UsernamePreference;
 import ca.appvelopers.mcgillmobile.util.dbflow.databases.StatementsDB;
@@ -150,11 +150,6 @@ public class SplashActivity extends BaseActivity {
     @Inject
     UsernamePreference usernamePref;
     /**
-     * {@link PasswordPreference} instance
-     */
-    @Inject
-    PasswordPreference passwordPref;
-    /**
      * {@link UpdateManager} instance
      */
     @Inject
@@ -200,7 +195,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onReceivedBroadcast(Intent intent) {
-        //Override the Minerva broadcast to not log the user out since they are already logged out
+        // Override the Minerva broadcast to not log the user out since they are already logged out
         if (!intent.getAction().equals(Constants.BROADCAST_MINERVA)) {
             super.onReceivedBroadcast(intent);
         }
@@ -213,7 +208,7 @@ public class SplashActivity extends BaseActivity {
         if (minVersionPref.get() > Utils.versionCode(this)) {
             // If we don't have the min required version, show the right container
             minVersionContainer.setVisibility(View.VISIBLE);
-        } else if (usernamePref.get() == null || passwordPref.get() == null) {
+        } else if (usernamePref.get() == null || !Hawk.contains(PrefsModule.Hawk.PASSWORD)) {
             // If we are missing some login info, show the login screen with no error message
             showLoginScreen((IOException) getIntent().getSerializableExtra(Constants.EXCEPTION));
         } else {
@@ -301,7 +296,7 @@ public class SplashActivity extends BaseActivity {
                             Response<ResponseBody> response) {
                         // Store the login info
                         usernamePref.set(username);
-                        passwordPref.set(password);
+                        Hawk.put(PrefsModule.Hawk.PASSWORD, password);
                         rememberUsernamePref.set(rememberUsername.isChecked());
 
                         analytics.sendEvent("Login", "Remember Username",

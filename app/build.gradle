@@ -140,6 +140,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     compile 'com.jakewharton.timber:timber:4.5.1'
+    compile 'com.orhanobut:hawk:2.0.1'
     compile 'com.squareup.moshi:moshi:1.4.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
