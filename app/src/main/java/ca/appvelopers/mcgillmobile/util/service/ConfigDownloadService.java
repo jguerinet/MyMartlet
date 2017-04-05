@@ -125,14 +125,14 @@ public class ConfigDownloadService extends IntentService {
                 // Set whether the place was a favorite or not
                 //  This will automatically save the new place
                 object.setFavorite(oldObject.isFavorite());
-            });
+            }, null);
         }
 
         // Categories
         List<Category> categories = executeRequest(configService.categories(
                 getIMS(imsCategoriesPref)), imsCategoriesPref);
         if (categories != null) {
-            DBUtils.updateDB(Category.class, categories, null, PlaceCategoriesDB.class, null);
+            DBUtils.updateDB(Category.class, categories, null, PlaceCategoriesDB.class, null, null);
         }
 
         // Registration Terms

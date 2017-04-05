@@ -84,7 +84,7 @@ public class CourseResult extends Course implements Serializable {
                 instructor, credits, startDate, endDate);
         this.term = term;
         // Set the Id now
-        setId();
+        prepareForDB();
         this.capacity = capacity;
         this.seatsRemaining = seatsRemaining;
         this.waitlistRemaining = waitlistRemaining;

@@ -363,20 +363,19 @@ public class Course extends BaseModel implements Serializable {
     }
 
     /**
-     * Sets the Id
+     * Prepares the object for the DB
      */
-    void setId() {
+    void prepareForDB() {
         if (id == null) {
             id = term.toString() + crn;
         }
+        // Create the day String from the days
+        daysString = DayUtils.getDayStrings(getDays());
     }
 
     @Override
     public boolean save() {
-        // Create the Id from the term and the crn
-        setId();
-        // Create the day String from the days
-        daysString = DayUtils.getDayStrings(getDays());
+        prepareForDB();
         return super.save();
     }
 

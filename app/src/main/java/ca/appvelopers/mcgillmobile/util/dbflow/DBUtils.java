@@ -82,14 +82,17 @@ public class DBUtils {
      *  inserting new ones.
      * Note: this only works with models that have correctly set up the equals() method
      *
-     * @param type       Object type
-     * @param newObjects List of new objects/objects to update
-     * @param dbClass    Class of the DB these will be stored in
-     * @param callback   Optional callback to run any update code. If not, save() will be called
-     * @param <T>        Object Type
+     * @param type           Object type
+     * @param newObjects     List of new objects/objects to update
+     * @param condition      Optional condition to run when searching
+     * @param dbClass        Class of the DB these will be stored in
+     * @param updateCallback Optional callback to run any update code. If not, save() will be called
+     * @param callback       Optional callback to call after update is finished
+     * @param <T>            Object Type
      */
     public static <T extends BaseModel> void updateDB(Class<T> type, List<T> newObjects,
-            @Nullable SQLCondition condition, Class dbClass, UpdateCallback<T> callback) {
+            @Nullable SQLCondition condition, Class dbClass, UpdateCallback<T> updateCallback,
+            @Nullable Callback callback) {
         From<T> select = SQLite.select()
                 .from(type);
 
@@ -103,10 +106,6 @@ public class DBUtils {
 
         query.async()
                 .queryListResultCallback((transaction, tResult) -> {
-                    if (tResult == null) {
-                        return;
-                    }
-
                     // Go through the existing objects
                     for (T oldObject : tResult) {
                         // Check if the object still exists in the received objects
@@ -116,8 +115,8 @@ public class DBUtils {
                             T newObject = newObjects.get(index);
 
                             // If there's a callback, use it
-                            if (callback != null) {
-                                callback.update(newObject, oldObject);
+                            if (updateCallback != null) {
+                                updateCallback.update(newObject, oldObject);
                             } else {
                                 // If not, call save
                                 newObject.save();
@@ -139,9 +138,11 @@ public class DBUtils {
                                     .build();
 
                     FlowManager.getDatabase(dbClass)
-                        .beginTransactionAsync(newObjectsTransaction)
-                        .build()
-                        .execute();
+                            .executeTransaction(newObjectsTransaction);
+
+                    if (callback != null) {
+                        callback.onFinish();
+                    }
             })
                 .execute();
     }

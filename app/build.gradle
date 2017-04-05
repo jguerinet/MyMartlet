@@ -152,7 +152,7 @@ dependencies {
         transitive = true;
     }
     compile 'com.viewpagerindicator:library:2.4.1@aar'
-    compile 'org.jsoup:jsoup:1.10.2'
+    compile 'org.jsoup:jsoup:1.9.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

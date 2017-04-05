@@ -202,7 +202,13 @@ public class CoursesActivity extends DrawerActivity {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                 // Set the courses
-                CoursesDB.setCourses(term, response.body());
+                CoursesDB.setCourses(term, response.body(), () -> {
+                    handler.post(() -> {
+                        // Update the view
+                        update();
+                        showToolbarProgress(false);
+                    });
+                });
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
@@ -210,9 +216,6 @@ public class CoursesActivity extends DrawerActivity {
                     public void onResponse(Call<TranscriptResponse> call,
                             Response<TranscriptResponse> response) {
                         TranscriptDB.saveTranscript(CoursesActivity.this, response.body());
-                        // Update the view
-                        update();
-                        showToolbarProgress(false);
                     }
 
                     @Override

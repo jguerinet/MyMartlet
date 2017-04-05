@@ -16,6 +16,8 @@
 
 package ca.appvelopers.mcgillmobile.util.dbflow.databases;
 
+import android.support.annotation.Nullable;
+
 import com.raizlabs.android.dbflow.annotation.Database;
 
 import java.util.ArrayList;
@@ -40,10 +42,12 @@ public class CoursesDB {
     /**
      * Saves the {@link Course}s for the given {@link Term}
      *
-     * @param term    {@link Term} these courses are for
-     * @param courses List of {@link Course}s to save
+     * @param term     {@link Term} these courses are for
+     * @param courses  List of {@link Course}s to save
+     * @param callback Optional callback called when the transaction is finished
      */
-    public static void setCourses(Term term, List<Course> courses) {
+    public static void setCourses(Term term, List<Course> courses,
+            @Nullable DBUtils.Callback callback) {
         if (courses == null) {
             courses = new ArrayList<>();
         }
@@ -53,6 +57,7 @@ public class CoursesDB {
             course.setTerm(term);
         }
 
-        DBUtils.updateDB(Course.class, courses, Course_Table.term.eq(term), CoursesDB.class, null);
+        DBUtils.updateDB(Course.class, courses, Course_Table.term.eq(term), CoursesDB.class, null,
+                callback);
     }
 }
