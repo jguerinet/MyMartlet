@@ -12,155 +12,29 @@
         android:paddingLeft="@dimen/default_margin"
         android:paddingRight="@dimen/default_margin">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/course_title"
-            android:textStyle="bold"/>
+            android:orientation="vertical"
+            android:id="@+id/container"/>
 
-        <TextView
-            android:layout_width="match_parent"
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textStyle="italic"
-            android:text="@string/course_time_title"
-            android:paddingTop="@dimen/padding_micro"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_time"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_marginStart="@dimen/padding_small"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
-            android:textStyle="italic"
-            android:textColor="@android:color/black"
-            android:paddingTop="@dimen/padding_micro"
-            android:text="@string/course_location"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_location"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_marginStart="@dimen/padding_small"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:textColor="@android:color/black"
-            android:paddingTop="@dimen/padding_micro"
-            android:text="@string/schedule_type"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_type"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_marginStart="@dimen/padding_small"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:textColor="@android:color/black"
-            android:paddingTop="@dimen/padding_micro"
-            android:text="@string/course_prof"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_instructor"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_marginStart="@dimen/padding_small"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:textColor="@android:color/black"
-            android:paddingTop="@dimen/padding_micro"
-            android:text="@string/course_section"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_section"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_marginStart="@dimen/padding_small"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:textColor="@android:color/black"
-            android:paddingTop="@dimen/padding_micro"
-            android:text="@string/course_credits_title"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_credits"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_marginStart="@dimen/padding_small"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:textColor="@android:color/black"
-            android:paddingTop="@dimen/padding_micro"
-            android:text="@string/course_crn"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_crn"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="@dimen/padding_small"
-            android:layout_marginStart="@dimen/padding_small"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/schedule_line"
-            android:background="@color/grey_light"
-            android:layout_marginTop="@dimen/padding_micro"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_docuum"
-            android:background="@drawable/transparent_redpressed"
-            android:textColor="@android:color/black"
+            android:id="@+id/docuum"
+            android:textColor="@color/red"
             android:text="@string/course_docuum"
-            android:gravity="center"
-            android:padding="@dimen/padding_micro"/>
+            android:layout_gravity="center"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/schedule_line"
-            android:background="@color/grey_light"/>
-
-        <TextView
-            android:layout_width="match_parent"
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/course_map"
-            android:background="@drawable/transparent_redpressed"
-            android:textColor="@android:color/black"
+            android:id="@+id/map"
+            android:textColor="@color/red"
             android:text="@string/course_map"
-            android:gravity="center"
-            android:padding="@dimen/padding_micro"/>
+            android:layout_gravity="center"/>
 
         </LinearLayout>
 

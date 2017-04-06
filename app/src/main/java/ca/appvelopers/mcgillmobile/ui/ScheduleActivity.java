@@ -33,6 +33,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.formgenerator.TextInputFormItem;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.dialog.DialogUtils;
 import com.guerinet.utils.prefs.BooleanPreference;
@@ -237,10 +239,7 @@ public class ScheduleActivity extends DrawerActivity {
         return HomepageManager.SCHEDULE;
     }
 
-    /**
-     * Gets the courses for the given {@link Term}
-     */
-    private void updateCoursesAndDate() {
+    private void updateCourses() {
         // Clear the current courses
         courses.clear();
 
@@ -249,6 +248,13 @@ public class ScheduleActivity extends DrawerActivity {
                 .from(Course.class)
                 .where(Course_Table.term.eq(term))
                 .queryList());
+    }
+
+    /**
+     * Gets the courses for the given {@link Term}
+     */
+    private void updateCoursesAndDate() {
+        updateCourses();
 
         // Date is by default set to today
         date = LocalDate.now();
@@ -278,7 +284,13 @@ public class ScheduleActivity extends DrawerActivity {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                 // Set the courses
-                CoursesDB.setCourses(term, response.body());
+                CoursesDB.setCourses(term, response.body(), () -> handler.post(() -> {
+                    // Update the view
+                    showToolbarProgress(false);
+                    updateCourses();
+                    Assert.assertNotNull(viewPager);
+                    viewPager.getAdapter().notifyDataSetChanged();
+                }));
 
                 // Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
@@ -286,10 +298,6 @@ public class ScheduleActivity extends DrawerActivity {
                             public void onResponse(Call<TranscriptResponse> call,
                                     Response<TranscriptResponse> response) {
                                 TranscriptDB.saveTranscript(ScheduleActivity.this, response.body());
-                                // Update the view
-                                Assert.assertNotNull(viewPager);
-                                viewPager.getAdapter().notifyDataSetChanged();
-                                showToolbarProgress(false);
                             }
 
                     @Override
@@ -512,28 +520,84 @@ public class ScheduleActivity extends DrawerActivity {
     /**
      * Shows a dialog with course information
      *
-     * @param course Clicked course
+     * @param course Clicked {@link Course}
      */
-    public void showCourseDialog(final Course course) {
+    private void showCourseDialog(Course course) {
         analytics.sendScreen("Schedule - Course");
 
         // Inflate the body
         View layout = View.inflate(this, R.layout.dialog_course, null);
-        CourseDialogHolder holder = new CourseDialogHolder();
-        ButterKnife.bind(holder, layout);
+        LinearLayout container = (LinearLayout) layout.findViewById(R.id.container);
+        FormGenerator fg = FormGenerator.get()
+                .setShowLine(false)
+                .setInputDefaultBackground(android.R.color.transparent)
+                .bind(this, container);
 
-        // Set the info
-        holder.title.setText(course.getTitle());
-        holder.time.setText(course.getTimeString());
-        holder.location.setText(course.getLocation());
-        holder.type.setText(course.getType());
-        holder.instructor.setText(course.getInstructor());
-        holder.section.setText(course.getSection());
-        holder.credits.setText(String.valueOf(course.getCredits()));
-        holder.crn.setText(String.valueOf(course.getCRN()));
-        holder.docuum.setOnClickListener(v -> Utils.openURL(this, "http://www.docuum.com/mcgill/" +
-                course.getSubject().toLowerCase() + "/" + course.getNumber()));
-        holder.map.setOnClickListener(v -> {
+        // Title
+        TextInputFormItem formItem;
+        formItem = fg.textInput()
+                .hint(R.string.course_name)
+                .text(course.getTitle())
+                .build();
+        formItem.view().setEnabled(false);
+
+        // Time
+        formItem = fg.textInput()
+                .hint(R.string.course_time_title)
+                .text(course.getTimeString())
+                .build();
+        formItem.view().setEnabled(false);
+
+        // Location
+        formItem = fg.textInput()
+                .hint(R.string.course_location)
+                .text(course.getLocation())
+                .build();
+        formItem.view().setEnabled(false);
+
+        // Type
+        formItem = fg.textInput()
+                .hint(R.string.schedule_type)
+                .text(course.getType())
+                .build();
+        formItem.view().setEnabled(false);
+
+        // Instructor
+        formItem = fg.textInput()
+                .hint(R.string.course_prof)
+                .text(course.getInstructor())
+                .build();
+        formItem.view().setEnabled(false);
+
+        // Section
+        formItem = fg.textInput()
+                .hint(R.string.course_section)
+                .text(course.getSection())
+                .build();
+        formItem.view().setEnabled(false);
+
+        // Credits
+        formItem = fg.textInput()
+                .hint(R.string.course_credits_title)
+                .text(String.valueOf(course.getCredits()))
+                .build();
+        formItem.view().setEnabled(false);
+
+        // CRN
+        formItem = fg.textInput()
+                .hint(R.string.course_crn)
+                .text(String.valueOf(course.getCRN()))
+                .build();
+        formItem.view().setEnabled(false);
+
+        // Docuum
+        View docuum = layout.findViewById(R.id.docuum);
+        docuum.setOnClickListener(v -> Utils.openURL(this,
+                "http://www.docuum.com/mcgill/" + course.getSubject().toLowerCase() + "/" +
+                        course.getNumber()));
+
+        // Maps
+        layout.findViewById(R.id.map).setOnClickListener(v -> {
             // Try to find a place that has the right name
             SQLite.select()
                     .from(Place.class)
@@ -542,9 +606,9 @@ public class ScheduleActivity extends DrawerActivity {
                         String location = course.getLocation().toLowerCase();
                         Place place = null;
                         for (Place aPlace : tResult) {
-                            if (location.contains(aPlace.getCourseName().toLowerCase())) {
-                                // If the course location contains the place course name, we've
-                                //  found it
+                            if (location.contains(aPlace.getName().toLowerCase())) {
+                                // If the course location contains the place course name,
+                                //  we've found it
                                 place = aPlace;
                                 break;
                             }
@@ -552,11 +616,14 @@ public class ScheduleActivity extends DrawerActivity {
 
                         if (place == null) {
                             // Tell the user
-                            Utils.toast(ScheduleActivity.this, getString(
-                                    R.string.error_place_not_found, course.getLocation()));
+                            Utils.toast(this, getString(R.string.error_place_not_found,
+                                    course.getLocation()));
+                            // Send a Crashlytics report
+                            Timber.e(new NullPointerException("Location not found: " +
+                                    course.getLocation()));
                         } else {
                             // Open the map to the given place
-                            Intent intent = new Intent(ScheduleActivity.this, MapActivity.class)
+                            Intent intent = new Intent(this, MapActivity.class)
                                     .putExtra(Constants.ID, place.getId());
                             handler.post(() -> switchDrawerActivity(intent));
                         }
@@ -569,62 +636,6 @@ public class ScheduleActivity extends DrawerActivity {
                 .setCancelable(true)
                 .setNeutralButton(R.string.done, (dialog, which) -> dialog.dismiss())
                 .show();
-    }
-
-    /**
-     * Holder for the course dialog views
-     */
-    class CourseDialogHolder {
-        /**
-         * Course title
-         */
-        @BindView(R.id.course_title)
-        TextView title;
-        /**
-         * Course time
-         */
-        @BindView(R.id.course_time)
-        TextView time;
-        /**
-         * Course location
-         */
-        @BindView(R.id.course_location)
-        TextView location;
-        /**
-         * Course type
-         */
-        @BindView(R.id.course_type)
-        TextView type;
-        /**
-         * Course instructor
-         */
-        @BindView(R.id.course_instructor)
-        TextView instructor;
-        /**
-         * Course section
-         */
-        @BindView(R.id.course_section)
-        TextView section;
-        /**
-         * Course credits
-         */
-        @BindView(R.id.course_credits)
-        TextView credits;
-        /**
-         * Course CRN
-         */
-        @BindView(R.id.course_crn)
-        TextView crn;
-        /**
-         * Link to course on Docuum
-         */
-        @BindView(R.id.course_docuum)
-        View docuum;
-        /**
-         * Link to show course building on the map
-         */
-        @BindView(R.id.course_map)
-        View map;
     }
 
     /**

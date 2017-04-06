@@ -114,13 +114,14 @@
     <string name="schedule_change_semester">Change Semester</string>
 
     <!-- Course Screen -->
-    <string name="course_time_title">Time: </string>
-    <string name="course_location">Room: </string>
-    <string name="schedule_type">Schedule Type: </string>
-    <string name="course_prof">Professor: </string>
-    <string name="course_section">Section: </string>
-    <string name="course_credits_title">Credits: </string>
-    <string name="course_crn">CRN: </string>
+    <string name="course_name">Name</string>
+    <string name="course_time_title">Time</string>
+    <string name="course_location">Room</string>
+    <string name="schedule_type">Schedule Type</string>
+    <string name="course_prof">Professor</string>
+    <string name="course_section">Section</string>
+    <string name="course_credits_title">Credits</string>
+    <string name="course_crn">CRN</string>
     <string name="course_docuum">View Course on Docuum</string>
     <string name="course_map">Show on Map</string>
     <string name="error_place_not_found">Place %s not found on map, developer has been notified</string>

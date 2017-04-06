@@ -113,13 +113,14 @@
     <string name="schedule_change_semester">Changer de Semestre</string>
 
     <!-- Course Screen -->
-    <string name="course_time_title">Heure:</string>
-    <string name="course_location">Salle:</string>
-    <string name="schedule_type">Type de Cours: </string>
-    <string name="course_prof">Professeur: </string>
-    <string name="course_section">Section: </string>
-    <string name="course_credits_title">Crédits: </string>
-    <string name="course_crn">CRN: </string>
+    <string name="course_name">Nom</string>
+    <string name="course_time_title">Heure</string>
+    <string name="course_location">Salle</string>
+    <string name="schedule_type">Type de Cours</string>
+    <string name="course_prof">Professeur</string>
+    <string name="course_section">Section</string>
+    <string name="course_credits_title">Crédits</string>
+    <string name="course_crn">CRN</string>
     <string name="course_docuum">Voir Cours sur Docuum</string>
     <string name="course_map">Voir sur la Carte</string>
     <string name="error_place_not_found">Endroit %s non trouvé sur la carte, le développeur a été averti.</string>
