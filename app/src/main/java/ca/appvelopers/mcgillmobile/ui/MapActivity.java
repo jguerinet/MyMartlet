@@ -65,6 +65,7 @@ import ca.appvelopers.mcgillmobile.R;
 import ca.appvelopers.mcgillmobile.model.place.Category;
 import ca.appvelopers.mcgillmobile.model.place.Place;
 import ca.appvelopers.mcgillmobile.ui.dialog.list.CategoryListAdapter;
+import ca.appvelopers.mcgillmobile.util.Constants;
 import ca.appvelopers.mcgillmobile.util.manager.HomepageManager;
 import timber.log.Timber;
 
@@ -411,14 +412,14 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         }
         //If we don't, it will be requested
 
+        map.setOnMarkerClickListener(this);
+
         SQLite.select()
                 .from(Place.class)
                 .async()
                 .queryListResultCallback((transaction, tResult) -> {
-                    if (tResult == null) {
-                        return;
-                    }
-
+                    int placeId = getIntent().getIntExtra(Constants.ID, -1);
+                    Marker theMarker = null;
                     for (Place place : tResult) {
                         // Create a MapPlace for this
                         Marker marker = map.addMarker(new MarkerOptions()
@@ -426,16 +427,22 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                                 .draggable(false)
                                 .visible(true));
 
+                        // Check if there was a place with the intent
+                        if (theMarker == null && place.getId() == placeId) {
+                            // If the right place is found, perform a click later
+                            theMarker = marker;
+                        }
+
                         // Add it to the list
                         places.add(new Pair<>(place, marker));
                     }
 
                     // Filter
                     filterByCategory();
+
+                    onMarkerClick(theMarker);
                 })
                 .execute();
-
-        map.setOnMarkerClickListener(this);
     }
 
     @Override

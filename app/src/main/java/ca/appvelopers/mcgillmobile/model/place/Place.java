@@ -120,11 +120,13 @@ public class Place extends BaseModel implements Serializable {
     private List<Integer> getCategories() {
         if (categories == null) {
             categories = new ArrayList<>();
-            for (String character : categoriesList.split(",")) {
-                try {
-                    categories.add(Integer.valueOf(character));
-                } catch (Exception e) {
-                    Timber.e(e, "Cannot convert into number: %s", character);
+            if (categoriesList != null) {
+                for (String character : categoriesList.split(",")) {
+                    try {
+                        categories.add(Integer.valueOf(character));
+                    } catch (Exception e) {
+                        Timber.e(e, "Cannot convert into number: %s", character);
+                    }
                 }
             }
         }

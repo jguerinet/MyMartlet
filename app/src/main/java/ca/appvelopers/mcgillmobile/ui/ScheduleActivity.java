@@ -596,6 +596,13 @@ public class ScheduleActivity extends DrawerActivity {
                 "http://www.docuum.com/mcgill/" + course.getSubject().toLowerCase() + "/" +
                         course.getNumber()));
 
+        final AlertDialog alert = new AlertDialog.Builder(this)
+                .setTitle(course.getCode())
+                .setView(layout)
+                .setCancelable(true)
+                .setNeutralButton(R.string.done, (dialog, which) -> dialog.dismiss())
+                .show();
+
         // Maps
         layout.findViewById(R.id.map).setOnClickListener(v -> {
             // Try to find a place that has the right name
@@ -622,20 +629,16 @@ public class ScheduleActivity extends DrawerActivity {
                             Timber.e(new NullPointerException("Location not found: " +
                                     course.getLocation()));
                         } else {
+                            // Close the dialog
+                            alert.dismiss();
                             // Open the map to the given place
                             Intent intent = new Intent(this, MapActivity.class)
                                     .putExtra(Constants.ID, place.getId());
                             handler.post(() -> switchDrawerActivity(intent));
                         }
-                    });
+                    })
+                    .execute();
         });
-
-        new AlertDialog.Builder(this)
-                .setTitle(course.getCode())
-                .setView(layout)
-                .setCancelable(true)
-                .setNeutralButton(R.string.done, (dialog, which) -> dialog.dismiss())
-                .show();
     }
 
     /**
