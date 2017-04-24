@@ -148,7 +148,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         searchString = "";
         category = new Category(false);
 
-        FormGenerator fg = FormGenerator.bind(this, container);
+        FormGenerator fg = FormGenerator.bind(container);
 
         // Icon coloring
         int red = ContextCompat.getColor(this, R.color.red);

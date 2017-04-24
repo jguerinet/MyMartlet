@@ -67,7 +67,7 @@ public class HelpActivity extends BaseActivity {
         ButterKnife.bind(this);
         setUpToolbar(true);
 
-        FormGenerator fg = FormGenerator.bind(this, container);
+        FormGenerator fg = FormGenerator.bind(container);
 
         // EULA
         fg.text()

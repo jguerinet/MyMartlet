@@ -95,7 +95,7 @@ public class SettingsActivity extends DrawerActivity {
         setTitle(getString(R.string.settings_version, Utils.versionName(this)));
         analytics.sendScreen("Settings");
 
-        FormGenerator fg = FormGenerator.bind(this, container);
+        FormGenerator fg = FormGenerator.bind(container);
 
         // 24 hour time preference
         fg.aSwitch()
