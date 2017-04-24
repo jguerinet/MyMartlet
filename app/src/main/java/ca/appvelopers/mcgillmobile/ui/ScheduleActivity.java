@@ -533,62 +533,67 @@ public class ScheduleActivity extends DrawerActivity {
                 .setInputDefaultBackground(android.R.color.transparent)
                 .bind(container);
 
+        fg.textInput()
+                .hint(R.string.course_code)
+                .text(course.getCode())
+                .enabled(false)
+                .build();
+
         // Title
-        TextInputFormItem formItem;
-        formItem = fg.textInput()
+        fg.textInput()
                 .hint(R.string.course_name)
                 .text(course.getTitle())
+                .enabled(false)
                 .build();
-        formItem.view().setEnabled(false);
 
         // Time
-        formItem = fg.textInput()
+        fg.textInput()
                 .hint(R.string.course_time_title)
                 .text(course.getTimeString())
+                .enabled(false)
                 .build();
-        formItem.view().setEnabled(false);
 
         // Location
-        formItem = fg.textInput()
+        fg.textInput()
                 .hint(R.string.course_location)
                 .text(course.getLocation())
+                .enabled(false)
                 .build();
-        formItem.view().setEnabled(false);
 
         // Type
-        formItem = fg.textInput()
+        fg.textInput()
                 .hint(R.string.schedule_type)
                 .text(course.getType())
+                .enabled(false)
                 .build();
-        formItem.view().setEnabled(false);
 
         // Instructor
-        formItem = fg.textInput()
+        fg.textInput()
                 .hint(R.string.course_prof)
                 .text(course.getInstructor())
+                .enabled(false)
                 .build();
-        formItem.view().setEnabled(false);
 
         // Section
-        formItem = fg.textInput()
+        fg.textInput()
                 .hint(R.string.course_section)
                 .text(course.getSection())
+                .enabled(false)
                 .build();
-        formItem.view().setEnabled(false);
 
         // Credits
-        formItem = fg.textInput()
+        fg.textInput()
                 .hint(R.string.course_credits_title)
                 .text(String.valueOf(course.getCredits()))
+                .enabled(false)
                 .build();
-        formItem.view().setEnabled(false);
 
         // CRN
-        formItem = fg.textInput()
+        fg.textInput()
                 .hint(R.string.course_crn)
                 .text(String.valueOf(course.getCRN()))
+                .enabled(false)
                 .build();
-        formItem.view().setEnabled(false);
 
         // Docuum
         View docuum = layout.findViewById(R.id.docuum);
@@ -597,7 +602,6 @@ public class ScheduleActivity extends DrawerActivity {
                         course.getNumber()));
 
         final AlertDialog alert = new AlertDialog.Builder(this)
-                .setTitle(course.getCode())
                 .setView(layout)
                 .setCancelable(true)
                 .setNeutralButton(R.string.done, (dialog, which) -> dialog.dismiss())
