@@ -115,7 +115,7 @@ public class WalkthroughAdapter extends PagerAdapter {
             container.setOrientation(LinearLayout.VERTICAL);
             container.setGravity(Gravity.CENTER);
 
-            FormGenerator fg = FormGenerator.bind(context, container);
+            FormGenerator fg = FormGenerator.bind(container);
 
             // HomepageManager Prompt
             fg.text()

@@ -26,7 +26,7 @@ buildscript {
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
     }
 }
 apply plugin: 'com.android.application'
@@ -107,7 +107,7 @@ android {
     }
 }
 
-// Set the Twitter keys from the properties filed
+// Set the Facebook/Twitter keys from the properties file
 android.buildTypes.each { type ->
     type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey
     type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret
@@ -116,43 +116,52 @@ android.buildTypes.each { type ->
             props.facebookAppId
 }
 
+// Versions for libraries with multiple dependencies
+def version_butterknife = "8.5.1"
+def version_dagger = "2.10"
+def version_dbflow = "4.0.0-beta5"
+def version_gps = "10.2.1"
+def version_okhttp = "3.7.0"
+def version_retrofit = "2.2.0"
+def version_support = "25.3.1"
+
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:design:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
-    compile 'com.android.support:support-v4:25.3.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+    compile "com.android.support:appcompat-v7:${version_support}"
+    compile "com.android.support:design:${version_support}"
+    compile "com.android.support:recyclerview-v7:${version_support}"
+    compile "com.android.support:support-v4:${version_support}"
+    compile("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") {
         transitive = true;
     }
-    compile 'com.facebook.android:facebook-android-sdk:4.20.0'
-    compile 'com.github.Raizlabs.DBFlow:dbflow:4.0.0-beta5'
-    compile 'com.github.Raizlabs.DBFlow:dbflow-core:4.0.0-beta5'
-    annotationProcessor 'com.github.Raizlabs.DBFlow:dbflow-processor:4.0.0-beta5'
-    compile 'com.google.android.gms:play-services-analytics:10.2.1'
-    compile 'com.google.android.gms:play-services-maps:10.2.1'
-    compile 'com.google.dagger:dagger:2.10'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
-    provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.guerinet:android-utils:1.2.1'
-    compile 'com.guerinet:form-generator:3.1.0'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
-    compile 'com.jakewharton.timber:timber:4.5.1'
-    compile 'com.orhanobut:hawk:2.0.1'
-    compile 'com.squareup.moshi:moshi:1.4.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.squareup.okio:okio:1.11.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.retrofit2:converter-moshi:2.2.0'
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
+    compile "com.facebook.android:facebook-android-sdk:4.22.0"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${version_dbflow}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${version_dbflow}"
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${version_dbflow}"
+    compile "com.google.android.gms:play-services-analytics:${version_gps}"
+    compile "com.google.android.gms:play-services-maps:${version_gps}"
+    compile "com.google.dagger:dagger:${version_dagger}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${version_dagger}"
+    provided "org.glassfish:javax.annotation:10.0-b28"
+    compile "com.guerinet:android-utils:1.2.1"
+    compile "com.guerinet:form-generator:3.2.2"
+    compile "com.jakewharton:butterknife:${version_butterknife}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${version_butterknife}"
+    compile "com.jakewharton.threetenabp:threetenabp:1.0.5"
+    compile "com.jakewharton.timber:timber:4.5.1"
+    compile "com.orhanobut:hawk:2.0.1"
+    compile "com.squareup.moshi:moshi:1.4.0"
+    compile "com.squareup.okhttp3:logging-interceptor:${version_okhttp}"
+    compile "com.squareup.okhttp3:okhttp:${version_okhttp}"
+    compile "com.squareup.okio:okio:1.12.0"
+    compile "com.squareup.picasso:picasso:2.5.2"
+    compile "com.squareup.retrofit2:converter-moshi:${version_retrofit}"
+    compile "com.squareup.retrofit2:retrofit:${version_retrofit}"
+    compile("com.twitter.sdk.android:twitter:2.3.2@aar") {
         transitive = true;
     }
-    compile 'com.viewpagerindicator:library:2.4.1@aar'
-    compile 'org.jsoup:jsoup:1.9.1'
+    compile "com.viewpagerindicator:library:2.4.1@aar"
+    // Don't update this as 1.10.x breaks the converters
+    compile "org.jsoup:jsoup:1.9.1"
 }
 
 apply plugin: 'com.google.gms.google-services'

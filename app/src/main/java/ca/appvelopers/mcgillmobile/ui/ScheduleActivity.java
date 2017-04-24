@@ -531,7 +531,7 @@ public class ScheduleActivity extends DrawerActivity {
         FormGenerator fg = FormGenerator.get()
                 .setShowLine(false)
                 .setInputDefaultBackground(android.R.color.transparent)
-                .bind(this, container);
+                .bind(container);
 
         // Title
         TextInputFormItem formItem;
