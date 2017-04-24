@@ -67,10 +67,6 @@ public class McGillManager {
      * The {@link McGillService} instance
      */
     private final McGillService mcGillService;
-    /**
-     * True if the client has been initialized (in terms of the cookies), false otherwise
-     */
-    private boolean initialized;
 
 	/**
 	 * Default Constructor
@@ -98,10 +94,7 @@ public class McGillManager {
                         // Use the cookies for the given URL host
                         List<Cookie> cookies = cookieStore.get(url.host());
 
-                        if (!initialized && cookies != null) {
-                            // If there are cookies, then it's initialized
-                            initialized = true;
-                        } else if (cookies == null) {
+                        if (cookies == null) {
                             // If there are no cookies, use an empty list
                             cookies = new ArrayList<>();
                         }
@@ -187,6 +180,17 @@ public class McGillManager {
     }
 
     /**
+     * Initializes the {@link McGillService} because a call needs to be made before anything
+     *  happens for some reason
+     */
+    public void init() {
+        // Create a blank call when initializing because the first call never seems to work
+        try {
+            mcGillService.login("", "").execute();
+        } catch (IOException ignored) {}
+    }
+
+    /**
      * Attempts to log into Minerva asynchronously
      *
      * @param username Inputted username
@@ -215,14 +219,10 @@ public class McGillManager {
 
     /**
      * Logs the user in with the stored username and password
+     *
      * @throws IOException Thrown if there was an error during login
      */
     public void login() throws IOException {
-        // If it's not initialized, call login with nothing to set up the cookies
-        if (!initialized) {
-            mcGillService.login("", "").execute();
-        }
-
         // Create the POST request with the given username and password and handle the response
         handleLogin(mcGillService.login(usernamePref.full(), Hawk.get(PrefsModule.Hawk.PASSWORD))
                 .execute());

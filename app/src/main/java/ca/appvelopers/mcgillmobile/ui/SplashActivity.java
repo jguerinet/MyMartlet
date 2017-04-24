@@ -338,6 +338,9 @@ public class SplashActivity extends BaseActivity {
             // Run any update code
             updateManager.update();
 
+            // Initialize the McGillService
+            mcGillManager.init();
+
             // Start downloading the config
             startService(new Intent(SplashActivity.this, ConfigDownloadService.class));
             return null;
