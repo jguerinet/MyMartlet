@@ -26,7 +26,7 @@ buildscript {
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
     }
 }
 apply plugin: 'com.android.application'
@@ -121,7 +121,7 @@ def version_butterknife = "8.5.1"
 def version_dagger = "2.10"
 def version_dbflow = "4.0.0-beta5"
 def version_gps = "10.2.1"
-def version_okhttp = "3.6.0"
+def version_okhttp = "3.7.0"
 def version_retrofit = "2.2.0"
 def version_support = "25.3.1"
 
@@ -133,7 +133,7 @@ dependencies {
     compile("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") {
         transitive = true;
     }
-    compile "com.facebook.android:facebook-android-sdk:4.20.0"
+    compile "com.facebook.android:facebook-android-sdk:4.22.0"
     compile "com.github.Raizlabs.DBFlow:dbflow:${version_dbflow}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${version_dbflow}"
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${version_dbflow}"
@@ -143,7 +143,7 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:${version_dagger}"
     provided "org.glassfish:javax.annotation:10.0-b28"
     compile "com.guerinet:android-utils:1.2.1"
-    compile "com.guerinet:form-generator:3.1.0"
+    compile "com.guerinet:form-generator:3.2.2"
     compile "com.jakewharton:butterknife:${version_butterknife}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${version_butterknife}"
     compile "com.jakewharton.threetenabp:threetenabp:1.0.5"
@@ -152,7 +152,7 @@ dependencies {
     compile "com.squareup.moshi:moshi:1.4.0"
     compile "com.squareup.okhttp3:logging-interceptor:${version_okhttp}"
     compile "com.squareup.okhttp3:okhttp:${version_okhttp}"
-    compile "com.squareup.okio:okio:1.11.0"
+    compile "com.squareup.okio:okio:1.12.0"
     compile "com.squareup.picasso:picasso:2.5.2"
     compile "com.squareup.retrofit2:converter-moshi:${version_retrofit}"
     compile "com.squareup.retrofit2:retrofit:${version_retrofit}"
@@ -160,6 +160,7 @@ dependencies {
         transitive = true;
     }
     compile "com.viewpagerindicator:library:2.4.1@aar"
+    // Don't update this as 1.10.x breaks the converters
     compile "org.jsoup:jsoup:1.9.1"
 }
 
