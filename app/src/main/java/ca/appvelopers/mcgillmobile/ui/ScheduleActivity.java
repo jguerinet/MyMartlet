@@ -22,17 +22,21 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.guerinet.formgenerator.ButtonFormItem;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.formgenerator.TextInputFormItem;
 import com.guerinet.utils.Utils;
@@ -77,6 +81,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
+
 
 /**
  * Displays the user's schedule
@@ -525,14 +530,26 @@ public class ScheduleActivity extends DrawerActivity {
     private void showCourseDialog(Course course) {
         analytics.sendScreen("Schedule - Course");
 
-        // Inflate the body
-        View layout = View.inflate(this, R.layout.dialog_course, null);
-        LinearLayout container = (LinearLayout) layout.findViewById(R.id.container);
+        // Set up the view in the dialog
+        ScrollView view = new ScrollView(this);
+        LinearLayout container = new LinearLayout(this);
+        container.setOrientation(LinearLayout.VERTICAL);
+        view.addView(container);
+
+        // Create the dialog
+        final AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(true)
+                .setNeutralButton(R.string.done, (dialog, which) -> dialog.dismiss())
+                .show();
+
+        // Populate the form
         FormGenerator fg = FormGenerator.get()
                 .setShowLine(false)
                 .setInputDefaultBackground(android.R.color.transparent)
                 .bind(container);
 
+        // Code
         fg.textInput()
                 .hint(R.string.course_code)
                 .text(course.getCode())
@@ -595,54 +612,60 @@ public class ScheduleActivity extends DrawerActivity {
                 .enabled(false)
                 .build();
 
-        // Docuum
-        View docuum = layout.findViewById(R.id.docuum);
-        docuum.setOnClickListener(v -> Utils.openURL(this,
-                "http://www.docuum.com/mcgill/" + course.getSubject().toLowerCase() + "/" +
-                        course.getNumber()));
+        int color = ContextCompat.getColor(this, R.color.red);
 
-        final AlertDialog alert = new AlertDialog.Builder(this)
-                .setView(layout)
-                .setCancelable(true)
-                .setNeutralButton(R.string.done, (dialog, which) -> dialog.dismiss())
-                .show();
+        // Docuum
+        fg.borderlessButton()
+                .layoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT), Gravity.CENTER)
+                .text(R.string.course_docuum)
+                .textColor(color)
+                .onClick(item -> Utils.openURL(this, "http://www.docuum.com/mcgill/" +
+                        course.getSubject().toLowerCase() + "/" + course.getNumber()))
+                .build();
 
         // Maps
-        layout.findViewById(R.id.map).setOnClickListener(v -> {
-            // Try to find a place that has the right name
-            SQLite.select()
-                    .from(Place.class)
-                    .async()
-                    .queryListResultCallback((transaction, tResult) -> {
-                        String location = course.getLocation().toLowerCase();
-                        Place place = null;
-                        for (Place aPlace : tResult) {
-                            if (location.contains(aPlace.getName().toLowerCase())) {
-                                // If the course location contains the place course name,
-                                //  we've found it
-                                place = aPlace;
-                                break;
-                            }
-                        }
+        fg.borderlessButton()
+                .layoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT), Gravity.CENTER)
+                .text(R.string.course_map)
+                .textColor(color)
+                .onClick(item -> {
+                    // Try to find a place that has the right name
+                    SQLite.select()
+                            .from(Place.class)
+                            .async()
+                            .queryListResultCallback((transaction, tResult) -> {
+                                String location = course.getLocation().toLowerCase();
+                                Place place = null;
+                                for (Place aPlace : tResult) {
+                                    if (location.contains(aPlace.getName().toLowerCase())) {
+                                        // If the course location contains the place course name,
+                                        //  we've found it
+                                        place = aPlace;
+                                        break;
+                                    }
+                                }
 
-                        if (place == null) {
-                            // Tell the user
-                            Utils.toast(this, getString(R.string.error_place_not_found,
-                                    course.getLocation()));
-                            // Send a Crashlytics report
-                            Timber.e(new NullPointerException("Location not found: " +
-                                    course.getLocation()));
-                        } else {
-                            // Close the dialog
-                            alert.dismiss();
-                            // Open the map to the given place
-                            Intent intent = new Intent(this, MapActivity.class)
-                                    .putExtra(Constants.ID, place.getId());
-                            handler.post(() -> switchDrawerActivity(intent));
-                        }
-                    })
-                    .execute();
-        });
+                                if (place == null) {
+                                    // Tell the user
+                                    Utils.toast(this, getString(R.string.error_place_not_found,
+                                            course.getLocation()));
+                                    // Send a Crashlytics report
+                                    Timber.e(new NullPointerException("Location not found: " +
+                                            course.getLocation()));
+                                } else {
+                                    // Close the dialog
+                                    alert.dismiss();
+                                    // Open the map to the given place
+                                    Intent intent = new Intent(this, MapActivity.class)
+                                            .putExtra(Constants.ID, place.getId());
+                                    handler.post(() -> switchDrawerActivity(intent));
+                                }
+                            })
+                            .execute();
+                })
+                .build();
     }
 
     /**
