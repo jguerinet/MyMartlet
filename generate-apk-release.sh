@@ -3,7 +3,7 @@
 # config
 RELEASE_REPO=AllanWang/MyMartlet
 USER_AUTH=AllanWang
-APK_NAME=app-debug
+APK_NAME=MyMartlet-debug
 MODULE_NAME=app
 VERSION_KEY=MM
 # Make version key different from module name
