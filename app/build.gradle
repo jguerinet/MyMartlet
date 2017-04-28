@@ -16,7 +16,8 @@
 
 // Setting up the release keystore properties
 def props = new Properties()
-props.load(new FileInputStream(rootProject.file("util/private.properties")))
+if (rootProject.file("util/private.properties").exists())
+    props.load(new FileInputStream(rootProject.file("util/private.properties")))
 
 buildscript {
     repositories {
@@ -51,11 +52,13 @@ android {
             keyPassword 'android'
         }
 
-        release {
-            storeFile file(props.storeFile)
-            storePassword props.storePassword
-            keyAlias props.keyAlias
-            keyPassword props.keyPassword
+        if (rootProject.file("util/private.properties").exists()) {
+            release {
+                storeFile file(props.storeFile)
+                storePassword props.storePassword
+                keyAlias props.keyAlias
+                keyPassword props.keyPassword
+            }
         }
     }
 
@@ -69,6 +72,8 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
             buildConfigField 'boolean', 'REPORT_CRASHES', 'false'
             versionNameSuffix "." + defaultConfig.versionCode
@@ -76,12 +81,14 @@ android {
 
         beta {
             initWith debug
-            signingConfig signingConfigs.release
+            if (rootProject.file("util/private.properties").exists())
+                signingConfig signingConfigs.release
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
 
         release {
-            signingConfig signingConfigs.release
+            if (rootProject.file("util/private.properties").exists())
+                signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
@@ -108,10 +115,11 @@ android {
 }
 
 // Set the Facebook/Twitter keys from the properties file
+// May be null if property file is not defined
 android.buildTypes.each { type ->
-    type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey
-    type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret
-    type.resValue 'string', 'facebook_app_id', props.facebookAppId
+    type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey ?: '"NA"'
+    type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret ?: '"NA"'
+    type.resValue 'string', 'facebook_app_id', props.facebookAppId ?: '"NA"'
     type.resValue 'string', 'facebook_provider', 'com.facebook.app.FacebookContentProvider' +
             props.facebookAppId
 }
