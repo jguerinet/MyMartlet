@@ -9,6 +9,9 @@ android:
   - android-25
   - extra-google-m2repository
   - extra-android-m2repository
+branches:
+  except:
+    - /^v[0-9]+/
 before_install:
 - chmod +x gradlew
 - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle

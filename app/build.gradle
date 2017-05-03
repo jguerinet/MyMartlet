@@ -72,8 +72,6 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
             buildConfigField 'boolean', 'REPORT_CRASHES', 'false'
             versionNameSuffix "." + defaultConfig.versionCode
