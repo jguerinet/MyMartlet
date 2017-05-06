@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+    <version title="v"/>
+    <item text="" />
+    -->
+
+    <version title="Version 2.3.1 (2016-09-05)"/>
+    <item text="New: Added disclaimer before registering for courses" />
+    <item text="Fixed MyCourses login" />
+    <item text="Fixed drawables on pre-Lollipop" />
+    <item text="Fixed course search" />
+    <item text="Removed horizontal schedule page in walkthrough" />
+
+    <version title="Version 2.3.0 (2016-07-16)"/>
+    <item text="New: Support for Android Nougat" />
+    <item text="Fixed course search" />
+    <item text="Fixed bug when removing favorite place" />
+
+    <version title="Version 2.2.5 (2016-04-05)"/>
+    <item text="Fix: Fix login issue with regards to the new proxy cookie Minerva sets" />
+
+    <version title="Version 2.2.4 (2016-03-10)"/>
+    <item text="Fix: Reverted Instabug to 1.x to fix the multiple crashes that 2.x was causing" />
+
+    <version title="Version 2.2.3 (2016-03-08)"/>
+    <item text="Fix: Fixed crash when parsing Sunday as the day of the week a course is offered (character was recently changed)" />
+    <item text="Fix: Fixed crash because of wrong order of email and LinkedIn info in the About section" />
+    <item text="Fix: Fixed crash where list converters would not be found on Android 4.x" />
+    <item text="Update: Started ignoring some unnecessary exceptions when sending crashes to Crashlytics" />
+
+    <version title="Version 2.2.2 (2016-03-08)"/>
+    <item text="Fix: Fixed crash that happened when trying to update a semester on courses that haven't been loaded from storage yet" />
+
+    <version title="Version 2.2.1 (2016-03-08)"/>
+    <item text="Fix: Attempt to fix the missing converter for the schedule on some devices" />
+    <item text="Update: Updated to support libraries v23.2.0, now using VectorDrawables everywhere" />
+
+    <version title="Version 2.2.0 (2016-03-02)"/>
+    <item text="Completely refactored the downloading and parsing of the info to be quicker and more efficient" />
+    <item text="Made the loading screen much faster" />
+    <item text="Stopped using Gson, starting using Moshi" />
+    <item text="Added button to become a beta tester in the app" />
+    <item text="Added GitHub button" />
+    <item text="Now redirecting to the McGill walkthrough for setting up the email" />
+    <item text="Switched to Instabug 2.0" />
+    <item text="Added some managers for some of the data to make it more synchronous and less error prone" />
+    <item text="Added option to display the schedule in 24 hour format" />
+    <item text="Removed the user info that was unused" />
+    <item text="Unified app icon" />
+    <item text="A ton of small bug fixes" />
+
+    <version title="Version 2.1.0 (2016-02-06)"/>
+    <item text="Started using Dagger for dependency injection almost everywhere" />
+    <item text="Removed Hungarian notation from all of the models" />
+    <item text="Replaced Joda Time with Android Three Ten" />
+    <item text="Removed unused fields on some models" />
+    <item text="Temporarily disabled the landscape orientation fo the schedule because it is not rendering correctly since the activity switch" />
+
+    <version title="Version 2.0.3 (2016-01-28)"/>
+    <item text="Switched from fragments to activities" />
+    <item text="Set up dependency to the Android Utils library" />
+
+    <version title="Version 2.0.2 (2016-01-12)"/>
+    <item text="Fixed some reported crashes" />
+    <item text="Fixed bug where about page would not load" />
+    <item text="Fixed bug where transcript would not load on pre-Lollipop devices" />
+    <item text="Removed unnecessary color state lists" />
+    <item text="Refreshed the Settings UI" />
+
+    <version title="Version 2.0.1 (2015-11-20)"/>
+    <item text="Open sourced the whole project" />
+    <item text="Switched to min SDK 15" />
+    <item text="Switched to Gradle" />
+    <item text="Removed FontAwesome and switched to material design VectorDrawables" />
+    <item text="Fixed Facebook sharing" />
+    <item text="Fixed Twitter sharing" />
+    <item text="Added Crashlytics" />
+    <item text="Added Instabug" />
+    <item text="Significantly optimized the Connection class" />
+    <item text="Fixed bug where app would crash if ebill was empty" />
+    <item text="Set up the Marshmallow permissions" />
+    <item text="Refactored the whole code base" />
+    <item text="Minor UI tweaks" />
+
+    <version title="Version 2.0.0 (2015-02-10)"/>
+    <item text="Fixed dev mode" />
+
+    <version title="Version 2.0.0 (2015-02-10)"/>
+    <item text="Removed wishlist option for semesters that you can't currently register for" />
+
+    <version title="Version 2.0.0 (2015-02-09)"/>
+    <item text="Fixed NPE crash reported on Google Play (NPE on class list)" />
+
+    <version title="Version 2.0.0 (2015-02-08)"/>
+    <item text="Bug fixes" />
+    <item text="Material design" />
+    <item text="Added a Search Functionality to the Map" />
+    <item text="Added new categories to filter by on the map" />
+    <item text="Added an End User License Agreement (EULA)" />
+
+    <version title="Version 1.0.1 (2014-09-24)"/>
+    <item text="Fixed bug where the current date would be shown even if you chose a semester in the past or future" />
+
+    <version title="Version 1.0.1 (2014-09-23)"/>
+    <item text="Loading screen only updates the essentials (current/future semesters + transcript + ebill)" />
+    <item text="Added skip button on loading screen" />
+    <item text="Date is now taken into account for classes" />
+    <item text="Fixed some parsing bugs" />
+    <item text="Added close button to walkthrough" />
+    <item text="Removed the default faculty in walkthrough" />
+    <item text="Can now download files from MyCourses" />
+    <item text="Fixed bug where logging out would not log you out of MyCourses" />
+
+    <version title="Version 1.0.0 (2014-09-08)"/>
+    <item text="Initial Release" />
+</resources>
