@@ -16,7 +16,8 @@
 
 // Setting up the release keystore properties
 def props = new Properties()
-props.load(new FileInputStream(rootProject.file("util/private.properties")))
+if (rootProject.file("util/private.properties").exists())
+    props.load(new FileInputStream(rootProject.file("util/private.properties")))
 
 buildscript {
     repositories {
@@ -51,11 +52,13 @@ android {
             keyPassword 'android'
         }
 
-        release {
-            storeFile file(props.storeFile)
-            storePassword props.storePassword
-            keyAlias props.keyAlias
-            keyPassword props.keyPassword
+        if (rootProject.file("util/private.properties").exists()) {
+            release {
+                storeFile file(props.storeFile)
+                storePassword props.storePassword
+                keyAlias props.keyAlias
+                keyPassword props.keyPassword
+            }
         }
     }
 
@@ -76,12 +79,14 @@ android {
 
         beta {
             initWith debug
-            signingConfig signingConfigs.release
+            if (rootProject.file("util/private.properties").exists())
+                signingConfig signingConfigs.release
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
 
         release {
-            signingConfig signingConfigs.release
+            if (rootProject.file("util/private.properties").exists())
+                signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
@@ -105,13 +110,21 @@ android {
     lintOptions {
         warning 'MissingTranslation'
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent,
+                    "MyMartlet-${variant.buildType.name}.apk")
+        }
+    }
 }
 
 // Set the Facebook/Twitter keys from the properties file
+// May be null if property file is not defined
 android.buildTypes.each { type ->
-    type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey
-    type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret
-    type.resValue 'string', 'facebook_app_id', props.facebookAppId
+    type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey ?: '"NA"'
+    type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret ?: '"NA"'
+    type.resValue 'string', 'facebook_app_id', props.facebookAppId ?: '"NA"'
     type.resValue 'string', 'facebook_provider', 'com.facebook.app.FacebookContentProvider' +
             props.facebookAppId
 }
@@ -127,6 +140,8 @@ def version_support = "25.3.1"
 
 dependencies {
     compile "com.android.support:appcompat-v7:${version_support}"
+    compile "com.android.support:customtabs:${version_support}"
+    compile "com.android.support:cardview-v7:${version_support}"
     compile "com.android.support:design:${version_support}"
     compile "com.android.support:recyclerview-v7:${version_support}"
     compile "com.android.support:support-v4:${version_support}"

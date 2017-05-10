@@ -54,7 +54,7 @@ All contributions are welcome!
 * [Quang Dao](https://github.com/nqdao) - Android Developer
 
 ## Version History
-See the [Change Log](CHANGELOG.md).
+See the [Change Log](docs/Changelog.md).
 
 ## Copyright
 	 Copyright 2014-2017 Julien Guerinet

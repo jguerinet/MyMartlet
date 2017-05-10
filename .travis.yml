@@ -1,0 +1,36 @@
+language: android
+jdk:
+- oraclejdk8
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-25.0.2
+  - android-25
+  - extra-google-m2repository
+  - extra-android-m2repository
+branches:
+  except:
+    - /^v[0-9]+/
+before_install:
+- chmod +x gradlew
+- export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+- export JAVA_HOME=$JAVA8_HOME
+- mkdir "$ANDROID_HOME/licenses" || true
+- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+- echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+after_success:
+- chmod +x ./generate-apk-release.sh
+- "./generate-apk-release.sh"
+script:
+- cd $TRAVIS_BUILD_DIR/
+- "./gradlew assembleDebug"
+notifications:
+  email: false
+sudo: false
+cache:
+  directories:
+  - "$HOME/.m2"
+env:
+  global:
+  - secure: XA0UFiLejZ/itJly990wQwP+9W56/TNLUZXGTrdHdMLxHnCmL7RZDt12+Bp4E5JLbIttEPsgE6+VuDTJPQC2Qs3k8V/XpOB88HCBXyQ7Zmg/gvz3seFm1KQNM4nbkOy5p2tcAewJTrZLks6mZDR1frym7VfxPT8kR9EO3DAmjLfkb1ovpTaJxUiYKDVtBqei5DrRtFjzzpLXnE+DywjUnwaoMtecPJE669qSwWn213ey1YFttxb3hcFhU77PzVsMzhmCkg5inY0eteWGnLc7FXfj8chCcHxMrP1VQg+aEauNsBdLaxzwwndinHn7zESkPjpt2R38Gv2m7euGj5V2unYfwVrIn4RvX7E1vtOK8InYn4rq/aH96hmCz3uOfkuBXmHjMv1OIA6FUftKWt6xZ/McdVLVbb9xU37AFBqGgB0W42xxcWA8yvYpZidEWvblqBzs7E6VsCc3kSrg4lXmL7pArVpWqANk2PA1hyEpoMMoIK34jHeN6HKzLHbAWKHUlgR7peyUh8eeU1AbvxzH/H7ftMUWvw07rl7hkfgwUcUwyvqUCLzEOdMZAvUmJx16qbTDNYkrQ5qzywg8S/z8vIBzdz1jAV36li8//LvDq62BByze5OiqS5ydJGihYP/BOdfFCAepLY4Na+3pKvzux31QwWoJt0gH/jwW9ClanCE=
