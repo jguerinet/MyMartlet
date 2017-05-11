@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ca.appvelopers.mcgillmobile" >
+    package="com.guerinet.mymartlet" >
 
     <!-- (Normal) -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".App"
+        android:name="com.guerinet.mymartlet.App"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:allowClearUserData="true"
@@ -28,10 +28,10 @@
         android:theme="@style/Theme.MyMartlet"
         android:vmSafeMode="true" >
 
-        <activity android:name=".ui.BaseActivity"/>
+        <activity android:name="com.guerinet.mymartlet.ui.BaseActivity"/>
 
         <activity
-            android:name=".ui.SplashActivity"
+            android:name="com.guerinet.mymartlet.ui.SplashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
             <intent-filter>
@@ -40,82 +40,82 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.transcript.semester.SemesterActivity" />
+        <activity android:name="com.guerinet.mymartlet.ui.transcript.semester.SemesterActivity" />
         <activity
-            android:name=".ui.walkthrough.WalkthroughActivity"
+            android:name="com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.transcript.TranscriptActivity"
+            android:name="com.guerinet.mymartlet.ui.transcript.TranscriptActivity"
             android:label="@string/title_transcript"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.web.MyCoursesActivity"
+            android:name="com.guerinet.mymartlet.ui.web.MyCoursesActivity"
             android:label="@string/title_mycourses"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.web.DesktopActivity"
+            android:name="com.guerinet.mymartlet.ui.web.DesktopActivity"
             android:label="@string/title_desktop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.ebill.EbillActivity"
+            android:name="com.guerinet.mymartlet.ui.ebill.EbillActivity"
             android:label="@string/title_ebill"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name="com.guerinet.mymartlet.ui.settings.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name="com.guerinet.mymartlet.ui.search.SearchActivity"
             android:label="@string/title_registration"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.settings.AboutActivity"
+            android:name="com.guerinet.mymartlet.ui.settings.AboutActivity"
             android:label="@string/title_about" />
 
         <activity
-            android:name=".ui.wishlist.WishlistActivity"
+            android:name="com.guerinet.mymartlet.ui.wishlist.WishlistActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.MapActivity"
+            android:name="com.guerinet.mymartlet.ui.MapActivity"
             android:label="@string/title_map"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.courses.CoursesActivity"
+            android:name="com.guerinet.mymartlet.ui.courses.CoursesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name=".ui.ScheduleActivity"
+            android:name="com.guerinet.mymartlet.ui.ScheduleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
-        <activity android:name=".ui.settings.HelpActivity" />
+        <activity android:name="com.guerinet.mymartlet.ui.settings.HelpActivity" />
         <activity
-            android:name=".ui.search.SearchResultsActivity"
+            android:name="com.guerinet.mymartlet.ui.search.SearchResultsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.settings.AgreementActivity"
+            android:name="com.guerinet.mymartlet.ui.settings.AgreementActivity"
             android:label="@string/title_agreement"
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name=".util.background.BootReceiver"
+            android:name="com.guerinet.mymartlet.util.background.BootReceiver"
             android:enabled="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -124,9 +124,9 @@
 
         <!-- Services -->
 
-        <service android:name=".util.service.ConfigDownloadService"/>
+        <service android:name="com.guerinet.mymartlet.util.service.ConfigDownloadService"/>
 
-        <service android:name=".util.background.CheckerService" />
+        <service android:name="com.guerinet.mymartlet.util.background.CheckerService" />
 
         <!-- Facebook -->
         <meta-data
