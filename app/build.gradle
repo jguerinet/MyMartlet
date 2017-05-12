@@ -145,6 +145,7 @@ dependencies {
     compile "com.android.support:design:${version_support}"
     compile "com.android.support:recyclerview-v7:${version_support}"
     compile "com.android.support:support-v4:${version_support}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") {
         transitive = true;
     }
