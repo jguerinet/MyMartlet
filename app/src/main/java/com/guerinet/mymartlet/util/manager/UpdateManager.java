@@ -18,9 +18,13 @@ package com.guerinet.mymartlet.util.manager;
 
 import android.content.Context;
 
+import com.guerinet.mymartlet.BuildConfig;
+import com.guerinet.mymartlet.model.AppUpdate;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.utils.Utils;
 import com.guerinet.utils.prefs.IntPreference;
+
+import org.threeten.bp.ZonedDateTime;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -66,6 +70,9 @@ public class UpdateManager {
 
         // Stored version is smaller than version number
         if (storedVersion < code) {
+            // Add an app update
+            new AppUpdate(BuildConfig.VERSION_NAME, ZonedDateTime.now()).save();
+
             updateLoop: while (storedVersion < code) {
                 // Find the closest version to the stored one and cascade down through the updates
                 switch (storedVersion) {
