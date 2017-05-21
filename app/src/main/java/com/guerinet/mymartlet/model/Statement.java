@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet.model;
 
-import com.guerinet.mymartlet.util.dbflow.databases.StatementsDB;
+import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Table(database = StatementsDB.class, allFields = true)
+@Table(database = StatementDB.class, allFields = true)
 public class Statement extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

@@ -27,8 +27,8 @@ import com.guerinet.mymartlet.model.place.Place;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
 import com.guerinet.mymartlet.util.dbflow.DBUtils;
-import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoriesDB;
-import com.guerinet.mymartlet.util.dbflow.databases.PlacesDB;
+import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB;
+import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB;
 import com.guerinet.mymartlet.util.retrofit.ConfigService;
 import com.guerinet.utils.DateUtils;
 import com.guerinet.utils.Utils;
@@ -121,7 +121,7 @@ public class ConfigDownloadService extends IntentService {
         List<Place> places = executeRequest(configService.places(getIMS(imsPlacesPref)),
                 imsPlacesPref);
         if (places != null) {
-            DBUtils.updateDB(Place.class, places, null, PlacesDB.class, (object, oldObject) -> {
+            DBUtils.updateDB(Place.class, places, null, PlaceDB.class, (object, oldObject) -> {
                 // Set whether the place was a favorite or not
                 //  This will automatically save the new place
                 object.setFavorite(oldObject.isFavorite());
@@ -132,7 +132,7 @@ public class ConfigDownloadService extends IntentService {
         List<Category> categories = executeRequest(configService.categories(
                 getIMS(imsCategoriesPref)), imsCategoriesPref);
         if (categories != null) {
-            DBUtils.updateDB(Category.class, categories, null, PlaceCategoriesDB.class, null, null);
+            DBUtils.updateDB(Category.class, categories, null, PlaceCategoryDB.class, null, null);
         }
 
         // Registration Terms

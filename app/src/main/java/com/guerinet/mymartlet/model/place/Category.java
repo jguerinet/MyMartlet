@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.model.place;
 import android.content.Context;
 
 import com.guerinet.mymartlet.R;
-import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoriesDB;
+import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -32,7 +32,7 @@ import java.util.Locale;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Table(database = PlaceCategoriesDB.class, allFields = true)
+@Table(database = PlaceCategoryDB.class, allFields = true)
 public class Category extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

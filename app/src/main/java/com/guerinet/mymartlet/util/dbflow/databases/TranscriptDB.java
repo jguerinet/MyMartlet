@@ -50,17 +50,17 @@ public class TranscriptDB {
                 Collections.singletonList(response.transcript), null);
 
         // Replace the Semesters
-        DBUtils.replaceDB(context, SemestersDB.NAME, Semester.class, response.semesters, null);
+        DBUtils.replaceDB(context, SemesterDB.NAME, Semester.class, response.semesters, null);
 
         // Replace the classes
-        DBUtils.replaceDB(context, TranscriptCoursesDB.NAME, TranscriptCourse.class,
+        DBUtils.replaceDB(context, TranscriptCourseDB.NAME, TranscriptCourse.class,
                 response.courses, null);
     }
 
     public static void clearTranscript(Context context) {
         // Clear all associated DBs
         context.deleteDatabase(TranscriptDB.FULL_NAME);
-        context.deleteDatabase(SemestersDB.FULL_NAME);
-        context.deleteDatabase(TranscriptCoursesDB.FULL_NAME);
+        context.deleteDatabase(SemesterDB.FULL_NAME);
+        context.deleteDatabase(TranscriptCourseDB.FULL_NAME);
     }
 }

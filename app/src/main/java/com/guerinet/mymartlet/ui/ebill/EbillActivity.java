@@ -27,7 +27,7 @@ import com.guerinet.mymartlet.model.Statement;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.util.Help;
 import com.guerinet.mymartlet.util.dbflow.DBUtils;
-import com.guerinet.mymartlet.util.dbflow.databases.StatementsDB;
+import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 
 import java.util.List;
@@ -102,7 +102,7 @@ public class EbillActivity extends DrawerActivity {
         mcGillService.ebill().enqueue(new Callback<List<Statement>>() {
             @Override
             public void onResponse(Call<List<Statement>> call, Response<List<Statement>> response) {
-                DBUtils.replaceDB(EbillActivity.this, StatementsDB.NAME, Statement.class,
+                DBUtils.replaceDB(EbillActivity.this, StatementDB.NAME, Statement.class,
                         response.body(), () -> {
                             showToolbarProgress(false);
                             adapter.update();

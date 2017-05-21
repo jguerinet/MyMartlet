@@ -39,7 +39,7 @@ import com.guerinet.mymartlet.ui.settings.AgreementActivity;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
-import com.guerinet.mymartlet.util.dbflow.databases.StatementsDB;
+import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.mymartlet.util.manager.McGillManager;
 import com.guerinet.mymartlet.util.manager.UpdateManager;
@@ -409,7 +409,7 @@ public class SplashActivity extends BaseActivity {
             //  We need to download everything if there is null info
             boolean downloadEverything =
                     SQLite.select().from(Transcript.class).querySingle() == null ||
-                            !getDatabasePath(StatementsDB.FULL_NAME).exists();
+                            !getDatabasePath(StatementDB.FULL_NAME).exists();
 
             // If we need to download everything, do it synchronously. If not, do it asynchronously
             UserDownloader userDownloader = new UserDownloader(SplashActivity.this) {

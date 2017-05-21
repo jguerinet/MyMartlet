@@ -23,9 +23,9 @@ import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPreference;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
-import com.guerinet.mymartlet.util.dbflow.databases.CoursesDB;
-import com.guerinet.mymartlet.util.dbflow.databases.PlacesDB;
-import com.guerinet.mymartlet.util.dbflow.databases.StatementsDB;
+import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
+import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB;
+import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
@@ -105,13 +105,13 @@ public class ClearManager {
         Hawk.delete(PrefsModule.Hawk.PASSWORD);
 
         //Schedule
-        context.deleteDatabase(CoursesDB.FULL_NAME);
+        context.deleteDatabase(CourseDB.FULL_NAME);
 
         // Transcript
         TranscriptDB.clearTranscript(context);
 
         // Statements
-        context.deleteDatabase(StatementsDB.FULL_NAME);
+        context.deleteDatabase(StatementDB.FULL_NAME);
 
         //HomepageManager
         homepageManager.clear();
@@ -128,7 +128,7 @@ public class ClearManager {
      */
     public void config() {
         // Places
-        FlowManager.getDatabase(PlacesDB.class).reset(context);
+        FlowManager.getDatabase(PlaceDB.class).reset(context);
 
         // Register terms
         registerTermPref.clear();

@@ -24,8 +24,8 @@ import com.raizlabs.android.dbflow.annotation.Database;
  * @author Julien Guerinet
  * @since 2.4.0
  */
-@Database(name = PlaceCategoriesDB.NAME, version = PlaceCategoriesDB.VERSION)
-public class PlaceCategoriesDB {
-    static final String NAME = "PlaceCategories";
+@Database(name = PlaceCategoryDB.NAME, version = PlaceCategoryDB.VERSION)
+public class PlaceCategoryDB {
+    static final String NAME = "PlaceCategory";
     static final int VERSION = 1;
 }

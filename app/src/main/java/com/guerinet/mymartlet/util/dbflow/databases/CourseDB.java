@@ -32,9 +32,9 @@ import java.util.List;
  * @author Julien Guerinet
  * @since 2.4.0
  */
-@Database(name = CoursesDB.NAME, version = CoursesDB.VERSION)
-public class CoursesDB {
-    public static final String NAME = "Courses";
+@Database(name = CourseDB.NAME, version = CourseDB.VERSION)
+public class CourseDB {
+    public static final String NAME = "Course";
     public static final String FULL_NAME = NAME + ".db";
     static final int VERSION = 1;
 
@@ -56,7 +56,7 @@ public class CoursesDB {
             course.setTerm(term);
         }
 
-        DBUtils.updateDB(Course.class, courses, Course_Table.term.eq(term), CoursesDB.class, null,
+        DBUtils.updateDB(Course.class, courses, Course_Table.term.eq(term), CourseDB.class, null,
                 callback);
     }
 }

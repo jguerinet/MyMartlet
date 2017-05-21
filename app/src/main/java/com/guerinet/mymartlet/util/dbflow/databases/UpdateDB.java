@@ -25,6 +25,6 @@ import com.raizlabs.android.dbflow.annotation.Database;
  */
 @Database(name = UpdateDB.NAME, version =  UpdateDB.VERSION)
 public class UpdateDB {
-    public static final String NAME = "Updates";
+    public static final String NAME = "Update";
     static final int VERSION = 1;
 }

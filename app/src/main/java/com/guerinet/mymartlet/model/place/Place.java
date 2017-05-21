@@ -17,7 +17,7 @@
 package com.guerinet.mymartlet.model.place;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.guerinet.mymartlet.util.dbflow.databases.PlacesDB;
+import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -34,7 +34,7 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Table(database = PlacesDB.class, allFields = true)
+@Table(database = PlaceDB.class, allFields = true)
 public class Place extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

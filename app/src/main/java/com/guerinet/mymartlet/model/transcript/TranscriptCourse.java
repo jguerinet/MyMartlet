@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.model.transcript;
 
 import com.guerinet.mymartlet.model.Semester;
 import com.guerinet.mymartlet.model.Term;
-import com.guerinet.mymartlet.util.dbflow.databases.TranscriptCoursesDB;
+import com.guerinet.mymartlet.util.dbflow.databases.TranscriptCourseDB;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Table(database = TranscriptCoursesDB.class, allFields = true)
+@Table(database = TranscriptCourseDB.class, allFields = true)
 public class TranscriptCourse extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

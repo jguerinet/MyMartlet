@@ -50,7 +50,7 @@ import com.guerinet.mymartlet.util.DayUtils;
 import com.guerinet.mymartlet.util.Help;
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPreference;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dbflow.databases.CoursesDB;
+import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse;
@@ -287,7 +287,7 @@ public class ScheduleActivity extends DrawerActivity {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                 // Set the courses
-                CoursesDB.setCourses(term, response.body(), () -> handler.post(() -> {
+                CourseDB.setCourses(term, response.body(), () -> handler.post(() -> {
                     // Update the view
                     showToolbarProgress(false);
                     updateCourses();

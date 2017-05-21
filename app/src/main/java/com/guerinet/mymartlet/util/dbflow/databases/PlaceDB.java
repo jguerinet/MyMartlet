@@ -16,17 +16,16 @@
 
 package com.guerinet.mymartlet.util.dbflow.databases;
 
-import com.guerinet.mymartlet.model.transcript.TranscriptCourse;
+import com.guerinet.mymartlet.model.place.Place;
 import com.raizlabs.android.dbflow.annotation.Database;
 
 /**
- * Database that holds a list of {@link TranscriptCourse}s
+ * Database that holds a list of {@link Place}s
  * @author Julien Guerinet
  * @since 2.4.0
  */
-@Database(name = TranscriptCoursesDB.NAME, version = TranscriptCoursesDB.VERSION)
-public class TranscriptCoursesDB {
-    static final String NAME = "TranscriptCourses";
-    public static final String FULL_NAME = NAME + ".db";
+@Database(name = PlaceDB.NAME, version = PlaceDB.VERSION)
+public class PlaceDB {
+    static final String NAME = "Place";
     static final int VERSION = 1;
 }

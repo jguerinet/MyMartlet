@@ -17,7 +17,7 @@
 package com.guerinet.mymartlet.model;
 
 import com.guerinet.mymartlet.util.DayUtils;
-import com.guerinet.mymartlet.util.dbflow.databases.CoursesDB;
+import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.utils.DateUtils;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -40,7 +40,7 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Table(database = CoursesDB.class, allFields = true)
+@Table(database = CourseDB.class, allFields = true)
 public class Course extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

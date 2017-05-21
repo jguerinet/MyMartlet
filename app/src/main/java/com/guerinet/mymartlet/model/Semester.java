@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.model;
 
 import android.content.Context;
 
-import com.guerinet.mymartlet.util.dbflow.databases.SemestersDB;
+import com.guerinet.mymartlet.util.dbflow.databases.SemesterDB;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -32,7 +32,7 @@ import java.io.Serializable;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Table(database = SemestersDB.class, allFields = true)
+@Table(database = SemesterDB.class, allFields = true)
 public class Semester extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

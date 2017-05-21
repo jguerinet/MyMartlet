@@ -29,8 +29,8 @@ import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.model.exception.MinervaException;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.dbflow.DBUtils;
-import com.guerinet.mymartlet.util.dbflow.databases.CoursesDB;
-import com.guerinet.mymartlet.util.dbflow.databases.StatementsDB;
+import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
+import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.retrofit.McGillService;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter;
@@ -124,7 +124,7 @@ public abstract class UserDownloader extends Thread {
                     //Download the schedule
                     try {
                         List<Course> courses = mcGillService.schedule(term).execute().body();
-                        CoursesDB.setCourses(term, courses, null);
+                        CourseDB.setCourses(term, courses, null);
                     } catch (IOException e) {
                         handleException(e, term.getId());
                     }
@@ -139,7 +139,7 @@ public abstract class UserDownloader extends Thread {
             // Download the ebill
             try {
                 Response<List<Statement>> response = mcGillService.ebill().execute();
-                DBUtils.replaceDB(context, StatementsDB.NAME, Statement.class, response.body(),
+                DBUtils.replaceDB(context, StatementDB.NAME, Statement.class, response.body(),
                         null);
             } catch (IOException e) {
                 handleException(e, "Ebill");
