@@ -294,6 +294,7 @@ public class Course extends BaseModel implements Serializable {
      */
     public void setTerm(Term term) {
         this.term = term;
+        prepareForDB();
     }
 
     /* HELPERS */
@@ -390,10 +391,6 @@ public class Course extends BaseModel implements Serializable {
         if (!(object instanceof Course)) {
             return false;
         }
-
-        Course course = (Course) object;
-
-        //Check if they have the same season, year, and CRN
-        return crn == course.getCRN() && term.equals(course.getTerm());
+        return getId().equals(((Course) object).getId());
     }
 }
