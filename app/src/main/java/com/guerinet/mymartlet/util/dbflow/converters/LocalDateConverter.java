@@ -22,6 +22,7 @@ import org.threeten.bp.LocalDate;
 
 /**
  * Converts LocalDates to a String for DBFlow and vice-versa
+ *
  * @author Julien Guerinet
  * @since 2.4.0
  */
@@ -30,17 +31,11 @@ public class LocalDateConverter extends TypeConverter<String, LocalDate> {
 
     @Override
     public String getDBValue(LocalDate model) {
-        if (model == null) {
-            return null;
-        }
-        return model.toString();
+        return model == null ? null : model.toString();
     }
 
     @Override
     public LocalDate getModelValue(String data) {
-        if (data == null) {
-            return null;
-        }
-        return LocalDate.parse(data);
+        return data == null ? null : LocalDate.parse(data);
     }
 }

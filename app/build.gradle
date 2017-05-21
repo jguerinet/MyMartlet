@@ -68,6 +68,7 @@ android {
         targetSdkVersion 25
         versionCode 25
         versionName "2.3.2"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -132,7 +133,7 @@ android.buildTypes.each { type ->
 // Versions for libraries with multiple dependencies
 def version_butterknife = "8.5.1"
 def version_dagger = "2.10"
-def version_dbflow = "4.0.0-beta5"
+def version_dbflow = "4.0.2"
 def version_gps = "10.2.1"
 def version_okhttp = "3.7.0"
 def version_retrofit = "2.2.0"

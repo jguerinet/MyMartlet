@@ -22,7 +22,7 @@ import android.support.annotation.Nullable;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.BaseModelQueriable;
 import com.raizlabs.android.dbflow.sql.language.From;
-import com.raizlabs.android.dbflow.sql.language.SQLCondition;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
@@ -33,6 +33,7 @@ import timber.log.Timber;
 
 /**
  * Static methods to help with DB management
+ *
  * @author Julien Guerinet
  * @since 2.4.0
  */
@@ -49,7 +50,7 @@ public class DBUtils {
      * @param <T>        Object type
      */
     public static <T extends BaseModel> void replaceDB(Context context, String dbName,
-            Class<T> type, List<T> newObjects, @Nullable Callback callback) {
+                                                       Class<T> type, List<T> newObjects, @Nullable Callback callback) {
         // Delete the old database
         FlowManager.getDatabase(dbName).reset(context);
 
@@ -79,7 +80,7 @@ public class DBUtils {
 
     /**
      * Updates the objects in a DB by updating existing objects, removing old objects, and
-     *  inserting new ones.
+     * inserting new ones.
      * Note: this only works with models that have correctly set up the equals() method
      *
      * @param type           Object type
@@ -91,8 +92,8 @@ public class DBUtils {
      * @param <T>            Object Type
      */
     public static <T extends BaseModel> void updateDB(Class<T> type, List<T> newObjects,
-            @Nullable SQLCondition condition, Class dbClass, UpdateCallback<T> updateCallback,
-            @Nullable Callback callback) {
+                                                      @Nullable SQLOperator condition, Class dbClass, UpdateCallback<T> updateCallback,
+                                                      @Nullable Callback callback) {
         From<T> select = SQLite.select()
                 .from(type);
 
@@ -143,7 +144,7 @@ public class DBUtils {
                     if (callback != null) {
                         callback.onFinish();
                     }
-            })
+                })
                 .execute();
     }
 

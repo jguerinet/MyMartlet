@@ -17,3 +17,4 @@
 #}
 
 -include ../proguard-com.twitter.sdk.android.twitter.txt
+-keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }

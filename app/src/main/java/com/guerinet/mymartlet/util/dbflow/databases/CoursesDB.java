@@ -29,6 +29,7 @@ import java.util.List;
 
 /**
  * Database that holds a list of {@link Course}s that comprise the user's schedule
+ *
  * @author Julien Guerinet
  * @since 2.4.0
  */
@@ -46,15 +47,12 @@ public class CoursesDB {
      * @param callback Optional callback called when the transaction is finished
      */
     public static void setCourses(Term term, List<Course> courses,
-            @Nullable DBUtils.Callback callback) {
-        if (courses == null) {
-            courses = new ArrayList<>();
-        }
+                                  @Nullable DBUtils.Callback callback) {
+
+        if (courses == null) courses = new ArrayList<>();
 
         // Set the term on the passed list of courses
-        for (Course course : courses) {
-            course.setTerm(term);
-        }
+        courses.forEach(course -> course.setTerm(term));
 
         DBUtils.updateDB(Course.class, courses, Course_Table.term.eq(term), CoursesDB.class, null,
                 callback);

@@ -24,6 +24,7 @@ import org.threeten.bp.ZonedDateTime;
 
 /**
  * Converts ZonedDateTimes to Strings and vice-versa for DBFlow
+ *
  * @author Julien Guerinet
  * @since 3.0.0
  */
@@ -31,17 +32,11 @@ import org.threeten.bp.ZonedDateTime;
 public class ZonedDateTimeConverter extends TypeConverter<String, ZonedDateTime> {
     @Override
     public String getDBValue(ZonedDateTime model) {
-        if (model == null) {
-            return null;
-        }
-        return model.toString();
+        return model == null ? null : model.toString();
     }
 
     @Override
     public ZonedDateTime getModelValue(String data) {
-        if (TextUtils.isEmpty(data)) {
-            return null;
-        }
-        return ZonedDateTime.parse(data);
+        return TextUtils.isEmpty(data) ? null : ZonedDateTime.parse(data);
     }
 }
