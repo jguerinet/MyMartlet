@@ -64,10 +64,10 @@ android {
 
     defaultConfig {
         applicationId "com.guerinet.mymartlet"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 25
-        versionCode 25
-        versionName "2.3.2"
+        versionCode 1
+        versionName "1.0.0"
     }
 
     buildTypes {
