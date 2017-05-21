@@ -9,9 +9,6 @@ android:
   - android-25
   - extra-google-m2repository
   - extra-android-m2repository
-branches:
-  except:
-    - /^v[0-9]+/
 before_install:
 - chmod +x gradlew
 - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
@@ -27,10 +24,11 @@ script:
 - "./gradlew assembleDebug"
 notifications:
   email: false
+  slack: mymartlet:oLnKxWZuf6ZPhA6zAfRIArWI
 sudo: false
 cache:
   directories:
   - "$HOME/.m2"
 env:
   global:
-  - secure: XA0UFiLejZ/itJly990wQwP+9W56/TNLUZXGTrdHdMLxHnCmL7RZDt12+Bp4E5JLbIttEPsgE6+VuDTJPQC2Qs3k8V/XpOB88HCBXyQ7Zmg/gvz3seFm1KQNM4nbkOy5p2tcAewJTrZLks6mZDR1frym7VfxPT8kR9EO3DAmjLfkb1ovpTaJxUiYKDVtBqei5DrRtFjzzpLXnE+DywjUnwaoMtecPJE669qSwWn213ey1YFttxb3hcFhU77PzVsMzhmCkg5inY0eteWGnLc7FXfj8chCcHxMrP1VQg+aEauNsBdLaxzwwndinHn7zESkPjpt2R38Gv2m7euGj5V2unYfwVrIn4RvX7E1vtOK8InYn4rq/aH96hmCz3uOfkuBXmHjMv1OIA6FUftKWt6xZ/McdVLVbb9xU37AFBqGgB0W42xxcWA8yvYpZidEWvblqBzs7E6VsCc3kSrg4lXmL7pArVpWqANk2PA1hyEpoMMoIK34jHeN6HKzLHbAWKHUlgR7peyUh8eeU1AbvxzH/H7ftMUWvw07rl7hkfgwUcUwyvqUCLzEOdMZAvUmJx16qbTDNYkrQ5qzywg8S/z8vIBzdz1jAV36li8//LvDq62BByze5OiqS5ydJGihYP/BOdfFCAepLY4Na+3pKvzux31QwWoJt0gH/jwW9ClanCE=
+  - secure: PMIfJko7rz/aacy5Vc1v9Qms1KF6qrzPkPTeaG349kxD6sBqBcX6M438aJ+l/f3GxyQVy7heCYVsHKHxgepXcRrs19t1vYWRBGqbHQHxFdeuItEgOYMCtgMPWiNesvYiXVThWC7qZCAvVlqQN4b2M+VQaOZXRHyuh+8E/UHyVZZ3zrtDeZWCXcB2V9mohl/oTuE96u5zE0mk+T03wko6XZ+Fj5EpmGHLDhCQj/fHaq6+lydtqlrZ4H5uUJiSLyrDkq45x5oC9EUpva3uBMlJJHLJp3ppwqyOtzyhyBfh3XlpWjFUaehJIU/0ql3QX5KlYNhGy0AWs7nRHtDC5JWwUluOYl21h8z7GUYfMkSIKe4aby30e+B/lNFosjwEQv43fP1h5J4LgzQmE5tVEctsB5XM6Hb8TMryGu44IqZ8kJqxjjeGmU4BRr0ZVCx8yjW4hHI8lQ5IRz6Qo1G1xIa82beARSoyggboCmcOSm5dOzx86xWcDHebxPPc/s8174oPeNL8GEynDLsR2pcXVuzylPOxSbMDHGit6ritkE5tkIL8gZ4MK1XcuYkohMFO6mrm/3EQUCbqDZtcFKDXWCgYaWajfVQv41qhmWa3j441z2/ptXR6SIe2FrVBS1pygd6panwzISjAeIcceXqjNN2/8Mvv6AKax57nYKnm1vg6S80=

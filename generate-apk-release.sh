@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 # config
+# make sure the GITHUB_API_KEY is encrypted and inside the travis file
+# travis encrypt GITHUB_API_KEY=super_secret --add env.global
+
 RELEASE_REPO=jguerinet/MyMartlet-APK
 USER_AUTH=AllanWang
 EMAIL=me@allanwang.ca
@@ -17,10 +20,10 @@ cp -R $MODULE_NAME/build/outputs/apk/$APK_NAME.apk $HOME/$VERSION_KEY/
 # go to home and setup git
 echo "Clone Git"
 cd $HOME
-git config --global fullUser.email "$EMAIL"
-git config --global fullUser.name "$USER_AUTH CI"
+git config --global user.email "$EMAIL"
+git config --global user.name "$USER_AUTH CI"
 # clone the repository in the buildApk folder
-git clone --quiet --branch=master  https://AllanWang:$GITHUB_API_KEY@github.com/$RELEASE_REPO.git  master > /dev/null
+git clone --quiet --branch=master  https://$USER_AUTH:$GITHUB_API_KEY@github.com/$RELEASE_REPO.git  master > /dev/null
 # create version file
 echo "Create Version File"
 cd master
