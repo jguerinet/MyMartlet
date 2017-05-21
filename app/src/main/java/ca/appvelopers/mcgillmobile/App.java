@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Julien Guerinet
+ * Copyright 2014-2017 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,7 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.utils.ProductionTree;
-import com.instabug.library.Instabug;
 import com.jakewharton.threetenabp.AndroidThreeTen;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.SocketTimeoutException;
 import java.util.List;
@@ -39,7 +35,6 @@ import ca.appvelopers.mcgillmobile.model.CourseResult;
 import ca.appvelopers.mcgillmobile.model.Statement;
 import ca.appvelopers.mcgillmobile.model.Term;
 import ca.appvelopers.mcgillmobile.model.prefs.UsernamePreference;
-import ca.appvelopers.mcgillmobile.util.Passwords;
 import ca.appvelopers.mcgillmobile.util.storage.Load;
 import ca.appvelopers.mcgillmobile.util.storage.Save;
 import io.fabric.sdk.android.Fabric;
@@ -110,12 +105,10 @@ public class App extends Application {
         }
 
         // Fabric: Twitter, Crashlytics
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(Passwords.TWITTER_KEY,
-                Passwords.TWITTER_SECRET);
         @SuppressWarnings("PointlessBooleanExpression")
         Crashlytics crashlytics = new Crashlytics.Builder().core(new CrashlyticsCore.Builder()
                 .disabled(!BuildConfig.REPORT_CRASHES).build()).build();
-        Fabric.with(this, new Twitter(authConfig), new TweetComposer(), crashlytics);
+        Fabric.with(this, crashlytics);
 
         // Dagger
         component = DaggerBaseComponent.builder()
@@ -128,16 +121,6 @@ public class App extends Application {
         AndroidThreeTen.init(this);
 
         // Instabug
-        Instabug.initialize(this, Passwords.INSTABUG_KEY)
-                .enableEmailField(true, false)
-                .setDefaultEmail(usernamePref.full())
-                .setCommentIsRequired(true)
-                .setDebugEnabled(false)
-                .setInvocationEvent(Instabug.IBGInvocationEvent.IBGInvocationEventNone)
-                .setIsTrackingCrashes(false)
-                .setIsTrackingUserSteps(false)
-                .setShowIntroDialog(false)
-                .setWillShowFeedbackSentAlert(true);
 
         // FormGenerator
         int padding = getResources().getDimensionPixelOffset(R.dimen.padding_small);

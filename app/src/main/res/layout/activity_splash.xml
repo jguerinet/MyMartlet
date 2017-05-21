@@ -1,151 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:animateLayoutChanges="true">
+    android:orientation="vertical"
+    android:padding="@dimen/default_margin">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/logo"
+        app:srcCompat="@drawable/ic_app"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:contentDescription="@null"
+        tools:ignore="MissingPrefix"/>
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:animateLayoutChanges="true"
-        android:padding="@dimen/default_margin"
-        android:layout_gravity="center">
+        android:textSize="@dimen/text_large"
+        android:text="@string/moved_title"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:padding="@dimen/padding_small"/>
 
-        <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/logo"
-            app:srcCompat="@drawable/ic_app"
-            android:layout_gravity="center"
-            android:padding="60dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:contentDescription="@null"
-            tools:ignore="MissingPrefix"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_medium"
+        android:text="@string/moved_description"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="@dimen/padding_small"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/progress_container"
-            android:paddingTop="@dimen/padding_double"
-            android:visibility="gone">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/moved_button"
+        android:text="@string/moved_download"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:padding="@dimen/padding_small"
+        android:layout_margin="@dimen/padding_small"/>
 
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/loading_progress"
-                android:indeterminate="true"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/progress_text"
-                android:textSize="@dimen/text_small"
-                android:gravity="center"
-                android:padding="@dimen/padding_micro"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/login_container"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/padding_large"
-                android:paddingRight="@dimen/padding_large">
-
-                <EditText
-                    android:id="@+id/login_username"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:paddingTop="@dimen/padding_small"
-                    android:singleLine="true"
-                    android:textSize="@dimen/text_small"
-                    android:inputType="text"
-                    android:hint="@string/login_username"/>
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textSize="@dimen/text_small"
-                    android:text="@string/login_email"/>
-
-            </LinearLayout>
-
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/login_remember_username"
-                android:text="@string/login_remember_username"
-                android:textSize="@dimen/text_micro"
-                android:layout_marginBottom="@dimen/padding_medium"
-                android:layout_marginLeft="@dimen/padding_large"
-                android:layout_marginRight="@dimen/padding_large"/>
-
-            <EditText
-                android:id="@+id/login_password"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textSize="@dimen/text_small"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:imeOptions="actionGo"
-                android:hint="@string/login_password"
-                android:layout_marginLeft="@dimen/padding_large"
-                android:layout_marginRight="@dimen/padding_large"/>
-
-            <Button
-                android:id="@+id/login_button"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/padding_large"
-                android:text="@string/login_button"
-                android:textSize="@dimen/text_small"
-                android:layout_marginLeft="@dimen/padding_large"
-                android:layout_marginRight="@dimen/padding_large"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/version_container"
-            android:gravity="center"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/new_version_title"
-                android:gravity="center"
-                android:paddingBottom="@dimen/padding_small"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/new_version_button"
-                android:id="@+id/version_button"
-                android:textColor="@android:color/white"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
