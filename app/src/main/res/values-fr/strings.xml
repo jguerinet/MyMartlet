@@ -82,18 +82,18 @@
 
     <!-- EULA -->
     <string name="eula_title">Contrat de Licence Utilisateur Final de l\'Application MyMartlet</string>
-    <string name="eula_description">Ce Contrat de Licence Utilisateur Final (“Contrat) est entre vous et Appvelopers et gouverne l’utilisation de cette application disponible par le Play Store. En installant l’application MyMartlet, vous acceptez d’être lié par ce Contrat. Si vous n’acceptez pas les termes et conditions de ce Contrat, vous n’avez pas le droit d’utiliser l’application MyMartlet. </string>
+    <string name="eula_description">Ce Contrat de Licence Utilisateur Final (“Contrat\") est entre vous et les développeurs de MyMartlet (\"Développeurs\") et gouverne l’utilisation de cette application disponible par le Play Store. En installant l’application MyMartlet, vous acceptez d’être lié par ce Contrat. Si vous n’acceptez pas les termes et conditions de ce Contrat, vous n’avez pas le droit d’utiliser l’application MyMartlet. </string>
     <string name="eula_parties">1. Parties</string>
-    <string name="eula_parties_description">Ce Contrat est seulement entre vous et Appvelopers, et pas l’Université McGill. L’Université McGill n’est pas affiliée avec Appvelopers et l’Université McGill n’est pas responsable pour tout abus de l’application MyMartlet.</string>
+    <string name="eula_parties_description">Ce Contrat est seulement entre vous et Développeurs, et pas l’Université McGill. L’Université McGill n’est pas affiliée avec Développeurs et l’Université McGill n’est pas responsable pour tout abus de l’application MyMartlet.</string>
     <string name="eula_privacy">2. Confidentialité</string>
-    <string name="eula_privacy_description">MyMartlet a le droit de récolter et utiliser de l’information par rapport à votre utilisation de l’application MyMartlet. Ceci peut inclure quelques types d’informations depuis et par rapport à votre appareil. Appvelopers a le droit d’utiliser cette information, du moment que c’est sous une forme qui ne peut pas vous identifier personnellement, pour mesurer l’utilisation et la performance de l’application MyMartlet. </string>
+    <string name="eula_privacy_description">MyMartlet a le droit de récolter et utiliser de l’information par rapport à votre utilisation de l’application MyMartlet. Ceci peut inclure quelques types d’informations depuis et par rapport à votre appareil. Développeurs ont le droit d’utiliser cette information, du moment que c’est sous une forme qui ne peut pas vous identifier personnellement, pour mesurer l’utilisation et la performance de l’application MyMartlet. </string>
     <string name="eula_content">3. Contenu</string>
-    <string name="eula_content_description">Appvelopers ne récolte et n’utilise pas les informations personnelles qui sont présentées dans l’application MyMartlet (“Contenu de l’Utilisateur“). Le Contenu de l’Utilisateur et sauvegardé seulement sur l’appareil de l’utilisateur et l’utilisateur est entièrement responsable de la sécurité du Contenu de l’Utilisateur. Appvelopers n’est pas responsable, ni l’Université McGill, pour tout égarement ou abus du Contenu de l’Utilisateur. </string>
+    <string name="eula_content_description">Développeurs ne récoltent et n’utilisent pas les informations personnelles qui sont présentées dans l’application MyMartlet (“Contenu de l’Utilisateur“). Le Contenu de l’Utilisateur et sauvegardé seulement sur l’appareil de l’utilisateur et l’utilisateur est entièrement responsable de la sécurité du Contenu de l’Utilisateur. Développeurs ne sont pas responsables, ni l’Université McGill, pour tout égarement ou abus du Contenu de l’Utilisateur. </string>
     <string name="eula_license">4. Licence </string>
-    <string name="eula_license_description">Appvelopers vous accorde la capacité d’utiliser l’application MyMartlet pour votre utilisation personnelle et non-commerciale. Vous avez seulement le droit d’utiliser l’application MyMartlet sur les appareils que vous possédez ou contrôlez, comme permis par les conditions générales d’utilisation du Play Store.</string>
+    <string name="eula_license_description">Développeurs vous accordent la capacité d’utiliser l’application MyMartlet pour votre utilisation personnelle et non-commerciale. Vous avez seulement le droit d’utiliser l’application MyMartlet sur les appareils que vous possédez ou contrôlez, comme permis par les conditions générales d’utilisation du Play Store.</string>
 
     <!-- Logout -->
-    <string name="logout_dialog_message">Voulez-vous continuer?</string>
+    <string name="logout_dialog_message">Êtes-vous sûr de vouloir vous déconnecter?</string>
 
     <!-- Transcript Screen -->
     <string name="transcript_termGPA">GPA du Semestre: %s</string>
