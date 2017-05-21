@@ -18,6 +18,7 @@ package com.guerinet.mymartlet.ui.web;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -43,44 +44,44 @@ import butterknife.ButterKnife;
  * @since 2.0.0
  */
 public class DesktopActivity extends DrawerActivity {
-    /**
-     * The WebView
-     */
+
     @BindView(R.id.web_view)
-    protected WebView mWebView;
-    /**
-     * {@link UsernamePreference} instance
-     */
+    WebView webView;
+
     @Inject
-    protected UsernamePreference usernamePref;
+    UsernamePreference usernamePref;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
         App.component(this).inject(this);
         analytics.sendScreen("Desktop Site");
 
-        //If the user is not connected to the internet, don't continue
+        // If the user is not connected to the internet, don't continue
         if (!Utils.isConnected(this)) {
             DialogHelper.error(this, R.string.error_no_internet);
             return;
         }
 
-        //Set up the WebView
-        mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setBuiltInZoomControls(true);
-        mWebView.getSettings().setDisplayZoomControls(false);
+        // Set up the WebView
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
 
-        mWebView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/Login");
-        mWebView.setWebViewClient(new WebViewClient() {
+        webView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/");
+        webView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
-                view.loadUrl("javascript:(function(){document.getElementById('username').value='" +
-                        usernamePref.full() + "';document.getElementById('password').value='" +
-                        Hawk.get(PrefsModule.Hawk.PASSWORD) +
-                        "'; document.LoginForm.submit(); })()");
+                if (url.toLowerCase().contains("login")) {
+                    // Only log them in if they're not already
+                    view.loadUrl("javascript:(function(){document.getElementById('username')" +
+                            ".value='" + usernamePref.full() +
+                            "';document.getElementById('password').value='" +
+                            Hawk.get(PrefsModule.Hawk.PASSWORD) + "'; " +
+                            "document.getElementsByClassName('mainSubmit').submit.click(); })()");
+                }
                 view.setVisibility(View.VISIBLE);
             }
         });
@@ -88,17 +89,17 @@ public class DesktopActivity extends DrawerActivity {
 
     @Override
     public void onBackPressed() {
-        //Check if we can go back in the WebView
-        if(mWebView.canGoBack()){
-            mWebView.goBack();
+        // Check if we can go back in the WebView
+        if (webView.canGoBack()) {
+            webView.goBack();
             return;
         }
         super.onBackPressed();
     }
 
     @Override
-    protected @HomepageManager.Homepage
-    int getCurrentPage() {
+    @HomepageManager.Homepage
+    protected int getCurrentPage() {
         return HomepageManager.DESKTOP;
     }
 }
