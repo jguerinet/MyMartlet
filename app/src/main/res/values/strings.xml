@@ -3,7 +3,7 @@
 
     <!-- Moved Strings -->
     <string name="moved_title">We\'ve moved!</string>
-    <string name="moved_description">We had to release a new app on the Play Store. But it is still the same app you have come to know and love! Click on the button below to download the new app. You MUST uninstall this app before downloading the new one or the install will fail. See you on the other side!</string>
+    <string name="moved_description">We had to release a new app on the Play Store. But it is still the same app you have come to know and love! Click on the button below to download the new app. You can uninstall this app as it is no longer supported. See you on the other side!</string>
     <string name="moved_download">Download new version</string>
     <string name="facebook_app_id"></string>
 

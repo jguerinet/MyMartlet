@@ -3,7 +3,7 @@
 
     <!-- Moved Strings -->
     <string name="moved_title">On a déménagé!</string>
-    <string name="moved_description">Nous avons dû publier une nouvelle appli sur le Play Store. Mais c\'est toujours la même appli que vous connaissez et que vous aimez! Cliquez sur le bouton ci-dessous pour télécharger la nouvelle appli. Vous DEVEZ désintaller cette appli avant d\'installer la nouvelle ou l\'installation ne marchera pas!</string>
+    <string name="moved_description">Nous avons dû publier une nouvelle appli sur le Play Store. Mais c\'est toujours la même appli que vous connaissez et que vous aimez! Cliquez sur le bouton ci-dessous pour télécharger la nouvelle appli. Vous pouvez désintaller cette appli car elle ne sera plus mis à jour!</string>
     <string name="moved_download">Télécharger la nouvelle version</string>
 
     <!-- Titles -->
