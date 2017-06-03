@@ -24,7 +24,15 @@ script:
 - "./gradlew assembleDebug"
 notifications:
   email: false
-  slack: mymartlet:oLnKxWZuf6ZPhA6zAfRIArWI
+  slack:
+    rooms:
+    - mymartlet:oLnKxWZuf6ZPhA6zAfRIArWI#travis
+    on_success: always
+    on_failure: always
+    template:
+    - "MyMartlet Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) %{result} in %{duration}"
+    - "%{commit_subject}"
+    - "<https://github.com/jguerinet/MyMartlet-APK/releases/tag/v%{build_number}|APK Download>"
 sudo: false
 cache:
   directories:
