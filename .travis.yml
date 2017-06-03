@@ -30,7 +30,7 @@ notifications:
     on_success: always
     on_failure: always
     template:
-    - "MyMartlet Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) %{result} in %{duration}"
+    - "MyMartlet Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) by %{author} %{result} in %{duration}"
     - "%{commit_subject}"
     - "<https://github.com/jguerinet/MyMartlet-APK/releases/tag/v%{build_number}|APK Download>"
 sudo: false
