@@ -8,11 +8,12 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_small"
         android:layout_marginTop="@dimen/padding_small"
         android:paddingLeft="@dimen/default_margin"
         android:paddingRight="@dimen/default_margin">
 
-        <!--every other view is to the left of the checkbox-->
+        <!--every other view is to the right of the checkbox-->
 
         <CheckBox
             android:id="@+id/course_checkbox"
@@ -126,7 +127,6 @@
             app:layout_constraintLeft_toRightOf="@+id/course_spots"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/course_days" />
-
 
     </android.support.constraint.ConstraintLayout>
 
