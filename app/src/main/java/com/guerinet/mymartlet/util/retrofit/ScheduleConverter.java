@@ -79,10 +79,18 @@ public class ScheduleConverter extends Converter.Factory
 
     @Override
     public List<Course> convert(ResponseBody value) throws IOException {
+        return convert(value.string());
+    }
+
+    /**
+     * @param html Schedule in Html format
+     * @return List of parsed {@link Course}s
+     */
+    public List<Course> convert(String html) {
         List<Course> courses = new ArrayList<>();
 
         //Parse the body into a Document
-        Elements scheduleTable = Jsoup.parse(value.string()).getElementsByClass("datadisplaytable");
+        Elements scheduleTable = Jsoup.parse(html).getElementsByClass("datadisplaytable");
 
         //Go through the schedule table
         for (int i = 0; i < scheduleTable.size(); i += 2) {

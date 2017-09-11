@@ -212,11 +212,12 @@ public class WishlistActivity extends DrawerActivity {
                         Response<List<CourseResult>> response) {
                     // Go through the received courses, check if they are on the user's wishlist
                     for (CourseResult course : response.body()) {
-                        long count = SQLite.selectCountOf()
+                        boolean exists = SQLite.selectCountOf()
                                 .from(CourseResult.class)
-                                .where(CourseResult_Table.id.eq(course.getId()))
-                                .count();
-                        if (count != 0) {
+                                .where(CourseResult_Table.term.eq(course.getTerm()))
+                                .and(CourseResult_Table.crn.eq(course.getCRN()))
+                                .hasData();
+                        if (exists) {
                             course.save();
                         }
                     }

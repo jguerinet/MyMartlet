@@ -46,8 +46,8 @@ public class Course extends BaseModel implements Serializable {
     /**
      * Unique Id for this course
      */
-    @PrimaryKey
-    String id;
+    @PrimaryKey (autoincrement = true)
+    int id;
     /**
      * The term this class is for
      */
@@ -158,13 +158,6 @@ public class Course extends BaseModel implements Serializable {
     }
 
 	/* GETTERS */
-
-    /**
-     * @return Course Id
-     */
-    public String getId() {
-        return id;
-    }
 
     /**
      * @return The course term
@@ -367,9 +360,6 @@ public class Course extends BaseModel implements Serializable {
      * Prepares the object for the DB
      */
     void prepareForDB() {
-        if (id == null) {
-            id = term.toString() + crn;
-        }
         // Create the day String from the days
         daysString = DayUtils.getDayStrings(getDays());
     }
@@ -391,6 +381,10 @@ public class Course extends BaseModel implements Serializable {
         if (!(object instanceof Course)) {
             return false;
         }
-        return getId().equals(((Course) object).getId());
+        Course course = (Course) object;
+        return course.term.equals(term) && course.crn == crn &&
+                DayUtils.getDayStrings(course.getDays()).equals(DayUtils.getDayStrings(getDays()))
+                && course.getLocation().equals(location) && course.startDate.equals(startDate) &&
+                course.endDate.equals(endDate);
     }
 }

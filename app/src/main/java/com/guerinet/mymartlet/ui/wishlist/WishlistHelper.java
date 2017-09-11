@@ -236,11 +236,12 @@ public class WishlistHelper {
                 int coursesAdded = 0;
                 for (CourseResult course : courses) {
                     // Check if the course exists already
-                    long count = SQLite.select()
+                    boolean exists = SQLite.selectCountOf()
                             .from(CourseResult.class)
-                            .where(CourseResult_Table.id.eq(course.getId()))
-                            .count();
-                    if (count != 0) {
+                            .where(CourseResult_Table.term.eq(course.getTerm()))
+                            .and(CourseResult_Table.crn.eq(course.getCRN()))
+                            .hasData();
+                    if (exists) {
                         coursesAdded ++;
                     }
                     course.save();
