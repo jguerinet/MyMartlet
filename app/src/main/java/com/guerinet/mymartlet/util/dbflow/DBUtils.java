@@ -25,7 +25,7 @@ import com.raizlabs.android.dbflow.sql.language.From;
 import com.raizlabs.android.dbflow.sql.language.SQLCondition;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
+import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction;
 
 import java.util.List;
 
@@ -54,10 +54,14 @@ public class DBUtils {
         FlowManager.getDatabase(dbName).reset(context);
 
         // Set up the transaction to save all of the models
-        FastStoreModelTransaction<? extends BaseModel> newObjectsTransaction =
-                FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(type))
-                        .addAll(newObjects)
-                        .build();
+        ProcessModelTransaction<T> newObjectsTransaction = new ProcessModelTransaction
+                .Builder<T>((tModel, wrapper) -> {
+            if (tModel != null) {
+                tModel.save();
+            }
+        })
+                .addAll(newObjects)
+                .build();
 
         // Execute the transaction
         FlowManager.getDatabase(dbName)
@@ -130,12 +134,15 @@ public class DBUtils {
                         }
                     }
 
-                    // Save any new objects
-                    FastStoreModelTransaction<? extends BaseModel> newObjectsTransaction =
-                            FastStoreModelTransaction.saveBuilder(
-                                    FlowManager.getModelAdapter(type))
-                                    .addAll(newObjects)
-                                    .build();
+                    // Set up the transaction to save all of the models
+                    ProcessModelTransaction<T> newObjectsTransaction = new ProcessModelTransaction
+                            .Builder<T>((tModel, wrapper) -> {
+                        if (tModel != null) {
+                            tModel.save();
+                        }
+                    })
+                            .addAll(newObjects)
+                            .build();
 
                     FlowManager.getDatabase(dbClass)
                             .executeTransaction(newObjectsTransaction);
