@@ -31,6 +31,7 @@ import org.threeten.bp.LocalTime;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import timber.log.Timber;
 
@@ -46,8 +47,8 @@ public class Course extends BaseModel implements Serializable {
     /**
      * Unique Id for this course
      */
-    @PrimaryKey (autoincrement = true)
-    int id;
+    @PrimaryKey
+    String id;
     /**
      * The term this class is for
      */
@@ -141,6 +142,7 @@ public class Course extends BaseModel implements Serializable {
             LocalTime startTime, LocalTime endTime, List<DayOfWeek> days, String type,
             String location, String instructor, double credits, LocalDate startDate,
             LocalDate endDate) {
+        id = UUID.randomUUID().toString();
         this.subject = subject;
         this.number = number;
         this.title = title;
