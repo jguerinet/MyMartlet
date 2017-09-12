@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// Set up the signing properties and the private variables
+// Set up the signing and private properties
 def signingProps = new Properties()
 if (rootProject.file("util/signing.properties").exists()) {
     signingProps.load(new FileInputStream(rootProject.file("util/signing.properties")))
@@ -23,6 +23,10 @@ def privateProps = new Properties()
 if (rootProject.file("util/private.properties").exists()) {
     privateProps.load(new FileInputStream(rootProject.file("util/private.properties")))
 }
+
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'me.tatarka.retrolambda'
 
 buildscript {
     repositories {
@@ -35,19 +39,23 @@ buildscript {
         classpath 'me.tatarka:gradle-retrolambda:3.6.1'
     }
 }
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
+    mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
     maven { url "https://jitpack.io" }
-    mavenCentral()
 }
-
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        applicationId "com.guerinet.mymartlet"
+        minSdkVersion 19
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0.0"
+    }
 
     signingConfigs {
         debug {
@@ -65,25 +73,12 @@ android {
         }
     }
 
-    defaultConfig {
-        applicationId "com.guerinet.mymartlet"
-        minSdkVersion 19
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0.0"
-    }
-
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            applicationIdSuffix '.debug'
+            versionNameSuffix '.' + defaultConfig.versionCode
             buildConfigField 'boolean', 'REPORT_CRASHES', 'false'
-            versionNameSuffix "." + defaultConfig.versionCode
-        }
-
-        beta {
-            initWith debug
-            signingConfig signingConfigs.release
-            buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
 
         release {
@@ -91,6 +86,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
+        }
+
+        beta {
+            initWith release
+            versionNameSuffix '.' + defaultConfig.versionCode
         }
     }
 
@@ -109,6 +109,7 @@ android {
     }
 
     lintOptions {
+        abortOnError true
         warning 'MissingTranslation'
     }
 
@@ -120,8 +121,7 @@ android {
     }
 }
 
-// Set the Facebook/Twitter keys from the properties file
-// May be null if property file is not defined
+// Set the Facebook/Twitter keys from the private properties file (null if not defined)
 android.buildTypes.each { type ->
     type.buildConfigField 'String', 'TWITTER_KEY', privateProps.twitterKey ?: '"N/A"'
     type.buildConfigField 'String', 'TWITTER_SECRET', privateProps.twitterSecret ?: '"N/A"'
@@ -131,47 +131,47 @@ android.buildTypes.each { type ->
 }
 
 // Versions for libraries with multiple dependencies
-def version_butterknife = "8.5.1"
-def version_dagger = "2.10"
-def version_dbflow = "4.0.0-beta5"
-def version_gps = "10.2.1"
-def version_okhttp = "3.7.0"
-def version_retrofit = "2.2.0"
-def version_support = "25.3.1"
+def butterknife_version = "8.5.1"
+def dagger_version = "2.10"
+def dbflow_version = "4.0.0-beta5"
+def okhttp_version = "3.7.0"
+def play_services_version = "10.2.1"
+def retrofit_version = "2.2.0"
+def support_version = "25.3.1"
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${version_support}"
-    compile "com.android.support:customtabs:${version_support}"
-    compile "com.android.support:cardview-v7:${version_support}"
-    compile "com.android.support:design:${version_support}"
-    compile "com.android.support:recyclerview-v7:${version_support}"
-    compile "com.android.support:support-v4:${version_support}"
+    compile "com.android.support:appcompat-v7:${support_version}"
+    compile "com.android.support:customtabs:${support_version}"
+    compile "com.android.support:cardview-v7:${support_version}"
+    compile "com.android.support:design:${support_version}"
+    compile "com.android.support:recyclerview-v7:${support_version}"
+    compile "com.android.support:support-v4:${support_version}"
     compile("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") {
         transitive = true;
     }
     compile "com.facebook.android:facebook-android-sdk:4.22.0"
-    compile "com.github.Raizlabs.DBFlow:dbflow:${version_dbflow}"
-    compile "com.github.Raizlabs.DBFlow:dbflow-core:${version_dbflow}"
-    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${version_dbflow}"
-    compile "com.google.android.gms:play-services-analytics:${version_gps}"
-    compile "com.google.android.gms:play-services-maps:${version_gps}"
-    compile "com.google.dagger:dagger:${version_dagger}"
-    annotationProcessor "com.google.dagger:dagger-compiler:${version_dagger}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    compile "com.google.android.gms:play-services-analytics:${play_services_version}"
+    compile "com.google.android.gms:play-services-maps:${play_services_version}"
+    compile "com.google.dagger:dagger:${dagger_version}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${dagger_version}"
     provided "org.glassfish:javax.annotation:10.0-b28"
     compile "com.guerinet:android-utils:1.2.1"
     compile "com.guerinet:form-generator:3.2.2"
-    compile "com.jakewharton:butterknife:${version_butterknife}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${version_butterknife}"
+    compile "com.jakewharton:butterknife:${butterknife_version}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife_version}"
     compile "com.jakewharton.threetenabp:threetenabp:1.0.5"
     compile "com.jakewharton.timber:timber:4.5.1"
     compile "com.orhanobut:hawk:2.0.1"
     compile "com.squareup.moshi:moshi:1.4.0"
-    compile "com.squareup.okhttp3:logging-interceptor:${version_okhttp}"
-    compile "com.squareup.okhttp3:okhttp:${version_okhttp}"
+    compile "com.squareup.okhttp3:logging-interceptor:${okhttp_version}"
+    compile "com.squareup.okhttp3:okhttp:${okhttp_version}"
     compile "com.squareup.okio:okio:1.12.0"
     compile "com.squareup.picasso:picasso:2.5.2"
-    compile "com.squareup.retrofit2:converter-moshi:${version_retrofit}"
-    compile "com.squareup.retrofit2:retrofit:${version_retrofit}"
+    compile "com.squareup.retrofit2:converter-moshi:${retrofit_version}"
+    compile "com.squareup.retrofit2:retrofit:${retrofit_version}"
     compile("com.twitter.sdk.android:twitter:2.3.2@aar") {
         transitive = true;
     }
