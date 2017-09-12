@@ -4,7 +4,8 @@
 Thumbs.db
 /build
 /captures
-util/private.properties
+private.properties
+signing.properties
 *.iml
 .idea/libraries
 .idea/shelf
@@ -15,7 +16,5 @@ modules.xml
 workspace.xml
 .name
 
-Passwords.java
 google-services.json
 !app/src/debug/google-services.json
-facebook_api.xml

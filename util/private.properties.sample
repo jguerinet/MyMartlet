@@ -1,7 +1,4 @@
-storeFile=HERE
-storePassword=HERE
-keyAlias=HERE
-keyPassword=HERE
-twitterKey="HERE"
+twitterPluginId=HERE
 twitterSecret="HERE"
-facebookAppId="HERE"
+facebookAppId=HERE
+apiSecret=HERE
