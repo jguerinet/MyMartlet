@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-// Setting up the release keystore properties
-def props = new Properties()
-if (rootProject.file("util/private.properties").exists())
-    props.load(new FileInputStream(rootProject.file("util/private.properties")))
+// Set up the signing properties and the private variables
+def signingProps = new Properties()
+if (rootProject.file("util/signing.properties").exists()) {
+    signingProps.load(new FileInputStream(rootProject.file("util/signing.properties")))
+}
+def privateProps = new Properties()
+if (rootProject.file("util/private.properties").exists()) {
+    privateProps.load(new FileInputStream(rootProject.file("util/private.properties")))
+}
 
 buildscript {
     repositories {
@@ -52,13 +57,11 @@ android {
             keyPassword 'android'
         }
 
-        if (rootProject.file("util/private.properties").exists()) {
-            release {
-                storeFile file(props.storeFile)
-                storePassword props.storePassword
-                keyAlias props.keyAlias
-                keyPassword props.keyPassword
-            }
+        release {
+            storeFile file(signingProps.storeFile ?: 'N/A')
+            storePassword signingProps.storePassword ?: 'N/A'
+            keyAlias signingProps.keyAlias ?: 'N/A'
+            keyPassword signingProps.keyPassword ?: 'N/A'
         }
     }
 
@@ -79,14 +82,12 @@ android {
 
         beta {
             initWith debug
-            if (rootProject.file("util/private.properties").exists())
-                signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
 
         release {
-            if (rootProject.file("util/private.properties").exists())
-                signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
@@ -122,11 +123,11 @@ android {
 // Set the Facebook/Twitter keys from the properties file
 // May be null if property file is not defined
 android.buildTypes.each { type ->
-    type.buildConfigField 'String', 'TWITTER_KEY', props.twitterKey ?: '"NA"'
-    type.buildConfigField 'String', 'TWITTER_SECRET', props.twitterSecret ?: '"NA"'
-    type.resValue 'string', 'facebook_app_id', props.facebookAppId ?: '"NA"'
+    type.buildConfigField 'String', 'TWITTER_KEY', privateProps.twitterKey ?: '"N/A"'
+    type.buildConfigField 'String', 'TWITTER_SECRET', privateProps.twitterSecret ?: '"N/A"'
+    type.resValue 'string', 'facebook_app_id', privateProps.facebookAppId ?: '"N/A"'
     type.resValue 'string', 'facebook_provider', 'com.facebook.app.FacebookContentProvider' +
-            props.facebookAppId
+            privateProps.facebookAppId ?: '"N/A'
 }
 
 // Versions for libraries with multiple dependencies
