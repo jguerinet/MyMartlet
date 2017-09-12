@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.ui.courses;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +28,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.Course;
@@ -45,8 +45,8 @@ import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.mymartlet.util.manager.McGillManager;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.util.Utils;
 
 import java.util.List;
 
@@ -143,7 +143,7 @@ public class CoursesActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogUtils.list(this, R.string.title_change_semester,
+                DialogUtils.singleList(this, R.string.title_change_semester,
                         new TermDialogHelper(this, term, false) {
                             @Override
                             public void onTermSelected(Term term) {
@@ -261,7 +261,7 @@ public class CoursesActivity extends DrawerActivity {
                     dialog.dismiss();
 
                     // Don't continue if the positive button has not been clicked on
-                    if (which != DialogInterface.BUTTON_POSITIVE) {
+                    if (which != DialogAction.POSITIVE) {
                         return;
                     }
 

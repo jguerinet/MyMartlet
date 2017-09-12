@@ -21,8 +21,7 @@ import android.content.Context;
 import com.guerinet.mymartlet.BuildConfig;
 import com.guerinet.mymartlet.model.AppUpdate;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.prefs.IntPreference;
+import com.guerinet.suitcase.prefs.IntPref;
 
 import org.threeten.bp.ZonedDateTime;
 
@@ -42,18 +41,18 @@ public class UpdateManager {
      */
     private final Context context;
     /**
-     * Version {@link IntPreference}
+     * Version {@link IntPref}
      */
-    private final IntPreference versionPref;
+    private final IntPref versionPref;
 
     /**
      * Default Injectable Constructor
      *
      * @param context     App context
-     * @param versionPref Version {@link IntPreference}
+     * @param versionPref Version {@link IntPref}
      */
     @Inject
-    UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPreference versionPref) {
+    UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPref versionPref) {
         this.context = context;
         this.versionPref = versionPref;
     }
@@ -63,7 +62,7 @@ public class UpdateManager {
      */
     public void update() {
         // Get the version code
-        int code = Utils.versionCode(context);
+        int code = BuildConfig.VERSION_CODE;
 
         // Get the current version number
         int storedVersion = versionPref.get();

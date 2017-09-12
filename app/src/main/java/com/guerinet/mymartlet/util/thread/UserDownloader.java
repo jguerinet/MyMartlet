@@ -34,7 +34,7 @@ import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.retrofit.McGillService;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter;
-import com.guerinet.utils.Utils;
+import com.guerinet.suitcase.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.io.IOException;

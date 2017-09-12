@@ -30,7 +30,7 @@ import com.guerinet.mymartlet.ui.dialog.DialogHelper;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.Utils;
+import com.guerinet.suitcase.util.Utils;
 import com.orhanobut.hawk.Hawk;
 
 import javax.inject.Inject;

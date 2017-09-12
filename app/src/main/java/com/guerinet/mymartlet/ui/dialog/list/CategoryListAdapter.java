@@ -21,7 +21,7 @@ import android.support.v4.util.Pair;
 
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.model.place.Category;
-import com.guerinet.utils.dialog.ListDialogInterface;
+import com.guerinet.suitcase.dialog.SingleListInterface;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.List;
  * @author Julien Guerinet
  * @since 2.1.0
  */
-public abstract class CategoryListAdapter implements ListDialogInterface {
+public abstract class CategoryListAdapter implements SingleListInterface {
     /**
      * List of place types with their associated String
      */
@@ -89,8 +89,8 @@ public abstract class CategoryListAdapter implements ListDialogInterface {
     }
 
     @Override
-    public CharSequence[] getChoices() {
-        CharSequence[] titles = new CharSequence[categories.size()];
+    public String[] getChoices() {
+        String[] titles = new String[categories.size()];
 
         // Go through the categories
         for (int i = 0; i < categories.size(); i ++) {

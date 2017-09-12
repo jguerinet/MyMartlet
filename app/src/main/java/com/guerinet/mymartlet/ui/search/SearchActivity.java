@@ -38,9 +38,9 @@ import com.guerinet.mymartlet.util.DayUtils;
 import com.guerinet.mymartlet.util.Help;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.Device;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.util.Device;
+import com.guerinet.suitcase.util.Utils;
 
 import org.threeten.bp.DayOfWeek;
 
@@ -190,7 +190,7 @@ public class SearchActivity extends DrawerActivity {
         termContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogUtils.list(SearchActivity.this, R.string.title_change_semester,
+                DialogUtils.singleList(SearchActivity.this, R.string.title_change_semester,
                         new TermDialogHelper(SearchActivity.this, term, true) {
                             @Override
                             public void onTermSelected(Term term) {

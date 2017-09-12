@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.util.dagger.prefs;
 import android.content.SharedPreferences;
 
 import com.guerinet.mymartlet.model.Term;
-import com.guerinet.utils.prefs.StringPreference;
+import com.guerinet.suitcase.prefs.StringPref;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import javax.inject.Singleton;
  * @since 2.4.0
  */
 @Singleton
-public class RegisterTermPreference extends StringPreference {
+public class RegisterTermPreference extends StringPref {
     /**
      * Instance list of the register {@link Term}s
      */

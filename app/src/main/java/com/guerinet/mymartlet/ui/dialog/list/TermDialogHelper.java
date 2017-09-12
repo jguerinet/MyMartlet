@@ -24,7 +24,7 @@ import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPreference;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
-import com.guerinet.utils.dialog.ListDialogInterface;
+import com.guerinet.suitcase.dialog.SingleListInterface;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -35,11 +35,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * {@link ListDialogInterface} implementation for a list of terms
+ * {@link SingleListInterface} implementation for a list of terms
  * @author Julien Guerinet
  * @since 2.0.0
  */
-public abstract class TermDialogHelper implements ListDialogInterface {
+public abstract class TermDialogHelper implements SingleListInterface {
     /**
      * App context
      */
@@ -112,8 +112,8 @@ public abstract class TermDialogHelper implements ListDialogInterface {
     }
 
     @Override
-    public CharSequence[] getChoices() {
-        CharSequence[] titles = new CharSequence[terms.size()];
+    public String[] getChoices() {
+        String[] titles = new String[terms.size()];
         for (int i = 0; i < terms.size(); i ++) {
             titles[i] = terms.get(i).getString(context);
         }

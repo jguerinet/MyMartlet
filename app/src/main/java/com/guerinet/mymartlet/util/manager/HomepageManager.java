@@ -32,7 +32,7 @@ import com.guerinet.mymartlet.ui.transcript.TranscriptActivity;
 import com.guerinet.mymartlet.ui.web.DesktopActivity;
 import com.guerinet.mymartlet.ui.web.MyCoursesActivity;
 import com.guerinet.mymartlet.ui.wishlist.WishlistActivity;
-import com.guerinet.utils.prefs.IntPreference;
+import com.guerinet.suitcase.prefs.IntPref;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -40,11 +40,11 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Inject;
 
 /**
- * Manages the user's homepage, an extension of the {@link IntPreference}
+ * Manages the user's homepage, an extension of the {@link IntPref}
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class HomepageManager extends IntPreference {
+public class HomepageManager extends IntPref {
     /**
      * The different homepages
      */

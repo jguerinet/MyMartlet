@@ -32,9 +32,9 @@ import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.BaseActivity;
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity;
-import com.guerinet.utils.RecyclerViewBaseAdapter;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter;
+import com.guerinet.suitcase.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public class HelpActivity extends BaseActivity {
                     DialogUtils.neutral(this, -1, R.string.help_email_walkthrough_info,
                             (dialog, which) -> {
                                 // Open the official McGill Guide
-                                Utils.openURL(this,
+                                Utils.openUrl(this,
                                         "http://kb.mcgill.ca/kb/article?ArticleId=4774");
 
                             });
@@ -107,7 +107,7 @@ public class HelpActivity extends BaseActivity {
         // Become Beta Tester
         fg.text()
                 .text(R.string.help_beta_tester)
-                .onClick(item -> Utils.openURL(this, "https://betas.to/iRinaygk"))
+                .onClick(item -> Utils.openUrl(this, "https://betas.to/iRinaygk"))
                 .build();
         
         // FAQ
@@ -118,7 +118,7 @@ public class HelpActivity extends BaseActivity {
     /**
      * Adapter used to display the FAQs
      */
-    class FAQAdapter extends RecyclerViewBaseAdapter {
+    class FAQAdapter extends BaseRecyclerViewAdapter {
         /**
          * List of FAQs
          */

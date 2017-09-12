@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.ui.wishlist;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -26,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.Course;
@@ -40,8 +40,8 @@ import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.manager.McGillManager;
 import com.guerinet.mymartlet.util.retrofit.McGillService;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -160,7 +160,7 @@ public class WishlistHelper {
             // Confirm with the user before continuing
             DialogUtils.alert(activity, R.string.warning, R.string.registration_disclaimer,
                     (dialogInterface, i) -> {
-                        if (i == DialogInterface.BUTTON_POSITIVE) {
+                        if (i == DialogAction.POSITIVE) {
                             register(courses);
                         } else {
                             activity.showToolbarProgress(false);

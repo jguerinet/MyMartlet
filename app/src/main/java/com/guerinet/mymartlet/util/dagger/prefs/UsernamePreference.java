@@ -20,7 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.guerinet.mymartlet.R;
-import com.guerinet.utils.prefs.StringPreference;
+import com.guerinet.suitcase.prefs.StringPref;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,7 +31,7 @@ import javax.inject.Singleton;
  * @since 2.0.4
  */
 @Singleton
-public class UsernamePreference extends StringPreference {
+public class UsernamePreference extends StringPref {
     /**
      * McGill email suffix
      */

@@ -25,7 +25,7 @@ import android.content.Intent;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
-import com.guerinet.utils.prefs.BooleanPreference;
+import com.guerinet.suitcase.prefs.BooleanPref;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.Calendar;
@@ -46,17 +46,17 @@ public class BootReceiver extends BroadcastReceiver {
     @Inject
     protected UsernamePreference usernamePref;
     /**
-     * Seat checker {@link BooleanPreference}
+     * Seat checker {@link BooleanPref}
      */
     @Inject
     @Named(PrefsModule.SEAT_CHECKER)
-    protected BooleanPreference seatCheckerPref;
+    protected BooleanPref seatCheckerPref;
     /**
-     * Grade checker {@link BooleanPreference}
+     * Grade checker {@link BooleanPref}
      */
     @Inject
     @Named(PrefsModule.GRADE_CHECKER)
-    protected BooleanPreference gradeCheckerPref;
+    protected BooleanPref gradeCheckerPref;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {

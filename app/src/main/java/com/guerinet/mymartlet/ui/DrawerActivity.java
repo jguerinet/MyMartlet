@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -30,6 +29,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -39,8 +39,8 @@ import com.facebook.share.widget.ShareDialog;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.util.Utils;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.net.MalformedURLException;
@@ -207,7 +207,7 @@ public abstract class DrawerActivity extends BaseActivity
     private void logout() {
         DialogUtils.alert(this, R.string.warning, R.string.logout_dialog_message,
                 (dialog, which) -> {
-                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                    if (which == DialogAction.POSITIVE) {
                         analytics.sendEvent("Logout", "Clicked");
                         clearManager.all();
                         // Go back to SplashActivity

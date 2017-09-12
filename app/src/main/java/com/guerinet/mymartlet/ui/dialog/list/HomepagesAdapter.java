@@ -17,13 +17,14 @@
 package com.guerinet.mymartlet.ui.dialog.list;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.mymartlet.util.manager.HomepageManager.Homepage;
-import com.guerinet.utils.dialog.ListDialogInterface;
+import com.guerinet.suitcase.dialog.SingleListInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
  * @since 2.0.0
  */
 @SuppressWarnings("ResourceType")
-public abstract class HomepagesAdapter implements ListDialogInterface {
+public abstract class HomepagesAdapter implements SingleListInterface {
     /**
      * {@link HomepageManager} instance
      */
@@ -86,9 +87,10 @@ public abstract class HomepagesAdapter implements ListDialogInterface {
         return -1;
     }
 
+    @NonNull
     @Override
-    public CharSequence[] getChoices() {
-        CharSequence[] titles = new CharSequence[homepages.size()];
+    public String[] getChoices() {
+        String[] titles = new String[homepages.size()];
         for (int i = 0; i < homepages.size(); i ++) {
             titles[i] = homepages.get(i).second;
         }

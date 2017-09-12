@@ -54,8 +54,10 @@ import com.guerinet.mymartlet.model.place.Place;
 import com.guerinet.mymartlet.ui.dialog.list.CategoryListAdapter;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.ui.UIUtils;
+import com.guerinet.suitcase.util.Permission;
+import com.guerinet.suitcase.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import junit.framework.Assert;
@@ -152,8 +154,8 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
 
         // Icon coloring
         int red = ContextCompat.getColor(this, R.color.red);
-        Utils.setTint(directions, 0, red);
-        Utils.setTint(favorite, 0, red);
+        UIUtils.setTint(directions, 0, red);
+        UIUtils.setTint(favorite, 0, red);
 
         //Set up the place filter
         fg.text()
@@ -163,7 +165,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                 .onClick(new TextViewFormItem.OnClickListener() {
                     @Override
                     public void onClick(final TextViewFormItem item) {
-                        DialogUtils.list(MapActivity.this, R.string.map_filter,
+                        DialogUtils.singleList(MapActivity.this, R.string.map_filter,
                                 new CategoryListAdapter(MapActivity.this, category) {
                                     @Override
                                     public void onCategorySelected(Category type) {
@@ -405,8 +407,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         //Show the user's location if we have the permission to
-        if (Utils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION,
-                LOCATION_REQUEST)) {
+        if (Permission.request(this, Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_REQUEST)) {
             //noinspection MissingPermission
             map.setMyLocationEnabled(true);
         }

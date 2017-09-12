@@ -26,7 +26,7 @@ import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.Semester;
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse;
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse_Table;
-import com.guerinet.utils.RecyclerViewBaseAdapter;
+import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import butterknife.BindView;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class SemesterAdapter extends RecyclerViewBaseAdapter {
+class SemesterAdapter extends BaseRecyclerViewAdapter {
     /**
      * Id of the semester we are currently looking at
      */
@@ -71,7 +71,6 @@ class SemesterAdapter extends RecyclerViewBaseAdapter {
         return courses.size();
     }
 
-    @Override
     public void update() {
         courses.clear();
 

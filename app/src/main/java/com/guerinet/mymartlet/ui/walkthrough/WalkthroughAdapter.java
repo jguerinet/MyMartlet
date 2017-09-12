@@ -32,7 +32,7 @@ import com.guerinet.mymartlet.ui.dialog.list.FacultiesAdapter;
 import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter;
 import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
 
 import javax.inject.Inject;
 
@@ -128,7 +128,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                     .text(homepageManager.getTitleString())
                     .leftIcon(R.drawable.ic_phone_android)
                     .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
-                    .onClick(item -> DialogUtils.list(context, R.string.settings_homepage_title,
+                    .onClick(item -> DialogUtils.singleList(context, R.string.settings_homepage_title,
                             new HomepagesAdapter(context) {
                                 @Override
                                 public void onHomepageSelected(@HomepageManager.Homepage
@@ -156,7 +156,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                     .text(R.string.faculty_none)
                     .leftIcon(R.drawable.ic_mycourses)
                     .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
-                    .onClick(item -> DialogUtils.list(context, R.string.faculty_title,
+                    .onClick(item -> DialogUtils.singleList(context, R.string.faculty_title,
                             new FacultiesAdapter(context, item.view().getText().toString()) {
                                 @Override
                                 public void onFacultySelected(String faculty) {

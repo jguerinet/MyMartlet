@@ -37,13 +37,12 @@ import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
-import com.guerinet.utils.prefs.BooleanPreference;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.prefs.BooleanPref;
+import com.guerinet.suitcase.util.Device;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -69,17 +68,17 @@ public class SettingsActivity extends DrawerActivity {
     @BindView(R.id.container)
     LinearLayout container;
     /**
-     * Statistics BooleanPreference
+     * Statistics BooleanPref
      */
     @Inject
     @Named(PrefsModule.STATS)
-    BooleanPreference statsPref;
+    BooleanPref statsPref;
     /**
-     * 24 hour time BooleanPreference
+     * 24 hour time BooleanPref
      */
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
-    BooleanPreference twentyFourHourPref;
+    BooleanPref twentyFourHourPref;
     /**
      * {@link UsernamePreference} instance
      */
@@ -92,7 +91,7 @@ public class SettingsActivity extends DrawerActivity {
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         App.component(this).inject(this);
-        setTitle(getString(R.string.settings_version, Utils.versionName(this)));
+        setTitle(getString(R.string.settings_version, BuildConfig.VERSION_NAME));
         analytics.sendScreen("Settings");
 
         FormGenerator fg = FormGenerator.bind(container);
@@ -109,7 +108,7 @@ public class SettingsActivity extends DrawerActivity {
         fg.text()
                 .text(homepageManager.getTitleString())
                 .leftIcon(R.drawable.ic_phone_android)
-                .onClick(item -> DialogUtils.list(this, R.string.settings_homepage_title,
+                .onClick(item -> DialogUtils.singleList(this, R.string.settings_homepage_title,
                         new HomepagesAdapter(this) {
                             @Override
                             public void onHomepageSelected(@HomepageManager.Homepage int choice) {
@@ -164,9 +163,9 @@ public class SettingsActivity extends DrawerActivity {
                     intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report));
 
                     // Content
-                    String device = "Device: " + Utils.device();
+                    String device = "Device: " + Device.model();
                     String sdkVersion = "SDK Version: " + Build.VERSION.SDK_INT;
-                    String appVersion = "App Version: " + Utils.versionName(this);
+                    String appVersion = "App Version: " + BuildConfig.VERSION_NAME;
                     String language = "Language: " + Locale.getDefault().getLanguage();
 
                     ConnectivityManager manager = (ConnectivityManager)
@@ -200,6 +199,8 @@ public class SettingsActivity extends DrawerActivity {
                     ArrayList<Uri> uriList = new ArrayList<>();
 
                     // Logs (attachment)
+                    // TODO
+                    /*
                     try {
                         File file = new File(getExternalFilesDir(null), "logs.txt");
                         Utils.getLogs(file);
@@ -208,6 +209,7 @@ public class SettingsActivity extends DrawerActivity {
                     } catch (IOException e) {
                         Timber.e(new Exception("Error getting logs", e));
                     }
+                    */
 
                     // Update logs (attachment)
                     try {

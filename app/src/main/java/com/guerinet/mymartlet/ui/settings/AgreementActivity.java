@@ -25,7 +25,7 @@ import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.BaseActivity;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.utils.prefs.BooleanPreference;
+import com.guerinet.suitcase.prefs.BooleanPref;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -47,11 +47,11 @@ public class AgreementActivity extends BaseActivity {
     @BindView(R.id.buttons_container)
     LinearLayout buttons;
     /**
-     * EULA {@link BooleanPreference}
+     * EULA {@link BooleanPref}
      */
     @Inject
     @Named(PrefsModule.EULA)
-    BooleanPreference eulaPref;
+    BooleanPref eulaPref;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

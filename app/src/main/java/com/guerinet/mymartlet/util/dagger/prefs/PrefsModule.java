@@ -19,9 +19,9 @@ package com.guerinet.mymartlet.util.dagger.prefs;
 import android.content.SharedPreferences;
 
 import com.guerinet.mymartlet.util.dagger.AppModule;
-import com.guerinet.utils.prefs.BooleanPreference;
-import com.guerinet.utils.prefs.DatePreference;
-import com.guerinet.utils.prefs.IntPreference;
+import com.guerinet.suitcase.date.DatePref;
+import com.guerinet.suitcase.prefs.BooleanPref;
+import com.guerinet.suitcase.prefs.IntPref;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -59,13 +59,13 @@ public class PrefsModule {
 
     /**
      * @param prefs {@link SharedPreferences} instance
-     * @return Stored version {@link IntPreference}, defaults to -1
+     * @return Stored version {@link IntPref}, defaults to -1
      */
     @Provides
     @Singleton
     @Named(VERSION)
-    IntPreference provideVersion(SharedPreferences prefs) {
-        return new IntPreference(prefs, VERSION, -1);
+    IntPref provideVersion(SharedPreferences prefs) {
+        return new IntPref(prefs, VERSION, -1);
     }
 
     /**
@@ -75,8 +75,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(MIN_VERSION)
-    IntPreference provideMinVersion(SharedPreferences prefs) {
-        return new IntPreference(prefs, MIN_VERSION, -1);
+    IntPref provideMinVersion(SharedPreferences prefs) {
+        return new IntPref(prefs, MIN_VERSION, -1);
     }
 
     /**
@@ -86,8 +86,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(FIRST_OPEN)
-    BooleanPreference provideFirstOpen(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, FIRST_OPEN, true);
+    BooleanPref provideFirstOpen(SharedPreferences prefs) {
+        return new BooleanPref(prefs, FIRST_OPEN, true);
     }
 
     /**
@@ -97,8 +97,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(STATS)
-    BooleanPreference provideStatistics(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, STATS, true);
+    BooleanPref provideStatistics(SharedPreferences prefs) {
+        return new BooleanPref(prefs, STATS, true);
     }
 
     /**
@@ -108,8 +108,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(SCHEDULE_24HR)
-    BooleanPreference provideScheduleTime(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, SCHEDULE_24HR, false);
+    BooleanPref provideScheduleTime(SharedPreferences prefs) {
+        return new BooleanPref(prefs, SCHEDULE_24HR, false);
     }
 
     /**
@@ -119,8 +119,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(REMEMBER_USERNAME)
-    BooleanPreference provideRememberUsername(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, REMEMBER_USERNAME, true);
+    BooleanPref provideRememberUsername(SharedPreferences prefs) {
+        return new BooleanPref(prefs, REMEMBER_USERNAME, true);
     }
 
     /**
@@ -130,8 +130,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(EULA)
-    BooleanPreference provideEULA(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, EULA, false);
+    BooleanPref provideEULA(SharedPreferences prefs) {
+        return new BooleanPref(prefs, EULA, false);
     }
 
     /**
@@ -141,8 +141,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(SEAT_CHECKER)
-    BooleanPreference provideSeatChecker(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, SEAT_CHECKER, false);
+    BooleanPref provideSeatChecker(SharedPreferences prefs) {
+        return new BooleanPref(prefs, SEAT_CHECKER, false);
     }
 
     /**
@@ -152,8 +152,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(GRADE_CHECKER)
-    BooleanPreference provideGradeChecker(SharedPreferences prefs) {
-        return new BooleanPreference(prefs, GRADE_CHECKER, false);
+    BooleanPref provideGradeChecker(SharedPreferences prefs) {
+        return new BooleanPref(prefs, GRADE_CHECKER, false);
     }
 
     /**
@@ -163,8 +163,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(IMS_CONFIG)
-    DatePreference provideIMSConfig(SharedPreferences prefs) {
-        return new DatePreference(prefs, IMS_CONFIG, null);
+    DatePref provideIMSConfig(SharedPreferences prefs) {
+        return new DatePref(prefs, IMS_CONFIG, null);
     }
 
     /**
@@ -174,8 +174,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(IMS_PLACES)
-    DatePreference provideIMSPlaces(SharedPreferences prefs) {
-        return new DatePreference(prefs, IMS_PLACES, null);
+    DatePref provideIMSPlaces(SharedPreferences prefs) {
+        return new DatePref(prefs, IMS_PLACES, null);
     }
 
     /**
@@ -185,8 +185,8 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(IMS_CATEGORIES)
-    DatePreference provideIMSCategories(SharedPreferences prefs) {
-        return new DatePreference(prefs, IMS_CATEGORIES, null);
+    DatePref provideIMSCategories(SharedPreferences prefs) {
+        return new DatePref(prefs, IMS_CATEGORIES, null);
     }
 
     /**
@@ -196,7 +196,7 @@ public class PrefsModule {
     @Provides
     @Singleton
     @Named(IMS_REGISTRATION)
-    DatePreference provideIMSRegistration(SharedPreferences prefs) {
-        return new DatePreference(prefs, IMS_REGISTRATION, null);
+    DatePref provideIMSRegistration(SharedPreferences prefs) {
+        return new DatePref(prefs, IMS_REGISTRATION, null);
     }
 }

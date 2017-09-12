@@ -34,8 +34,8 @@ import android.widget.TextView;
 
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.BaseActivity;
-import com.guerinet.utils.RecyclerViewBaseAdapter;
-import com.guerinet.utils.Utils;
+import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter;
+import com.guerinet.suitcase.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -73,13 +73,13 @@ public class AboutActivity extends BaseActivity {
 
     @OnClick(R.id.github)
     void gitHub() {
-        Utils.openURL(this, "https://github.com/jguerinet/MyMartlet/");
+        Utils.openUrl(this, "https://github.com/jguerinet/MyMartlet/");
     }
 
     /**
      * Displays the developers in the About page
      */
-    class PersonAdapter extends RecyclerViewBaseAdapter {
+    class PersonAdapter extends BaseRecyclerViewAdapter {
         /**
          * Person view type
          */
@@ -250,7 +250,7 @@ public class AboutActivity extends BaseActivity {
                 description.setText(person.description);
                 linkedIn.setOnClickListener(view -> {
                     analytics.sendEvent("About", "Linkedin", getString(person.name));
-                    Utils.openURL(context, getString(person.linkedIn));
+                    Utils.openUrl(context, getString(person.linkedIn));
                 });
                 email.setOnClickListener(view -> {
                     analytics.sendEvent("About", "Email", getString(person.name));

@@ -32,8 +32,8 @@ import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper;
 import com.guerinet.mymartlet.util.Help;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -117,7 +117,7 @@ public class WishlistActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogUtils.list(this, R.string.title_change_semester,
+                DialogUtils.singleList(this, R.string.title_change_semester,
                         new TermDialogHelper(this, term, true) {
                             @Override
                             public void onTermSelected(Term newTerm) {

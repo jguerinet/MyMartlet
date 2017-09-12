@@ -24,7 +24,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.guerinet.mymartlet.BuildConfig;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.utils.prefs.BooleanPreference;
+import com.guerinet.suitcase.prefs.BooleanPref;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,18 +43,18 @@ public class Analytics {
      */
     private final Tracker tracker;
     /**
-     * Statistics {@link BooleanPreference}
+     * Statistics {@link BooleanPref}
      */
-    private final BooleanPreference statsPref;
+    private final BooleanPref statsPref;
 
     /**
      * Default Constructor
      *
      * @param context   App context
-     * @param statsPref Statistics {@link BooleanPreference}
+     * @param statsPref Statistics {@link BooleanPref}
      */
     @Inject
-    Analytics(Context context, @Named(PrefsModule.STATS) BooleanPreference statsPref) {
+    Analytics(Context context, @Named(PrefsModule.STATS) BooleanPref statsPref) {
         // Set up the tracker
         tracker = GoogleAnalytics.getInstance(context).newTracker(R.xml.global_tracker);
         this.statsPref = statsPref;

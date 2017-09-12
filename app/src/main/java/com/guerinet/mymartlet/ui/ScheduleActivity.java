@@ -54,9 +54,10 @@ import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
-import com.guerinet.utils.prefs.BooleanPreference;
+import com.guerinet.suitcase.date.DateFormat;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.prefs.BooleanPref;
+import com.guerinet.suitcase.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import junit.framework.Assert;
@@ -106,17 +107,17 @@ public class ScheduleActivity extends DrawerActivity {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     /**
-     * The first open {@link BooleanPreference}
+     * The first open {@link BooleanPref}
      */
     @Inject
     @Named(PrefsModule.FIRST_OPEN)
-    BooleanPreference firstOpenPref;
+    BooleanPref firstOpenPref;
     /**
-     * The time format {@link BooleanPreference}
+     * The time format {@link BooleanPref}
      */
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
-    BooleanPreference twentyFourHourPref;
+    BooleanPref twentyFourHourPref;
     /**
      * {@link DefaultTermPreference} instance
      */
@@ -193,7 +194,7 @@ public class ScheduleActivity extends DrawerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_change_semester:
-                DialogUtils.list(this, R.string.title_change_semester,
+                DialogUtils.singleList(this, R.string.title_change_semester,
                         new TermDialogHelper(this, term, false) {
                     @Override
                     public void onTermSelected(Term newTerm) {
@@ -618,7 +619,7 @@ public class ScheduleActivity extends DrawerActivity {
                         ViewGroup.LayoutParams.WRAP_CONTENT), Gravity.CENTER)
                 .text(R.string.course_docuum)
                 .textColor(color)
-                .onClick(item -> Utils.openURL(this, "http://www.docuum.com/mcgill/" +
+                .onClick(item -> Utils.openUrl(this, "http://www.docuum.com/mcgill/" +
                         course.getSubject().toLowerCase() + "/" + course.getNumber()))
                 .build();
 
@@ -722,7 +723,7 @@ public class ScheduleActivity extends DrawerActivity {
 
             // Set the titles
             dayTitle.setText(DayUtils.getStringId(currentDate.getDayOfWeek()));
-            dateTitle.setText(com.guerinet.utils.DateUtils.getLongDateString(currentDate));
+            dateTitle.setText(DateFormat.getLongDateString(currentDate));
 
             // Fill the schedule up
             fillSchedule(timetableContainer, scheduleContainer, currentDate, true);

@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.guerinet.mymartlet.App;
+import com.guerinet.mymartlet.BuildConfig;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.Transcript;
 import com.guerinet.mymartlet.model.exception.MinervaException;
@@ -46,9 +47,9 @@ import com.guerinet.mymartlet.util.manager.UpdateManager;
 import com.guerinet.mymartlet.util.service.ConfigDownloadService;
 import com.guerinet.mymartlet.util.storage.ClearManager;
 import com.guerinet.mymartlet.util.thread.UserDownloader;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.prefs.BooleanPreference;
-import com.guerinet.utils.prefs.IntPreference;
+import com.guerinet.suitcase.prefs.BooleanPref;
+import com.guerinet.suitcase.prefs.IntPref;
+import com.guerinet.suitcase.util.Utils;
 import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
@@ -127,23 +128,23 @@ public class SplashActivity extends BaseActivity {
     @Inject
     ClearManager clearManager;
     /**
-     * Remember username {@link BooleanPreference}
+     * Remember username {@link BooleanPref}
      */
     @Inject
     @Named(PrefsModule.REMEMBER_USERNAME)
-    BooleanPreference rememberUsernamePref;
+    BooleanPref rememberUsernamePref;
     /**
-     * Min version {@link IntPreference}
+     * Min version {@link IntPref}
      */
     @Inject
     @Named(PrefsModule.MIN_VERSION)
-    IntPreference minVersionPref;
+    IntPref minVersionPref;
     /**
-     * EULA {@link BooleanPreference}
+     * EULA {@link BooleanPref}
      */
     @Inject
     @Named(PrefsModule.EULA)
-    BooleanPreference eulaPref;
+    BooleanPref eulaPref;
     /**
      * {@link UsernamePreference} instance
      */
@@ -205,7 +206,7 @@ public class SplashActivity extends BaseActivity {
      * Shows the first screen to the user depending on their situation
      */
     private void showNextScreen() {
-        if (minVersionPref.get() > Utils.versionCode(this)) {
+        if (minVersionPref.get() > BuildConfig.VERSION_CODE) {
             // If we don't have the min required version, show the right container
             minVersionContainer.setVisibility(View.VISIBLE);
         } else if (usernamePref.get() == null || !Hawk.contains(PrefsModule.Hawk.PASSWORD)) {

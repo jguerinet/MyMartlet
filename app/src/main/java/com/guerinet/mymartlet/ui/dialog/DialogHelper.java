@@ -21,8 +21,8 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 
 import com.guerinet.mymartlet.R;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.dialog.DialogUtils;
+import com.guerinet.suitcase.dialog.DialogUtils;
+import com.guerinet.suitcase.util.Utils;
 
 /**
  * Helper methods that create dialogs for various situations
@@ -57,6 +57,6 @@ public class DialogHelper {
      * @param message Message String
      */
     public static void error(Context context, String message) {
-        DialogUtils.neutral(context, R.string.error, message);
+        DialogUtils.neutral(context, R.string.error, message, null);
     }
 }

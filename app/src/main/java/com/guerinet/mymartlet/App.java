@@ -26,7 +26,7 @@ import com.guerinet.formgenerator.FormGenerator;
 import com.guerinet.mymartlet.util.dagger.AppModule;
 import com.guerinet.mymartlet.util.dagger.BaseComponent;
 import com.guerinet.mymartlet.util.dagger.DaggerBaseComponent;
-import com.guerinet.utils.ProductionTree;
+import com.guerinet.suitcase.log.ProductionTree;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.config.FlowConfig;

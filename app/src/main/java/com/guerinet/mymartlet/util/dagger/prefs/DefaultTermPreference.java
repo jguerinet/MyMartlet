@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.guerinet.mymartlet.model.Term;
-import com.guerinet.utils.prefs.StringPreference;
+import com.guerinet.suitcase.prefs.StringPref;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,7 +31,7 @@ import javax.inject.Singleton;
  * @since 2.4.0
  */
 @Singleton
-public class DefaultTermPreference extends StringPreference {
+public class DefaultTermPreference extends StringPref {
     /**
      * Default {@link Term}
      */

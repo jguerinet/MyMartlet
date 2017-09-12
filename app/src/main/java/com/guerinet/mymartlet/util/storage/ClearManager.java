@@ -29,7 +29,7 @@ import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.prefs.BooleanPreference;
+import com.guerinet.suitcase.prefs.BooleanPref;
 import com.orhanobut.hawk.Hawk;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
@@ -53,9 +53,9 @@ public class ClearManager {
      */
     private final UsernamePreference usernamePref;
     /**
-     * Remember Username {@link BooleanPreference}
+     * Remember Username {@link BooleanPref}
      */
-    private final BooleanPreference rememberUsernamePref;
+    private final BooleanPref rememberUsernamePref;
     /**
      * {@link DefaultTermPreference} instance
      */
@@ -74,14 +74,14 @@ public class ClearManager {
      *
      * @param context              App context
      * @param usernamePref         {@link UsernamePreference} instance
-     * @param rememberUsernamePref Remember Username {@link BooleanPreference}
+     * @param rememberUsernamePref Remember Username {@link BooleanPref}
      * @param homepageManager      {@link HomepageManager} instance
      * @param defaultTermPref      {@link DefaultTermPreference} instance
      * @param registerTermPref     {@link RegisterTermPreference} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
-            @Named(PrefsModule.REMEMBER_USERNAME) BooleanPreference rememberUsernamePref,
+            @Named(PrefsModule.REMEMBER_USERNAME) BooleanPref rememberUsernamePref,
             HomepageManager homepageManager, DefaultTermPreference defaultTermPref,
             RegisterTermPreference registerTermPref) {
         this.context = context;

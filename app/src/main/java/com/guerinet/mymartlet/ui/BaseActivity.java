@@ -39,7 +39,7 @@ import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.retrofit.McGillService;
 import com.guerinet.mymartlet.util.storage.ClearManager;
-import com.guerinet.utils.Utils;
+import com.guerinet.suitcase.util.Utils;
 
 import junit.framework.Assert;
 

@@ -27,7 +27,7 @@ import com.guerinet.mymartlet.model.Course;
 import com.guerinet.mymartlet.model.Course_Table;
 import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.util.DayUtils;
-import com.guerinet.utils.RecyclerViewBaseAdapter;
+import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ import butterknife.BindView;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class CoursesAdapter extends RecyclerViewBaseAdapter {
+class CoursesAdapter extends BaseRecyclerViewAdapter {
     /**
      * List of {@link Course}s to show
      */

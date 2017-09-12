@@ -40,8 +40,9 @@ import com.guerinet.mymartlet.ui.dialog.DialogHelper;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
-import com.guerinet.utils.Device;
-import com.guerinet.utils.Utils;
+import com.guerinet.suitcase.util.Device;
+import com.guerinet.suitcase.util.Permission;
+import com.guerinet.suitcase.util.Utils;
 import com.orhanobut.hawk.Hawk;
 
 import javax.inject.Inject;
@@ -104,7 +105,7 @@ public class MyCoursesActivity extends DrawerActivity {
             public void onDownloadStart(String url, String userAgent, String contentDisposition,
                                         String mimeType, long contentLength) {
                 //Check that we have the external storage permission
-                if (!Utils.requestPermission(MyCoursesActivity.this,
+                if (!Permission.request(MyCoursesActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, EXTERNAL_STORAGE_PERMISSION)) {
                     return;
                 }

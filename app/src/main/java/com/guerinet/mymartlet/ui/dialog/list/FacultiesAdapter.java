@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.ui.dialog.list;
 import android.content.Context;
 
 import com.guerinet.mymartlet.R;
-import com.guerinet.utils.dialog.ListDialogInterface;
+import com.guerinet.suitcase.dialog.SingleListInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +30,7 @@ import java.util.List;
  * @author Julien Guerinet
  * @since 2.1.0
  */
-public abstract class FacultiesAdapter implements ListDialogInterface {
+public abstract class FacultiesAdapter implements SingleListInterface {
     /**
      * List of faculties
      */
@@ -78,8 +78,8 @@ public abstract class FacultiesAdapter implements ListDialogInterface {
     }
 
     @Override
-    public CharSequence[] getChoices() {
-        return faculties.toArray(new CharSequence[faculties.size()]);
+    public String[] getChoices() {
+        return faculties.toArray(new String[faculties.size()]);
     }
 
     @Override

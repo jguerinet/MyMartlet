@@ -29,7 +29,7 @@ import com.guerinet.mymartlet.model.CourseResult;
 import com.guerinet.mymartlet.model.CourseResult_Table;
 import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.util.DayUtils;
-import com.guerinet.utils.RecyclerViewBaseAdapter;
+import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import butterknife.BindView;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class WishlistAdapter extends RecyclerViewBaseAdapter {
+class WishlistAdapter extends BaseRecyclerViewAdapter {
     /**
      * List of {@link CourseResult}s currently being shown
      */

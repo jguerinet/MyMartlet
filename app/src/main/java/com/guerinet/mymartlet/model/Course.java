@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.model;
 
 import com.guerinet.mymartlet.util.DayUtils;
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
-import com.guerinet.utils.DateUtils;
+import com.guerinet.suitcase.date.DateFormat;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.UUID;
 
 import timber.log.Timber;
+
+import static com.guerinet.suitcase.date.DateFormat.getMediumDateString;
 
 /**
  * A course in the user's schedule or one that a user can register for
@@ -346,16 +348,16 @@ public class Course extends BaseModel implements Serializable {
             return "";
         }
 
-        return DateUtils.getShortTimeString(startTime) + " - " +
-                DateUtils.getShortTimeString(endTime);
+        return DateFormat.getShortTimeString(startTime) + " - " +
+                DateFormat.getShortTimeString(endTime);
     }
 
     /**
      * @return The course dates in String format
      */
     public String getDateString() {
-        return DateUtils.getMediumDateString(startDate) + " - " +
-                DateUtils.getMediumDateString(endDate);
+        return getMediumDateString(startDate) + " - " +
+                DateFormat.getMediumDateString(endDate);
     }
 
     /**

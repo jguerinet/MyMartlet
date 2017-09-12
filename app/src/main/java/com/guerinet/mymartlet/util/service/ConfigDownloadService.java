@@ -30,10 +30,10 @@ import com.guerinet.mymartlet.util.dbflow.DBUtils;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB;
 import com.guerinet.mymartlet.util.retrofit.ConfigService;
-import com.guerinet.utils.DateUtils;
-import com.guerinet.utils.Utils;
-import com.guerinet.utils.prefs.DatePreference;
-import com.guerinet.utils.prefs.IntPreference;
+import com.guerinet.suitcase.date.DateFormat;
+import com.guerinet.suitcase.date.DatePref;
+import com.guerinet.suitcase.prefs.IntPref;
+import com.guerinet.suitcase.util.Utils;
 
 import org.threeten.bp.ZonedDateTime;
 
@@ -59,35 +59,35 @@ public class ConfigDownloadService extends IntentService {
     @Inject
     ConfigService configService;
     /**
-     * The Config If-Modified-Since {@link DatePreference}
+     * The Config If-Modified-Since {@link DatePref}
      */
     @Inject
     @Named(PrefsModule.IMS_CONFIG)
-    DatePreference imsConfigPref;
+    DatePref imsConfigPref;
     /**
-     * The Places If-Modified-Since {@link DatePreference}
+     * The Places If-Modified-Since {@link DatePref}
      */
     @Inject
     @Named(PrefsModule.IMS_PLACES)
-    DatePreference imsPlacesPref;
+    DatePref imsPlacesPref;
     /**
-     * The Categories If-Modified-Since {@link DatePreference}
+     * The Categories If-Modified-Since {@link DatePref}
      */
     @Inject
     @Named(PrefsModule.IMS_CATEGORIES)
-    DatePreference imsCategoriesPref;
+    DatePref imsCategoriesPref;
     /**
-     * The Registration Semesters If-Modified-Since {@link DatePreference}
+     * The Registration Semesters If-Modified-Since {@link DatePref}
      */
     @Inject
     @Named(PrefsModule.IMS_REGISTRATION)
-    DatePreference imsRegistrationPref;
+    DatePref imsRegistrationPref;
     /**
-     * The min version {@link IntPreference}
+     * The min version {@link IntPref}
      */
     @Inject
     @Named(PrefsModule.MIN_VERSION)
-    IntPreference minVersionPref;
+    IntPref minVersionPref;
     /**
      * {@link RegisterTermPreference} instance
      */
@@ -144,22 +144,22 @@ public class ConfigDownloadService extends IntentService {
     }
 
     /**
-     * @param pref {@link DatePreference} instance to get the date from
+     * @param pref {@link DatePref} instance to get the date from
      * @return IMS String to use for the call
      */
-    private String getIMS(DatePreference pref) {
-        return DateUtils.getRFC1123String(pref.getDate());
+    private String getIMS(DatePref pref) {
+        return DateFormat.getRFC1123String(pref.getDate());
     }
 
     /**
      * Executes a given call
      *
      * @param call    Call to execute
-     * @param imsPref IMS {@link DatePreference} to update after a successful call
+     * @param imsPref IMS {@link DatePref} to update after a successful call
      * @param <T>     Class of the response object
      * @return Response object, null if there was an error
      */
-    private <T> T executeRequest(Call<T> call, DatePreference imsPref) {
+    private <T> T executeRequest(Call<T> call, DatePref imsPref) {
         try {
             Response<T> response = call.execute();
 
