@@ -16,8 +16,8 @@
 
 package com.guerinet.mymartlet;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
@@ -45,7 +45,7 @@ import timber.log.Timber;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
     /**
      * Dagger {@link BaseComponent}
      */

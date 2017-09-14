@@ -8,7 +8,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:167887597085:android:39d7b23f13a59687",
         "android_client_info": {
-          "package_name": "com.guerinet.mymartlet"
+          "package_name": "com.guerinet.mymartlet.debug"
         }
       },
       "oauth_client": [],
