@@ -56,7 +56,13 @@ public class CourseDB {
             course.setTerm(term);
         }
 
-        DBUtils.updateDB(Course.class, courses, Course_Table.term.eq(term), CourseDB.class, null,
-                callback);
+        DBUtils.updateDB(Course.class, courses, Course_Table.term.eq(term), CourseDB.class,
+                (object, oldObject) -> {
+                    // Save the new object, delete the old one
+                    //  If we don't do this, a duplicate will be created because they don't have the
+                    //  same Id
+                    object.save();
+                    oldObject.delete();
+                }, callback);
     }
 }
