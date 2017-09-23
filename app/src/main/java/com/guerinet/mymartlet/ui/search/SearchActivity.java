@@ -36,7 +36,7 @@ import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.DayUtils;
 import com.guerinet.mymartlet.util.Help;
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.dialog.DialogUtils;
 import com.guerinet.suitcase.util.Device;
@@ -153,11 +153,9 @@ public class SearchActivity extends DrawerActivity {
      */
     @BindView(R.id.more_options)
     protected Button mMoreOptionsButton;
-    /**
-     * {@link RegisterTermPreference} instance
-     */
+
     @Inject
-    RegisterTermPreference registerTermPref;
+    RegisterTermsPref registerTermsPref;
     /**
      * {@link Term} selected
      */
@@ -175,7 +173,7 @@ public class SearchActivity extends DrawerActivity {
         analytics.sendScreen("Registration");
 
         // Check if there are any terms to register for
-        List<Term> registerTerms = registerTermPref.getTerms();
+        List<Term> registerTerms = registerTermsPref.getTerms();
         if (registerTerms.isEmpty()) {
             //Hide all of the search related stuff, show explanatory text, and return
             findViewById(R.id.search_empty).setVisibility(View.VISIBLE);
@@ -342,7 +340,7 @@ public class SearchActivity extends DrawerActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //Only inflate the menu if there are semesters to register for
-        if (!registerTermPref.getTerms().isEmpty()) {
+        if (!registerTermsPref.getTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.reset, menu);
             return true;
         }

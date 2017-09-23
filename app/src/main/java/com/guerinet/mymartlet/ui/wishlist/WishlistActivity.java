@@ -30,7 +30,7 @@ import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper;
 import com.guerinet.mymartlet.util.Help;
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.dialog.DialogUtils;
 import com.guerinet.suitcase.util.Utils;
@@ -53,11 +53,9 @@ import timber.log.Timber;
  * @since 1.0.0
  */
 public class WishlistActivity extends DrawerActivity {
-    /**
-     * {@link RegisterTermPreference} instance
-     */
+
     @Inject
-    RegisterTermPreference registerTermPref;
+    RegisterTermsPref registerTermsPref;
     /**
      * The current currentTerm, null if none possible (no semesters to register for)
      */
@@ -88,8 +86,8 @@ public class WishlistActivity extends DrawerActivity {
         wishlistHelper = new WishlistHelper(this, mainView, false);
 
         // Load the first registration currentTerm if there is one
-        if (!registerTermPref.getTerms().isEmpty()) {
-            term = registerTermPref.getTerms().get(0);
+        if (!registerTermsPref.getTerms().isEmpty()) {
+            term = registerTermsPref.getTerms().get(0);
         }
     }
 
@@ -101,11 +99,11 @@ public class WishlistActivity extends DrawerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!registerTermPref.getTerms().isEmpty()) {
+        if (!registerTermsPref.getTerms().isEmpty()) {
             getMenuInflater().inflate(R.menu.refresh, menu);
 
             // Allow user to change the semester if there is more than 1 semester
-            if (registerTermPref.getTerms().size() > 1) {
+            if (registerTermsPref.getTerms().size() > 1) {
                 getMenuInflater().inflate(R.menu.change_semester, menu);
             }
             return true;

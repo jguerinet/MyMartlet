@@ -23,7 +23,7 @@ import com.guerinet.mymartlet.model.Semester;
 import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
 import com.guerinet.suitcase.dialog.SingleListInterface;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
@@ -53,11 +53,9 @@ public abstract class TermDialogHelper implements SingleListInterface {
 
     @Inject
     DefaultTermPref defaultTermPref;
-    /**
-     * {@link RegisterTermPreference} instance
-     */
+
     @Inject
-    RegisterTermPreference registerTermPref;
+    RegisterTermsPref registerTermsPref;
     /**
      * List of {@link Term}s to choose from
      */
@@ -92,7 +90,7 @@ public abstract class TermDialogHelper implements SingleListInterface {
             }
         } else {
             // We are using the registration terms
-            terms.addAll(registerTermPref.getTerms());
+            terms.addAll(registerTermsPref.getTerms());
         }
 
         //Sort them chronologically

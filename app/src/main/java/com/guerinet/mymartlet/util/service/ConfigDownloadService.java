@@ -25,7 +25,7 @@ import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.model.place.Category;
 import com.guerinet.mymartlet.model.place.Place;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
 import com.guerinet.mymartlet.util.dbflow.DBUtils;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB;
@@ -88,11 +88,9 @@ public class ConfigDownloadService extends IntentService {
     @Inject
     @Named(PrefsModule.MIN_VERSION)
     IntPref minVersionPref;
-    /**
-     * {@link RegisterTermPreference} instance
-     */
+
     @Inject
-    RegisterTermPreference registerTermPref;
+    RegisterTermsPref registerTermsPref;
 
     public ConfigDownloadService() {
         super("ConfigDownloadService");
@@ -139,7 +137,7 @@ public class ConfigDownloadService extends IntentService {
         List<Term> registerTerms = executeRequest(configService.registrationTerms(
                 getIMS(imsRegistrationPref)), imsRegistrationPref);
         if (registerTerms != null) {
-            registerTermPref.setTerms(registerTerms);
+            registerTermsPref.setTerms(registerTerms);
         }
     }
 

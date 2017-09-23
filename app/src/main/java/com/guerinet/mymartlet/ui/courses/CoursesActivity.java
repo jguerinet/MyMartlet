@@ -39,7 +39,7 @@ import com.guerinet.mymartlet.ui.dialog.DialogHelper;
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper;
 import com.guerinet.mymartlet.util.Help;
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
@@ -85,11 +85,9 @@ public class CoursesActivity extends DrawerActivity {
 
     @Inject
     DefaultTermPref defaultTermPref;
-    /**
-     * {@link RegisterTermPreference} instance
-     */
+
     @Inject
-    RegisterTermPreference registerTermPref;
+    RegisterTermsPref registerTermsPref;
     /**
      * Adapter for the list of courses
      */
@@ -178,7 +176,7 @@ public class CoursesActivity extends DrawerActivity {
         setTitle(term.getString(this));
 
         //User can unregister if the current currentTerm is in the list of terms to register for
-        boolean canUnregister = registerTermPref.getTerms().contains(term);
+        boolean canUnregister = registerTermsPref.getTerms().contains(term);
 
         // Change the text and the visibility if we are in the list of currently registered courses
         unregisterButton.setVisibility(canUnregister ? View.VISIBLE : View.GONE);

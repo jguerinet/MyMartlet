@@ -21,7 +21,7 @@ import android.content.SharedPreferences;
 
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB;
@@ -62,10 +62,8 @@ public class ClearManager {
      * {@link HomepageManager}
      */
     private final HomepageManager homepageManager;
-    /**
-     * {@link RegisterTermPreference} instance
-     */
-    private final RegisterTermPreference registerTermPref;
+
+    private final RegisterTermsPref registerTermsPref;
 
     /**
      * Default Injectable Constructor
@@ -75,19 +73,19 @@ public class ClearManager {
      * @param rememberUsernamePref Remember Username {@link BooleanPref}
      * @param homepageManager      {@link HomepageManager} instance
      * @param defaultTermPref      {@link DefaultTermPref} instance
-     * @param registerTermPref     {@link RegisterTermPreference} instance
+     * @param registerTermsPref    {@link RegisterTermsPref} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPref rememberUsernamePref,
             HomepageManager homepageManager, DefaultTermPref defaultTermPref,
-            RegisterTermPreference registerTermPref) {
+            RegisterTermsPref registerTermsPref) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;
         this.usernamePref = usernamePref;
         this.homepageManager = homepageManager;
         this.defaultTermPref = defaultTermPref;
-        this.registerTermPref = registerTermPref;
+        this.registerTermsPref = registerTermsPref;
     }
 
     /**
@@ -129,6 +127,6 @@ public class ClearManager {
         FlowManager.getDatabase(PlaceDB.class).reset(context);
 
         // Register terms
-        registerTermPref.clear();
+        registerTermsPref.clear();
     }
 }
