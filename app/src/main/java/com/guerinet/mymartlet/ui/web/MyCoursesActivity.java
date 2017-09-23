@@ -37,7 +37,7 @@ import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.DialogHelper;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.util.Device;
@@ -152,7 +152,7 @@ public class MyCoursesActivity extends DrawerActivity {
                         "(document.getElementsByName('j_username')[0]).value='" +
                         usernamePref.full() + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
-                        Hawk.get(PrefsModule.Hawk.PASSWORD) +
+                        Hawk.get(PrefsModuleKt.PASSWORD) +
                         "'; document.getElementsByName('_eventId_proceed')[0].click();})()");
 
                 view.setVisibility(View.VISIBLE);

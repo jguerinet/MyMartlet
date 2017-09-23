@@ -20,7 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
@@ -75,7 +75,7 @@ public class ClearManager {
      */
     @Inject
     protected ClearManager(Context context, UsernamePref usernamePref,
-            @Named(PrefsModule.REMEMBER_USERNAME) BooleanPref rememberUsernamePref,
+            @Named(PrefsModuleKt.REMEMBER_USERNAME) BooleanPref rememberUsernamePref,
             HomepageManager homepageManager, DefaultTermPref defaultTermPref,
             RegisterTermsPref registerTermsPref) {
         this.context = context;
@@ -96,7 +96,7 @@ public class ClearManager {
         }
 
         // Password
-        Hawk.delete(PrefsModule.Hawk.PASSWORD);
+        Hawk.delete(PrefsModuleKt.PASSWORD);
 
         //Schedule
         context.deleteDatabase(CourseDB.FULL_NAME);

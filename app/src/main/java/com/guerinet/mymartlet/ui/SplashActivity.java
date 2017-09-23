@@ -38,7 +38,7 @@ import com.guerinet.mymartlet.model.exception.MinervaException;
 import com.guerinet.mymartlet.ui.dialog.DialogHelper;
 import com.guerinet.mymartlet.ui.settings.AgreementActivity;
 import com.guerinet.mymartlet.util.Constants;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
@@ -131,19 +131,19 @@ public class SplashActivity extends BaseActivity {
      * Remember username {@link BooleanPref}
      */
     @Inject
-    @Named(PrefsModule.REMEMBER_USERNAME)
+    @Named(PrefsModuleKt.REMEMBER_USERNAME)
     BooleanPref rememberUsernamePref;
     /**
      * Min version {@link IntPref}
      */
     @Inject
-    @Named(PrefsModule.MIN_VERSION)
+    @Named(PrefsModuleKt.MIN_VERSION)
     IntPref minVersionPref;
     /**
      * EULA {@link BooleanPref}
      */
     @Inject
-    @Named(PrefsModule.EULA)
+    @Named(PrefsModuleKt.EULA)
     BooleanPref eulaPref;
 
     @Inject
@@ -207,7 +207,7 @@ public class SplashActivity extends BaseActivity {
         if (minVersionPref.get() > BuildConfig.VERSION_CODE) {
             // If we don't have the min required version, show the right container
             minVersionContainer.setVisibility(View.VISIBLE);
-        } else if (usernamePref.get() == null || !Hawk.contains(PrefsModule.Hawk.PASSWORD)) {
+        } else if (usernamePref.get() == null || !Hawk.contains(PrefsModuleKt.PASSWORD)) {
             // If we are missing some login info, show the login screen with no error message
             showLoginScreen((IOException) getIntent().getSerializableExtra(Constants.EXCEPTION));
         } else {
@@ -295,7 +295,7 @@ public class SplashActivity extends BaseActivity {
                             Response<ResponseBody> response) {
                         // Store the login info
                         usernamePref.set(username);
-                        Hawk.put(PrefsModule.Hawk.PASSWORD, password);
+                        Hawk.put(PrefsModuleKt.PASSWORD, password);
                         rememberUsernamePref.set(rememberUsername.isChecked());
 
                         analytics.sendEvent("Login", "Remember Username",
@@ -350,7 +350,7 @@ public class SplashActivity extends BaseActivity {
             if (!eulaPref.get()) {
                 // If the user has not accepted the EULA, show it before continuing
                 Intent intent = new Intent(SplashActivity.this, AgreementActivity.class)
-                        .putExtra(PrefsModule.EULA, true);
+                        .putExtra(PrefsModuleKt.EULA, true);
                 startActivityForResult(intent, AGREEMENT_CODE);
             } else {
                 // If they have, go to the next screen

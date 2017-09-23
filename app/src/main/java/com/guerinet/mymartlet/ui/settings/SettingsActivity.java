@@ -34,7 +34,7 @@ import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.AppUpdate;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.dialog.DialogUtils;
@@ -71,13 +71,13 @@ public class SettingsActivity extends DrawerActivity {
      * Statistics BooleanPref
      */
     @Inject
-    @Named(PrefsModule.STATS)
+    @Named(PrefsModuleKt.STATS)
     BooleanPref statsPref;
     /**
      * 24 hour time BooleanPref
      */
     @Inject
-    @Named(PrefsModule.SCHEDULE_24HR)
+    @Named(PrefsModuleKt.SCHEDULE_24HR)
     BooleanPref twentyFourHourPref;
 
     @Inject

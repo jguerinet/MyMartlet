@@ -24,7 +24,7 @@ import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.model.place.Category;
 import com.guerinet.mymartlet.model.place.Place;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
 import com.guerinet.mymartlet.util.dbflow.DBUtils;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB;
@@ -62,31 +62,31 @@ public class ConfigDownloadService extends IntentService {
      * The Config If-Modified-Since {@link DatePref}
      */
     @Inject
-    @Named(PrefsModule.IMS_CONFIG)
+    @Named(PrefsModuleKt.IMS_CONFIG)
     DatePref imsConfigPref;
     /**
      * The Places If-Modified-Since {@link DatePref}
      */
     @Inject
-    @Named(PrefsModule.IMS_PLACES)
+    @Named(PrefsModuleKt.IMS_PLACES)
     DatePref imsPlacesPref;
     /**
      * The Categories If-Modified-Since {@link DatePref}
      */
     @Inject
-    @Named(PrefsModule.IMS_CATEGORIES)
+    @Named(PrefsModuleKt.IMS_CATEGORIES)
     DatePref imsCategoriesPref;
     /**
      * The Registration Semesters If-Modified-Since {@link DatePref}
      */
     @Inject
-    @Named(PrefsModule.IMS_REGISTRATION)
+    @Named(PrefsModuleKt.IMS_REGISTRATION)
     DatePref imsRegistrationPref;
     /**
      * The min version {@link IntPref}
      */
     @Inject
-    @Named(PrefsModule.MIN_VERSION)
+    @Named(PrefsModuleKt.MIN_VERSION)
     IntPref minVersionPref;
 
     @Inject

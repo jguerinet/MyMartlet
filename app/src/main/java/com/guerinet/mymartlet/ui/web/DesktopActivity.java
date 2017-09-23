@@ -27,7 +27,7 @@ import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.DialogHelper;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.util.Utils;
@@ -79,7 +79,7 @@ public class DesktopActivity extends DrawerActivity {
                     view.loadUrl("javascript:(function(){document.getElementById('username')" +
                             ".value='" + usernamePref.full() +
                             "';document.getElementById('password').value='" +
-                            Hawk.get(PrefsModule.Hawk.PASSWORD) + "'; " +
+                            Hawk.get(PrefsModuleKt.PASSWORD) + "'; " +
                             "document.getElementsByClassName('mainSubmit').submit.click(); })()");
                 }
                 view.setVisibility(View.VISIBLE);

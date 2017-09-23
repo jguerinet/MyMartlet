@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.BaseActivity;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.suitcase.prefs.BooleanPref;
 
 import javax.inject.Inject;
@@ -50,7 +50,7 @@ public class AgreementActivity extends BaseActivity {
      * EULA {@link BooleanPref}
      */
     @Inject
-    @Named(PrefsModule.EULA)
+    @Named(PrefsModuleKt.EULA)
     BooleanPref eulaPref;
 
     @Override
@@ -60,7 +60,7 @@ public class AgreementActivity extends BaseActivity {
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
 
-        boolean required = getIntent().getBooleanExtra(PrefsModule.EULA, false);
+        boolean required = getIntent().getBooleanExtra(PrefsModuleKt.EULA, false);
         setUpToolbar(!required);
 
         // Check if we need to display the buttons

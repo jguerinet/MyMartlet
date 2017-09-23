@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.guerinet.mymartlet.App;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.suitcase.prefs.BooleanPref;
 import com.orhanobut.hawk.Hawk;
@@ -47,19 +47,19 @@ public class BootReceiver extends BroadcastReceiver {
      * Seat checker {@link BooleanPref}
      */
     @Inject
-    @Named(PrefsModule.SEAT_CHECKER)
+    @Named(PrefsModuleKt.SEAT_CHECKER)
     protected BooleanPref seatCheckerPref;
     /**
      * Grade checker {@link BooleanPref}
      */
     @Inject
-    @Named(PrefsModule.GRADE_CHECKER)
+    @Named(PrefsModuleKt.GRADE_CHECKER)
     protected BooleanPref gradeCheckerPref;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
         App.Companion.component(context).inject(this);
-        setAlarm(context, usernamePref.get(), Hawk.get(PrefsModule.Hawk.PASSWORD),
+        setAlarm(context, usernamePref.get(), Hawk.get(PrefsModuleKt.PASSWORD),
                 seatCheckerPref.get(), gradeCheckerPref.get());
 	}
 

@@ -49,7 +49,7 @@ import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.DayUtils;
 import com.guerinet.mymartlet.util.Help;
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
@@ -110,13 +110,13 @@ public class ScheduleActivity extends DrawerActivity {
      * The first open {@link BooleanPref}
      */
     @Inject
-    @Named(PrefsModule.FIRST_OPEN)
+    @Named(PrefsModuleKt.FIRST_OPEN)
     BooleanPref firstOpenPref;
     /**
      * The time format {@link BooleanPref}
      */
     @Inject
-    @Named(PrefsModule.SCHEDULE_24HR)
+    @Named(PrefsModuleKt.SCHEDULE_24HR)
     BooleanPref twentyFourHourPref;
 
     @Inject

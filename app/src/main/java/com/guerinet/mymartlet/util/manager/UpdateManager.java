@@ -20,7 +20,7 @@ import android.content.Context;
 
 import com.guerinet.mymartlet.BuildConfig;
 import com.guerinet.mymartlet.model.AppUpdate;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.suitcase.prefs.IntPref;
 
 import org.threeten.bp.ZonedDateTime;
@@ -52,7 +52,7 @@ public class UpdateManager {
      * @param versionPref Version {@link IntPref}
      */
     @Inject
-    UpdateManager(Context context, @Named(PrefsModule.VERSION) IntPref versionPref) {
+    UpdateManager(Context context, @Named(PrefsModuleKt.VERSION) IntPref versionPref) {
         this.context = context;
         this.versionPref = versionPref;
     }

@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.util.manager;
 import com.guerinet.mymartlet.model.Course;
 import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.model.exception.MinervaException;
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
+import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.retrofit.CourseResultConverter;
 import com.guerinet.mymartlet.util.retrofit.EbillConverter;
@@ -222,7 +222,7 @@ public class McGillManager {
      */
     public void login() throws IOException {
         // Create the POST request with the given username and password and handle the response
-        handleLogin(mcGillService.login(usernamePref.full(), Hawk.get(PrefsModule.Hawk.PASSWORD))
+        handleLogin(mcGillService.login(usernamePref.full(), Hawk.get(PrefsModuleKt.PASSWORD))
                 .execute());
     }
 
