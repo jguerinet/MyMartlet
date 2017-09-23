@@ -40,7 +40,6 @@ import java.net.SocketTimeoutException
 /**
  * Base application instance
  * @author Julien Guerinet
- * @version 1.0.0
  * @since 1.0.0
  */
 class App : MultiDexApplication() {
