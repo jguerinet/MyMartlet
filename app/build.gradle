@@ -185,6 +185,7 @@ dependencies {
         transitive = true;
     }
     compile "com.viewpagerindicator:library:2.4.1@aar"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     // Don't update this as 1.10.x breaks the converters
     compile "org.jsoup:jsoup:1.9.1"
 }
