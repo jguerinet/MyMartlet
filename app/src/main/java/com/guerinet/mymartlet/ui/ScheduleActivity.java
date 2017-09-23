@@ -48,7 +48,7 @@ import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.DayUtils;
 import com.guerinet.mymartlet.util.Help;
-import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
@@ -118,17 +118,15 @@ public class ScheduleActivity extends DrawerActivity {
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
     BooleanPref twentyFourHourPref;
-    /**
-     * {@link DefaultTermPreference} instance
-     */
+
     @Inject
-    DefaultTermPreference defaultTermPref;
+    DefaultTermPref defaultTermPref;
     /**
      * Current {@link Term}
      */
     private Term term;
     /**
-     * List of courses for the current term
+     * List of courses for the current currentTerm
      */
     private List<Course> courses;
     /**
@@ -149,14 +147,14 @@ public class ScheduleActivity extends DrawerActivity {
         }
 
         if (term == null) {
-            // Use the default term if there was no saved term
+            // Use the default currentTerm if there was no saved currentTerm
             term = defaultTermPref.getTerm();
         }
 
         // Title
         setTitle(term.getString(this));
 
-        // Update the list of courses for this term and the starting date
+        // Update the list of courses for this currentTerm and the starting date
         updateCoursesAndDate();
 
         // Render the right view based on the orientation
@@ -198,15 +196,15 @@ public class ScheduleActivity extends DrawerActivity {
                         new TermDialogHelper(this, term, false) {
                     @Override
                     public void onTermSelected(Term newTerm) {
-                        // If it's the same term as now, do nothing
+                        // If it's the same currentTerm as now, do nothing
                         if (newTerm.equals(term)) {
                             return;
                         }
 
-                        // Set the instance term
+                        // Set the instance currentTerm
                         term = newTerm;
 
-                        // Set the default term
+                        // Set the default currentTerm
                         defaultTermPref.setTerm(term);
 
                         // Update the courses
@@ -234,7 +232,7 @@ public class ScheduleActivity extends DrawerActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Save the term
+        // Save the currentTerm
         outState.putSerializable(Constants.TERM, term);
     }
 
@@ -247,7 +245,7 @@ public class ScheduleActivity extends DrawerActivity {
         // Clear the current courses
         courses.clear();
 
-        // Get the new courses for the current term
+        // Get the new courses for the current currentTerm
         courses.addAll(SQLite.select()
                 .from(Course.class)
                 .where(Course_Table.term.eq(term))
@@ -275,7 +273,7 @@ public class ScheduleActivity extends DrawerActivity {
     }
 
     /**
-     * Refreshes the list of courses for the given term and the user's transcript
+     * Refreshes the list of courses for the given currentTerm and the user's transcript
      *  (only available in portrait mode)
      */
     private void refreshCourses() {
@@ -283,7 +281,7 @@ public class ScheduleActivity extends DrawerActivity {
             return;
         }
 
-        // Download the courses for this term
+        // Download the courses for this currentTerm
         mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {

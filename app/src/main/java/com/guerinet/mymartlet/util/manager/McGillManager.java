@@ -236,9 +236,9 @@ public class McGillManager {
      * @return The proper registration URL
      */
     public static String getRegistrationURL(List<? extends Course> courses, boolean dropCourse) {
-        // Get the term from the first course (they'll all have the same term
+        // Get the currentTerm from the first course (they'll all have the same currentTerm
         Term term = courses.get(0).getTerm();
-        // Start the URL with the term
+        // Start the URL with the currentTerm
         String url = "https://horizon.mcgill.ca/pban1/bwckcoms.P_Regs?term_in=" + term.toString();
 
         // Add random Minerva stuff that is apparently necessary

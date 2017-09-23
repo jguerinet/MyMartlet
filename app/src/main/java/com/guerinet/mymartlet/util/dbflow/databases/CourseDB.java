@@ -51,7 +51,7 @@ public class CourseDB {
             courses = new ArrayList<>();
         }
 
-        // Set the term on the passed list of courses
+        // Set the currentTerm on the passed list of courses
         for (Course course : courses) {
             course.setTerm(term);
         }

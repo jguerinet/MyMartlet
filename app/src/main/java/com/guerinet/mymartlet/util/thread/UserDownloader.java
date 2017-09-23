@@ -101,7 +101,7 @@ public abstract class UserDownloader extends Thread {
                 handleException(e, "Transcript");
             }
 
-            //The current term
+            //The current currentTerm
             Term currentTerm = Term.currentTerm();
 
             // Go through the semesters
@@ -109,11 +109,11 @@ public abstract class UserDownloader extends Thread {
                     .from(Semester.class)
                     .queryList();
             for (Semester semester: semesters) {
-                //Get the term of this semester
+                //Get the currentTerm of this semester
                 Term term = semester.getTerm();
 
                 //If we are not downloading everything, only download it if it's the
-                //  current or future term
+                //  current or future currentTerm
                 if (downloadEverything || term.equals(currentTerm) ||
                         term.isAfter(currentTerm)) {
                     if (downloadEverything) {

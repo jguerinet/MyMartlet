@@ -93,7 +93,7 @@ class WishlistAdapter extends BaseRecyclerViewAdapter {
         courses.clear();
 
         if (term == null) {
-            // Hide all of the main content and show explanatory text if the term is null
+            // Hide all of the main content and show explanatory text if the currentTerm is null
             emptyView.setText(R.string.registration_no_semesters);
             showEmptyView(true);
             notifyDataSetChanged();

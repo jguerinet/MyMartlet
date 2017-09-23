@@ -26,8 +26,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import java.io.Serializable;
 
 /**
- * Contains information pertaining to each semester such as current program, term credits,
- *  term GPA, and full time status
+ * Contains information pertaining to each semester such as current program, currentTerm credits,
+ *  currentTerm GPA, and full time status
  * @author Ryan Singzon
  * @author Julien Guerinet
  * @since 1.0.0
@@ -41,7 +41,7 @@ public class Semester extends BaseModel implements Serializable {
     @PrimaryKey
     int id;
     /**
-     * The semester term
+     * The semester currentTerm
      */
     Term term;
     /**
@@ -74,7 +74,7 @@ public class Semester extends BaseModel implements Serializable {
      * Default Constructor
      *
      * @param semesterId   Id of the current semester
-     * @param term         Semester term
+     * @param term         Semester currentTerm
      * @param program      Semester's program name
      * @param bachelor     Semester's bachelor name
      * @param credits      Semester credits
@@ -103,7 +103,7 @@ public class Semester extends BaseModel implements Serializable {
     }
 
     /**
-     * @return Semester term
+     * @return Semester currentTerm
      */
     public Term getTerm() {
         return term;

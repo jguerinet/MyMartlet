@@ -52,7 +52,7 @@ public class Course extends BaseModel implements Serializable {
     @PrimaryKey
     String id;
     /**
-     * The term this class is for
+     * The currentTerm this class is for
      */
     Term term;
     /**
@@ -164,7 +164,7 @@ public class Course extends BaseModel implements Serializable {
 	/* GETTERS */
 
     /**
-     * @return The course term
+     * @return The course currentTerm
      */
     public Term getTerm() {
         return term;
@@ -375,7 +375,7 @@ public class Course extends BaseModel implements Serializable {
     }
 
     /**
-     * 2 ClassItems are equal if they have the same CRN and are for the same term
+     * 2 ClassItems are equal if they have the same CRN and are for the same currentTerm
      *
      * @param object The course to check
      * @return True if they are equal, false otherwise

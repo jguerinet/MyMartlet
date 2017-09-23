@@ -22,7 +22,7 @@ import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.model.Semester;
 import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.util.Analytics;
-import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
 import com.guerinet.suitcase.dialog.SingleListInterface;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -50,11 +50,9 @@ public abstract class TermDialogHelper implements SingleListInterface {
      */
     @Inject
     protected Analytics analytics;
-    /**
-     * {@link DefaultTermPreference} instance
-     */
+
     @Inject
-    DefaultTermPreference defaultTermPref;
+    DefaultTermPref defaultTermPref;
     /**
      * {@link RegisterTermPreference} instance
      */
@@ -79,7 +77,7 @@ public abstract class TermDialogHelper implements SingleListInterface {
 
         analytics.sendScreen("Change Semester");
 
-        //Use the default term if no term was sent
+        //Use the default currentTerm if no currentTerm was sent
         this.currentTerm = currentTerm == null ? defaultTermPref.getTerm() : currentTerm;
 
         terms = new ArrayList<>();

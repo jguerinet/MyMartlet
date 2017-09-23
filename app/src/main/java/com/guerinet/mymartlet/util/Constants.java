@@ -30,9 +30,9 @@ public class Constants {
      */
     public static final String ID = "id";
     /**
-     * Key used to pass a term via an intent
+     * Key used to pass a currentTerm via an intent
      */
-    public static final String TERM = "term";
+    public static final String TERM = "currentTerm";
     /**
      * Key used to pass a list of courses via an intent
      */

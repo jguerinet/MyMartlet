@@ -44,7 +44,7 @@ public class TranscriptCourse extends BaseModel implements Serializable {
      */
     int semesterId;
     /**
-     * Course term
+     * Course currentTerm
      */
     Term term;
     /**
@@ -77,7 +77,7 @@ public class TranscriptCourse extends BaseModel implements Serializable {
      * Default Constructor
      *
      * @param semesterId   Id of the semester this belongs to
-     * @param term         Course term
+     * @param term         Course currentTerm
      * @param code         Course code
      * @param title        Course title
      * @param credits      Course credits
@@ -98,7 +98,7 @@ public class TranscriptCourse extends BaseModel implements Serializable {
     /* GETTERS */
 
     /**
-     * @return Course term
+     * @return Course currentTerm
      */
     public Term getTerm() {
         return term;

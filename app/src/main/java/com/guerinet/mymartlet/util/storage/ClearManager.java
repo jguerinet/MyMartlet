@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.util.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
@@ -56,10 +56,8 @@ public class ClearManager {
      * Remember Username {@link BooleanPref}
      */
     private final BooleanPref rememberUsernamePref;
-    /**
-     * {@link DefaultTermPreference} instance
-     */
-    private final DefaultTermPreference defaultTermPref;
+
+    private final DefaultTermPref defaultTermPref;
     /**
      * {@link HomepageManager}
      */
@@ -76,13 +74,13 @@ public class ClearManager {
      * @param usernamePref         {@link UsernamePreference} instance
      * @param rememberUsernamePref Remember Username {@link BooleanPref}
      * @param homepageManager      {@link HomepageManager} instance
-     * @param defaultTermPref      {@link DefaultTermPreference} instance
+     * @param defaultTermPref      {@link DefaultTermPref} instance
      * @param registerTermPref     {@link RegisterTermPreference} instance
      */
     @Inject
     protected ClearManager(Context context, UsernamePreference usernamePref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPref rememberUsernamePref,
-            HomepageManager homepageManager, DefaultTermPreference defaultTermPref,
+            HomepageManager homepageManager, DefaultTermPref defaultTermPref,
             RegisterTermPreference registerTermPref) {
         this.context = context;
         this.rememberUsernamePref = rememberUsernamePref;

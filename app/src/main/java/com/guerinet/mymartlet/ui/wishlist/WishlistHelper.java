@@ -256,7 +256,7 @@ public class WishlistHelper {
                 for (Course course : courses) {
                     course.delete();
                 }
-                // Get the term from the first course (they will all be in the same term)
+                // Get the currentTerm from the first course (they will all be in the same currentTerm)
                 update(courses.get(0).getTerm());
 
                 analytics.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));

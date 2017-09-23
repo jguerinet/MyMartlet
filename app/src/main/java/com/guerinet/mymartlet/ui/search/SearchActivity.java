@@ -64,12 +64,12 @@ import timber.log.Timber;
  */
 public class SearchActivity extends DrawerActivity {
     /**
-     * Spinner to choose the term
+     * Spinner to choose the currentTerm
      */
     @BindView(R.id.search_term)
     protected TextView mTermSelector;
     /**
-     * Container for the term selection
+     * Container for the currentTerm selection
      */
     @BindView(R.id.term_container)
     protected LinearLayout termContainer;
@@ -184,7 +184,7 @@ public class SearchActivity extends DrawerActivity {
             return;
         }
 
-        //Set the term to the first one
+        //Set the currentTerm to the first one
         term = registerTerms.get(0);
         mTermSelector.setText(term.getString(this));
         termContainer.setOnClickListener(new View.OnClickListener() {

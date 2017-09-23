@@ -59,7 +59,7 @@ public class WishlistActivity extends DrawerActivity {
     @Inject
     RegisterTermPreference registerTermPref;
     /**
-     * The current term, null if none possible (no semesters to register for)
+     * The current currentTerm, null if none possible (no semesters to register for)
      */
     @Nullable
     private Term term;
@@ -87,7 +87,7 @@ public class WishlistActivity extends DrawerActivity {
         // Set up the view
         wishlistHelper = new WishlistHelper(this, mainView, false);
 
-        // Load the first registration term if there is one
+        // Load the first registration currentTerm if there is one
         if (!registerTermPref.getTerms().isEmpty()) {
             term = registerTermPref.getTerms().get(0);
         }
@@ -145,7 +145,7 @@ public class WishlistActivity extends DrawerActivity {
      */
     private void update() {
         if (term != null) {
-            // Set the title if there is a term
+            // Set the title if there is a currentTerm
             setTitle(term.getString(this));
         }
         // Reload the adapter
@@ -254,7 +254,7 @@ public class WishlistActivity extends DrawerActivity {
      */
     private class CourseHolder {
         /**
-         * Course term
+         * Course currentTerm
          */
         private final Term term;
         /**

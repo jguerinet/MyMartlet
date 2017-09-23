@@ -17,13 +17,14 @@
 package com.guerinet.mymartlet.model;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import org.threeten.bp.LocalDate;
 
 import java.io.Serializable;
 
 /**
- * One class term, consisting of a season and a year
+ * One class currentTerm, consisting of a season and a year
  * @author Julien Guerinet
  * @since 1.0.0
  */
@@ -73,10 +74,10 @@ public class Term implements Serializable {
     /* HELPERS */
 
     /**
-     * Checks if the current term is after the given term
+     * Checks if the current currentTerm is after the given currentTerm
      *
-     * @param term The term to compare
-     * @return True if the current term is after the given term, false otherwise
+     * @param term The currentTerm to compare
+     * @return True if the current currentTerm is after the given currentTerm, false otherwise
      */
     @SuppressWarnings("SimplifiableIfStatement")
     public boolean isAfter(Term term) {
@@ -102,14 +103,14 @@ public class Term implements Serializable {
 
     /**
      * @param context App context
-     * @return String representation of the term
+     * @return String representation of the currentTerm
      */
     public String getString(Context context) {
         return Season.getString(context, season) + " " + year;
     }
 
     /**
-     * @return The term in a format used by McGill
+     * @return The currentTerm in a format used by McGill
      */
     @Override
     public String toString() {
@@ -140,11 +141,12 @@ public class Term implements Serializable {
     }
 
     /**
-     * Parses a term from a String
+     * Parses a currentTerm from a String
      *
-     * @param term The term String
-     * @return The parsed term
+     * @param term The currentTerm String
+     * @return The parsed currentTerm
      */
+    @NonNull
     public static Term parseTerm(String term) {
         String[] termParts = term.trim().split(" ");
         return new Term(Season.getSeason(termParts[0]), Integer.valueOf(termParts[1]));
@@ -153,8 +155,9 @@ public class Term implements Serializable {
     /**
      * Gets the Term today falls in
      *
-     * @return Today's corresponding term
+     * @return Today's corresponding currentTerm
      */
+    @NonNull
     public static Term currentTerm() {
         LocalDate today = LocalDate.now();
         int month = today.getMonthValue();

@@ -38,7 +38,7 @@ import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.DialogHelper;
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper;
 import com.guerinet.mymartlet.util.Help;
-import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPreference;
+import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermPreference;
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
@@ -82,11 +82,9 @@ public class CoursesActivity extends DrawerActivity {
      */
     @BindView(android.R.id.empty)
     TextView emptyView;
-    /**
-     * {@link DefaultTermPreference} instance
-     */
+
     @Inject
-    DefaultTermPreference defaultTermPref;
+    DefaultTermPref defaultTermPref;
     /**
      * {@link RegisterTermPreference} instance
      */
@@ -147,10 +145,10 @@ public class CoursesActivity extends DrawerActivity {
                         new TermDialogHelper(this, term, false) {
                             @Override
                             public void onTermSelected(Term term) {
-                                // Set the default term
+                                // Set the default currentTerm
                                 defaultTermPref.setTerm(term);
 
-                                // Set the instance term
+                                // Set the instance currentTerm
                                 CoursesActivity.this.term = term;
 
                                 update();
@@ -179,7 +177,7 @@ public class CoursesActivity extends DrawerActivity {
         // Set the title
         setTitle(term.getString(this));
 
-        //User can unregister if the current term is in the list of terms to register for
+        //User can unregister if the current currentTerm is in the list of terms to register for
         boolean canUnregister = registerTermPref.getTerms().contains(term);
 
         // Change the text and the visibility if we are in the list of currently registered courses
@@ -190,14 +188,14 @@ public class CoursesActivity extends DrawerActivity {
     }
 
     /**
-     * Refreshes the list of courses for the given term and the user's transcript
+     * Refreshes the list of courses for the given currentTerm and the user's transcript
      */
     private void refresh() {
         if (!canRefresh()) {
             return;
         }
 
-        // Download the courses for this term
+        // Download the courses for this currentTerm
         mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {

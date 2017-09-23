@@ -25,13 +25,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * The different seasons a term can be in
+ * The different seasons a currentTerm can be in
  * @author Julien Guerinet
  * @since 1.0.0
  */
 public final class Season {
     /**
-     * The different seasons for a term can be in
+     * The different seasons for a currentTerm can be in
      */
     @Retention(RetentionPolicy.CLASS)
     @StringDef({FALL, WINTER, SUMMER})

@@ -109,7 +109,7 @@ public class CheckerService extends IntentService {
 //				//  Don't use it if there aren't the same amount of courses (during add/drop)
 //				Semester foundSemester = null;
 //				for(Semester oldSemester : oldTranscript.getSemesters()){
-//					if(oldSemester.getTerm().equals(semester.getTerm()) &&
+//					if(oldSemester.getCurrentTerm().equals(semester.getCurrentTerm()) &&
 //							oldSemester.getCourses().size() == semester.getCourses().size()){
 //						foundSemester = oldSemester;
 //						//Go through the new semester's courses
@@ -124,7 +124,7 @@ public class CheckerService extends IntentService {
 //                                        //TODO
 //										Intent intent = new Intent(this, SplashActivity.class)
 ////												.putExtra(Constants.HOMEPAGE, HomepageManager.TRANSCRIPT)
-//												.putExtra(Constants.TERM, semester.getTerm());
+//												.putExtra(Constants.TERM, semester.getCurrentTerm());
 //										//TODO Use a String
 //										createNotification(intent, "Your Grades are updated",
 //												GRADES_ID);
@@ -169,7 +169,7 @@ public class CheckerService extends IntentService {
 //            }
 //            //Add course if it has not already been added
 //            if(!courseExists){
-//                coursesList.add(new TranscriptCourse(wishlistClass.getTerm(), wishlistClass.getCode(),
+//                coursesList.add(new TranscriptCourse(wishlistClass.getCurrentTerm(), wishlistClass.getCode(),
 //                        wishlistClass.getTitle(), wishlistClass.getCredits(), "N/A", "N/A"));
 //            }
 //        }
@@ -191,7 +191,7 @@ public class CheckerService extends IntentService {
 //                return;
 //            }
 //
-//            String registrationUrl = new Connection.SearchURLBuilder(course.getTerm(), courseSubject)
+//            String registrationUrl = new Connection.SearchURLBuilder(course.getCurrentTerm(), courseSubject)
 //		            .courseNumber(courseNumber)
 //		            .build();
 //
@@ -210,7 +210,7 @@ public class CheckerService extends IntentService {
 //
 //	        //TODO: Figure out a way to parse only some course sections instead of re-parsing all course sections for a given Course
 //            //This parses all ClassItems for a given course
-//            List<Course> updatedClassList = Parser.parseClassResults(course.getTerm(), classesString);
+//            List<Course> updatedClassList = Parser.parseClassResults(course.getCurrentTerm(), classesString);
 //
 //            //Update the course object with an updated class size
 //            for(Course updatedClass : updatedClassList){
@@ -236,7 +236,7 @@ public class CheckerService extends IntentService {
 //			if(wantedClass.getSeatsRemaining()>0){
 //				Intent intent = new Intent(this, SplashActivity.class)
 //						.putExtra(Constants.HOMEPAGE, HomepageManager.WISHLIST)
-//						.putExtra(Constants.TERM, wantedClass.getTerm());
+//						.putExtra(Constants.TERM, wantedClass.getCurrentTerm());
 //				//show notification
 //				createNotification(intent, "A spot has opened up for the class: " +
 //						wantedClass.getTitle(), SEATS_ID);

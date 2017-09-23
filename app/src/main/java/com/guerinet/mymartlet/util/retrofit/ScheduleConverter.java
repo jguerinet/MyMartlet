@@ -44,7 +44,7 @@ import retrofit2.Retrofit;
 import timber.log.Timber;
 
 /**
- * Retrofit converter to parse the user's schedule as a list of courses (for one term)
+ * Retrofit converter to parse the user's schedule as a list of courses (for one currentTerm)
  * @author Julien Guerinet
  * @since 2.2.0
  */

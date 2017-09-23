@@ -74,7 +74,7 @@ public class CourseResultConverter extends Converter.Factory
         //Parse the response body into a list of rows
         Elements rows = document.getElementsByClass("dddefault");
 
-        // Parse the term from the page header
+        // Parse the currentTerm from the page header
         Element header = document.getElementsByClass("staticheaders").get(0);
         Term term = Term.parseTerm(header.childNode(2).toString());
 
@@ -239,7 +239,7 @@ public class CourseResultConverter extends Converter.Factory
     /**
      * Parses a String into a LocalDate object
      *
-     * @param term Current term
+     * @param term Current currentTerm
      * @param date The date String
      * @return The corresponding local date
      */
@@ -252,7 +252,7 @@ public class CourseResultConverter extends Converter.Factory
     /**
      * Parses the date range String into 2 dates
      *
-     * @param term      Current term
+     * @param term      Current currentTerm
      * @param dateRange The date range String
      * @return A pair representing the starting and ending dates of the range
      * @throws IllegalArgumentException
