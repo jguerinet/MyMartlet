@@ -171,7 +171,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
 
         new AppInitializer().execute();
     }

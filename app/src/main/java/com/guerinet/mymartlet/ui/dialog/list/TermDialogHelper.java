@@ -75,7 +75,7 @@ public abstract class TermDialogHelper implements SingleListInterface {
      * @param context App context
      */
     public TermDialogHelper(Context context, Term currentTerm, boolean registration) {
-        App.component(context).inject(this);
+        App.Companion.component(context).inject(this);
 
         analytics.sendScreen("Change Semester");
 

@@ -60,7 +60,7 @@ public abstract class HomepagesAdapter implements SingleListInterface {
      * @param context App context
      */
     protected HomepagesAdapter(Context context) {
-        App.component(context).inject(this);
+        App.Companion.component(context).inject(this);
         homepages = new ArrayList<>();
         addHomepage(HomepageManager.SCHEDULE);
         addHomepage(HomepageManager.TRANSCRIPT);

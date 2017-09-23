@@ -111,7 +111,7 @@ public class WishlistHelper {
         this.activity = activity;
         this.add = add;
         ButterKnife.bind(this, container);
-        App.component(activity).inject(this);
+        App.Companion.component(activity).inject(this);
 
         list.setLayoutManager(new LinearLayoutManager(activity));
         adapter = new WishlistAdapter(emptyView);

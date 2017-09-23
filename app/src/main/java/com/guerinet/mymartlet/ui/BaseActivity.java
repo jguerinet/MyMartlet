@@ -101,7 +101,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
 
         // Add the Minerva broadcast action
         filter.addAction(Constants.BROADCAST_MINERVA);

@@ -90,7 +90,7 @@ public abstract class DrawerActivity extends BaseActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
 
         // Set up the Facebook callback manager
         facebookCallbackManager = CallbackManager.Factory.create();

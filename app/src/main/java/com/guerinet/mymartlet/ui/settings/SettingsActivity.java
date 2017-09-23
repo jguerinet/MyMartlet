@@ -90,7 +90,7 @@ public class SettingsActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
         setTitle(getString(R.string.settings_version, BuildConfig.VERSION_NAME));
         analytics.sendScreen("Settings");
 

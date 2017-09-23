@@ -26,6 +26,8 @@ if (rootProject.file("util/private.properties").exists()) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'me.tatarka.retrolambda'
 
 buildscript {
@@ -155,10 +157,10 @@ dependencies {
     compile "com.facebook.android:facebook-android-sdk:4.22.0"
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     compile "com.google.android.gms:play-services-maps:${play_services_version}"
     compile "com.google.dagger:dagger:${dagger_version}"
-    annotationProcessor "com.google.dagger:dagger-compiler:${dagger_version}"
+    kapt "com.google.dagger:dagger-compiler:${dagger_version}"
     provided "org.glassfish:javax.annotation:10.0-b28"
     compile "com.guerinet:form-generator:3.2.2"
     compile "com.guerinet.suitcase:analytics:${suitcase_version}"
@@ -170,7 +172,7 @@ dependencies {
     compile "com.guerinet.suitcase:ui:${suitcase_version}"
     compile "com.guerinet.suitcase:util:${suitcase_version}"
     compile "com.jakewharton:butterknife:${butterknife_version}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife_version}"
+    kapt "com.jakewharton:butterknife-compiler:${butterknife_version}"
     compile "com.jakewharton.threetenabp:threetenabp:1.0.5"
     compile "com.jakewharton.timber:timber:4.5.1"
     compile "com.orhanobut:hawk:2.0.1"

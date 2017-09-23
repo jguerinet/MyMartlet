@@ -77,7 +77,7 @@ public abstract class UserDownloader extends Thread {
      * @param context App context
      */
     public UserDownloader(Context context) {
-        App.component(context).inject(this);
+        App.Companion.component(context).inject(this);
     }
 
     @Override

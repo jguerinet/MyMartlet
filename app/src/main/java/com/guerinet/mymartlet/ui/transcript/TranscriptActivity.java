@@ -72,7 +72,7 @@ public class TranscriptActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transcript);
         ButterKnife.bind(this);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
         analytics.sendScreen("Transcript");
 
         list.setLayoutManager(new LinearLayoutManager(this));

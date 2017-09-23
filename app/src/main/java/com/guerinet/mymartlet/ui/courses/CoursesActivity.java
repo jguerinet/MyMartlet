@@ -106,7 +106,7 @@ public class CoursesActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
         analytics.sendScreen("View Courses");
 
         term = defaultTermPref.getTerm();

@@ -78,7 +78,7 @@ public class MyCoursesActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
         analytics.sendScreen("MyCourses");
 
         //No internet: not worth trying to load the view

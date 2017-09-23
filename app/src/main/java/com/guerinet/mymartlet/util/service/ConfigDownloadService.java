@@ -101,7 +101,7 @@ public class ConfigDownloadService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        App.component(getApplicationContext()).inject(this);
+        App.Companion.component(getApplicationContext()).inject(this);
     }
 
     @Override

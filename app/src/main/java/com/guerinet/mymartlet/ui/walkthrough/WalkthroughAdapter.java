@@ -72,7 +72,7 @@ public class WalkthroughAdapter extends PagerAdapter {
         super();
         this.context = context;
         this.firstOpen = firstOpen;
-        App.component(context).inject(this);
+        App.Companion.component(context).inject(this);
     }
 
     @Override

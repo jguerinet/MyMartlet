@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.util.dagger;
 
-import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.ui.BaseActivity;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.MapActivity;
@@ -52,8 +51,6 @@ import dagger.Component;
  */
 @Singleton @Component(modules = {AppModule.class, NetworkModule.class, PrefsModule.class})
 public interface BaseComponent {
-    void inject(App app);
-
     void inject(BaseActivity activity);
     void inject(DrawerActivity activity);
     void inject(SplashActivity activity);

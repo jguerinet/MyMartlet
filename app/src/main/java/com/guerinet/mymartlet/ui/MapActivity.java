@@ -141,7 +141,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
         analytics.sendScreen("Map");
 
         //Set up the initial information

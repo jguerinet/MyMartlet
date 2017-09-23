@@ -50,7 +50,7 @@ public abstract class CategoryListAdapter implements SingleListInterface {
      * @param currentCategory Currently selected category
      */
     protected CategoryListAdapter(Context context, Category currentCategory) {
-        App.component(context).inject(this);
+        App.Companion.component(context).inject(this);
         categories = new ArrayList<>();
 
         // Get the categories synchronously from the DB

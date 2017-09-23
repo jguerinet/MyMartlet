@@ -141,7 +141,7 @@ public class ScheduleActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
-        App.component(this).inject(this);
+        App.Companion.component(this).inject(this);
         courses = new ArrayList<>();
 
         if (savedInstanceState != null) {

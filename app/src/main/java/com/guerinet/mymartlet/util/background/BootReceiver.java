@@ -60,7 +60,7 @@ public class BootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-        App.component(context).inject(this);
+        App.Companion.component(context).inject(this);
         setAlarm(context, usernamePref.get(), Hawk.get(PrefsModule.Hawk.PASSWORD),
                 seatCheckerPref.get(), gradeCheckerPref.get());
 	}
