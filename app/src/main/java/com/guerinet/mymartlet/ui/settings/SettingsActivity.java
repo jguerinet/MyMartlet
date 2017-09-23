@@ -35,7 +35,7 @@ import com.guerinet.mymartlet.model.AppUpdate;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
+import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.dialog.DialogUtils;
 import com.guerinet.suitcase.prefs.BooleanPref;
@@ -79,11 +79,9 @@ public class SettingsActivity extends DrawerActivity {
     @Inject
     @Named(PrefsModule.SCHEDULE_24HR)
     BooleanPref twentyFourHourPref;
-    /**
-     * {@link UsernamePreference} instance
-     */
+
     @Inject
-    UsernamePreference usernamePref;
+    UsernamePref usernamePref;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

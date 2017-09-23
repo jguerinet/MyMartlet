@@ -24,7 +24,7 @@ import android.content.Intent;
 
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
+import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.suitcase.prefs.BooleanPref;
 import com.orhanobut.hawk.Hawk;
 
@@ -40,11 +40,9 @@ import javax.inject.Named;
  * @since 2.0.0
  */
 public class BootReceiver extends BroadcastReceiver {
-    /**
-     * {@link UsernamePreference}
-     */
+
     @Inject
-    protected UsernamePreference usernamePref;
+    protected UsernamePref usernamePref;
     /**
      * Seat checker {@link BooleanPref}
      */

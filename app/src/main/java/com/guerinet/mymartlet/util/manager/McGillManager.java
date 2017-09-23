@@ -20,7 +20,7 @@ import com.guerinet.mymartlet.model.Course;
 import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.model.exception.MinervaException;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
+import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.retrofit.CourseResultConverter;
 import com.guerinet.mymartlet.util.retrofit.EbillConverter;
 import com.guerinet.mymartlet.util.retrofit.McGillService;
@@ -59,10 +59,8 @@ import retrofit2.Retrofit;
  */
 @Singleton
 public class McGillManager {
-    /**
-     * {@link UsernamePreference} instance
-     */
-    private final UsernamePreference usernamePref;
+
+    private final UsernamePref usernamePref;
     /**
      * The {@link McGillService} instance
      */
@@ -72,10 +70,10 @@ public class McGillManager {
 	 * Default Constructor
      *
      * @param loggingInterceptor {@link HttpLoggingInterceptor} instance
-     * @param usernamePref       {@link UsernamePreference} instance
+     * @param usernamePref       {@link UsernamePref} instance
      */
     @Inject
-	McGillManager(HttpLoggingInterceptor loggingInterceptor, UsernamePreference usernamePref) {
+	McGillManager(HttpLoggingInterceptor loggingInterceptor, UsernamePref usernamePref) {
         this.usernamePref = usernamePref;
 
         // Set up the client here in order to have access to the login methods

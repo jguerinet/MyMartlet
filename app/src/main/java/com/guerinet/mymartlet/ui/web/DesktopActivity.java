@@ -28,7 +28,7 @@ import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.DialogHelper;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
+import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.util.Utils;
 import com.orhanobut.hawk.Hawk;
@@ -49,7 +49,7 @@ public class DesktopActivity extends DrawerActivity {
     WebView webView;
 
     @Inject
-    UsernamePreference usernamePref;
+    UsernamePref usernamePref;
 
     @Override @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(@Nullable Bundle savedInstanceState) {

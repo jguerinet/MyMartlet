@@ -22,7 +22,7 @@ import android.content.SharedPreferences;
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref;
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
+import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB;
 import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
@@ -48,10 +48,8 @@ public class ClearManager {
      * App context
      */
     private final Context context;
-    /**
-     * {@link UsernamePreference} instance
-     */
-    private final UsernamePreference usernamePref;
+
+    private final UsernamePref usernamePref;
     /**
      * Remember Username {@link BooleanPref}
      */
@@ -69,14 +67,14 @@ public class ClearManager {
      * Default Injectable Constructor
      *
      * @param context              App context
-     * @param usernamePref         {@link UsernamePreference} instance
+     * @param usernamePref         {@link UsernamePref} instance
      * @param rememberUsernamePref Remember Username {@link BooleanPref}
      * @param homepageManager      {@link HomepageManager} instance
      * @param defaultTermPref      {@link DefaultTermPref} instance
      * @param registerTermsPref    {@link RegisterTermsPref} instance
      */
     @Inject
-    protected ClearManager(Context context, UsernamePreference usernamePref,
+    protected ClearManager(Context context, UsernamePref usernamePref,
             @Named(PrefsModule.REMEMBER_USERNAME) BooleanPref rememberUsernamePref,
             HomepageManager homepageManager, DefaultTermPref defaultTermPref,
             RegisterTermsPref registerTermsPref) {

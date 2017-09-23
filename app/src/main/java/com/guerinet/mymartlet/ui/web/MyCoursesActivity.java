@@ -38,7 +38,7 @@ import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.DialogHelper;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
+import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.util.Device;
 import com.guerinet.suitcase.util.Permission;
@@ -66,11 +66,9 @@ public class MyCoursesActivity extends DrawerActivity {
      */
     @BindView(R.id.web_view)
     protected WebView mWebView;
-    /**
-     * {@link UsernamePreference} instance
-     */
+
     @Inject
-    protected UsernamePreference usernamePref;
+    protected UsernamePref usernamePref;
 
     @Override
     @SuppressLint({"SetJavaScriptEnabled", "NewApi"})

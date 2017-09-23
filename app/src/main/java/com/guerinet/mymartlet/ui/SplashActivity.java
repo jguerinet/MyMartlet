@@ -39,7 +39,7 @@ import com.guerinet.mymartlet.ui.dialog.DialogHelper;
 import com.guerinet.mymartlet.ui.settings.AgreementActivity;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule;
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePreference;
+import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.dbflow.databases.StatementDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.mymartlet.util.manager.McGillManager;
@@ -145,11 +145,9 @@ public class SplashActivity extends BaseActivity {
     @Inject
     @Named(PrefsModule.EULA)
     BooleanPref eulaPref;
-    /**
-     * {@link UsernamePreference} instance
-     */
+
     @Inject
-    UsernamePreference usernamePref;
+    UsernamePref usernamePref;
     /**
      * {@link UpdateManager} instance
      */
