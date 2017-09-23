@@ -103,7 +103,7 @@ public class CoursesActivity extends DrawerActivity {
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
-        analytics.sendScreen("View Courses");
+        ga.sendScreen("View Courses");
 
         term = defaultTermPref.getTerm();
 

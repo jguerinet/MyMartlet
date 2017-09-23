@@ -52,7 +52,7 @@ public class SearchResultsActivity extends BaseActivity {
         setContentView(R.layout.view_courses);
         ButterKnife.bind(this);
         setUpToolbar(true);
-        analytics.sendScreen("Search Results");
+        ga.sendScreen("Search Results");
 
         // Get the info from the intent
         Term term = (Term) getIntent().getSerializableExtra(Constants.TERM);

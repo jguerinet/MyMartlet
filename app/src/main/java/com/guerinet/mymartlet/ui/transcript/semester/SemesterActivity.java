@@ -81,7 +81,7 @@ public class SemesterActivity extends BaseActivity {
         setContentView(R.layout.activity_semester);
         ButterKnife.bind(this);
         setUpToolbar(true);
-        analytics.sendScreen("Transcript - Semester");
+        ga.sendScreen("Transcript - Semester");
 
         // Try finding the semester
         Semester semester = SQLite.select()

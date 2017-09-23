@@ -36,10 +36,10 @@ import com.guerinet.mymartlet.model.Term;
 import com.guerinet.mymartlet.model.exception.MinervaException;
 import com.guerinet.mymartlet.ui.BaseActivity;
 import com.guerinet.mymartlet.ui.dialog.DialogHelper;
-import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.manager.McGillManager;
 import com.guerinet.mymartlet.util.retrofit.McGillService;
+import com.guerinet.suitcase.analytics.GAManager;
 import com.guerinet.suitcase.dialog.DialogUtils;
 import com.guerinet.suitcase.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -83,11 +83,9 @@ public class WishlistHelper {
      */
     @Inject
     McGillService mcGillService;
-    /**
-     * {@link Analytics} instance
-     */
+
     @Inject
-    Analytics analytics;
+    GAManager ga;
     /**
      * Calling activity instance
      */
@@ -247,7 +245,7 @@ public class WishlistHelper {
                     course.save();
                 }
 
-                analytics.sendEvent("Search Results", "Add to Wishlist",
+                ga.sendEvent("Search Results", "Add to Wishlist",
                         String.valueOf(coursesAdded));
 
                 toastMessage = activity.getString(R.string.wishlist_add, coursesAdded);
@@ -259,7 +257,7 @@ public class WishlistHelper {
                 // Get the currentTerm from the first course (they will all be in the same currentTerm)
                 update(courses.get(0).getTerm());
 
-                analytics.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));
+                ga.sendEvent("Wishlist", "Remove", String.valueOf(courses.size()));
             }
         }
 

@@ -30,8 +30,8 @@ import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.dialog.list.FacultiesAdapter;
 import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter;
-import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
+import com.guerinet.suitcase.analytics.GAManager;
 import com.guerinet.suitcase.dialog.DialogUtils;
 
 import javax.inject.Inject;
@@ -51,11 +51,9 @@ public class WalkthroughAdapter extends PagerAdapter {
      *  For a first open there is an extra page at the end
      */
     private final boolean firstOpen;
-    /**
-     * {@link Analytics} instance
-     */
+
     @Inject
-    Analytics analytics;
+    GAManager ga;
     /**
      * {@link HomepageManager} instance
      */
@@ -138,7 +136,7 @@ public class WalkthroughAdapter extends PagerAdapter {
 
                                     item.view().setText(homepageManager.getTitleString());
 
-                                    analytics.sendEvent("Walkthrough", "HomepageManager",
+                                    ga.sendEvent("Walkthrough", "HomepageManager",
                                             homepageManager.getString());
                                 }
                             }))
@@ -162,7 +160,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                                 public void onFacultySelected(String faculty) {
                                     // Update the view
                                     item.view().setText(faculty);
-                                    analytics.sendEvent("Walkthrough", "Faculty", faculty);
+                                    ga.sendEvent("Walkthrough", "Faculty", faculty);
                                 }
                             }))
                     .build();

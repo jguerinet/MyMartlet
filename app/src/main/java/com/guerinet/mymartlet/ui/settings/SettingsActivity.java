@@ -90,7 +90,7 @@ public class SettingsActivity extends DrawerActivity {
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
         setTitle(getString(R.string.settings_version, BuildConfig.VERSION_NAME));
-        analytics.sendScreen("Settings");
+        ga.sendScreen("Settings");
 
         FormGenerator fg = FormGenerator.bind(container);
 
@@ -113,7 +113,7 @@ public class SettingsActivity extends DrawerActivity {
                                 // Update the instance
                                 homepageManager.set(choice);
 
-                                analytics.sendEvent("Settings", "HomepageManager",
+                                ga.sendEvent("Settings", "HomepageManager",
                                         homepageManager.getString());
 
                                 // Update the TextView
@@ -149,7 +149,7 @@ public class SettingsActivity extends DrawerActivity {
                 .text(R.string.title_report_bug)
                 .leftIcon(R.drawable.ic_bug_report)
                 .onClick(item -> {
-                    analytics.sendEvent("About", "Report a Bug");
+                    ga.sendEvent("About", "Report a Bug");
 
                     Intent intent = new Intent(Intent.ACTION_SEND);
 

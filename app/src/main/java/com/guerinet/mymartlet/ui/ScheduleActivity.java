@@ -525,7 +525,7 @@ public class ScheduleActivity extends DrawerActivity {
      * @param course Clicked {@link Course}
      */
     private void showCourseDialog(Course course) {
-        analytics.sendScreen("Schedule - Course");
+        ga.sendScreen("Schedule - Course");
 
         // Set up the view in the dialog
         ScrollView view = new ScrollView(this);

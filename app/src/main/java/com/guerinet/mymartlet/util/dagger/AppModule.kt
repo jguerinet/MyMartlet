@@ -20,9 +20,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.view.inputmethod.InputMethodManager
+import com.guerinet.mymartlet.BuildConfig
+import com.guerinet.mymartlet.R
+import com.guerinet.mymartlet.util.dagger.prefs.STATS
+import com.guerinet.suitcase.analytics.GAManager
+import com.guerinet.suitcase.prefs.BooleanPref
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -54,6 +60,14 @@ class AppModule (val context: Context){
     @Provides
     @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder().build()
+
+    /**
+     * Provides the [GAManager] singleton instance
+     */
+    @Provides
+    @Singleton
+    fun provideGAManager(context: Context, @Named(STATS) statsPref: BooleanPref): GAManager =
+            GAManager(context, R.xml.global_tracker, BuildConfig.DEBUG || !statsPref.get())
 
     /**
      * Provides the [InputMethodManager] for the given [Context]

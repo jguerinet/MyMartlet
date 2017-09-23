@@ -208,7 +208,7 @@ public abstract class DrawerActivity extends BaseActivity
         DialogUtils.alert(this, R.string.warning, R.string.logout_dialog_message,
                 (dialog, which) -> {
                     if (which == DialogAction.POSITIVE) {
-                        analytics.sendEvent("Logout", "Clicked");
+                        ga.sendEvent("Logout", "Clicked");
                         clearManager.all();
                         // Go back to SplashActivity
                         startActivity(new Intent(this, SplashActivity.class));
@@ -222,7 +222,7 @@ public abstract class DrawerActivity extends BaseActivity
      * Shares the app on Facebook
      */
     private void shareOnFacebook() {
-        analytics.sendEvent("facebook", "attempt_post");
+        ga.sendEvent("facebook", "attempt_post");
 
         // Set up all of the info
         ShareLinkContent content = new ShareLinkContent.Builder()
@@ -240,7 +240,7 @@ public abstract class DrawerActivity extends BaseActivity
                 if (result.getPostId() != null) {
                     // Let the user know they posted successfully
                     Utils.toast(DrawerActivity.this, R.string.social_post_success);
-                    analytics.sendEvent("facebook", "successful_post");
+                    ga.sendEvent("facebook", "successful_post");
                 } else {
                     Timber.i("Facebook post cancelled");
                 }
@@ -255,7 +255,7 @@ public abstract class DrawerActivity extends BaseActivity
             public void onError(FacebookException e) {
                 Timber.e(e, "Error posting to Facebook");
                 Utils.toast(DrawerActivity.this, R.string.social_post_failure);
-                analytics.sendEvent("facebook", "failed_post");
+                ga.sendEvent("facebook", "failed_post");
             }
         });
         dialog.show(content);

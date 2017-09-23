@@ -61,7 +61,7 @@ public class EbillActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ebill);
         ButterKnife.bind(this);
-        analytics.sendScreen("Ebill");
+        ga.sendScreen("Ebill");
 
         mList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new EbillAdapter();

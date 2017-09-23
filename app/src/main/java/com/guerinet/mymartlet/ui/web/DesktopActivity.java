@@ -57,7 +57,7 @@ public class DesktopActivity extends DrawerActivity {
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
-        analytics.sendScreen("Desktop Site");
+        ga.sendScreen("Desktop Site");
 
         // If the user is not connected to the internet, don't continue
         if (!Utils.isConnected(this)) {

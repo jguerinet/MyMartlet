@@ -249,7 +249,7 @@ public class SplashActivity extends BaseActivity {
                     R.string.login_error_wrong_data : R.string.error_other);
         }
 
-        analytics.sendScreen("Login");
+        ga.sendScreen("Login");
     }
 
     /**
@@ -298,7 +298,7 @@ public class SplashActivity extends BaseActivity {
                         Hawk.put(PrefsModuleKt.PASSWORD, password);
                         rememberUsernamePref.set(rememberUsername.isChecked());
 
-                        analytics.sendEvent("Login", "Remember Username",
+                        ga.sendEvent("Login", "Remember Username",
                                 String.valueOf(rememberUsername.isChecked()));
 
                         handler.post(() -> {
@@ -388,7 +388,7 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         protected IOException doInBackground(Void... params) {
-            analytics.sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
+            ga.sendEvent("Splash", "Auto-Login", Boolean.toString(autoLogin));
 
             // If we're auto-logging in and there is no internet, skip everything
             if (autoLogin && !Utils.isConnected(SplashActivity.this)) {

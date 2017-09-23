@@ -79,7 +79,7 @@ public class HelpActivity extends BaseActivity {
         fg.text()
                 .text(R.string.help_email_walkthrough)
                 .onClick(item -> {
-                    analytics.sendEvent("Help", "McGill Email");
+                    ga.sendEvent("Help", "McGill Email");
 
                     // Show the user the info about the Chrome bug
                     DialogUtils.neutral(this, -1, R.string.help_email_walkthrough_info,

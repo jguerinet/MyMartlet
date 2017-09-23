@@ -170,7 +170,7 @@ public class SearchActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-        analytics.sendScreen("Registration");
+        ga.sendScreen("Registration");
 
         // Check if there are any terms to register for
         List<Term> registerTerms = registerTermsPref.getTerms();

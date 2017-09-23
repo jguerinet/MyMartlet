@@ -35,10 +35,10 @@ import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.exception.MinervaException;
 import com.guerinet.mymartlet.ui.dialog.DialogHelper;
-import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.Constants;
 import com.guerinet.mymartlet.util.retrofit.McGillService;
 import com.guerinet.mymartlet.util.storage.ClearManager;
+import com.guerinet.suitcase.analytics.GAManager;
 import com.guerinet.suitcase.util.Utils;
 
 import junit.framework.Assert;
@@ -65,11 +65,9 @@ public class BaseActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.toolbar_progress)
     protected ProgressBar toolbarProgress;
-    /**
-     * {@link Analytics} instance
-     */
+
     @Inject
-    protected Analytics analytics;
+    protected GAManager ga;
     /**
      * {@link McGillService} instance
      */

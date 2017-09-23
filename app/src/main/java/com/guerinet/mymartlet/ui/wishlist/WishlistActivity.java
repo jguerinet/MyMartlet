@@ -80,7 +80,7 @@ public class WishlistActivity extends DrawerActivity {
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
-        analytics.sendScreen("Wishlist");
+        ga.sendScreen("Wishlist");
 
         // Set up the view
         wishlistHelper = new WishlistHelper(this, mainView, false);

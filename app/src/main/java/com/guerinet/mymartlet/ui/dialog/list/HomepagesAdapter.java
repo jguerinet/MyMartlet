@@ -21,7 +21,6 @@ import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import com.guerinet.mymartlet.App;
-import com.guerinet.mymartlet.util.Analytics;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.mymartlet.util.manager.HomepageManager.Homepage;
 import com.guerinet.suitcase.dialog.SingleListInterface;
@@ -44,11 +43,7 @@ public abstract class HomepagesAdapter implements SingleListInterface {
      */
     @Inject
     HomepageManager homepageManager;
-    /**
-     * {@link Analytics} instance
-     */
-    @Inject
-    Analytics analytics;
+
     /**
      * The list of homepages
      */
