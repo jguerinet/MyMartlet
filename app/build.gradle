@@ -140,7 +140,7 @@ def dbflow_version = "4.0.0-beta5"
 def okhttp_version = "3.7.0"
 def play_services_version = "11.0.4"
 def retrofit_version = "2.2.0"
-def suitcase_version = "2.1.0"
+def suitcase_version = "2.1.1"
 def support_version = "25.3.1"
 
 dependencies {

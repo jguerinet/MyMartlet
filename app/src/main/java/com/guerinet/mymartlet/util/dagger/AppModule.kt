@@ -67,7 +67,9 @@ class AppModule (val context: Context){
     @Provides
     @Singleton
     fun provideGAManager(context: Context, @Named(STATS) statsPref: BooleanPref): GAManager =
-            GAManager(context, R.xml.global_tracker, BuildConfig.DEBUG || !statsPref.get())
+            object : GAManager(context, R.xml.global_tracker) {
+                override fun isDisabled(): Boolean = BuildConfig.DEBUG || !statsPref.get()
+            }
 
     /**
      * Provides the [InputMethodManager] for the given [Context]
