@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -258,7 +258,7 @@ public class SplashActivity extends BaseActivity {
     @OnClick(R.id.version_button)
     protected void downloadNewVersion() {
         // Redirect them to the Play Store
-        Utils.openPlayStoreApp(this);
+        Utils.openPlayStoreApp(this, getPackageName());
     }
 
     /**

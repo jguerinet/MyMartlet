@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@ import com.guerinet.mymartlet.util.dbflow.DBUtils;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB;
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB;
 import com.guerinet.mymartlet.util.retrofit.ConfigService;
-import com.guerinet.suitcase.date.DateFormat;
 import com.guerinet.suitcase.date.DatePref;
+import com.guerinet.suitcase.date.extensions.ZonedDateTimeExtKt;
 import com.guerinet.suitcase.prefs.IntPref;
 import com.guerinet.suitcase.util.Utils;
 
@@ -146,7 +146,7 @@ public class ConfigDownloadService extends IntentService {
      * @return IMS String to use for the call
      */
     private String getIMS(DatePref pref) {
-        return DateFormat.getRFC1123String(pref.getDate());
+        return ZonedDateTimeExtKt.getRFC1123String(pref.getDate());
     }
 
     /**

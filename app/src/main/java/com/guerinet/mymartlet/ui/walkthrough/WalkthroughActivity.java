@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,14 @@
 
 package com.guerinet.mymartlet.ui.walkthrough;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.widget.Button;
 
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.BaseActivity;
 import com.guerinet.mymartlet.util.Constants;
-import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,8 +43,8 @@ public class WalkthroughActivity extends BaseActivity {
     /**
      * The ViewPagerIndicator
      */
-    @BindView(R.id.indicator)
-    CirclePageIndicator indicator;
+//    @BindView(R.id.indicator)
+//    CirclePageIndicator indicator;
     /**
      * The next button
      */
@@ -81,28 +77,28 @@ public class WalkthroughActivity extends BaseActivity {
         viewPager.setAdapter(adapter);
 
         // Indicator
-        indicator.setViewPager(viewPager);
-        indicator.setStrokeColor(Color.WHITE);
-        indicator.setPageColor(Color.GRAY);
-        indicator.setFillColor(ContextCompat.getColor(this, R.color.red));
-        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {}
-
-            @Override
-            public void onPageSelected(int position) {
-                WalkthroughActivity.this.position = position;
-                // Hide the back button on the first page
-                back.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
-                // Set the right text on the next button if we are on the last page
-                next.setText((position == adapter.getCount() - 1) ?
-                        R.string.start : R.string.next);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {}
-        });
+//        indicator.setViewPager(viewPager);
+//        indicator.setStrokeColor(Color.WHITE);
+//        indicator.setPageColor(Color.GRAY);
+//        indicator.setFillColor(ContextCompat.getColor(this, R.color.red));
+//        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//
+//            @Override
+//            public void onPageScrolled(int i, float v, int i2) {}
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                WalkthroughActivity.this.position = position;
+//                // Hide the back button on the first page
+//                back.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
+//                // Set the right text on the next button if we are on the last page
+//                next.setText((position == adapter.getCount() - 1) ?
+//                        R.string.start : R.string.next);
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int i) {}
+//        });
     }
 
     @OnClick(R.id.next)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -242,7 +242,7 @@ public class AboutActivity extends BaseActivity {
 
                 name.setText(person.name);
 
-                Picasso.with(context)
+                Picasso.get()
                         .load(person.pictureId)
                         .into(picture);
 

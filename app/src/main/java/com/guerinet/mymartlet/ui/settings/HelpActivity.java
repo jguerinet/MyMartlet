@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.morf.Morf;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.BaseActivity;
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity;
@@ -41,6 +41,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kotlin.Unit;
 
 /**
  * Displays useful information to the user
@@ -67,16 +68,19 @@ public class HelpActivity extends BaseActivity {
         ButterKnife.bind(this);
         setUpToolbar(true);
 
-        FormGenerator fg = FormGenerator.bind(container);
+        Morf morf = Morf.Companion.bind(container);
 
         // EULA
-        fg.text()
+        morf.text()
                 .text(R.string.title_agreement)
-                .onClick(item -> startActivity(new Intent(this, AgreementActivity.class)))
+                .onClick(item -> {
+                    startActivity(new Intent(this, AgreementActivity.class));
+                    return Unit.INSTANCE;
+                })
                 .build();
 
         // Email
-        fg.text()
+        morf.text()
                 .text(R.string.help_email_walkthrough)
                 .onClick(item -> {
                     ga.sendEvent("Help", "McGill Email");
@@ -89,27 +93,37 @@ public class HelpActivity extends BaseActivity {
                                         "http://kb.mcgill.ca/kb/article?ArticleId=4774");
 
                             });
+                    return Unit.INSTANCE;
                 })
                 .build();
 
         // Help
-        fg.text()
+        morf.text()
                 .text(R.string.help_walkthrough)
-                .onClick(item -> startActivity(new Intent(this, WalkthroughActivity.class)))
+                .onClick(item -> {
+                    startActivity(new Intent(this, WalkthroughActivity.class));
+                    return Unit.INSTANCE;
+                })
                 .build();
 
         // McGill App
-        fg.text()
+        morf.text()
                 .text(R.string.help_download)
-                .onClick(item -> Utils.openPlayStoreApp(this, "com.mcgill"))
+                .onClick(item -> {
+                    Utils.openPlayStoreApp(this, "com.mcgill");
+                    return Unit.INSTANCE;
+                })
                 .build();
 
         // Become Beta Tester
-        fg.text()
+        morf.text()
                 .text(R.string.help_beta_tester)
-                .onClick(item -> Utils.openUrl(this, "https://betas.to/iRinaygk"))
+                .onClick(item -> {
+                    Utils.openUrl(this, "https://betas.to/iRinaygk");
+                    return Unit.INSTANCE;
+                })
                 .build();
-        
+
         // FAQ
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(new FAQAdapter());

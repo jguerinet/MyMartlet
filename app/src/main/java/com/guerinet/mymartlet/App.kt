@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@ package com.guerinet.mymartlet
 
 import android.content.Context
 import android.support.multidex.MultiDexApplication
-import android.support.v4.content.ContextCompat
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
-import com.guerinet.formgenerator.FormGenerator
 import com.guerinet.mymartlet.util.dagger.AppModule
 import com.guerinet.mymartlet.util.dagger.BaseComponent
 import com.guerinet.mymartlet.util.dagger.DaggerBaseComponent
@@ -30,10 +28,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowManager
-import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
-import com.twitter.sdk.android.tweetcomposer.TweetComposer
-import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 import java.net.SocketTimeoutException
 
@@ -74,7 +69,7 @@ class App : MultiDexApplication() {
         val crashlytics = Crashlytics.Builder()
                 .core(CrashlyticsCore.Builder().disabled(!BuildConfig.REPORT_CRASHES).build())
                 .build()
-        Fabric.with(this, Twitter(authConfig), TweetComposer(), crashlytics)
+//        Fabric.with(this, Twitter(authConfig), TweetComposer(), crashlytics)
 
         // Android ThreeTen
         AndroidThreeTen.init(this)
@@ -92,11 +87,11 @@ class App : MultiDexApplication() {
 
         // FormGenerator
         val padding = resources.getDimensionPixelOffset(R.dimen.padding_small)
-        FormGenerator.set(FormGenerator.Builder()
-                .setDefaultBackground(R.drawable.transparent_redpressed)
-                .setDefaultDrawablePaddingSize(padding)
-                .setDefaultPaddingSize(padding)
-                .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)))
+//        FormGenerator.set(FormGenerator.Builder()
+//                .setDefaultBackground(R.drawable.transparent_redpressed)
+//                .setDefaultDrawablePaddingSize(padding)
+//                .setDefaultPaddingSize(padding)
+//                .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)))
     }
 
     companion object {

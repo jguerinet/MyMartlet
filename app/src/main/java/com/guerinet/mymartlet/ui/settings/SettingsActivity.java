@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.widget.LinearLayout;
 
-import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.morf.Morf;
+import com.guerinet.morf.util.Position;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.BuildConfig;
 import com.guerinet.mymartlet.R;
@@ -52,6 +53,7 @@ import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kotlin.Unit;
 import okio.BufferedSink;
 import okio.Okio;
 import timber.log.Timber;
@@ -63,7 +65,7 @@ import timber.log.Timber;
  */
 public class SettingsActivity extends DrawerActivity {
     /**
-     * The {@link FormGenerator} container
+     * The {@link Morf} container
      */
     @BindView(R.id.container)
     LinearLayout container;
@@ -92,62 +94,73 @@ public class SettingsActivity extends DrawerActivity {
         setTitle(getString(R.string.settings_version, BuildConfig.VERSION_NAME));
         ga.sendScreen("Settings");
 
-        FormGenerator fg = FormGenerator.bind(container);
+        Morf morf = Morf.Companion.bind(container);
 
         // 24 hour time preference
-        fg.aSwitch()
+        morf.aSwitch()
                 .text(R.string.settings_twentyfourhours)
-                .leftIcon(R.drawable.ic_clock)
+                .icon(Position.START, R.drawable.ic_clock)
                 .checked(twentyFourHourPref.get())
                 .onCheckChanged((buttonView, isChecked) -> twentyFourHourPref.set(isChecked))
                 .build();
 
         // Homepage choice
-        fg.text()
+        morf.text()
                 .text(homepageManager.getTitleString())
-                .leftIcon(R.drawable.ic_phone_android)
-                .onClick(item -> DialogUtils.singleList(this, R.string.settings_homepage_title,
-                        new HomepagesAdapter(this) {
-                            @Override
-                            public void onHomepageSelected(@HomepageManager.Homepage int choice) {
-                                // Update the instance
-                                homepageManager.set(choice);
+                .icon(Position.START, R.drawable.ic_phone_android)
+                .onClick(item -> {
+                    DialogUtils.singleList(this, R.string.settings_homepage_title,
+                            new HomepagesAdapter(this) {
 
-                                ga.sendEvent("Settings", "HomepageManager",
-                                        homepageManager.getString());
+                                @Override
+                                public void onHomepageSelected(@HomepageManager.Homepage int
+                                        choice) {
+                                    // Update the instance
+                                    homepageManager.set(choice);
 
-                                // Update the TextView
-                                item.view().setText(homepageManager.getTitleString());
-                            }
-                        }))
+                                    ga.sendEvent("Settings", "HomepageManager",
+                                            homepageManager.getString());
+
+                                    // Update the TextView
+                                    item.text(homepageManager.getTitleString());
+                                }
+                            });
+                    return Unit.INSTANCE;
+                })
                 .build();
 
         // Statistics
-        fg.aSwitch()
+        morf.aSwitch()
                 .text(R.string.settings_statistics)
-                .leftIcon(R.drawable.ic_trending_up)
+                .icon(Position.START, R.drawable.ic_trending_up)
                 .checked(statsPref.get())
                 .onCheckChanged((buttonView, isChecked) -> statsPref.set(isChecked))
                 .build();
 
         // Help
-        fg.text()
+        morf.text()
                 .text(R.string.title_help)
-                .leftIcon(R.drawable.ic_help)
-                .onClick(item -> startActivity(new Intent(this, HelpActivity.class)))
+                .icon(Position.START, R.drawable.ic_help)
+                .onClick(item -> {
+                    startActivity(new Intent(this, HelpActivity.class));
+                    return Unit.INSTANCE;
+                })
                 .build();
 
         // About
-        fg.text()
+        morf.text()
                 .text(R.string.title_about)
-                .leftIcon(R.drawable.ic_info)
-                .onClick(item -> startActivity(new Intent(this, AboutActivity.class)))
+                .icon(Position.START, R.drawable.ic_info)
+                .onClick(item -> {
+                    startActivity(new Intent(this, AboutActivity.class));
+                    return Unit.INSTANCE;
+                })
                 .build();
 
         // Bug Report
-        fg.text()
+        morf.text()
                 .text(R.string.title_report_bug)
-                .leftIcon(R.drawable.ic_bug_report)
+                .icon(Position.START, R.drawable.ic_bug_report)
                 .onClick(item -> {
                     ga.sendEvent("About", "Report a Bug");
 
@@ -239,6 +252,7 @@ public class SettingsActivity extends DrawerActivity {
                     // Code (Email)
                     intent.setType("message/rfc822");
                     startActivity(Intent.createChooser(intent, null));
+                    return Unit.INSTANCE;
                 })
                 .build();
     }

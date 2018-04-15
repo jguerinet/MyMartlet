@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.Statement;
-import com.guerinet.suitcase.date.DateFormat;
+import com.guerinet.suitcase.date.extensions.DateUtils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -118,9 +118,9 @@ class EbillAdapter extends RecyclerView.Adapter<EbillAdapter.StatementHolder> {
             Context context = itemView.getContext();
 
             mDate.setText(context.getString(R.string.ebill_statement_date,
-                    DateFormat.getLongDateString(statement.getDate())));
+                    DateUtils.getLongDateString(statement.getDate())));
             mDueDate.setText(context.getString(R.string.ebill_due_date,
-                    DateFormat.getLongDateString(statement.getDueDate())));
+                    DateUtils.getLongDateString(statement.getDueDate())));
 
             double amount = statement.getAmount();
             mAmount.setText(String.format("$%s", String.valueOf(amount)));

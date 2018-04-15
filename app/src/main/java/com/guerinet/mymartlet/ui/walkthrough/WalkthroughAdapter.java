@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.morf.Morf;
+import com.guerinet.morf.util.Position;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.ui.dialog.list.FacultiesAdapter;
@@ -35,6 +36,8 @@ import com.guerinet.suitcase.analytics.GAManager;
 import com.guerinet.suitcase.dialog.DialogUtils;
 
 import javax.inject.Inject;
+
+import kotlin.Unit;
 
 /**
  * Initial walkthrough
@@ -112,57 +115,65 @@ public class WalkthroughAdapter extends PagerAdapter {
             container.setOrientation(LinearLayout.VERTICAL);
             container.setGravity(Gravity.CENTER);
 
-            FormGenerator fg = FormGenerator.bind(container);
+            Morf morf = Morf.Companion.bind(container);
 
             // HomepageManager Prompt
-            fg.text()
+            morf.text()
                     .text(R.string.walkthrough_homepage)
                     .gravity(Gravity.CENTER)
-                    .padding(context.getResources().getDimensionPixelOffset(R.dimen.padding_small))
+                    .paddingId(R.dimen.padding_small)
                     .build();
 
             // HomepageManager
-            fg.text()
+            morf.text()
                     .text(homepageManager.getTitleString())
-                    .leftIcon(R.drawable.ic_phone_android)
-                    .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
-                    .onClick(item -> DialogUtils.singleList(context, R.string.settings_homepage_title,
-                            new HomepagesAdapter(context) {
-                                @Override
-                                public void onHomepageSelected(@HomepageManager.Homepage
-                                        int choice) {
-                                    // Update it
-                                    homepageManager.set(choice);
+                    .icon(Position.START, R.drawable.ic_phone_android)
+                    .icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
+                    .onClick(item -> {
+                        DialogUtils.singleList(context, R.string.settings_homepage_title,
+                                new HomepagesAdapter(context) {
 
-                                    item.view().setText(homepageManager.getTitleString());
+                                    @Override
+                                    public void onHomepageSelected(@HomepageManager.Homepage
+                                            int choice) {
+                                        // Update it
+                                        homepageManager.set(choice);
 
-                                    ga.sendEvent("Walkthrough", "HomepageManager",
-                                            homepageManager.getString());
-                                }
-                            }))
+                                        item.text(homepageManager.getTitleString());
+
+                                        ga.sendEvent("Walkthrough", "HomepageManager",
+                                                homepageManager.getString());
+                                    }
+                                });
+                        return Unit.INSTANCE;
+                    })
                     .build();
 
             // Faculty Prompt
-            fg.text()
+            morf.text()
                     .text(R.string.walkthrough_faculty)
                     .gravity(Gravity.CENTER)
-                    .padding(context.getResources().getDimensionPixelOffset(R.dimen.padding_small))
+                    .paddingId(R.dimen.padding_small)
                     .build();
 
             // Faculty
-            fg.text()
+            morf.text()
                     .text(R.string.faculty_none)
-                    .leftIcon(R.drawable.ic_mycourses)
-                    .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
-                    .onClick(item -> DialogUtils.singleList(context, R.string.faculty_title,
-                            new FacultiesAdapter(context, item.view().getText().toString()) {
-                                @Override
-                                public void onFacultySelected(String faculty) {
-                                    // Update the view
-                                    item.view().setText(faculty);
-                                    ga.sendEvent("Walkthrough", "Faculty", faculty);
-                                }
-                            }))
+                    .icon(Position.START, R.drawable.ic_mycourses)
+                    .icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
+                    .onClick(item -> {
+                        DialogUtils.singleList(context, R.string.faculty_title,
+                                new FacultiesAdapter(context, item.getView().getText().toString()) {
+
+                                    @Override
+                                    public void onFacultySelected(String faculty) {
+                                        // Update the view
+                                        item.text(faculty);
+                                        ga.sendEvent("Walkthrough", "Faculty", faculty);
+                                    }
+                                });
+                        return Unit.INSTANCE;
+                    })
                     .build();
             view = container;
         } else {

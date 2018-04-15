@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.guerinet.formgenerator.FormGenerator;
+import com.guerinet.morf.Morf;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.Course;
@@ -54,7 +54,7 @@ import com.guerinet.mymartlet.util.dbflow.databases.CourseDB;
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB;
 import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse;
-import com.guerinet.suitcase.date.DateFormat;
+import com.guerinet.suitcase.date.extensions.DateUtils;
 import com.guerinet.suitcase.dialog.DialogUtils;
 import com.guerinet.suitcase.prefs.BooleanPref;
 import com.guerinet.suitcase.util.Utils;
@@ -76,6 +76,7 @@ import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kotlin.Unit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -346,7 +347,7 @@ public class ScheduleActivity extends DrawerActivity {
 
             // Set up the day name
             dayView = View.inflate(this, R.layout.fragment_day_name, null);
-            TextView dayViewTitle = (TextView) dayView.findViewById(R.id.day_name);
+            TextView dayViewTitle = dayView.findViewById(R.id.day_name);
             dayViewTitle.setText(DayUtils.getStringId(day));
             scheduleContainer.addView(dayView);
 
@@ -434,7 +435,7 @@ public class ScheduleActivity extends DrawerActivity {
             View timetableCell = View.inflate(this, R.layout.item_day_timetable, null);
 
             // Put the correct time
-            TextView time = (TextView) timetableCell.findViewById(R.id.cell_time);
+            TextView time = timetableCell.findViewById(R.id.cell_time);
             time.setText(LocalTime.MIDNIGHT.withHour(hour).format(formatter));
 
             // Add it to the right container
@@ -473,17 +474,17 @@ public class ScheduleActivity extends DrawerActivity {
                         scheduleCell = View.inflate(this, R.layout.item_day_class, null);
 
                         // Set up all of the info
-                        TextView code = (TextView) scheduleCell.findViewById(R.id.course_code);
+                        TextView code = scheduleCell.findViewById(R.id.course_code);
                         code.setText(currentCourse.getCode());
 
-                        TextView type = (TextView) scheduleCell.findViewById(R.id.course_type);
+                        TextView type = scheduleCell.findViewById(R.id.course_type);
                         type.setText(currentCourse.getType());
 
-                        TextView courseTime = (TextView)scheduleCell.findViewById(R.id.course_time);
+                        TextView courseTime = scheduleCell.findViewById(R.id.course_time);
                         courseTime.setText(currentCourse.getTimeString());
 
                         TextView location =
-                                (TextView)scheduleCell.findViewById(R.id.course_location);
+                                scheduleCell.findViewById(R.id.course_location);
                         location.setText(currentCourse.getLocation());
 
                         // Find out how long this course is in terms of blocks of 30 min
@@ -541,69 +542,69 @@ public class ScheduleActivity extends DrawerActivity {
                 .show();
 
         // Populate the form
-        FormGenerator fg = FormGenerator.get()
-                .setShowLine(false)
-                .setInputDefaultBackground(android.R.color.transparent)
-                .bind(container);
+        Morf.Shape shape = Morf.Companion.getShape();
+//                .setShowLine(false)
+//                .setInputDefaultBackground(android.R.color.transparent)
+        Morf morf = shape.bind(container);
 
         // Code
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.course_code)
                 .text(course.getCode())
                 .enabled(false)
                 .build();
 
         // Title
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.course_name)
                 .text(course.getTitle())
                 .enabled(false)
                 .build();
 
         // Time
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.course_time_title)
                 .text(course.getTimeString())
                 .enabled(false)
                 .build();
 
         // Location
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.course_location)
                 .text(course.getLocation())
                 .enabled(false)
                 .build();
 
         // Type
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.schedule_type)
                 .text(course.getType())
                 .enabled(false)
                 .build();
 
         // Instructor
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.course_prof)
                 .text(course.getInstructor())
                 .enabled(false)
                 .build();
 
         // Section
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.course_section)
                 .text(course.getSection())
                 .enabled(false)
                 .build();
 
         // Credits
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.course_credits_title)
                 .text(String.valueOf(course.getCredits()))
                 .enabled(false)
                 .build();
 
         // CRN
-        fg.textInput()
+        morf.textInput()
                 .hint(R.string.course_crn)
                 .text(String.valueOf(course.getCRN()))
                 .enabled(false)
@@ -612,17 +613,20 @@ public class ScheduleActivity extends DrawerActivity {
         int color = ContextCompat.getColor(this, R.color.red);
 
         // Docuum
-        fg.borderlessButton()
+        morf.borderlessButton()
                 .layoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT), Gravity.CENTER)
                 .text(R.string.course_docuum)
                 .textColor(color)
-                .onClick(item -> Utils.openUrl(this, "http://www.docuum.com/mcgill/" +
-                        course.getSubject().toLowerCase() + "/" + course.getNumber()))
+                .onClick(item -> {
+                    Utils.openUrl(this, "http://www.docuum.com/mcgill/" +
+                            course.getSubject().toLowerCase() + "/" + course.getNumber());
+                    return Unit.INSTANCE;
+                })
                 .build();
 
         // Maps
-        fg.borderlessButton()
+        morf.borderlessButton()
                 .layoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT), Gravity.CENTER)
                 .text(R.string.course_map)
@@ -661,6 +665,7 @@ public class ScheduleActivity extends DrawerActivity {
                                 }
                             })
                             .execute();
+                    return Unit.INSTANCE;
                 })
                 .build();
     }
@@ -721,7 +726,7 @@ public class ScheduleActivity extends DrawerActivity {
 
             // Set the titles
             dayTitle.setText(DayUtils.getStringId(currentDate.getDayOfWeek()));
-            dateTitle.setText(DateFormat.getLongDateString(currentDate));
+            dateTitle.setText(DateUtils.getLongDateString(currentDate));
 
             // Fill the schedule up
             fillSchedule(timetableContainer, scheduleContainer, currentDate, true);

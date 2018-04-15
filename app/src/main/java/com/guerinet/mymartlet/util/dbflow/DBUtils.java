@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import android.support.annotation.Nullable;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.BaseModelQueriable;
 import com.raizlabs.android.dbflow.sql.language.From;
-import com.raizlabs.android.dbflow.sql.language.SQLCondition;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction;
@@ -95,7 +95,7 @@ public class DBUtils {
      * @param <T>            Object Type
      */
     public static <T extends BaseModel> void updateDB(Class<T> type, List<T> newObjects,
-            @Nullable SQLCondition condition, Class dbClass, UpdateCallback<T> updateCallback,
+            @Nullable SQLOperator condition, Class dbClass, UpdateCallback<T> updateCallback,
             @Nullable Callback callback) {
         From<T> select = SQLite.select()
                 .from(type);

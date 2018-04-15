@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.guerinet.formgenerator.FormGenerator;
-import com.guerinet.formgenerator.TextViewFormItem;
+import com.guerinet.morf.Morf;
+import com.guerinet.morf.util.Position;
 import com.guerinet.mymartlet.App;
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.place.Category;
@@ -69,6 +69,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import kotlin.Unit;
 import timber.log.Timber;
 
 /**
@@ -87,7 +88,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
     @BindView(R.id.info_container)
     LinearLayout infoContainer;
     /**
-     * {@link FormGenerator} container for the filter
+     * {@link Morf} container for the filter
      */
     @BindView(R.id.container)
     LinearLayout container;
@@ -150,7 +151,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         searchString = "";
         category = new Category(false);
 
-        FormGenerator fg = FormGenerator.bind(container);
+        Morf morf = Morf.Companion.bind(container);
 
         // Icon coloring
         int red = ContextCompat.getColor(this, R.color.red);
@@ -158,27 +159,25 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         UIUtils.setTint(favorite, 0, red);
 
         //Set up the place filter
-        fg.text()
+        morf.text()
                 .text(category.getString(this))
-                .leftIcon(R.drawable.ic_location)
-                .rightIcon(R.drawable.ic_chevron_right, Color.GRAY)
-                .onClick(new TextViewFormItem.OnClickListener() {
-                    @Override
-                    public void onClick(final TextViewFormItem item) {
-                        DialogUtils.singleList(MapActivity.this, R.string.map_filter,
+                .icon(Position.START, R.drawable.ic_location)
+                .icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
+                .onClick(textViewItem -> {
+                    DialogUtils.singleList(MapActivity.this, R.string.map_filter,
                                 new CategoryListAdapter(MapActivity.this, category) {
                                     @Override
                                     public void onCategorySelected(Category type) {
                                         MapActivity.this.category = type;
 
                                         //Update the text
-                                        item.view().setText(type.getString(MapActivity.this));
+                                        textViewItem.text(type.getString(MapActivity.this));
 
                                         //Update the filtered places
                                         filterByCategory();
                                     }
                                 });
-                    }
+                    return Unit.INSTANCE;
                 })
                 .build();
 
@@ -208,7 +207,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         final int textViewID = searchView.getContext().getResources()
                 .getIdentifier("android:id/search_src_text", null, null);
         final AutoCompleteTextView searchTextView =
-                (AutoCompleteTextView) searchView.findViewById(textViewID);
+                searchView.findViewById(textViewID);
         try {
             // Set the cursor to the same color as the text
             Field cursorDrawable = TextView.class.getDeclaredField("mCursorDrawableRes");
