@@ -40,16 +40,20 @@ import org.koin.dsl.module.applicationContext
  */
 val appModule: Module = applicationContext {
 
+    // Shared Prefs
     bean { PreferenceManager.getDefaultSharedPreferences(androidApplication().applicationContext) }
 
+    // Moshi
     bean { Moshi.Builder().build() }
 
+    // GAManager
     bean {
         object : GAManager(androidApplication(), R.xml.global_tracker) {
             override fun isDisabled() = BuildConfig.DEBUG || !get<BooleanPref>(STATS).value
         }
     }
 
+    // InputMethodManager
     bean {
         androidApplication().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
