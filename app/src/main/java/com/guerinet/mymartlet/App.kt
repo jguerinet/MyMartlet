@@ -20,6 +20,7 @@ import android.content.Context
 import android.support.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.guerinet.mymartlet.util.appModule
 import com.guerinet.mymartlet.util.dagger.AppModule
 import com.guerinet.mymartlet.util.dagger.BaseComponent
 import com.guerinet.mymartlet.util.dagger.DaggerBaseComponent
@@ -29,6 +30,7 @@ import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.twitter.sdk.android.core.TwitterAuthConfig
+import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import java.net.SocketTimeoutException
 
@@ -74,6 +76,8 @@ class App : MultiDexApplication() {
         // Android ThreeTen
         AndroidThreeTen.init(this)
 
+        initializeKoin()
+
         // Dagger
         component = DaggerBaseComponent.builder()
                 .appModule(AppModule(this))
@@ -93,6 +97,8 @@ class App : MultiDexApplication() {
 //                .setDefaultPaddingSize(padding)
 //                .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)))
     }
+
+    private fun initializeKoin() = startKoin(this, listOf(appModule))
 
     companion object {
 
