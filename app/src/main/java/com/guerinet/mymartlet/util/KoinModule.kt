@@ -23,7 +23,9 @@ import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.dagger.prefs.STATS
 import com.guerinet.suitcase.analytics.GAManager
+import com.guerinet.suitcase.date.DatePref
 import com.guerinet.suitcase.prefs.BooleanPref
+import com.guerinet.suitcase.prefs.IntPref
 import com.squareup.moshi.Moshi
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module.Module
@@ -57,4 +59,36 @@ val appModule: Module = applicationContext {
     bean {
         androidApplication().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
+}
+
+/**
+ * Contains all of the SharedPreferences providers
+ */
+val prefsModule: Module = applicationContext {
+
+    bean(Prefs.VERSION) { IntPref(get(), Prefs.VERSION, -1) }
+
+    bean(Prefs.MIN_VERSION) { IntPref(get(), Prefs.MIN_VERSION, -1) }
+
+    bean(Prefs.IS_FIRST_OPEN) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
+
+    bean(Prefs.STATS) { BooleanPref(get(), Prefs.STATS, true) }
+
+    bean(Prefs.SCHEDULE_24HR) { BooleanPref(get(), Prefs.SCHEDULE_24HR, false) }
+
+    bean(Prefs.REMEMBER_USERNAME) { BooleanPref(get(), Prefs.REMEMBER_USERNAME, true) }
+
+    bean(Prefs.EULA) { BooleanPref(get(), Prefs.EULA, false) }
+
+    bean(Prefs.SEAT_CHECKER) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
+
+    bean(Prefs.GRADE_CHECKER) { BooleanPref(get(), Prefs.GRADE_CHECKER, false) }
+
+    bean(Prefs.IMS_CONFIG) { DatePref(get(), Prefs.IMS_CONFIG, null) }
+
+    bean(Prefs.IMS_PLACES) { DatePref(get(), Prefs.IMS_PLACES, null) }
+
+    bean(Prefs.IMS_CATEGORIES) { DatePref(get(), Prefs.IMS_CATEGORIES, null) }
+
+    bean(Prefs.IMS_REGISTRATION) { DatePref(get(), Prefs.IMS_REGISTRATION, null) }
 }

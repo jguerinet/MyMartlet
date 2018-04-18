@@ -24,6 +24,7 @@ import com.guerinet.mymartlet.util.appModule
 import com.guerinet.mymartlet.util.dagger.AppModule
 import com.guerinet.mymartlet.util.dagger.BaseComponent
 import com.guerinet.mymartlet.util.dagger.DaggerBaseComponent
+import com.guerinet.mymartlet.util.prefsModule
 import com.guerinet.suitcase.log.ProductionTree
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orhanobut.hawk.Hawk
@@ -98,7 +99,7 @@ class App : MultiDexApplication() {
 //                .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)))
     }
 
-    private fun initializeKoin() = startKoin(this, listOf(appModule))
+    private fun initializeKoin() = startKoin(this, listOf(appModule, prefsModule))
 
     companion object {
 
