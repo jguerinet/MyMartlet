@@ -283,11 +283,11 @@ public class ScheduleActivity extends DrawerActivity {
         }
 
         // Download the courses for this currentTerm
-        mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
+        getMcGillService().schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                 // Set the courses
-                CourseDB.setCourses(term, response.body(), () -> handler.post(() -> {
+                CourseDB.setCourses(term, response.body(), () -> getHandler().post(() -> {
                     // Update the view
                     showToolbarProgress(false);
                     updateCourses();
@@ -296,7 +296,7 @@ public class ScheduleActivity extends DrawerActivity {
                 }));
 
                 // Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
+                getMcGillService().transcript().enqueue(new Callback<TranscriptResponse>() {
                             @Override
                             public void onResponse(Call<TranscriptResponse> call,
                                     Response<TranscriptResponse> response) {
@@ -526,7 +526,7 @@ public class ScheduleActivity extends DrawerActivity {
      * @param course Clicked {@link Course}
      */
     private void showCourseDialog(Course course) {
-        ga.sendScreen("Schedule - Course");
+        getGa().sendScreen("Schedule - Course");
 
         // Set up the view in the dialog
         ScrollView view = new ScrollView(this);
@@ -661,7 +661,7 @@ public class ScheduleActivity extends DrawerActivity {
                                     // Open the map to the given place
                                     Intent intent = new Intent(this, MapActivity.class)
                                             .putExtra(Constants.ID, place.getId());
-                                    handler.post(() -> switchDrawerActivity(intent));
+                                    getHandler().post(() -> switchDrawerActivity(intent));
                                 }
                             })
                             .execute();

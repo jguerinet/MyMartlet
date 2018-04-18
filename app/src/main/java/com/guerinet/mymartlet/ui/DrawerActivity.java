@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ public abstract class DrawerActivity extends BaseActivity
         setUpToolbar(false);
 
         // Set up the drawer
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getToolbar(), 0, 0);
         drawerToggle.setDrawerIndicatorEnabled(true);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerLayout.setFocusableInTouchMode(false);
@@ -182,7 +182,7 @@ public abstract class DrawerActivity extends BaseActivity
     protected void switchDrawerActivity(Intent intent) {
         // If it's not the currently opened activity, launch it after a short delay
         //  so that the user sees the drawer closing
-        handler.postDelayed(() -> {
+        getHandler().postDelayed(() -> {
             startActivity(intent);
             finish();
         }, 250);
@@ -208,8 +208,8 @@ public abstract class DrawerActivity extends BaseActivity
         DialogUtils.alert(this, R.string.warning, R.string.logout_dialog_message,
                 (dialog, which) -> {
                     if (which == DialogAction.POSITIVE) {
-                        ga.sendEvent("Logout", "Clicked");
-                        clearManager.all();
+                        getGa().sendEvent("Logout", "Clicked");
+                        getClearManager().all();
                         // Go back to SplashActivity
                         startActivity(new Intent(this, SplashActivity.class));
                         finish();
@@ -222,7 +222,7 @@ public abstract class DrawerActivity extends BaseActivity
      * Shares the app on Facebook
      */
     private void shareOnFacebook() {
-        ga.sendEvent("facebook", "attempt_post");
+        getGa().sendEvent("facebook", "attempt_post");
 
         // Set up all of the info
         ShareLinkContent content = new ShareLinkContent.Builder()
@@ -240,7 +240,7 @@ public abstract class DrawerActivity extends BaseActivity
                 if (result.getPostId() != null) {
                     // Let the user know they posted successfully
                     Utils.toast(DrawerActivity.this, R.string.social_post_success);
-                    ga.sendEvent("facebook", "successful_post");
+                    getGa().sendEvent("facebook", "successful_post");
                 } else {
                     Timber.i("Facebook post cancelled");
                 }
@@ -255,7 +255,7 @@ public abstract class DrawerActivity extends BaseActivity
             public void onError(FacebookException e) {
                 Timber.e(e, "Error posting to Facebook");
                 Utils.toast(DrawerActivity.this, R.string.social_post_failure);
-                ga.sendEvent("facebook", "failed_post");
+                getGa().sendEvent("facebook", "failed_post");
             }
         });
         dialog.show(content);

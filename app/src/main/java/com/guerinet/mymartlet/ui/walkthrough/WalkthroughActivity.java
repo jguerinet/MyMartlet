@@ -69,7 +69,7 @@ public class WalkthroughActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walkthrough);
         ButterKnife.bind(this);
-        ga.sendScreen("Walkthrough");
+        getGa().sendScreen("Walkthrough");
 
         // Load the adapter
         boolean firstOpen = getIntent().getBooleanExtra(Constants.FIRST_OPEN, false);
@@ -118,7 +118,7 @@ public class WalkthroughActivity extends BaseActivity {
 
     @OnClick(R.id.close)
     void close() {
-        ga.sendEvent("Walkthrough", "Skip");
+        getGa().sendEvent("Walkthrough", "Skip");
         finish();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class TranscriptActivity extends DrawerActivity {
         setContentView(R.layout.activity_transcript);
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
-        ga.sendScreen("Transcript");
+        getGa().sendScreen("Transcript");
 
         list.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TranscriptAdapter();
@@ -113,7 +113,7 @@ public class TranscriptActivity extends DrawerActivity {
             return;
         }
 
-        mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
+        getMcGillService().transcript().enqueue(new Callback<TranscriptResponse>() {
             @Override
             public void onResponse(Call<TranscriptResponse> call,
                     Response<TranscriptResponse> response) {

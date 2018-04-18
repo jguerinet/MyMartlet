@@ -64,7 +64,7 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
         setUpToolbar(true);
-        ga.sendScreen("About");
+        getGa().sendScreen("About");
 
         // Set up the list
         list.setLayoutManager(new LinearLayoutManager(this));
@@ -249,11 +249,11 @@ public class AboutActivity extends BaseActivity {
                 role.setText(person.role);
                 description.setText(person.description);
                 linkedIn.setOnClickListener(view -> {
-                    ga.sendEvent("About", "Linkedin", getString(person.name));
+                    getGa().sendEvent("About", "Linkedin", getString(person.name));
                     Utils.openUrl(context, getString(person.linkedIn));
                 });
                 email.setOnClickListener(view -> {
-                    ga.sendEvent("About", "Email", getString(person.name));
+                    getGa().sendEvent("About", "Email", getString(person.name));
 
                     // Send an email
                     Intent intent = new Intent(Intent.ACTION_SEND)

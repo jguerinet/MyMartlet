@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class SearchResultsActivity extends BaseActivity {
         setContentView(R.layout.view_courses);
         ButterKnife.bind(this);
         setUpToolbar(true);
-        ga.sendScreen("Search Results");
+        getGa().sendScreen("Search Results");
 
         // Get the info from the intent
         Term term = (Term) getIntent().getSerializableExtra(Constants.TERM);

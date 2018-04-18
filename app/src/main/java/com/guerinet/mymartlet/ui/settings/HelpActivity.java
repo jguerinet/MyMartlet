@@ -83,7 +83,7 @@ public class HelpActivity extends BaseActivity {
         morf.text()
                 .text(R.string.help_email_walkthrough)
                 .onClick(item -> {
-                    ga.sendEvent("Help", "McGill Email");
+                    getGa().sendEvent("Help", "McGill Email");
 
                     // Show the user the info about the Chrome bug
                     DialogUtils.neutral(this, -1, R.string.help_email_walkthrough_info,

@@ -143,7 +143,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
-        ga.sendScreen("Map");
+        getGa().sendScreen("Map");
 
         //Set up the initial information
         places = new ArrayList<>();

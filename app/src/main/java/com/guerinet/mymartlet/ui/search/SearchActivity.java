@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,7 +170,7 @@ public class SearchActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-        ga.sendScreen("Registration");
+        getGa().sendScreen("Registration");
 
         // Check if there are any terms to register for
         List<Term> registerTerms = registerTermsPref.getTerms();
@@ -312,7 +312,7 @@ public class SearchActivity extends DrawerActivity {
         }
 
         // Execute the request
-        mcGillService.search(term, subject, mNumber.getText().toString(),
+        getMcGillService().search(term, subject, mNumber.getText().toString(),
                 mTitle.getText().toString(), minCredits, maxCredits, startHour, startMinute,
                 startAM ? "a" : "p", endHour, endMinute, endAM ? "a" : "p", dayChars)
                 .enqueue(new Callback<List<CourseResult>>() {

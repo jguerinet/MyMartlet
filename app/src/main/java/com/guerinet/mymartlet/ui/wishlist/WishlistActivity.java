@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ public class WishlistActivity extends DrawerActivity {
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
-        ga.sendScreen("Wishlist");
+        getGa().sendScreen("Wishlist");
 
         // Set up the view
         wishlistHelper = new WishlistHelper(this, mainView, false);
@@ -203,7 +203,7 @@ public class WishlistActivity extends DrawerActivity {
             String subject = code[0];
             String number = code[1];
 
-            mcGillService.search(course.term, subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
+            getMcGillService().search(course.term, subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
                     new ArrayList<>()).enqueue(new retrofit2.Callback<List<CourseResult>>() {
                 @Override
                 public void onResponse(Call<List<CourseResult>> call,

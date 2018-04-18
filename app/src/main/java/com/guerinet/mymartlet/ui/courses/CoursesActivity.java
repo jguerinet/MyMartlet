@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ public class CoursesActivity extends DrawerActivity {
         setContentView(R.layout.activity_wishlist);
         ButterKnife.bind(this);
         App.Companion.component(this).inject(this);
-        ga.sendScreen("View Courses");
+        getGa().sendScreen("View Courses");
 
         term = defaultTermPref.getTerm();
 
@@ -194,12 +194,12 @@ public class CoursesActivity extends DrawerActivity {
         }
 
         // Download the courses for this currentTerm
-        mcGillService.schedule(term).enqueue(new Callback<List<Course>>() {
+        getMcGillService().schedule(term).enqueue(new Callback<List<Course>>() {
             @Override
             public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                 // Set the courses
                 CourseDB.setCourses(term, response.body(), () -> {
-                    handler.post(() -> {
+                    getHandler().post(() -> {
                         // Update the view
                         update();
                         showToolbarProgress(false);
@@ -207,7 +207,7 @@ public class CoursesActivity extends DrawerActivity {
                 });
 
                 //Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(new Callback<TranscriptResponse>() {
+                getMcGillService().transcript().enqueue(new Callback<TranscriptResponse>() {
                     @Override
                     public void onResponse(Call<TranscriptResponse> call,
                             Response<TranscriptResponse> response) {
@@ -266,7 +266,7 @@ public class CoursesActivity extends DrawerActivity {
                     }
 
                     // Run the registration thread
-                    mcGillService.registration(McGillManager.getRegistrationURL(courses, true))
+                    getMcGillService().registration(McGillManager.getRegistrationURL(courses, true))
                             .enqueue(new Callback<List<RegistrationError>>() {
                                 @Override
                                 public void onResponse(Call<List<RegistrationError>> call,

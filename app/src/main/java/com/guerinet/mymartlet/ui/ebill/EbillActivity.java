@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class EbillActivity extends DrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ebill);
         ButterKnife.bind(this);
-        ga.sendScreen("Ebill");
+        getGa().sendScreen("Ebill");
 
         mList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new EbillAdapter();
@@ -99,7 +99,7 @@ public class EbillActivity extends DrawerActivity {
             return;
         }
 
-        mcGillService.ebill().enqueue(new Callback<List<Statement>>() {
+        getMcGillService().ebill().enqueue(new Callback<List<Statement>>() {
             @Override
             public void onResponse(Call<List<Statement>> call, Response<List<Statement>> response) {
                 DBUtils.replaceDB(EbillActivity.this, StatementDB.NAME, Statement.class,
