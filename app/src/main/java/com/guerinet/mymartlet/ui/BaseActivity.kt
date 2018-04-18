@@ -33,11 +33,12 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.extensions.errorDialog
+import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
-import com.guerinet.mymartlet.util.storage.ClearManager
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.util.extensions.isConnected
 import org.jetbrains.anko.startActivity
+import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 /**
@@ -62,12 +63,7 @@ open class BaseActivity : AppCompatActivity() {
     @Inject
     var mcGillService: McGillService? = null
 
-    // TODO
-    /**
-     * [ClearManager] instance
-     */
-    @Inject
-    var clearManager: ClearManager? = null
+    val clearManager: ClearManager by inject()
 
     /**
      * Handler for posting delayed actions
@@ -150,7 +146,7 @@ open class BaseActivity : AppCompatActivity() {
         when (intent.action) {
             Constants.BROADCAST_MINERVA -> {
                 // Log the user out
-                clearManager!!.all()
+                clearManager.clearUserInfo()
                 // Bring them back to the SplashActivity with an exception
                 startActivity<SplashActivity>(Constants.EXCEPTION to MinervaException())
                 finish()
