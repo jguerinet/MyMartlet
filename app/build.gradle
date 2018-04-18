@@ -142,6 +142,7 @@ def suitcase_version = "2.4.0"
 def support_version = "27.1.1"
 
 dependencies {
+    implementation 'androidx.core:core-ktx:0.3'
     implementation "com.afollestad.material-dialogs:commons:0.9.6.0"
     implementation "com.android.support:appcompat-v7:${support_version}"
     implementation "com.android.support:customtabs:${support_version}"
@@ -185,6 +186,7 @@ dependencies {
     implementation("com.twitter.sdk.android:twitter:3.2.0@aar") {
         transitive = true
     }
+    compile "org.jetbrains.anko:anko-commons:$anko_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     // Don't update this as 1.10.x breaks the converters
     implementation "org.jsoup:jsoup:1.9.1"

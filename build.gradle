@@ -18,6 +18,7 @@ apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin'
 
 buildscript {
+    ext.anko_version='0.10.4'
     ext.kotlin_version = '1.2.31'
     repositories {
         google()
