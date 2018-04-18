@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/progress_container"
+            android:id="@+id/progressContainer"
             android:paddingTop="@dimen/padding_double"
             android:visibility="gone">
 
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:id="@+id/login_container"
+            android:id="@+id/loginContainer"
             android:visibility="gone">
 
             <LinearLayout
@@ -69,7 +69,7 @@
                 android:paddingRight="@dimen/padding_large">
 
                 <EditText
-                    android:id="@+id/login_username"
+                    android:id="@+id/username"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -90,7 +90,7 @@
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/login_remember_username"
+                android:id="@+id/rememberUsername"
                 android:text="@string/login_remember_username"
                 android:textSize="@dimen/text_micro"
                 android:layout_marginBottom="@dimen/padding_medium"
@@ -98,7 +98,7 @@
                 android:layout_marginRight="@dimen/padding_large"/>
 
             <EditText
-                android:id="@+id/login_password"
+                android:id="@+id/password"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="@dimen/text_small"
@@ -110,7 +110,7 @@
                 android:layout_marginRight="@dimen/padding_large"/>
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/loginButton"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:gravity="center"
@@ -126,7 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/version_container"
+            android:id="@+id/minVersionContainer"
             android:gravity="center"
             android:visibility="gone">
 
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/new_version_button"
-                android:id="@+id/version_button"
+                android:id="@+id/versionButton"
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>

@@ -52,9 +52,7 @@ open class BaseActivity : AppCompatActivity() {
 
     val toolbarProgress: ProgressBar by lazy { findViewById<ProgressBar>(R.id.toolbar_progress) }
 
-    // TODO
-    @Inject
-    var ga: GAManager? = null
+    val ga: GAManager by inject()
 
     // TODO
     /**
