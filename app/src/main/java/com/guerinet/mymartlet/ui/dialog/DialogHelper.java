@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ public class DialogHelper {
      * @param context   App context
      * @param messageId String Id of the error description
      */
+    @Deprecated
     public static void error(Context context, @StringRes int messageId) {
         DialogUtils.neutral(context, R.string.error, messageId);
     }
