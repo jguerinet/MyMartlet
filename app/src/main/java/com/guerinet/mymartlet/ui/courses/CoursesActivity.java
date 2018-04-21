@@ -266,7 +266,8 @@ public class CoursesActivity extends DrawerActivity {
                     }
 
                     // Run the registration thread
-                    getMcGillService().registration(McGillManager.getRegistrationURL(courses, true))
+                    getMcGillService().registration(McGillManager.Companion.getRegistrationURL
+                            (courses, true))
                             .enqueue(new Callback<List<RegistrationError>>() {
                                 @Override
                                 public void onResponse(Call<List<RegistrationError>> call,
