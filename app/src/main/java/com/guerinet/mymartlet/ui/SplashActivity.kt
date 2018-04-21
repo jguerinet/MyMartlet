@@ -47,7 +47,10 @@ import com.guerinet.suitcase.util.extensions.isConnected
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.experimental.launch
 import okhttp3.ResponseBody
+import org.jetbrains.anko.startActivityForResult
+import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
@@ -80,11 +83,7 @@ class SplashActivity : BaseActivity() {
 
     private val imm: InputMethodManager by inject()
 
-    /**
-     * [UpdateManager] instance
-     */
-    @Inject
-    internal var updateManager: UpdateManager? = null
+    private val updateManager: UpdateManager by inject()
     /**
      * The [HomepageManager] instance
      */
@@ -94,11 +93,29 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        AppInitializer().execute()
 
         // OnClick listeners
         versionButton.setOnClickListener { openPlayStoreApp() }
         loginButton.setOnClickListener { login() }
+
+        launch {
+            // Run any update code
+            updateManager.update()
+
+            // Initialize the McGillService
+            mcGillManager.init()
+
+            // Start downloading the Config
+            startService<ConfigDownloadService>()
+
+            if (!eulaPref.value) {
+                // If the user has not accepted the EULA, show it before continuing
+                startActivityForResult<AgreementActivity>(AGREEMENT_CODE, Prefs.EULA to true)
+            } else {
+                // If not, go to the next screen
+                showNextScreen()
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -235,36 +252,6 @@ class SplashActivity : BaseActivity() {
                         }
                     }
                 })
-    }
-
-    /**
-     * Initializes the app by starting the config download and running through update code
-     */
-    private inner class AppInitializer : AsyncTask<Void, Void, Void>() {
-
-        override fun doInBackground(vararg params: Void): Void? {
-            // Run any update code
-            updateManager!!.update()
-
-            // Initialize the McGillService
-            mcGillManager.init()
-
-            // Start downloading the config
-            startService(Intent(this@SplashActivity, ConfigDownloadService::class.java))
-            return null
-        }
-
-        override fun onPostExecute(aVoid: Void) {
-            if (!eulaPref.get()) {
-                // If the user has not accepted the EULA, show it before continuing
-                val intent = Intent(this@SplashActivity, AgreementActivity::class.java)
-                        .putExtra(Prefs.EULA, true)
-                startActivityForResult(intent, AGREEMENT_CODE)
-            } else {
-                // If they have, go to the next screen
-                showNextScreen()
-            }
-        }
     }
 
     /**
