@@ -15,6 +15,7 @@ misc.xml
 modules.xml
 workspace.xml
 .name
+build_file_checksums.ser
 
 google-services.json
 !app/src/debug/google-services.json
