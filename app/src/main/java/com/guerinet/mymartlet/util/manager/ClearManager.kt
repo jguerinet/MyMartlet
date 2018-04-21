@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.util.manager
 
 import android.content.Context
-import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.dagger.prefs.PASSWORD
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
@@ -28,10 +27,7 @@ import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB
 import com.guerinet.suitcase.prefs.BooleanPref
-import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.sql.language.Delete
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 
 /**
  * Clears data from databases or the SharedPrefs
@@ -40,10 +36,8 @@ import org.koin.standalone.inject
  */
 class ClearManager(private val context: Context, private val usernamePref: UsernamePref,
         private val homepageManager: HomepageManager, private val defaultTermPref: DefaultTermPref,
-        private val registerTermsPref: RegisterTermsPref) : KoinComponent {
-
-    // Inject this here because we can't inject named components via constructor
-    private val rememberUsernamePref: BooleanPref by inject(Prefs.REMEMBER_USERNAME)
+        private val registerTermsPref: RegisterTermsPref,
+        private val rememberUsernamePref: BooleanPref) {
 
     /**
      * Clears all of the user's info

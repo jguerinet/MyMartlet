@@ -22,14 +22,17 @@ import android.view.inputmethod.InputMethodManager
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.dagger.prefs.STATS
+import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.DatePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.squareup.moshi.Moshi
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module.Module
 import org.koin.dsl.module.applicationContext
+import timber.log.Timber
 
 /**
  * Koin modules
@@ -58,6 +61,19 @@ val appModule: Module = applicationContext {
     // InputMethodManager
     bean {
         androidApplication().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    // Clear Manager
+    bean { ClearManager(get(), get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME))}
+}
+
+val networkModule: Module = applicationContext {
+
+    // HttpLoggingInterceptor
+    bean {
+        val interceptor = HttpLoggingInterceptor({ message -> Timber.tag("OkHttp").i(message) })
+        interceptor.level = HttpLoggingInterceptor.Level.BASIC
+        interceptor
     }
 }
 
