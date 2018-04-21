@@ -45,7 +45,6 @@ import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
-import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_splash.*
 import okhttp3.ResponseBody
@@ -68,11 +67,8 @@ class SplashActivity : BaseActivity() {
      */
     @BindView(R.id.progress_text)
     internal var progressText: TextView? = null
-    /**
-     * The [McGillManager] instance
-     */
-    @Inject
-    internal var mcGillManager: McGillManager? = null
+
+    private val mcGillManager: McGillManager by inject()
 
     private val rememberUsernamePref: BooleanPref by inject(Prefs.REMEMBER_USERNAME)
 
@@ -202,7 +198,7 @@ class SplashActivity : BaseActivity() {
 
         progressContainer.isVisible = true
 
-        mcGillManager!!.login(username + getString(R.string.login_email), password,
+        mcGillManager.login(username + getString(R.string.login_email), password,
                 object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>,
                             response: Response<ResponseBody>) {
@@ -251,7 +247,7 @@ class SplashActivity : BaseActivity() {
             updateManager!!.update()
 
             // Initialize the McGillService
-            mcGillManager!!.init()
+            mcGillManager.init()
 
             // Start downloading the config
             startService(Intent(this@SplashActivity, ConfigDownloadService::class.java))
@@ -305,7 +301,7 @@ class SplashActivity : BaseActivity() {
             // Try logging them in if needed
             if (autoLogin) {
                 try {
-                    mcGillManager!!.login()
+                    mcGillManager.login()
                 } catch (e: IOException) {
                     return e
                 }
