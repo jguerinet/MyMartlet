@@ -18,14 +18,10 @@ package com.guerinet.mymartlet.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.core.view.isVisible
-import butterknife.BindView
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Transcript
@@ -45,10 +41,13 @@ import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
+import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import okhttp3.ResponseBody
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
@@ -64,12 +63,6 @@ import javax.inject.Inject
  * @since 1.0.0
  */
 class SplashActivity : BaseActivity() {
-
-    /**
-     * Update text for when downloading everything
-     */
-    @BindView(R.id.progress_text)
-    internal var progressText: TextView? = null
 
     private val mcGillManager: McGillManager by inject()
 
@@ -96,7 +89,7 @@ class SplashActivity : BaseActivity() {
 
         // OnClick listeners
         versionButton.setOnClickListener { openPlayStoreApp() }
-        loginButton.setOnClickListener { login() }
+        loginButton.setOnClickListener { loginPressed() }
 
         launch {
             // Run any update code
@@ -146,7 +139,7 @@ class SplashActivity : BaseActivity() {
             // If we don't have the min required version, show the right container
             minVersionContainer.isVisible = true
         } else if (usernamePref.value == null || !Hawk.contains(Prefs.PASSWORD)) {
-            // If we are missing some login info, show the login screen with no error message
+            // If we are missing some login info, show the loginPressed screen with no error message
             showLoginScreen(intent.getSerializableExtra(Constants.EXCEPTION) as? IOException)
         } else {
             // Try logging the user in and download their info
@@ -190,9 +183,9 @@ class SplashActivity : BaseActivity() {
     }
 
     /**
-     * Attempts to log the user in
+     * Called when the login button is pressed
      */
-    private fun login() {
+    private fun loginPressed() {
         // Hide the keyboard
         username.clearFocus()
         imm.hideSoftInputFromWindow(username.windowToken, 0)
@@ -255,54 +248,38 @@ class SplashActivity : BaseActivity() {
     }
 
     /**
-     * Initializes the app by logging the user in and downloading the required information
+     * Attempts to either [autoLogin] or manually log in the user
      */
-    private inner class AutoLogin
-    /**
-     * Default Constructor
-     *
-     * @param autoLogin True if we should auto-login the user, false if they have just logged in
-     */
-    (
-            /**
-             * True if we should auto-login the user, false if they have just logged in
-             */
-            private val autoLogin: Boolean) : AsyncTask<Void, String, IOException>() {
+    private fun login(autoLogin: Boolean) {
+        // Show the progress container
+        progressContainer.isVisible = true
 
-        override fun onPreExecute() {
-            // Show the progress container
-            progressContainer!!.visibility = View.VISIBLE
+        // Reset the progress text (if it was set during a previous login attempt
+        progressText.text = ""
 
-            // Reset the text (if it was set during a previous login attempt)
-            progressText!!.text = ""
-        }
+        async {
+            ga.sendEvent("Splash", "Auto-Login", autoLogin.toString())
 
-        override fun doInBackground(vararg params: Void): IOException? {
-            ga.sendEvent("Splash", "Auto-Login", java.lang.Boolean.toString(autoLogin))
-
-            // If we're auto-logging in and there is no internet, skip everything
-            if (autoLogin && !this@SplashActivity.isConnected) {
-                return null
+            // If we're auto-logging in and there's no internet, skip everything
+            if (autoLogin && !isConnected) {
+                return@async null
             }
 
-            // Try logging them in if needed
+            // Try auto login if needed
             if (autoLogin) {
-                try {
-                    mcGillManager.login()
-                } catch (e: IOException) {
-                    return e
-                }
-
+                return@async mcGillManager.login()
             }
 
             // Check if we need to download everything or only the essential stuff
             //  We need to download everything if there is null info
-            val downloadEverything = SQLite.select().from(Transcript::class.java).querySingle() == null || !getDatabasePath(StatementDB.FULL_NAME).exists()
+            val downloadEverything =
+                    SQLite.select().from(Transcript::class).querySingle() == null ||
+                            !getDatabasePath(StatementDB.FULL_NAME).exists()
 
             // If we need to download everything, do it synchronously. If not, do it asynchronously
             val userDownloader = object : UserDownloader(this@SplashActivity) {
                 override fun update(section: String) {
-                    publishProgress(section)
+                    updateProgress(section)
                 }
             }
 
@@ -313,23 +290,14 @@ class SplashActivity : BaseActivity() {
                     // If there was an exception, return it
                     return e
                 }
-
             } else {
                 userDownloader.start()
             }
-            return null
-        }
 
-        override fun onProgressUpdate(vararg progress: String) {
-            // Update the TextView
-            progressText!!.text = progress[0]
-        }
-
-        override fun onPostExecute(e: IOException?) {
             // Hide the container
-            progressContainer!!.visibility = View.GONE
+            progressContainer.isVisible = false
 
-            if (e == null) {
+            if (result == null) {
                 // Connection successful: home page
                 startActivity(Intent(this@SplashActivity, homepageManager!!.activity))
                 finish()
@@ -338,6 +306,17 @@ class SplashActivity : BaseActivity() {
                 showLoginScreen(e)
             }
         }
+    }
+
+    /**
+     * Updates the progress [message]
+     */
+    private fun updateProgress(message: String) {
+        progressText.text = message
+    }
+
+    private fun openHomePage() {
+        startActivity<>()
     }
 
     companion object {

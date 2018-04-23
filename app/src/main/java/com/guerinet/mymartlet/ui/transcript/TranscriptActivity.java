@@ -102,7 +102,7 @@ public class TranscriptActivity extends DrawerActivity {
     @Override
     @HomepageManager.Homepage
     protected int getCurrentPage() {
-        return HomepageManager.TRANSCRIPT;
+        return HomepageManager.Companion.getTRANSCRIPT();
     }
 
     /**

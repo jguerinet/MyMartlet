@@ -361,7 +361,7 @@ public class SearchActivity extends DrawerActivity {
     @Override
     protected @HomepageManager.Homepage
     int getCurrentPage() {
-        return HomepageManager.SEARCH_COURSES;
+        return HomepageManager.Companion.getSEARCH_COURSES();
     }
 
     /**

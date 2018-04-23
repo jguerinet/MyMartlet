@@ -270,7 +270,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
 
     @Override
     protected @HomepageManager.Homepage int getCurrentPage() {
-        return HomepageManager.MAP;
+        return HomepageManager.Companion.getMAP();
     }
 
     /**

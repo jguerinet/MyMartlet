@@ -165,7 +165,7 @@ public class CoursesActivity extends DrawerActivity {
     @HomepageManager.Homepage
     @Override
     protected int getCurrentPage() {
-        return HomepageManager.COURSES;
+        return HomepageManager.Companion.getCOURSES();
     }
 
     /**
