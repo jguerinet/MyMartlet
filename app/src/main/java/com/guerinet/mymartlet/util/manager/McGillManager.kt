@@ -27,6 +27,7 @@ import com.guerinet.mymartlet.util.retrofit.RegistrationErrorConverter
 import com.guerinet.mymartlet.util.retrofit.Result
 import com.guerinet.mymartlet.util.retrofit.ScheduleConverter
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter
+import com.orhanobut.hawk.Hawk
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -176,7 +177,7 @@ class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
      */
     fun login(): Result {
         val username = usernamePref.full() ?: ""
-        val password = Hawk.get(Prefs.PASSWORD)
+        val password: String = Hawk.get(Prefs.PASSWORD)
 
         // Create the POST request with the given username and password and handle the response
         return handleLogin(mcGillService.login(username, password).execute())
