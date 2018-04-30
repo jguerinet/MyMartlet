@@ -35,19 +35,20 @@ import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.manager.UpdateManager
+import com.guerinet.mymartlet.util.retrofit.Result
 import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import com.guerinet.mymartlet.util.thread.UserDownloader
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
+import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import okhttp3.ResponseBody
-import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
@@ -55,7 +56,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-import javax.inject.Inject
 
 /**
  * First activity that is opened when the app is started
@@ -77,11 +77,8 @@ class SplashActivity : BaseActivity() {
     private val imm: InputMethodManager by inject()
 
     private val updateManager: UpdateManager by inject()
-    /**
-     * The [HomepageManager] instance
-     */
-    @Inject
-    internal var homepageManager: HomepageManager? = null
+
+    private val homePageManager: HomepageManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -250,14 +247,14 @@ class SplashActivity : BaseActivity() {
     /**
      * Attempts to either [autoLogin] or manually log in the user
      */
-    private fun login(autoLogin: Boolean) {
+    private suspend fun login(autoLogin: Boolean) {
         // Show the progress container
         progressContainer.isVisible = true
 
         // Reset the progress text (if it was set during a previous login attempt
         progressText.text = ""
 
-        async {
+        val resultAsync = async {
             ga.sendEvent("Splash", "Auto-Login", autoLogin.toString())
 
             // If we're auto-logging in and there's no internet, skip everything
@@ -267,7 +264,11 @@ class SplashActivity : BaseActivity() {
 
             // Try auto login if needed
             if (autoLogin) {
-                return@async mcGillManager.login()
+                val result = mcGillManager.login()
+                if (result !is Result.EmptySuccess) {
+                    // If auto login isn't successful, don't continue
+                    return@async result
+                }
             }
 
             // Check if we need to download everything or only the essential stuff
@@ -288,23 +289,25 @@ class SplashActivity : BaseActivity() {
                     userDownloader.execute()
                 } catch (e: IOException) {
                     // If there was an exception, return it
-                    return e
+                    return@async Result.Failure(e)
                 }
             } else {
                 userDownloader.start()
             }
 
-            // Hide the container
-            progressContainer.isVisible = false
+            return@async null
+        }
 
-            if (result == null) {
-                // Connection successful: home page
-                startActivity(Intent(this@SplashActivity, homepageManager!!.activity))
-                finish()
-            } else {
-                // Connection not successful: login
-                showLoginScreen(e)
-            }
+        // Hide the container
+        progressContainer.isVisible = false
+
+        val result = resultAsync.await()
+        if (result !is Result.Failure) {
+            // Connection successful: home page
+            openHomePage()
+        } else {
+            // Connection not successful: login
+            showLoginScreen(result.exception)
         }
     }
 
@@ -316,7 +319,8 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun openHomePage() {
-        startActivity<>()
+        startActivity(Intent(this, homePageManager.activity))
+        finish()
     }
 
     companion object {
