@@ -119,7 +119,7 @@ public class SettingsActivity extends DrawerActivity {
                                     homepageManager.set(choice);
 
                                     getGa().sendEvent("Settings", "HomepageManager",
-                                            homepageManager.getString());
+                                            homepageManager.getTitle());
 
                                     // Update the TextView
                                     item.text(homepageManager.getTitleString());

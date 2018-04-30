@@ -101,7 +101,7 @@ public abstract class HomepagesAdapter implements SingleListInterface {
      * @param homepage {@link Homepage} to add
      */
     private void addHomepage(@Homepage int homepage) {
-        homepages.add(new Pair<>(homepage, homepageManager.getString(homepage)));
+        homepages.add(new Pair<>(homepage, homepageManager.getTitle(homepage)));
     }
 
     /**

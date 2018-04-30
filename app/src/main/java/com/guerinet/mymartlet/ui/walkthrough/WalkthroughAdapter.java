@@ -142,7 +142,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                                         item.text(homepageManager.getTitleString());
 
                                         ga.sendEvent("Walkthrough", "HomepageManager",
-                                                homepageManager.getString());
+                                                homepageManager.getTitle());
                                     }
                                 });
                         return Unit.INSTANCE;

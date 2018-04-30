@@ -16,8 +16,6 @@
 
 package com.guerinet.mymartlet.util.manager
 
-import android.app.Activity
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.SharedPreferences
 import android.support.annotation.IdRes
@@ -34,8 +32,8 @@ import com.guerinet.mymartlet.ui.transcript.TranscriptActivity
 import com.guerinet.mymartlet.ui.web.DesktopActivity
 import com.guerinet.mymartlet.ui.web.MyCoursesActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistActivity
-import com.guerinet.mymartlet.util.Constants.COURSES
 import com.guerinet.suitcase.prefs.IntPref
+import kotlin.reflect.KClass
 
 /**
  * Manages the user's homepage, an extension of the [IntPref]
@@ -48,68 +46,58 @@ import com.guerinet.suitcase.prefs.IntPref
 class HomepageManager(prefs: SharedPreferences, private val context: Context) : IntPref(prefs,
         "home_page", HomePage.SCHEDULE.ordinal) {
 
+    val homePage: HomePage
+        get() = HomePage.values()[value]
+
+    /**
+     * Title of the current homepage
+     */
+    val title: String
+        get() = context.getString(homePage.titleId)
+
     /**
      * Title String for the settings and/or the walkthrough
      */
     val titleString: String
-        get() = context.getString(R.string.settings_homepage, string)
+        get() = context.getString(R.string.settings_homepage, title)
 
     /**
      * Class to open for the current homepage
      */
     val activity: Class<*>
-        get() = getActivity(get())
+        get() = homePage.activity.java
 
     /**
-     * Title of the current homepage
+     * Converts the [menuId] to a home page
      */
-    val string: String
-        get() = getString(get())
+    fun getHomePage(@IdRes menuId: Int): Int =
+            HomePage.values().first { it.menuId == menuId }.ordinal
 
-    val activity: Activity
-        get() =
-            when (homepage) {
-                SCHEDULE -> return ScheduleActivity::class.java
-                TRANSCRIPT -> return TranscriptActivity::class.java
-                MY_COURSES -> return MyCoursesActivity::class.java
-                COURSES -> return CoursesActivity::class.java
-                WISHLIST -> return WishlistActivity::class.java
-                SEARCH_COURSES -> return SearchActivity::class.java
-                EBILL -> return EbillActivity::class.java
-                MAP -> return MapActivity::class.java
-                DESKTOP -> return DesktopActivity::class.java
-                HomePage.SETTINGS -> return SettingsActivity::class.java
-                else -> throw IllegalStateException("Unknown homepage")
-            }
-}
+    /**
+     * Converts the given [homePage] into a menu item Id
+     */
+    @IdRes
+    fun getMenuId(homePage: Int) = HomePage.values()[homePage].menuId
 
-/**
- * Returns the title of the given [homePage]
- */
-fun getString(homePage: Int): String = context.getString(HomePage.values()[homePage].titleId)
+    /**
+     * A potential home page for the app
+     *
+     * @param titleId   Id of the title of the his home page
+     * @param menuId    Id of the menu item for this home page
+     * @param activity  Corresponding activity to open for this home page
+     */
+    enum class HomePage(@StringRes val titleId: Int, @IdRes val menuId: Int,
+            val activity: KClass<*>) {
 
-/**
- * Converts the [menuId] to a home page
- */
-fun getHomePage(@IdRes menuId: Int): Int =
-        HomePage.values().first { it.menuId == menuId }.ordinal
-
-/**
- * Converts the given [homePage] into a menu item Id
- */
-@IdRes
-fun getMenuId(homePage: Int) = HomePage.values()[homePage].menuId
-
-enum class HomePage(@StringRes val titleId: Int, @IdRes val menuId: Int, activity: Activity) {
-    SCHEDULE(R.string.homepage_schedule, R.id.schedule),
-    TRANSCRIPT(R.string.homepage_transcript, R.id.transcript),
-    MY_COURSES(R.string.homepage_mycourses, R.id.my_courses),
-    COURSES(R.string.homepage_courses, R.id.courses),
-    WISHLIST(R.string.homepage_wishlist, R.id.wishlist),
-    SEARCH_COURSES(R.string.homepage_search, R.id.search),
-    EBILL(R.string.homepage_ebill, R.id.ebill),
-    MAP(R.string.homepage_map, R.id.map),
-    DESKTOP(R.string.homepage_desktop, R.id.desktop),
-    SETTINGS(R.string.title_settings, R.id.settings)
-}
+        SCHEDULE(R.string.homepage_schedule, R.id.schedule, ScheduleActivity::class),
+        TRANSCRIPT(R.string.homepage_transcript, R.id.transcript, TranscriptActivity::class),
+        MY_COURSES(R.string.homepage_mycourses, R.id.my_courses, MyCoursesActivity::class),
+        COURSES(R.string.homepage_courses, R.id.courses, CoursesActivity::class),
+        WISHLIST(R.string.homepage_wishlist, R.id.wishlist, WishlistActivity::class),
+        SEARCH_COURSES(R.string.homepage_search, R.id.search, SearchActivity::class),
+        EBILL(R.string.homepage_ebill, R.id.ebill, EbillActivity::class),
+        MAP(R.string.homepage_map, R.id.map, MapActivity::class),
+        DESKTOP(R.string.homepage_desktop, R.id.desktop, DesktopActivity::class),
+        SETTINGS(R.string.title_settings, R.id.settings, SettingsActivity::class)
+    }
 }
