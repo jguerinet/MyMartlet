@@ -48,13 +48,9 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
-import okhttp3.ResponseBody
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.IOException
 
 /**
@@ -182,7 +178,7 @@ class SplashActivity : BaseActivity() {
     /**
      * Called when the login button is pressed
      */
-    private fun loginPressed() {
+    private suspend fun loginPressed() {
         // Hide the keyboard
         username.clearFocus()
         imm.hideSoftInputFromWindow(username.windowToken, 0)
@@ -205,43 +201,41 @@ class SplashActivity : BaseActivity() {
 
         progressContainer.isVisible = true
 
-        mcGillManager.login(username + getString(R.string.login_email), password,
-                object : Callback<ResponseBody> {
-                    override fun onResponse(call: Call<ResponseBody>,
-                            response: Response<ResponseBody>) {
-                        // Store the login info
-                        usernamePref.value = username
-                        Hawk.put(Prefs.PASSWORD, password)
-                        rememberUsernamePref.value = rememberUsername.isChecked
+        launch {
+            val result = mcGillManager.login(username + getString(R.string.login_email), password)
 
-                        ga.sendEvent("Login", "Remember Username",
-                                rememberUsername.isChecked.toString())
+            when (result) {
+                is Result.Success<*> -> {
+                    // Store the login info
+                    usernamePref.value = username
+                    Hawk.put(Prefs.PASSWORD, password)
+                    rememberUsernamePref.value = rememberUsername.isChecked
 
-                        handler.post {
-                            // Hide the login container
-                            loginContainer.isVisible = false
+                    ga.sendEvent("Login", "Remember Username",
+                            rememberUsername.isChecked.toString())
 
-                            // Start the downloading of information
-                            AutoLogin(false).execute()
-                        }
+                    // Hide the login container
+                    loginContainer.isVisible = false
+
+                    // Start the downloading of information
+                    login(false)
+                }
+                is Result.Failure -> {
+                    val error = if (result.exception is MinervaException)
+                        R.string.login_error_wrong_data
+                    else
+                        R.string.error_other
+
+                    // If for some reason the activity is finishing, don't show this
+                    if (isFinishing) {
+                        return@launch
                     }
 
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        val error = if (t is MinervaException)
-                            R.string.login_error_wrong_data
-                        else
-                            R.string.error_other
-
-                        handler.post {
-                            // If for some reason the activity is finishing, don't show this
-                            if (isFinishing) {
-                                return@post
-                            }
-                            progressContainer.isVisible = false
-                            errorDialog(error)
-                        }
-                    }
-                })
+                    progressContainer.isVisible = false
+                    errorDialog(error)
+                }
+            }
+        }
     }
 
     /**

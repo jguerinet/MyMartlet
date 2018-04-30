@@ -34,8 +34,6 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.IOException
@@ -152,23 +150,12 @@ class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
     }
 
     /**
-     * Attempts to log into Minerva asynchronously with the [username], [password], and [callback]
+     * Attempts to log into Minerva asynchronously with the [username], [password], and returns the
+     *  corresponding [Result]
      */
-    fun login(username: String, password: String, callback: Callback<ResponseBody>) {
-        mcGillService.login(username, password).enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                val result = handleLogin(response)
-                when (result) {
-                // If login goes smoothly, call the given callback
-                    is Result.Success<*> -> callback.onResponse(call, response)
-                    is Result.Failure -> callback.onFailure(call, result.exception)
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                callback.onFailure(call, t)
-            }
-        })
+    fun login(username: String, password: String): Result {
+        val response = mcGillService.login(username, password).execute()
+        return handleLogin(response)
     }
 
     /**
