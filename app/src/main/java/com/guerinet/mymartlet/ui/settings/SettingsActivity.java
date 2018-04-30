@@ -106,7 +106,7 @@ public class SettingsActivity extends DrawerActivity {
 
         // Homepage choice
         morf.text()
-                .text(homepageManager.getTitleString())
+                .text(homePageManager.getTitleString())
                 .icon(Position.START, R.drawable.ic_phone_android)
                 .onClick(item -> {
                     DialogUtils.singleList(this, R.string.settings_homepage_title,

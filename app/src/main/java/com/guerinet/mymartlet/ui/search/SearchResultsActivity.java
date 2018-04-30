@@ -42,7 +42,7 @@ public class SearchResultsActivity extends BaseActivity {
     /**
      * Main view
      */
-    @BindView(R.id.main)
+    @BindView(R.id.mainView)
     LinearLayout main;
 
     @SuppressWarnings("unchecked")

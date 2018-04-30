@@ -70,14 +70,7 @@ class HomepageManager(prefs: SharedPreferences, private val context: Context) : 
     /**
      * Converts the [menuId] to a home page
      */
-    fun getHomePage(@IdRes menuId: Int): Int =
-            HomePage.values().first { it.menuId == menuId }.ordinal
-
-    /**
-     * Converts the given [homePage] into a menu item Id
-     */
-    @IdRes
-    fun getMenuId(homePage: Int) = HomePage.values()[homePage].menuId
+    fun getHomePage(@IdRes menuId: Int): HomePage = HomePage.values().first { it.menuId == menuId }
 
     /**
      * A potential home page for the app
