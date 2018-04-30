@@ -64,7 +64,7 @@ public class MyCoursesActivity extends DrawerActivity {
     /**
      * Main content
      */
-    @BindView(R.id.web_view)
+    @BindView(R.id.webView)
     protected WebView mWebView;
 
     @Inject

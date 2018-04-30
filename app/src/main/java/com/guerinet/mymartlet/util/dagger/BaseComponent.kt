@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.util.dagger
 
-import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.MapActivity
 import com.guerinet.mymartlet.ui.ScheduleActivity
 import com.guerinet.mymartlet.ui.courses.CoursesActivity
@@ -28,13 +27,11 @@ import com.guerinet.mymartlet.ui.settings.AgreementActivity
 import com.guerinet.mymartlet.ui.settings.SettingsActivity
 import com.guerinet.mymartlet.ui.transcript.TranscriptActivity
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughAdapter
-import com.guerinet.mymartlet.ui.web.DesktopActivity
 import com.guerinet.mymartlet.ui.web.MyCoursesActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistHelper
 import com.guerinet.mymartlet.util.background.BootReceiver
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule
-import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.thread.UserDownloader
 import dagger.Component
 import javax.inject.Singleton
@@ -48,7 +45,6 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AppModule::class, PrefsModule::class))
 interface BaseComponent {
 
-    fun inject(activity: DrawerActivity)
     fun inject(activity: AgreementActivity)
     fun inject(activity: ScheduleActivity)
     fun inject(activity: TranscriptActivity)
@@ -56,7 +52,6 @@ interface BaseComponent {
     fun inject(activity: WishlistActivity)
     fun inject(activity: MapActivity)
     fun inject(activity: MyCoursesActivity)
-    fun inject(activity: DesktopActivity)
     fun inject(activity: SettingsActivity)
     fun inject(activity: SearchActivity)
 
@@ -67,7 +62,6 @@ interface BaseComponent {
 
     fun inject(downloader: UserDownloader)
 
-    fun inject(mcGillManager: McGillManager)
     fun inject(receiver: BootReceiver)
     fun inject(helper: WishlistHelper)
 }

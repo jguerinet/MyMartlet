@@ -14,7 +14,7 @@
         <include layout="@layout/toolbar"/>
 
         <WebView
-            android:id="@+id/web_view"
+            android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
