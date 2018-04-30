@@ -27,7 +27,6 @@ import com.guerinet.mymartlet.ui.settings.AgreementActivity
 import com.guerinet.mymartlet.ui.settings.SettingsActivity
 import com.guerinet.mymartlet.ui.transcript.TranscriptActivity
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughAdapter
-import com.guerinet.mymartlet.ui.web.MyCoursesActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistHelper
 import com.guerinet.mymartlet.util.background.BootReceiver
@@ -51,7 +50,6 @@ interface BaseComponent {
     fun inject(activity: CoursesActivity)
     fun inject(activity: WishlistActivity)
     fun inject(activity: MapActivity)
-    fun inject(activity: MyCoursesActivity)
     fun inject(activity: SettingsActivity)
     fun inject(activity: SearchActivity)
 
