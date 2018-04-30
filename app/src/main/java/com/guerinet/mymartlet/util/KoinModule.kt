@@ -21,7 +21,6 @@ import android.preference.PreferenceManager
 import android.view.inputmethod.InputMethodManager
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.util.dagger.prefs.STATS
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.suitcase.analytics.GAManager
@@ -58,7 +57,8 @@ val appModule: Module = applicationContext {
     // GAManager
     bean {
         object : GAManager(androidApplication(), R.xml.global_tracker) {
-            override val isDisabled: Boolean = BuildConfig.DEBUG || !get<BooleanPref>(STATS).value
+            override val isDisabled: Boolean = BuildConfig.DEBUG ||
+                    !get<BooleanPref>(Prefs.STATS).value
         }
     }
 

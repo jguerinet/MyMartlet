@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,11 @@
 
 package com.guerinet.mymartlet.util.dagger
 
-import com.guerinet.mymartlet.ui.*
+import com.guerinet.mymartlet.ui.BaseActivity
+import com.guerinet.mymartlet.ui.DrawerActivity
+import com.guerinet.mymartlet.ui.MapActivity
+import com.guerinet.mymartlet.ui.ScheduleActivity
+import com.guerinet.mymartlet.ui.SplashActivity
 import com.guerinet.mymartlet.ui.courses.CoursesActivity
 import com.guerinet.mymartlet.ui.dialog.list.CategoryListAdapter
 import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter
@@ -44,7 +48,7 @@ import javax.inject.Singleton
  * @since 1.0.0
  */
 @Singleton
-@Component(modules = arrayOf(AppModule::class, NetworkModule::class, PrefsModule::class))
+@Component(modules = arrayOf(AppModule::class, PrefsModule::class))
 interface BaseComponent {
 
     fun inject(activity: BaseActivity)
