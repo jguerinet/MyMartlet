@@ -135,7 +135,7 @@ public class WishlistActivity extends DrawerActivity {
     @HomepageManager.Homepage
     @Override
     protected int getCurrentPage() {
-        return HomepageManager.WISHLIST;
+        return HomepageManager.Companion.getWISHLIST();
     }
 
     /**

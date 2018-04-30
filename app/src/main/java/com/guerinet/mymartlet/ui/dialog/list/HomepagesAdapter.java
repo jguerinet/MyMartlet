@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,16 +57,16 @@ public abstract class HomepagesAdapter implements SingleListInterface {
     protected HomepagesAdapter(Context context) {
         App.Companion.component(context).inject(this);
         homepages = new ArrayList<>();
-        addHomepage(HomepageManager.SCHEDULE);
-        addHomepage(HomepageManager.TRANSCRIPT);
-        addHomepage(HomepageManager.MY_COURSES);
-        addHomepage(HomepageManager.COURSES);
-        addHomepage(HomepageManager.WISHLIST);
-        addHomepage(HomepageManager.SEARCH_COURSES);
-        addHomepage(HomepageManager.EBILL);
-        addHomepage(HomepageManager.MAP);
-        addHomepage(HomepageManager.DESKTOP);
-        addHomepage(HomepageManager.SETTINGS);
+        addHomepage(HomepageManager.Companion.getSCHEDULE());
+        addHomepage(HomepageManager.Companion.getTRANSCRIPT());
+        addHomepage(HomepageManager.Companion.getMY_COURSES());
+        addHomepage(HomepageManager.Companion.getCOURSES());
+        addHomepage(HomepageManager.Companion.getWISHLIST());
+        addHomepage(HomepageManager.Companion.getSEARCH_COURSES());
+        addHomepage(HomepageManager.Companion.getEBILL());
+        addHomepage(HomepageManager.Companion.getMAP());
+        addHomepage(HomepageManager.Companion.getDESKTOP());
+        addHomepage(HomepageManager.Companion.getSETTINGS());
 
         // Sort them alphabetically
         Collections.sort(homepages, (lhs, rhs) -> lhs.second.compareToIgnoreCase(rhs.second));

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -173,7 +173,7 @@ public class WishlistHelper {
     }
 
     private void register(final List<CourseResult> courses) {
-        mcGillService.registration(McGillManager.getRegistrationURL(courses, false))
+        mcGillService.registration(McGillManager.Companion.getRegistrationURL(courses, false))
                 .enqueue(new Callback<List<RegistrationError>>() {
                     @Override
                     public void onResponse(Call<List<RegistrationError>> call,

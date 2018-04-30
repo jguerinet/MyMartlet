@@ -260,6 +260,6 @@ public class SettingsActivity extends DrawerActivity {
     @HomepageManager.Homepage
     @Override
     protected int getCurrentPage() {
-        return HomepageManager.SETTINGS;
+        return HomepageManager.Companion.getSETTINGS();
     }
 }

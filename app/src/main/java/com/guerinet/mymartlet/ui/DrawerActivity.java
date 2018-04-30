@@ -159,7 +159,7 @@ public abstract class DrawerActivity extends BaseActivity
                 logout();
                 return true;
             default:
-                int homepage = homepageManager.getHomepage(item.getItemId());
+                int homepage = homepageManager.getHomePage(item.getItemId());
 
                 // If it's the same as the current homepage, close the drawer and don't continue
                 if (homepage == getCurrentPage()) {

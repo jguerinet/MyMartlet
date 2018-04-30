@@ -100,6 +100,6 @@ public class DesktopActivity extends DrawerActivity {
     @Override
     @HomepageManager.Homepage
     protected int getCurrentPage() {
-        return HomepageManager.DESKTOP;
+        return HomepageManager.Companion.getDESKTOP();
     }
 }

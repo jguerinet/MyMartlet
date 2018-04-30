@@ -88,7 +88,7 @@ public class EbillActivity extends DrawerActivity {
     @Override
     protected @HomepageManager.Homepage
     int getCurrentPage() {
-        return HomepageManager.EBILL;
+        return HomepageManager.Companion.getEBILL();
     }
 
     /**

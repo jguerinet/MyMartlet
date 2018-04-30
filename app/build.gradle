@@ -131,6 +131,12 @@ android.buildTypes.each { type ->
             privateProps.facebookAppId ?: '"N/A'
 }
 
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
 // Versions for libraries with multiple dependencies
 def butterknife_version = "8.5.1"
 def dagger_version = "2.15"
@@ -158,6 +164,7 @@ dependencies {
     implementation "com.facebook.android:facebook-android-sdk:4.32.0"
     implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}"
     kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     implementation "com.google.android.gms:play-services-maps:${play_services_version}"
     implementation "com.google.dagger:dagger:${dagger_version}"
@@ -189,6 +196,7 @@ dependencies {
     }
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.21"
     // Don't update this as 1.10.x breaks the converters
     implementation "org.jsoup:jsoup:1.9.1"
     implementation "org.koin:koin-core:$koin_version"

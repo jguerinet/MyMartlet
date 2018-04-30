@@ -239,7 +239,7 @@ public class ScheduleActivity extends DrawerActivity {
 
     @Override
     protected @HomepageManager.Homepage int getCurrentPage() {
-        return HomepageManager.SCHEDULE;
+        return HomepageManager.Companion.getSCHEDULE();
     }
 
     private void updateCourses() {
