@@ -24,7 +24,7 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.dagger.prefs.STATS
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.suitcase.analytics.GAManager
-import com.guerinet.suitcase.date.DatePref
+import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.squareup.moshi.Moshi
@@ -54,7 +54,7 @@ val appModule: Module = applicationContext {
     // GAManager
     bean {
         object : GAManager(androidApplication(), R.xml.global_tracker) {
-            override fun isDisabled() = BuildConfig.DEBUG || !get<BooleanPref>(STATS).value
+            override val isDisabled: Boolean = BuildConfig.DEBUG || !get<BooleanPref>(STATS).value
         }
     }
 
@@ -82,27 +82,27 @@ val networkModule: Module = applicationContext {
  */
 val prefsModule: Module = applicationContext {
 
-    bean(Prefs.MIN_VERSION) { IntPref(get(), Prefs.MIN_VERSION, -1) }
-
-    bean(Prefs.IS_FIRST_OPEN) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
-
-    bean(Prefs.STATS) { BooleanPref(get(), Prefs.STATS, true) }
-
-    bean(Prefs.SCHEDULE_24HR) { BooleanPref(get(), Prefs.SCHEDULE_24HR, false) }
-
-    bean(Prefs.REMEMBER_USERNAME) { BooleanPref(get(), Prefs.REMEMBER_USERNAME, true) }
-
     bean(Prefs.EULA) { BooleanPref(get(), Prefs.EULA, false) }
-
-    bean(Prefs.SEAT_CHECKER) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
 
     bean(Prefs.GRADE_CHECKER) { BooleanPref(get(), Prefs.GRADE_CHECKER, false) }
 
-    bean(Prefs.IMS_CONFIG) { DatePref(get(), Prefs.IMS_CONFIG, null) }
+    bean(Prefs.IMS_CATEGORIES) { NullDatePref(get(), Prefs.IMS_CATEGORIES, null) }
 
-    bean(Prefs.IMS_PLACES) { DatePref(get(), Prefs.IMS_PLACES, null) }
+    bean(Prefs.IMS_CONFIG) { NullDatePref(get(), Prefs.IMS_CONFIG, null) }
 
-    bean(Prefs.IMS_CATEGORIES) { DatePref(get(), Prefs.IMS_CATEGORIES, null) }
+    bean(Prefs.IMS_PLACES) { NullDatePref(get(), Prefs.IMS_PLACES, null) }
 
-    bean(Prefs.IMS_REGISTRATION) { DatePref(get(), Prefs.IMS_REGISTRATION, null) }
+    bean(Prefs.IMS_REGISTRATION) { NullDatePref(get(), Prefs.IMS_REGISTRATION, null) }
+
+    bean(Prefs.IS_FIRST_OPEN) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
+
+    bean(Prefs.MIN_VERSION) { IntPref(get(), Prefs.MIN_VERSION, -1) }
+
+    bean(Prefs.REMEMBER_USERNAME) { BooleanPref(get(), Prefs.REMEMBER_USERNAME, true) }
+
+    bean(Prefs.SCHEDULE_24HR) { BooleanPref(get(), Prefs.SCHEDULE_24HR, false) }
+
+    bean(Prefs.SEAT_CHECKER) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
+
+    bean(Prefs.STATS) { BooleanPref(get(), Prefs.STATS, true) }
 }
