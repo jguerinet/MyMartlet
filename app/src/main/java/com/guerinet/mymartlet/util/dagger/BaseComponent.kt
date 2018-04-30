@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.util.dagger
 
-import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.MapActivity
 import com.guerinet.mymartlet.ui.ScheduleActivity
@@ -49,7 +48,6 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AppModule::class, PrefsModule::class))
 interface BaseComponent {
 
-    fun inject(activity: BaseActivity)
     fun inject(activity: DrawerActivity)
     fun inject(activity: AgreementActivity)
     fun inject(activity: ScheduleActivity)

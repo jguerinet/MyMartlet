@@ -39,7 +39,6 @@ import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.util.extensions.isConnected
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
-import javax.inject.Inject
 
 /**
  * Base class for all activities
@@ -52,16 +51,11 @@ open class BaseActivity : AppCompatActivity() {
 
     val toolbarProgress: ProgressBar by lazy { findViewById<ProgressBar>(R.id.toolbar_progress) }
 
-    val ga: GAManager by inject()
+    val ga by inject<GAManager>()
 
-    // TODO
-    /**
-     * [McGillService] instance
-     */
-    @Inject
-    var mcGillService: McGillService? = null
+    val mcGillService by inject<McGillService>()
 
-    val clearManager: ClearManager by inject()
+    val clearManager by inject<ClearManager>()
 
     /**
      * Handler for posting delayed actions

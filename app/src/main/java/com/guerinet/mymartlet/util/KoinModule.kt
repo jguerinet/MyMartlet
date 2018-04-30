@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.ClearManager
+import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.NullDatePref
@@ -55,7 +56,7 @@ val appModule: Module = applicationContext {
     bean { Moshi.Builder().build() }
 
     // GAManager
-    bean {
+    bean<GAManager> {
         object : GAManager(androidApplication(), R.xml.global_tracker) {
             override val isDisabled: Boolean = BuildConfig.DEBUG ||
                     !get<BooleanPref>(Prefs.STATS).value
@@ -81,6 +82,9 @@ val networkModule: Module = applicationContext {
         HttpLoggingInterceptor({ message -> Timber.tag("OkHttp").i(message) })
                 .level = HttpLoggingInterceptor.Level.BASIC
     }
+
+    // McGillService
+    bean { get<McGillManager>().mcGillService }
 
     // OkHttp
     bean { OkHttpClient.Builder().addInterceptor(get()).build() }
