@@ -35,23 +35,23 @@ interface ConfigService {
      * Retrieves the [ConfigDownloadService.Config]. Uses the [ims] header
      */
     @GET("config")
-    fun config(@Header("If-Modified-Since") ims: String): Call<ConfigDownloadService.Config>
+    fun config(@Header("If-Modified-Since") ims: String?): Call<ConfigDownloadService.Config>
 
     /**
      * Retrieves the list of [Place]. Uses the [ims] header
      */
     @GET("places")
-    fun places(@Header("If-Modified-Since") ims: String): Call<List<Place>>
+    fun places(@Header("If-Modified-Since") ims: String?): Call<List<Place>>
 
     /**
      * Retrieves the list of [Category]s. Uses the [ims] header
      */
     @GET("categories")
-    fun categories(@Header("If-Modified-Since") ims: String): Call<List<Category>>
+    fun categories(@Header("If-Modified-Since") ims: String?): Call<List<Category>>
 
     /**
      * Retrieves the list of [Term]s one can currently register for. Uses the [ims] header
      */
     @GET("registration-terms")
-    fun registrationTerms(@Header("If-Modified-Since") ims: String): Call<List<Term>>
+    fun registrationTerms(@Header("If-Modified-Since") ims: String?): Call<List<Term>>
 }

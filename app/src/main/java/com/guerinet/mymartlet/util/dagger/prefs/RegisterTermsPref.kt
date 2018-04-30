@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import javax.inject.Singleton
 class RegisterTermsPref @Inject constructor(prefs: SharedPreferences) :
         StringPref(prefs, "register_terms", "") {
 
-    var terms: MutableList<Term> = get()!!.split(",").map { Term.parseTerm(it) }.toMutableList()
+    var terms: MutableList<Term> = value.split(",").map { Term.parseTerm(it) }.toMutableList()
         set(value) {
             field = value
             set(value.joinToString { term -> term.id })

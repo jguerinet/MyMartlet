@@ -124,7 +124,9 @@
 
         <!-- Services -->
 
-        <service android:name="com.guerinet.mymartlet.util.service.ConfigDownloadService"/>
+        <service
+            android:name="com.guerinet.mymartlet.util.service.ConfigDownloadService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <service android:name="com.guerinet.mymartlet.util.background.CheckerService" />
 
