@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.util.dagger.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.R
-import com.guerinet.suitcase.prefs.StringPref
+import com.guerinet.suitcase.prefs.NullStringPref
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,7 +30,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class UsernamePref @Inject constructor(context: Context, prefs: SharedPreferences) :
-        StringPref(prefs, "username", null) {
+        NullStringPref(prefs, "username", null) {
 
     /**
      * McGill email suffix
