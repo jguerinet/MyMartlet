@@ -46,6 +46,7 @@ import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.startActivityForResult
@@ -82,7 +83,9 @@ class SplashActivity : BaseActivity() {
 
         // OnClick listeners
         versionButton.setOnClickListener { openPlayStoreApp() }
-        loginButton.setOnClickListener { loginPressed() }
+        loginButton.setOnClickListener {
+            launch(UI) { loginPressed() }
+        }
 
         launch {
             // Run any update code
@@ -201,39 +204,36 @@ class SplashActivity : BaseActivity() {
 
         progressContainer.isVisible = true
 
-        launch {
-            val result = mcGillManager.login(username + getString(R.string.login_email), password)
+        val result = mcGillManager.login(username + getString(R.string.login_email), password)
 
-            when (result) {
-                is Result.Success<*> -> {
-                    // Store the login info
-                    usernamePref.value = username
-                    Hawk.put(Prefs.PASSWORD, password)
-                    rememberUsernamePref.value = rememberUsername.isChecked
+        when (result) {
+            is Result.Success<*> -> {
+                // Store the login info
+                usernamePref.value = username
+                Hawk.put(Prefs.PASSWORD, password)
+                rememberUsernamePref.value = rememberUsername.isChecked
 
-                    ga.sendEvent("Login", "Remember Username",
-                            rememberUsername.isChecked.toString())
+                ga.sendEvent("Login", "Remember Username", rememberUsername.isChecked.toString())
 
-                    // Hide the login container
-                    loginContainer.isVisible = false
+                // Hide the login container
+                loginContainer.isVisible = false
 
-                    // Start the downloading of information
-                    login(false)
+                // Start the downloading of information
+                login(false)
+            }
+            is Result.Failure -> {
+                val error = if (result.exception is MinervaException)
+                    R.string.login_error_wrong_data
+                else
+                    R.string.error_other
+
+                // If for some reason the activity is finishing, don't show this
+                if (isFinishing) {
+                    return
                 }
-                is Result.Failure -> {
-                    val error = if (result.exception is MinervaException)
-                        R.string.login_error_wrong_data
-                    else
-                        R.string.error_other
 
-                    // If for some reason the activity is finishing, don't show this
-                    if (isFinishing) {
-                        return@launch
-                    }
-
-                    progressContainer.isVisible = false
-                    errorDialog(error)
-                }
+                progressContainer.isVisible = false
+                errorDialog(error)
             }
         }
     }

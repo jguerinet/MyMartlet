@@ -154,8 +154,12 @@ class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
      *  corresponding [Result]
      */
     fun login(username: String, password: String): Result {
-        val response = mcGillService.login(username, password).execute()
-        return handleLogin(response)
+        return try {
+            val response = mcGillService.login(username, password).execute()
+            handleLogin(response)
+        } catch (e: IOException) {
+            Result.Failure(e)
+        }
     }
 
     /**
