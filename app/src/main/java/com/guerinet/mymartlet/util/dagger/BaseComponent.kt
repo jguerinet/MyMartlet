@@ -20,7 +20,6 @@ import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.MapActivity
 import com.guerinet.mymartlet.ui.ScheduleActivity
-import com.guerinet.mymartlet.ui.SplashActivity
 import com.guerinet.mymartlet.ui.courses.CoursesActivity
 import com.guerinet.mymartlet.ui.dialog.list.CategoryListAdapter
 import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter
@@ -37,7 +36,6 @@ import com.guerinet.mymartlet.ui.wishlist.WishlistHelper
 import com.guerinet.mymartlet.util.background.BootReceiver
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule
 import com.guerinet.mymartlet.util.manager.McGillManager
-import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import com.guerinet.mymartlet.util.thread.UserDownloader
 import dagger.Component
 import javax.inject.Singleton
@@ -53,7 +51,6 @@ interface BaseComponent {
 
     fun inject(activity: BaseActivity)
     fun inject(activity: DrawerActivity)
-    fun inject(activity: SplashActivity)
     fun inject(activity: AgreementActivity)
     fun inject(activity: ScheduleActivity)
     fun inject(activity: TranscriptActivity)
@@ -69,8 +66,6 @@ interface BaseComponent {
     fun inject(adapter: HomepagesAdapter)
     fun inject(adapter: CategoryListAdapter)
     fun inject(helper: TermDialogHelper)
-
-    fun inject(service: ConfigDownloadService)
 
     fun inject(downloader: UserDownloader)
 
