@@ -20,7 +20,7 @@ import android.content.Context
 import android.support.annotation.StringRes
 import android.support.v7.app.AlertDialog
 import com.guerinet.mymartlet.R
-import com.guerinet.suitcase.dialog.DialogUtils
+import com.guerinet.suitcase.dialog.neutralDialog
 
 /**
  * Extensions for the [Context]
@@ -31,5 +31,4 @@ import com.guerinet.suitcase.dialog.DialogUtils
 /**
  * Shows an error [AlertDialog] with one button and the [messageId]
  */
-fun Context.errorDialog(@StringRes messageId: Int) =
-        DialogUtils.neutral(this, R.string.error, messageId)
+fun Context.errorDialog(@StringRes messageId: Int) = neutralDialog(R.string.error, messageId)
