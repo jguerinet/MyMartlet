@@ -47,7 +47,6 @@ import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.startService
@@ -139,7 +138,7 @@ class SplashActivity : BaseActivity() {
             showLoginScreen(intent.getSerializableExtra(Constants.EXCEPTION) as? IOException)
         } else {
             // Try logging the user in and download their info
-            AutoLogin(true).execute()
+            launch(UI) { login(true) }
         }
     }
 
@@ -181,7 +180,7 @@ class SplashActivity : BaseActivity() {
     /**
      * Called when the login button is pressed
      */
-    private suspend fun loginPressed() {
+    private fun loginPressed() {
         // Hide the keyboard
         username.clearFocus()
         imm.hideSoftInputFromWindow(username.windowToken, 0)
@@ -241,68 +240,60 @@ class SplashActivity : BaseActivity() {
     /**
      * Attempts to either [autoLogin] or manually log in the user
      */
-    private suspend fun login(autoLogin: Boolean) {
+    private fun login(autoLogin: Boolean) {
         // Show the progress container
         progressContainer.isVisible = true
 
         // Reset the progress text (if it was set during a previous login attempt
         progressText.text = ""
 
-        val resultAsync = async {
-            ga.sendEvent("Splash", "Auto-Login", autoLogin.toString())
+        ga.sendEvent("Splash", "Auto-Login", autoLogin.toString())
 
-            // If we're auto-logging in and there's no internet, skip everything
-            if (autoLogin && !isConnected) {
-                return@async null
+        // If we're auto-logging in and there's no internet, skip everything
+        if (autoLogin && !isConnected) {
+            openHomePage()
+            return
+        }
+
+        // Try auto login if needed
+        if (autoLogin) {
+            val result = mcGillManager.login()
+            if (result is Result.Failure) {
+                // If auto login isn't successful, don't continue
+                showLoginScreen(result.exception)
+                return
             }
+        }
 
-            // Try auto login if needed
-            if (autoLogin) {
-                val result = mcGillManager.login()
-                if (result !is Result.EmptySuccess) {
-                    // If auto login isn't successful, don't continue
-                    return@async result
-                }
+        // Check if we need to download everything or only the essential stuff
+        //  We need to download everything if there is null info
+        val downloadEverything = SQLite.select().from(Transcript::class).querySingle() == null ||
+                !getDatabasePath(StatementDB.FULL_NAME).exists()
+
+        // If we need to download everything, do it synchronously. If not, do it asynchronously
+        val userDownloader = object : UserDownloader(this@SplashActivity) {
+            override fun update(section: String) {
+                updateProgress(section)
             }
+        }
 
-            // Check if we need to download everything or only the essential stuff
-            //  We need to download everything if there is null info
-            val downloadEverything =
-                    SQLite.select().from(Transcript::class).querySingle() == null ||
-                            !getDatabasePath(StatementDB.FULL_NAME).exists()
-
-            // If we need to download everything, do it synchronously. If not, do it asynchronously
-            val userDownloader = object : UserDownloader(this@SplashActivity) {
-                override fun update(section: String) {
-                    updateProgress(section)
-                }
+        if (downloadEverything) {
+            try {
+                userDownloader.execute()
+            } catch (e: IOException) {
+                // If there was an exception, stop here
+                showLoginScreen(e)
+                return
             }
-
-            if (downloadEverything) {
-                try {
-                    userDownloader.execute()
-                } catch (e: IOException) {
-                    // If there was an exception, return it
-                    return@async Result.Failure(e)
-                }
-            } else {
-                userDownloader.start()
-            }
-
-            return@async null
+        } else {
+            userDownloader.start()
         }
 
         // Hide the container
         progressContainer.isVisible = false
 
-        val result = resultAsync.await()
-        if (result !is Result.Failure) {
-            // Connection successful: home page
-            openHomePage()
-        } else {
-            // Connection not successful: login
-            showLoginScreen(result.exception)
-        }
+        // Connection successful: home page
+        openHomePage()
     }
 
     /**
