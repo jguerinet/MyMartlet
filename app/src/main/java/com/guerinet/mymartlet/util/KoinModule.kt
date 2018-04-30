@@ -23,15 +23,19 @@ import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.dagger.prefs.STATS
 import com.guerinet.mymartlet.util.manager.ClearManager
+import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.squareup.moshi.Moshi
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module.Module
 import org.koin.dsl.module.applicationContext
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 
 /**
@@ -69,11 +73,25 @@ val appModule: Module = applicationContext {
 
 val networkModule: Module = applicationContext {
 
+    // ConfigService
+    bean { get<Retrofit>().create(ConfigService::class.java) }
+
     // HttpLoggingInterceptor
     bean {
-        val interceptor = HttpLoggingInterceptor({ message -> Timber.tag("OkHttp").i(message) })
-        interceptor.level = HttpLoggingInterceptor.Level.BASIC
-        interceptor
+        HttpLoggingInterceptor({ message -> Timber.tag("OkHttp").i(message) })
+                .level = HttpLoggingInterceptor.Level.BASIC
+    }
+
+    // OkHttp
+    bean { OkHttpClient.Builder().addInterceptor(get()).build() }
+
+    // Retrofit
+    bean {
+        Retrofit.Builder()
+                .client(get())
+                .baseUrl("https://mymartlet.herokuapp.com/api/v2")
+                .addConverterFactory(MoshiConverterFactory.create(get()))
+                .build()
     }
 }
 
