@@ -19,7 +19,6 @@ package com.guerinet.mymartlet.util.manager
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.model.AppUpdate
-import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.suitcase.util.BaseUpdateManager
 import org.threeten.bp.ZonedDateTime
 
@@ -30,8 +29,7 @@ import org.threeten.bp.ZonedDateTime
  *
  * @param prefs [SharedPreferences] instance
  */
-class UpdateManager(prefs: SharedPreferences) : BaseUpdateManager(prefs, BuildConfig.VERSION_CODE,
-        Prefs.VERSION) {
+class UpdateManager(prefs: SharedPreferences) : BaseUpdateManager(prefs, BuildConfig.VERSION_CODE) {
 
     override fun firstOpen(): Boolean {
         // Add an app update

@@ -27,7 +27,6 @@ package com.guerinet.mymartlet.util
  */
 object Prefs {
 
-    const val VERSION = "version"
     const val MIN_VERSION = "min_version"
     const val IS_FIRST_OPEN = "first_open"
     const val STATS = "statistics"

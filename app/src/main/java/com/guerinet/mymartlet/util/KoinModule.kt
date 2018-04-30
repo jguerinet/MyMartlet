@@ -82,8 +82,6 @@ val networkModule: Module = applicationContext {
  */
 val prefsModule: Module = applicationContext {
 
-    bean(Prefs.VERSION) { IntPref(get(), Prefs.VERSION, -1) }
-
     bean(Prefs.MIN_VERSION) { IntPref(get(), Prefs.MIN_VERSION, -1) }
 
     bean(Prefs.IS_FIRST_OPEN) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
