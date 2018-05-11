@@ -35,6 +35,7 @@ import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.AppUpdate;
 import com.guerinet.mymartlet.ui.DrawerActivity;
 import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter;
+import com.guerinet.mymartlet.ui.settings.about.AboutActivity;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.mymartlet.util.manager.HomepageManager;

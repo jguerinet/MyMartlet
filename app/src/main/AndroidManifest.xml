@@ -81,7 +81,7 @@
             android:theme="@style/Theme.MyMartlet.Drawer"/>
 
         <activity
-            android:name="com.guerinet.mymartlet.ui.settings.AboutActivity"
+            android:name="com.guerinet.mymartlet.ui.settings.about.AboutActivity"
             android:label="@string/title_about" />
 
         <activity
