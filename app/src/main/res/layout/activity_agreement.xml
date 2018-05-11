@@ -76,16 +76,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/buttons_container"
+                android:id="@+id/buttonsContainer"
                 android:orientation="horizontal"
                 android:visibility="gone">
-                
+
                 <Button
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/decline"
-                    android:id="@+id/button_decline"
+                    android:id="@+id/decline"
                     android:textColor="@color/red"/>
 
                 <View
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/agree"
-                    android:id="@+id/button_agree"
+                    android:id="@+id/agree"
                     android:textColor="@color/red"/>
 
             </LinearLayout>
