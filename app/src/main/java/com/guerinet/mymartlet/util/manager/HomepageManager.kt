@@ -46,14 +46,15 @@ import kotlin.reflect.KClass
 class HomepageManager(prefs: SharedPreferences, private val context: Context) : IntPref(prefs,
         "home_page", HomePage.SCHEDULE.ordinal) {
 
-    val homePage: HomePage
+    var homePage: HomePage
         get() = HomePage.values()[value]
+        set(value) = set(value.ordinal)
 
     /**
      * Title of the current homepage
      */
     val title: String
-        get() = context.getString(homePage.titleId)
+        get() = getTitle(homePage)
 
     /**
      * Title String for the settings and/or the walkthrough
@@ -66,6 +67,11 @@ class HomepageManager(prefs: SharedPreferences, private val context: Context) : 
      */
     val activity: Class<*>
         get() = homePage.activity.java
+
+    /**
+     * Returns the title String for the [homePage]
+     */
+    fun getTitle(homePage: HomePage): String = context.getString(homePage.titleId)
 
     /**
      * Converts the [menuId] to a home page

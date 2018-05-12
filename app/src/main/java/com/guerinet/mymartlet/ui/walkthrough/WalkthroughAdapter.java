@@ -134,7 +134,7 @@ public class WalkthroughAdapter extends PagerAdapter {
                                 new HomepagesAdapter(context) {
 
                                     @Override
-                                    public void onHomepageSelected(@HomepageManager.Homepage
+                                    public void onHomePageSelected(@HomepageManager.Homepage
                                             int choice) {
                                         // Update it
                                         homepageManager.set(choice);

@@ -54,7 +54,7 @@ import java.net.URL
  */
 abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val homePageManager by inject<HomepageManager>()
+    protected val homePageManager by inject<HomepageManager>()
 
     private val drawerToggle: ActionBarDrawerToggle by lazy {
         ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0)
