@@ -24,14 +24,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/statement_date"
+                android:id="@+id/date"
                 android:paddingBottom="@dimen/padding_micro"
                 tools:text="Date"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/statement_due_date"
+                android:id="@+id/dueDate"
                 tools:text="Due Date"/>
 
         </LinearLayout>
@@ -39,7 +39,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/statement_amount"
+            android:id="@+id/amount"
             android:gravity="center"
             android:padding="@dimen/padding_micro"
             tools:text="$0.00"/>
