@@ -21,23 +21,39 @@ package com.guerinet.mymartlet.util
  * @author Julien Guerinet
  * @since 1.0.0
  */
+object Constants {
+
+    /* INTENT KEYS */
+
+    const val COURSES = "courses"
+
+    const val EXCEPTION = "exception"
+
+    const val ID = "id"
+
+    const val TERM = "currentTerm"
+
+    /* BROADCASTS */
+
+    const val BROADCAST_MINERVA = "broadcast_minerva"
+}
 
 /**
  * SharedPreferences keys
  */
 object Prefs {
 
-    const val MIN_VERSION = "min_version"
-    const val IS_FIRST_OPEN = "first_open"
-    const val STATS = "statistics"
-    const val SCHEDULE_24HR = "24hr Schedule"
-    const val REMEMBER_USERNAME = "remember_username"
     const val EULA = "user_agreement"
-    const val SEAT_CHECKER = "seat_checker"
     const val GRADE_CHECKER = "grade_checker"
+    const val IMS_CATEGORIES = "ims_categories"
     const val IMS_CONFIG = "ims_config"
     const val IMS_PLACES = "ims_places"
-    const val IMS_CATEGORIES = "ims_categories"
     const val IMS_REGISTRATION = "ims_registration"
+    const val IS_FIRST_OPEN = "first_open"
+    const val MIN_VERSION = "min_version"
+    const val REMEMBER_USERNAME = "remember_username"
     const val PASSWORD = "password"
+    const val SCHEDULE_24HR = "24hr Schedule"
+    const val SEAT_CHECKER = "seat_checker"
+    const val STATS = "statistics"
 }

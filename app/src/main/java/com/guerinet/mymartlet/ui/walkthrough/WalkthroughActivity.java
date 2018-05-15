@@ -72,7 +72,7 @@ public class WalkthroughActivity extends BaseActivity {
         getGa().sendScreen("Walkthrough");
 
         // Load the adapter
-        boolean firstOpen = getIntent().getBooleanExtra(Constants.FIRST_OPEN, false);
+        boolean firstOpen = getIntent().getBooleanExtra(Constants.INSTANCE.getFIRST_OPEN(), false);
         adapter = new WalkthroughAdapter(this, firstOpen);
         viewPager.setAdapter(adapter);
 

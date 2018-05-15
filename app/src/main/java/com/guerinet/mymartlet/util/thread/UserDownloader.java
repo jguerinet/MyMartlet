@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,7 +157,7 @@ public abstract class UserDownloader extends Thread {
     private void handleException(IOException e, String section) {
         if (e instanceof MinervaException) {
             LocalBroadcastManager.getInstance(context)
-                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                    .sendBroadcast(new Intent(Constants.INSTANCE.getBROADCAST_MINERVA()));
         } else if (!(e instanceof SSLException)) {
             // Don't log SSLExceptions
             Timber.e(new Exception("Exception: " + section, e), "");

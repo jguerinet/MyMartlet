@@ -46,7 +46,7 @@ public class Help {
         if (t instanceof MinervaException) {
             // If this is a MinervaException, broadcast it
             LocalBroadcastManager.getInstance(context).sendBroadcast(
-                    new Intent(Constants.BROADCAST_MINERVA));
+                    new Intent(Constants.INSTANCE.getBROADCAST_MINERVA()));
         } else {
             DialogHelper.error(context, R.string.error_other);
         }

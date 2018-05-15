@@ -210,7 +210,8 @@ public class WishlistHelper {
                         // If this is a MinervaException, broadcast it
                         if (t instanceof MinervaException) {
                             LocalBroadcastManager.getInstance(activity)
-                                    .sendBroadcast(new Intent(Constants.BROADCAST_MINERVA));
+                                    .sendBroadcast(new Intent(Constants.INSTANCE
+                                            .getBROADCAST_MINERVA()));
                         } else {
                             DialogHelper.error(activity, R.string.error_other);
                         }

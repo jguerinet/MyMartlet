@@ -144,7 +144,7 @@ public class ScheduleActivity extends DrawerActivity {
         courses = new ArrayList<>();
 
         if (savedInstanceState != null) {
-            term = (Term) savedInstanceState.get(Constants.TERM);
+            term = (Term) savedInstanceState.get(Constants.INSTANCE.getTERM());
         }
 
         if (term == null) {
@@ -169,7 +169,7 @@ public class ScheduleActivity extends DrawerActivity {
         if (firstOpenPref.get()) {
             // Show them the walkthrough if it is
             Intent intent = new Intent(this, WalkthroughActivity.class)
-                    .putExtra(Constants.FIRST_OPEN, true);
+                    .putExtra(Constants.INSTANCE.getFIRST_OPEN(), true);
             startActivity(intent);
             // Save the fact that the walkthrough has been seen at least once
             firstOpenPref.set(false);
@@ -234,7 +234,7 @@ public class ScheduleActivity extends DrawerActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save the currentTerm
-        outState.putSerializable(Constants.TERM, term);
+        outState.putSerializable(Constants.INSTANCE.getTERM(), term);
     }
 
     @Override
@@ -660,7 +660,7 @@ public class ScheduleActivity extends DrawerActivity {
                                     alert.dismiss();
                                     // Open the map to the given place
                                     Intent intent = new Intent(this, MapActivity.class)
-                                            .putExtra(Constants.ID, place.getId());
+                                            .putExtra(Constants.INSTANCE.getID(), place.getId());
                                     getHandler().post(() -> switchDrawerActivity(intent));
                                 }
                             })

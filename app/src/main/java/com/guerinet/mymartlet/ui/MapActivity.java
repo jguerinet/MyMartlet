@@ -418,7 +418,7 @@ public class MapActivity extends DrawerActivity implements OnMapReadyCallback,
                 .from(Place.class)
                 .async()
                 .queryListResultCallback((transaction, tResult) -> {
-                    int placeId = getIntent().getIntExtra(Constants.ID, -1);
+                    int placeId = getIntent().getIntExtra(Constants.INSTANCE.getID(), -1);
                     Marker theMarker = null;
                     for (Place place : tResult) {
                         // Create a MapPlace for this
