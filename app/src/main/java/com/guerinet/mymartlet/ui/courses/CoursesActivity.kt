@@ -36,7 +36,6 @@ import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.extensions.errorDialog
-import com.guerinet.mymartlet.util.extensions.handleException
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
@@ -48,7 +47,6 @@ import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import timber.log.Timber
 
 /**
  * Shows the user all of the courses they have taken or is currently registered in
@@ -237,14 +235,5 @@ class CoursesActivity : DrawerActivity() {
                                 }
                             })
                 })
-    }
-
-    /**
-     * Handles an [error] while performing an [action]
-     */
-    private fun handleError(action: String, error: Throwable) {
-        Timber.e(error, "Error $action")
-        toolbarProgress.isVisible = false
-        handleException(error)
     }
 }

@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/transcript_cgpa"
+                android:id="@+id/cgpa"
                 android:layout_gravity="center"
                 android:textSize="@dimen/text_large"
                 android:textColor="@color/red"
@@ -34,7 +34,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/transcript_credits"
+                android:id="@+id/credits"
                 android:layout_gravity="center"
                 android:textSize="@dimen/text_medium"
                 android:textStyle="italic"

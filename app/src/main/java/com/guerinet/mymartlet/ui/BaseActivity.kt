@@ -39,6 +39,7 @@ import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.util.extensions.isConnected
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 /**
  * Base class for all activities
@@ -127,6 +128,21 @@ open class BaseActivity : AppCompatActivity() {
 
         toolbarProgress.isVisible = true
         return true
+    }
+
+    /**
+     * Handles a network [error] while performing an [action]
+     */
+    fun handleError(action: String, exception: Throwable) {
+        Timber.e(exception, "Error $action")
+        toolbarProgress.isVisible = false
+        if (exception is MinervaException) {
+            // If this is a MinervaException, broadcast it
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(Intent(Constants.BROADCAST_MINERVA))
+        } else {
+            errorDialog(R.string.error_other)
+        }
     }
 
     /**

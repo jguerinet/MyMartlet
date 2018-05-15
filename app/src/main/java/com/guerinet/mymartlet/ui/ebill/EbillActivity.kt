@@ -26,13 +26,11 @@ import com.guerinet.mymartlet.model.Statement
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.dbflow.DBUtils
 import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
-import com.guerinet.mymartlet.util.extensions.handleException
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import kotlinx.android.synthetic.main.activity_ebill.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import timber.log.Timber
 
 /**
  * Displays the user's ebill statements
@@ -92,9 +90,7 @@ class EbillActivity : DrawerActivity() {
             }
 
             override fun onFailure(call: Call<List<Statement>>, t: Throwable) {
-                Timber.e(t, "Error refreshing the ebill")
-                toolbarProgress.isVisible = false
-                handleException(t)
+                handleError("refreshing the ebill", t)
             }
         })
     }
