@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.util.dagger.prefs
 
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.model.Term
-import com.guerinet.suitcase.prefs.StringPref
+import com.guerinet.suitcase.prefs.NullStringPref
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,7 +29,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class DefaultTermPref @Inject constructor(prefs: SharedPreferences):
-        StringPref(prefs, "default_term", null) {
+        NullStringPref(prefs, "default_term", null) {
 
     private var currentTerm: Term? = null
 
