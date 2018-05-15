@@ -35,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/registration_no_semesters"
-                    android:id="@+id/search_empty"
+                    android:id="@+id/searchEmpty"
                     android:gravity="center"
                     android:textSize="@dimen/text_medium"
                     android:visibility="gone"/>
@@ -44,14 +44,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/search_container">
+                    android:id="@+id/searchContainer">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/padding_micro"
-                        android:id="@+id/term_container"
+                        android:id="@+id/termContainer"
                         android:padding="@dimen/padding_micro"
                         android:background="?android:attr/selectableItemBackground">
 
@@ -67,12 +67,12 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:id="@+id/search_term"/>
+                            android:id="@+id/termSelector"/>
 
                     </LinearLayout>
 
                     <EditText
-                        android:id="@+id/search_subject"
+                        android:id="@+id/subject"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
@@ -83,7 +83,7 @@
                         android:padding="@dimen/padding_micro"/>
 
                     <EditText
-                        android:id="@+id/search_number"
+                        android:id="@+id/number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
@@ -96,12 +96,12 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/more_options_container"
+                        android:id="@+id/moreOptionsContainer"
                         android:orientation="vertical"
                         android:visibility="gone">
 
                         <EditText
-                            android:id="@+id/search_title"
+                            android:id="@+id/courseTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/registration_title"
@@ -128,7 +128,7 @@
                             <EditText
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/search_min"
+                                android:id="@+id/minCredits"
                                 android:hint="0"
                                 android:inputType="number"/>
 
@@ -141,7 +141,7 @@
                             <EditText
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/search_max"
+                                android:id="@+id/maxCredits"
                                 android:hint="0"
                                 android:inputType="number"/>
 
@@ -173,7 +173,7 @@
                                 android:layout_weight="1"
                                 tools:targetApi="21"
                                 android:timePickerMode="spinner"
-                                android:id="@+id/search_start"/>
+                                android:id="@+id/startTime"/>
 
                         </LinearLayout>
 
@@ -194,7 +194,7 @@
                                 android:layout_weight="1"
                                 tools:targetApi="21"
                                 android:timePickerMode="spinner"
-                                android:id="@+id/search_end"/>
+                                android:id="@+id/endTime"/>
 
                         </LinearLayout>
 
@@ -221,43 +221,43 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/monday"
-                                    android:id="@+id/search_monday"/>
+                                    android:id="@+id/monday"/>
 
                                 <CheckBox
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/tuesday"
-                                    android:id="@+id/search_tuesday"/>
+                                    android:id="@+id/tuesday"/>
 
                                 <CheckBox
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/wednesday"
-                                    android:id="@+id/search_wednesday"/>
+                                    android:id="@+id/wednesday"/>
 
                                 <CheckBox
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/thursday"
-                                    android:id="@+id/search_thursday"/>
+                                    android:id="@+id/thursday"/>
 
                                 <CheckBox
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/friday"
-                                    android:id="@+id/search_friday"/>
+                                    android:id="@+id/friday"/>
 
                                 <CheckBox
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/saturday"
-                                    android:id="@+id/search_saturday"/>
+                                    android:id="@+id/saturday"/>
 
                                 <CheckBox
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/sunday"
-                                    android:id="@+id/search_sunday"/>
+                                    android:id="@+id/sunday"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -266,7 +266,7 @@
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/more_options"
+                        android:id="@+id/moreOptionsButton"
                         android:layout_gravity="center"
                         android:text="@string/registration_show_options"
                         android:textSize="@dimen/text_small"
@@ -280,7 +280,7 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/search_button"
+            android:id="@+id/searchButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@android:string/ok"
