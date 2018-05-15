@@ -17,13 +17,17 @@
 package com.guerinet.mymartlet.util.extensions
 
 import android.content.Context
+import android.content.Intent
 import android.support.annotation.StringRes
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
 import com.guerinet.mymartlet.R
+import com.guerinet.mymartlet.model.exception.MinervaException
+import com.guerinet.mymartlet.util.Constants
 import com.guerinet.suitcase.dialog.neutralDialog
 
 /**
- * Extensions for the [Context]
+ * Extensions for the Context
  * @author Julien Guerinet
  * @since 2.0.0
  */
@@ -32,3 +36,24 @@ import com.guerinet.suitcase.dialog.neutralDialog
  * Shows an error [AlertDialog] with one button and the [messageId]
  */
 fun Context.errorDialog(@StringRes messageId: Int) = neutralDialog(R.string.error, messageId)
+
+/**
+ * Shows an error [AlertDialog] with one button and the [message]
+ */
+fun Context.errorDialog(message: String) = neutralDialog(R.string.error, message)
+
+/**
+ * Broadcasts a [MinervaException] if it is deemed necessary from the [exception]
+ */
+fun Context.handleException(exception: Throwable?) {
+    if (exception == null) {
+        return
+    }
+
+    if (exception is MinervaException) {
+        // If this is a MinervaException, broadcast it
+        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(Constants.BROADCAST_MINERVA))
+    } else {
+        errorDialog(R.string.error_other)
+    }
+}

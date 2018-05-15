@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ public class Help {
      * @param context App context
      * @param t       Received Throwable
      */
+    @Deprecated
     public static void handleException(Context context, Throwable t) {
         if (t == null) {
             return;

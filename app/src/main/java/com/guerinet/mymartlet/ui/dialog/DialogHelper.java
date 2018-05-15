@@ -57,6 +57,7 @@ public class DialogHelper {
      * @param context App context
      * @param message Message String
      */
+    @Deprecated
     public static void error(Context context, String message) {
         DialogUtils.neutral(context, R.string.error, message, null);
     }

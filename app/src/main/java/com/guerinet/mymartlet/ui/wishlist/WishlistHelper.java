@@ -76,7 +76,7 @@ public class WishlistHelper {
     /**
      * Add/Remove to/from wishlist button
      */
-    @BindView(R.id.course_wishlist)
+    @BindView(R.id.wishlist)
     Button wishlistButton;
     /**
      * {@link McGillService} instance
@@ -139,7 +139,7 @@ public class WishlistHelper {
         adapter.update(term);
     }
 
-    @OnClick(R.id.course_register)
+    @OnClick(R.id.register)
     void registerButton() {
         List<CourseResult> courses = adapter.getCheckedCourses();
         if (courses.size() > 10) {
@@ -167,7 +167,7 @@ public class WishlistHelper {
         }
     }
 
-    @OnClick(R.id.course_wishlist)
+    @OnClick(R.id.wishlist)
     void wishlistButton() {
         updateWishlist(adapter.getCheckedCourses());
     }
