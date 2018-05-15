@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/semester_name"
+                android:id="@+id/name"
                 android:duplicateParentState="true"
                 android:textSize="@dimen/text_medium"
                 tools:text="Fall 2000"/>
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/semester_gpa"
+                android:id="@+id/gpa"
                 android:duplicateParentState="true"
                 android:textSize="@dimen/text_small"
                 android:layout_marginLeft="@dimen/padding_micro"
