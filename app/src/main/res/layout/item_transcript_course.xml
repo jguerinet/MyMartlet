@@ -46,7 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/course_grade"
+                android:id="@+id/grade"
                 android:textSize="@dimen/text_large"
                 android:paddingLeft="@dimen/padding_micro"
                 android:paddingRight="@dimen/padding_micro"
@@ -72,7 +72,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/course_average"
+                android:id="@+id/average"
                 android:gravity="end"
                 android:textSize="@dimen/text_small"
                 tools:text="Course Average"/>
