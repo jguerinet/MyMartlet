@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:id="@+id/course_checkbox"
+            android:id="@+id/checkBox"
             android:layout_marginLeft="@dimen/padding_small"
             android:layout_marginStart="@dimen/padding_small"/>
 
@@ -36,13 +36,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/course_code"
+                    android:id="@+id/code"
                     android:textSize="@dimen/text_medium"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/course_credits"
+                    android:id="@+id/credits"
                     android:layout_marginLeft="@dimen/padding_micro"
                     android:layout_marginStart="@dimen/padding_micro"
                     android:gravity="center"/>
@@ -58,7 +58,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:id="@+id/course_type"
+                    android:id="@+id/type"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -73,7 +73,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/course_title"
+                android:id="@+id/title"
                 android:textStyle="italic"
                 android:paddingBottom="@dimen/padding_micro"/>
 
@@ -85,13 +85,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/course_days"/>
+                    android:id="@+id/days"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/course_hours"
+                    android:id="@+id/hours"
                     android:gravity="end"/>
 
             </LinearLayout>

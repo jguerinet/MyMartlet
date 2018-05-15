@@ -474,10 +474,10 @@ public class ScheduleActivity extends DrawerActivity {
                         scheduleCell = View.inflate(this, R.layout.item_day_class, null);
 
                         // Set up all of the info
-                        TextView code = scheduleCell.findViewById(R.id.course_code);
+                        TextView code = scheduleCell.findViewById(R.id.code);
                         code.setText(currentCourse.getCode());
 
-                        TextView type = scheduleCell.findViewById(R.id.course_type);
+                        TextView type = scheduleCell.findViewById(R.id.type);
                         type.setText(currentCourse.getType());
 
                         TextView courseTime = scheduleCell.findViewById(R.id.course_time);

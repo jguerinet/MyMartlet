@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/course_code"
+        android:id="@+id/code"
         android:textSize="@dimen/text_medium"
         android:textColor="@android:color/white"
         android:duplicateParentState="true"
@@ -45,7 +45,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/course_type"
+        android:id="@+id/type"
         android:textStyle="italic"
         android:textColor="@android:color/white"
         android:duplicateParentState="true"

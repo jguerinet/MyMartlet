@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,17 +128,17 @@ class WishlistAdapter extends BaseRecyclerViewAdapter {
         /**
          * Course code
          */
-        @BindView(R.id.course_code)
+        @BindView(R.id.code)
         TextView code;
         /**
          * Course credits
          */
-        @BindView(R.id.course_credits)
+        @BindView(R.id.credits)
         TextView credits;
         /**
          * Course title
          */
-        @BindView(R.id.course_title)
+        @BindView(R.id.title)
         TextView title;
         /**
          * Course spots
@@ -148,7 +148,7 @@ class WishlistAdapter extends BaseRecyclerViewAdapter {
         /**
          * Course type
          */
-        @BindView(R.id.course_type)
+        @BindView(R.id.type)
         TextView type;
         /**
          * Number of remaining waitlist spots
@@ -158,12 +158,12 @@ class WishlistAdapter extends BaseRecyclerViewAdapter {
         /**
          * Course days
          */
-        @BindView(R.id.course_days)
+        @BindView(R.id.days)
         TextView days;
         /**
          * Course hours
          */
-        @BindView(R.id.course_hours)
+        @BindView(R.id.hours)
         TextView hours;
         /**
          * Course dates
@@ -173,7 +173,7 @@ class WishlistAdapter extends BaseRecyclerViewAdapter {
         /**
          * Checkbox to (un)select the course for various operations
          */
-        @BindView(R.id.course_checkbox)
+        @BindView(R.id.checkBox)
         CheckBox checkBox;
 
         CourseHolder(View itemView) {

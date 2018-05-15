@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ class SemesterAdapter extends BaseRecyclerViewAdapter {
         /**
          * Course Code
          */
-        @BindView(R.id.course_code)
+        @BindView(R.id.code)
         TextView code;
         /**
          * User grade
@@ -103,12 +103,12 @@ class SemesterAdapter extends BaseRecyclerViewAdapter {
         /**
          * Course title
          */
-        @BindView(R.id.course_title)
+        @BindView(R.id.title)
         TextView title;
         /**
          * Course credits
          */
-        @BindView(R.id.course_credits)
+        @BindView(R.id.credits)
         TextView credits;
         /**
          * Course average grade
