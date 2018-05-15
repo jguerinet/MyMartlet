@@ -25,12 +25,18 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.suitcase.dialog.neutralDialog
+import org.jetbrains.anko.toast
 
 /**
  * Extensions for the Context
  * @author Julien Guerinet
  * @since 2.0.0
  */
+
+/**
+ * Displays a toast with a generic error message
+ */
+fun Context.errorToast() = toast(R.string.error_other)
 
 /**
  * Shows an error [AlertDialog] with one button and the [messageId]

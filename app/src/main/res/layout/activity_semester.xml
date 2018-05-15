@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/semester_bachelor"
+            android:id="@+id/degreeName"
             android:textSize="@dimen/text_large"
             android:layout_gravity="center"
             tools:text="Bachelor of X"/>
@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/semester_program"
+            android:id="@+id/program"
             android:textSize="@dimen/text_medium"
             android:paddingBottom="@dimen/padding_small"
             android:layout_gravity="center"
@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/semester_GPA"
+                android:id="@+id/gpa"
                 android:textSize="@dimen/text_medium"
                 android:layout_weight="0.5"
                 tools:text="GPA"/>
@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/semester_credits"
+                android:id="@+id/credits"
                 android:textSize="@dimen/text_medium"
                 android:gravity="end"
                 android:layout_weight="0.5"
@@ -61,7 +61,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/semester_full_time"
+            android:id="@+id/fullTime"
             android:textSize="@dimen/text_small"
             tools:text="Full Time"/>
 
@@ -76,7 +76,7 @@
     </LinearLayout>
 
     <include layout="@layout/line"/>
-    
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"

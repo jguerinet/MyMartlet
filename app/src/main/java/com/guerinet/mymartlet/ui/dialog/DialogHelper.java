@@ -36,6 +36,7 @@ public class DialogHelper {
      *
      * @param context App context
      */
+    @Deprecated
     public static void error(Context context) {
         Utils.toast(context, R.string.error_other);
     }
