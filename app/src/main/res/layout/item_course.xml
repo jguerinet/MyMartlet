@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:gravity="end"
-                    android:id="@+id/course_dates"/>
+                    android:id="@+id/dates"/>
 
             </LinearLayout>
 
@@ -105,7 +105,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:id="@+id/course_spots"
+                    android:id="@+id/spots"
                     android:textSize="@dimen/text_small"
                     android:layout_marginRight="@dimen/padding_micro"
                     android:layout_marginEnd="@dimen/padding_micro"
@@ -115,7 +115,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:id="@+id/course_waitlist"
+                    android:id="@+id/waitlistRemaining"
                     android:textSize="@dimen/text_small"
                     android:gravity="end"
                     android:visibility="gone"/>

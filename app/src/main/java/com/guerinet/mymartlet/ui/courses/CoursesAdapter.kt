@@ -55,7 +55,6 @@ internal class CoursesAdapter(emptyView: TextView) :
                 .async()
                 .queryListResultCallback { _, tResult ->
                     submitList(tResult)
-                    showEmptyView(tResult.isEmpty())
                 }
                 .execute()
     }
