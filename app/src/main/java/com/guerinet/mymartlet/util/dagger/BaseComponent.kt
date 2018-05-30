@@ -16,9 +16,7 @@
 
 package com.guerinet.mymartlet.util.dagger
 
-import com.guerinet.mymartlet.ui.MapActivity
 import com.guerinet.mymartlet.ui.ScheduleActivity
-import com.guerinet.mymartlet.ui.dialog.list.CategoryListAdapter
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughAdapter
 import com.guerinet.mymartlet.ui.wishlist.WishlistActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistHelper
@@ -39,10 +37,8 @@ interface BaseComponent {
 
     fun inject(activity: ScheduleActivity)
     fun inject(activity: WishlistActivity)
-    fun inject(activity: MapActivity)
 
     fun inject(adapter: WalkthroughAdapter)
-    fun inject(adapter: CategoryListAdapter)
 
     fun inject(downloader: UserDownloader)
 
