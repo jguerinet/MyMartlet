@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.guerinet.mymartlet.App;
+import com.guerinet.mymartlet.util.Prefs;
 import com.guerinet.mymartlet.util.dagger.prefs.PrefsModuleKt;
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref;
 import com.guerinet.suitcase.prefs.BooleanPref;
@@ -59,7 +60,7 @@ public class BootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
         App.Companion.component(context).inject(this);
-        setAlarm(context, usernamePref.get(), Hawk.get(PrefsModuleKt.PASSWORD),
+        setAlarm(context, usernamePref.get(), Hawk.get(Prefs.PASSWORD),
                 seatCheckerPref.get(), gradeCheckerPref.get());
 	}
 

@@ -17,8 +17,8 @@
 package com.guerinet.mymartlet.util.manager
 
 import android.content.Context
+import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.dagger.prefs.PASSWORD
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
@@ -27,6 +27,7 @@ import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB
 import com.guerinet.suitcase.prefs.BooleanPref
+import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.sql.language.Delete
 
 /**
@@ -49,7 +50,7 @@ class ClearManager(private val context: Context, private val usernamePref: Usern
         }
 
         // Password
-        Hawk.delete(PASSWORD)
+        Hawk.delete(Prefs.PASSWORD)
 
         // Schedule, Statements, Wishlist
         Delete.tables(CourseDB::class.java, StatementDB::class.java, WishlistDB::class.java)

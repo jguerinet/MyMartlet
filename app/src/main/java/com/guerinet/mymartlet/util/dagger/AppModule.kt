@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,8 @@ package com.guerinet.mymartlet.util.dagger
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.view.inputmethod.InputMethodManager
-import com.guerinet.mymartlet.BuildConfig
-import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.util.dagger.prefs.STATS
-import com.guerinet.suitcase.analytics.GAManager
-import com.guerinet.suitcase.prefs.BooleanPref
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
-import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -37,7 +29,7 @@ import javax.inject.Singleton
  * @since 1.0.0
  */
 @Module
-class AppModule (val context: Context){
+class AppModule(val context: Context) {
 
     /**
      * Provides the app [Context]
@@ -53,28 +45,4 @@ class AppModule (val context: Context){
     @Singleton
     fun provideSharedPrefs(context: Context): SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
-
-    /**
-     * Provides the [Moshi] singleton instance
-     */
-    @Provides
-    @Singleton
-    fun provideMoshi(): Moshi = Moshi.Builder().build()
-
-    /**
-     * Provides the [GAManager] singleton instance
-     */
-    @Provides
-    @Singleton
-    fun provideGAManager(context: Context, @Named(STATS) statsPref: BooleanPref): GAManager =
-            object : GAManager(context, R.xml.global_tracker) {
-                override fun isDisabled(): Boolean = BuildConfig.DEBUG || !statsPref.get()
-            }
-
-    /**
-     * Provides the [InputMethodManager] for the given [Context]
-     */
-    @Provides
-    fun provideIMM(context: Context): InputMethodManager =
-            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 }
