@@ -35,7 +35,6 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class, PrefsModule::class])
 interface BaseComponent {
 
-    fun inject(activity: ScheduleActivity)
     fun inject(activity: WishlistActivity)
 
     fun inject(adapter: WalkthroughAdapter)

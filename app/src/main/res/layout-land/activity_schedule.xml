@@ -27,7 +27,7 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/container_timetable"/>
+                    android:id="@+id/timetableContainer"/>
 
                 <HorizontalScrollView
                     android:layout_width="0dp"
@@ -38,7 +38,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:id="@+id/container_schedule"/>
+                        android:id="@+id/scheduleContainer"/>
 
                 </HorizontalScrollView>
 

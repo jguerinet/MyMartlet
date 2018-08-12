@@ -38,7 +38,7 @@ public class WalkthroughActivity extends BaseActivity {
     /**
      * The ViewPager
      */
-    @BindView(R.id.view_pager)
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
     /**
      * The ViewPagerIndicator
