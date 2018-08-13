@@ -34,7 +34,7 @@ class WalkthroughActivity : BaseActivity() {
      */
     private val adapter: WalkthroughAdapter by lazy {
         val isFirstOpen = intent.getBooleanExtra(Constants.FIRST_OPEN, false)
-        WalkthroughAdapter(this, isFirstOpen)
+        WalkthroughAdapter(isFirstOpen)
     }
     /**
      * Current position in the walkthrough
