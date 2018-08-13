@@ -48,7 +48,9 @@ class HomepageManager(prefs: SharedPreferences, private val context: Context) : 
 
     var homePage: HomePage
         get() = HomePage.values()[value]
-        set(value) = set(value.ordinal)
+        set(value) {
+            super.value = value.ordinal
+        }
 
     /**
      * Title of the current homepage

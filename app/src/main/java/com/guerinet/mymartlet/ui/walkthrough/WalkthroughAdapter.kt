@@ -151,7 +151,7 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) : PagerAdapter(), Koi
             val homePage = homePages[it].first
 
             // Update it
-            homePageManager.value = homePage
+            homePageManager.homePage = homePage
 
             item.text(homePageManager.titleString)
 
