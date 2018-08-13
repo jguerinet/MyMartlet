@@ -29,6 +29,8 @@ object Constants {
 
     const val EXCEPTION = "exception"
 
+    const val FIRST_OPEN = "first_open"
+
     const val ID = "id"
 
     const val TERM = "currentTerm"
