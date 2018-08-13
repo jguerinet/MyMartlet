@@ -164,7 +164,7 @@ dependencies {
     implementation "com.facebook.android:facebook-android-sdk:4.32.0"
     implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-    compile "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}"
     kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     implementation "com.google.android.gms:play-services-maps:${play_services_version}"
     implementation "com.google.dagger:dagger:${dagger_version}"
