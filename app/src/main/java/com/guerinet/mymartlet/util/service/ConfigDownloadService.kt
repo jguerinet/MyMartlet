@@ -27,7 +27,7 @@ import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.suitcase.date.NullDatePref
-import com.guerinet.suitcase.date.extensions.getRFC1123String
+import com.guerinet.suitcase.date.extensions.rfc1123String
 import com.guerinet.suitcase.prefs.IntPref
 import com.guerinet.suitcase.util.extensions.isConnected
 import org.koin.android.ext.android.inject
@@ -93,7 +93,7 @@ class ConfigDownloadService : JobIntentService() {
     /**
      * Returns the ims String based on the [pref] to use for the call
      */
-    private fun getIMS(pref: NullDatePref): String? = pref.date.getRFC1123String()
+    private fun getIMS(pref: NullDatePref): String? = pref.date.rfc1123String
 
     /**
      * Executes the [call] and updates the [imsPref] if successful. Returns the response object,
