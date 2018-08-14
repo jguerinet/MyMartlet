@@ -41,7 +41,6 @@ import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
-import com.guerinet.mymartlet.ui.dialog.list.CategoriesAdapter
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.suitcase.dialog.singleListDialog
@@ -111,18 +110,37 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             icon(Position.START, R.drawable.ic_location)
             icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
             onClick { textViewItem ->
-                singleListDialog(R.string.map_filter,
-                        object : CategoriesAdapter(this@MapActivity, category) {
-                            override fun onCategorySelected(category: Category) {
-                                this@MapActivity.category = category
-
-                                // Update the text
-                                textViewItem.text(category.getString(this@MapActivity))
-
-                                // Update the filtered places
-                                filterByCategory()
-                            }
+                // Get the categories synchronously from the DB
+                val categories = SQLite.select()
+                        .from(Category::class)
+                        .queryList()
+                        .map { Pair(it, it.getString(this@MapActivity)) }
+                        .sortedWith(Comparator { o1, o2 ->
+                            o1.second.compareTo(o2.second, true)
                         })
+                        .toMutableList()
+
+                // Add the favorites option
+                var type = Category(true)
+                categories.add(0, Pair(type, type.getString(this@MapActivity)))
+
+                // Add the All option
+                type = Category(false)
+                categories.add(0, Pair(type, type.getString(this@MapActivity)))
+
+                val currentChoice = categories.indexOfFirst { it.first == category }
+
+                val choices = categories.map { it.second }.toTypedArray()
+
+                singleListDialog(choices, R.string.map_filter, currentChoice) { position ->
+                    category = categories[position].first
+
+                    // Update the text
+                    textViewItem.text(category.getString(this@MapActivity))
+
+                    // Update the filtered places
+                    filterByCategory()
+                }
             }
         }
 
