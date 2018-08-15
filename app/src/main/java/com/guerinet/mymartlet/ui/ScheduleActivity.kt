@@ -84,7 +84,7 @@ class ScheduleActivity : DrawerActivity() {
 
     private val defaultTermPref by inject<DefaultTermPref>()
 
-    private var term: Term = defaultTermPref.getTerm()
+    private var term: Term = defaultTermPref.term
 
     private val courses: MutableList<Course> = mutableListOf()
 
