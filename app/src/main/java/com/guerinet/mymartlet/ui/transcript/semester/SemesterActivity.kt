@@ -58,7 +58,7 @@ class SemesterActivity : BaseActivity() {
         }
 
         // Set the title as this current semester
-        title = semester.getSemesterName(this)
+        title = semester.getName(this)
 
         // Set the info up
         degreeName.text = semester.bachelor

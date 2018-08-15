@@ -53,7 +53,7 @@ internal class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
 
         override fun bind(position: Int, item: Semester) {
             itemView.apply {
-                name.text = item.getSemesterName(context)
+                name.text = item.getName(context)
                 gpa.text = context.getString(R.string.transcript_termGPA, item.gpa.toString())
 
                 setOnClickListener {
