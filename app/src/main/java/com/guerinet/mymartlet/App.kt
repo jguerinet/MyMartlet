@@ -19,9 +19,11 @@ package com.guerinet.mymartlet
 import android.support.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.util.appModule
 import com.guerinet.mymartlet.util.prefsModule
 import com.guerinet.suitcase.log.ProductionTree
+import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.config.FlowConfig
@@ -79,16 +81,18 @@ class App : MultiDexApplication() {
         // DBFlow
         FlowManager.init(FlowConfig.Builder(this).build())
 
-        // FormGenerator
-        val padding = resources.getDimensionPixelOffset(R.dimen.padding_small)
-//        FormGenerator.set(FormGenerator.Builder()
-//                .setDefaultBackground(R.drawable.transparent_redpressed)
-//                .setDefaultDrawablePaddingSize(padding)
-//                .setDefaultPaddingSize(padding)
-//                .setDefaultIconColor(ContextCompat.getColor(this, R.color.red)))
+        initializeMorf()
     }
 
     private fun initializeKoin() = startKoin(this, listOf(appModule, prefsModule))
+
+    private fun initializeMorf() =
+            Morf.createAndSetShape {
+                backgroundId = R.drawable.transparent_redpressed
+                drawablePaddingId = R.dimen.padding_small
+                paddingId = R.dimen.padding_small
+                iconColor = getColorCompat(R.color.red)
+            }
 
     companion object {
 
