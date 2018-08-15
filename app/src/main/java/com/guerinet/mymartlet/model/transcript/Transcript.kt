@@ -30,7 +30,7 @@ import android.arch.persistence.room.PrimaryKey
  * @param id            Transcript Id
  */
 @Entity
-class Transcript(
+data class Transcript(
         val cgpa: Double,
         val totalCredits: Double,
         // Note: I'm putting this at the end as it has a default value of 0 (only 1 transcript)

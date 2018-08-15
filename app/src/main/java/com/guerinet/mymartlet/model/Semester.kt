@@ -36,7 +36,7 @@ import android.content.Context
  * @param isFullTime    True if the user was full time during this semester, false otherwise
  */
 @Entity
-class Semester(
+data class Semester(
         @PrimaryKey val id: Int,
         val term: Term,
         val program: String,

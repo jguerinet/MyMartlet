@@ -37,7 +37,7 @@ import com.guerinet.mymartlet.model.Term
  * @param id            Self managed Id, used as primary key
  */
 @Entity
-class TranscriptCourse(
+data class TranscriptCourse(
         val semesterId: Int,
         val term: Term,
         val courseCode: String,
