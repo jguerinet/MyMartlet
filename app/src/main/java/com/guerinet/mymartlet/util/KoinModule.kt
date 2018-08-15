@@ -24,6 +24,7 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
+import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.NullDatePref
@@ -107,6 +108,8 @@ val prefsModule: Module = applicationContext {
 
     // DefaultTermPref
     bean { DefaultTermPref(get()) }
+
+    bean { RegisterTermsPref(get()) }
 
     bean(Prefs.EULA) { BooleanPref(get(), Prefs.EULA, false) }
 

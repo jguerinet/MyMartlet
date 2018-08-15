@@ -19,26 +19,22 @@ package com.guerinet.mymartlet.util.prefs
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.suitcase.prefs.StringPref
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Stores and loads the list of [Term]s a user can currently register in
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Singleton
-class RegisterTermsPref @Inject constructor(prefs: SharedPreferences) :
-        StringPref(prefs, "register_terms", "") {
+class RegisterTermsPref(prefs: SharedPreferences) : StringPref(prefs, "register_terms", "") {
 
-    var terms: MutableList<Term> = value.split(",").map { Term.parseTerm(it) }.toMutableList()
+    var terms: List<Term> = value.split(",").map { Term.parseTerm(it) }
         set(value) {
             field = value
-            set(value.joinToString { term -> term.id })
+            super.value = value.joinToString(",") { term -> term.id }
         }
 
     override fun clear() {
         super.clear()
-        terms.clear()
+        terms = listOf()
     }
 }
