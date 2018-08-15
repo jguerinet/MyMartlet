@@ -25,6 +25,7 @@ import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 import com.guerinet.mymartlet.util.room.converters.TermConverter
+import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 
 /**
  * Database with all of the user's information
@@ -34,6 +35,8 @@ import com.guerinet.mymartlet.util.room.converters.TermConverter
 @Database(entities = [Semester::class, Transcript::class, TranscriptCourse::class], version = 1)
 @TypeConverters(TermConverter::class)
 abstract class UserDb : RoomDatabase() {
+
+    abstract fun transcriptDao(): TranscriptDao
 
     companion object {
 
