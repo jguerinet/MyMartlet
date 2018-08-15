@@ -99,7 +99,7 @@ class CoursesActivity : DrawerActivity() {
             R.id.action_change_semester -> {
                 TermDialogHelper(this, term, false) {
                     // Set the default currentTerm
-                    defaultTermPref.setTerm(it)
+                    defaultTermPref.term = it
 
                     term = it
 

@@ -23,6 +23,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.toast
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
+import com.guerinet.mymartlet.model.CourseResult_Table
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper

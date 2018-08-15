@@ -19,41 +19,21 @@ package com.guerinet.mymartlet.util.prefs
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.suitcase.prefs.NullStringPref
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Stores the user's default [Term] in the [SharedPreferences]
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Singleton
-class DefaultTermPref @Inject constructor(prefs: SharedPreferences) :
-        NullStringPref(prefs, "default_term", null) {
+class DefaultTermPref(prefs: SharedPreferences) : NullStringPref(prefs, "default_term", null) {
 
     private var currentTerm: Term? = null
 
-    /**
-     * Returns the stored default [Term], the current one if none stored
-     */
-    fun getTerm(): Term {
-        if (currentTerm == null) {
-            // Get the stored term
-            val term = get()
-            currentTerm = if (term == null) {
-                // If there is no default term, use the current one
-                Term.currentTerm()
-            } else {
-                Term.parseTerm(term)
-            }
+    var term: Term = value?.run { Term.parseTerm(this) } ?: Term.currentTerm()
+        set(value) {
+            this.currentTerm = value
+            super.value = value.id
         }
-        return currentTerm!!
-    }
-
-    fun setTerm(term: Term) {
-        this.currentTerm = term
-        set(term.id)
-    }
 
     override fun clear() {
         super.clear()

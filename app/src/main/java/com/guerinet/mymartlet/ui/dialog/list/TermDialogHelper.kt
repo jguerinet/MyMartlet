@@ -64,7 +64,7 @@ class TermDialogHelper(context: Context, currentTerm: Term?, registration: Boole
 
         terms.map { it.second }.toTypedArray()
 
-        val term = currentTerm ?: defaultTermPref.getTerm()
+        val term = currentTerm ?: defaultTermPref.term
 
         // Use the default currentTerm if no currentTerm was sent
         val currentChoice = terms.indexOfFirst { it.first == term }

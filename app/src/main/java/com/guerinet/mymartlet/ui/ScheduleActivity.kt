@@ -149,7 +149,7 @@ class ScheduleActivity : DrawerActivity() {
                     term = it
 
                     // Set the default currentTerm
-                    defaultTermPref.setTerm(term)
+                    defaultTermPref.term = term
 
                     // Update the courses
                     updateCoursesAndDate()
