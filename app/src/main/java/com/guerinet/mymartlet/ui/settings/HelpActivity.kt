@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
-import com.afollestad.materialdialogs.MaterialDialog
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
@@ -61,11 +60,10 @@ class HelpActivity : BaseActivity() {
                 ga.sendEvent("Help", "McGill Email")
 
                 // Show the user the info about the Chrome bug
-                neutralDialog(message = R.string.help_email_walkthrough_info,
-                        listener = MaterialDialog.SingleButtonCallback { _, _ ->
-                            // Open the official McGill Guide
-                            openUrl("http://kb.mcgill.ca/kb/article?ArticleId=4774")
-                        })
+                neutralDialog(message = R.string.help_email_walkthrough_info) { _, _ ->
+                    // Open the official McGill Guide
+                    openUrl("http://kb.mcgill.ca/kb/article?ArticleId=4774")
+                }
             }
         }
 
