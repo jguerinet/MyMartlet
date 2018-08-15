@@ -26,8 +26,8 @@ import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.manager.HomepageManager
+import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.kotlinextensions.save
 import com.raizlabs.android.dbflow.sql.language.SQLite

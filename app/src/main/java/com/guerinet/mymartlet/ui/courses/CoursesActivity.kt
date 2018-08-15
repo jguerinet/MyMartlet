@@ -31,13 +31,13 @@ import com.guerinet.mymartlet.model.RegistrationError
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
-import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
+import com.guerinet.mymartlet.util.prefs.DefaultTermPref
+import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.suitcase.dialog.alertDialog
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight

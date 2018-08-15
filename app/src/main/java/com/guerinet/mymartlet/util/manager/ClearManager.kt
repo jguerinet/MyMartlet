@@ -18,14 +18,14 @@ package com.guerinet.mymartlet.util.manager
 
 import android.content.Context
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB
 import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB
+import com.guerinet.mymartlet.util.prefs.DefaultTermPref
+import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
+import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.sql.language.Delete

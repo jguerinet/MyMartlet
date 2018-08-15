@@ -47,10 +47,10 @@ import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.manager.HomepageManager
+import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.extensions.openUrl

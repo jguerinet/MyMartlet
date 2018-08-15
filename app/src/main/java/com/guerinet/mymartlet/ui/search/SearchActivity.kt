@@ -29,8 +29,8 @@ import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.manager.HomepageManager
+import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.suitcase.util.Device
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.startActivity

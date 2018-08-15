@@ -21,10 +21,10 @@ import android.support.v4.app.JobIntentService
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.dbflow.DBUtils
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB
+import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.date.extensions.rfc1123String

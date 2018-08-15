@@ -22,7 +22,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref
+import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.orhanobut.hawk.Hawk
 import java.util.*

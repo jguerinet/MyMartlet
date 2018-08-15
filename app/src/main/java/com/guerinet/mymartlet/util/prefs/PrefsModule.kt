@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.dagger.prefs
+package com.guerinet.mymartlet.util.prefs
 
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.util.dagger.AppModule

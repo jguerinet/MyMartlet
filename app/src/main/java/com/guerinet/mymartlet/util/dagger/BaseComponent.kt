@@ -16,12 +16,11 @@
 
 package com.guerinet.mymartlet.util.dagger
 
-import com.guerinet.mymartlet.ui.ScheduleActivity
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughAdapter
 import com.guerinet.mymartlet.ui.wishlist.WishlistActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistHelper
 import com.guerinet.mymartlet.util.background.BootReceiver
-import com.guerinet.mymartlet.util.dagger.prefs.PrefsModule
+import com.guerinet.mymartlet.util.prefs.PrefsModule
 import com.guerinet.mymartlet.util.thread.UserDownloader
 import dagger.Component
 import javax.inject.Singleton

@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.util.manager
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref
+import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.CourseResultConverter
 import com.guerinet.mymartlet.util.retrofit.EbillConverter
 import com.guerinet.mymartlet.util.retrofit.McGillService

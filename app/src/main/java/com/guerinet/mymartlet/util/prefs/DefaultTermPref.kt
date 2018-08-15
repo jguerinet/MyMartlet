@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.dagger.prefs
+package com.guerinet.mymartlet.util.prefs
 
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.model.Term
@@ -28,7 +28,7 @@ import javax.inject.Singleton
  * @since 1.0.0
  */
 @Singleton
-class DefaultTermPref @Inject constructor(prefs: SharedPreferences):
+class DefaultTermPref @Inject constructor(prefs: SharedPreferences) :
         NullStringPref(prefs, "default_term", null) {
 
     private var currentTerm: Term? = null

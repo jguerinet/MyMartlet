@@ -29,12 +29,12 @@ import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.ui.settings.AgreementActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref
 import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.manager.UpdateManager
+import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.Result
 import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import com.guerinet.mymartlet.util.thread.UserDownloader

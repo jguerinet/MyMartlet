@@ -24,9 +24,9 @@ import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
+import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_web.*

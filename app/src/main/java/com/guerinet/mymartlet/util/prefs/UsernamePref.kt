@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.dagger.prefs
+package com.guerinet.mymartlet.util.prefs
 
+import android.content.Context
 import android.content.SharedPreferences
-import com.guerinet.mymartlet.model.Term
-import com.guerinet.suitcase.prefs.StringPref
+import com.guerinet.mymartlet.R
+import com.guerinet.suitcase.prefs.NullStringPref
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Stores and loads the list of [Term]s a user can currently register in
+ * Stores and loads the user's username (McGill email)
  * @author Julien Guerinet
  * @since 1.0.0
  */
 @Singleton
-class RegisterTermsPref @Inject constructor(prefs: SharedPreferences) :
-        StringPref(prefs, "register_terms", "") {
+class UsernamePref @Inject constructor(context: Context, prefs: SharedPreferences) :
+        NullStringPref(prefs, "username", null) {
 
-    var terms: MutableList<Term> = value.split(",").map { Term.parseTerm(it) }.toMutableList()
-        set(value) {
-            field = value
-            set(value.joinToString { term -> term.id })
-        }
+    /**
+     * McGill email suffix
+     */
+    private val emailSuffix: String = context.getString(R.string.login_email)
 
-    override fun clear() {
-        super.clear()
-        terms.clear()
-    }
+    /**
+     * User's full email, null if none
+     */
+    fun full(): String? = if (get() == null) null else get() + emailSuffix
 }

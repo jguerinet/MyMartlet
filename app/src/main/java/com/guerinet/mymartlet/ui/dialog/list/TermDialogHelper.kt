@@ -21,8 +21,8 @@ import android.util.Pair
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.Term
-import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
+import com.guerinet.mymartlet.util.prefs.DefaultTermPref
+import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.raizlabs.android.dbflow.kotlinextensions.from

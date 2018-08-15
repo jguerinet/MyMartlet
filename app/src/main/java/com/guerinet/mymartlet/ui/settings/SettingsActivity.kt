@@ -34,8 +34,8 @@ import com.guerinet.mymartlet.model.AppUpdate
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.settings.about.AboutActivity
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref
 import com.guerinet.mymartlet.util.manager.HomepageManager
+import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.Device
