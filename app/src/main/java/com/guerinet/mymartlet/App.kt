@@ -21,6 +21,7 @@ import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.util.appModule
+import com.guerinet.mymartlet.util.networkModule
 import com.guerinet.mymartlet.util.prefsModule
 import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat
@@ -87,7 +88,7 @@ class App : MultiDexApplication() {
         }
     }
 
-    private fun initializeKoin() = startKoin(this, listOf(appModule, prefsModule))
+    private fun initializeKoin() = startKoin(this, listOf(appModule, networkModule, prefsModule))
 
     private fun initializeMorf() =
             Morf.createAndSetShape {
