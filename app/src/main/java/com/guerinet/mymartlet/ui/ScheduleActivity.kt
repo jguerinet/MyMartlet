@@ -35,6 +35,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.widget.toast
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
@@ -51,7 +52,7 @@ import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.suitcase.prefs.BooleanPref
-import com.guerinet.suitcase.util.Utils
+import com.guerinet.suitcase.util.extensions.openUrl
 import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_schedule.*
@@ -311,7 +312,7 @@ class ScheduleActivity : DrawerActivity() {
 
         // Set up the ViewPager
         viewPager.apply {
-            adapter = adapter
+            this.adapter = adapter
             currentItem = adapter.startingDateIndex
             addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(i: Int, v: Float, i2: Int) {}
@@ -538,9 +539,9 @@ class ScheduleActivity : DrawerActivity() {
                         ViewGroup.LayoutParams.WRAP_CONTENT), Gravity.CENTER)
                 .text(R.string.course_docuum)
                 .textColor(color)
-                .onClick { item ->
-                    Utils.openUrl(this, "http://www.docuum.com/mcgill/" +
-                            course.subject.toLowerCase() + "/" + course.number)
+                .onClick {
+                    openUrl("http://www.docuum.com/mcgill/${course.subject.toLowerCase()}" +
+                            "/${course.number}")
                     Unit
                 }
                 .build()
@@ -570,7 +571,7 @@ class ScheduleActivity : DrawerActivity() {
 
                                 if (place == null) {
                                     // Tell the user
-                                    Utils.toast(this, getString(R.string.error_place_not_found,
+                                    toast(getString(R.string.error_place_not_found,
                                             course.location))
                                     // Send a Crashlytics report
                                     Timber.e(NullPointerException("Location not found: " + course.location))
@@ -579,7 +580,7 @@ class ScheduleActivity : DrawerActivity() {
                                     alert.dismiss()
                                     // Open the map to the given place
                                     val intent = Intent(this, MapActivity::class.java)
-                                            .putExtra(Constants.getID(), place.id)
+                                            .putExtra(Constants.ID, place.id)
                                     handler.post { switchDrawerActivity(intent) }
                                 }
                             }
@@ -601,7 +602,7 @@ class ScheduleActivity : DrawerActivity() {
         /**
          * The index of the starting date (offset of 500001 to get the right day)
          */
-        private val startingDateIndex = 500001 + date.dayOfWeek.value
+        val startingDateIndex = 500001 + date.dayOfWeek.value
 
         private val holders = Stack<DayHolder>()
 
@@ -621,24 +622,17 @@ class ScheduleActivity : DrawerActivity() {
             collection.removeView(view as View)
         }
 
-        override fun getCount(): Int {
-            return 1000000
-        }
+        override fun getCount() = 1000000
 
-        private fun getDate(position: Int): LocalDate {
-            return startingDate.plusDays((position - startingDateIndex).toLong())
-        }
+        fun getDate(position: Int): LocalDate =
+                startingDate.plusDays((position - startingDateIndex).toLong())
 
-        override fun getItemPosition(`object`: Any): Int {
-            // This is to force the refreshing of all of the views when the view is reloaded
-            return PagerAdapter.POSITION_NONE
-        }
+        // This is to force the refreshing of all of the views when the view is reloaded
+        override fun getItemPosition(`object`: Any): Int = PagerAdapter.POSITION_NONE
 
-        override fun isViewFromObject(view: View, `object`: Any): Boolean {
-            return view == `object`
-        }
+        override fun isViewFromObject(view: View, `object`: Any): Boolean = view == `object`
 
-        class DayHolder(collection: ViewGroup, context: Context) {
+        inner class DayHolder(collection: ViewGroup, context: Context) {
 
             val view = LayoutInflater.from(context).inflate(R.layout.fragment_day, collection,
                     false)
