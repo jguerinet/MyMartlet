@@ -67,7 +67,7 @@ class DesktopActivity : DrawerActivity() {
                 if (url.toLowerCase().contains("login")) {
                     // Only log them in if they're not already
                     view.loadUrl("javascript:(function(){document.getElementById('username')" +
-                            ".value=${usernamePref.full()}';document.getElementById('password')" +
+                            ".value=${usernamePref.full}';document.getElementById('password')" +
                             ".value='${Hawk.get<String>(Prefs.PASSWORD)}'; " +
                             "document.getElementsByClassName('mainSubmit').submit.click(); })()")
                 }
