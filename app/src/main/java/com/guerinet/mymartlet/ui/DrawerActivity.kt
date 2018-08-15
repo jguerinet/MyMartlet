@@ -26,7 +26,6 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import androidx.core.net.toUri
 import com.afollestad.materialdialogs.DialogAction
-import com.afollestad.materialdialogs.MaterialDialog
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -170,16 +169,15 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
      * Logs the user out
      */
     private fun logout() {
-        alertDialog(R.string.warning, R.string.logout_dialog_message,
-                MaterialDialog.SingleButtonCallback { _, which ->
-                    if (which == DialogAction.POSITIVE) {
-                        ga.sendEvent("Logout", "Clicked")
-                        clearManager.clearUserInfo()
-                        // Go back to SplashActivity
-                        startActivity<SplashActivity>()
-                        finish()
-                    }
-                })
+        alertDialog(R.string.warning, R.string.logout_dialog_message) { _, which ->
+            if (which == DialogAction.POSITIVE) {
+                ga.sendEvent("Logout", "Clicked")
+                clearManager.clearUserInfo()
+                // Go back to SplashActivity
+                startActivity<SplashActivity>()
+                finish()
+            }
+        }
     }
 
     /**
