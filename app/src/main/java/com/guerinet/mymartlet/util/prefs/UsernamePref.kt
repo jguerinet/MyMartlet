@@ -20,16 +20,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.R
 import com.guerinet.suitcase.prefs.NullStringPref
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Stores and loads the user's username (McGill email)
  * @author Julien Guerinet
  * @since 1.0.0
  */
-@Singleton
-class UsernamePref @Inject constructor(context: Context, prefs: SharedPreferences) :
+class UsernamePref(context: Context, prefs: SharedPreferences) :
         NullStringPref(prefs, "username", null) {
 
     /**
@@ -40,5 +37,6 @@ class UsernamePref @Inject constructor(context: Context, prefs: SharedPreference
     /**
      * User's full email, null if none
      */
-    fun full(): String? = if (get() == null) null else get() + emailSuffix
+    val full: String?
+        get() = super.value?.apply { super.value + emailSuffix }
 }
