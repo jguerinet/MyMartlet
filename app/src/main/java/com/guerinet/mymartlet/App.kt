@@ -16,14 +16,10 @@
 
 package com.guerinet.mymartlet
 
-import android.content.Context
 import android.support.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.guerinet.mymartlet.util.appModule
-import com.guerinet.mymartlet.util.dagger.AppModule
-import com.guerinet.mymartlet.util.dagger.BaseComponent
-import com.guerinet.mymartlet.util.dagger.DaggerBaseComponent
 import com.guerinet.mymartlet.util.prefsModule
 import com.guerinet.suitcase.log.ProductionTree
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -41,8 +37,6 @@ import java.net.SocketTimeoutException
  * @since 1.0.0
  */
 class App : MultiDexApplication() {
-
-    lateinit var component: BaseComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -79,11 +73,6 @@ class App : MultiDexApplication() {
 
         initializeKoin()
 
-        // Dagger
-        component = DaggerBaseComponent.builder()
-                .appModule(AppModule(this))
-                .build()
-
         // Hawk
         Hawk.init(this).build()
 
@@ -102,12 +91,6 @@ class App : MultiDexApplication() {
     private fun initializeKoin() = startKoin(this, listOf(appModule, prefsModule))
 
     companion object {
-
-        /**
-         * Returns the [BaseComponent] for the given app [context]
-         */
-        fun component(context: Context) : BaseComponent =
-                (context.applicationContext as App).component
 
 //        fun setAlarm(context: Context) {
 //            BootReceiver.setAlarm(context)
