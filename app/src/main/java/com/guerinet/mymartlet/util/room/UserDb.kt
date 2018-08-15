@@ -19,10 +19,12 @@ package com.guerinet.mymartlet.util.room
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
+import com.guerinet.mymartlet.util.room.converters.TermConverter
 
 /**
  * Database with all of the user's information
@@ -30,6 +32,7 @@ import com.guerinet.mymartlet.model.transcript.TranscriptCourse
  * @since 2.0.0
  */
 @Database(entities = [Semester::class, Transcript::class, TranscriptCourse::class], version = 1)
+@TypeConverters(TermConverter::class)
 abstract class UserDb : RoomDatabase() {
 
     companion object {

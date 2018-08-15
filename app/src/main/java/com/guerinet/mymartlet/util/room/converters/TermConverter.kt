@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.dbflow.converters;
+package com.guerinet.mymartlet.util.room.converters
 
-import com.guerinet.mymartlet.model.Term;
-import com.raizlabs.android.dbflow.converter.TypeConverter;
+import android.arch.persistence.room.TypeConverter
+import com.guerinet.mymartlet.model.Term
 
 /**
- * Converts a {@link Term} to a String for a DB and vice-versa
+ * Converts a [Term] to a String for Room and vice-versa
  * @author Julien Guerinet
- * @since 2.4.0
+ * @since 2.0.0
  */
-@com.raizlabs.android.dbflow.annotation.TypeConverter
-public class TermTypeConverter extends TypeConverter<String, Term> {
+class TermConverter {
 
-    @Override
-    public String getDBValue(Term model) {
-        return model.getId();
-    }
+    @TypeConverter
+    fun termToString(value: Term): String = value.id
 
-    @Override
-    public Term getModelValue(String data) {
-        return Term.parseTerm(data);
-    }
+    @TypeConverter
+    fun stringToTerm(value: String): Term = Term.parseTerm(value)
 }
