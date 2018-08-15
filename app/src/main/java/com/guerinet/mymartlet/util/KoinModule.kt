@@ -81,7 +81,7 @@ val networkModule: Module = applicationContext {
 
     // HttpLoggingInterceptor
     bean {
-        HttpLoggingInterceptor({ message -> Timber.tag("OkHttp").i(message) })
+        HttpLoggingInterceptor { message -> Timber.tag("OkHttp").i(message) }
                 .level = HttpLoggingInterceptor.Level.BASIC
     }
 
