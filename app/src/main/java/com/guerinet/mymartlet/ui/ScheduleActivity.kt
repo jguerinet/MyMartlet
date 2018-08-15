@@ -35,17 +35,16 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.view.isVisible
-
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
-import com.guerinet.mymartlet.model.Course_Table
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
+import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
@@ -53,24 +52,17 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.Utils
+import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.sql.language.SQLite
-
+import kotlinx.android.synthetic.main.activity_schedule.*
+import kotlinx.android.synthetic.main.fragment_day.*
+import org.jetbrains.anko.startActivity
+import org.koin.android.ext.android.inject
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.ChronoUnit
-
-import butterknife.BindView
-import butterknife.ButterKnife
-import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.suitcase.date.extensions.getLongDateString
-import com.guerinet.suitcase.dialog.singleListDialog
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import kotlinx.android.synthetic.main.activity_schedule.*
-import kotlinx.android.synthetic.main.fragment_day.*
-import org.jetbrains.anko.startActivity
-import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -145,34 +137,30 @@ class ScheduleActivity : DrawerActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_change_semester -> {
-                singleListDialog(R.string.title_change_semester,
-                        object : TermDialogHelper(this, term, false) {
-                            @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-                            override fun onTermSelected(newTerm: Term) {
-                                // If it's the same currentTerm as now, do nothing
-                                if (newTerm == term) {
-                                    return
-                                }
+                TermDialogHelper(this, term, false) {
+                    // If it's the same currentTerm as now, do nothing
+                    if (it == term) {
+                        return@TermDialogHelper
+                    }
 
-                                // Set the instance currentTerm
-                                term = newTerm
+                    // Set the instance currentTerm
+                    term = it
 
-                                // Set the default currentTerm
-                                defaultTermPref.setTerm(term)
+                    // Set the default currentTerm
+                    defaultTermPref.setTerm(term)
 
-                                // Update the courses
-                                updateCoursesAndDate()
+                    // Update the courses
+                    updateCoursesAndDate()
 
-                                // Title
-                                title = newTerm.getString(this@ScheduleActivity)
+                    // Title
+                    title = it.getString(this@ScheduleActivity)
 
-                                // TODO This only renders the portrait view
-                                renderPortraitView()
+                    // TODO This only renders the portrait view
+                    renderPortraitView()
 
-                                // Refresh the content
-                                refreshCourses()
-                            }
-                        })
+                    // Refresh the content
+                    refreshCourses()
+                }
                 return true
             }
             R.id.action_refresh -> {
@@ -638,7 +626,7 @@ class ScheduleActivity : DrawerActivity() {
         }
 
         private fun getDate(position: Int): LocalDate {
-            return startingDate!!.plusDays((position - startingDateIndex).toLong())
+            return startingDate.plusDays((position - startingDateIndex).toLong())
         }
 
         override fun getItemPosition(`object`: Any): Int {

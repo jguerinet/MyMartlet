@@ -31,7 +31,6 @@ import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.util.Device
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.startActivity
@@ -75,14 +74,11 @@ class SearchActivity : DrawerActivity() {
         // Set the currentTerm to the first one
         term = registerTerms[0]
         termSelector.text = term.getString(this)
-        termContainer.setOnClickListener {
-            singleListDialog(R.string.title_change_semester,
-                    object : TermDialogHelper(this@SearchActivity, term, true) {
-                        override fun onTermSelected(term: Term) {
-                            this@SearchActivity.term = term
-                            termSelector.text = term.getString(this@SearchActivity)
-                        }
-                    })
+        termContainer.setOnClickListener { _ ->
+            TermDialogHelper(this@SearchActivity, term, true) {
+                term = it
+                termSelector.text = term.getString(this@SearchActivity)
+            }
         }
 
         startTime.setIs24HourView(false)

@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.ui.wishlist
 
 import android.os.Bundle
-import android.util.Pair
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
@@ -26,9 +25,9 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
+import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.suitcase.dialog.singleListDialog
 import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.kotlinextensions.save
 import com.raizlabs.android.dbflow.sql.language.SQLite
@@ -107,18 +106,8 @@ class WishlistActivity : DrawerActivity() {
     }
 
     private fun changeSemester() {
-        ga.sendScreen("Change Semester")
-
-        val terms = registerTermsPref.terms.toList()
-                .sortedWith(kotlin.Comparator { o1, o2 -> if (o1.isAfter(o2)) -1 else 1 })
-                .map { Pair(it, it.getString(this)) }
-
-        val currentChoice = terms.indexOfFirst { it.first == term }
-
-        val choices = terms.map { it.second }.toTypedArray()
-
-        singleListDialog(choices, R.string.title_change_semester, currentChoice) { position ->
-            term = terms[position].first
+        TermDialogHelper(this, term, true) {
+            term = it
             update()
         }
     }

@@ -18,24 +18,25 @@ package com.guerinet.mymartlet.ui.dialog.list
 
 import android.content.Context
 import android.util.Pair
+import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.dagger.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.dagger.prefs.RegisterTermsPref
 import com.guerinet.suitcase.analytics.GAManager
-import com.guerinet.suitcase.dialog.SingleListInterface
+import com.guerinet.suitcase.dialog.singleListDialog
 import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
 /**
- * [SingleListInterface] implementation for a list of terms
+ * Displays a list of terms
  * @author Julien Guerinet
  * @since 2.0.0
  */
-abstract class TermDialogHelper(context: Context, currentTerm: Term?, registration: Boolean) :
-        SingleListInterface, KoinComponent {
+class TermDialogHelper(context: Context, currentTerm: Term?, registration: Boolean,
+        onTermSelected: ((Term) -> Unit)) : KoinComponent {
 
     private val ga by inject<GAManager>()
 
@@ -44,7 +45,7 @@ abstract class TermDialogHelper(context: Context, currentTerm: Term?, registrati
     private val registerTermsPref by inject<RegisterTermsPref>()
 
     private val terms by lazy {
-        val terms = if (!registration) {
+        if (!registration) {
             // We are using the user's existing terms
             SQLite.select()
                     .from(Semester::class)
@@ -54,31 +55,24 @@ abstract class TermDialogHelper(context: Context, currentTerm: Term?, registrati
             // We are using the registration terms
             registerTermsPref.terms.toList()
         }
-        terms.sortedWith(kotlin.Comparator { o1, o2 -> if (o1.isAfter(o2)) -1 else 1 })
+                .sortedWith(kotlin.Comparator { o1, o2 -> if (o1.isAfter(o2)) -1 else 1 })
                 .map { Pair(it, it.getString(context)) }
     }
-
-    private val currentTerm: Term
-
-    override val currentChoice: Int
-        get() = terms.indexOfFirst { it.first == currentTerm }
-
-    override val choices: Array<String>
-        get() = terms.map { it.second }.toTypedArray()
 
     init {
         ga.sendScreen("Change Semester")
 
+        terms.map { it.second }.toTypedArray()
+
+        val term = currentTerm ?: defaultTermPref.getTerm()
+
         // Use the default currentTerm if no currentTerm was sent
-        this.currentTerm = currentTerm ?: defaultTermPref.getTerm()
-    }
+        val currentChoice = terms.indexOfFirst { it.first == term }
 
-    override fun onChoiceSelected(position: Int) {
-        onTermSelected(terms[position].first)
-    }
+        val choices = terms.map { it.second }.toTypedArray()
 
-    /**
-     * Called when a [term] has been selected
-     */
-    abstract fun onTermSelected(term: Term)
+        context.singleListDialog(choices, R.string.title_change_semester, currentChoice) {
+            onTermSelected(terms[it].first)
+        }
+    }
 }

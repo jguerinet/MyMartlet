@@ -40,7 +40,6 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.suitcase.dialog.alertDialog
-import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
 import org.koin.android.ext.android.inject
@@ -98,19 +97,15 @@ class CoursesActivity : DrawerActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_change_semester -> {
-                singleListDialog(R.string.title_change_semester,
-                        object : TermDialogHelper(this, term, false) {
-                            override fun onTermSelected(term: Term) {
-                                // Set the default currentTerm
-                                defaultTermPref.setTerm(term)
+                TermDialogHelper(this, term, false) {
+                    // Set the default currentTerm
+                    defaultTermPref.setTerm(it)
 
-                                // Set the instance currentTerm
-                                this@CoursesActivity.term = term
+                    term = it
 
-                                update()
-                                refresh()
-                            }
-                        })
+                    update()
+                    refresh()
+                }
                 return true
             }
             R.id.action_refresh -> {
