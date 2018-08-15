@@ -24,7 +24,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.toast
 import com.afollestad.materialdialogs.DialogAction
-import com.afollestad.materialdialogs.MaterialDialog
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.RegistrationError
@@ -61,7 +60,7 @@ class CoursesActivity : DrawerActivity() {
 
     private val adapter: CoursesAdapter by lazy { CoursesAdapter(empty) }
 
-    private var term: Term = defaultTermPref.getTerm()
+    private var term: Term = defaultTermPref.term
 
     override val currentPage = HomepageManager.HomePage.COURSES
 
@@ -189,46 +188,45 @@ class CoursesActivity : DrawerActivity() {
             return
         }
 
-        alertDialog(R.string.unregister_dialog_title, R.string.unregister_dialog_message,
-                MaterialDialog.SingleButtonCallback { _, which ->
+        alertDialog(R.string.unregister_dialog_title, R.string.unregister_dialog_message)
+        { _, which ->
+            // Don't continue if the positive button has not been clicked on
+            if (which != DialogAction.POSITIVE) {
+                return@alertDialog
+            }
 
-                    // Don't continue if the positive button has not been clicked on
-                    if (which != DialogAction.POSITIVE) {
-                        return@SingleButtonCallback
-                    }
+            if (!canRefresh()) {
+                return@alertDialog
+            }
 
-                    if (!canRefresh()) {
-                        return@SingleButtonCallback
-                    }
+            // Run the registration thread
+            mcGillService.registration(McGillManager.getRegistrationURL(courses, true))
+                    .enqueue(object : Callback<List<RegistrationError>> {
+                        override fun onResponse(call: Call<List<RegistrationError>>,
+                                response: Response<List<RegistrationError>>) {
+                            toolbarProgress.isVisible = false
 
-                    // Run the registration thread
-                    mcGillService.registration(McGillManager.getRegistrationURL(courses, true))
-                            .enqueue(object : Callback<List<RegistrationError>> {
-                                override fun onResponse(call: Call<List<RegistrationError>>,
-                                        response: Response<List<RegistrationError>>) {
-                                    toolbarProgress.isVisible = false
+                            // If there are no errors, show the success message
+                            val body = response.body()
+                            if (body == null || body.isEmpty()) {
+                                toast(R.string.unregistration_success)
+                                return
+                            }
 
-                                    // If there are no errors, show the success message
-                                    val body = response.body()
-                                    if (body == null || body.isEmpty()) {
-                                        toast(R.string.unregistration_success)
-                                        return
-                                    }
+                            // Prepare the error message String
+                            val errorMessage = body.joinToString("\n",
+                                    transform = { error -> error.getString(courses) })
+                            errorDialog(errorMessage)
 
-                                    // Prepare the error message String
-                                    val errorMessage = body.joinToString("\n",
-                                            transform = { error -> error.getString(courses) })
-                                    errorDialog(errorMessage)
+                            // Refresh the courses
+                            refresh()
+                        }
 
-                                    // Refresh the courses
-                                    refresh()
-                                }
-
-                                override fun onFailure(call: Call<List<RegistrationError>>,
-                                        t: Throwable) {
-                                    handleError("unregistering for courses", t)
-                                }
-                            })
-                })
+                        override fun onFailure(call: Call<List<RegistrationError>>,
+                                t: Throwable) {
+                            handleError("unregistering for courses", t)
+                        }
+                    })
+        }
     }
 }
