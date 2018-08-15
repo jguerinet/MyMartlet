@@ -39,6 +39,7 @@ import androidx.core.widget.toast
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
+import com.guerinet.mymartlet.model.Course_Table
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
