@@ -16,6 +16,7 @@
 
 package com.guerinet.mymartlet.util.manager
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.support.annotation.IdRes
@@ -88,7 +89,7 @@ class HomepageManager(prefs: SharedPreferences, private val context: Context) : 
      * @param activity  Corresponding activity to open for this home page
      */
     enum class HomePage(@StringRes val titleId: Int, @IdRes val menuId: Int,
-            val activity: KClass<*>) {
+            val activity: KClass<out Activity>) {
 
         SCHEDULE(R.string.homepage_schedule, R.id.schedule, ScheduleActivity::class),
         TRANSCRIPT(R.string.homepage_transcript, R.id.transcript, TranscriptActivity::class),
