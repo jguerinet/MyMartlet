@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.model
+package com.guerinet.mymartlet.model.transcript
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey

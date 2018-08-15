@@ -24,8 +24,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Transcript
 import com.guerinet.mymartlet.model.exception.MinervaException
+import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.ui.settings.AgreementActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.Prefs

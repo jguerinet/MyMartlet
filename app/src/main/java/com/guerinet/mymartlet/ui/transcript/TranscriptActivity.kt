@@ -22,7 +22,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Transcript
+import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.manager.HomepageManager

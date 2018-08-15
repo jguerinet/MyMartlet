@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.guerinet.mymartlet.R;
-import com.guerinet.mymartlet.model.Transcript;
+import com.guerinet.mymartlet.model.transcript.Transcript;
 import com.guerinet.mymartlet.ui.SplashActivity;
 
 import timber.log.Timber;
@@ -71,8 +71,8 @@ public class CheckerService extends IntentService {
 //			checkSeats();
 //		}
 	}
-	
-	/**
+
+    /**
 	 * Downloads the user's transcript to check for new or changed grades
 	 */
 	private void checkGrades(){
@@ -147,8 +147,8 @@ public class CheckerService extends IntentService {
 //			}
 		}
 	}
-	
-	/**
+
+    /**
 	 * Queries minerva to check for new seat openings
 	 */
 	private void checkSeats(){

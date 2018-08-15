@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.util.dbflow.databases;
 import android.content.Context;
 
 import com.guerinet.mymartlet.model.Semester;
-import com.guerinet.mymartlet.model.Transcript;
+import com.guerinet.mymartlet.model.transcript.Transcript;
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse;
 import com.guerinet.mymartlet.util.dbflow.DBUtils;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse;
