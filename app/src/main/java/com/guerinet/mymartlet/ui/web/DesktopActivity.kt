@@ -56,22 +56,26 @@ class DesktopActivity : DrawerActivity() {
         }
 
         // Set up the WebView
-        webView.settings.useWideViewPort = true
-        webView.settings.javaScriptEnabled = true
-        webView.settings.builtInZoomControls = true
-        webView.settings.displayZoomControls = false
+        webView.apply {
+            settings.apply {
+                useWideViewPort = true
+                javaScriptEnabled = true
+                builtInZoomControls = true
+                displayZoomControls = false
+            }
 
-        webView.loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/")
-        webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                if (url.toLowerCase().contains("login")) {
-                    // Only log them in if they're not already
-                    view.loadUrl("javascript:(function(){document.getElementById('username')" +
-                            ".value=${usernamePref.full}';document.getElementById('password')" +
-                            ".value='${Hawk.get<String>(Prefs.PASSWORD)}'; " +
-                            "document.getElementsByClassName('mainSubmit').submit.click(); })()")
+            loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/")
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView, url: String) {
+                    if (url.toLowerCase().contains("login")) {
+                        // Only log them in if they're not already
+                        view.loadUrl("javascript:(function(){document.getElementById('username')" +
+                                ".value=${usernamePref.full}';document.getElementById('password')" +
+                                ".value='${Hawk.get<String>(Prefs.PASSWORD)}'; " + "document." +
+                                "getElementsByClassName('mainSubmit').submit.click(); })()")
+                    }
+                    view.isVisible = true
                 }
-                view.isVisible = true
             }
         }
     }
