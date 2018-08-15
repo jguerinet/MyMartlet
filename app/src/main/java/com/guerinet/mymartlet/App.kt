@@ -43,25 +43,7 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        // Timber
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
-        if (BuildConfig.REPORT_CRASHES) {
-            Timber.plant(object: ProductionTree() {
-
-                override fun log(message: String) {
-                    Crashlytics.log(message)
-                }
-
-                override fun logException(t: Throwable) {
-                    // Don't log socket timeouts
-                    if (t !is SocketTimeoutException) {
-                        Crashlytics.logException(t)
-                    }
-                }
-            })
-        }
+        initializeTimber()
 
         // Fabric, Twitter, Crashlytics
         val authConfig = TwitterAuthConfig(BuildConfig.TWITTER_KEY, BuildConfig.TWITTER_SECRET)
@@ -82,6 +64,27 @@ class App : MultiDexApplication() {
         FlowManager.init(FlowConfig.Builder(this).build())
 
         initializeMorf()
+    }
+
+    private fun initializeTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+
+        if (BuildConfig.REPORT_CRASHES) {
+            Timber.plant(object : ProductionTree() {
+
+                override fun log(tag: String?, message: String) =
+                        Crashlytics.log("$tag: $message")
+
+                override fun logException(t: Throwable) {
+                    // Don't log socket timeouts
+                    if (t !is SocketTimeoutException) {
+                        Crashlytics.logException(t)
+                    }
+                }
+            })
+        }
     }
 
     private fun initializeKoin() = startKoin(this, listOf(appModule, prefsModule))
