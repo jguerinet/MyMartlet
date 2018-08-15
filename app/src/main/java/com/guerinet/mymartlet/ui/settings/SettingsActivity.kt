@@ -23,6 +23,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.FileProvider
+import android.util.Pair
 import android.widget.CompoundButton
 import com.guerinet.morf.Morf
 import com.guerinet.morf.TextViewItem
@@ -31,7 +32,6 @@ import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.AppUpdate
 import com.guerinet.mymartlet.ui.DrawerActivity
-import com.guerinet.mymartlet.ui.dialog.list.HomepagesAdapter
 import com.guerinet.mymartlet.ui.settings.about.AboutActivity
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.dagger.prefs.UsernamePref
@@ -86,20 +86,36 @@ class SettingsActivity : DrawerActivity() {
         morf.text {
             text(homePageManager.titleString)
             icon(Position.START, R.drawable.ic_phone_android)
-            onClick({ item: TextViewItem ->
-                singleListDialog(R.string.settings_homepage_title, object : HomepagesAdapter() {
+            onClick { item: TextViewItem ->
+                val homePages = listOf(
+                        HomepageManager.HomePage.SCHEDULE,
+                        HomepageManager.HomePage.TRANSCRIPT,
+                        HomepageManager.HomePage.MY_COURSES,
+                        HomepageManager.HomePage.COURSES,
+                        HomepageManager.HomePage.WISHLIST,
+                        HomepageManager.HomePage.SEARCH_COURSES,
+                        HomepageManager.HomePage.EBILL,
+                        HomepageManager.HomePage.MAP,
+                        HomepageManager.HomePage.DESKTOP,
+                        HomepageManager.HomePage.SETTINGS
+                )
+                        .map { Pair(it, homePageManager.getTitle(it)) }
+                        .sortedWith(Comparator { o1, o2 -> o1.second.compareTo(o2.second) })
 
-                    override fun onHomePageSelected(homePage: HomepageManager.HomePage) {
-                        // Update the instance
-                        homePageManager.homePage = homePage
+                val currentChoice = homePages.indexOfFirst { it.first == homePageManager.homePage }
 
-                        ga.sendEvent("Settings", "HomepageManager", homePageManager.title)
+                val choices = homePages.map { it.second }.toTypedArray()
 
-                        // Update the TextView
-                        item.text(homePageManager.titleString)
-                    }
-                })
-            })
+                singleListDialog(choices, R.string.settings_homepage_title, currentChoice) {
+                    // Update the instance
+                    homePageManager.homePage = homePages[it].first
+
+                    ga.sendEvent("Settings", "HomePageManager", homePageManager.title)
+
+                    // Update the TextView
+                    item.text(homePageManager.titleString)
+                }
+            }
         }
 
         // Statistics
