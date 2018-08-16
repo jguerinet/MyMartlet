@@ -17,6 +17,8 @@
 package com.guerinet.mymartlet.util.room.daos
 
 import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Query
+import com.guerinet.mymartlet.model.Semester
 
 /**
  * Dao for accessing all Transcript related models
@@ -24,4 +26,10 @@ import android.arch.persistence.room.Dao
  * @since 2.0.0
  */
 @Dao
-interface TranscriptDao
+interface TranscriptDao {
+
+    /** Returns the list of all [Semester]s */
+    @Query("SELECT * FROM Semester")
+    fun getSemesters(): List<Semester>
+
+}

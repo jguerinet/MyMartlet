@@ -26,6 +26,7 @@ import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
+import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.prefs.BooleanPref
@@ -72,6 +73,15 @@ val appModule: Module = applicationContext {
 
     // Clear Manager
     bean { ClearManager(get(), get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME))}
+}
+
+val dbModule = applicationContext {
+
+    // UserDb
+    bean { UserDb.init(androidApplication()) }
+
+    // TranscriptDao
+    bean { get<UserDb>().transcriptDao() }
 }
 
 val networkModule: Module = applicationContext {
