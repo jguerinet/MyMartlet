@@ -26,6 +26,7 @@ import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
+import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
@@ -80,6 +81,9 @@ val appModule: Module = applicationContext {
 }
 
 val dbModule = applicationContext {
+
+    // ConfigDb
+    bean { ConfigDb.init(androidApplication()) }
 
     // EbillDao
     bean { get<UserDb>().ebillDao() }
@@ -156,7 +160,7 @@ val prefsModule: Module = applicationContext {
 val viewModelsModule = applicationContext {
 
     // EbillViewModel
-    viewModel { EbillViewModel(get()) }
+    viewModel { EbillViewModel(get(), get()) }
 
     // SemesterViewModel
     viewModel { SemesterViewModel(get()) }
