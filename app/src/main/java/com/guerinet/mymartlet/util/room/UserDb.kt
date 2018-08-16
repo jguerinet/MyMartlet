@@ -22,6 +22,7 @@ import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import com.guerinet.mymartlet.model.Semester
+import com.guerinet.mymartlet.model.Statement
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 import com.guerinet.mymartlet.util.room.converters.TermConverter
@@ -32,7 +33,8 @@ import com.guerinet.mymartlet.util.room.daos.TranscriptDao
  * @author Julien Guerinet
  * @since 2.0.0
  */
-@Database(entities = [Semester::class, Transcript::class, TranscriptCourse::class], version = 1)
+@Database(entities = [Semester::class, Statement::class, Transcript::class,
+    TranscriptCourse::class], version = 1)
 @TypeConverters(TermConverter::class)
 abstract class UserDb : RoomDatabase() {
 
