@@ -19,9 +19,11 @@ package com.guerinet.mymartlet.util.room
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
+import com.guerinet.mymartlet.util.room.converters.IntMutableListConverter
 
 /**
  * Database with all of the config information
@@ -29,6 +31,7 @@ import com.guerinet.mymartlet.model.place.Place
  * @since 2.0.0
  */
 @Database(entities = [Category::class, Place::class], version = 1)
+@TypeConverters(IntMutableListConverter::class)
 abstract class ConfigDb : RoomDatabase() {
 
 //    abstract fun mapDao(): MapDao
