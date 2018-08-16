@@ -21,13 +21,10 @@ import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Semester
-import com.guerinet.mymartlet.model.Statement
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
-import com.guerinet.mymartlet.util.dbflow.DBUtils
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
-import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.suitcase.util.extensions.isConnected
@@ -116,13 +113,13 @@ abstract class UserDownloader(context: Context) : Thread() {
                 update(context!!.getString(R.string.downloading_ebill))
             }
 
-            // Download the ebill
-            try {
-                val response = mcGillService!!.ebill().execute()
-                DBUtils.replaceDB(context, StatementDB.NAME, Statement::class.java, response.body(), null)
-            } catch (e: IOException) {
-                handleException(e, "Ebill")
-            }
+            // TODO Download the ebill
+//            try {
+//                val response = mcGillService!!.ebill().execute()
+//                DBUtils.replaceDB(context, StatementDB.NAME, Statement::class.java, response.body(), null)
+//            } catch (e: IOException) {
+//                handleException(e, "Ebill")
+//            }
         }
     }
 
