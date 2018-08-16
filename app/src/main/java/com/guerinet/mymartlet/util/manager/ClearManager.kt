@@ -20,7 +20,6 @@ import android.content.Context
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB
-import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
 import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
@@ -56,7 +55,7 @@ class ClearManager(private val context: Context, private val usernamePref: Usern
         userDb.clearAllTables()
 
         // Schedule, Statements, Wishlist
-        Delete.tables(CourseDB::class.java, StatementDB::class.java, WishlistDB::class.java)
+        Delete.tables(CourseDB::class.java, WishlistDB::class.java)
 
         // HomePageManager
         homepageManager.clear()
