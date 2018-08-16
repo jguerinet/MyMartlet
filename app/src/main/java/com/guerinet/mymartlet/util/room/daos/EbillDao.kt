@@ -17,6 +17,7 @@
 package com.guerinet.mymartlet.util.room.daos
 
 import android.arch.lifecycle.LiveData
+import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.guerinet.mymartlet.model.Statement
 
@@ -33,4 +34,21 @@ interface EbillDao : BaseDao {
     @Query("SELECT * FROM Statement")
     fun getStatements(): LiveData<List<Statement>>
 
+    /**
+     * Deletes all of the stored [Statement]s
+     */
+    @Query("DELETE FROM Statement")
+    fun deleteStatements()
+
+    /**
+     * Inserts the list of [statements]
+     */
+    @Insert
+    fun insertStatements(statements: List<Statement>)
+
+    /**
+     * Updates the list of [statements] locally stored
+     */
+    fun updateStatements(statements: List<Statement>) =
+            update(statements, this::deleteStatements, this::insertStatements)
 }

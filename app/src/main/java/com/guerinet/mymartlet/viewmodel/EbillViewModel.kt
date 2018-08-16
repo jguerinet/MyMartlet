@@ -20,6 +20,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.Statement
+import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.EbillDao
 
 /**
@@ -27,7 +28,21 @@ import com.guerinet.mymartlet.util.room.daos.EbillDao
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class EbillViewModel(private val ebillDao: EbillDao) : BaseViewModel() {
+class EbillViewModel(private val ebillDao: EbillDao, private val mcGillService: McGillService)
+    : BaseViewModel() {
 
     val statements: LiveData<List<Statement>> by lazy { ebillDao.getStatements() }
+
+    suspend fun refresh(): Exception? = update {
+        try {
+            val response = mcGillService.ebill().execute().body()
+                    ?: return@update Exception("Body was null")
+
+            // Save the response
+            ebillDao.updateStatements(response)
+            return@update null
+        } catch (e: Exception) {
+            return@update e
+        }
+    }
 }
