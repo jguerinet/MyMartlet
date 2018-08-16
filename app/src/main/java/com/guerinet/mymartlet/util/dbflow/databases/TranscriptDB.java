@@ -20,7 +20,6 @@ import android.content.Context;
 
 import com.guerinet.mymartlet.model.Semester;
 import com.guerinet.mymartlet.model.transcript.Transcript;
-import com.guerinet.mymartlet.model.transcript.TranscriptCourse;
 import com.guerinet.mymartlet.util.dbflow.DBUtils;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse;
 import com.raizlabs.android.dbflow.annotation.Database;
@@ -51,16 +50,5 @@ public class TranscriptDB {
 
         // Replace the Semesters
         DBUtils.replaceDB(context, SemesterDB.NAME, Semester.class, response.semesters, null);
-
-        // Replace the classes
-        DBUtils.replaceDB(context, TranscriptCourseDB.NAME, TranscriptCourse.class,
-                response.courses, null);
-    }
-
-    public static void clearTranscript(Context context) {
-        // Clear all associated DBs
-        context.deleteDatabase(TranscriptDB.FULL_NAME);
-        context.deleteDatabase(SemesterDB.FULL_NAME);
-        context.deleteDatabase(TranscriptCourseDB.FULL_NAME);
     }
 }

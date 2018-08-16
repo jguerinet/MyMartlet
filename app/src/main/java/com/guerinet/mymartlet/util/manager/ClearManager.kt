@@ -21,11 +21,11 @@ import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
 import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB
 import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
-import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
+import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.orhanobut.hawk.Hawk
 import com.raizlabs.android.dbflow.sql.language.Delete
@@ -38,7 +38,7 @@ import com.raizlabs.android.dbflow.sql.language.Delete
 class ClearManager(private val context: Context, private val usernamePref: UsernamePref,
         private val homepageManager: HomepageManager, private val defaultTermPref: DefaultTermPref,
         private val registerTermsPref: RegisterTermsPref,
-        private val rememberUsernamePref: BooleanPref) {
+        private val rememberUsernamePref: BooleanPref, private val userDb: UserDb) {
 
     /**
      * Clears all of the user's info
@@ -52,11 +52,11 @@ class ClearManager(private val context: Context, private val usernamePref: Usern
         // Password
         Hawk.delete(Prefs.PASSWORD)
 
+        // User Db
+        userDb.clearAllTables()
+
         // Schedule, Statements, Wishlist
         Delete.tables(CourseDB::class.java, StatementDB::class.java, WishlistDB::class.java)
-
-        // Transcript
-        TranscriptDB.clearTranscript(context)
 
         // HomePageManager
         homepageManager.clear()
