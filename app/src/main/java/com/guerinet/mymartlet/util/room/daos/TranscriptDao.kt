@@ -21,6 +21,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
+import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 
 /**
  * Dao for accessing all Transcript related models
@@ -30,12 +31,27 @@ import com.guerinet.mymartlet.model.transcript.Transcript
 @Dao
 interface TranscriptDao {
 
-    /** Returns the [Transcript] instance */
+    /**
+     * Returns the [Transcript] instance
+     */
     @Query("SELECT * FROM Transcript")
     fun getTranscript(): LiveData<Transcript>
 
-    /** Returns the list of all [Semester]s */
+    /**
+     * Returns the [Semester] with the [semesterId]
+     */
+    @Query("SELECT * FROM Semester WHERE id = :semesterId")
+    fun getSemester(semesterId: Int): LiveData<Semester>
+
+    /**
+     * Returns the list of all [Semester]s
+     */
     @Query("SELECT * FROM Semester")
     fun getSemesters(): LiveData<List<Semester>>
 
+    /**
+     * Returns the list of [TranscriptCourse]s for the [semesterId]
+     */
+    @Query("SELECT * FROM TranscriptCourse WHERE semesterId = :semesterId")
+    fun getTranscriptCourses(semesterId: Int): LiveData<List<TranscriptCourse>>
 }

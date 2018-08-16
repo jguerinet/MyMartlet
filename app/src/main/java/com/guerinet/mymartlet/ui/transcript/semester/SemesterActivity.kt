@@ -19,15 +19,13 @@ package com.guerinet.mymartlet.ui.transcript.semester
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Semester
-import com.guerinet.mymartlet.model.Semester_Table
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
-import com.guerinet.mymartlet.util.extensions.errorToast
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.guerinet.mymartlet.util.extensions.assertNotNull
+import com.guerinet.mymartlet.util.extensions.observe
+import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import kotlinx.android.synthetic.main.activity_semester.*
-import timber.log.Timber
+import org.koin.android.architecture.ext.viewModel
 
 /**
  * Displays information about a semester from the user's transcript
@@ -36,7 +34,9 @@ import timber.log.Timber
  */
 class SemesterActivity : BaseActivity() {
 
-    private lateinit var adapter: SemesterAdapter
+    private val adapter: SemesterAdapter by lazy { SemesterAdapter() }
+
+    private val semesterViewModel by viewModel<SemesterViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,42 +44,33 @@ class SemesterActivity : BaseActivity() {
         setUpToolbar()
         ga.sendScreen("Transcript - Semester")
 
-        // Try finding the semester
-        val semester = SQLite.select()
-                .from(Semester::class)
-                .where(Semester_Table.id.eq(intent.getIntExtra(Constants.ID, -1)))
-                .querySingle()
+        val semesterId = intent.getIntExtra(Constants.ID, -1)
 
-        if (semester == null) {
-            errorToast()
-            Timber.e(IllegalArgumentException("Semester was null"))
-            finish()
-            return
-        }
-
-        // Set the title as this current semester
-        title = semester.getName(this)
-
-        // Set the info up
-        degreeName.text = semester.bachelor
-        program.text = semester.program
-        gpa.text = getString(R.string.transcript_termGPA, semester.gpa.toString())
-        credits.text = getString(R.string.semester_termCredits, semester.credits.toString())
-        fullTime.setText(if (semester.isFullTime)
-            R.string.semester_fullTime
-        else
-            R.string.semester_partTime)
-
-        // Set up the courses list
-        adapter = SemesterAdapter(semester.id)
         list.apply {
             list.layoutManager = LinearLayoutManager(this@SemesterActivity)
-            list.adapter = adapter
+            list.adapter = this@SemesterActivity.adapter
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        adapter.update()
+        observe(semesterViewModel.getSemester(semesterId)) {
+            val semester = assertNotNull(it, "Semester") ?: return@observe
+
+            // Set the title as this current semester
+            title = semester.getName(this)
+
+            // Set the info
+            degreeName.text = semester.bachelor
+            program.text = semester.program
+            gpa.text = getString(R.string.transcript_termGPA, semester.gpa.toString())
+            credits.text = getString(R.string.semester_termCredits, semester.credits.toString())
+            fullTime.setText(if (semester.isFullTime) {
+                R.string.semester_fullTime
+            } else {
+                R.string.semester_partTime
+            })
+        }
+
+        observe(semesterViewModel.getTranscriptCourses(semesterId)) {
+            adapter.update(it)
+        }
     }
 }

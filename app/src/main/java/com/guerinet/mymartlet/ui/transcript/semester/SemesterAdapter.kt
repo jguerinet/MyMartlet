@@ -19,37 +19,24 @@ package com.guerinet.mymartlet.ui.transcript.semester
 import android.support.v7.util.DiffUtil
 import android.view.ViewGroup
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
-import com.guerinet.mymartlet.model.transcript.TranscriptCourse_Table
 import com.guerinet.suitcase.ui.BaseListAdapter
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.item_transcript_course.view.*
 
 /**
  * Displays the list of courses for a semester
  * @author Julien Guerinet
  * @since 1.0.0
- *
- * @param semesterId Id of the [Semester] to show
  */
-internal class SemesterAdapter(private val semesterId: Int) :
-        BaseListAdapter<TranscriptCourse>(ItemCallback()) {
+internal class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseHolder =
-            CourseHolder(parent)
+    /**
+     * Updates the list of [transcriptCourses] shown
+     */
+    fun update(transcriptCourses: List<TranscriptCourse>?) =
+            submitList(transcriptCourses?.toMutableList())
 
-    fun update() {
-        SQLite.select()
-                .from(TranscriptCourse::class)
-                .where(TranscriptCourse_Table.semesterId.eq(semesterId))
-                .async()
-                .queryListResultCallback { _, tResult ->
-                    submitList(tResult)
-                }
-                .execute()
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CourseHolder(parent)
 
     internal class CourseHolder(parent: ViewGroup) :
             BaseHolder<TranscriptCourse>(parent, R.layout.item_transcript_course) {
@@ -71,10 +58,10 @@ internal class SemesterAdapter(private val semesterId: Int) :
 
     class ItemCallback : DiffUtil.ItemCallback<TranscriptCourse>() {
 
-        override fun areItemsTheSame(oldItem: TranscriptCourse, newItem: TranscriptCourse)
-                : Boolean = oldItem.courseCode == newItem.courseCode && oldItem.term == newItem.term
+        override fun areItemsTheSame(oldItem: TranscriptCourse, newItem: TranscriptCourse) =
+                oldItem.courseCode == newItem.courseCode && oldItem.term == newItem.term
 
-        override fun areContentsTheSame(oldItem: TranscriptCourse, newItem: TranscriptCourse)
-                : Boolean = oldItem == newItem
+        override fun areContentsTheSame(oldItem: TranscriptCourse, newItem: TranscriptCourse) =
+                oldItem == newItem
     }
 }

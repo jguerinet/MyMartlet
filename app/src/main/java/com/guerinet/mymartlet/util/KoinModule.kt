@@ -27,6 +27,7 @@ import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.UserDb
+import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.NullDatePref
@@ -149,6 +150,9 @@ val prefsModule: Module = applicationContext {
 }
 
 val viewModelsModule = applicationContext {
+
+    // SemesterViewModel
+    viewModel { SemesterViewModel(get()) }
 
     // TranscriptViewModel
     viewModel { TranscriptViewModel(get()) }
