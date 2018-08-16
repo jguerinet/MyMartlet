@@ -29,7 +29,6 @@ import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.ui.settings.AgreementActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
@@ -267,8 +266,7 @@ class SplashActivity : BaseActivity() {
 
         // Check if we need to download everything or only the essential stuff
         //  We need to download everything if there is null info
-        val downloadEverything = SQLite.select().from(Transcript::class).querySingle() == null ||
-                !getDatabasePath(StatementDB.FULL_NAME).exists()
+        val downloadEverything = SQLite.select().from(Transcript::class).querySingle() == null
 
         // If we need to download everything, do it synchronously. If not, do it asynchronously
         val userDownloader = object : UserDownloader(this@SplashActivity) {
