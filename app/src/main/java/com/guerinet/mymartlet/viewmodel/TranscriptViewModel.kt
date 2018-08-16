@@ -22,8 +22,6 @@ import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
 
 /**
  * [ViewModel] for the transcript section
@@ -40,26 +38,21 @@ class TranscriptViewModel(private val transcriptDao: TranscriptDao,
     /**
      * Refreshes the data by requesting it from McGill
      */
-    suspend fun refresh(): Exception? {
-        isToolbarProgressVisible.postValue(true)
-        return async(CommonPool) {
-            try {
-                // Make the request
-                val response = mcGillService.transcript().execute().body()
-                        ?: return@async Exception("Body was null")
+    suspend fun refresh(): Exception? = update {
+        try {
+            // Make the request
+            val response = mcGillService.transcript().execute().body()
+                    ?: return@update Exception("Body was null")
 
-                // Save the response
-                transcriptDao.apply {
-                    updateTranscript(response.transcript)
-                    updateSemesters(response.semesters)
-                    updateTranscriptCourses(response.courses)
-                }
-                isToolbarProgressVisible.postValue(false)
-                return@async null
-            } catch (e: Exception) {
-                isToolbarProgressVisible.postValue(false)
-                return@async e
+            // Save the response
+            transcriptDao.apply {
+                updateTranscript(response.transcript)
+                updateSemesters(response.semesters)
+                updateTranscriptCourses(response.courses)
             }
-        }.await()
+            return@update null
+        } catch (e: Exception) {
+            return@update e
+        }
     }
 }

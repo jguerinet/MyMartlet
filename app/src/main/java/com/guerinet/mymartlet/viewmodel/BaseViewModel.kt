@@ -18,6 +18,8 @@ package com.guerinet.mymartlet.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.withContext
 
 /**
  * Base [ViewModel] with some common observables
@@ -28,4 +30,17 @@ open class BaseViewModel : ViewModel() {
 
     /** Tells the view whether the toolbar progress bar should be visible or not */
     val isToolbarProgressVisible: MutableLiveData<Boolean> = MutableLiveData()
+
+    /**
+     * Starts an update by showing the progress bar, running the [block], hiding the
+     *  progress bar, and returning the eventual [Exception] from the block
+     */
+    suspend fun update(block: () -> Exception?): Exception? {
+        isToolbarProgressVisible.postValue(true)
+        val exception = withContext(CommonPool) {
+            block()
+        }
+        isToolbarProgressVisible.postValue(false)
+        return exception
+    }
 }
