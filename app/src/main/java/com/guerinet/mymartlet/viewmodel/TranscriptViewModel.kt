@@ -17,20 +17,52 @@
 package com.guerinet.mymartlet.viewmodel
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
+import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
 
 /**
  * [ViewModel] for the transcript section
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class TranscriptViewModel(private val transcriptDao: TranscriptDao) : ViewModel() {
+class TranscriptViewModel(private val transcriptDao: TranscriptDao,
+        private val mcGillService: McGillService) : ViewModel() {
 
     val transcript: LiveData<Transcript> by lazy { transcriptDao.getTranscript() }
 
     val semesters: LiveData<List<Semester>> by lazy { transcriptDao.getSemesters() }
 
+    val isToolbarProgressVisible: MutableLiveData<Boolean> = MutableLiveData()
+
+    /**
+     * Refreshes the data by requesting it from McGill
+     */
+    suspend fun refresh(): Exception? {
+        isToolbarProgressVisible.postValue(true)
+        return async(CommonPool) {
+            try {
+                // Make the request
+                val response = mcGillService.transcript().execute().body()
+                        ?: return@async Exception("Body was null")
+
+                // Save the response
+                transcriptDao.apply {
+                    updateTranscript(response.transcript)
+                    updateSemesters(response.semesters)
+                    updateTranscriptCourses(response.courses)
+                }
+                isToolbarProgressVisible.postValue(false)
+                return@async null
+            } catch (e: Exception) {
+                isToolbarProgressVisible.postValue(false)
+                return@async e
+            }
+        }.await()
+    }
 }

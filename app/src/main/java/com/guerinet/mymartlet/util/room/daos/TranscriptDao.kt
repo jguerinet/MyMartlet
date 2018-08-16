@@ -18,7 +18,10 @@ package com.guerinet.mymartlet.util.room.daos
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Transaction
+import android.arch.persistence.room.Update
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
@@ -29,7 +32,7 @@ import com.guerinet.mymartlet.model.transcript.TranscriptCourse
  * @since 2.0.0
  */
 @Dao
-interface TranscriptDao {
+interface TranscriptDao : BaseDao {
 
     /**
      * Returns the [Transcript] instance
@@ -54,4 +57,48 @@ interface TranscriptDao {
      */
     @Query("SELECT * FROM TranscriptCourse WHERE semesterId = :semesterId")
     fun getTranscriptCourses(semesterId: Int): LiveData<List<TranscriptCourse>>
+
+    /**
+     * Updates the [transcript] instance
+     */
+    @Update
+    fun updateTranscript(transcript: Transcript)
+
+    /**
+     * Deletes all of the stored [Semester]s
+     */
+    @Query("DELETE FROM Semester")
+    fun deleteSemesters()
+
+    /**
+     * Adds the list of [semesters]
+     */
+    @Insert
+    fun addSemesters(semesters: List<Semester>)
+
+    /**
+     * Updates the stored [semesters]
+     */
+    @Transaction
+    fun updateSemesters(semesters: List<Semester>) =
+            update(semesters, this::deleteSemesters, this::addSemesters)
+
+    /**
+     * Deletes all of the stored [TranscriptCourse]s
+     */
+    @Query("DELETE FROM TranscriptCourse")
+    fun deleteTranscriptCourses()
+
+    /**
+     * Adds the list of [transcriptCourses]
+     */
+    @Insert
+    fun addTranscriptCourses(transcriptCourses: List<TranscriptCourse>)
+
+    /**
+     * Updates the stored [transcriptCourses]
+     */
+    @Transaction
+    fun updateTranscriptCourses(transcriptCourses: List<TranscriptCourse>) =
+            update(transcriptCourses, this::deleteTranscriptCourses, this::addTranscriptCourses)
 }

@@ -126,16 +126,17 @@ open class BaseActivity : AppCompatActivity() {
             errorDialog(R.string.error_no_internet)
             return false
         }
-
-        toolbarProgress.isVisible = true
         return true
     }
 
     /**
      * Handles a network [error] while performing an [action]
      */
-    fun handleError(action: String, exception: Throwable) {
-        Timber.e(exception, "Error $action")
+    fun handleError(action: String, exception: Throwable?) {
+        if (exception == null) {
+            return
+        }
+        Timber.e(exception, "Error: $action")
         toolbarProgress.isVisible = false
         if (exception is MinervaException) {
             // If this is a MinervaException, broadcast it

@@ -23,16 +23,13 @@ import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
-import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import kotlinx.android.synthetic.main.activity_transcript.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import org.koin.android.architecture.ext.viewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * Shows the user's transcript
@@ -67,6 +64,11 @@ class TranscriptActivity : DrawerActivity() {
         observe(transcriptViewModel.semesters) {
             adapter.update(it)
         }
+
+        observe(transcriptViewModel.isToolbarProgressVisible) {
+            val isVisible = it ?: return@observe
+            toolbarProgress.isVisible = isVisible
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -93,16 +95,9 @@ class TranscriptActivity : DrawerActivity() {
             return
         }
 
-        mcGillService.transcript().enqueue(object : Callback<TranscriptResponse> {
-            override fun onResponse(call: Call<TranscriptResponse>,
-                    response: Response<TranscriptResponse>) {
-                TranscriptDB.saveTranscript(this@TranscriptActivity, response.body()!!)
-                toolbarProgress.isVisible = false
-            }
-
-            override fun onFailure(call: Call<TranscriptResponse>, t: Throwable) {
-                handleError("refreshing transcript", t)
-            }
-        })
+        launch(UI) {
+            val e = transcriptViewModel.refresh()
+            handleError("Refreshing Transcript", e)
+        }
     }
 }
