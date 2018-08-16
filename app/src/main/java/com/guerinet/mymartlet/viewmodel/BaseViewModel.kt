@@ -16,25 +16,16 @@
 
 package com.guerinet.mymartlet.viewmodel
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.guerinet.mymartlet.model.Semester
-import com.guerinet.mymartlet.model.transcript.TranscriptCourse
-import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 
 /**
- * [ViewModel] for the [Semester]
+ * Base [ViewModel] with some common observables
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class SemesterViewModel(private val transcriptDao: TranscriptDao) : BaseViewModel() {
+open class BaseViewModel : ViewModel() {
 
-    /**
-     * Returns the observable [Semester] for the [semesterId]
-     */
-    fun getSemester(semesterId: Int) = transcriptDao.getSemester(semesterId)
-
-    /**
-     * Returns the observable list of [TranscriptCourse]s for the [semesterId]
-     */
-    fun getTranscriptCourses(semesterId: Int) = transcriptDao.getTranscriptCourses(semesterId)
+    /** Tells the view whether the toolbar progress bar should be visible or not */
+    val isToolbarProgressVisible: MutableLiveData<Boolean> = MutableLiveData()
 }

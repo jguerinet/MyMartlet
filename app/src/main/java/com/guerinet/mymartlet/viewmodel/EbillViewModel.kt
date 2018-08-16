@@ -16,25 +16,18 @@
 
 package com.guerinet.mymartlet.viewmodel
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
-import com.guerinet.mymartlet.model.transcript.TranscriptCourse
-import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.mymartlet.model.Statement
+import com.guerinet.mymartlet.util.room.daos.EbillDao
 
 /**
  * [ViewModel] for the [Semester]
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class SemesterViewModel(private val transcriptDao: TranscriptDao) : BaseViewModel() {
+class EbillViewModel(private val ebillDao: EbillDao) : BaseViewModel() {
 
-    /**
-     * Returns the observable [Semester] for the [semesterId]
-     */
-    fun getSemester(semesterId: Int) = transcriptDao.getSemester(semesterId)
-
-    /**
-     * Returns the observable list of [TranscriptCourse]s for the [semesterId]
-     */
-    fun getTranscriptCourses(semesterId: Int) = transcriptDao.getTranscriptCourses(semesterId)
+    val statements: LiveData<List<Statement>> by lazy { ebillDao.getStatements() }
 }

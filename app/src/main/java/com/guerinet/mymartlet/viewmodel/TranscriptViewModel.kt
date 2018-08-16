@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.viewmodel
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
@@ -32,13 +31,11 @@ import kotlinx.coroutines.experimental.async
  * @since 2.0.0
  */
 class TranscriptViewModel(private val transcriptDao: TranscriptDao,
-        private val mcGillService: McGillService) : ViewModel() {
+        private val mcGillService: McGillService) : BaseViewModel() {
 
     val transcript: LiveData<Transcript> by lazy { transcriptDao.getTranscript() }
 
     val semesters: LiveData<List<Semester>> by lazy { transcriptDao.getSemesters() }
-
-    val isToolbarProgressVisible: MutableLiveData<Boolean> = MutableLiveData()
 
     /**
      * Refreshes the data by requesting it from McGill

@@ -27,6 +27,7 @@ import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.UserDb
+import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.suitcase.analytics.GAManager
@@ -75,16 +76,19 @@ val appModule: Module = applicationContext {
     }
 
     // Clear Manager
-    bean { ClearManager(get(), get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME))}
+    bean { ClearManager(get(), get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get()) }
 }
 
 val dbModule = applicationContext {
 
-    // UserDb
-    bean { UserDb.init(androidApplication()) }
+    // EbillDao
+    bean { get<UserDb>().ebillDao() }
 
     // TranscriptDao
     bean { get<UserDb>().transcriptDao() }
+
+    // UserDb
+    bean { UserDb.init(androidApplication()) }
 }
 
 val networkModule: Module = applicationContext {
@@ -151,10 +155,13 @@ val prefsModule: Module = applicationContext {
 
 val viewModelsModule = applicationContext {
 
+    // EbillViewModel
+    viewModel { EbillViewModel(get()) }
+
     // SemesterViewModel
     viewModel { SemesterViewModel(get()) }
 
     // TranscriptViewModel
-    viewModel { TranscriptViewModel(get()) }
+    viewModel { TranscriptViewModel(get(), get()) }
 
 }
