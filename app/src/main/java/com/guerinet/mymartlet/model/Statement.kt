@@ -33,7 +33,7 @@ import org.threeten.bp.LocalDate
  *
  */
 @Entity
-class Statement(
+data class Statement(
         val date: LocalDate,
         val dueDate: LocalDate,
         val amount: Double,
