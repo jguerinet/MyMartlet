@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.room.daos
+package com.guerinet.mymartlet.viewmodel
 
 import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Query
+import android.arch.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
+import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 
 /**
- * Dao for accessing all Transcript related models
+ * [ViewModel] for the transcript section
  * @author Julien Guerinet
  * @since 2.0.0
  */
-@Dao
-interface TranscriptDao {
+class TranscriptViewModel(private val transcriptDao: TranscriptDao) : ViewModel() {
 
-    /** Returns the [Transcript] instance */
-    @Query("SELECT * FROM Transcript")
-    fun getTranscript(): LiveData<Transcript>
+    val transcript: LiveData<Transcript> by lazy { transcriptDao.getTranscript() }
 
-    /** Returns the list of all [Semester]s */
-    @Query("SELECT * FROM Semester")
-    fun getSemesters(): LiveData<List<Semester>>
+    val semesters: LiveData<List<Semester>> by lazy { transcriptDao.getSemesters() }
 
 }

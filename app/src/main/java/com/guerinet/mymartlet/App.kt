@@ -24,6 +24,7 @@ import com.guerinet.mymartlet.util.appModule
 import com.guerinet.mymartlet.util.dbModule
 import com.guerinet.mymartlet.util.networkModule
 import com.guerinet.mymartlet.util.prefsModule
+import com.guerinet.mymartlet.util.viewModelsModule
 import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -90,7 +91,7 @@ class App : MultiDexApplication() {
     }
 
     private fun initializeKoin() = startKoin(this, listOf(appModule, dbModule, networkModule,
-            prefsModule))
+            prefsModule, viewModelsModule))
 
     private fun initializeMorf() =
             Morf.createAndSetShape {

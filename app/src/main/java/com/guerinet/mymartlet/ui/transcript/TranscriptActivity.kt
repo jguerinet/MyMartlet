@@ -22,14 +22,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
+import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import kotlinx.android.synthetic.main.activity_transcript.*
+import org.koin.android.architecture.ext.viewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +43,9 @@ class TranscriptActivity : DrawerActivity() {
 
     override val currentPage = HomepageManager.HomePage.TRANSCRIPT
 
-    private val adapter = TranscriptAdapter()
+    private val adapter by lazy { TranscriptAdapter() }
+
+    private val transcriptViewModel by viewModel<TranscriptViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +54,19 @@ class TranscriptActivity : DrawerActivity() {
 
         list.apply {
             layoutManager = LinearLayoutManager(this@TranscriptActivity)
-            adapter = adapter
+            adapter = this@TranscriptActivity.adapter
         }
-        update()
+
+        observe(transcriptViewModel.transcript) {
+            if (it != null) {
+                cgpa.text = getString(R.string.transcript_CGPA, it.cgpa.toString())
+                credits.text = getString(R.string.transcript_credits, it.totalCredits.toString())
+            }
+        }
+
+        observe(transcriptViewModel.semesters) {
+            adapter.update(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -85,7 +97,6 @@ class TranscriptActivity : DrawerActivity() {
             override fun onResponse(call: Call<TranscriptResponse>,
                     response: Response<TranscriptResponse>) {
                 TranscriptDB.saveTranscript(this@TranscriptActivity, response.body()!!)
-                update()
                 toolbarProgress.isVisible = false
             }
 
@@ -93,19 +104,5 @@ class TranscriptActivity : DrawerActivity() {
                 handleError("refreshing transcript", t)
             }
         })
-    }
-
-    /**
-     * Updates the view
-     */
-    private fun update() {
-        // Reload all of the info
-        val transcript = SQLite.select().from(Transcript::class).querySingle()
-        if (transcript != null) {
-            cgpa.text = getString(R.string.transcript_CGPA, transcript.cgpa.toString())
-            credits.text = getString(R.string.transcript_credits,
-                    transcript.totalCredits.toString())
-        }
-        adapter.update()
     }
 }

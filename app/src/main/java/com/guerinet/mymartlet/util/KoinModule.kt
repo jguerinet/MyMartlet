@@ -27,6 +27,7 @@ import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.UserDb
+import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.prefs.BooleanPref
@@ -34,6 +35,7 @@ import com.guerinet.suitcase.prefs.IntPref
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module.Module
 import org.koin.dsl.module.applicationContext
@@ -144,4 +146,11 @@ val prefsModule: Module = applicationContext {
     bean(Prefs.SEAT_CHECKER) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
 
     bean(Prefs.STATS) { BooleanPref(get(), Prefs.STATS, true) }
+}
+
+val viewModelsModule = applicationContext {
+
+    // TranscriptViewModel
+    viewModel { TranscriptViewModel(get()) }
+
 }

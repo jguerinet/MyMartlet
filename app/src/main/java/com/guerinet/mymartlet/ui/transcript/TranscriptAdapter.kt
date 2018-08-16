@@ -23,8 +23,6 @@ import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.ui.transcript.semester.SemesterActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.suitcase.ui.BaseListAdapter
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.item_semester.view.*
 import org.jetbrains.anko.startActivity
 
@@ -35,18 +33,12 @@ import org.jetbrains.anko.startActivity
  */
 internal class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SemesterHolder =
-            SemesterHolder(parent)
+    /**
+     * Updates the [list] of semesters shown
+     */
+    fun update(list: List<Semester>?) = submitList(list?.toMutableList())
 
-    fun update() {
-        SQLite.select()
-                .from(Semester::class)
-                .async()
-                .queryListResultCallback { _, tResult ->
-                    submitList(tResult)
-                }
-                .execute()
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SemesterHolder(parent)
 
     internal class SemesterHolder(parent: ViewGroup) :
             BaseHolder<Semester>(parent, R.layout.item_semester) {

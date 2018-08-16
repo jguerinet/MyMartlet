@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.room.daos
+package com.guerinet.mymartlet.util.extensions
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Query
-import com.guerinet.mymartlet.model.Semester
-import com.guerinet.mymartlet.model.transcript.Transcript
+import android.arch.lifecycle.Observer
 
 /**
- * Dao for accessing all Transcript related models
+ * LifecycleOwner extensions
  * @author Julien Guerinet
  * @since 2.0.0
  */
-@Dao
-interface TranscriptDao {
 
-    /** Returns the [Transcript] instance */
-    @Query("SELECT * FROM Transcript")
-    fun getTranscript(): LiveData<Transcript>
-
-    /** Returns the list of all [Semester]s */
-    @Query("SELECT * FROM Semester")
-    fun getSemesters(): LiveData<List<Semester>>
-
-}
+/**
+ * Observes the [liveData] and calls the [body] when it changes
+ */
+fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
+        liveData.observe(this, Observer(body))
