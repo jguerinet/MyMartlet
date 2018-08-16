@@ -22,18 +22,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Statement
 import com.guerinet.mymartlet.ui.DrawerActivity
-import com.guerinet.mymartlet.util.dbflow.DBUtils
-import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
 import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import kotlinx.android.synthetic.main.activity_ebill.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import org.koin.android.architecture.ext.viewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * Displays the user's ebill statements
@@ -62,6 +58,11 @@ class EbillActivity : DrawerActivity() {
         observe(ebillViewModel.statements) {
             adapter.update(it)
         }
+
+        observe(ebillViewModel.isToolbarProgressVisible) {
+            val isVisible = it ?: return@observe
+            toolbarProgress.isVisible = isVisible
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -87,19 +88,9 @@ class EbillActivity : DrawerActivity() {
             return
         }
 
-        mcGillService.ebill().enqueue(object : Callback<List<Statement>> {
-            override fun onResponse(call: Call<List<Statement>>,
-                    response: Response<List<Statement>>) {
-                DBUtils.replaceDB(this@EbillActivity, StatementDB.NAME, Statement::class.java,
-                        response.body()) {
-                    toolbarProgress.isVisible = false
-                    adapter.update()
-                }
-            }
-
-            override fun onFailure(call: Call<List<Statement>>, t: Throwable) {
-                handleError("refreshing the ebill", t)
-            }
-        })
+        launch(UI) {
+            val e = ebillViewModel.refresh()
+            handleError("Ebill Refresh", e)
+        }
     }
 }

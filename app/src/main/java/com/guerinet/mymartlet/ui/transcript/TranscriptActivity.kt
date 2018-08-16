@@ -97,7 +97,7 @@ class TranscriptActivity : DrawerActivity() {
 
         launch(UI) {
             val e = transcriptViewModel.refresh()
-            handleError("Refreshing Transcript", e)
+            handleError("Transcript Refresh", e)
         }
     }
 }
