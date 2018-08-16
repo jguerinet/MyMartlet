@@ -88,6 +88,9 @@ val dbModule = applicationContext {
     // EbillDao
     bean { get<UserDb>().ebillDao() }
 
+    // MapDao
+    bean { get<ConfigDb>().mapDao() }
+
     // TranscriptDao
     bean { get<UserDb>().transcriptDao() }
 

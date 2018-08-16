@@ -24,6 +24,7 @@ import android.content.Context
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.room.converters.IntMutableListConverter
+import com.guerinet.mymartlet.util.room.daos.MapDao
 
 /**
  * Database with all of the config information
@@ -34,7 +35,7 @@ import com.guerinet.mymartlet.util.room.converters.IntMutableListConverter
 @TypeConverters(IntMutableListConverter::class)
 abstract class ConfigDb : RoomDatabase() {
 
-//    abstract fun mapDao(): MapDao
+    abstract fun mapDao(): MapDao
 
     companion object {
 
