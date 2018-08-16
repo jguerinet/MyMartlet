@@ -32,6 +32,7 @@ import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
+import com.guerinet.mymartlet.util.extensions.broadcast
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
@@ -138,8 +139,7 @@ open class BaseActivity : AppCompatActivity() {
         toolbarProgress.isVisible = false
         if (exception is MinervaException) {
             // If this is a MinervaException, broadcast it
-            LocalBroadcastManager.getInstance(this)
-                    .sendBroadcast(Intent(Constants.BROADCAST_MINERVA))
+            broadcast(Constants.BROADCAST_MINERVA)
         } else {
             errorDialog(R.string.error_other)
         }
