@@ -21,13 +21,14 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.guerinet.mymartlet.model.place.Category
+import com.guerinet.mymartlet.model.place.Place
 
 /**
  * Database with all of the config information
  * @author Julien Guerinet
  * @since 2.0.0
  */
-@Database(entities = [Category::class], version = 1)
+@Database(entities = [Category::class, Place::class], version = 1)
 abstract class ConfigDb : RoomDatabase() {
 
 //    abstract fun mapDao(): MapDao
