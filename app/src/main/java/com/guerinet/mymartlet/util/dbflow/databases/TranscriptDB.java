@@ -18,7 +18,6 @@ package com.guerinet.mymartlet.util.dbflow.databases;
 
 import android.content.Context;
 
-import com.guerinet.mymartlet.model.Semester;
 import com.guerinet.mymartlet.model.transcript.Transcript;
 import com.guerinet.mymartlet.util.dbflow.DBUtils;
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse;
@@ -47,8 +46,5 @@ public class TranscriptDB {
         // Replace the Transcript
         DBUtils.replaceDB(context, TranscriptDB.NAME, Transcript.class,
                 Collections.singletonList(response.transcript), null);
-
-        // Replace the Semesters
-        DBUtils.replaceDB(context, SemesterDB.NAME, Semester.class, response.semesters, null);
     }
 }
