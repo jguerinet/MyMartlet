@@ -17,15 +17,13 @@
 package com.guerinet.mymartlet.ui.ebill
 
 import android.annotation.SuppressLint
-import android.support.v4.content.ContextCompat
 import android.support.v7.util.DiffUtil
 import android.view.ViewGroup
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Statement
 import com.guerinet.suitcase.date.extensions.getLongDateString
 import com.guerinet.suitcase.ui.BaseListAdapter
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.guerinet.suitcase.util.extensions.getColorCompat
 import kotlinx.android.synthetic.main.item_statement.view.*
 
 /**
@@ -33,25 +31,16 @@ import kotlinx.android.synthetic.main.item_statement.view.*
  * @author Julien Guerinet
  * @since 1.0.0
  */
-internal class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
-
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): StatementHolder =
-            StatementHolder(viewGroup)
+class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
 
     /**
      * Updates the list of [Statement]s shown
      */
-    fun update() {
-        SQLite.select()
-                .from(Statement::class)
-                .async()
-                .queryListResultCallback { _, tResult ->
-                    submitList(tResult)
-                }
-                .execute()
-    }
+    fun update(statements: List<Statement>?) = submitList(statements?.toMutableList())
 
-    internal class StatementHolder(parent: ViewGroup) :
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int) = StatementHolder(viewGroup)
+
+    class StatementHolder(parent: ViewGroup) :
             BaseHolder<Statement>(parent, R.layout.item_statement) {
 
         @SuppressLint("SetTextI18n")
@@ -66,7 +55,7 @@ internal class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
 
                 // Change the color to green or red depending on if the user owes money or not
                 val colorId = if (item.amount < 0) R.color.green else R.color.red
-                amount.setTextColor(ContextCompat.getColor(context, colorId))
+                amount.setTextColor(context.getColorCompat(colorId))
             }
         }
     }
@@ -74,10 +63,9 @@ internal class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
     class ItemCallback : DiffUtil.ItemCallback<Statement>() {
 
         override fun areItemsTheSame(oldItem: Statement, newItem: Statement): Boolean =
-                oldItem.date == newItem.date && oldItem.dueDate == newItem.dueDate &&
-                        oldItem.amount == newItem.amount
+                oldItem.date == newItem.date && oldItem.amount == newItem.amount
 
         override fun areContentsTheSame(oldItem: Statement, newItem: Statement): Boolean =
-                areItemsTheSame(oldItem, newItem)
+                oldItem == newItem
     }
 }

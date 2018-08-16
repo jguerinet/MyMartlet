@@ -26,8 +26,11 @@ import com.guerinet.mymartlet.model.Statement
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.dbflow.DBUtils
 import com.guerinet.mymartlet.util.dbflow.databases.StatementDB
+import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
+import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import kotlinx.android.synthetic.main.activity_ebill.*
+import org.koin.android.architecture.ext.viewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,7 +45,9 @@ class EbillActivity : DrawerActivity() {
 
     override val currentPage = HomepageManager.HomePage.EBILL
 
-    private val adapter = EbillAdapter()
+    private val ebillViewModel by viewModel<EbillViewModel>()
+
+    private val adapter by lazy { EbillAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +56,12 @@ class EbillActivity : DrawerActivity() {
 
         list.apply {
             layoutManager = LinearLayoutManager(this@EbillActivity)
-            adapter = adapter
+            adapter = this@EbillActivity.adapter
         }
-        adapter.update()
+
+        observe(ebillViewModel.statements) {
+            adapter.update(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
