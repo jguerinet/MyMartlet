@@ -16,14 +16,13 @@
 
 package com.guerinet.mymartlet.util.manager
 
-import android.content.Context
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
-import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB
 import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
+import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.orhanobut.hawk.Hawk
@@ -34,10 +33,11 @@ import com.raizlabs.android.dbflow.sql.language.Delete
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class ClearManager(private val context: Context, private val usernamePref: UsernamePref,
+class ClearManager(private val usernamePref: UsernamePref,
         private val homepageManager: HomepageManager, private val defaultTermPref: DefaultTermPref,
         private val registerTermsPref: RegisterTermsPref,
-        private val rememberUsernamePref: BooleanPref, private val userDb: UserDb) {
+        private val rememberUsernamePref: BooleanPref, private val userDb: UserDb,
+        private val configDb: ConfigDb) {
 
     /**
      * Clears all of the user's info
@@ -68,8 +68,8 @@ class ClearManager(private val context: Context, private val usernamePref: Usern
      * Clears all config info
      */
     fun clearConfig() {
-        // Places
-        Delete.table(PlaceDB::class.java)
+        // Config Db
+        configDb.clearAllTables()
 
         // Register terms
         registerTermsPref.clear()
