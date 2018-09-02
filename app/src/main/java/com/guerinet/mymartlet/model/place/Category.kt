@@ -34,19 +34,19 @@ import java.util.*
 @Entity
 data class Category(
         @PrimaryKey var id: Int = 0,
-        var en: String?,
-        var fr: String?
+        var en: String,
+        var fr: String
 ) {
 
     /**
      * Constructor used to create the Favorites (is [isFavorites] is true) and All types
      */
-    constructor(isFavorites: Boolean) : this(if (isFavorites) FAVORITES else ALL, null, null)
+    constructor(isFavorites: Boolean) : this(if (isFavorites) FAVORITES else ALL, "", "")
 
     /**
      * Returns the String to use. Uses the app [context]
      */
-    fun getString(context: Context): String? = when {
+    fun getString(context: Context): String = when {
         id == FAVORITES -> context.getString(R.string.map_favorites)
         id == ALL -> context.getString(R.string.map_all)
         Locale.getDefault().language == "fr" -> fr

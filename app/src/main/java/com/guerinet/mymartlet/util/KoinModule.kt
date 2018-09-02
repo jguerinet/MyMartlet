@@ -29,6 +29,7 @@ import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
+import com.guerinet.mymartlet.viewmodel.MapViewModel
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.suitcase.analytics.GAManager
@@ -164,6 +165,9 @@ val viewModelsModule = applicationContext {
 
     // EbillViewModel
     viewModel { EbillViewModel(get(), get()) }
+
+    // MapViewModel
+    viewModel { MapViewModel(get()) }
 
     // SemesterViewModel
     viewModel { SemesterViewModel(get()) }

@@ -29,5 +29,5 @@ import android.arch.lifecycle.Observer
 /**
  * Observes the [liveData] and calls the [body] when it changes
  */
-fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
+fun <T : Any?, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
         liveData.observe(this, Observer(body))
