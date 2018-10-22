@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ public class CourseResult extends Course implements Serializable {
             LocalDate endDate, int capacity, int seatsRemaining, int waitlistRemaining) {
         super(subject, number, title, crn, section, startTime, endTime, days, type, location,
                 instructor, credits, startDate, endDate);
-        this.term = term;
+        this.setTerm(term);
         // Set the Id now
         prepareForDB();
         this.capacity = capacity;
