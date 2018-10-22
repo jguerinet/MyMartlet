@@ -21,6 +21,8 @@ import android.arch.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.util.retrofit.McGillService
+import com.guerinet.mymartlet.util.room.daos.SemesterDao
+import com.guerinet.mymartlet.util.room.daos.TranscriptCourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 
 /**
@@ -28,12 +30,16 @@ import com.guerinet.mymartlet.util.room.daos.TranscriptDao
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class TranscriptViewModel(private val transcriptDao: TranscriptDao,
-        private val mcGillService: McGillService) : BaseViewModel() {
+class TranscriptViewModel(
+        private val semesterDao: SemesterDao,
+        private val transcriptDao: TranscriptDao,
+        private val transcriptCourseDao: TranscriptCourseDao,
+        private val mcGillService: McGillService
+) : BaseViewModel() {
 
-    val transcript: LiveData<Transcript> by lazy { transcriptDao.getTranscript() }
+    val transcript: LiveData<Transcript> by lazy { transcriptDao.get() }
 
-    val semesters: LiveData<List<Semester>> by lazy { transcriptDao.getSemesters() }
+    val semesters: LiveData<List<Semester>> by lazy { semesterDao.getAll() }
 
     /**
      * Refreshes the data by requesting it from McGill
@@ -45,11 +51,9 @@ class TranscriptViewModel(private val transcriptDao: TranscriptDao,
                     ?: return@update Exception("Body was null")
 
             // Save the response
-            transcriptDao.apply {
-                updateTranscript(response.transcript)
-                updateSemesters(response.semesters)
-                updateTranscriptCourses(response.courses)
-            }
+            transcriptDao.update(response.transcript)
+            semesterDao.update(response.semesters)
+            transcriptCourseDao.update(response.courses)
             return@update null
         } catch (e: Exception) {
             return@update e

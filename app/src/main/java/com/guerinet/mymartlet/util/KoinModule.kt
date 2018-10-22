@@ -86,14 +86,20 @@ val dbModule = applicationContext {
     // ConfigDb
     bean { ConfigDb.init(androidApplication()) }
 
-    // StatementDao
-    bean { get<UserDb>().ebillDao() }
-
     // MapDao
     bean { get<ConfigDb>().mapDao() }
 
+    // SemesterDao
+    bean { get<UserDb>().semesterDao() }
+
+    // StatementDao
+    bean { get<UserDb>().statementDao() }
+
     // TranscriptDao
     bean { get<UserDb>().transcriptDao() }
+
+    // TranscriptCourseDao
+    bean { get<UserDb>().trasncriptCourseDao() }
 
     // UserDb
     bean { UserDb.init(androidApplication()) }
@@ -173,6 +179,6 @@ val viewModelsModule = applicationContext {
     viewModel { SemesterViewModel(get()) }
 
     // TranscriptViewModel
-    viewModel { TranscriptViewModel(get(), get()) }
+    viewModel { TranscriptViewModel(get(), get(), get(), get()) }
 
 }
