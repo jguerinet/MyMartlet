@@ -22,20 +22,19 @@ import org.threeten.bp.LocalDate
 
 /**
  * One statement in the user's ebill
- * @author Quang Dao
  * @author Julien Guerinet
+ * @author Quang Dao
  * @since 1.0.0
  *
  * @param date      Statement date
  * @param dueDate   Due date
  * @param amount    Total amount due or owed
  * @param id        Randomly generated Id for this statement, used as a primary key
- *
  */
 @Entity
 data class Statement(
         val date: LocalDate,
         val dueDate: LocalDate,
         val amount: Double,
-        @PrimaryKey(autoGenerate = true) internal var id: Int = 0
+        @PrimaryKey(autoGenerate = true) var id: Int = 0
 )
