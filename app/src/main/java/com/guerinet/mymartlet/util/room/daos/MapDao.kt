@@ -17,6 +17,7 @@
 package com.guerinet.mymartlet.util.room.daos
 
 import android.arch.lifecycle.LiveData
+import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
@@ -26,6 +27,7 @@ import com.guerinet.mymartlet.model.place.Place
  * @author Julien Guerinet
  * @since 2.0.0
  */
+@Dao
 interface MapDao {
 
     /**
