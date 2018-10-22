@@ -86,7 +86,7 @@ val dbModule = applicationContext {
     // ConfigDb
     bean { ConfigDb.init(androidApplication()) }
 
-    // EbillDao
+    // StatementDao
     bean { get<UserDb>().ebillDao() }
 
     // MapDao

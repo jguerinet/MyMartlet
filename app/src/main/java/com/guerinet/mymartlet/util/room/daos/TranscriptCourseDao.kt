@@ -46,6 +46,6 @@ abstract class TranscriptCourseDao : BaseDao<TranscriptCourse>() {
      * Updates the stored [transcriptCourses]
      */
     @Transaction
-    open fun updateTranscriptCourses(transcriptCourses: List<TranscriptCourse>) =
+    open fun update(transcriptCourses: List<TranscriptCourse>) =
             update(transcriptCourses, this::deleteAll)
 }

@@ -27,7 +27,7 @@ import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 import com.guerinet.mymartlet.util.room.converters.LocalDateConverter
 import com.guerinet.mymartlet.util.room.converters.TermConverter
-import com.guerinet.mymartlet.util.room.daos.EbillDao
+import com.guerinet.mymartlet.util.room.daos.StatementDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 
 /**
@@ -40,7 +40,7 @@ import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 @TypeConverters(LocalDateConverter::class, TermConverter::class)
 abstract class UserDb : RoomDatabase() {
 
-    abstract fun ebillDao(): EbillDao
+    abstract fun ebillDao(): StatementDao
 
     abstract fun transcriptDao(): TranscriptDao
 

@@ -18,8 +18,8 @@ package com.guerinet.mymartlet.util.room.daos
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Transaction
 import com.guerinet.mymartlet.model.Statement
 
 /**
@@ -28,29 +28,23 @@ import com.guerinet.mymartlet.model.Statement
  * @since 2.0.0
  */
 @Dao
-interface EbillDao : BaseDao {
+abstract class StatementDao : BaseDao<Statement>() {
 
     /**
      * Returns all of the [Statement]s in an observable format
      */
     @Query("SELECT * FROM Statement")
-    fun getStatements(): LiveData<List<Statement>>
+    abstract fun getAll(): LiveData<List<Statement>>
 
     /**
      * Deletes all of the stored [Statement]s
      */
     @Query("DELETE FROM Statement")
-    fun deleteStatements()
-
-    /**
-     * Inserts the list of [statements]
-     */
-    @Insert
-    fun insertStatements(statements: List<Statement>)
+    abstract fun deleteAll()
 
     /**
      * Updates the list of [statements] locally stored
      */
-    fun updateStatements(statements: List<Statement>) =
-            update(statements, this::deleteStatements, this::insertStatements)
+    @Transaction
+    fun update(statements: List<Statement>) = update(statements, this::deleteAll)
 }
