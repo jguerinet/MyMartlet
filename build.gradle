@@ -19,14 +19,14 @@ apply plugin: 'kotlin'
 
 buildscript {
     ext.anko_version='0.10.4'
-    ext.kotlin_version = '1.2.31'
+    ext.kotlin_version = '1.2.71'
     repositories {
         google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.1'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
         classpath 'com.google.gms:google-services:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
