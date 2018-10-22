@@ -17,6 +17,7 @@
 package com.guerinet.mymartlet.util.room.daos
 
 import android.arch.persistence.room.Insert
+import android.arch.persistence.room.Update
 import com.raizlabs.android.dbflow.kotlinextensions.insert
 
 /**
@@ -37,6 +38,12 @@ abstract class BaseDao<T> {
      */
     @Insert
     abstract fun insert(objects: List<T>)
+
+    /**
+     * Updates the [obj]
+     */
+    @Update
+    abstract fun update(obj: T)
 
     /**
      * Updates a [list] of objects by [delete]ing the old objects and [insert]ing the new ones

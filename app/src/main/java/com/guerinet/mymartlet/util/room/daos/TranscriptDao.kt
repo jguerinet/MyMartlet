@@ -19,7 +19,6 @@ package com.guerinet.mymartlet.util.room.daos
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
 import com.guerinet.mymartlet.model.transcript.Transcript
 
 /**
@@ -34,11 +33,5 @@ abstract class TranscriptDao : BaseDao<Transcript>() {
      * Returns the [Transcript] instance
      */
     @Query("SELECT * FROM Transcript")
-    abstract fun getTranscript(): LiveData<Transcript>
-
-    /**
-     * Updates the [transcript] instance
-     */
-    @Update
-    abstract fun updateTranscript(transcript: Transcript)
+    abstract fun get(): LiveData<Transcript>
 }
