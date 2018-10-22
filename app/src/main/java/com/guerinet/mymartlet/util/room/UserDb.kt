@@ -48,7 +48,7 @@ abstract class UserDb : RoomDatabase() {
 
     abstract fun transcriptDao(): TranscriptDao
 
-    abstract fun trasncriptCourseDao(): TranscriptCourseDao
+    abstract fun transcriptCourseDao(): TranscriptCourseDao
 
     companion object {
 

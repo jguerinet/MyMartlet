@@ -99,7 +99,7 @@ val dbModule = applicationContext {
     bean { get<UserDb>().transcriptDao() }
 
     // TranscriptCourseDao
-    bean { get<UserDb>().trasncriptCourseDao() }
+    bean { get<UserDb>().transcriptCourseDao() }
 
     // UserDb
     bean { UserDb.init(androidApplication()) }
