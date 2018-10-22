@@ -19,26 +19,33 @@ package com.guerinet.mymartlet.util.room.daos
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
-import com.guerinet.mymartlet.model.transcript.Transcript
+import android.arch.persistence.room.Transaction
+import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 
 /**
- * Dao for accessing all Transcript related models
+ * Dao for accessing the TranscriptCourse model
  * @author Julien Guerinet
  * @since 2.0.0
  */
 @Dao
-abstract class TranscriptDao : BaseDao<Transcript>() {
+abstract class TranscriptCourseDao : BaseDao<TranscriptCourse>() {
 
     /**
-     * Returns the [Transcript] instance
+     * Returns the list of [TranscriptCourse]s for the [semesterId]
      */
-    @Query("SELECT * FROM Transcript")
-    abstract fun getTranscript(): LiveData<Transcript>
+    @Query("SELECT * FROM TranscriptCourse WHERE semesterId = :semesterId")
+    abstract fun get(semesterId: Int): LiveData<List<TranscriptCourse>>
 
     /**
-     * Updates the [transcript] instance
+     * Deletes all of the stored [TranscriptCourse]s
      */
-    @Update
-    abstract fun updateTranscript(transcript: Transcript)
+    @Query("DELETE FROM TranscriptCourse")
+    abstract fun deleteAll()
+
+    /**
+     * Updates the stored [transcriptCourses]
+     */
+    @Transaction
+    open fun updateTranscriptCourses(transcriptCourses: List<TranscriptCourse>) =
+            update(transcriptCourses, this::deleteAll)
 }

@@ -34,23 +34,23 @@ abstract class SemesterDao : BaseDao<Semester>() {
      * Returns the [Semester] with the [semesterId]
      */
     @Query("SELECT * FROM Semester WHERE id = :semesterId")
-    abstract fun getSemester(semesterId: Int): LiveData<Semester>
+    abstract fun get(semesterId: Int): LiveData<Semester>
 
     /**
      * Returns the list of all [Semester]s
      */
     @Query("SELECT * FROM Semester")
-    abstract fun getSemesters(): LiveData<List<Semester>>
+    abstract fun getAll(): LiveData<List<Semester>>
 
     /**
      * Deletes all of the stored [Semester]s
      */
     @Query("DELETE FROM Semester")
-    abstract fun deleteSemesters()
+    abstract fun deleteAll()
 
     /**
      * Updates the stored [semesters]
      */
     @Transaction
-    open fun updateSemesters(semesters: List<Semester>) = update(semesters, this::deleteSemesters)
+    open fun update(semesters: List<Semester>) = update(semesters, this::deleteAll)
 }
