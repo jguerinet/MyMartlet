@@ -46,5 +46,5 @@ abstract class StatementDao : BaseDao<Statement>() {
      * Updates the list of [statements] locally stored
      */
     @Transaction
-    fun update(statements: List<Statement>) = update(statements, this::deleteAll)
+    open fun update(statements: List<Statement>) = update(statements, this::deleteAll)
 }
