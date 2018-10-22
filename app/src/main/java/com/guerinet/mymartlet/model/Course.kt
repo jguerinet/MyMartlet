@@ -32,31 +32,30 @@ import timber.log.Timber
  * @author Quang Dao
  * @since 1.0.0
  *
- * @param id    Unique Id for this course
- * @param term  The currentTerm this class is for
- * @param subject   The course's 4-letter subject (ex: MATH)
- * @param number    The course's number (ex: 263)
- * @param title The course title
- * @param crn   The course CRN number
- * @param section   The course section (ex: 001)
- * @param startTime The course's start time
- * @param endTime   The course's end time
- * @param days  The days this course is on
- * @param type  The course type (ex: lecture, tutorial...)
- * @param location  The course location (generally building and room number)
- * @param instructor The course's instructor's name
- * @param credits   The number of credits for this course
- * @param startDate The course start date
- * @param endDate The course end date
+ * @param term          Term this class is for
+ * @param subject       Course's 4-letter subject (ex: MATH)
+ * @param number        Course's number (ex: 263)
+ * @param title         Course title
+ * @param crn           Course CRN number
+ * @param section       Course section (ex: 001)
+ * @param startTime     Course's start time
+ * @param endTime       Course's end time
+ * @param days          Days this course is on
+ * @param type          Course type (ex: lecture, tutorial...)
+ * @param location      Course location (generally building and room number)
+ * @param instructor    Course's instructor's name
+ * @param credits       Number of credits for this course
+ * @param startDate     Course start date
+ * @param endDate       Course end date
+ * @param id            Unique Id for this course
  */
 @Entity
 open class Course(
-        @PrimaryKey var id: String = Utils.uuid(),
         val term: Term,
         val subject: String,
         val number: String,
         val title: String,
-        val crn: Int = 0,
+        val crn: Int,
         val section: String,
         val startTime: LocalTime,
         val endTime: LocalTime,
@@ -66,7 +65,8 @@ open class Course(
         val instructor: String,
         val credits: Double,
         val startDate: LocalDate,
-        val endDate: LocalDate
+        val endDate: LocalDate,
+        @PrimaryKey var id: String = Utils.uuid()
 ) {
 
     /** Course code */
