@@ -22,7 +22,6 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Transaction
 import android.arch.persistence.room.Update
-import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 
@@ -32,73 +31,43 @@ import com.guerinet.mymartlet.model.transcript.TranscriptCourse
  * @since 2.0.0
  */
 @Dao
-interface TranscriptDao : BaseDao {
+abstract class TranscriptDao : BaseDao<Transcript>() {
 
     /**
      * Returns the [Transcript] instance
      */
     @Query("SELECT * FROM Transcript")
-    fun getTranscript(): LiveData<Transcript>
-
-    /**
-     * Returns the [Semester] with the [semesterId]
-     */
-    @Query("SELECT * FROM Semester WHERE id = :semesterId")
-    fun getSemester(semesterId: Int): LiveData<Semester>
-
-    /**
-     * Returns the list of all [Semester]s
-     */
-    @Query("SELECT * FROM Semester")
-    fun getSemesters(): LiveData<List<Semester>>
+    abstract fun getTranscript(): LiveData<Transcript>
 
     /**
      * Returns the list of [TranscriptCourse]s for the [semesterId]
      */
     @Query("SELECT * FROM TranscriptCourse WHERE semesterId = :semesterId")
-    fun getTranscriptCourses(semesterId: Int): LiveData<List<TranscriptCourse>>
+    abstract fun getTranscriptCourses(semesterId: Int): LiveData<List<TranscriptCourse>>
 
     /**
      * Updates the [transcript] instance
      */
     @Update
-    fun updateTranscript(transcript: Transcript)
-
-    /**
-     * Deletes all of the stored [Semester]s
-     */
-    @Query("DELETE FROM Semester")
-    fun deleteSemesters()
-
-    /**
-     * Adds the list of [semesters]
-     */
-    @Insert
-    fun addSemesters(semesters: List<Semester>)
-
-    /**
-     * Updates the stored [semesters]
-     */
-    @Transaction
-    fun updateSemesters(semesters: List<Semester>) =
-            update(semesters, this::deleteSemesters, this::addSemesters)
+    abstract fun updateTranscript(transcript: Transcript)
 
     /**
      * Deletes all of the stored [TranscriptCourse]s
      */
     @Query("DELETE FROM TranscriptCourse")
-    fun deleteTranscriptCourses()
+    abstract fun deleteTranscriptCourses()
 
     /**
      * Adds the list of [transcriptCourses]
      */
     @Insert
-    fun addTranscriptCourses(transcriptCourses: List<TranscriptCourse>)
+    abstract fun addTranscriptCourses(transcriptCourses: List<TranscriptCourse>)
 
     /**
      * Updates the stored [transcriptCourses]
      */
     @Transaction
-    fun updateTranscriptCourses(transcriptCourses: List<TranscriptCourse>) =
-            update(transcriptCourses, this::deleteTranscriptCourses, this::addTranscriptCourses)
+    open fun updateTranscriptCourses(transcriptCourses: List<TranscriptCourse>) {
+    }
+//            update(transcriptCourses, this::deleteTranscriptCourses, this::addTranscriptCourses)
 }

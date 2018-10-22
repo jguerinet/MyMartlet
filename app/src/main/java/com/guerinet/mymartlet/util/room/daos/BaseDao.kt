@@ -16,17 +16,32 @@
 
 package com.guerinet.mymartlet.util.room.daos
 
+import android.arch.persistence.room.Insert
+import com.raizlabs.android.dbflow.kotlinextensions.insert
+
 /**
  * Basic Dao functions
  * @author Julien Guerinet
  * @since 2.0.0
  */
-interface BaseDao {
+abstract class BaseDao<T> {
+
+    /**
+     * Inserts 1 [obj] into the database
+     */
+    @Insert
+    abstract fun insert(obj: T)
+
+    /**
+     * Inserts a list of [objects] into the database
+     */
+    @Insert
+    abstract fun insert(objects: List<T>)
 
     /**
      * Updates a [list] of objects by [delete]ing the old objects and [insert]ing the new ones
      */
-    fun <T : Any> update(list: List<T>, delete: () -> Unit, insert: (List<T>) -> Unit) {
+    fun update(list: List<T>, delete: () -> Unit) {
         // Delete all the old objects
         delete()
         // Insert all the new objects
