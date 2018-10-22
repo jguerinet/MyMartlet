@@ -17,6 +17,7 @@
 package com.guerinet.mymartlet.model.place
 
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
 
@@ -45,6 +46,7 @@ data class Place(
 ) {
 
     /** Place coordinates */
+    @Ignore
     val coordinates = LatLng(latitude, longitude)
 
     /** True if this place is in the user's favorites, false otherwise */
