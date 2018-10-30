@@ -51,7 +51,7 @@ android {
 
     defaultConfig {
         applicationId "com.guerinet.mymartlet"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 3
         versionName "1.0.1"
