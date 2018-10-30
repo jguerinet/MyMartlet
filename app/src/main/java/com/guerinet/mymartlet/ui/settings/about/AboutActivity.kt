@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.ui.settings.about
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.suitcase.util.extensions.openUrl
@@ -38,7 +37,7 @@ class AboutActivity : BaseActivity() {
         ga.sendScreen("About")
 
         // Set up the list
-        list.layoutManager = LinearLayoutManager(this)
+        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         list.adapter = PersonAdapter()
 
         github.setOnClickListener { openUrl("https://github.com/jguerinet/MyMartlet/") }

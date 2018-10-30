@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.ui.transcript.semester
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
@@ -25,7 +24,6 @@ import com.guerinet.mymartlet.util.extensions.assertNotNull
 import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import kotlinx.android.synthetic.main.activity_semester.*
-import org.koin.android.architecture.ext.viewModel
 
 /**
  * Displays information about a semester from the user's transcript
@@ -47,7 +45,8 @@ class SemesterActivity : BaseActivity() {
         val semesterId = intent.getIntExtra(Constants.ID, -1)
 
         list.apply {
-            list.layoutManager = LinearLayoutManager(this@SemesterActivity)
+            list.layoutManager =
+                    androidx.recyclerview.widget.LinearLayoutManager(this@SemesterActivity)
             list.adapter = this@SemesterActivity.adapter
         }
 

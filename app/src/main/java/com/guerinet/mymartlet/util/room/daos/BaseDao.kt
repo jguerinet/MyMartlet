@@ -16,8 +16,8 @@
 
 package com.guerinet.mymartlet.util.room.daos
 
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Update
+import androidx.room.Insert
+import androidx.room.Update
 import com.raizlabs.android.dbflow.kotlinextensions.insert
 
 /**

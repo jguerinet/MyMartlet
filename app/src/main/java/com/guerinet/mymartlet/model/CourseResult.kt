@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet.model
 
-import android.arch.persistence.room.Entity
+import androidx.room.Entity
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime

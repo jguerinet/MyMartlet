@@ -16,9 +16,9 @@
 
 package com.guerinet.mymartlet.model
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 import android.content.Context
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * Contains information pertaining to each semester such as current program, term credits,

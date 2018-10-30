@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.util.dbflow;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.BaseModelQueriable;
@@ -29,6 +28,7 @@ import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTr
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 /**

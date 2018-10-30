@@ -16,8 +16,8 @@
 
 package com.guerinet.mymartlet.model
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.guerinet.suitcase.date.extensions.getMediumDateString
 import com.guerinet.suitcase.date.extensions.getShortTimeString
 import com.guerinet.suitcase.util.Utils

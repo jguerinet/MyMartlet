@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet
 
-import android.support.multidex.MultiDexApplication
+import androidx.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.guerinet.morf.Morf

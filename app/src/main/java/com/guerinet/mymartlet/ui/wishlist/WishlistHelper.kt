@@ -16,10 +16,8 @@
 
 package com.guerinet.mymartlet.ui.wishlist
 
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.core.widget.toast
 import com.afollestad.materialdialogs.DialogAction
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
@@ -60,7 +58,7 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
 
     init {
         container.apply {
-            list.layoutManager = LinearLayoutManager(activity)
+            list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
             list.adapter = adapter
 
             // Change the button text if this is to remove courses

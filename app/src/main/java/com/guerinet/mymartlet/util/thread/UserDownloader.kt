@@ -18,7 +18,6 @@ package com.guerinet.mymartlet.util.thread
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.LocalBroadcastManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.Term
@@ -131,7 +130,7 @@ abstract class UserDownloader(context: Context) : Thread() {
      */
     private fun handleException(e: IOException, section: String) {
         if (e is MinervaException) {
-            LocalBroadcastManager.getInstance(context!!)
+            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context!!)
                     .sendBroadcast(Intent(Constants.BROADCAST_MINERVA))
         } else if (e !is SSLException) {
             // Don't log SSLExceptions

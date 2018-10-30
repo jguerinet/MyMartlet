@@ -21,10 +21,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AlertDialog
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -34,12 +30,12 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.toast
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
-import com.guerinet.mymartlet.model.Course_Table
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
@@ -315,7 +311,8 @@ class ScheduleActivity : DrawerActivity() {
         viewPager.apply {
             this.adapter = adapter
             currentItem = adapter.startingDateIndex
-            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            addOnPageChangeListener(object :
+                androidx.viewpager.widget.ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(i: Int, v: Float, i2: Int) {}
 
                 override fun onPageSelected(i: Int) {
@@ -594,7 +591,7 @@ class ScheduleActivity : DrawerActivity() {
     /**
      * Adapter used for the ViewPager in the portrait view of the schedule
      */
-    internal inner class ScheduleAdapter : PagerAdapter() {
+    internal inner class ScheduleAdapter : androidx.viewpager.widget.PagerAdapter() {
 
         /**
          * The initial date to use as a reference
@@ -629,7 +626,8 @@ class ScheduleActivity : DrawerActivity() {
                 startingDate.plusDays((position - startingDateIndex).toLong())
 
         // This is to force the refreshing of all of the views when the view is reloaded
-        override fun getItemPosition(`object`: Any): Int = PagerAdapter.POSITION_NONE
+        override fun getItemPosition(`object`: Any): Int =
+            androidx.viewpager.widget.PagerAdapter.POSITION_NONE
 
         override fun isViewFromObject(view: View, `object`: Any): Boolean = view == `object`
 

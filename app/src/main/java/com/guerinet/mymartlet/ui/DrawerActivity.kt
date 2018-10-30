@@ -19,12 +19,10 @@ package com.guerinet.mymartlet.ui
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.net.toUri
+import androidx.core.view.GravityCompat
 import com.afollestad.materialdialogs.DialogAction
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -32,6 +30,7 @@ import com.facebook.FacebookException
 import com.facebook.share.Sharer
 import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareDialog
+import com.google.android.material.navigation.NavigationView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.suitcase.dialog.alertDialog
@@ -59,7 +58,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
         ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0)
     }
 
-    private val drawerLayout by lazy { find<DrawerLayout>(R.id.drawerLayout) }
+    private val drawerLayout by lazy { find<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawerLayout) }
 
     /**
      * Callback manager used for Facebook

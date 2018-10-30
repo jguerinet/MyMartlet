@@ -16,13 +16,12 @@
 
 package com.guerinet.mymartlet.ui.courses
 
-import android.support.v7.util.DiffUtil
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
-import com.guerinet.mymartlet.model.Course_Table
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.suitcase.ui.BaseListAdapter

@@ -17,8 +17,8 @@
 package com.guerinet.mymartlet.ui.ebill
 
 import android.annotation.SuppressLint
-import android.support.v7.util.DiffUtil
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Statement
 import com.guerinet.suitcase.date.extensions.getLongDateString

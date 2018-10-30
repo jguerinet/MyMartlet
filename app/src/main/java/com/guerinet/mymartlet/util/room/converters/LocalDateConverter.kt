@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet.util.room.converters
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import org.threeten.bp.LocalDate
 
 /**

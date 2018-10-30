@@ -19,8 +19,8 @@ package com.guerinet.mymartlet.util.manager
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.annotation.IdRes
-import android.support.annotation.StringRes
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.MapActivity

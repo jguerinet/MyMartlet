@@ -16,18 +16,17 @@
 
 package com.guerinet.mymartlet.util.background;
 
-
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 
 import com.guerinet.mymartlet.R;
 import com.guerinet.mymartlet.model.transcript.Transcript;
 import com.guerinet.mymartlet.ui.SplashActivity;
 
+import androidx.core.app.NotificationCompat;
 import timber.log.Timber;
 
 /**

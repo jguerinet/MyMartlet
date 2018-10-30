@@ -16,13 +16,12 @@
 
 package com.guerinet.mymartlet.ui.wishlist
 
-import android.support.v7.util.DiffUtil
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
-import com.guerinet.mymartlet.model.CourseResult_Table
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.suitcase.ui.BaseListAdapter

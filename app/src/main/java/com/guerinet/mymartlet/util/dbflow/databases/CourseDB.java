@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package com.guerinet.mymartlet.util.dbflow.databases;
 
-import android.support.annotation.Nullable;
-
 import com.guerinet.mymartlet.model.Course;
 import com.guerinet.mymartlet.model.Course_Table;
 import com.guerinet.mymartlet.model.Term;
@@ -26,6 +24,8 @@ import com.raizlabs.android.dbflow.annotation.Database;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 /**
  * Database that holds a list of {@link Course}s that comprise the user's schedule

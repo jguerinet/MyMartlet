@@ -22,12 +22,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.CallSuper
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.ProgressBar
+import androidx.annotation.CallSuper
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.exception.MinervaException
@@ -86,12 +85,14 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter)
+        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this)
+            .registerReceiver(receiver, filter)
     }
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
+        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this)
+            .unregisterReceiver(receiver)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

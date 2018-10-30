@@ -16,8 +16,8 @@
 
 package com.guerinet.mymartlet.ui.transcript
 
-import android.support.v7.util.DiffUtil
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.ui.transcript.semester.SemesterActivity

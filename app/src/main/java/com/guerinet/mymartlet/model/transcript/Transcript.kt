@@ -16,8 +16,8 @@
 
 package com.guerinet.mymartlet.model.transcript
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * User's unofficial transcript

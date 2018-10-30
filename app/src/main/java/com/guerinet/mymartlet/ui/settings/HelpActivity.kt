@@ -17,9 +17,8 @@
 package com.guerinet.mymartlet.ui.settings
 
 import android.os.Bundle
-import android.support.v4.util.Pair
-import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
+import androidx.core.util.Pair
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
@@ -86,7 +85,7 @@ class HelpActivity : BaseActivity() {
         }
 
         // FAQ
-        list.layoutManager = LinearLayoutManager(this)
+        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         list.adapter = FAQAdapter()
     }
 

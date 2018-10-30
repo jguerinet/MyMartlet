@@ -18,9 +18,9 @@ package com.guerinet.mymartlet.util.extensions
 
 import android.content.Context
 import android.content.Intent
-import android.support.annotation.StringRes
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AlertDialog
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.guerinet.mymartlet.R
 import com.guerinet.suitcase.dialog.neutralDialog
 import org.jetbrains.anko.toast
@@ -50,7 +50,9 @@ fun Context.errorDialog(message: String) = neutralDialog(R.string.error, message
  * Broadcasts an [intent] using the [LocalBroadcastManager]
  */
 fun Context.broadcast(intent: Intent) =
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this).sendBroadcast(
+        intent
+    )
 
 /**
  * Broadcasts an [action] using the [LocalBroadcastManager]

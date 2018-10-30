@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet.util.room.converters
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 
 /**
  * Converts a mutable list of Ints to a String for Room and vice-versa

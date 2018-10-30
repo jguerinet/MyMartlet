@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao

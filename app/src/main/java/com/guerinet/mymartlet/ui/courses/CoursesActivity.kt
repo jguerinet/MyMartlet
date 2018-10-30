@@ -17,12 +17,10 @@
 package com.guerinet.mymartlet.ui.courses
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.core.widget.toast
 import com.afollestad.materialdialogs.DialogAction
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
@@ -69,7 +67,7 @@ class CoursesActivity : DrawerActivity() {
         setContentView(R.layout.activity_wishlist)
         ga.sendScreen("View Courses")
 
-        list.layoutManager = LinearLayoutManager(this)
+        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         list.adapter = adapter
 
         // Format the unregister button

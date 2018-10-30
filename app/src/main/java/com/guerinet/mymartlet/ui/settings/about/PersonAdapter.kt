@@ -18,10 +18,10 @@ package com.guerinet.mymartlet.ui.settings.about
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.guerinet.mymartlet.R
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter

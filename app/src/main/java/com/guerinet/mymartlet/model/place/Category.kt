@@ -16,9 +16,9 @@
 
 package com.guerinet.mymartlet.model.place
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 import android.content.Context
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.guerinet.mymartlet.R
 import java.util.*
 

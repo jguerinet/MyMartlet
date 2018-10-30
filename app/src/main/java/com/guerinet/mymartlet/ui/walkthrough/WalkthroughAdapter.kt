@@ -18,14 +18,12 @@ package com.guerinet.mymartlet.ui.walkthrough
 
 import android.content.Context
 import android.graphics.Color
-import android.support.v4.view.PagerAdapter
 import android.util.Pair
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-
 import com.guerinet.morf.Morf
 import com.guerinet.morf.TextViewItem
 import com.guerinet.morf.util.Position
@@ -45,7 +43,8 @@ import java.util.*
  * @param isFirstOpen   True if this is the first open, false otherwise
  *                      For a first open there is an extra page at the end
  */
-class WalkthroughAdapter(private val isFirstOpen: Boolean) : PagerAdapter(), KoinComponent {
+class WalkthroughAdapter(private val isFirstOpen: Boolean) :
+    androidx.viewpager.widget.PagerAdapter(), KoinComponent {
 
     private val ga by inject<GAManager>()
 

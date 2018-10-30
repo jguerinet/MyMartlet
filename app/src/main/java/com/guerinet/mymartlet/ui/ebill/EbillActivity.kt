@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.ui.ebill
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
@@ -29,7 +28,6 @@ import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import kotlinx.android.synthetic.main.activity_ebill.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import org.koin.android.architecture.ext.viewModel
 
 /**
  * Displays the user's ebill statements
@@ -51,7 +49,7 @@ class EbillActivity : DrawerActivity() {
         ga.sendScreen("Ebill")
 
         list.apply {
-            layoutManager = LinearLayoutManager(this@EbillActivity)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@EbillActivity)
             adapter = this@EbillActivity.adapter
         }
 

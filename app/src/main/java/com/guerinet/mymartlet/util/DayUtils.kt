@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet.util
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.guerinet.mymartlet.R
 import org.threeten.bp.DayOfWeek
 

@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.ui.transcript
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
@@ -29,7 +28,6 @@ import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import kotlinx.android.synthetic.main.activity_transcript.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import org.koin.android.architecture.ext.viewModel
 
 /**
  * Shows the user's transcript
@@ -50,7 +48,8 @@ class TranscriptActivity : DrawerActivity() {
         ga.sendScreen("Transcript")
 
         list.apply {
-            layoutManager = LinearLayoutManager(this@TranscriptActivity)
+            layoutManager =
+                    androidx.recyclerview.widget.LinearLayoutManager(this@TranscriptActivity)
             adapter = this@TranscriptActivity.adapter
         }
 
