@@ -47,12 +47,12 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.guerinet.mymartlet"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 3
         versionName "1.0.1"
         multiDexEnabled true
