@@ -32,9 +32,7 @@ import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.room.daos.MapDao
 import com.guerinet.suitcase.dialog.singleListDialog
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CommonPool
 import org.jetbrains.anko.toast
 import timber.log.Timber
 

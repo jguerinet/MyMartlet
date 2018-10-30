@@ -26,8 +26,6 @@ import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import kotlinx.android.synthetic.main.activity_ebill.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 
 /**
  * Displays the user's ebill statements

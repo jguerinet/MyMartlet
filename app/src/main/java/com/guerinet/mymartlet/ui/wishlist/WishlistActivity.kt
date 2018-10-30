@@ -20,10 +20,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
-import androidx.core.widget.toast
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
-import com.guerinet.mymartlet.model.CourseResult_Table
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
@@ -33,8 +31,6 @@ import com.raizlabs.android.dbflow.kotlinextensions.from
 import com.raizlabs.android.dbflow.kotlinextensions.save
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.view_courses.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Response
