@@ -30,7 +30,6 @@ import com.guerinet.morf.TextViewItem
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.AppUpdate
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.settings.about.AboutActivity
 import com.guerinet.mymartlet.util.Prefs
@@ -39,10 +38,9 @@ import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.Device
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_settings.*
-import okio.Okio
+import okio.buffer
+import okio.sink
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -203,15 +201,16 @@ class SettingsActivity : DrawerActivity() {
 
                 // Update logs (attachment)
                 try {
-                    val appUpdates = SQLite.select()
-                            .from(AppUpdate::class)
-                            .queryList()
+                    // TODO
+//                    val appUpdates = SQLite.select()
+//                            .from(AppUpdate::class)
+//                            .queryList()
 
                     // Create the file that will hold the update logs
                     val file = File(getExternalFilesDir(null), "update_logs.log")
 
                     // Create the Okio bugger to write the logs
-                    val sink = Okio.buffer(Okio.sink(file))
+                    val sink = file.sink().buffer()
 
                     for (update in appUpdates) {
                         // Write the updates to the file
