@@ -164,8 +164,9 @@ class SplashActivity : BaseActivity() {
 
         // Check if an error message needs to be displayed, display it if so
         if (e != null) {
-            errorDialog(if (e is MinervaException)
-                R.string.login_error_wrong_data else R.string.error_other)
+            errorDialog(
+                if (e is MinervaException) R.string.login_error_wrong_data else R.string.error_other
+            )
         }
 
         ga.sendScreen("Login")
