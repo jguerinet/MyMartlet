@@ -33,9 +33,9 @@ import java.util.*
  */
 @Entity
 data class Category(
-        @PrimaryKey var id: Int = 0,
-        var en: String,
-        var fr: String
+    @PrimaryKey var id: Int = 0,
+    var en: String,
+    var fr: String
 ) {
 
     /**
