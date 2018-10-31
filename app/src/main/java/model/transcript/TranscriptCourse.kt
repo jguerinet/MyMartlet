@@ -38,12 +38,12 @@ import com.guerinet.mymartlet.model.Term
  */
 @Entity
 data class TranscriptCourse(
-        val semesterId: Int,
-        val term: Term,
-        val courseCode: String,
-        val courseTitle: String,
-        val credits: Double,
-        val userGrade: String,
-        val averageGrade: String,
-        @PrimaryKey(autoGenerate = true) val id: Int = 0
+    val semesterId: Int,
+    val term: Term,
+    val courseCode: String,
+    val courseTitle: String,
+    val credits: Double,
+    val userGrade: String,
+    val averageGrade: String,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0
 )
