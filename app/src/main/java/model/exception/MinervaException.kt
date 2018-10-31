@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.model.exception;
+package com.guerinet.mymartlet.model.exception
 
-import java.io.IOException;
+import java.io.IOException
 
 /**
  * Exception caused when the user was logged out of Minerva
@@ -24,9 +24,4 @@ import java.io.IOException;
  * @author Julien Guerinet
  * @since 1.0.0
  */
-public class MinervaException extends IOException {
-
-	public MinervaException() {
-		super("User is Logged out from Minerva");
-	}
-}
+class MinervaException : IOException("User is Logged out from Minerva")
