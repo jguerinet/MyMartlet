@@ -37,13 +37,13 @@ import androidx.room.PrimaryKey
  */
 @Entity
 data class Semester(
-        @PrimaryKey val id: Int,
-        val term: Term,
-        val program: String,
-        val bachelor: String,
-        val credits: Double,
-        val gpa: Double,
-        val isFullTime: Boolean
+    @PrimaryKey val id: Int,
+    val term: Term,
+    val program: String,
+    val bachelor: String,
+    val credits: Double,
+    val gpa: Double,
+    val isFullTime: Boolean
 ) {
 
     /**
