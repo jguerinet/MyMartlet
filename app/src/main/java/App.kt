@@ -46,18 +46,12 @@ class App : Application() {
         // Fabric, Twitter, Crashlytics
         val authConfig = TwitterAuthConfig(BuildConfig.TWITTER_KEY, BuildConfig.TWITTER_SECRET)
         val crashlytics = Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(!BuildConfig.REPORT_CRASHES).build())
-                .build()
+            .core(CrashlyticsCore.Builder().disabled(!BuildConfig.REPORT_CRASHES).build())
+            .build()
 //        Fabric.with(this, Twitter(authConfig), TweetComposer(), crashlytics)
-
-        // Android ThreeTen
-        AndroidThreeTen.init(this)
-
+        initializeAndroidThreeTen()
         initializeKoin()
-
-        // Hawk
-        Hawk.init(this).build()
-
+        initializeHawk()
         initializeMorf()
     }
 
@@ -84,18 +78,22 @@ class App : Application() {
         }
     }
 
-    private fun initializeKoin() = startKoin(this, listOf(appModule, dbModule, networkModule,
-        prefsModule, viewModelsModule
-    ), logger = KoinLogger()
+    private fun initializeAndroidThreeTen() = AndroidThreeTen.init(this)
+
+    private fun initializeKoin() = startKoin(
+        this,
+        listOf(appModule, dbModule, networkModule, prefsModule, viewModelsModule),
+        logger = KoinLogger()
     )
 
-    private fun initializeMorf() =
-            Morf.createAndSetShape {
-                backgroundId = R.drawable.transparent_redpressed
-                drawablePaddingId = R.dimen.padding_small
-                paddingId = R.dimen.padding_small
-                iconColor = getColorCompat(R.color.red)
-            }
+    private fun initializeHawk() = Hawk.init(this).build()
+
+    private fun initializeMorf() = Morf.createAndSetShape {
+        backgroundId = R.drawable.transparent_redpressed
+        drawablePaddingId = R.dimen.padding_small
+        paddingId = R.dimen.padding_small
+        iconColor = getColorCompat(R.color.red)
+    }
 
     companion object {
 
