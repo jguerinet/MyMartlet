@@ -39,8 +39,12 @@ import com.guerinet.room.converter.LocalDateConverter
  * @author Julien Guerinet
  * @since 2.0.0
  */
-@Database(entities = [Course::class, CourseResult::class, Semester::class, Statement::class,
-    Transcript::class, TranscriptCourse::class], version = 1)
+@Database(
+    exportSchema = false,
+    entities = [Course::class, CourseResult::class, Semester::class, Statement::class,
+        Transcript::class, TranscriptCourse::class],
+    version = 1
+)
 @TypeConverters(LocalDateConverter::class, TermConverter::class)
 abstract class UserDb : RoomDatabase() {
 
@@ -55,6 +59,6 @@ abstract class UserDb : RoomDatabase() {
     companion object {
 
         fun init(context: Context): UserDb =
-                Room.databaseBuilder(context, UserDb::class.java, "user-db").build()
+            Room.databaseBuilder(context, UserDb::class.java, "user-db").build()
     }
 }
