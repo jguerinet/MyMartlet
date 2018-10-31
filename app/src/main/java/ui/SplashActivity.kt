@@ -56,21 +56,21 @@ import java.io.IOException
  */
 class SplashActivity : BaseActivity() {
 
-    private val mcGillManager: McGillManager by inject()
+    private val mcGillManager by inject<McGillManager>()
 
-    private val rememberUsernamePref: BooleanPref by inject(Prefs.REMEMBER_USERNAME)
+    private val rememberUsernamePref by inject<BooleanPref>(Prefs.REMEMBER_USERNAME)
 
-    private val minVersionPref: IntPref by inject(Prefs.MIN_VERSION)
+    private val minVersionPref by inject<IntPref>(Prefs.MIN_VERSION)
 
-    private val eulaPref: BooleanPref by inject(Prefs.EULA)
+    private val eulaPref by inject<BooleanPref>(Prefs.EULA)
 
-    private val usernamePref: UsernamePref by inject()
+    private val usernamePref by inject<UsernamePref>()
 
-    private val imm: InputMethodManager by inject()
+    private val imm by inject<InputMethodManager>()
 
-    private val updateManager: UpdateManager by inject()
+    private val updateManager by inject<UpdateManager>()
 
-    private val homePageManager: HomepageManager by inject()
+    private val homePageManager by inject<HomepageManager>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
