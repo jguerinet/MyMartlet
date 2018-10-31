@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-//noinspection GradleDependency
-// Set up the signing and private properties
-def signingProps = new Properties()
-if (rootProject.file("util/signing.properties").exists()) {
-    signingProps.load(new FileInputStream(rootProject.file("util/signing.properties")))
+// Release Signing Config Properties (not necessary)
+def fileName = "MyMartlet.properties"
+def releaseProps = null
+if (project.hasProperty(fileName)) {
+    def releasePropertiesFile = file(project.property(fileName))
+    if (releasePropertiesFile.canRead()) {
+        releaseProps = new Properties()
+        releaseProps.load(new FileInputStream(releasePropertiesFile))
+    }
 }
-def privateProps = new Properties()
-if (rootProject.file("util/private.properties").exists()) {
-    privateProps.load(new FileInputStream(rootProject.file("util/private.properties")))
+
+// Private Properties (not necessary)
+fileName = "MyMartlet-Private.properties"
+def privateProps = null
+if (project.hasProperty(fileName)) {
+    def privatePropertiesFile = file(project.property(fileName))
+    if (privatePropertiesFile.canRead()) {
+        privateProps = new Properties()
+        privateProps.load(new FileInputStream(releasePropertiesFile))
+    }
 }
 
 apply plugin: 'com.android.application'
@@ -68,10 +79,12 @@ android {
         }
 
         release {
-            storeFile file(signingProps.storeFile ?: 'N/A')
-            storePassword signingProps.storePassword ?: 'N/A'
-            keyAlias signingProps.keyAlias ?: 'N/A'
-            keyPassword signingProps.keyPassword ?: 'N/A'
+            if (releaseProps != null) {
+                storeFile releaseProps.storeFile
+                storePassword releaseProps.storePassword
+                keyAlias releaseProps.keyAlias
+                keyPassword releaseProps.keyPassword
+            }
         }
     }
 
@@ -113,11 +126,11 @@ android {
 
 // Set the Facebook/Twitter keys from the private properties file (null if not defined)
 android.buildTypes.each { type ->
-    type.buildConfigField 'String', 'TWITTER_KEY', privateProps.twitterKey ?: '"N/A"'
-    type.buildConfigField 'String', 'TWITTER_SECRET', privateProps.twitterSecret ?: '"N/A"'
-    type.resValue 'string', 'facebook_app_id', privateProps.facebookAppId ?: '"N/A"'
-    type.resValue 'string', 'facebook_provider', 'com.facebook.app.FacebookContentProvider' +
-            privateProps.facebookAppId ?: '"N/A'
+    type.buildConfigField 'String', 'TWITTER_KEY', privateProps?.twitterKey ?: '"TWITTER_KEY"'
+    type.buildConfigField 'String', 'TWITTER_SECRET', privateProps?.twitterSecret ?: '"TWITTER_SECRET"'
+    def facebookAppId = privateProps?.facebookAppId ?: '"FACEBOOK_ID"'
+    type.resValue 'string', 'facebook_app_id', facebookAppId
+    type.resValue 'string', 'facebook_provider', 'com.facebook.app.FacebookContentProvider' + facebookAppId
 }
 
 // Versions for libraries with multiple dependencies
