@@ -51,22 +51,22 @@ import timber.log.Timber
  */
 @Entity
 open class Course(
-        val term: Term,
-        val subject: String,
-        val number: String,
-        val title: String,
-        val crn: Int,
-        val section: String,
-        val startTime: LocalTime,
-        val endTime: LocalTime,
-        val days: List<DayOfWeek>,
-        val type: String,
-        val location: String,
-        val instructor: String,
-        val credits: Double,
-        val startDate: LocalDate,
-        val endDate: LocalDate,
-        @PrimaryKey var id: String = Utils.uuid()
+    val term: Term,
+    val subject: String,
+    val number: String,
+    val title: String,
+    val crn: Int,
+    val section: String,
+    val startTime: LocalTime,
+    val endTime: LocalTime,
+    val days: List<DayOfWeek>,
+    val type: String,
+    val location: String,
+    val instructor: String,
+    val credits: Double,
+    val startDate: LocalDate,
+    val endDate: LocalDate,
+    @PrimaryKey var id: String = Utils.uuid()
 ) {
 
     /** Course code */
@@ -110,5 +110,5 @@ open class Course(
      *  If the date is within the date range and that the course is offered on that day
      */
     fun isForDate(date: LocalDate): Boolean =
-            !date.isBefore(startDate) && !date.isAfter(endDate) && days.contains(date.dayOfWeek)
+        !date.isBefore(startDate) && !date.isAfter(endDate) && days.contains(date.dayOfWeek)
 }
