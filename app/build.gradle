@@ -136,16 +136,17 @@ android.buildTypes.each { type ->
 def butterknife_version = "8.5.1"
 def dbflow_version = "4.2.4"
 def koin_version = "1.0.1"
-def okhttp_version = "3.10.0"
+def okhttp_version = "3.11.0"
 def play_services_version = "16.0.0"
 def retrofit_version = "2.4.0"
+def room_version = "2.0.0"
 def suitcase_version = "4.3.2"
 
 dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
-    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha01'
+    kapt "androidx.lifecycle:lifecycle-compiler:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt 'androidx.room:room-compiler:2.0.0'
     implementation 'androidx.core:core-ktx:1.0.0'
     implementation "com.afollestad.material-dialogs:commons:0.9.6.0"
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -155,10 +156,10 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation("com.crashlytics.sdk.android:crashlytics:2.9.1@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics:2.9.5@aar") {
         transitive = true
     }
-    implementation "com.facebook.android:facebook-android-sdk:4.34.0"
+    implementation "com.facebook.android:facebook-android-sdk:4.38.0"
     implementation "com.github.Raizlabs.DBFlow:dbflow:$dbflow_version"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:$dbflow_version"
     implementation "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:$dbflow_version"
@@ -185,7 +186,7 @@ dependencies {
     implementation "com.squareup.picasso:picasso:2.71828"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation("com.twitter.sdk.android:twitter:3.2.0@aar") {
+    implementation("com.twitter.sdk.android:twitter:3.3.0@aar") {
         transitive = true
     }
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
