@@ -31,7 +31,7 @@ import com.guerinet.room.converter.IntMutableListConverter
  * @author Julien Guerinet
  * @since 2.0.0
  */
-@Database(entities = [Category::class, Place::class], version = 1)
+@Database(exportSchema = false, entities = [Category::class, Place::class], version = 1)
 @TypeConverters(IntMutableListConverter::class)
 abstract class ConfigDb : RoomDatabase() {
 
@@ -40,6 +40,6 @@ abstract class ConfigDb : RoomDatabase() {
     companion object {
 
         fun init(context: Context): ConfigDb =
-                Room.databaseBuilder(context, ConfigDb::class.java, "config-db").build()
+            Room.databaseBuilder(context, ConfigDb::class.java, "config-db").build()
     }
 }
