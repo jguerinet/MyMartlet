@@ -33,8 +33,8 @@ import org.threeten.bp.LocalDate
  */
 @Entity
 data class Statement(
-        val date: LocalDate,
-        val dueDate: LocalDate,
-        val amount: Double,
-        @PrimaryKey(autoGenerate = true) var id: Int = 0
+    val date: LocalDate,
+    val dueDate: LocalDate,
+    val amount: Double,
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
 )
