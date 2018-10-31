@@ -18,28 +18,26 @@ package com.guerinet.mymartlet.util.manager
 
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.BuildConfig
-import com.guerinet.mymartlet.model.AppUpdate
+import com.guerinet.room.AppUpdate
+import com.guerinet.room.UpdateDao
 import com.guerinet.suitcase.util.BaseUpdateManager
-import org.threeten.bp.ZonedDateTime
 
 /**
  * Runs any update code
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param prefs [SharedPreferences] instance
+ * @param prefs     [SharedPreferences] instance
+ * @param updateDao Dao to save the [AppUpdate]
  */
-class UpdateManager(prefs: SharedPreferences) : BaseUpdateManager(prefs, BuildConfig.VERSION_CODE) {
+class UpdateManager(
+    prefs: SharedPreferences,
+    private val updateDao: UpdateDao
+) : BaseUpdateManager(prefs, BuildConfig.VERSION_CODE) {
 
-    override fun firstOpen(): Boolean {
-        // Add an app update
-        AppUpdate(BuildConfig.VERSION_NAME, ZonedDateTime.now()).save()
-        return true
-    }
-
-    override fun update(version: Int): Int {
-        // Add an app update
-        AppUpdate(BuildConfig.VERSION_NAME, ZonedDateTime.now()).save()
-        return version
+    override fun onUpdateFinished() {
+        super.onUpdateFinished()
+        // Log an update
+        AppUpdate.log(updateDao, BuildConfig.VERSION_NAME, BuildConfig.BUILD_NUMBER)
     }
 }
