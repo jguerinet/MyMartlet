@@ -27,12 +27,12 @@ import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.Statement
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
-import com.guerinet.mymartlet.util.room.converters.LocalDateConverter
 import com.guerinet.mymartlet.util.room.converters.TermConverter
 import com.guerinet.mymartlet.util.room.daos.SemesterDao
 import com.guerinet.mymartlet.util.room.daos.StatementDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptCourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.room.converter.LocalDateConverter
 
 /**
  * Database with all of the user's information

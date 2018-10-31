@@ -23,8 +23,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
-import com.guerinet.mymartlet.util.room.converters.IntMutableListConverter
 import com.guerinet.mymartlet.util.room.daos.MapDao
+import com.guerinet.room.converter.IntMutableListConverter
 
 /**
  * Database with all of the config information
