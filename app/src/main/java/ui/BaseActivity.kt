@@ -37,16 +37,25 @@ import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.util.extensions.isConnected
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Base class for all activities
  * @author Julien Guerinet
  * @since 1.0.0
  */
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(), CoroutineScope {
+
+    private val job: Job by lazy { Job() }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
 
@@ -93,6 +102,11 @@ open class BaseActivity : AppCompatActivity() {
         super.onPause()
         androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this)
             .unregisterReceiver(receiver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
