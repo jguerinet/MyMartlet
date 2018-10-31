@@ -20,18 +20,13 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.guerinet.morf.Morf
-import com.guerinet.mymartlet.util.appModule
-import com.guerinet.mymartlet.util.dbModule
-import com.guerinet.mymartlet.util.networkModule
-import com.guerinet.mymartlet.util.prefsModule
-import com.guerinet.mymartlet.util.viewModelsModule
+import com.guerinet.mymartlet.util.*
 import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orhanobut.hawk.Hawk
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import org.koin.android.ext.android.startKoin
-import org.koin.standalone.StandAloneContext.startKoin
 import timber.log.Timber
 import java.net.SocketTimeoutException
 
@@ -70,17 +65,19 @@ class App : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        if (BuildConfig.REPORT_CRASHES) {
+        if (BuildConfig.DEBUG) {
             Timber.plant(object : ProductionTree() {
 
-                override fun log(tag: String?, message: String) =
-                        Crashlytics.log("$tag: $message")
+                override fun log(priority: Int, tag: String?, message: String) =
+                    Crashlytics.log(priority, tag, message)
 
                 override fun logException(t: Throwable) {
                     // Don't log socket timeouts
-                    if (t !is SocketTimeoutException) {
-                        Crashlytics.logException(t)
+                    if (t is SocketTimeoutException) {
+                        return
                     }
+
+                    Crashlytics.logException(t)
                 }
             })
         }
