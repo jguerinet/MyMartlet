@@ -31,8 +31,7 @@ import androidx.room.PrimaryKey
  */
 @Entity
 data class Transcript(
-        val cgpa: Double,
-        val totalCredits: Double,
-        // Note: I'm putting this at the end as it has a default value of 0 (only 1 transcript)
-        @PrimaryKey val id: Int = 0
+    val cgpa: Double,
+    val totalCredits: Double,
+    @PrimaryKey val id: Int = 0
 )
