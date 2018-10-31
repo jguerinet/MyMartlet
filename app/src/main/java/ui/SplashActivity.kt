@@ -42,9 +42,9 @@ import com.guerinet.suitcase.prefs.IntPref
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
 import com.orhanobut.hawk.Hawk
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
@@ -79,11 +79,9 @@ class SplashActivity : BaseActivity() {
 
         // OnClick listeners
         versionButton.setOnClickListener { openPlayStoreApp() }
-        loginButton.setOnClickListener {
-            launch(UI) { loginPressed() }
-        }
+        loginButton.setOnClickListener { loginPressed() }
 
-        launch {
+        launch(Dispatchers.Default) {
             // Run any update code
             updateManager.update()
 
@@ -103,7 +101,7 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             AGREEMENT_CODE -> if (resultCode == Activity.RESULT_OK) {
                 // If they agreed, go to the next screen
@@ -135,7 +133,7 @@ class SplashActivity : BaseActivity() {
             showLoginScreen(intent.getSerializableExtra(Constants.EXCEPTION) as? IOException)
         } else {
             // Try logging the user in and download their info
-            launch(UI) { login(true) }
+            launch { login(true) }
         }
     }
 
