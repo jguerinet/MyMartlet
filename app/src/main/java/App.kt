@@ -21,6 +21,7 @@ import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.util.*
+import com.guerinet.suitcase.log.KoinLogger
 import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -84,7 +85,9 @@ class App : Application() {
     }
 
     private fun initializeKoin() = startKoin(this, listOf(appModule, dbModule, networkModule,
-            prefsModule, viewModelsModule))
+        prefsModule, viewModelsModule
+    ), logger = KoinLogger()
+    )
 
     private fun initializeMorf() =
             Morf.createAndSetShape {
