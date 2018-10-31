@@ -25,7 +25,6 @@ import androidx.core.view.isVisible
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.exception.MinervaException
-import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.ui.settings.AgreementActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.Prefs
@@ -262,7 +261,9 @@ class SplashActivity : BaseActivity() {
 
         // Check if we need to download everything or only the essential stuff
         //  We need to download everything if there is null info
-        val downloadEverything = SQLite.select().from(Transcript::class).querySingle() == null
+        // TODO
+        val downloadEverything =
+            true // SQLite.select().from(Transcript::class).querySingle() == null
 
         // If we need to download everything, do it synchronously. If not, do it asynchronously
         val userDownloader = object : UserDownloader(this@SplashActivity) {
