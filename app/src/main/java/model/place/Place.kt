@@ -36,13 +36,13 @@ import com.google.android.gms.maps.model.LatLng
  */
 @Entity
 data class Place(
-        @PrimaryKey val id: Int = 0,
-        val name: String,
-        val categories: MutableList<Int>,
-        val address: String,
-        val courseName: String,
-        val latitude: Double,
-        val longitude: Double
+    @PrimaryKey val id: Int = 0,
+    val name: String,
+    val categories: MutableList<Int>,
+    val address: String,
+    val courseName: String,
+    val latitude: Double,
+    val longitude: Double
 ) {
 
     /** Place coordinates */
@@ -68,5 +68,5 @@ data class Place(
      *  Note: every place is within [Category.ALL]
      */
     fun isWithinCategory(category: Category): Boolean =
-            category.id == Category.ALL || categories.contains(category.id)
+        category.id == Category.ALL || categories.contains(category.id)
 }
