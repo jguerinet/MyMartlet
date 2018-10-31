@@ -89,11 +89,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'REPORT_CRASHES', 'true'
         }
-
-        beta {
-            initWith release
-            versionNameSuffix '.' + defaultConfig.versionCode
-        }
     }
 
     packagingOptions {
@@ -114,13 +109,6 @@ android {
         abortOnError true
         warning 'MissingTranslation'
     }
-
-//    applicationVariants.all { variant ->
-//        variant.outputs.each { output ->
-//            output.outputFile = new File(output.outputFile.parent,
-//                    "MyMartlet-${variant.buildType.name}.apk")
-//        }
-//    }
 }
 
 // Set the Facebook/Twitter keys from the private properties file (null if not defined)
