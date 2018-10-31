@@ -26,7 +26,10 @@ import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orhanobut.hawk.Hawk
+import com.twitter.sdk.android.core.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
+import com.twitter.sdk.android.core.TwitterConfig
+import io.fabric.sdk.android.Fabric
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import java.net.SocketTimeoutException
@@ -40,19 +43,13 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         initializeTimber()
-
-        // Fabric, Twitter, Crashlytics
-        val authConfig = TwitterAuthConfig(BuildConfig.TWITTER_KEY, BuildConfig.TWITTER_SECRET)
-        val crashlytics = Crashlytics.Builder()
-            .core(CrashlyticsCore.Builder().disabled(!BuildConfig.REPORT_CRASHES).build())
-            .build()
-//        Fabric.with(this, Twitter(authConfig), TweetComposer(), crashlytics)
+        initializeFabric()
         initializeAndroidThreeTen()
         initializeKoin()
         initializeHawk()
         initializeMorf()
+        initializeTwitter()
     }
 
     private fun initializeTimber() {
@@ -78,6 +75,13 @@ class App : Application() {
         }
     }
 
+    private fun initializeFabric() {
+        val crashlytics = Crashlytics.Builder()
+            .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+            .build()
+        Fabric.with(this, crashlytics)
+    }
+
     private fun initializeAndroidThreeTen() = AndroidThreeTen.init(this)
 
     private fun initializeKoin() = startKoin(
@@ -93,6 +97,16 @@ class App : Application() {
         drawablePaddingId = R.dimen.padding_small
         paddingId = R.dimen.padding_small
         iconColor = getColorCompat(R.color.red)
+    }
+
+    private fun initializeTwitter() {
+        // Fabric, Twitter, Crashlytics
+        val authConfig = TwitterAuthConfig(BuildConfig.TWITTER_KEY, BuildConfig.TWITTER_SECRET)
+        val twitterConfig = TwitterConfig.Builder(this)
+            .twitterAuthConfig(authConfig)
+            .debug(BuildConfig.DEBUG)
+            .build()
+        Twitter.initialize(twitterConfig)
     }
 
     companion object {
