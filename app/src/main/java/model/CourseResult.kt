@@ -33,23 +33,25 @@ import org.threeten.bp.LocalTime
  */
 @Entity
 class CourseResult(
-        term: Term,
-        subject: String,
-        number: String,
-        title: String,
-        crn: Int,
-        section: String,
-        startTime: LocalTime,
-        endTime: LocalTime,
-        days: List<DayOfWeek>,
-        type: String,
-        location: String,
-        instructor: String,
-        credits: Double,
-        startDate: LocalDate,
-        endDate: LocalDate,
-        val capacity: Int,
-        val seatsRemaining: Int,
-        val waitlistRemaining: Int
-) : Course(term, subject, number, title, crn, section, startTime, endTime, days, type, location,
-        instructor, credits, startDate, endDate)
+    term: Term,
+    subject: String,
+    number: String,
+    title: String,
+    crn: Int,
+    section: String,
+    startTime: LocalTime,
+    endTime: LocalTime,
+    days: List<DayOfWeek>,
+    type: String,
+    location: String,
+    instructor: String,
+    credits: Double,
+    startDate: LocalDate,
+    endDate: LocalDate,
+    val capacity: Int,
+    val seatsRemaining: Int,
+    val waitlistRemaining: Int
+) : Course(
+    term, subject, number, title, crn, section, startTime, endTime, days, type, location,
+    instructor, credits, startDate, endDate
+)
