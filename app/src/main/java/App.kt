@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet
 
-import androidx.multidex.MultiDexApplication
+import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.guerinet.morf.Morf
@@ -29,10 +29,9 @@ import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orhanobut.hawk.Hawk
-import com.raizlabs.android.dbflow.config.FlowConfig
-import com.raizlabs.android.dbflow.config.FlowManager
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import org.koin.android.ext.android.startKoin
+import org.koin.standalone.StandAloneContext.startKoin
 import timber.log.Timber
 import java.net.SocketTimeoutException
 
@@ -41,7 +40,7 @@ import java.net.SocketTimeoutException
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class App : MultiDexApplication() {
+class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -62,9 +61,6 @@ class App : MultiDexApplication() {
 
         // Hawk
         Hawk.init(this).build()
-
-        // DBFlow
-        FlowManager.init(FlowConfig.Builder(this).build())
 
         initializeMorf()
     }
