@@ -27,6 +27,7 @@ import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.Statement
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
+import com.guerinet.mymartlet.util.room.converters.DayOfWeekListConverter
 import com.guerinet.mymartlet.util.room.converters.TermConverter
 import com.guerinet.mymartlet.util.room.daos.SemesterDao
 import com.guerinet.mymartlet.util.room.daos.StatementDao
@@ -46,7 +47,10 @@ import com.guerinet.room.converter.LocalTimeConverter
         Transcript::class, TranscriptCourse::class],
     version = 1
 )
-@TypeConverters(LocalDateConverter::class, LocalTimeConverter::class, TermConverter::class)
+@TypeConverters(
+    DayOfWeekListConverter::class, LocalDateConverter::class,
+    LocalTimeConverter::class, TermConverter::class
+)
 abstract class UserDb : RoomDatabase() {
 
     abstract fun semesterDao(): SemesterDao
