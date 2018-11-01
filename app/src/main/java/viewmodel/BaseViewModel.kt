@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CommonPool
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
@@ -37,7 +37,7 @@ open class BaseViewModel : ViewModel() {
      */
     suspend fun update(block: () -> Exception?): Exception? {
         isToolbarProgressVisible.postValue(true)
-        val exception = withContext(CommonPool) {
+        val exception = withContext(Dispatchers.Default) {
             block()
         }
         isToolbarProgressVisible.postValue(false)

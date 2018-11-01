@@ -26,6 +26,8 @@ import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import kotlinx.android.synthetic.main.activity_ebill.*
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Displays the user's ebill statements
@@ -84,7 +86,7 @@ class EbillActivity : DrawerActivity() {
             return
         }
 
-        launch(UI) {
+        launch {
             val e = ebillViewModel.refresh()
             handleError("Ebill Refresh", e)
         }
