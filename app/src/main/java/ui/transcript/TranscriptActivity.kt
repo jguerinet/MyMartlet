@@ -26,6 +26,8 @@ import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import kotlinx.android.synthetic.main.activity_transcript.*
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Shows the user's transcript
@@ -92,7 +94,7 @@ class TranscriptActivity : DrawerActivity() {
             return
         }
 
-        launch(UI) {
+        launch {
             val e = transcriptViewModel.refresh()
             handleError("Transcript Refresh", e)
         }
