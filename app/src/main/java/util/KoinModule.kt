@@ -188,7 +188,7 @@ val viewModelsModule = module {
     viewModel { MapViewModel(get()) }
 
     // SemesterViewModel
-    viewModel { SemesterViewModel(get()) }
+    viewModel { SemesterViewModel(get(), get()) }
 
     // TranscriptViewModel
     viewModel { TranscriptViewModel(get(), get(), get(), get()) }

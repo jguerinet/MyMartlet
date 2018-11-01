@@ -19,22 +19,26 @@ package com.guerinet.mymartlet.viewmodel
 import androidx.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
-import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.mymartlet.util.room.daos.SemesterDao
+import com.guerinet.mymartlet.util.room.daos.TranscriptCourseDao
 
 /**
  * [ViewModel] for the [Semester]
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class SemesterViewModel(private val transcriptDao: TranscriptDao) : BaseViewModel() {
+class SemesterViewModel(
+    private val semesterDao: SemesterDao,
+    private val transcriptCourseDao: TranscriptCourseDao
+) : BaseViewModel() {
 
     /**
      * Returns the observable [Semester] for the [semesterId]
      */
-    fun getSemester(semesterId: Int) = transcriptDao.getSemester(semesterId)
+    fun getSemester(semesterId: Int) = semesterDao.get(semesterId)
 
     /**
      * Returns the observable list of [TranscriptCourse]s for the [semesterId]
      */
-    fun getTranscriptCourses(semesterId: Int) = transcriptDao.getTranscriptCourses(semesterId)
+    fun getTranscriptCourses(semesterId: Int) = transcriptCourseDao.get(semesterId)
 }

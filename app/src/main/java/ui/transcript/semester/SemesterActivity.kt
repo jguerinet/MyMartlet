@@ -24,6 +24,7 @@ import com.guerinet.mymartlet.util.extensions.assertNotNull
 import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import kotlinx.android.synthetic.main.activity_semester.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Displays information about a semester from the user's transcript
