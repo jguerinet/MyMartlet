@@ -21,7 +21,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
-import androidx.core.widget.toast
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.Term
@@ -34,6 +33,7 @@ import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.suitcase.util.Device
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import org.threeten.bp.DayOfWeek
 import retrofit2.Call
