@@ -35,10 +35,13 @@ import com.guerinet.mymartlet.ui.settings.about.AboutActivity
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.UsernamePref
+import com.guerinet.room.UpdateDao
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.Device
 import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okio.buffer
 import okio.sink
 import org.jetbrains.anko.startActivity
@@ -59,6 +62,8 @@ class SettingsActivity : DrawerActivity() {
     private val twentyFourHourPref by inject<BooleanPref>(Prefs.SCHEDULE_24HR)
 
     private val usernamePref by inject<UsernamePref>()
+
+    private val updateDao by inject<UpdateDao>()
 
     override val currentPage = HomepageManager.HomePage.SETTINGS
 
@@ -199,37 +204,44 @@ class SettingsActivity : DrawerActivity() {
                 }
                 */
 
-                // Update logs (attachment)
-                try {
-                    // TODO
-//                    val appUpdates = SQLite.select()
-//                            .from(AppUpdate::class)
-//                            .queryList()
+                launch(Dispatchers.Default) {
+                    // Update logs (attachment)
+                    try {
+                        val appUpdates = updateDao.getAll()
 
-                    // Create the file that will hold the update logs
-                    val file = File(getExternalFilesDir(null), "update_logs.log")
+                        // Create the file that will hold the update logs
+                        val file = File(getExternalFilesDir(null), "update_logs.log")
 
-                    // Create the Okio bugger to write the logs
-                    val sink = file.sink().buffer()
+                        // Create the Okio bugger to write the logs
+                        val sink = file.sink().buffer()
 
-                    for (update in appUpdates) {
-                        // Write the updates to the file
-                        sink.writeUtf8("Version: ${update.version}\nDate: " +
-                                update.timestamp.toString() + "\n\n")
+                        appUpdates.forEach { update ->
+                            // Write the updates to the file
+                            sink.writeUtf8(
+                                "Version: ${update.version}\nDate: ${update.timestamp}\n\n"
+                            )
+                        }
+                        sink.flush()
+
+                        uriList.add(
+                            FileProvider.getUriForFile(
+                                this@SettingsActivity,
+                                BuildConfig.APPLICATION_ID + ".fileProvider", file
+                            )
+                        )
+                    } catch (e: Exception) {
+                        Timber.e(e, "Error attaching update logs to feedback/bug report email")
                     }
-                    sink.flush()
 
-                    uriList.add(FileProvider.getUriForFile(this@SettingsActivity,
-                            BuildConfig.APPLICATION_ID + ".fileProvider", file))
-                } catch (e: Exception) {
-                    Timber.e(e, "Error attaching update logs to feedback/bug report email")
+                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
+
+                    // Code (Email)
+                    intent.type = "message/rfc822"
+
+                    launch {
+                        startActivity(Intent.createChooser(intent, null))
+                    }
                 }
-
-                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
-
-                // Code (Email)
-                intent.type = "message/rfc822"
-                startActivity(Intent.createChooser(intent, null))
             }
         }
     }
