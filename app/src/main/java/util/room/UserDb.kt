@@ -33,6 +33,7 @@ import com.guerinet.mymartlet.util.room.daos.StatementDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptCourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.room.converter.LocalDateConverter
+import com.guerinet.room.converter.LocalTimeConverter
 
 /**
  * Database with all of the user's information
@@ -45,7 +46,7 @@ import com.guerinet.room.converter.LocalDateConverter
         Transcript::class, TranscriptCourse::class],
     version = 1
 )
-@TypeConverters(LocalDateConverter::class, TermConverter::class)
+@TypeConverters(LocalDateConverter::class, LocalTimeConverter::class, TermConverter::class)
 abstract class UserDb : RoomDatabase() {
 
     abstract fun semesterDao(): SemesterDao
