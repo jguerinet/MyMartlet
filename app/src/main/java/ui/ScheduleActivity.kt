@@ -17,21 +17,20 @@
 package com.guerinet.mymartlet.ui
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.guerinet.morf.Morf
+import com.guerinet.morf.morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.Term
-import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
 import com.guerinet.mymartlet.util.Constants
@@ -41,13 +40,16 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
+import com.guerinet.mymartlet.util.room.daos.MapDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.prefs.BooleanPref
+import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.guerinet.suitcase.util.extensions.openUrl
 import kotlinx.android.synthetic.main.activity_schedule.*
 import kotlinx.android.synthetic.main.fragment_day.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
@@ -77,6 +79,8 @@ class ScheduleActivity : DrawerActivity() {
     private val courseDao by inject<CourseDao>()
 
     private val transcriptDao by inject<TranscriptDao>()
+
+    private val placeDao by inject<MapDao>()
 
     private var term: Term = defaultTermPref.term
 
@@ -465,128 +469,91 @@ class ScheduleActivity : DrawerActivity() {
         val shape = Morf.shape
         //                .setShowLine(false)
         //                .setInputDefaultBackground(android.R.color.transparent)
-        val morf = shape.bind(container)
+        container.morf(shape) {
+            // Code
+            addTextInput(R.string.course_code, course.code)
 
-        // Code
-        morf.textInput()
-                .hint(R.string.course_code)
-                .text(course.code)
-                .enabled(false)
-                .build()
+            // Title
+            addTextInput(R.string.course_name, course.title)
 
-        // Title
-        morf.textInput()
-                .hint(R.string.course_name)
-                .text(course.title)
-                .enabled(false)
-                .build()
+            // Time
+            addTextInput(R.string.course_time_title, course.timeString)
 
-        // Time
-        morf.textInput()
-                .hint(R.string.course_time_title)
-                .text(course.timeString)
-                .enabled(false)
-                .build()
+            // Location
+            addTextInput(R.string.course_location, course.location)
 
-        // Location
-        morf.textInput()
-                .hint(R.string.course_location)
-                .text(course.location)
-                .enabled(false)
-                .build()
+            // Type
+            addTextInput(R.string.schedule_type, course.type)
 
-        // Type
-        morf.textInput()
-                .hint(R.string.schedule_type)
-                .text(course.type)
-                .enabled(false)
-                .build()
+            // Instructor
+            addTextInput(R.string.course_prof, course.instructor)
 
-        // Instructor
-        morf.textInput()
-                .hint(R.string.course_prof)
-                .text(course.instructor)
-                .enabled(false)
-                .build()
+            // Section
+            addTextInput(R.string.course_section, course.section)
 
-        // Section
-        morf.textInput()
-                .hint(R.string.course_section)
-                .text(course.section)
-                .enabled(false)
-                .build()
+            // Credits
+            addTextInput(R.string.course_credits_title, course.credits.toString())
 
-        // Credits
-        morf.textInput()
-                .hint(R.string.course_credits_title)
-                .text(course.credits.toString())
-                .enabled(false)
-                .build()
+            // CRN
+            addTextInput(R.string.course_crn, course.crn.toString())
 
-        // CRN
-        morf.textInput()
-                .hint(R.string.course_crn)
-                .text(course.crn.toString())
-                .enabled(false)
-                .build()
+            val color = getColorCompat(R.color.red)
 
-        val color = ContextCompat.getColor(this, R.color.red)
-
-        // Docuum
-        morf.borderlessButton()
-                .layoutParams(LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT), Gravity.CENTER)
-                .text(R.string.course_docuum)
-                .textColor(color)
-                .onClick {
-                    openUrl("http://www.docuum.com/mcgill/${course.subject.toLowerCase()}" +
-                            "/${course.number}")
-                    Unit
+            // Docuum
+            borderlessButton {
+                layoutParams(
+                    LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    ), Gravity.CENTER
+                )
+                textId = R.string.course_docuum
+                textColor = color
+                onClick {
+                    openUrl(
+                        "http://www.docuum.com/mcgill/${course.subject.toLowerCase()}" +
+                                "/${course.number}"
+                    )
                 }
-                .build()
+            }
 
-        // Maps
-        morf.borderlessButton()
-                .layoutParams(LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT), Gravity.CENTER)
-                .text(R.string.course_map)
-                .textColor(color)
-                .onClick { item ->
+            // Maps
+            borderlessButton {
+                layoutParams(
+                    LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    ), Gravity.CENTER
+                )
+                textId = R.string.course_map
+                textColor = color
+                onClick {
                     // Try to find a place that has the right name
-                    SQLite.select()
-                            .from(Place::class.java)
-                            .async()
-                            .queryListResultCallback { transaction, tResult ->
-                                val location = course.location.toLowerCase()
-                                var place: Place? = null
-                                for (aPlace in tResult) {
-                                    if (location.contains(aPlace.name.toLowerCase())) {
-                                        // If the course location contains the place course name,
-                                        //  we've found it
-                                        place = aPlace
-                                        break
-                                    }
-                                }
-
-                                if (place == null) {
-                                    // Tell the user
-                                    toast(getString(R.string.error_place_not_found,
-                                            course.location))
-                                    // Send a Crashlytics report
-                                    Timber.e(NullPointerException("Location not found: " + course.location))
-                                } else {
-                                    // Close the dialog
-                                    alert.dismiss()
-                                    // Open the map to the given place
-                                    val intent = Intent(this, MapActivity::class.java)
-                                            .putExtra(Constants.ID, place.id)
-                                    handler.post { switchDrawerActivity(intent) }
-                                }
-                            }
-                            .execute()
-                    Unit
+                    launch(Dispatchers.IO) {
+                        val places = placeDao.getPlaces()
+                        val place = places.firstOrNull { course.location.contains(it.name, true) }
+                        if (place == null) {
+                            // Tell the user
+                            toast(getString(R.string.error_place_not_found, course.location))
+                            // Send a Crashlytics report
+                            Timber.e(NullPointerException("Location not found: ${course.location}"))
+                        } else {
+                            // Close the dialog
+                            alert.dismiss()
+                            // Open the map to the given place
+                            val intent = intentFor<MapActivity>(Constants.ID to place.id)
+                            handler.post { switchDrawerActivity(intent) }
+                        }
+                    }
                 }
-                .build()
+            }
+        }
+    }
+
+    fun Morf.addTextInput(@StringRes hintId: Int, text: String) = textInput {
+        this.hintId = hintId
+        this.text = text
+        isEnabled = false
     }
 
     /**
