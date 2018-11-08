@@ -51,7 +51,7 @@ import timber.log.Timber
  */
 @Entity
 open class Course(
-    val term: Term,
+    var term: Term,
     val subject: String,
     val number: String,
     val title: String,

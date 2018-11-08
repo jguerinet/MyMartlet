@@ -16,41 +16,34 @@
 
 package com.guerinet.mymartlet.util.room.daos
 
-import androidx.room.Insert
-import androidx.room.Update
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import com.guerinet.mymartlet.model.Course
+import com.guerinet.mymartlet.model.Term
 
 /**
- * Basic Dao functions
+ * Dao for accessing [Course] related info
  * @author Julien Guerinet
  * @since 2.0.0
  */
-abstract class BaseDao<T> {
+@Dao
+abstract class CourseDao : BaseDao<Course>() {
 
     /**
-     * Inserts 1 [obj] into the database
+     * Deletes all of the stored [Course]s
      */
-    @Insert
-    abstract fun insert(obj: T)
+    @Query("DELETE FROM Course")
+    abstract fun deleteAll()
 
     /**
-     * Inserts a list of [objects] into the database
+     * Updates the stored [courses]
      */
-    @Insert
-    abstract fun insert(objects: List<T>)
+    @Transaction
+    fun update(courses: List<Course>, term: Term) {
+        // Set the term on the list of courses
+        courses.forEach { it.term = term }
 
-    /**
-     * Updates the [obj]
-     */
-    @Update
-    abstract fun update(obj: T)
-
-    /**
-     * Updates a [list] of objects by [delete]ing the old objects and [insert]ing the new ones
-     */
-    fun update(list: List<T>, delete: () -> Unit) {
-        // Delete all the old objects
-        delete()
-        // Insert all the new objects
-        insert(list)
+        update(courses, this::deleteAll)
     }
 }

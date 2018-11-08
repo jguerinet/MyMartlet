@@ -29,10 +29,7 @@ import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 import com.guerinet.mymartlet.util.room.converters.DayOfWeekListConverter
 import com.guerinet.mymartlet.util.room.converters.TermConverter
-import com.guerinet.mymartlet.util.room.daos.SemesterDao
-import com.guerinet.mymartlet.util.room.daos.StatementDao
-import com.guerinet.mymartlet.util.room.daos.TranscriptCourseDao
-import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.mymartlet.util.room.daos.*
 import com.guerinet.room.converter.LocalDateConverter
 import com.guerinet.room.converter.LocalTimeConverter
 
@@ -52,6 +49,8 @@ import com.guerinet.room.converter.LocalTimeConverter
     LocalTimeConverter::class, TermConverter::class
 )
 abstract class UserDb : RoomDatabase() {
+
+    abstract fun courseDao(): CourseDao
 
     abstract fun semesterDao(): SemesterDao
 

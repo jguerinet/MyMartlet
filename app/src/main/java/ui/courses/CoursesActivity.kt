@@ -28,17 +28,20 @@ import com.guerinet.mymartlet.model.RegistrationError
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
-import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
-import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
+import com.guerinet.mymartlet.util.room.daos.CourseDao
+import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.dialog.alertDialog
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,6 +58,10 @@ class CoursesActivity : DrawerActivity() {
     private val defaultTermPref by inject<DefaultTermPref>()
 
     private val registerTermsPref by inject<RegisterTermsPref>()
+
+    private val courseDao by inject<CourseDao>()
+
+    private val transcriptDao by inject<TranscriptDao>()
 
     private val adapter: CoursesAdapter by lazy { CoursesAdapter(empty) }
 
@@ -141,9 +148,10 @@ class CoursesActivity : DrawerActivity() {
         // Download the courses for this currentTerm
         mcGillService.schedule(term).enqueue(object : Callback<List<Course>> {
             override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>) {
-                // Set the courses
-                CourseDB.setCourses(term, response.body()) {
-                    handler.post {
+                launch(Dispatchers.IO) {
+                    courseDao.update(response.body() ?: listOf(), term)
+
+                    launch {
                         // Update the view
                         update()
                         toolbarProgress.isVisible = false
@@ -154,7 +162,9 @@ class CoursesActivity : DrawerActivity() {
                 mcGillService.transcript().enqueue(object : Callback<TranscriptResponse> {
                     override fun onResponse(call: Call<TranscriptResponse>,
                             response: Response<TranscriptResponse>) {
-                        TranscriptDB.saveTranscript(this@CoursesActivity, response.body()!!)
+                        launch(Dispatchers.IO) {
+                            transcriptDao.update(response.body()!!.transcript)
+                        }
                     }
 
                     override fun onFailure(call: Call<TranscriptResponse>, t: Throwable) =
