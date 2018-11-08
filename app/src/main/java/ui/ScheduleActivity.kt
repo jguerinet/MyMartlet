@@ -19,7 +19,6 @@ package com.guerinet.mymartlet.ui
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
@@ -52,7 +51,6 @@ import kotlinx.coroutines.launch
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
-import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -108,7 +106,7 @@ class ScheduleActivity : DrawerActivity() {
 
         // Render the right view based on the orientation
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            renderLandscapeView()
+//            renderLandscapeView()
         } else {
             renderPortraitView()
         }
@@ -249,6 +247,7 @@ class ScheduleActivity : DrawerActivity() {
         })
     }
 
+    /* TODO Bring landscape view back
     /**
      * Renders the landscape view
      */
@@ -299,6 +298,7 @@ class ScheduleActivity : DrawerActivity() {
             this.scheduleContainer!!.addView(line)
         }
     }
+    */
 
     /**
      * Renders the portrait view
