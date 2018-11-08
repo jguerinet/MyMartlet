@@ -42,6 +42,7 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
+import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.extensions.openUrl
 import kotlinx.android.synthetic.main.activity_schedule.*
@@ -76,6 +77,8 @@ class ScheduleActivity : DrawerActivity() {
     private val defaultTermPref by inject<DefaultTermPref>()
 
     private val courseDao by inject<CourseDao>()
+
+    private val transcriptDao by inject<TranscriptDao>()
 
     private var term: Term = defaultTermPref.term
 
@@ -214,9 +217,9 @@ class ScheduleActivity : DrawerActivity() {
         // Download the courses for this currentTerm
         mcGillService.schedule(term).enqueue(object : Callback<List<Course>> {
             override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>) {
-                // Set the courses
-                CourseDB.setCourses(term, response.body()) {
-                    handler.post {
+                launch(Dispatchers.IO) {
+                    courseDao.update(response.body() ?: listOf(), term)
+                    launch {
                         // Update the view
                         toolbarProgress.isVisible = false
                         updateCourses()
@@ -229,7 +232,9 @@ class ScheduleActivity : DrawerActivity() {
                 mcGillService.transcript().enqueue(object : Callback<TranscriptResponse> {
                     override fun onResponse(call: Call<TranscriptResponse>,
                             response: Response<TranscriptResponse>) {
-                        TranscriptDB.saveTranscript(this@ScheduleActivity, response.body())
+                        launch(Dispatchers.IO) {
+                            transcriptDao.update(response.body()?.transcript!!)
+                        }
                     }
 
                     override fun onFailure(call: Call<TranscriptResponse>, t: Throwable) {
