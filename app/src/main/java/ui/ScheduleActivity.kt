@@ -41,10 +41,13 @@ import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
+import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.extensions.openUrl
 import kotlinx.android.synthetic.main.activity_schedule.*
 import kotlinx.android.synthetic.main.fragment_day.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
@@ -71,6 +74,8 @@ class ScheduleActivity : DrawerActivity() {
     private val twentyFourHourPref by inject<BooleanPref>(Prefs.SCHEDULE_24HR)
 
     private val defaultTermPref by inject<DefaultTermPref>()
+
+    private val courseDao by inject<CourseDao>()
 
     private var term: Term = defaultTermPref.term
 
@@ -172,10 +177,9 @@ class ScheduleActivity : DrawerActivity() {
         courses.clear()
 
         // Get the new courses for the current currentTerm
-        courses.addAll(SQLite.select()
-                .from(Course::class)
-                .where(Course_Table.term.eq(term))
-                .queryList())
+        launch(Dispatchers.IO) {
+            courses.addAll(courseDao.getTermCourses(term))
+        }
     }
 
     /**

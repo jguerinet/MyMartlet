@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.model
 
 import android.content.Context
-
 import org.threeten.bp.LocalDate
 
 /**

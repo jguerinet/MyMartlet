@@ -31,6 +31,12 @@ import com.guerinet.mymartlet.model.Term
 abstract class CourseDao : BaseDao<Course>() {
 
     /**
+     * Returns the list of [Course]s for the [term]
+     */
+    @Query("SELECT * FROM Course WHERE term = :term")
+    abstract fun getTermCourses(term: Term): List<Course>
+
+    /**
      * Deletes all of the stored [Course]s
      */
     @Query("DELETE FROM Course")
