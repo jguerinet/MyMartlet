@@ -40,7 +40,7 @@ abstract class CourseDao : BaseDao<Course>() {
      * Updates the stored [courses]
      */
     @Transaction
-    fun update(courses: List<Course>, term: Term) {
+    open fun update(courses: List<Course>, term: Term) {
         // Set the term on the list of courses
         courses.forEach { it.term = term }
 
