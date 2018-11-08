@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.util.room.daos
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.guerinet.mymartlet.model.place.Category
@@ -34,11 +33,11 @@ interface MapDao {
      * Returns all of the places as an observable
      */
     @Query("SELECT * FROM Place")
-    fun getPlaces(): LiveData<List<Place>>
+    fun getPlaces(): List<Place>
 
     /**
      * Returns all of the categories as an observable
      */
     @Query("SELECT * FROM Category")
-    fun getCategories(): LiveData<List<Category>>
+    fun getCategories(): List<Category>
 }
