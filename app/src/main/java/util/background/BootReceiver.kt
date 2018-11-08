@@ -101,7 +101,8 @@ class BootReceiver : BroadcastReceiver() {
          * @return The pending intent
          */
         private fun getPendingIntent(context: Context): PendingIntent {
-            val intent = Intent(context, CheckerService::class.java)
+            // TODO
+            val intent = Intent() // Intent(context, CheckerService::class.java)
             return PendingIntent.getService(context, 0, intent, 0)
         }
     }
