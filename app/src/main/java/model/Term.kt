@@ -18,6 +18,7 @@ package com.guerinet.mymartlet.model
 
 import android.content.Context
 import org.threeten.bp.LocalDate
+import java.io.Serializable
 
 /**
  * One class term, consisting of a season and a year
@@ -28,7 +29,7 @@ import org.threeten.bp.LocalDate
  * @param year      Term year
  */
 @Suppress("EqualsOrHashCode")
-class Term(val season: Season, val year: Int) {
+class Term(val season: Season, val year: Int) : Serializable {
 
     /**
      * Term Id, for parsing errors
