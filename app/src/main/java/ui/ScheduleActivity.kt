@@ -427,7 +427,7 @@ class ScheduleActivity : DrawerActivity() {
                             // We need a final variable for the onClick listener
                             val course = currentCourse
                             // OnClick: CourseActivity (for a detailed description of the course)
-                            scheduleCell.setOnClickListener { v -> showCourseDialog(course) }
+                            scheduleCell.setOnClickListener { showCourseDialog(course) }
                         } else {
                             scheduleCell.isClickable = false
                         }
@@ -462,7 +462,7 @@ class ScheduleActivity : DrawerActivity() {
         val alert = AlertDialog.Builder(this)
                 .setView(view)
                 .setCancelable(true)
-                .setNeutralButton(R.string.done) { dialog, which -> dialog.dismiss() }
+            .setNeutralButton(R.string.done) { dialog, _ -> dialog.dismiss() }
                 .show()
 
         // Populate the form
@@ -531,7 +531,9 @@ class ScheduleActivity : DrawerActivity() {
                     // Try to find a place that has the right name
                     launch(Dispatchers.IO) {
                         val places = placeDao.getPlaces()
-                        val place = places.firstOrNull { course.location.contains(it.name, true) }
+                        val place = places.firstOrNull { place ->
+                            course.location.contains(place.name, true)
+                        }
                         if (place == null) {
                             // Tell the user
                             toast(getString(R.string.error_place_not_found, course.location))
@@ -550,7 +552,7 @@ class ScheduleActivity : DrawerActivity() {
         }
     }
 
-    fun Morf.addTextInput(@StringRes hintId: Int, text: String) = textInput {
+    private fun Morf.addTextInput(@StringRes hintId: Int, text: String) = textInput {
         this.hintId = hintId
         this.text = text
         isEnabled = false
