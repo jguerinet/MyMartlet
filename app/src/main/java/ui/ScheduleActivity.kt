@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.ui
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
@@ -42,11 +41,13 @@ import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptRespon
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.MapDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.suitcase.date.extensions.getLongDateString
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.guerinet.suitcase.util.extensions.openUrl
 import kotlinx.android.synthetic.main.activity_schedule.*
 import kotlinx.android.synthetic.main.fragment_day.*
+import kotlinx.android.synthetic.main.fragment_day.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.intentFor
@@ -575,19 +576,26 @@ class ScheduleActivity : DrawerActivity() {
         private val holders = Stack<DayHolder>()
 
         override fun instantiateItem(collection: ViewGroup, position: Int): Any {
-            val context = this@ScheduleActivity
-            val view = LayoutInflater.from(context).inflate(R.layout.fragment_day, collection,
-                    false)
+            val holder = if (holders.isNotEmpty()) {
+                holders.pop()
+            } else {
+                DayHolder(
+                    LayoutInflater.from(collection.context)
+                        .inflate(R.layout.fragment_day, collection, false)
+                )
+            }
 
-            // Get the date for this view
-            val currentDate = getDate(position)
+            // Get the date for this view and set it
+            holder.bind(getDate(position))
 
-            collection.addView(view)
-            return view
+            collection.addView(holder.view)
+            return holder.view
         }
 
         override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
-            collection.removeView(view as View)
+            val dayView = view as View
+            collection.removeView(dayView)
+            holders.push(DayHolder(view))
         }
 
         override fun getCount() = 1000000
@@ -601,18 +609,15 @@ class ScheduleActivity : DrawerActivity() {
 
         override fun isViewFromObject(view: View, `object`: Any): Boolean = view == `object`
 
-        inner class DayHolder(collection: ViewGroup, context: Context) {
-
-            val view = LayoutInflater.from(context).inflate(R.layout.fragment_day, collection,
-                    false)
+        inner class DayHolder(val view: View) {
 
             fun bind(date: LocalDate) {
                 // Set the titles
-                dayTitle.setText(DayUtils.getStringId(currentDate.dayOfWeek))
-                dayDate.text = currentDate.getLongDateString()
+                dayTitle.setText(DayUtils.getStringId(date.dayOfWeek))
+                dayDate.text = date.getLongDateString()
 
                 // Fill the schedule up
-                fillSchedule(timetableContainer, scheduleContainer, currentDate, true)
+                fillSchedule(view.timetableContainer, view.scheduleContainer, date, true)
             }
         }
     }
