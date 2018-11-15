@@ -22,11 +22,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
-import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.suitcase.ui.BaseListAdapter
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.item_course.view.*
 
 /**
@@ -43,19 +40,10 @@ internal class CoursesAdapter(emptyView: TextView) :
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CourseHolder = CourseHolder(viewGroup)
 
-    fun update(term: Term, canUnregister: Boolean) {
+    fun update(courses: List<Course>, canUnregister: Boolean) {
         this.canUnregister = canUnregister
         checkedCourses.clear()
-
-        // Get the courses asynchronously
-        SQLite.select()
-                .from(Course::class)
-                .where(Course_Table.term.eq(term))
-                .async()
-                .queryListResultCallback { _, tResult ->
-                    submitList(tResult)
-                }
-                .execute()
+        submitList(courses.toMutableList())
     }
 
     internal inner class CourseHolder(parent: ViewGroup) :
