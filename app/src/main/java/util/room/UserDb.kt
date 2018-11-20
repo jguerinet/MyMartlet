@@ -52,6 +52,8 @@ abstract class UserDb : RoomDatabase() {
 
     abstract fun courseDao(): CourseDao
 
+    abstract fun courseResultDao(): CourseResultDao
+
     abstract fun semesterDao(): SemesterDao
 
     abstract fun statementDao(): StatementDao

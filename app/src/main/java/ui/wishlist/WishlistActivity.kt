@@ -27,10 +27,11 @@ import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.kotlinextensions.save
-import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.guerinet.mymartlet.util.room.daos.CourseResultDao
 import kotlinx.android.synthetic.main.view_courses.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Response
@@ -44,6 +45,8 @@ import retrofit2.Response
 class WishlistActivity : DrawerActivity() {
 
     private val registerTermsPref by inject<RegisterTermsPref>()
+
+    private val courseResultDao by inject<CourseResultDao>()
 
     /**
      * Current term, null if none possible (no semesters to register for)
@@ -127,21 +130,12 @@ class WishlistActivity : DrawerActivity() {
         toolbarProgress.isVisible = true
 
         // Go through the user's wishlist
-        SQLite.select()
-                .from(CourseResult::class)
-                .async()
-                .queryListResultCallback { _, tResult ->
-                    val holders = mutableListOf<CourseHolder>()
-                    for (course in tResult) {
-                        val holder = CourseHolder(course)
-                        if (!holders.contains(holder)) {
-                            holders.add(holder)
-                        }
-                    }
-
-                    launch(UI) { performUpdateCalls(holders) }
-                }
-                .execute()
+        launch(Dispatchers.IO) {
+            val holders = courseResultDao.getAll()
+                .map { CourseHolder(it) }
+                .distinct()
+            launch { performUpdateCalls(holders) }
+        }
 
     }
 
@@ -180,13 +174,10 @@ class WishlistActivity : DrawerActivity() {
                         return
                     }
                     receivedCourses.forEach {
-                        val exists = SQLite.selectCountOf()
-                                .from(CourseResult::class)
-                                .where(CourseResult_Table.term.eq(it.term))
-                                .and(CourseResult_Table.crn.eq(it.crn))
-                                .hasData()
-                        if (exists) {
-                            course.save()
+                        launch(Dispatchers.IO) {
+                            if (courseResultDao.get(it.term, it.crn) != null) {
+                                courseResultDao.update(it)
+                            }
                         }
                     }
                     finalizeUpdate()
