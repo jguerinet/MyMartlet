@@ -16,6 +16,7 @@
 
 package com.guerinet.mymartlet.util.room.daos
 
+import androidx.room.Dao
 import androidx.room.Query
 import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.Term
@@ -25,6 +26,7 @@ import com.guerinet.mymartlet.model.Term
  * @author Julien Guerinet
  * @since 1.0.0
  */
+@Dao
 abstract class CourseResultDao : BaseDao<CourseResult>() {
 
     /**
