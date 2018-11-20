@@ -36,6 +36,12 @@ abstract class CourseResultDao : BaseDao<CourseResult>() {
     abstract fun getAll(): List<CourseResult>
 
     /**
+     * Returns all [CourseResult]s for the [term]
+     */
+    @Query("SELECT * FROM CourseResult WHERE term = :term")
+    abstract fun get(term: Term): List<CourseResult>
+
+    /**
      * Returns one [CourseResult] with the same [term] and [crn] if found
      */
     @Query("SELECT * FROM CourseResult WHERE term = :term AND crn = :crn")

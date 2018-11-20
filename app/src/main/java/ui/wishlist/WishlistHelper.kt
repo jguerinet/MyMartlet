@@ -30,8 +30,8 @@ import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.dialog.alertDialog
-import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.view_courses.view.*
+import org.jetbrains.anko.toast
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import retrofit2.Call
