@@ -22,11 +22,7 @@ import android.app.DownloadManager
 import android.content.Context
 import android.os.Bundle
 import android.os.Environment
-import android.webkit.CookieManager
-import android.webkit.DownloadListener
-import android.webkit.MimeTypeMap
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
@@ -129,7 +125,7 @@ class MyCoursesActivity : DrawerActivity() {
                 // Preload the user's information
                 view.loadUrl("javascript:(function f(){" +
                         "(document.getElementsByName('j_username')[0]).value='" +
-                        usernamePref.full() + "';" +
+                        usernamePref.full + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
                         Hawk.get<String>(Prefs.PASSWORD) +
                         "'; document.getElementsByName('_eventId_proceed')[0].click();})()")
