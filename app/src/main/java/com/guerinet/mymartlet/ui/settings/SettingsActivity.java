@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import com.guerinet.mymartlet.util.manager.HomepageManager;
 import com.guerinet.suitcase.dialog.DialogUtils;
 import com.guerinet.suitcase.prefs.BooleanPref;
 import com.guerinet.suitcase.util.Device;
+import com.guerinet.suitcase.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.io.File;
@@ -144,6 +145,13 @@ public class SettingsActivity extends DrawerActivity {
                 .text(R.string.title_about)
                 .leftIcon(R.drawable.ic_info)
                 .onClick(item -> startActivity(new Intent(this, AboutActivity.class)))
+                .build();
+
+        // Privacy Policy
+        fg.text()
+                .text("Privacy Policy")
+                .leftIcon(R.drawable.ic_info)
+                .onClick(item -> Utils.openUrl(this, "https://github.com/jguerinet/MyMartlet/blob/prod/privacy-policy.md"))
                 .build();
 
         // Bug Report
