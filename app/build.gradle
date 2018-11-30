@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2018 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,8 +53,8 @@ android {
         applicationId "com.guerinet.mymartlet"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 5
-        versionName "1.0.2"
+        versionCode 6
+        versionName "1.0.3"
         multiDexEnabled true
     }
 
@@ -150,7 +150,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${support_version}"
     compile "com.android.support:support-v4:${support_version}"
     compile("com.crashlytics.sdk.android:crashlytics:2.6.7@aar") {
-        transitive = true;
+        transitive = true
     }
     compile "com.facebook.android:facebook-android-sdk:4.22.0"
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
@@ -182,7 +182,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-moshi:${retrofit_version}"
     compile "com.squareup.retrofit2:retrofit:${retrofit_version}"
     compile("com.twitter.sdk.android:twitter:2.3.2@aar") {
-        transitive = true;
+        transitive = true
     }
     compile "com.viewpagerindicator:library:2.4.1@aar"
     // Don't update this as 1.10.x breaks the converters
