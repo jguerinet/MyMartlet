@@ -75,7 +75,7 @@ class SearchActivity : DrawerActivity() {
         term = registerTerms[0]
         termSelector.text = term.getString(this)
         termContainer.setOnClickListener { _ ->
-            TermDialogHelper(this@SearchActivity, term, true) {
+            TermDialogHelper(this@SearchActivity, this@SearchActivity, term, true) {
                 term = it
                 termSelector.text = term.getString(this@SearchActivity)
             }

@@ -138,7 +138,7 @@ class ScheduleActivity : DrawerActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_change_semester -> {
-                TermDialogHelper(this, term, false) {
+                TermDialogHelper(this, this, term, false) {
                     // If it's the same currentTerm as now, do nothing
                     if (it == term) {
                         return@TermDialogHelper

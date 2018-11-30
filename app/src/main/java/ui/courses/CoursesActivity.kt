@@ -101,7 +101,7 @@ class CoursesActivity : DrawerActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_change_semester -> {
-                TermDialogHelper(this, term, false) {
+                TermDialogHelper(this, this, term, false) {
                     // Set the default currentTerm
                     defaultTermPref.term = it
 
