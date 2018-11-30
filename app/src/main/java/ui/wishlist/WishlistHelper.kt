@@ -82,7 +82,15 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
     /**
      * Updates the [term] that the courses should be in, null if none
      */
-    fun update(term: Term?) = adapter.update(term)
+    fun update(term: Term?) {
+        val courses = if (term != null) {
+            courseResultDao.get(term)
+        } else {
+            listOf()
+        }
+
+        adapter.update(term, courses)
+    }
 
     /**
      * Attempts to (un)register to the list of checked courses
