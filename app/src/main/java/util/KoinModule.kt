@@ -100,8 +100,8 @@ val dbModule = module {
     // CourseResultDao
     single { get<UserDb>().courseResultDao() }
 
-    // MapDao
-    single { get<ConfigDb>().mapDao() }
+    // PlaceDao
+    single { get<ConfigDb>().placeDao() }
 
     // SemesterDao
     single { get<UserDb>().semesterDao() }

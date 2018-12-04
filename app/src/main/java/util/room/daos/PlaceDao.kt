@@ -28,7 +28,7 @@ import com.guerinet.mymartlet.model.place.Place
  * @since 2.0.0
  */
 @Dao
-abstract class MapDao : BaseDao<Place>() {
+abstract class PlaceDao : BaseDao<Place>() {
 
     /**
      * Returns all of the places as an observable
@@ -38,12 +38,6 @@ abstract class MapDao : BaseDao<Place>() {
 
     @Query("SELECT id FROM Place WHERE ${Category.FAVORITES} IN(categories)")
     abstract fun getFavoritePlaces(): List<Int>
-
-    /**
-     * Returns all of the categories as an observable
-     */
-    @Query("SELECT * FROM Category")
-    abstract fun getCategories(): List<Category>
 
     @Query("DELETE FROM Place WHERE Place.id NOT IN(:ids)")
     abstract fun deletePlaces(ids: List<Int>)

@@ -39,7 +39,7 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
-import com.guerinet.mymartlet.util.room.daos.MapDao
+import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.date.extensions.getLongDateString
 import com.guerinet.suitcase.prefs.BooleanPref
@@ -81,7 +81,7 @@ class ScheduleActivity : DrawerActivity() {
 
     private val transcriptDao by inject<TranscriptDao>()
 
-    private val placeDao by inject<MapDao>()
+    private val placeDao by inject<PlaceDao>()
 
     private var term: Term = defaultTermPref.term
 

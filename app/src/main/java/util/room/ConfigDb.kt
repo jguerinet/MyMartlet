@@ -24,7 +24,7 @@ import androidx.room.TypeConverters
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.room.daos.CategoryDao
-import com.guerinet.mymartlet.util.room.daos.MapDao
+import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.room.converter.IntMutableListConverter
 
 /**
@@ -38,7 +38,7 @@ abstract class ConfigDb : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
 
-    abstract fun mapDao(): MapDao
+    abstract fun placeDao(): PlaceDao
 
     companion object {
 

@@ -22,7 +22,7 @@ import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.daos.CategoryDao
-import com.guerinet.mymartlet.util.room.daos.MapDao
+import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.date.extensions.rfc1123String
 import com.guerinet.suitcase.prefs.IntPref
@@ -55,7 +55,7 @@ class ConfigDownloadService : JobIntentService() {
 
     private val categoryDao by inject<CategoryDao>()
 
-    private val mapDao by inject<MapDao>()
+    private val placesDao by inject<PlaceDao>()
 
     override fun onHandleWork(intent: Intent) {
         if (!isConnected) {
@@ -70,7 +70,7 @@ class ConfigDownloadService : JobIntentService() {
         // Places
         val places = executeRequest(configService.places(getIMS(imsPlacesPref)), imsPlacesPref)
         if (places != null) {
-            mapDao.updatePlaces(places)
+            placesDao.updatePlaces(places)
         }
 
         // Categories
