@@ -18,6 +18,7 @@ package com.guerinet.mymartlet.util.room.daos
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 
@@ -27,17 +28,44 @@ import com.guerinet.mymartlet.model.place.Place
  * @since 2.0.0
  */
 @Dao
-interface MapDao {
+abstract class MapDao : BaseDao<Place>() {
 
     /**
      * Returns all of the places as an observable
      */
     @Query("SELECT * FROM Place")
-    fun getPlaces(): List<Place>
+    abstract fun getPlaces(): List<Place>
+
+    @Query("SELECT id FROM Place WHERE ${Category.FAVORITES} IN(categories)")
+    abstract fun getFavoritePlaces(): List<Int>
 
     /**
      * Returns all of the categories as an observable
      */
     @Query("SELECT * FROM Category")
-    fun getCategories(): List<Category>
+    abstract fun getCategories(): List<Category>
+
+    @Query("DELETE FROM Place WHERE Place.id NOT IN(:ids)")
+    abstract fun deletePlaces(ids: List<Int>)
+
+    /**
+     * Updates the list of [Place]s by inserting the [places] and deleting the old ones
+     */
+    @Transaction
+    fun updatePlaces(places: List<Place>) {
+        // Get the list of Ids
+        val placeIds = places.map { it.id }
+
+        // Get the list of favorites
+        val favorites = getFavoritePlaces()
+
+        // Set the favorites boolean
+        places.filter { favorites.contains(it.id) }.forEach { it.isFavorite = true }
+
+        // Insert the new places
+        insert(places)
+
+        // Delete the ones that have not been updated
+        deletePlaces(placeIds)
+    }
 }

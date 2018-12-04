@@ -88,6 +88,9 @@ val appModule: Module = module {
 
 val dbModule = module {
 
+    // CategoryDao
+    single { get<ConfigDb>().categoryDao() }
+
     // ConfigDb
     single { ConfigDb.init(androidContext()) }
 

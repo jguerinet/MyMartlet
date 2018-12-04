@@ -18,14 +18,11 @@ package com.guerinet.mymartlet.util.service
 
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.guerinet.mymartlet.model.place.Category
-import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dbflow.DBUtils
-import com.guerinet.mymartlet.util.dbflow.databases.PlaceCategoryDB
-import com.guerinet.mymartlet.util.dbflow.databases.PlaceDB
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
+import com.guerinet.mymartlet.util.room.daos.CategoryDao
+import com.guerinet.mymartlet.util.room.daos.MapDao
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.date.extensions.rfc1123String
 import com.guerinet.suitcase.prefs.IntPref
@@ -56,6 +53,10 @@ class ConfigDownloadService : JobIntentService() {
 
     private val registerTermsPref by inject<RegisterTermsPref>()
 
+    private val categoryDao by inject<CategoryDao>()
+
+    private val mapDao by inject<MapDao>()
+
     override fun onHandleWork(intent: Intent) {
         if (!isConnected) {
             // If we're not connected to the internet, don't continue
@@ -69,19 +70,14 @@ class ConfigDownloadService : JobIntentService() {
         // Places
         val places = executeRequest(configService.places(getIMS(imsPlacesPref)), imsPlacesPref)
         if (places != null) {
-            DBUtils.updateDB(Place::class.java, places, null, PlaceDB::class.java, { `object`, oldObject ->
-                // Set whether the place was a favorite or not
-                //  This will automatically save the new place
-                `object`.isFavorite = oldObject.isFavorite
-            }, null)
+            mapDao.updatePlaces(places)
         }
 
         // Categories
         val categories = executeRequest(configService.categories(getIMS(imsCategoriesPref)),
                 imsCategoriesPref)
         if (categories != null) {
-            DBUtils.updateDB(Category::class.java, categories, null, PlaceCategoryDB::class.java,
-                    null, null)
+            categoryDao.update(categories)
         }
 
         // Registration Terms
