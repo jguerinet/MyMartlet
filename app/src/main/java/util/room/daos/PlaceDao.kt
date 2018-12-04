@@ -46,7 +46,7 @@ abstract class PlaceDao : BaseDao<Place>() {
      * Updates the list of [Place]s by inserting the [places] and deleting the old ones
      */
     @Transaction
-    fun updatePlaces(places: List<Place>) {
+    open fun updatePlaces(places: List<Place>) {
         // Get the list of Ids
         val placeIds = places.map { it.id }
 
