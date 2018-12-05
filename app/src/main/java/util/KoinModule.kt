@@ -76,6 +76,9 @@ val appModule: Module = module {
         androidContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
+    // McGillManager
+    single { McGillManager(get(), get()) }
+
     // Moshi
     single { Moshi.Builder().build() }
 
