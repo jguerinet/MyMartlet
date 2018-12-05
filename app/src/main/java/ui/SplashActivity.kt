@@ -36,14 +36,16 @@ import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.Result
 import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import com.guerinet.mymartlet.util.thread.UserDownloader
+import com.guerinet.suitcase.coroutines.bgDispatcher
+import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_splash.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
@@ -80,7 +82,7 @@ class SplashActivity : BaseActivity() {
         versionButton.setOnClickListener { openPlayStoreApp() }
         loginButton.setOnClickListener { loginPressed() }
 
-        launch(Dispatchers.Default) {
+        launch(bgDispatcher) {
             // Run any update code
             updateManager.update()
 
@@ -95,7 +97,7 @@ class SplashActivity : BaseActivity() {
                 startActivityForResult<AgreementActivity>(AGREEMENT_CODE, Prefs.EULA to true)
             } else {
                 // If not, go to the next screen
-                showNextScreen()
+                withContext(uiDispatcher) { showNextScreen() }
             }
         }
     }
