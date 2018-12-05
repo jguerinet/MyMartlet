@@ -146,7 +146,9 @@ class SplashActivity : BaseActivity() {
         loginContainer.isVisible = true
 
         // Delete of the previous user's info
-        clearManager.clearUserInfo()
+        launch(bgDispatcher) {
+            clearManager.clearUserInfo()
+        }
 
         // Fill out username text if it is present
         username.setText(usernamePref.value)
