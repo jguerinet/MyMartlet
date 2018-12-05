@@ -26,6 +26,7 @@ import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.manager.UpdateManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
+import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
@@ -38,6 +39,7 @@ import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.squareup.moshi.Moshi
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -136,8 +138,8 @@ val networkModule: Module = module {
     // HttpLoggingInterceptor
     single {
         HttpLoggingInterceptor { message -> Timber.tag("OkHttp").i(message) }
-            .level = HttpLoggingInterceptor.Level.BASIC
-    }
+            .apply { level = HttpLoggingInterceptor.Level.BASIC }
+    } bind Interceptor::class
 
     // McGillService
     single { get<McGillManager>().mcGillService }
@@ -149,7 +151,7 @@ val networkModule: Module = module {
     single {
         Retrofit.Builder()
             .client(get())
-            .baseUrl("https://mymartlet.herokuapp.com/api/v2")
+            .baseUrl("https://mymartlet.herokuapp.com/api/v2/")
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
     }
@@ -163,7 +165,11 @@ val prefsModule: Module = module {
     // DefaultTermPref
     single { DefaultTermPref(get()) }
 
+    // RegisterTermsPref
     single { RegisterTermsPref(get()) }
+
+    // UsernamePref
+    single { UsernamePref(get(), get()) }
 
     single(Prefs.EULA) { BooleanPref(get(), Prefs.EULA, false) }
 
