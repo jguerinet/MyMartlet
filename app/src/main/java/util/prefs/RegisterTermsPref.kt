@@ -27,7 +27,7 @@ import com.guerinet.suitcase.prefs.StringPref
  */
 class RegisterTermsPref(prefs: SharedPreferences) : StringPref(prefs, "register_terms", "") {
 
-    var terms: List<Term> = value.split(",").map { Term.parseTerm(it) }
+    var terms: List<Term> = value.split(",").filter { it.isNotBlank() }.map { Term.parseTerm(it) }
         set(value) {
             field = value
             super.value = value.joinToString(",") { term -> term.id }
