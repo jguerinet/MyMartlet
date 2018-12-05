@@ -139,7 +139,7 @@ android.buildTypes.each { type ->
 // Versions for libraries with multiple dependencies
 def koin_version = "1.0.1"
 def okhttp_version = "3.11.0"
-def play_services_version = "16.0.0"
+def play_services_version = "11.0.4"
 def retrofit_version = "2.4.0"
 def room_version = "2.0.0"
 def suitcase_version = "4.8.1"
@@ -160,6 +160,7 @@ dependencies {
         transitive = true
     }
     implementation "com.facebook.android:facebook-android-sdk:4.38.0"
+    implementation "com.google.android.gms:play-services-analytics:$play_services_version"
     implementation "com.google.android.gms:play-services-maps:$play_services_version"
     implementation 'com.google.android.material:material:1.0.0'
     implementation "com.guerinet:morf:6.0.0"
