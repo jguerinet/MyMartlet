@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.ClearManager
+import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.manager.UpdateManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
@@ -72,6 +73,9 @@ val appModule: Module = module {
                     !get<BooleanPref>(Prefs.STATS).value
         }
     }
+
+    // HomePageManager
+    single { HomepageManager(get(), androidContext()) }
 
     // InputMethodManager
     factory {
