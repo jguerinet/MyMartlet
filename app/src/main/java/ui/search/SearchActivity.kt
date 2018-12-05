@@ -133,7 +133,7 @@ class SearchActivity : DrawerActivity() {
         val endMinute: Int
         val endAM: Boolean
 
-        if (Device.isAtLeastMarshmallow()) {
+        if (Device.isApiLevel(23)) {
             startHour = this.startTime.hour % 12
             startMinute = this.startTime.minute
             startAM = this.startTime.hour < 12
@@ -228,7 +228,7 @@ class SearchActivity : DrawerActivity() {
     @SuppressLint("NewApi")
     private fun reset() {
         //Reset all of the views
-        if (Device.isAtLeastMarshmallow()) {
+        if (Device.isApiLevel(23)) {
             startTime.hour = 0
             startTime.minute = 0
             endTime.hour = 0
