@@ -202,36 +202,44 @@ class SplashActivity : BaseActivity() {
 
         progressContainer.isVisible = true
 
-        val result = mcGillManager.login(username + getString(R.string.login_email), password)
+        launch(bgDispatcher) {
+            val result = mcGillManager.login(username + getString(R.string.login_email), password)
 
-        when (result) {
-            is Result.Success<*> -> {
-                // Store the login info
-                usernamePref.value = username
-                Hawk.put(Prefs.PASSWORD, password)
-                rememberUsernamePref.value = rememberUsername.isChecked
+            when (result) {
+                is Result.Success<*> -> {
+                    // Store the login info
+                    usernamePref.value = username
+                    Hawk.put(Prefs.PASSWORD, password)
+                    rememberUsernamePref.value = rememberUsername.isChecked
 
-                ga.sendEvent("Login", "Remember Username", rememberUsername.isChecked.toString())
+                    ga.sendEvent(
+                        "Login",
+                        "Remember Username",
+                        rememberUsername.isChecked.toString()
+                    )
 
-                // Hide the login container
-                loginContainer.isVisible = false
+                    withContext(uiDispatcher) {
+                        // Hide the login container
+                        loginContainer.isVisible = false
 
-                // Start the downloading of information
-                login(false)
-            }
-            is Result.Failure -> {
-                val error = if (result.exception is MinervaException)
-                    R.string.login_error_wrong_data
-                else
-                    R.string.error_other
-
-                // If for some reason the activity is finishing, don't show this
-                if (isFinishing) {
-                    return
+                        // Start the downloading of information
+                        login(false)
+                    }
                 }
+                is Result.Failure -> {
+                    val error = if (result.exception is MinervaException)
+                        R.string.login_error_wrong_data
+                    else
+                        R.string.error_other
 
-                progressContainer.isVisible = false
-                errorDialog(error)
+                    // If for some reason the activity is finishing, don't show this
+                    if (!isFinishing) {
+                        withContext(uiDispatcher) {
+                            progressContainer.isVisible = false
+                            errorDialog(error)
+                        }
+                    }
+                }
             }
         }
     }
