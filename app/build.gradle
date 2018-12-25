@@ -177,6 +177,7 @@ dependencies {
     implementation "com.jakewharton.threetenabp:threetenabp:1.1.1"
     implementation "com.jakewharton.timber:timber:4.7.1"
     implementation "com.orhanobut:hawk:2.0.1"
+    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
     implementation "com.squareup.moshi:moshi:1.7.0"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,10 +14,13 @@
         android:textColor="@color/red"
         android:text="@string/skip"/>
 
-    <com.viewpagerindicator.CirclePageIndicator
-        android:layout_height="20dp"
-        android:layout_width="match_parent"
-        android:id="@+id/indicator"/>
+    <com.rd.PageIndicatorView
+        android:id="@+id/indicator"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        app:piv_animationType="worm"
+        app:piv_selectedColor="@color/red"
+        app:piv_unselectedColor="@color/grey"/>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_height="0dp"
