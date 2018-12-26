@@ -31,7 +31,7 @@ abstract class BaseDao<T> {
     /**
      * Inserts 1 [obj] into the database
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(obj: T)
 
     /**
