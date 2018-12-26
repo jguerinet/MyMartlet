@@ -46,7 +46,6 @@ import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.guerinet.suitcase.util.extensions.openUrl
 import kotlinx.android.synthetic.main.activity_schedule.*
-import kotlinx.android.synthetic.main.fragment_day.*
 import kotlinx.android.synthetic.main.fragment_day.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -613,11 +612,13 @@ class ScheduleActivity : DrawerActivity() {
 
             fun bind(date: LocalDate) {
                 // Set the titles
-                dayTitle.setText(DayUtils.getStringId(date.dayOfWeek))
-                dayDate.text = date.getLongDateString()
+                view.apply {
+                    dayTitle.setText(DayUtils.getStringId(date.dayOfWeek))
+                    dayDate.text = date.getLongDateString()
 
-                // Fill the schedule up
-                fillSchedule(view.timetableContainer, view.scheduleContainer, date, true)
+                    // Fill the schedule up
+                    fillSchedule(timetableContainer, scheduleContainer, date, true)
+                }
             }
         }
     }
