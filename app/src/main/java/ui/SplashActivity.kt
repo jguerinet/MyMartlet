@@ -269,6 +269,9 @@ class SplashActivity : BaseActivity() {
                     val result = mcGillManager.login()
                     if (result is Result.Failure) {
                         withContext(uiDispatcher) {
+                            // Hide the container
+                            progressContainer.isVisible = false
+
                             // If auto login isn't successful, don't continue
                             showLoginScreen(result.exception)
                         }
@@ -294,19 +297,24 @@ class SplashActivity : BaseActivity() {
                         userDownloader.execute()
                     } catch (e: IOException) {
                         // If there was an exception, stop here
+                        // Hide the container
+                        progressContainer.isVisible = false
+
                         showLoginScreen(e)
                         return@withContext
                     }
                 } else {
                     userDownloader.start()
                 }
+
+                withContext(uiDispatcher) {
+                    // Hide the container
+                    progressContainer.isVisible = false
+
+                    // Connection successful: home page
+                    openHomePage()
+                }
             }
-
-            // Hide the container
-            progressContainer.isVisible = false
-
-            // Connection successful: home page
-            openHomePage()
         }
     }
 
