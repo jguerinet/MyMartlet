@@ -328,7 +328,7 @@ class TranscriptConverter : Converter.Factory(),
     private fun getCredits(credits: String): Double {
         val creditsString = credits.replace("\\s", "")
         val creditArray = creditsString.split("-")[1].split("credits")
-        return creditArray[0].toDouble()
+        return creditArray[0].trim().toDouble()
     }
 
     /**
