@@ -38,5 +38,5 @@ class UsernamePref(context: Context, prefs: SharedPreferences) :
      * User's full email, null if none
      */
     val full: String?
-        get() = super.value?.apply { super.value + emailSuffix }
+        get() = super.value?.run { super.value + emailSuffix }
 }
