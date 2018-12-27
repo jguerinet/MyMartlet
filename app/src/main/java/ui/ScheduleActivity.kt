@@ -41,6 +41,8 @@ import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptRespon
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.suitcase.coroutines.bgDispatcher
+import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.date.extensions.getLongDateString
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.extensions.getColorCompat
@@ -49,6 +51,7 @@ import kotlinx.android.synthetic.main.activity_schedule.*
 import kotlinx.android.synthetic.main.fragment_day.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -102,18 +105,15 @@ class ScheduleActivity : DrawerActivity() {
             term = savedTerm
         }
 
-        // Title
-        title = term.getString(this)
-
         // Update the list of courses for this currentTerm and the starting date
         updateCoursesAndDate()
 
-        // Render the right view based on the orientation
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//        // Render the right view based on the orientation
+//        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 //            renderLandscapeView()
-        } else {
-            renderPortraitView()
-        }
+//        } else {
+//            renderPortraitView()
+//        }
 
         // Check if this is the first time the user is using the app
         if (firstOpenPref.value) {
@@ -152,12 +152,6 @@ class ScheduleActivity : DrawerActivity() {
                     // Update the courses
                     updateCoursesAndDate()
 
-                    // Title
-                    title = it.getString(this@ScheduleActivity)
-
-                    // TODO This only renders the portrait view
-                    renderPortraitView()
-
                     // Refresh the content
                     refreshCourses()
                 }
@@ -177,13 +171,15 @@ class ScheduleActivity : DrawerActivity() {
         outState.putSerializable(Constants.TERM, term)
     }
 
-    private fun updateCourses() {
-        // Clear the current courses
-        courses.clear()
+    private suspend fun updateCourses() {
+        withContext(bgDispatcher) {
+            // Clear the current courses
+            courses.clear()
 
-        // Get the new courses for the current currentTerm
-        launch(Dispatchers.IO) {
-            courses.addAll(courseDao.getTermCourses(term))
+            // Get the new courses for the current currentTerm
+            val localCourses = courseDao.getTermCourses(term)
+
+            courses.addAll(localCourses)
         }
     }
 
@@ -191,18 +187,28 @@ class ScheduleActivity : DrawerActivity() {
      * Gets the courses for the given [Term]
      */
     private fun updateCoursesAndDate() {
-        updateCourses()
+        launch(Dispatchers.Default) {
+            updateCourses()
 
-        // Date is by default set to today
-        date = LocalDate.now()
+            // Date is by default set to today
+            date = LocalDate.now()
 
-        // Check if we are in the current semester
-        if (term != Term.currentTerm()) {
-            // If not, find the starting date of this semester instead of using today
-            for (course in courses) {
-                if (course.startDate.isBefore(date)) {
-                    date = course.startDate
+            // Check if we are in the current semester
+            if (term != Term.currentTerm()) {
+                // If not, find the starting date of this semester instead of using today
+                for (course in courses) {
+                    if (course.startDate.isBefore(date)) {
+                        date = course.startDate
+                    }
                 }
+            }
+
+            withContext(uiDispatcher) {
+                // Title
+                title = term.getString(this@ScheduleActivity)
+
+                // TODO This only renders the portrait view
+                renderPortraitView()
             }
         }
     }
@@ -221,7 +227,7 @@ class ScheduleActivity : DrawerActivity() {
             override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>) {
                 launch(Dispatchers.IO) {
                     courseDao.update(response.body() ?: listOf(), term)
-                    launch {
+                    withContext(uiDispatcher) {
                         // Update the view
                         toolbarProgress.isVisible = false
                         updateCourses()
