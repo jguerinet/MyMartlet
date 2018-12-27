@@ -16,6 +16,7 @@
 
 package com.guerinet.mymartlet.util.room.converters
 
+import androidx.room.TypeConverter
 import com.guerinet.room.converter.BaseListConverter
 import org.threeten.bp.DayOfWeek
 
@@ -25,6 +26,12 @@ import org.threeten.bp.DayOfWeek
  * @since 2.0.0
  */
 class DayOfWeekListConverter : BaseListConverter<DayOfWeek>() {
+
+    /**
+     * Overriding [fromString] here to never return a null value
+     */
+    @TypeConverter
+    override fun fromString(value: String?): List<DayOfWeek>? = super.fromString(value) ?: listOf()
 
     override fun objectToString(value: DayOfWeek): String = value.value.toString()
 
