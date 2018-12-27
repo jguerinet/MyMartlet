@@ -29,7 +29,9 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import timber.log.Timber
 import java.io.IOException
+import java.util.concurrent.locks.ReentrantLock
 import javax.net.ssl.SSLException
+import kotlin.concurrent.withLock
 
 /**
  * TODO
@@ -51,6 +53,10 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
 
     private val transcriptCourseDao by inject<TranscriptCourseDao>()
 
+    private val lock = ReentrantLock()
+
+    private val condition = lock.newCondition()
+
     /**
      * True if everything should be downloaded, false otherwise (defaults to false)
      */
@@ -61,7 +67,7 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
     private var exception: IOException? = null
 
     override fun run() {
-        synchronized(this) {
+        lock.withLock {
             //If we're not connected to the internet, don't continue
             if (!context.isConnected) {
                 return
@@ -127,6 +133,7 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
             } catch (e: IOException) {
                 handleException(e, "Ebill")
             }
+            condition.signal()
         }
     }
 
@@ -161,11 +168,8 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
         start()
 
         //Wait until the thread has been fully executed
-        synchronized(this) {
-            try {
-            } catch (ignored: InterruptedException) {
-            }
-
+        lock.withLock {
+            condition.await()
         }
 
         //If there's an exception, throw it
