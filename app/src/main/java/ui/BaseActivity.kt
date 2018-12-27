@@ -132,6 +132,7 @@ open class BaseActivity : CoroutineActivity() {
             errorDialog(R.string.error_no_internet)
             return false
         }
+        toolbarProgress.isVisible = true
         return true
     }
 
