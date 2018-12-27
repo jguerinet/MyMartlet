@@ -348,6 +348,10 @@ class ScheduleActivity : DrawerActivity() {
      */
     private fun fillSchedule(timetableContainer: LinearLayout?, scheduleContainer: LinearLayout?,
             date: LocalDate, clickable: Boolean) {
+        // Clear everything out
+        timetableContainer?.removeAllViews()
+        scheduleContainer?.removeAllViews()
+
         // Go through the list of courses, find which ones are for the given date
         val courses = this.courses.filter { it.isForDate(date) }
 
