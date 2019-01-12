@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import retrofit2.Call
@@ -136,7 +137,9 @@ class CoursesActivity : DrawerActivity() {
         // Update the list
         launch(Dispatchers.IO) {
             val courses = courseDao.getTermCourses(term)
-            adapter.update(courses, canUnregister)
+            withContext(Dispatchers.Main) {
+                adapter.update(courses, canUnregister)
+            }
         }
     }
 
@@ -154,7 +157,7 @@ class CoursesActivity : DrawerActivity() {
                 launch(Dispatchers.IO) {
                     courseDao.update(response.body() ?: listOf(), term)
 
-                    launch {
+                    withContext(Dispatchers.Main) {
                         // Update the view
                         update()
                         toolbarProgress.isVisible = false
