@@ -40,7 +40,7 @@ data class Term(val season: Season, val year: Int) : Comparable<Term> {
     /**
      * Returns the term in the format used by McGill
      */
-    override fun toString(): String = "$year${season.seasonNumber}"
+    override fun toString(): String = "$year${season.number}"
 
     companion object {
         /**

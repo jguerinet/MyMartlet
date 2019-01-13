@@ -21,7 +21,7 @@ package com.guerinet.mymartlet.model
  * @author Julien Guerinet
  * @since 1.0.0
  */
-enum class Season(val title: String, val seasonNumber: String) {
+enum class Season(val title: String, val number: String) {
     /**
      * January - April
      */
@@ -36,11 +36,6 @@ enum class Season(val title: String, val seasonNumber: String) {
      * September - December
      */
     FALL("Fall", "09");
-
-    /**
-     * McGill season number
-     */
-    val number: Int = seasonNumber.toInt()
 
     companion object {
 
@@ -57,7 +52,7 @@ enum class Season(val title: String, val seasonNumber: String) {
          */
         fun getSeasonFromNumber(number: String): Season =
             Season.values().firstOrNull {
-                number.equals(it.seasonNumber, ignoreCase = true)
+                number.equals(it.number, ignoreCase = true)
             } ?: throw IllegalStateException("Unknown McGill Season: $number")
     }
 }
