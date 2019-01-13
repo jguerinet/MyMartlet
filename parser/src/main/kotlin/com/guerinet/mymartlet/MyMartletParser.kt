@@ -16,6 +16,12 @@
 
 package com.guerinet.mymartlet
 
+import com.guerinet.mymartlet.parser.parseSchedule
+import org.jsoup.Jsoup
+
 object MyMartletParser {
+
+    fun parseSchedule(html: String) =
+        Jsoup.parse(html, "UTF-8").parseSchedule()
 
 }

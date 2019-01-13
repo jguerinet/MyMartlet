@@ -19,22 +19,57 @@ package com.guerinet.mymartlet.parser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.InputStream
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.assertTrue
 
- class Helper
+abstract class ParseTestBase {
 
-object ParseDebuggerTest : ParseDebugger {
-    override fun debug(message: String) {
-        println(message)
+    /**
+     * Debugger to capture warning or error logs
+     */
+    protected lateinit var debugger: ParseDebuggerTest
+
+    @BeforeTest
+    fun baseBefore() {
+        debugger = ParseDebuggerTest()
     }
 
-    override fun notFound(message: String) {
-        System.err.println(message)
+    @AfterTest
+    fun baseAfter() {
+        debugger.check()
     }
 
 }
 
+
+class ParseDebuggerTest : ParseDebugger {
+
+    private val debugMessages = mutableListOf<String>()
+    private val notFoundMessages = mutableListOf<String>()
+
+    override fun debug(message: String) {
+        debugMessages.add(message)
+    }
+
+    override fun notFound(message: String) {
+        notFoundMessages.add(message)
+    }
+
+    fun check() {
+        assertTrue(
+            debugMessages.isEmpty(),
+            "Debug messages not empty:\n\t${debugMessages.joinToString("\n\t")}"
+        )
+        assertTrue(
+            notFoundMessages.isEmpty(),
+            "NotFound messages not empty\n\t${notFoundMessages.joinToString("\n\t")}"
+        )
+    }
+}
+
 fun getResource(resource: String): InputStream =
-    Helper::class.java.classLoader!!.getResource(resource).openStream()
+    ParseDebuggerTest::class.java.classLoader!!.getResource(resource).openStream()
 
 fun getHtml(resource: String): Document =
     Jsoup.parseBodyFragment(getResource(resource).bufferedReader().use { it.readText() })

@@ -76,6 +76,8 @@ private fun Elements.parseCourse(
             ?: return notFound("No course value found")
     val (_, title, subject, number, section) = courseValues
     val tds = row.getElementsByTag("tr").mapNotNull { it.getElementsByTag("td").first() }
+    if (tds.size < 5)
+        return notFound("Not enough bullet points")
     val crn = tds[1].text().toIntOrNull() ?: return notFound("No valid crn found")
     val credits = tds[5].text().toDoubleOrNull() ?: return notFound("No valid credits found")
 
