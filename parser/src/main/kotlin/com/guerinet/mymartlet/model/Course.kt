@@ -41,7 +41,6 @@ import java.time.LocalTime
  * @param credits       Number of credits for this course
  * @param startDate     Course start date
  * @param endDate       Course end date
- * @param id            Unique Id for this course
  */
 data class Course(
     var term: Term,
