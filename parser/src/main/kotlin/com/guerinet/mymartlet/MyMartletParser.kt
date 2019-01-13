@@ -16,12 +16,19 @@
 
 package com.guerinet.mymartlet
 
+import com.guerinet.mymartlet.model.Course
+import com.guerinet.mymartlet.parser.ParseDebugger
+import com.guerinet.mymartlet.parser.ParseDebuggerNoOp
 import com.guerinet.mymartlet.parser.parseSchedule
 import org.jsoup.Jsoup
 
+/**
+ * Collection of data parsers that take in html content as strings
+ * and outputs relevant models.
+ */
 object MyMartletParser {
 
-    fun parseSchedule(html: String) =
-        Jsoup.parse(html, "UTF-8").parseSchedule()
+    fun parseSchedule(html: String, debugger: ParseDebugger = ParseDebuggerNoOp): List<Course> =
+        Jsoup.parse(html, "UTF-8").parseSchedule(debugger = debugger)
 
 }
