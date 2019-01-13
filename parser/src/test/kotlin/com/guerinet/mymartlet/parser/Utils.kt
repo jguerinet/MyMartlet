@@ -22,6 +22,7 @@ import java.io.InputStream
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 abstract class ParseTestBase {
 
@@ -42,11 +43,20 @@ abstract class ParseTestBase {
 
 }
 
-
+/**
+ * Test debugger to keep track of messages
+ */
 class ParseDebuggerTest : ParseDebugger {
 
-    private val debugMessages = mutableListOf<String>()
-    private val notFoundMessages = mutableListOf<String>()
+    /**
+     * Debug message collector
+     */
+    val debugMessages = mutableListOf<String>()
+
+    /**
+     * NotFound message collector
+     */
+    val notFoundMessages = mutableListOf<String>()
 
     override fun debug(message: String) {
         debugMessages.add(message)
@@ -68,8 +78,16 @@ class ParseDebuggerTest : ParseDebugger {
     }
 }
 
+/**
+ * Get inputstream from resource folder
+ */
 fun getResource(resource: String): InputStream =
-    ParseDebuggerTest::class.java.classLoader!!.getResource(resource).openStream()
+    (ParseDebuggerTest::class.java.classLoader ?: fail("Classloader not found"))
+        .getResource(resource)
+        .openStream()
 
+/**
+ * Get resource from resource folder and read into Jsoup
+ */
 fun getHtml(resource: String): Document =
     Jsoup.parseBodyFragment(getResource(resource).bufferedReader().use { it.readText() })
