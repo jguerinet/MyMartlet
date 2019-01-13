@@ -18,6 +18,7 @@ package com.guerinet.mymartlet.model
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class TermTest {
 
@@ -31,4 +32,19 @@ class TermTest {
         assertEquals("201805", Term(Season.SUMMER, 2018).toString())
     }
 
+    @Test
+    fun comparisons() {
+        assertTrue(
+            Term(Season.FALL, 2018) < Term(Season.FALL, 2019),
+            "Term with later year should be greater"
+        )
+        assertTrue(
+            Term(Season.WINTER, 2018) < Term(Season.SUMMER, 2018),
+            "Term with later season and same year should be greater"
+        )
+        assertTrue(
+            Term(Season.FALL, 2018) < Term(Season.WINTER, 2019),
+            "Term with later year and earlier season should be greater"
+        )
+    }
 }
