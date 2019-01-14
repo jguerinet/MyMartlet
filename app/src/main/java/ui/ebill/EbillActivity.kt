@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.extensions.observe
@@ -52,10 +53,8 @@ class EbillActivity : DrawerActivity(), TimberTag {
         setContentView(R.layout.activity_ebill)
         ga.sendScreen("Ebill")
 
-        list.apply {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@EbillActivity)
-            adapter = this@EbillActivity.adapter
-        }
+        list.layoutManager = LinearLayoutManager(this)
+        list.adapter = adapter
 
         observe(ebillViewModel.statements) {
             adapter.update(it)
