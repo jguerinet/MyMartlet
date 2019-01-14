@@ -34,8 +34,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Displays the user's ebill statements
- * @author Rafi Uddin
  * @author Julien Guerinet
+ * @author Rafi Uddin
  * @since 1.0.0
  */
 class EbillActivity : DrawerActivity(), TimberTag {
