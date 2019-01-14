@@ -1,5 +1,7 @@
 # MyMartlet - Android
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6764bc77236c4209a230db91bb2cf441)](https://app.codacy.com/app/jguerinet/MyMartlet?utm_source=github.com&utm_medium=referral&utm_content=jguerinet/MyMartlet&utm_campaign=Badge_Grade_Dashboard)
+
 ## Summary
 The MyMartlet app provides a mobile portal to McGill University students to McGill's MyMcGill. It gives the user access to all of the essential MyMcGill features, such as schedule, transcript, ebill, adding/dropping courses, a campus map, and more. 
 This is an unofficial McGill app, and is not affiliated with McGill University whatsoever. [Download it from the Play Store](https://play.google.com/store/apps/details?id=ca.appvelopers.mcgillmobile). 
