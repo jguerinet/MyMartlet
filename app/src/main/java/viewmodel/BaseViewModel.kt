@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
+import com.guerinet.suitcase.coroutines.bgDispatcher
 import kotlinx.coroutines.withContext
 
 /**
@@ -35,9 +35,9 @@ open class BaseViewModel : ViewModel() {
      * Starts an update by showing the progress bar, running the [block], hiding the
      *  progress bar, and returning the eventual [Exception] from the block
      */
-    suspend fun update(block: () -> Exception?): Exception? {
+    suspend fun update(block: suspend () -> Exception?): Exception? {
         isToolbarProgressVisible.postValue(true)
-        val exception = withContext(Dispatchers.Default) {
+        val exception = withContext(bgDispatcher) {
             block()
         }
         isToolbarProgressVisible.postValue(false)
