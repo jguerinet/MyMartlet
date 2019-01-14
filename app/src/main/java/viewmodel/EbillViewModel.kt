@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,15 +28,17 @@ import com.guerinet.mymartlet.util.room.daos.StatementDao
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class EbillViewModel(private val statementDao: StatementDao, private val mcGillService: McGillService)
-    : BaseViewModel() {
+class EbillViewModel(
+    private val statementDao: StatementDao,
+    private val mcGillService: McGillService
+) : BaseViewModel() {
 
     val statements: LiveData<List<Statement>> by lazy { statementDao.getAll() }
 
     suspend fun refresh(): Exception? = update {
         try {
             val response = mcGillService.ebill().execute().body()
-                    ?: return@update Exception("Body was null")
+                ?: return@update Exception("Body was null")
 
             // Save the response
             statementDao.update(response)
