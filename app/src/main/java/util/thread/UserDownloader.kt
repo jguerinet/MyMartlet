@@ -24,10 +24,12 @@ import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.*
+import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.util.extensions.isConnected
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import timber.log.Timber
@@ -132,12 +134,14 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
             GlobalScope.launch(uiDispatcher) {
                 try {
                     val response = mcGillService.ebill().await()
-                    statementDao.update(response)
+                    withContext(bgDispatcher) {
+                        statementDao.update(response)
+                    }
                 } catch (e: IOException) {
                     handleException(e, "Ebill")
                 }
-                condition.signal()
             }
+            condition.signal()
         }
     }
 
