@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,11 @@
 
 package com.guerinet.mymartlet.util.retrofit
 
-import com.guerinet.mymartlet.model.Course
-import com.guerinet.mymartlet.model.CourseResult
-import com.guerinet.mymartlet.model.RegistrationError
-import com.guerinet.mymartlet.model.Statement
-import com.guerinet.mymartlet.model.Term
+import com.guerinet.mymartlet.model.*
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
-import retrofit2.http.Url
+import retrofit2.http.*
 
 /**
  * Retrieves information from McGill
@@ -60,7 +52,7 @@ interface McGillService {
      * Retrieves the user's ebill
      */
     @GET("bztkcbil.pm_viewbills")
-    fun ebill(): Call<List<Statement>>
+    fun ebill(): Deferred<List<Statement>>
 
     /**
      * Registers or unregisters someone to a list of courses with the [url]

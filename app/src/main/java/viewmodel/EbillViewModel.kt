@@ -37,14 +37,14 @@ class EbillViewModel(
 
     suspend fun refresh(): Exception? = update {
         try {
-            val response = mcGillService.ebill().execute().body()
-                ?: return@update Exception("Body was null")
+            // Call the McGillService to get the updated list of statements
+            val response = mcGillService.ebill().await()
 
             // Save the response
             statementDao.update(response)
-            return@update null
+            null
         } catch (e: Exception) {
-            return@update e
+            e
         }
     }
 }

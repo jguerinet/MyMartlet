@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
+import com.guerinet.suitcase.coroutines.uiDispatcher
 import kotlinx.android.synthetic.main.activity_ebill.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -86,7 +87,7 @@ class EbillActivity : DrawerActivity() {
             return
         }
 
-        launch {
+        launch(uiDispatcher) {
             val e = ebillViewModel.refresh()
             handleError("Ebill Refresh", e)
         }

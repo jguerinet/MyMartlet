@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,10 @@ import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.*
+import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.util.extensions.isConnected
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import timber.log.Timber
@@ -126,14 +129,15 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
                 update(context.getString(R.string.downloading_ebill))
             }
 
-            // Download the ebill
-            try {
-                val response = mcGillService.ebill().execute()
-                statementDao.update(response.body() ?: listOf())
-            } catch (e: IOException) {
-                handleException(e, "Ebill")
+            GlobalScope.launch(uiDispatcher) {
+                try {
+                    val response = mcGillService.ebill().await()
+                    statementDao.update(response)
+                } catch (e: IOException) {
+                    handleException(e, "Ebill")
+                }
+                condition.signal()
             }
-            condition.signal()
         }
     }
 
