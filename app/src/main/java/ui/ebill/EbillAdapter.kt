@@ -50,6 +50,7 @@ class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
                     R.string.ebill_statement_date,
                     item.date.getLongDateString()
                 )
+
                 dueDate.text = context.getString(
                     R.string.ebill_due_date,
                     item.dueDate.getLongDateString()
@@ -57,8 +58,13 @@ class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
 
                 amount.text = "$${item.amount}"
 
-                // Change the color to green or red depending on if the user owes money or not
-                val colorId = if (item.amount < 0) R.color.green else R.color.red
+                // Set the color based on if the user owes money
+                val colorId = when {
+                    item.amount > 0 -> R.color.red
+                    item.amount < 0 -> R.color.green
+                    else -> android.R.color.black
+                }
+
                 amount.setTextColor(context.getColorCompat(colorId))
             }
         }
