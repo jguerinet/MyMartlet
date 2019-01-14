@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,15 +41,19 @@ class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int) = StatementHolder(viewGroup)
 
     class StatementHolder(parent: ViewGroup) :
-            BaseHolder<Statement>(parent, R.layout.item_statement) {
+        BaseHolder<Statement>(parent, R.layout.item_statement) {
 
         @SuppressLint("SetTextI18n")
         override fun bind(position: Int, item: Statement) {
             itemView.apply {
-                date.text = context.getString(R.string.ebill_statement_date,
-                        item.date.getLongDateString())
-                dueDate.text = context.getString(R.string.ebill_due_date,
-                        item.dueDate.getLongDateString())
+                date.text = context.getString(
+                    R.string.ebill_statement_date,
+                    item.date.getLongDateString()
+                )
+                dueDate.text = context.getString(
+                    R.string.ebill_due_date,
+                    item.dueDate.getLongDateString()
+                )
 
                 amount.text = "$${item.amount}"
 
@@ -62,10 +66,11 @@ class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
 
     class ItemCallback : DiffUtil.ItemCallback<Statement>() {
 
+        // Note: we check some of the data and not the Id here because the Id is auto-generated
         override fun areItemsTheSame(oldItem: Statement, newItem: Statement): Boolean =
-                oldItem.date == newItem.date && oldItem.amount == newItem.amount
+            oldItem.date == newItem.date && oldItem.amount == newItem.amount
 
         override fun areContentsTheSame(oldItem: Statement, newItem: Statement): Boolean =
-                oldItem == newItem
+            oldItem == newItem
     }
 }
