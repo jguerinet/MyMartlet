@@ -61,8 +61,9 @@ class EbillActivity : DrawerActivity(), TimberTag {
         }
 
         observe(ebillViewModel.isToolbarProgressVisible) {
-            val isVisible = it ?: return@observe
-            toolbarProgress.isVisible = isVisible
+            if (it != null) {
+                toolbarProgress.isVisible = it
+            }
         }
     }
 
