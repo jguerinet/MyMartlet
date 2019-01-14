@@ -26,6 +26,7 @@ import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import com.guerinet.suitcase.coroutines.uiDispatcher
+import com.guerinet.suitcase.log.TimberTag
 import kotlinx.android.synthetic.main.activity_ebill.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,7 +37,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class EbillActivity : DrawerActivity() {
+class EbillActivity : DrawerActivity(), TimberTag {
+
+    override val tag: String = "Ebill"
 
     override val currentPage = HomepageManager.HomePage.EBILL
 
