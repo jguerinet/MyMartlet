@@ -169,6 +169,7 @@ dependencies {
     implementation "com.guerinet.suitcase:date:$suitcase_version"
     implementation "com.guerinet.suitcase:dialog:$suitcase_version"
     implementation "com.guerinet.suitcase:io:$suitcase_version"
+    implementation "com.guerinet.suitcase:lifecycle:$suitcase_version"
     implementation "com.guerinet.suitcase:log:$suitcase_version"
     implementation "com.guerinet.suitcase:prefs:$suitcase_version"
     implementation "com.guerinet.suitcase:room:$suitcase_version"
