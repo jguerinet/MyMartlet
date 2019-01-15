@@ -31,10 +31,10 @@ import com.guerinet.mymartlet.util.room.daos.TranscriptDao
  * @since 2.0.0
  */
 class TranscriptViewModel(
-        private val semesterDao: SemesterDao,
-        private val transcriptDao: TranscriptDao,
-        private val transcriptCourseDao: TranscriptCourseDao,
-        private val mcGillService: McGillService
+    private val semesterDao: SemesterDao,
+    private val transcriptDao: TranscriptDao,
+    private val transcriptCourseDao: TranscriptCourseDao,
+    private val mcGillService: McGillService
 ) : BaseViewModel() {
 
     val transcript: LiveData<Transcript> by lazy { transcriptDao.get() }
