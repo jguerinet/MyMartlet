@@ -53,23 +53,23 @@ class SemesterActivity : BaseActivity(), TimberTag {
         list.adapter = adapter
 
         observe(semesterViewModel.getSemester(semesterId)) {
-            val semester = assertNotNull(it, "Semester") ?: return@observe
+            // Make sure it's not null before continuing
+            assertNotNull(it, "Semester")?.also { semester ->
+                // Set the title as this current semester
+                title = semester.getName(this)
 
-            // Set the title as this current semester
-            title = semester.getName(this)
-
-            // Set the info
-            degreeName.text = semester.bachelor
-            program.text = semester.program
-            gpa.text = getString(R.string.transcript_termGPA, semester.gpa.toString())
-            credits.text = getString(R.string.semester_termCredits, semester.credits.toString())
-            fullTime.setText(
-                if (semester.isFullTime) {
-                    R.string.semester_fullTime
-                } else {
-                    R.string.semester_partTime
-                }
-            )
+                degreeName.text = semester.bachelor
+                program.text = semester.program
+                gpa.text = getString(R.string.transcript_termGPA, semester.gpa.toString())
+                credits.text = getString(R.string.semester_termCredits, semester.credits.toString())
+                fullTime.setText(
+                    if (semester.isFullTime) {
+                        R.string.semester_fullTime
+                    } else {
+                        R.string.semester_partTime
+                    }
+                )
+            }
         }
 
         observe(semesterViewModel.getTranscriptCourses(semesterId)) {
