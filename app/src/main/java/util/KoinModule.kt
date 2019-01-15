@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,12 @@ import android.view.inputmethod.InputMethodManager
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.ClearManager
+import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.manager.UpdateManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
+import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
@@ -37,7 +39,9 @@ import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -60,7 +64,7 @@ import timber.log.Timber
 val appModule: Module = module {
 
     // Clear Manager
-    single { ClearManager(get(), get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get()) }
+    single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get(), get()) }
 
     // GAManager
     single<GAManager> {
@@ -71,10 +75,16 @@ val appModule: Module = module {
         }
     }
 
+    // HomePageManager
+    single { HomepageManager(get(), androidContext()) }
+
     // InputMethodManager
     factory {
         androidContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
+
+    // McGillManager
+    single { McGillManager(get(), get()) }
 
     // Moshi
     single { Moshi.Builder().build() }
@@ -88,6 +98,9 @@ val appModule: Module = module {
 
 val dbModule = module {
 
+    // CategoryDao
+    single { get<ConfigDb>().categoryDao() }
+
     // ConfigDb
     single { ConfigDb.init(androidContext()) }
 
@@ -97,8 +110,8 @@ val dbModule = module {
     // CourseResultDao
     single { get<UserDb>().courseResultDao() }
 
-    // MapDao
-    single { get<ConfigDb>().mapDao() }
+    // PlaceDao
+    single { get<ConfigDb>().placeDao() }
 
     // SemesterDao
     single { get<UserDb>().semesterDao() }
@@ -130,8 +143,8 @@ val networkModule: Module = module {
     // HttpLoggingInterceptor
     single {
         HttpLoggingInterceptor { message -> Timber.tag("OkHttp").i(message) }
-            .level = HttpLoggingInterceptor.Level.BASIC
-    }
+            .apply { level = HttpLoggingInterceptor.Level.BASIC }
+    } bind Interceptor::class
 
     // McGillService
     single { get<McGillManager>().mcGillService }
@@ -143,8 +156,9 @@ val networkModule: Module = module {
     single {
         Retrofit.Builder()
             .client(get())
-            .baseUrl("https://mymartlet.herokuapp.com/api/v2")
+            .baseUrl("https://mymartlet.herokuapp.com/api/v2/")
             .addConverterFactory(MoshiConverterFactory.create(get()))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
     }
 }
@@ -157,7 +171,11 @@ val prefsModule: Module = module {
     // DefaultTermPref
     single { DefaultTermPref(get()) }
 
+    // RegisterTermsPref
     single { RegisterTermsPref(get()) }
+
+    // UsernamePref
+    single { UsernamePref(get(), get()) }
 
     single(Prefs.EULA) { BooleanPref(get(), Prefs.EULA, false) }
 

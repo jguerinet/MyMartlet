@@ -28,6 +28,7 @@ import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
+import com.guerinet.mymartlet.util.room.daos.CourseResultDao
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.dialog.alertDialog
 import kotlinx.android.synthetic.main.view_courses.view.*
@@ -49,6 +50,8 @@ import retrofit2.Response
  */
 class WishlistHelper(private val activity: BaseActivity, container: View,
         private val canAdd: Boolean) : KoinComponent {
+
+    private val courseResultDao by inject<CourseResultDao>()
 
     private val mcGillService by inject<McGillService>()
 
@@ -79,7 +82,15 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
     /**
      * Updates the [term] that the courses should be in, null if none
      */
-    fun update(term: Term?) = adapter.update(term)
+    fun update(term: Term?) {
+        val courses = if (term != null) {
+            courseResultDao.get(term)
+        } else {
+            listOf()
+        }
+
+        adapter.update(term, courses)
+    }
 
     /**
      * Attempts to (un)register to the list of checked courses
@@ -126,7 +137,7 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
                         if (body == null || body.isEmpty()) {
                             // If there are no errors, show the success message
                             activity.toast(R.string.registration_success)
-                            courses.forEach { it.delete() }
+                            courses.forEach { courseResultDao.delete(it) }
                             return
                         }
 
@@ -155,12 +166,10 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
             canAdd -> {
                 val coursesAdded = courses.filter {
                     // Check if the course exists already
-                    val isPresent = SQLite.selectCountOf()
-                            .from(CourseResult::class.java)
-                            .where(CourseResult_Table.term.eq(course.term))
-                            .and(CourseResult_Table.crn.eq(course.crn))
-                            .hasData()
-                    it.save()
+                    val isPresent = courseResultDao.get(it.term, it.crn) != null
+
+                    // Save it
+                    courseResultDao.insert(it)
 
                     // Only add it if it's not already part of the wishlist
                     isPresent
@@ -170,7 +179,7 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
                 activity.getString(R.string.wishlist_add, coursesAdded)
             }
             else -> {
-                courses.forEach { it.delete() }
+                courses.forEach { courseResultDao.delete(it) }
 
                 // Get the term from the first course (they will all be in the same term)
                 update(courses[0].term)

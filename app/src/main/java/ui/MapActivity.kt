@@ -39,7 +39,8 @@ import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.mymartlet.util.room.daos.MapDao
+import com.guerinet.mymartlet.util.room.daos.CategoryDao
+import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.ui.extensions.setDrawableTint
 import com.guerinet.suitcase.util.Utils
@@ -61,7 +62,9 @@ import timber.log.Timber
  */
 class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    private val mapDao by inject<MapDao>()
+    private val placeDao by inject<PlaceDao>()
+
+    private val categoryDao by inject<CategoryDao>()
 
     private var map: GoogleMap? = null
 
@@ -112,7 +115,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             onClick { textViewItem ->
                 doAsync {
                     val categories =
-                        mapDao.getCategories().map { Pair(it, it.getString(this@MapActivity)) }
+                        categoryDao.getCategories().map { Pair(it, it.getString(this@MapActivity)) }
 
                     uiThread {
                         singleListDialog(categories.map { it.second }.toTypedArray(),
@@ -324,7 +327,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         map?.setOnMarkerClickListener(this)
 
         doAsync {
-            val places = mapDao.getPlaces()
+            val places = placeDao.getPlaces()
             val placeId = intent.getIntExtra(Constants.ID, -1)
             var theMarker: Marker? = null
             places.mapNotNullTo(this@MapActivity.places) {

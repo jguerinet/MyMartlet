@@ -43,6 +43,12 @@ abstract class SemesterDao : BaseDao<Semester>() {
     abstract fun getAll(): LiveData<List<Semester>>
 
     /**
+     * Returns the list of all [Semester]s
+     */
+    @Query("SELECT * FROM Semester")
+    abstract fun getSemesters(): List<Semester>
+
+    /**
      * Deletes all of the stored [Semester]s
      */
     @Query("DELETE FROM Semester")

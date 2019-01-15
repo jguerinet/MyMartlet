@@ -36,14 +36,16 @@ import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.Result
 import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import com.guerinet.mymartlet.util.thread.UserDownloader
+import com.guerinet.suitcase.coroutines.bgDispatcher
+import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_splash.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
@@ -80,7 +82,7 @@ class SplashActivity : BaseActivity() {
         versionButton.setOnClickListener { openPlayStoreApp() }
         loginButton.setOnClickListener { loginPressed() }
 
-        launch(Dispatchers.Default) {
+        launch(bgDispatcher) {
             // Run any update code
             updateManager.update()
 
@@ -95,7 +97,7 @@ class SplashActivity : BaseActivity() {
                 startActivityForResult<AgreementActivity>(AGREEMENT_CODE, Prefs.EULA to true)
             } else {
                 // If not, go to the next screen
-                showNextScreen()
+                withContext(uiDispatcher) { showNextScreen() }
             }
         }
     }
@@ -132,7 +134,7 @@ class SplashActivity : BaseActivity() {
             showLoginScreen(intent.getSerializableExtra(Constants.EXCEPTION) as? IOException)
         } else {
             // Try logging the user in and download their info
-            launch { login(true) }
+            launch(bgDispatcher) { login(true) }
         }
     }
 
@@ -144,7 +146,9 @@ class SplashActivity : BaseActivity() {
         loginContainer.isVisible = true
 
         // Delete of the previous user's info
-        clearManager.clearUserInfo()
+        launch(bgDispatcher) {
+            clearManager.clearUserInfo()
+        }
 
         // Fill out username text if it is present
         username.setText(usernamePref.value)
@@ -198,36 +202,44 @@ class SplashActivity : BaseActivity() {
 
         progressContainer.isVisible = true
 
-        val result = mcGillManager.login(username + getString(R.string.login_email), password)
+        launch(bgDispatcher) {
+            val result = mcGillManager.login(username + getString(R.string.login_email), password)
 
-        when (result) {
-            is Result.Success<*> -> {
-                // Store the login info
-                usernamePref.value = username
-                Hawk.put(Prefs.PASSWORD, password)
-                rememberUsernamePref.value = rememberUsername.isChecked
+            when (result) {
+                is Result.Success<*> -> {
+                    // Store the login info
+                    usernamePref.value = username
+                    Hawk.put(Prefs.PASSWORD, password)
+                    rememberUsernamePref.value = rememberUsername.isChecked
 
-                ga.sendEvent("Login", "Remember Username", rememberUsername.isChecked.toString())
+                    ga.sendEvent(
+                        "Login",
+                        "Remember Username",
+                        rememberUsername.isChecked.toString()
+                    )
 
-                // Hide the login container
-                loginContainer.isVisible = false
+                    withContext(uiDispatcher) {
+                        // Hide the login container
+                        loginContainer.isVisible = false
+                    }
 
-                // Start the downloading of information
-                login(false)
-            }
-            is Result.Failure -> {
-                val error = if (result.exception is MinervaException)
-                    R.string.login_error_wrong_data
-                else
-                    R.string.error_other
-
-                // If for some reason the activity is finishing, don't show this
-                if (isFinishing) {
-                    return
+                    // Start the downloading of information
+                    login(false)
                 }
+                is Result.Failure -> {
+                    val error = if (result.exception is MinervaException)
+                        R.string.login_error_wrong_data
+                    else
+                        R.string.error_other
 
-                progressContainer.isVisible = false
-                errorDialog(error)
+                    // If for some reason the activity is finishing, don't show this
+                    if (!isFinishing) {
+                        withContext(uiDispatcher) {
+                            progressContainer.isVisible = false
+                            errorDialog(error)
+                        }
+                    }
+                }
             }
         }
     }
@@ -235,73 +247,91 @@ class SplashActivity : BaseActivity() {
     /**
      * Attempts to either [autoLogin] or manually log in the user
      */
-    private fun login(autoLogin: Boolean) {
-        // Show the progress container
-        progressContainer.isVisible = true
+    private suspend fun login(autoLogin: Boolean) {
+        withContext(uiDispatcher) {
+            // Show the progress container
+            progressContainer.isVisible = true
 
-        // Reset the progress text (if it was set during a previous login attempt
-        progressText.text = ""
+            // Reset the progress text (if it was set during a previous login attempt
+            progressText.text = ""
 
-        ga.sendEvent("Splash", "Auto-Login", autoLogin.toString())
+            ga.sendEvent("Splash", "Auto-Login", autoLogin.toString())
 
-        // If we're auto-logging in and there's no internet, skip everything
-        if (autoLogin && !isConnected) {
-            openHomePage()
-            return
-        }
+            // If we're auto-logging in and there's no internet, skip everything
+            if (autoLogin && !isConnected) {
+                openHomePage()
+                return@withContext
+            }
 
-        // Try auto login if needed
-        if (autoLogin) {
-            val result = mcGillManager.login()
-            if (result is Result.Failure) {
-                // If auto login isn't successful, don't continue
-                showLoginScreen(result.exception)
-                return
+            withContext(bgDispatcher) {
+                // Try auto login if needed
+                if (autoLogin) {
+                    val result = mcGillManager.login()
+                    if (result is Result.Failure) {
+                        withContext(uiDispatcher) {
+                            // Hide the container
+                            progressContainer.isVisible = false
+
+                            // If auto login isn't successful, don't continue
+                            showLoginScreen(result.exception)
+                        }
+                        return@withContext
+                    }
+                }
+
+                // Check if we need to download everything or only the essential stuff
+                //  We need to download everything if there is null info
+                // TODO
+                val downloadEverything =
+                    true // SQLite.select().from(Transcript::class).querySingle() == null
+
+                // If we need to download everything, do it synchronously. If not, do it asynchronously
+                val userDownloader = object : UserDownloader(this@SplashActivity) {
+                    override fun update(section: String) {
+                        updateProgress(section)
+                    }
+                }
+
+                if (downloadEverything) {
+                    try {
+                        userDownloader.execute()
+                    } catch (e: IOException) {
+                        // If there was an exception, stop here
+                        // Hide the container
+                        progressContainer.isVisible = false
+
+                        showLoginScreen(e)
+                        return@withContext
+                    }
+                } else {
+                    userDownloader.start()
+                }
+
+                withContext(uiDispatcher) {
+                    // Hide the container
+                    progressContainer.isVisible = false
+
+                    // Connection successful: home page
+                    openHomePage()
+                }
             }
         }
-
-        // Check if we need to download everything or only the essential stuff
-        //  We need to download everything if there is null info
-        // TODO
-        val downloadEverything =
-            true // SQLite.select().from(Transcript::class).querySingle() == null
-
-        // If we need to download everything, do it synchronously. If not, do it asynchronously
-        val userDownloader = object : UserDownloader(this@SplashActivity) {
-            override fun update(section: String) {
-                updateProgress(section)
-            }
-        }
-
-        if (downloadEverything) {
-            try {
-                userDownloader.execute()
-            } catch (e: IOException) {
-                // If there was an exception, stop here
-                showLoginScreen(e)
-                return
-            }
-        } else {
-            userDownloader.start()
-        }
-
-        // Hide the container
-        progressContainer.isVisible = false
-
-        // Connection successful: home page
-        openHomePage()
     }
 
     /**
      * Updates the progress [message]
      */
     private fun updateProgress(message: String) {
-        progressText.text = message
+        launch(uiDispatcher) {
+            progressText.text = message
+        }
     }
 
-    private fun openHomePage() {
-        startActivity(Intent(this, homePageManager.activity))
-        finish()
+    private suspend fun openHomePage() {
+        withContext(uiDispatcher) {
+            startActivity(Intent(this@SplashActivity, homePageManager.activity))
+            finish()
+        }
     }
 
     companion object {

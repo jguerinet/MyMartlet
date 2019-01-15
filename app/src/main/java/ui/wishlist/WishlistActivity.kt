@@ -106,7 +106,7 @@ class WishlistActivity : DrawerActivity() {
     }
 
     private fun changeSemester() {
-        TermDialogHelper(this, term, true) {
+        TermDialogHelper(this, this, term, true) {
             term = it
             update()
         }

@@ -31,7 +31,6 @@ import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.UsernamePref
-import com.guerinet.suitcase.util.Device
 import com.guerinet.suitcase.util.Utils
 import com.guerinet.suitcase.util.extensions.hasPermission
 import com.guerinet.suitcase.util.extensions.isConnected
@@ -68,12 +67,7 @@ class MyCoursesActivity : DrawerActivity() {
         // Clear any existing cookies
         val cookieManager = CookieManager.getInstance()
         if (cookieManager.hasCookies()) {
-            if (Device.isAtLeastLollipop()) {
-                CookieManager.getInstance().removeAllCookies(null)
-            } else {
-                @Suppress("DEPRECATION")
-                CookieManager.getInstance().removeAllCookie()
-            }
+            CookieManager.getInstance().removeAllCookies(null)
         }
 
         // Set up any eventual downloads

@@ -88,7 +88,7 @@ class TranscriptConverter : Converter.Factory(),
                 var hasCourse = false
 
                 // Divide the semester info into separate items
-                val semesterItems = text.trim().split("\\s+")
+                val semesterItems = text.trim().split("\\s+".toRegex())
 
                 // Find the right season and year, making sure to get the right array index
                 val (season, yearString) = when {
@@ -328,7 +328,7 @@ class TranscriptConverter : Converter.Factory(),
     private fun getCredits(credits: String): Double {
         val creditsString = credits.replace("\\s", "")
         val creditArray = creditsString.split("-")[1].split("credits")
-        return creditArray[0].toDouble()
+        return creditArray[0].trim().toDouble()
     }
 
     /**

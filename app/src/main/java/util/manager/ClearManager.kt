@@ -17,8 +17,6 @@
 package com.guerinet.mymartlet.util.manager
 
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
-import com.guerinet.mymartlet.util.dbflow.databases.WishlistDB
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
@@ -26,7 +24,6 @@ import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.orhanobut.hawk.Hawk
-import com.raizlabs.android.dbflow.sql.language.Delete
 
 /**
  * Clears data from databases or the SharedPrefs
@@ -53,9 +50,6 @@ class ClearManager(private val usernamePref: UsernamePref,
 
         // User Db
         userDb.clearAllTables()
-
-        // Schedule, Statements, Wishlist
-        Delete.tables(CourseDB::class.java, WishlistDB::class.java)
 
         // HomePageManager
         homepageManager.clear()

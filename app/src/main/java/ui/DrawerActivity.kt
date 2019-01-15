@@ -137,7 +137,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
                 }
 
                 // Try to get one of the activities to open
-                switchDrawerActivity(Intent(this, homepage.activity::class.java))
+                switchDrawerActivity(Intent(this, homepage.activity.java))
 
                 // Close the drawer
                 drawerLayout.closeDrawer(GravityCompat.START)

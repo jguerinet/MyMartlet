@@ -25,8 +25,6 @@ import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.suitcase.ui.BaseListAdapter
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.synthetic.main.item_course.view.*
 
 /**
@@ -50,23 +48,14 @@ internal class WishlistAdapter(emptyView: TextView) :
     /**
      * Updates the list of courses shown for a [term] (null if no wishlist semesters available)
      */
-    fun update(term: Term?) {
+    fun update(term: Term?, courses: List<CourseResult>) {
         if (term == null) {
             // Hide all of the main content and show explanatory text if the currentTerm is null
             (emptyView as TextView).setText(R.string.registration_no_semesters)
             submitList(mutableListOf())
             return
         }
-
-        // Get the wishlist
-        SQLite.select()
-                .from(CourseResult::class)
-                .where(CourseResult_Table.term.eq(term))
-                .async()
-                .queryListResultCallback { _, tResult ->
-                    submitList(tResult)
-                }
-                .execute()
+        submitList(courses.toMutableList())
     }
 
     internal inner class CourseHolder(parent: ViewGroup) :

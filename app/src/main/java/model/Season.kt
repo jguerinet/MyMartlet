@@ -19,6 +19,7 @@ package com.guerinet.mymartlet.model
 import android.content.Context
 
 import com.guerinet.mymartlet.R
+import com.squareup.moshi.Json
 
 /**
  * Different seasons a term can be in
@@ -30,16 +31,19 @@ enum class Season(val title: String) {
     /**
      * September - December
      */
+    @Json(name = "Fall")
     FALL("Fall"),
 
     /**
      * January - April
      */
+    @Json(name = "Winter")
     WINTER("Winter"),
 
     /**
      * May, June, July
      */
+    @Json(name = "Summer")
     SUMMER("Summer");
 
     /**

@@ -16,7 +16,9 @@
 
 package com.guerinet.mymartlet.util.room.daos
 
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Update
 
 /**
@@ -29,13 +31,13 @@ abstract class BaseDao<T> {
     /**
      * Inserts 1 [obj] into the database
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(obj: T)
 
     /**
      * Inserts a list of [objects] into the database
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(objects: List<T>)
 
     /**
@@ -43,6 +45,12 @@ abstract class BaseDao<T> {
      */
     @Update
     abstract fun update(obj: T)
+
+    /**
+     * Deletes the [obj]
+     */
+    @Delete
+    abstract fun delete(obj: T)
 
     /**
      * Updates a [list] of objects by [delete]ing the old objects and [insert]ing the new ones

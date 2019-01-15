@@ -40,7 +40,7 @@ data class Place(
     val name: String,
     val categories: MutableList<Int>,
     val address: String,
-    val courseName: String,
+    val courseName: String?,
     val latitude: Double,
     val longitude: Double
 ) {

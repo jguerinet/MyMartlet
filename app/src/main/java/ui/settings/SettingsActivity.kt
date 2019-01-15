@@ -162,7 +162,7 @@ class SettingsActivity : DrawerActivity() {
 
                 // TODO Replace with Suitcase
                 // Content
-                val device = "Device: ${Device.model()}"
+                val device = "Device: ${Device.model}"
                 val sdkVersion = "SDK Version: ${Build.VERSION.SDK_INT}"
                 val appVersion = "App Version: ${BuildConfig.VERSION_NAME}"
                 val language = "Language: ${Locale.getDefault().language}"

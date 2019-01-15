@@ -18,8 +18,8 @@ package com.guerinet.mymartlet.util.room.daos
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.guerinet.mymartlet.model.place.Category
-import com.guerinet.mymartlet.model.place.Place
 
 /**
  * Dao used to retrieve the data for the Map section
@@ -27,17 +27,23 @@ import com.guerinet.mymartlet.model.place.Place
  * @since 2.0.0
  */
 @Dao
-interface MapDao {
+abstract class CategoryDao : BaseDao<Category>() {
 
     /**
-     * Returns all of the places as an observable
-     */
-    @Query("SELECT * FROM Place")
-    fun getPlaces(): List<Place>
-
-    /**
-     * Returns all of the categories as an observable
+     * Returns all of the [Category]s
      */
     @Query("SELECT * FROM Category")
-    fun getCategories(): List<Category>
+    abstract fun getCategories(): List<Category>
+
+    /**
+     * Deletes all of the stored [Category]s
+     */
+    @Query("DELETE FROM Category")
+    abstract fun deleteAll()
+
+    /**
+     * Updates the categories by deleting all old categories and inserting the new [categories]
+     */
+    @Transaction
+    open fun update(categories: List<Category>) = update(categories, this::deleteAll)
 }

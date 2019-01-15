@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,18 +19,24 @@ package com.guerinet.mymartlet.util.thread
 import android.content.Context
 import android.content.Intent
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
-import com.guerinet.mymartlet.util.dbflow.databases.CourseDB
-import com.guerinet.mymartlet.util.dbflow.databases.TranscriptDB
 import com.guerinet.mymartlet.util.retrofit.McGillService
+import com.guerinet.mymartlet.util.room.daos.*
+import com.guerinet.suitcase.coroutines.bgDispatcher
+import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.util.extensions.isConnected
-import com.raizlabs.android.dbflow.sql.language.SQLite
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 import timber.log.Timber
 import java.io.IOException
+import java.util.concurrent.locks.ReentrantLock
 import javax.net.ssl.SSLException
+import kotlin.concurrent.withLock
 
 /**
  * TODO
@@ -38,16 +44,24 @@ import javax.net.ssl.SSLException
  * @author Julien Guerinet
  * @since 2.2.0
  */
-abstract class UserDownloader(context: Context) : Thread() {
+abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
 
-    /**
-     * App context
-     */
-    var context: Context? = null
-    /**
-     * [McGillService] instance
-     */
-    var mcGillService: McGillService? = null
+    private val mcGillService by inject<McGillService>()
+
+    private val courseDao by inject<CourseDao>()
+
+    private val semesterDao by inject<SemesterDao>()
+
+    private val statementDao by inject<StatementDao>()
+
+    private val transcriptDao by inject<TranscriptDao>()
+
+    private val transcriptCourseDao by inject<TranscriptCourseDao>()
+
+    private val lock = ReentrantLock()
+
+    private val condition = lock.newCondition()
+
     /**
      * True if everything should be downloaded, false otherwise (defaults to false)
      */
@@ -58,67 +72,76 @@ abstract class UserDownloader(context: Context) : Thread() {
     private var exception: IOException? = null
 
     override fun run() {
-        synchronized(this) {
+        lock.withLock {
             //If we're not connected to the internet, don't continue
-            if (!context!!.isConnected) {
+            if (!context.isConnected) {
                 return
             }
 
             //Transcript
             if (downloadEverything) {
-                update(context!!.getString(R.string.downloading_transcript))
+                update(context.getString(R.string.downloading_transcript))
             }
 
             try {
-                val transcriptResponse = mcGillService!!.transcript().execute().body()
-                TranscriptDB.saveTranscript(context, transcriptResponse!!)
+                val transcriptResponse = mcGillService.transcript().execute().body()
+                if (transcriptResponse != null) {
+                    transcriptDao.insert(transcriptResponse.transcript)
+                    transcriptCourseDao.update(transcriptResponse.courses)
+                    semesterDao.update(transcriptResponse.semesters)
+                }
             } catch (e: IOException) {
                 handleException(e, "Transcript")
             }
 
-            //The current currentTerm
             val currentTerm = Term.currentTerm()
 
             // Go through the semesters
-            val semesters = SQLite.select()
-                    .from(Semester::class.java)
-                    .queryList()
+            val semesters = semesterDao.getSemesters()
             for (semester in semesters) {
                 //Get the currentTerm of this semester
                 val term = semester.term
 
                 //If we are not downloading everything, only download it if it's the
                 //  current or future currentTerm
-                if (downloadEverything || term == currentTerm ||
-                        term.isAfter(currentTerm)) {
+                if (downloadEverything || term == currentTerm || term.isAfter(currentTerm)) {
                     if (downloadEverything) {
-                        update(context!!.getString(R.string.downloading_semester,
-                                term.getString(context)))
+                        update(
+                            context.getString(
+                                R.string.downloading_semester,
+                                term.getString(context)
+                            )
+                        )
                     }
 
                     //Download the schedule
                     try {
-                        val courses = mcGillService!!.schedule(term).execute().body()
-                        CourseDB.setCourses(term, courses, null)
+                        val courses = mcGillService.schedule(term).execute().body()
+                        if (courses != null) {
+                            courseDao.update(courses, term)
+                        }
                     } catch (e: IOException) {
                         handleException(e, term.id)
                     }
-
                 }
             }
 
-            //Ebill
+            // Ebill
             if (downloadEverything) {
-                update(context!!.getString(R.string.downloading_ebill))
+                update(context.getString(R.string.downloading_ebill))
             }
 
-            // TODO Download the ebill
-//            try {
-//                val response = mcGillService!!.ebill().execute()
-//                DBUtils.replaceDB(context, StatementDB.NAME, Statement::class.java, response.body(), null)
-//            } catch (e: IOException) {
-//                handleException(e, "Ebill")
-//            }
+            GlobalScope.launch(uiDispatcher) {
+                try {
+                    val response = mcGillService.ebill().await()
+                    withContext(bgDispatcher) {
+                        statementDao.update(response)
+                    }
+                } catch (e: IOException) {
+                    handleException(e, "Ebill")
+                }
+            }
+            condition.signal()
         }
     }
 
@@ -130,7 +153,7 @@ abstract class UserDownloader(context: Context) : Thread() {
      */
     private fun handleException(e: IOException, section: String) {
         if (e is MinervaException) {
-            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context!!)
+            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context)
                     .sendBroadcast(Intent(Constants.BROADCAST_MINERVA))
         } else if (e !is SSLException) {
             // Don't log SSLExceptions
@@ -153,11 +176,8 @@ abstract class UserDownloader(context: Context) : Thread() {
         start()
 
         //Wait until the thread has been fully executed
-        synchronized(this) {
-            try {
-            } catch (ignored: InterruptedException) {
-            }
-
+        lock.withLock {
+            condition.await()
         }
 
         //If there's an exception, throw it

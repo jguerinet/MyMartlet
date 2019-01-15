@@ -19,14 +19,16 @@ package com.guerinet.mymartlet.ui.dialog.list
 import android.content.Context
 import android.util.Pair
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
+import com.guerinet.mymartlet.util.room.daos.SemesterDao
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.dialog.singleListDialog
-import com.raizlabs.android.dbflow.kotlinextensions.from
-import com.raizlabs.android.dbflow.sql.language.SQLite
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
@@ -35,8 +37,10 @@ import org.koin.standalone.inject
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class TermDialogHelper(context: Context, currentTerm: Term?, registration: Boolean,
-        onTermSelected: ((Term) -> Unit)) : KoinComponent {
+class TermDialogHelper(
+    context: Context, mainScope: CoroutineScope, currentTerm: Term?, registration: Boolean,
+    onTermSelected: ((Term) -> Unit)
+) : KoinComponent {
 
     private val ga by inject<GAManager>()
 
@@ -44,35 +48,37 @@ class TermDialogHelper(context: Context, currentTerm: Term?, registration: Boole
 
     private val registerTermsPref by inject<RegisterTermsPref>()
 
-    private val terms by lazy {
-        if (!registration) {
-            // We are using the user's existing terms
-            SQLite.select()
-                    .from(Semester::class)
-                    .queryList()
-                    .map { it.term }
-        } else {
-            // We are using the registration terms
-            registerTermsPref.terms.toList()
-        }
-                .sortedWith(kotlin.Comparator { o1, o2 -> if (o1.isAfter(o2)) -1 else 1 })
-                .map { Pair(it, it.getString(context)) }
-    }
+    private val semesterDao by inject<SemesterDao>()
 
     init {
         ga.sendScreen("Change Semester")
 
-        terms.map { it.second }.toTypedArray()
+        mainScope.launch(Dispatchers.Default) {
+            val terms = if (!registration) {
+                // We are using the user's existing terms
+                semesterDao.getSemesters()
+                    .map { it.term }
+            } else {
+                // We are using the registration terms
+                registerTermsPref.terms.toList()
+            }
+                .sortedWith(kotlin.Comparator { o1, o2 -> if (o1.isAfter(o2)) -1 else 1 })
+                .map { Pair(it, it.getString(context)) }
 
-        val term = currentTerm ?: defaultTermPref.term
+            terms.map { it.second }.toTypedArray()
 
-        // Use the default currentTerm if no currentTerm was sent
-        val currentChoice = terms.indexOfFirst { it.first == term }
+            val term = currentTerm ?: defaultTermPref.term
 
-        val choices = terms.map { it.second }.toTypedArray()
+            // Use the default currentTerm if no currentTerm was sent
+            val currentChoice = terms.indexOfFirst { it.first == term }
 
-        context.singleListDialog(choices, R.string.title_change_semester, currentChoice) {
-            onTermSelected(terms[it].first)
+            val choices = terms.map { it.second }.toTypedArray()
+
+            withContext(Dispatchers.Main) {
+                context.singleListDialog(choices, R.string.title_change_semester, currentChoice) {
+                    onTermSelected(terms[it].first)
+                }
+            }
         }
     }
 }

@@ -17,6 +17,8 @@
 package com.guerinet.mymartlet.ui.walkthrough
 
 import android.os.Bundle
+import androidx.core.view.isInvisible
+import androidx.viewpager.widget.ViewPager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
@@ -39,7 +41,7 @@ class WalkthroughActivity : BaseActivity() {
     /**
      * Current position in the walkthrough
      */
-    private val position = 0
+    private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,29 +51,26 @@ class WalkthroughActivity : BaseActivity() {
         // Load the adapter
         viewPager.adapter = adapter
 
-        // TODO Indicator
-        //        indicator.setViewPager(viewPager);
-        //        indicator.setStrokeColor(Color.WHITE);
-        //        indicator.setPageColor(Color.GRAY);
-        //        indicator.setFillColor(ContextCompat.getColor(this, R.color.red));
-        //        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-        //
-        //            @Override
-        //            public void onPageScrolled(int i, float v, int i2) {}
-        //
-        //            @Override
-        //            public void onPageSelected(int position) {
-        //                WalkthroughActivity.this.position = position;
-        //                // Hide the back button on the first page
-        //                back.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
-        //                // Set the right text on the next button if we are on the last page
-        //                next.setText((position == adapter.getCount() - 1) ?
-        //                        R.string.start : R.string.next);
-        //            }
-        //
-        //            @Override
-        //            public void onPageScrollStateChanged(int i) {}
-        //        });
+        indicator.setViewPager(viewPager)
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {}
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                this@WalkthroughActivity.position = position
+                // Hide the back button on the first page
+                back.isInvisible = position == 0
+                // Set the right text on the next button if we are on the last page
+                next.setText(if (position == adapter.count - 1) R.string.start else R.string.next)
+            }
+        })
 
         next.setOnClickListener {
             // We've reached the end of the walkthrough

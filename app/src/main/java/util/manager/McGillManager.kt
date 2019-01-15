@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.*
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.orhanobut.hawk.Hawk
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -100,15 +101,16 @@ class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
                 .build()
 
         mcGillService = Retrofit.Builder()
-                .client(client)
-                .baseUrl("https://horizon.mcgill.ca/pban1/")
-                .addConverterFactory(ScheduleConverter())
-                .addConverterFactory(TranscriptConverter())
-                .addConverterFactory(EbillConverter())
-                .addConverterFactory(CourseResultConverter())
-                .addConverterFactory(RegistrationErrorConverter())
-                .build()
-                .create(McGillService::class.java)
+            .client(client)
+            .baseUrl("https://horizon.mcgill.ca/pban1/")
+            .addConverterFactory(ScheduleConverter())
+            .addConverterFactory(TranscriptConverter())
+            .addConverterFactory(EbillConverter())
+            .addConverterFactory(CourseResultConverter())
+            .addConverterFactory(RegistrationErrorConverter())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
+            .create(McGillService::class.java)
     }
 
     /* HELPERS */
