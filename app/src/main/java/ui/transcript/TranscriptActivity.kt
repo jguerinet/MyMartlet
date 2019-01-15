@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.extensions.observe
@@ -41,20 +42,17 @@ class TranscriptActivity : DrawerActivity(), TimberTag {
 
     override val currentPage = HomepageManager.HomePage.TRANSCRIPT
 
-    private val adapter by lazy { TranscriptAdapter() }
-
     private val transcriptViewModel by viewModel<TranscriptViewModel>()
+
+    private val adapter by lazy { TranscriptAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transcript)
         ga.sendScreen("Transcript")
 
-        list.apply {
-            layoutManager =
-                    androidx.recyclerview.widget.LinearLayoutManager(this@TranscriptActivity)
-            adapter = this@TranscriptActivity.adapter
-        }
+        list.layoutManager = LinearLayoutManager(this)
+        list.adapter = adapter
 
         observe(transcriptViewModel.transcript) {
             if (it != null) {
