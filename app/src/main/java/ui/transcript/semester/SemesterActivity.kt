@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.guerinet.mymartlet.ui.transcript.semester
 
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
@@ -33,9 +34,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class SemesterActivity : BaseActivity() {
 
-    private val adapter: SemesterAdapter by lazy { SemesterAdapter() }
-
     private val semesterViewModel by viewModel<SemesterViewModel>()
+
+    private val adapter: SemesterAdapter by lazy { SemesterAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +46,8 @@ class SemesterActivity : BaseActivity() {
 
         val semesterId = intent.getIntExtra(Constants.ID, -1)
 
-        list.apply {
-            list.layoutManager =
-                    androidx.recyclerview.widget.LinearLayoutManager(this@SemesterActivity)
-            list.adapter = this@SemesterActivity.adapter
-        }
+        list.layoutManager = LinearLayoutManager(this)
+        list.adapter = adapter
 
         observe(semesterViewModel.getSemester(semesterId)) {
             val semester = assertNotNull(it, "Semester") ?: return@observe
@@ -62,11 +60,13 @@ class SemesterActivity : BaseActivity() {
             program.text = semester.program
             gpa.text = getString(R.string.transcript_termGPA, semester.gpa.toString())
             credits.text = getString(R.string.semester_termCredits, semester.credits.toString())
-            fullTime.setText(if (semester.isFullTime) {
-                R.string.semester_fullTime
-            } else {
-                R.string.semester_partTime
-            })
+            fullTime.setText(
+                if (semester.isFullTime) {
+                    R.string.semester_fullTime
+                } else {
+                    R.string.semester_partTime
+                }
+            )
         }
 
         observe(semesterViewModel.getTranscriptCourses(semesterId)) {
