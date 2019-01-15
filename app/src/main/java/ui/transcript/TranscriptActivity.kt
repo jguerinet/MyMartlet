@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
+import com.guerinet.suitcase.log.TimberTag
 import kotlinx.android.synthetic.main.activity_transcript.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,7 +35,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class TranscriptActivity : DrawerActivity() {
+class TranscriptActivity : DrawerActivity(), TimberTag {
+
+    override val tag: String = "Transcript"
 
     override val currentPage = HomepageManager.HomePage.TRANSCRIPT
 
