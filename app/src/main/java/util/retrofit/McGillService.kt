@@ -46,7 +46,7 @@ interface McGillService {
      * Retrieves the user's transcript
      */
     @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
-    fun transcript(): Call<TranscriptConverter.TranscriptResponse>
+    fun transcript(): Deferred<TranscriptConverter.TranscriptResponse>
 
     /**
      * Retrieves the user's ebill

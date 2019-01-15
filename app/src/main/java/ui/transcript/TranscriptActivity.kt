@@ -25,6 +25,7 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
+import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
 import kotlinx.android.synthetic.main.activity_transcript.*
@@ -96,7 +97,7 @@ class TranscriptActivity : DrawerActivity(), TimberTag {
             return
         }
 
-        launch {
+        launch(uiDispatcher) {
             val e = transcriptViewModel.refresh()
             handleError("Transcript Refresh", e)
         }
