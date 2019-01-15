@@ -88,7 +88,7 @@ fun String.parseDateRange(year: Int): Pair<LocalDate, LocalDate> {
 object DayUtils {
 
     // TODO verify, docs from original dayutils mentions N as well for sunday
-    val days = listOf(
+    private val days = listOf(
         'M' to DayOfWeek.MONDAY,
         'T' to DayOfWeek.TUESDAY,
         'W' to DayOfWeek.WEDNESDAY,
