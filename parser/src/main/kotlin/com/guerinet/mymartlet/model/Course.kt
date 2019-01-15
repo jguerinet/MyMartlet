@@ -26,6 +26,8 @@ import java.time.LocalTime
  * @author Quang Dao
  * @since 1.0.0
  *
+ * Migrated since 2.3.2
+ *
  * @param term          Term this class is for
  * @param subject       Course's 4-letter subject (ex: MATH)
  * @param number        Course's number (ex: 263)

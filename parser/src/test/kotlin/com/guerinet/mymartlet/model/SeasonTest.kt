@@ -19,8 +19,15 @@ package com.guerinet.mymartlet.model
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
+/**
+ * Tests for [Season]
+ */
 class SeasonTest {
 
+    /**
+     * Ensures that season comparisons are valid.
+     * Comparisons should be based on chronological order.
+     */
     @Test
     fun comparisons() {
         assertTrue(Season.WINTER < Season.SUMMER, "winter < summer")

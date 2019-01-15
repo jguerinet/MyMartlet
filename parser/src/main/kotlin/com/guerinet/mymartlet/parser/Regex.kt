@@ -16,12 +16,13 @@
 
 package com.guerinet.mymartlet.parser
 
-import java.time.DayOfWeek
-
 /**
  * Parses time
  * Example:
  * - 10:10 am
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 internal val REGEX_TIME = Regex("(\\d+):(\\d+)\\s*(am|pm)", RegexOption.IGNORE_CASE)
 
@@ -33,6 +34,9 @@ internal val REGEX_TIME = Regex("(\\d+):(\\d+)\\s*(am|pm)", RegexOption.IGNORE_C
  * - the section is a number
  * Example:
  * - Algorithm Design. - COMP 360 - 001
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 internal val REGEX_COURSE_NUMBER_SECTION = Regex("(.+?)\\.\\s*-\\s*(.+?)\\s+(.+?)\\s*-\\s*(\\d+)")
 

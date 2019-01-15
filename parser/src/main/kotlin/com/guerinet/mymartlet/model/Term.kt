@@ -23,6 +23,8 @@ import java.time.LocalDate
  * @author Julien Guerinet
  * @since 1.0.0
  *
+ * Migrated since 2.3.2
+ *
  * @param season    Term [Season]
  * @param year      Term year
  */

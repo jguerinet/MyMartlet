@@ -25,9 +25,15 @@ import org.jsoup.Jsoup
 /**
  * Collection of data parsers that take in html content as strings
  * and outputs relevant models.
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 object MyMartletParser {
 
+    /**
+     * Given schedule html, extract course list
+     */
     fun parseSchedule(html: String, debugger: ParseDebugger = ParseDebuggerNoOp): List<Course> =
         Jsoup.parse(html, "UTF-8").parseSchedule(debugger = debugger)
 

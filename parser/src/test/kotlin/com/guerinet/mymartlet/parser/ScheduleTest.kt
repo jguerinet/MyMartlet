@@ -25,8 +25,15 @@ import java.time.LocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+/**
+ * Tests for [parseSchedule]
+ */
 class ScheduleTest : ParseTestBase() {
 
+    /**
+     * Given a valid html segment for student schedule,
+     * extract all courses.
+     */
     @Test
     fun validCourseList() {
         val courses = getHtml("webpages/schedule-2019-01.html").parseSchedule(debugger)

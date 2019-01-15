@@ -19,6 +19,9 @@ package com.guerinet.mymartlet.parser
 /**
  * Debugger for parsers to track messages.
  * This is useful in identify when a parser fails.
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 interface ParseDebugger {
     /**

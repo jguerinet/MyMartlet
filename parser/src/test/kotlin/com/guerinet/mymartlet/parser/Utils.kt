@@ -24,6 +24,10 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
+/**
+ * Base class for all parser tests.
+ * Creates and verifies helper components for each test.
+ */
 abstract class ParseTestBase {
 
     /**

@@ -16,3 +16,28 @@
 
 package com.guerinet.mymartlet.parser
 
+import java.time.DayOfWeek
+import kotlin.test.Test
+import kotlin.test.fail
+
+/**
+ * Tests for parser.General.kt
+ */
+class GeneralTest {
+
+    /**
+     * While not all characters have an associated day,
+     * all [DayOfWeek] should have an associated character
+     */
+    @Test
+    fun `all DayOfWeek enums accounted for`() {
+        DayOfWeek.values().forEach {
+            try {
+                DayUtils.dayToChar(it)
+            } catch (e: Exception) {
+                fail("Could not get associated char for ${it.name}")
+            }
+        }
+    }
+
+}

@@ -20,6 +20,12 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 
+/**
+ * Attempts to parse any [LocalTime] within the provided string
+ *
+ * @author Allan Wang
+ * @since 2.3.2
+ */
 internal fun String.parseTime(): LocalTime? {
     val matches = REGEX_TIME.find(this)?.groupValues ?: return null
     var hour = matches[1].toInt()
@@ -39,6 +45,9 @@ internal fun String.parseTime(): LocalTime? {
  *
  * TODO should just use a regex and return null if not found?
  *
+ * @author Allan Wang
+ * @since 2.3.2
+ *
  * @param year The current year
  * @return The corresponding local date
  */
@@ -52,6 +61,9 @@ fun String.parseDate(year: Int): LocalDate {
 
 /**
  * Parses the date range String into 2 dates
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  *
  * @param year The current year
  * @return A pair representing the starting and ending dates of the range
@@ -67,6 +79,12 @@ fun String.parseDateRange(year: Int): Pair<LocalDate, LocalDate> {
     return startDate.parseDate(year) to endDate.parseDate(year)
 }
 
+/**
+ * Object mapping [DayOfWeek] to minerva character keys
+ *
+ * @author Allan Wang
+ * @since 2.3.2
+ */
 object DayUtils {
 
     // TODO verify, docs from original dayutils mentions N as well for sunday
@@ -80,10 +98,16 @@ object DayUtils {
         'U' to DayOfWeek.SUNDAY
     )
 
+    /**
+     * Get day associated to character, or null otherwise
+     */
     fun charToDay(dayChar: Char): DayOfWeek? =
         days.find { it.first == dayChar }?.second
 
-    fun dayToChar(day: DayOfWeek): Char? =
-        days.find { it.second == day }?.first
+    /**
+     * Get char associated with day
+     */
+    fun dayToChar(day: DayOfWeek): Char =
+        days.first { it.second == day }.first
 
 }

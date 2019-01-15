@@ -20,6 +20,8 @@ package com.guerinet.mymartlet.model
  * Different seasons a term can be in
  * @author Julien Guerinet
  * @since 1.0.0
+ *
+ * Migrated since 2.3.2
  */
 enum class Season(val title: String, val number: String) {
     /**
@@ -40,19 +42,19 @@ enum class Season(val title: String, val number: String) {
     companion object {
 
         /**
-         * Returns the [Season] for the [title]
+         * Returns the [Season] for the [title], or null if none exists
          */
-        fun getSeasonFromTitle(title: String): Season =
+        fun getSeasonFromTitle(title: String): Season? =
             Season.values().firstOrNull {
                 title.equals(it.title, ignoreCase = true)
-            } ?: throw IllegalStateException("Unknown Season: $title")
+            }
 
         /**
-         * Returns the [Season] for the [number]
+         * Returns the [Season] for the [number], or null if none exists
          */
-        fun getSeasonFromNumber(number: String): Season =
+        fun getSeasonFromNumber(number: String): Season? =
             Season.values().firstOrNull {
                 number.equals(it.number, ignoreCase = true)
-            } ?: throw IllegalStateException("Unknown McGill Season: $number")
+            }
     }
 }

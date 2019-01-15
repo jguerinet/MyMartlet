@@ -20,6 +20,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+/**
+ * Tests for [Term]
+ */
 class TermTest {
 
     /**
@@ -32,6 +35,10 @@ class TermTest {
         assertEquals("201805", Term(Season.SUMMER, 2018).toString())
     }
 
+    /**
+     * Ensures that term comparisons are valid.
+     * Comparisons should be based on chronological order.
+     */
     @Test
     fun comparisons() {
         assertTrue(

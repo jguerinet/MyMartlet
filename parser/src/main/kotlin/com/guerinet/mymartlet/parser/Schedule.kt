@@ -28,6 +28,9 @@ import java.util.*
  * Parses student schedule
  * Data found through paths like
  * https://horizon.mcgill.ca/pban1/bwskfshd.P_CrseSchdDetl?term_in=[Term.toString]
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 internal fun Element.parseSchedule(debugger: ParseDebugger = ParseDebuggerNoOp): List<Course> {
     fun notFound(message: String): List<Course> {
@@ -47,6 +50,17 @@ internal fun Element.parseSchedule(debugger: ParseDebugger = ParseDebuggerNoOp):
     return courses
 }
 
+/**
+ * Extracts a single course from an element list and a specified index.
+ * Not that all elements are required as a course may span multiple subelements.
+ *
+ * Any classes that are found will be added to the [collector].
+ *
+ * Returns a new index to examine, which is guaranteed to always be greater than the received [index].
+ *
+ * @author Allan Wang
+ * @since 2.3.2
+ */
 private fun Elements.parseCourse(
     index: Int,
     collector: MutableList<Course>,

@@ -20,6 +20,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
+/**
+ * Tests for parser.Regex.kt
+ */
 class RegexTest {
 
     private fun Regex.assertMatches(input: String, vararg components: String) {
@@ -41,6 +44,9 @@ class RegexTest {
         )
     }
 
+    /**
+     * Tests for [REGEX_TIME]
+     */
     @Test
     fun timeParse() {
         REGEX_TIME.assertMatches("07:10 am", "07", "10", "am")
@@ -48,6 +54,9 @@ class RegexTest {
         REGEX_TIME.assertFind("3:00am", "3", "00", "am")
     }
 
+    /**
+     * Tests for [REGEX_COURSE_NUMBER_SECTION]
+     */
     @Test
     fun courseTitleSectionParse() {
         REGEX_COURSE_NUMBER_SECTION.assertMatches(
