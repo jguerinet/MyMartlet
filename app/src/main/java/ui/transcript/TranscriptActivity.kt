@@ -23,9 +23,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
-import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
+import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
 import kotlinx.android.synthetic.main.activity_transcript.*
 import kotlinx.coroutines.launch
