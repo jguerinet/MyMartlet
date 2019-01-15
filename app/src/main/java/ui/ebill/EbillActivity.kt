@@ -40,7 +40,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class EbillActivity : DrawerActivity(), TimberTag {
 
-    override val tag: String = "Ebill"
+    override val tag: String = "EbillActivity"
 
     override val currentPage = HomepageManager.HomePage.EBILL
 

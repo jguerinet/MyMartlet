@@ -39,7 +39,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class TranscriptActivity : DrawerActivity(), TimberTag {
 
-    override val tag: String = "Transcript"
+    override val tag: String = "TranscriptActivity"
 
     override val currentPage = HomepageManager.HomePage.TRANSCRIPT
 
