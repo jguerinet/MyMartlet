@@ -19,7 +19,6 @@
         android:indeterminate="true"
         android:indeterminateTint="@android:color/white"
         android:indeterminateTintMode="src_atop"
-        android:padding="8dp"
         android:visibility="gone"/>
 
 </androidx.appcompat.widget.Toolbar>
