@@ -66,8 +66,9 @@ class TranscriptActivity : DrawerActivity(), TimberTag {
         }
 
         observe(transcriptViewModel.isToolbarProgressVisible) {
-            val isVisible = it ?: return@observe
-            toolbarProgress.isVisible = isVisible
+            if (it != null) {
+                toolbarProgress.isVisible = it
+            }
         }
     }
 
