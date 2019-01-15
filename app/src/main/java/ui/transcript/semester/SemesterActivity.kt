@@ -22,8 +22,8 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.extensions.assertNotNull
-import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
+import com.guerinet.suitcase.lifecycle.observe
 import kotlinx.android.synthetic.main.activity_semester.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
