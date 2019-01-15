@@ -24,6 +24,7 @@ import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.extensions.assertNotNull
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.suitcase.lifecycle.observe
+import com.guerinet.suitcase.log.TimberTag
 import kotlinx.android.synthetic.main.activity_semester.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,7 +33,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class SemesterActivity : BaseActivity() {
+class SemesterActivity : BaseActivity(), TimberTag {
+
+    override val tag: String = "SemesterActivity"
 
     private val semesterViewModel by viewModel<SemesterViewModel>()
 
