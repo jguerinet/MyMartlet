@@ -22,6 +22,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.*
 
 private const val SCHEDULE_TABLE_QUERY = "table.datadisplaytable"
@@ -122,7 +123,7 @@ private fun Elements.parseCourse(
             val dates = cells[3].split("-").mapNotNull {
                 try {
                     LocalDate.parse(it.trim(), dtf)
-                } catch (e: Exception) {
+                } catch (e: DateTimeParseException) {
                     debugger.debug("Date parse error: ${e.message}")
                     null
                 }
