@@ -84,7 +84,7 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
             }
 
             try {
-                val transcriptResponse = mcGillService.transcript().execute().body()
+                val transcriptResponse = mcGillService.oldTranscript().execute().body()
                 if (transcriptResponse != null) {
                     transcriptDao.insert(transcriptResponse.transcript)
                     transcriptCourseDao.update(transcriptResponse.courses)
