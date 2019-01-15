@@ -24,6 +24,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+private const val SCHEDULE_TABLE_QUERY = "table.datadisplaytable"
+
 /**
  * Parses student schedule
  * Data found through paths like
@@ -38,9 +40,9 @@ internal fun Element.parseSchedule(debugger: ParseDebugger = ParseDebuggerNoOp):
         return emptyList()
     }
 
-    val table = select("table.datadisplaytable")
+    val table = select(SCHEDULE_TABLE_QUERY)
     if (table.isEmpty()) {
-        return notFound("No table.datadisplaytable")
+        return notFound(SCHEDULE_TABLE_QUERY)
     }
     val courses: MutableList<Course> = mutableListOf()
     var i = 0
@@ -77,8 +79,8 @@ private fun Elements.parseCourse(
     val row = getOrNull(index) ?: return notFound("Elements is empty")
     val nextRow = getOrNull(index + 1) ?: return notFound("Element only has one row")
     // Fast track; not expected data
-    if (!row.`is`("table.datadisplaytable") || !nextRow.`is`("table.datadisplaytable"))
-        return notFound("Elements are not table.datadisplaytable")
+    if (!row.`is`(SCHEDULE_TABLE_QUERY) || !nextRow.`is`(SCHEDULE_TABLE_QUERY))
+        return notFound("Elements are not $SCHEDULE_TABLE_QUERY")
     // Fast track; second row doesn't match
     if (nextRow.attr("summary") != "This table lists the scheduled meeting times and assigned instructors for this class..")
         return notFound("Second row does not match scheduled meeting summary")
