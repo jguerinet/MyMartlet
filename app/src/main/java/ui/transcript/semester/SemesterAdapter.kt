@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.item_transcript_course.view.*
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback()) {
+internal class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback()) {
 
     /**
      * Updates the list of [transcriptCourses] shown
@@ -38,7 +38,7 @@ class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CourseHolder(parent)
 
-    class CourseHolder(parent: ViewGroup) :
+    internal class CourseHolder(parent: ViewGroup) :
         BaseHolder<TranscriptCourse>(parent, R.layout.item_transcript_course) {
 
         override fun bind(position: Int, item: TranscriptCourse) {
@@ -56,7 +56,7 @@ class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback()) {
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<TranscriptCourse>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<TranscriptCourse>() {
 
         override fun areItemsTheSame(oldItem: TranscriptCourse, newItem: TranscriptCourse) =
             oldItem.courseCode == newItem.courseCode && oldItem.term == newItem.term

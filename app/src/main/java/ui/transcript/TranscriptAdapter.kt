@@ -31,7 +31,7 @@ import org.jetbrains.anko.startActivity
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
+internal class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
 
     /**
      * Updates the [list] of semesters shown
@@ -40,7 +40,8 @@ class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SemesterHolder(parent)
 
-    class SemesterHolder(parent: ViewGroup) : BaseHolder<Semester>(parent, R.layout.item_semester) {
+    internal class SemesterHolder(parent: ViewGroup) :
+        BaseHolder<Semester>(parent, R.layout.item_semester) {
 
         override fun bind(position: Int, item: Semester) {
             itemView.apply {
@@ -54,7 +55,7 @@ class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<Semester>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<Semester>() {
 
         override fun areItemsTheSame(oldItem: Semester, newItem: Semester): Boolean =
             oldItem.term == newItem.term
