@@ -1,5 +1,6 @@
 # MyMartlet - Android
 
+[![Build Status](https://travis-ci.com/jguerinet/MyMartlet.svg?branch=develop)](https://travis-ci.com/jguerinet/MyMartlet)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6764bc77236c4209a230db91bb2cf441)](https://app.codacy.com/app/jguerinet/MyMartlet?utm_source=github.com&utm_medium=referral&utm_content=jguerinet/MyMartlet&utm_campaign=Badge_Grade_Dashboard)
 
 ## Summary
@@ -59,7 +60,7 @@ All contributions are welcome!
 See the [Change Log](docs/Changelog.md).
 
 ## Copyright
-	 Copyright 2014-2017 Julien Guerinet
+	 Copyright 2014-2019 Julien Guerinet
 
 	 Licensed under the Apache License, Version 2.0 (the "License");
 	 you may not use this file except in compliance with the License.
