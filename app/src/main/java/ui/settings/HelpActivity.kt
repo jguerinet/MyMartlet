@@ -88,13 +88,13 @@ class HelpActivity : BaseActivity() {
 
         // FAQ
         list.layoutManager = LinearLayoutManager(this)
-        list.adapter = FAQAdapter()
+        list.adapter = FaqAdapter()
     }
 
     /**
-     * Displays the FAQs
+     * Displays the Faqs
      */
-    private inner class FAQAdapter : BaseRecyclerViewAdapter() {
+    private inner class FaqAdapter : BaseRecyclerViewAdapter() {
 
         private val faqs = listOf(
             R.string.help_question1 to R.string.help_answer1,
