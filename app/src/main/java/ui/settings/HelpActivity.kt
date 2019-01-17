@@ -81,7 +81,7 @@ class HelpActivity : BaseActivity() {
             // Become Beta Tester
             text {
                 textId = R.string.help_beta_tester
-                onClick { openUrl("https://betas.to/iRinaygk") }
+                onClick { openUrl("https://play.google.com/apps/testing/com.guerinet.mymartlet") }
             }
         }
 
