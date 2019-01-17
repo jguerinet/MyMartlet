@@ -80,11 +80,13 @@ private fun Elements.parseCourse(
     val row = getOrNull(index) ?: return notFound("Elements is empty")
     val nextRow = getOrNull(index + 1) ?: return notFound("Element only has one row")
     // Fast track; not expected data
-    if (!row.`is`(SCHEDULE_TABLE_QUERY) || !nextRow.`is`(SCHEDULE_TABLE_QUERY))
+    if (!row.`is`(SCHEDULE_TABLE_QUERY) || !nextRow.`is`(SCHEDULE_TABLE_QUERY)) {
         return notFound("Elements are not $SCHEDULE_TABLE_QUERY")
+    }
     // Fast track; second row doesn't match
-    if (nextRow.attr("summary") != "This table lists the scheduled meeting times and assigned instructors for this class..")
+    if (nextRow.attr("summary") != "This table lists the scheduled meeting times and assigned instructors for this class..") {
         return notFound("Second row does not match scheduled meeting summary")
+    }
     // Get content from first row
     val caption =
         row.getElementsByTag("caption").first()?.text() ?: return notFound("No caption found")
@@ -93,8 +95,9 @@ private fun Elements.parseCourse(
             ?: return notFound("No course value found")
     val (_, title, subject, number, section) = courseValues
     val tds = row.getElementsByTag("tr").mapNotNull { it.getElementsByTag("td").first() }
-    if (tds.size < 5)
+    if (tds.size < 5) {
         return notFound("Not enough bullet points")
+    }
     val crn = tds[1].text().toIntOrNull() ?: return notFound("No valid crn found")
     val credits = tds[5].text().toDoubleOrNull() ?: return notFound("No valid credits found")
 
