@@ -86,7 +86,8 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
         BaseRecyclerViewAdapter.BaseHolder(view) {
 
         override fun bind(position: Int) {
-            view.setText(items[position] as Int)
+            val title = items[position] as? Int ?: return
+            view.setText(title)
         }
     }
 
