@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package com.guerinet.mymartlet.util.extensions
 
 import android.app.Activity
-import timber.log.Timber
+import com.guerinet.suitcase.log.TimberTag
 
 /**
  * Activity extensions
@@ -27,12 +27,15 @@ import timber.log.Timber
 
 /**
  * Asserts that the [obj] is not null, and finishes the activity, shows an error toast, and logs
- *  and exception using the [tag] (if one is supplied, defaults to null) if it is null.
+ *  and exception using the object [name] (if supplied, defaults to null) if it is null.
  */
-fun <T : Any?> Activity.assertNotNull(obj: T?, tag: String? = null): T? {
+fun <T : Any?, A> A.assertNotNull(
+    obj: T?,
+    name: String? = null
+): T? where A : Activity, A : TimberTag {
     if (obj == null) {
         errorToast()
-        tag?.apply { Timber.e(IllegalArgumentException("$tag was null")) }
+        name?.apply { timber.e(IllegalArgumentException("$this was null")) }
         finish()
     }
     return obj

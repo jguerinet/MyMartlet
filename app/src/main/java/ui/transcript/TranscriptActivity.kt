@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
-import com.guerinet.mymartlet.util.extensions.observe
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
+import com.guerinet.suitcase.coroutines.uiDispatcher
+import com.guerinet.suitcase.lifecycle.observe
+import com.guerinet.suitcase.log.TimberTag
 import kotlinx.android.synthetic.main.activity_transcript.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,24 +37,23 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class TranscriptActivity : DrawerActivity() {
+class TranscriptActivity : DrawerActivity(), TimberTag {
+
+    override val tag: String = "TranscriptActivity"
 
     override val currentPage = HomepageManager.HomePage.TRANSCRIPT
 
-    private val adapter by lazy { TranscriptAdapter() }
-
     private val transcriptViewModel by viewModel<TranscriptViewModel>()
+
+    private val adapter by lazy { TranscriptAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transcript)
         ga.sendScreen("Transcript")
 
-        list.apply {
-            layoutManager =
-                androidx.recyclerview.widget.LinearLayoutManager(this@TranscriptActivity)
-            adapter = this@TranscriptActivity.adapter
-        }
+        list.layoutManager = LinearLayoutManager(this)
+        list.adapter = adapter
 
         observe(transcriptViewModel.transcript) {
             if (it != null) {
@@ -65,8 +67,9 @@ class TranscriptActivity : DrawerActivity() {
         }
 
         observe(transcriptViewModel.isToolbarProgressVisible) {
-            val isVisible = it ?: return@observe
-            toolbarProgress.isVisible = isVisible
+            if (it != null) {
+                toolbarProgress.isVisible = it
+            }
         }
     }
 
@@ -94,7 +97,7 @@ class TranscriptActivity : DrawerActivity() {
             return
         }
 
-        launch {
+        launch(uiDispatcher) {
             val e = transcriptViewModel.refresh()
             handleError("Transcript Refresh", e)
         }

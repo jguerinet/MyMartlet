@@ -167,11 +167,9 @@ class CoursesActivity : DrawerActivity() {
                 }
 
                 // Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(object : Callback<TranscriptResponse> {
-                    override fun onResponse(
-                        call: Call<TranscriptResponse>,
-                        response: Response<TranscriptResponse>
-                    ) {
+                mcGillService.oldTranscript().enqueue(object : Callback<TranscriptResponse> {
+                    override fun onResponse(call: Call<TranscriptResponse>,
+                            response: Response<TranscriptResponse>) {
                         launch(Dispatchers.IO) {
                             transcriptDao.update(response.body()!!.transcript)
                         }

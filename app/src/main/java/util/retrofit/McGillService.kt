@@ -52,10 +52,16 @@ interface McGillService {
     fun schedule(@Query("term_in") term: Term): Call<List<Course>>
 
     /**
+     * Old way of getting the transcript. Should be phased out completely
+     */
+    @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
+    fun oldTranscript(): Call<TranscriptConverter.TranscriptResponse>
+
+    /**
      * Retrieves the user's transcript
      */
     @GET("bzsktran.P_Display_Form?user_type=S&tran_type=V")
-    fun transcript(): Call<TranscriptConverter.TranscriptResponse>
+    fun transcript(): Deferred<TranscriptConverter.TranscriptResponse>
 
     /**
      * Retrieves the user's ebill

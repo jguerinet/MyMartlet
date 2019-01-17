@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ internal class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback(
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<TranscriptCourse>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<TranscriptCourse>() {
 
         override fun areItemsTheSame(oldItem: TranscriptCourse, newItem: TranscriptCourse) =
             oldItem.courseCode == newItem.courseCode && oldItem.term == newItem.term
