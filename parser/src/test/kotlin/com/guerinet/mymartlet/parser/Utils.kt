@@ -27,6 +27,9 @@ import kotlin.test.fail
 /**
  * Base class for all parser tests.
  * Creates and verifies helper components for each test.
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 abstract class ParseTestBase {
 
@@ -49,6 +52,9 @@ abstract class ParseTestBase {
 
 /**
  * Test debugger to keep track of messages
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 class ParseDebuggerTest : ParseDebugger {
 
@@ -84,6 +90,9 @@ class ParseDebuggerTest : ParseDebugger {
 
 /**
  * Get inputstream from resource folder
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 fun getResource(resource: String): InputStream =
     (ParseDebuggerTest::class.java.classLoader ?: fail("Classloader not found"))
@@ -92,6 +101,9 @@ fun getResource(resource: String): InputStream =
 
 /**
  * Get resource from resource folder and read into Jsoup
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 fun getHtml(resource: String): Document =
     Jsoup.parseBodyFragment(getResource(resource).bufferedReader().use { it.readText() })

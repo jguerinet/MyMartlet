@@ -22,6 +22,9 @@ import kotlin.test.fail
 
 /**
  * Tests for parser.General.kt
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 class GeneralTest {
 

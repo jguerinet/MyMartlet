@@ -27,6 +27,9 @@ import kotlin.test.assertEquals
 
 /**
  * Tests for [parseSchedule]
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 class ScheduleTest : ParseTestBase() {
 

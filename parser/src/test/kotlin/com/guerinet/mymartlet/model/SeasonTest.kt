@@ -21,6 +21,9 @@ import kotlin.test.assertTrue
 
 /**
  * Tests for [Season]
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 class SeasonTest {
 

@@ -22,6 +22,9 @@ import kotlin.test.assertTrue
 
 /**
  * Tests for [Term]
+ *
+ * @author Allan Wang
+ * @since 2.3.2
  */
 class TermTest {
 
