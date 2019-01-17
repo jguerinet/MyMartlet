@@ -123,7 +123,7 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
                 }
 
                 // LinkedIn
-                val linkedInId = getResourceId(idPrefix + "_linkedin")
+                val linkedInId = getResourceId("${idPrefix}_linkedin")
                 if (linkedInId != 0) {
                     linkedIn.setOnClickListener {
                         ga.sendEvent("About", "Linkedin", personName)
@@ -134,7 +134,7 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
                 }
 
                 // Email
-                val emailId = getResourceId(idPrefix + "_email")
+                val emailId = getResourceId("${idPrefix}_email")
                 if (emailId != 0) {
                     email.setOnClickListener {
                         ga.sendEvent("About", "Email", personName)
