@@ -17,7 +17,6 @@
 package com.guerinet.mymartlet.ui.settings
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Pair
 import com.guerinet.morf.TextViewItem
@@ -46,7 +45,6 @@ import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Allows the user to change the app settings
@@ -164,8 +162,6 @@ class SettingsActivity : DrawerActivity(), TimberTag {
 
                     launch(uiDispatcher) {
 
-                        val uriList = ArrayList<Uri>()
-
                         withContext(bgDispatcher) {
                             // Update logs (attachment)
                             try {
@@ -185,16 +181,17 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                                 }
                                 sink.flush()
 
-                                uriList.add(getFileUri(BuildConfig.APPLICATION_ID, file))
+                                intent.putExtra(
+                                    Intent.EXTRA_STREAM,
+                                    getFileUri(BuildConfig.APPLICATION_ID, file)
+                                )
                             } catch (e: Exception) {
                                 timber.e(e, "Error attaching update logs to bug report email")
                             }
-
-                            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
                         }
-                    }
 
-                    startActivity(Intent.createChooser(intent, null))
+                        startActivity(Intent.createChooser(intent, null))
+                    }
                 }
             }
         }
