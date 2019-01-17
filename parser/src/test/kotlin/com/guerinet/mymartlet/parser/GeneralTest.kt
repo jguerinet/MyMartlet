@@ -37,7 +37,7 @@ class GeneralTest {
         DayOfWeek.values().forEach {
             try {
                 DayUtils.dayToChar(it)
-            } catch (e: Exception) {
+            } catch (e: NoSuchElementException) {
                 fail("Could not get associated char for ${it.name}")
             }
         }
