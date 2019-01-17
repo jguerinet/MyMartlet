@@ -174,7 +174,7 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                                 // Create the file that will hold the update logs
                                 val file = File(getExternalFilesDir(null), "update_logs.log")
 
-                                // Create the Okio bugger to write the logs
+                                // Create the Okio buffer to write the logs
                                 val sink = file.sink().buffer()
 
                                 appUpdates.forEach { update ->
