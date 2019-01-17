@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,10 +40,10 @@ class AgreementActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agreement)
 
-        val required = intent.getBooleanExtra(Prefs.EULA, false)
-        setUpToolbar(!required)
+        val isRequired = intent.getBooleanExtra(Prefs.EULA, false)
+        setUpToolbar(!isRequired)
 
-        if (required) {
+        if (isRequired) {
             // Display the buttons if the user is required to agree to it
             buttonsContainer.visibility = View.VISIBLE
 
