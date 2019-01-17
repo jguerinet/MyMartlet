@@ -36,6 +36,7 @@ import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.io.getFileUri
+import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.Utils
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -45,7 +46,6 @@ import okio.buffer
 import okio.sink
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -55,7 +55,9 @@ import kotlin.collections.ArrayList
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class SettingsActivity : DrawerActivity() {
+class SettingsActivity : DrawerActivity(), TimberTag {
+
+    override val tag: String = "SettingsActivity"
 
     private val statsPref by inject<BooleanPref>(Prefs.STATS)
 
@@ -161,7 +163,7 @@ class SettingsActivity : DrawerActivity() {
                             Utils.getDebugInfo(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
 
                         // Log everything in the logs
-                        Timber.i(content)
+                        timber.i(content)
 
                         putExtra(Intent.EXTRA_TEXT, content)
                     }
@@ -191,7 +193,7 @@ class SettingsActivity : DrawerActivity() {
 
                                 uriList.add(getFileUri(BuildConfig.APPLICATION_ID, file))
                             } catch (e: Exception) {
-                                Timber.e(e, "Error attaching update logs to bug report email")
+                                timber.e(e, "Error attaching update logs to bug report email")
                             }
 
                             intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
