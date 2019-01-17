@@ -30,7 +30,6 @@ import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.settings.about.AboutActivity
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.room.UpdateDao
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
@@ -62,8 +61,6 @@ class SettingsActivity : DrawerActivity(), TimberTag {
     private val statsPref by inject<BooleanPref>(Prefs.STATS)
 
     private val twentyFourHourPref by inject<BooleanPref>(Prefs.SCHEDULE_24HR)
-
-    private val usernamePref by inject<UsernamePref>()
 
     private val updateDao by inject<UpdateDao>()
 
