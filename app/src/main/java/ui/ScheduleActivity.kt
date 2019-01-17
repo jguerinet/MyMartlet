@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -237,7 +237,7 @@ class ScheduleActivity : DrawerActivity() {
                 }
 
                 // Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.transcript().enqueue(object : Callback<TranscriptResponse> {
+                mcGillService.oldTranscript().enqueue(object : Callback<TranscriptResponse> {
                     override fun onResponse(call: Call<TranscriptResponse>,
                             response: Response<TranscriptResponse>) {
                         launch(Dispatchers.IO) {

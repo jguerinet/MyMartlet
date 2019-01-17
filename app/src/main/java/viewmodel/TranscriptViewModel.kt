@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,10 @@ import com.guerinet.mymartlet.util.room.daos.TranscriptDao
  * @since 2.0.0
  */
 class TranscriptViewModel(
-        private val semesterDao: SemesterDao,
-        private val transcriptDao: TranscriptDao,
-        private val transcriptCourseDao: TranscriptCourseDao,
-        private val mcGillService: McGillService
+    private val semesterDao: SemesterDao,
+    private val transcriptDao: TranscriptDao,
+    private val transcriptCourseDao: TranscriptCourseDao,
+    private val mcGillService: McGillService
 ) : BaseViewModel() {
 
     val transcript: LiveData<Transcript> by lazy { transcriptDao.get() }
@@ -47,16 +47,15 @@ class TranscriptViewModel(
     suspend fun refresh(): Exception? = update {
         try {
             // Make the request
-            val response = mcGillService.transcript().execute().body()
-                    ?: return@update Exception("Body was null")
+            val response = mcGillService.transcript().await()
 
             // Save the response
             transcriptDao.update(response.transcript)
             semesterDao.update(response.semesters)
             transcriptCourseDao.update(response.courses)
-            return@update null
+            null
         } catch (e: Exception) {
-            return@update e
+            e
         }
     }
 }
