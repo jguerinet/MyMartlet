@@ -48,7 +48,7 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
         R.string.contributors_past,
         "adnan",
         "hernan",
-        "josh",
+        "joshua",
         "julia",
         "quang",
         "ryan",
