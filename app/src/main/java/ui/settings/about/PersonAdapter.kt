@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.koin.standalone.inject
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class PersonAdapter internal constructor() : BaseRecyclerViewAdapter(), KoinComponent {
+class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
     private val ga by inject<GAManager>()
 
@@ -49,55 +49,102 @@ class PersonAdapter internal constructor() : BaseRecyclerViewAdapter(), KoinComp
         items.add(R.string.contributors_current)
 
         // Julien
-        items.add(Person(R.string.about_julien, R.drawable.about_julien, R.string.about_julien_role,
-                R.string.about_julien_email, R.string.about_julien_linkedin))
+        items.add(
+            Person(
+                R.string.about_julien, R.drawable.about_julien, R.string.about_julien_role,
+                R.string.about_julien_email, R.string.about_julien_linkedin
+            )
+        )
 
         // Past Contributors
         items.add(R.string.contributors_past)
 
         // Adnan
-        items.add(Person(R.string.about_adnan, R.drawable.about_adnan, R.string.about_adnan_role,
-                R.string.about_adnan_email, R.string.about_adnan_linkedin))
+        items.add(
+            Person(
+                R.string.about_adnan, R.drawable.about_adnan, R.string.about_adnan_role,
+                R.string.about_adnan_email, R.string.about_adnan_linkedin
+            )
+        )
 
         // Hernan
-        items.add(Person(R.string.about_hernan, R.drawable.about_hernan, R.string.about_hernan_role,
-                R.string.about_hernan_email, R.string.about_hernan_linkedin))
+        items.add(
+            Person(
+                R.string.about_hernan, R.drawable.about_hernan, R.string.about_hernan_role,
+                R.string.about_hernan_email, R.string.about_hernan_linkedin
+            )
+        )
 
         // Josh
-        items.add(Person(R.string.about_joshua, R.drawable.about_josh, R.string.about_joshua_role,
-                R.string.about_joshua_email, R.string.about_joshua_linkedin))
+        items.add(
+            Person(
+                R.string.about_joshua, R.drawable.about_josh, R.string.about_joshua_role,
+                R.string.about_joshua_email, R.string.about_joshua_linkedin
+            )
+        )
 
         // Julia
-        items.add(Person(R.string.about_julia, R.drawable.about_julia, R.string.about_julia_role,
-                R.string.about_julia_email, R.string.about_julia_linkedin))
+        items.add(
+            Person(
+                R.string.about_julia, R.drawable.about_julia, R.string.about_julia_role,
+                R.string.about_julia_email, R.string.about_julia_linkedin
+            )
+        )
 
         // Quang
-        items.add(Person(R.string.about_quang, R.drawable.about_quang, R.string.about_quang_role,
-                R.string.about_quang_email, R.string.about_quang_linkedin))
+        items.add(
+            Person(
+                R.string.about_quang, R.drawable.about_quang, R.string.about_quang_role,
+                R.string.about_quang_email, R.string.about_quang_linkedin
+            )
+        )
 
         // Ryan
-        items.add(Person(R.string.about_ryan, R.drawable.about_ryan, R.string.about_ryan_role,
-                R.string.about_ryan_email, R.string.about_ryan_linkedin))
+        items.add(
+            Person(
+                R.string.about_ryan, R.drawable.about_ryan, R.string.about_ryan_role,
+                R.string.about_ryan_email, R.string.about_ryan_linkedin
+            )
+        )
 
         // Selim
-        items.add(Person(R.string.about_selim, R.drawable.about_selim, R.string.about_selim_role,
-                R.string.about_selim_email, R.string.about_selim_linkedin))
+        items.add(
+            Person(
+                R.string.about_selim, R.drawable.about_selim, R.string.about_selim_role,
+                R.string.about_selim_email, R.string.about_selim_linkedin
+            )
+        )
 
         // Shabbir
-        items.add(Person(R.string.about_shabbir, R.drawable.about_shabbir,
+        items.add(
+            Person(
+                R.string.about_shabbir, R.drawable.about_shabbir,
                 R.string.about_shabbir_role, R.string.about_shabbir_email,
-                R.string.about_shabbir_linkedin))
+                R.string.about_shabbir_linkedin
+            )
+        )
 
         // Xavier
-        items.add(Person(R.string.about_xavier, R.drawable.about_xavier, R.string.about_xavier_role,
-                R.string.about_xavier_email, R.string.about_xavier_linkedin))
+        items.add(
+            Person(
+                R.string.about_xavier, R.drawable.about_xavier, R.string.about_xavier_role,
+                R.string.about_xavier_email, R.string.about_xavier_linkedin
+            )
+        )
 
         // Yulric
-        items.add(Person(R.string.about_yulric, R.drawable.about_yulric, R.string.about_yulric_role,
-                R.string.about_yulric_email, R.string.about_yulric_linkedin))
+        items.add(
+            Person(
+                R.string.about_yulric, R.drawable.about_yulric, R.string.about_yulric_role,
+                R.string.about_yulric_email, R.string.about_yulric_linkedin
+            )
+        )
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewAdapter.BaseHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseRecyclerViewAdapter.BaseHolder {
         if (viewType == PERSON) {
             return PersonHolder(parent)
         }
@@ -117,7 +164,7 @@ class PersonAdapter internal constructor() : BaseRecyclerViewAdapter(), KoinComp
      * Header in the list
      */
     internal inner class HeaderHolder(private val view: TextView) :
-            BaseRecyclerViewAdapter.BaseHolder(view) {
+        BaseRecyclerViewAdapter.BaseHolder(view) {
 
         override fun bind(position: Int) {
             view.setText(items[position] as Int)
@@ -128,7 +175,7 @@ class PersonAdapter internal constructor() : BaseRecyclerViewAdapter(), KoinComp
      * Person item in the list
      */
     internal inner class PersonHolder(parent: ViewGroup) :
-            BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_person) {
+        BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_person) {
 
         override fun bind(position: Int) {
             val person = items[position] as Person
@@ -137,8 +184,8 @@ class PersonAdapter internal constructor() : BaseRecyclerViewAdapter(), KoinComp
                 name.setText(person.name)
 
                 Picasso.get()
-                        .load(person.pictureId)
-                        .into(picture)
+                    .load(person.pictureId)
+                    .into(picture)
 
                 role.setText(person.role)
 
@@ -152,8 +199,8 @@ class PersonAdapter internal constructor() : BaseRecyclerViewAdapter(), KoinComp
 
                     // Send an email
                     val intent = Intent(Intent.ACTION_SEND)
-                            .putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(person.email)))
-                            .setType("message/rfc822")
+                        .putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(person.email)))
+                        .setType("message/rfc822")
                     context.startActivity(Intent.createChooser(intent, null))
                 }
             }
@@ -181,8 +228,9 @@ class PersonAdapter internal constructor() : BaseRecyclerViewAdapter(), KoinComp
  * @param linkedIn    URL to the person's LinkedIn
  */
 private class Person(
-        @StringRes val name: Int,
-        @DrawableRes val pictureId: Int,
-        @StringRes val role: Int,
-        @StringRes val email: Int,
-        @StringRes val linkedIn: Int)
+    @StringRes val name: Int,
+    @DrawableRes val pictureId: Int,
+    @StringRes val role: Int,
+    @StringRes val email: Int,
+    @StringRes val linkedIn: Int
+)
