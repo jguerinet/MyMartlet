@@ -39,21 +39,6 @@
         app:layout_constraintTop_toBottomOf="@+id/picture"
         tools:text="@string/about_julien"/>
 
-    <TextView
-        android:id="@+id/role"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:textSize="@dimen/text_medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="@string/about_julien_role"/>
-
-
     <ImageView
         android:id="@+id/linkedIn"
         android:layout_width="wrap_content"
@@ -67,7 +52,7 @@
         app:layout_constraintEnd_toStartOf="@+id/email"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/role"
+        app:layout_constraintTop_toBottomOf="@+id/name"
         app:srcCompat="@drawable/ic_linkedin"/>
 
     <ImageView
@@ -82,7 +67,7 @@
         android:tint="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linkedIn"
-        app:layout_constraintTop_toBottomOf="@+id/role"
+        app:layout_constraintTop_toBottomOf="@+id/name"
         app:srcCompat="@drawable/ic_email"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

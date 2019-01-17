@@ -120,14 +120,6 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
                     picture.visibility = View.GONE
                 }
 
-                // Role
-                val roleId = getResourceId(idPrefix + "_role")
-                if (roleId != 0) {
-                    role.setText(roleId)
-                } else {
-                    role.text = ""
-                }
-
                 // LinkedIn
                 val linkedInId = getResourceId(idPrefix + "_linkedin")
                 if (linkedInId != 0) {
