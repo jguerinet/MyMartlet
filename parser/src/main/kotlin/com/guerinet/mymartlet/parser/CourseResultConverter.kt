@@ -33,8 +33,8 @@
 //import java.io.IOException
 //import java.lang.reflect.ParameterizedType
 //import java.lang.reflect.Type
-//import java.time.DayOfWeek
-//import java.time.LocalTime
+//import org.threeten.bp.DayOfWeek
+//import org.threeten.bp.LocalTime
 //
 ///**
 // * Retrofit converter to parse a list of course results when searching for courses

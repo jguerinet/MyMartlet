@@ -16,9 +16,9 @@
 
 package com.guerinet.mymartlet.parser
 
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
+import org.threeten.bp.DayOfWeek
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalTime
 
 /**
  * Attempts to parse any [LocalTime] within the provided string

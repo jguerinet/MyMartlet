@@ -19,9 +19,9 @@ package com.guerinet.mymartlet.parser
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.Season
 import com.guerinet.mymartlet.model.Term
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
+import org.threeten.bp.DayOfWeek
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet.parser
 
-import java.time.DayOfWeek
+import org.threeten.bp.DayOfWeek
 import kotlin.test.Test
 import kotlin.test.fail
 

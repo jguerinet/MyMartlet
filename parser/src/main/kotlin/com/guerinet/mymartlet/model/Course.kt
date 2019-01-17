@@ -16,9 +16,9 @@
 
 package com.guerinet.mymartlet.model
 
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
+import org.threeten.bp.LocalDate
+import org.threeten.bp.DayOfWeek
+import org.threeten.bp.LocalTime
 
 /**
  * A course in the user's schedule or one that a user can register for

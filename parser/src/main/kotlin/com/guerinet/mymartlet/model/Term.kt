@@ -16,7 +16,7 @@
 
 package com.guerinet.mymartlet.model
 
-import java.time.LocalDate
+import org.threeten.bp.LocalDate
 
 /**
  * One class term, consisting of a season and a year

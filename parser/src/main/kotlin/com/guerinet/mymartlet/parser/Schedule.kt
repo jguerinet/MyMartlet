@@ -20,9 +20,9 @@ import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.Term
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.DateTimeParseException
 import java.util.*
 
 private const val SCHEDULE_TABLE_QUERY = "table.datadisplaytable"
