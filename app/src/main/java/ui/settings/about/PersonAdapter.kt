@@ -18,15 +18,15 @@ package com.guerinet.mymartlet.ui.settings.about
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.guerinet.mymartlet.R
 import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter
 import com.guerinet.suitcase.ui.extensions.setPaddingId
 import com.guerinet.suitcase.ui.extensions.setTextSizeId
-import com.guerinet.suitcase.util.extensions.getResourceId
 import com.guerinet.suitcase.util.extensions.openUrl
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_person.view.*
@@ -44,18 +44,18 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
     private val items = listOf(
         R.string.contributors_current,
-        "julien",
+        Person.JULIEN,
         R.string.contributors_past,
-        "adnan",
-        "hernan",
-        "joshua",
-        "julia",
-        "quang",
-        "ryan",
-        "selim",
-        "shabbir",
-        "xavier",
-        "yulric"
+        Person.ADNAN,
+        Person.HERNAN,
+        Person.JOSHUA,
+        Person.JULIA,
+        Person.QUANG,
+        Person.RYAN,
+        Person.SELIM,
+        Person.SHABBIR,
+        Person.XAVIER,
+        Person.YULRIC
     )
 
     override fun onCreateViewHolder(
@@ -76,7 +76,7 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
     }
 
     override fun getItemViewType(position: Int): Int =
-        if (items[position] is String) VIEW_TYPE_PERSON else -1
+        if (items[position] is Person) VIEW_TYPE_PERSON else -1
 
     override fun getItemCount(): Int = items.size
 
@@ -99,64 +99,109 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
         BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_person) {
 
         override fun bind(position: Int) {
-            val personName = items[position] as? String ?: return
-
-            val idPrefix = "about_$personName"
+            val person = items[position] as? Person ?: return
 
             itemView.apply {
                 // Name
-                val nameId = getResourceId(idPrefix)
-                if (nameId != 0) {
-                    name.setText(nameId)
-                } else {
-                    name.text = ""
-                }
+                name.setText(person.nameId)
 
                 // Picture
-                val pictureId = getResourceId(idPrefix, "drawable")
-                if (pictureId != 0) {
-                    Picasso.get()
-                        .load(pictureId)
-                        .into(picture)
-                } else {
-                    picture.visibility = View.GONE
-                }
+                Picasso.get()
+                    .load(person.pictureId)
+                    .into(picture)
 
                 // LinkedIn
-                val linkedInId = getResourceId("${idPrefix}_linkedin")
-                if (linkedInId != 0) {
-                    linkedIn.setOnClickListener {
-                        ga.sendEvent("About", "Linkedin", personName)
-                        context.openUrl(context.getString(linkedInId))
-                    }
-                } else {
-                    linkedIn.visibility = View.GONE
+                linkedIn.setOnClickListener {
+                    ga.sendEvent("About", "Linkedin", person.name)
+                    context.openUrl(context.getString(person.linkedInId))
                 }
 
                 // Email
-                val emailId = getResourceId("${idPrefix}_email")
-                if (emailId != 0) {
-                    email.setOnClickListener {
-                        ga.sendEvent("About", "Email", personName)
+                email.setOnClickListener {
+                    ga.sendEvent("About", "Email", person.name)
 
-                        // Send an email
-                        val intent = Intent(Intent.ACTION_SEND)
-                            .putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(emailId)))
-                            .setType("message/rfc822")
-                        context.startActivity(Intent.createChooser(intent, null))
-                    }
-                } else {
-                    email.visibility = View.GONE
+                    // Send an email
+                    val intent = Intent(Intent.ACTION_SEND)
+                        .putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(person.emailId)))
+                        .setType("message/rfc822")
+                    context.startActivity(Intent.createChooser(intent, null))
                 }
             }
         }
+    }
 
-        /**
-         * Returns the resource Id for the [stringId] and the [resourceType] (defaults to String),
-         *  0 if none found
-         */
-        private fun getResourceId(stringId: String, resourceType: String = "string"): Int =
-            itemView.context.getResourceId(resourceType, stringId)
+    private enum class Person(
+        @StringRes val nameId: Int,
+        @DrawableRes val pictureId: Int,
+        @StringRes val emailId: Int,
+        @StringRes val linkedInId: Int
+    ) {
+        JULIEN(
+            R.string.about_julien,
+            R.drawable.about_julien,
+            R.string.about_julien_email,
+            R.string.about_julien_linkedin
+        ),
+        ADNAN(
+            R.string.about_adnan,
+            R.drawable.about_adnan,
+            R.string.about_adnan_email,
+            R.string.about_adnan_linkedin
+        ),
+        HERNAN(
+            R.string.about_hernan,
+            R.drawable.about_hernan,
+            R.string.about_hernan_email,
+            R.string.about_hernan_linkedin
+        ),
+        JOSHUA(
+            R.string.about_joshua,
+            R.drawable.about_joshua,
+            R.string.about_joshua_email,
+            R.string.about_joshua_linkedin
+        ),
+        JULIA(
+            R.string.about_julia,
+            R.drawable.about_julia,
+            R.string.about_julia_email,
+            R.string.about_julia_linkedin
+        ),
+        QUANG(
+            R.string.about_quang,
+            R.drawable.about_quang,
+            R.string.about_quang_email,
+            R.string.about_quang_linkedin
+        ),
+        RYAN(
+            R.string.about_ryan,
+            R.drawable.about_ryan,
+            R.string.about_ryan_email,
+            R.string.about_ryan_linkedin
+        ),
+        SELIM(
+            R.string.about_selim,
+            R.drawable.about_selim,
+            R.string.about_selim_email,
+            R.string.about_selim_linkedin
+        ),
+        SHABBIR(
+            R.string.about_shabbir,
+            R.drawable.about_shabbir,
+            R.string.about_shabbir_email,
+            R.string.about_shabbir_linkedin
+        ),
+        XAVIER(
+            R.string.about_xavier,
+            R.drawable.about_xavier,
+            R.string.about_xavier_email,
+            R.string.about_xavier_linkedin
+        ),
+        YULRIC(
+            R.string.about_yulric,
+            R.drawable.about_yulric,
+            R.string.about_yulric_email,
+            R.string.about_yulric_linkedin
+        )
     }
 
     companion object {
