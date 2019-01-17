@@ -44,6 +44,7 @@ import okio.sink
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import java.io.File
+import java.io.IOException
 import java.util.*
 
 /**
@@ -185,7 +186,7 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                                     Intent.EXTRA_STREAM,
                                     getFileUri(BuildConfig.APPLICATION_ID, file)
                                 )
-                            } catch (e: Exception) {
+                            } catch (e: IOException) {
                                 timber.e(e, "Error attaching update logs to bug report email")
                             }
                         }
