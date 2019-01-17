@@ -20,7 +20,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Pair
-import com.guerinet.morf.Morf
 import com.guerinet.morf.TextViewItem
 import com.guerinet.morf.morf
 import com.guerinet.morf.util.Position
@@ -73,8 +72,6 @@ class SettingsActivity : DrawerActivity(), TimberTag {
         ga.sendScreen("Settings")
 
         container.morf {
-
-            val morf = Morf.bind(container)
 
             // 24 hour time preference
             aSwitch {
@@ -138,7 +135,7 @@ class SettingsActivity : DrawerActivity(), TimberTag {
             }
 
             // Bug Report
-            morf.text {
+            text {
                 textId = R.string.title_report_bug
                 icon(Position.START, R.drawable.ic_bug_report)
                 onClick {
