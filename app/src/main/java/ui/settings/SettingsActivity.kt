@@ -58,13 +58,13 @@ class SettingsActivity : DrawerActivity(), TimberTag {
 
     override val tag: String = "SettingsActivity"
 
+    override val currentPage = HomepageManager.HomePage.SETTINGS
+
     private val statsPref by inject<BooleanPref>(Prefs.STATS)
 
     private val twentyFourHourPref by inject<BooleanPref>(Prefs.SCHEDULE_24HR)
 
     private val updateDao by inject<UpdateDao>()
-
-    override val currentPage = HomepageManager.HomePage.SETTINGS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
