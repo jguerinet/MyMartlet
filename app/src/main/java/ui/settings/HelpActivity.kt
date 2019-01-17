@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.ui.settings
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.core.util.Pair
-import com.guerinet.morf.Morf
+import com.guerinet.morf.morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
@@ -33,8 +33,8 @@ import org.jetbrains.anko.startActivity
 
 /**
  * Displays useful information to the user
- * @author Rafi Uddin
  * @author Julien Guerinet
+ * @author Rafi Uddin
  * @since 1.0.0
  */
 class HelpActivity : BaseActivity() {
@@ -44,45 +44,47 @@ class HelpActivity : BaseActivity() {
         setContentView(R.layout.activity_help)
         setUpToolbar(true)
 
-        val morf = Morf.bind(container)
+        container.morf {
 
-        // EULA
-        morf.text {
-            text(R.string.title_agreement)
-            onClick { startActivity<AgreementActivity>() }
-        }
+            // EULA
+            text {
+                textId = R.string.title_agreement
+                onClick { startActivity<AgreementActivity>() }
+            }
 
-        // Email
-        morf.text {
-            text(R.string.help_email_walkthrough)
-            onClick {
-                ga.sendEvent("Help", "McGill Email")
+            // Email
+            text {
+                textId = R.string.help_email_walkthrough
+                onClick {
+                    ga.sendEvent("Help", "McGill Email")
 
-                // Show the user the info about the Chrome bug
-                neutralDialog(message = R.string.help_email_walkthrough_info) { _, _ ->
-                    // Open the official McGill Guide
-                    openUrl("http://kb.mcgill.ca/kb/article?ArticleId=4774")
+                    // Show the user the info about the Chrome bug
+                    neutralDialog(message = R.string.help_email_walkthrough_info) { _, _ ->
+                        // Open the official McGill Guide
+                        openUrl("http://kb.mcgill.ca/kb/article?ArticleId=4774")
+                    }
                 }
+            }
+
+            // Help
+            text {
+                textId = R.string.help_walkthrough
+                onClick { startActivity<WalkthroughActivity>() }
+            }
+
+            // McGill App
+            text {
+                textId = R.string.help_download
+                onClick { openPlayStoreApp("com.mcgill") }
+            }
+
+            // Become Beta Tester
+            text {
+                textId = R.string.help_beta_tester
+                onClick { openUrl("https://betas.to/iRinaygk") }
             }
         }
 
-        // Help
-        morf.text {
-            text(R.string.help_walkthrough)
-            onClick { startActivity<WalkthroughActivity>() }
-        }
-
-        // McGill App
-        morf.text {
-            text(R.string.help_download)
-            onClick { openPlayStoreApp("com.mcgill") }
-        }
-
-        // Become Beta Tester
-        morf.text {
-            text(R.string.help_beta_tester)
-            onClick { openUrl("https://betas.to/iRinaygk") }
-        }
 
         // FAQ
         list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
