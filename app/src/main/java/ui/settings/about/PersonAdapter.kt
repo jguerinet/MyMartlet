@@ -62,7 +62,7 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
         parent: ViewGroup,
         viewType: Int
     ): BaseRecyclerViewAdapter.BaseHolder {
-        if (viewType == PERSON) {
+        if (viewType == VIEW_TYPE_PERSON) {
             return PersonHolder(parent)
         }
 
@@ -75,7 +75,8 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
         return HeaderHolder(textView)
     }
 
-    override fun getItemViewType(position: Int): Int = if (items[position] is String) PERSON else -1
+    override fun getItemViewType(position: Int): Int =
+        if (items[position] is String) VIEW_TYPE_PERSON else -1
 
     override fun getItemCount(): Int = items.size
 
@@ -160,9 +161,6 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
     companion object {
 
-        /**
-         * Person view type
-         */
-        private const val PERSON = 0
+        private const val VIEW_TYPE_PERSON = 0
     }
 }
