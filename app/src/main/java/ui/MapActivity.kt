@@ -31,7 +31,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.guerinet.morf.Morf
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
@@ -201,8 +205,9 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         return true
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>,
+        grantResults: IntArray
     ) {
         when (requestCode) {
             LOCATION_REQUEST ->
@@ -225,7 +230,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         val intent = Intent(
             Intent.ACTION_VIEW, Uri.parse(
                 "http://maps.google.com/maps?f=d &daddr="
-                        + place.second.position.latitude + "," + place.second.position.longitude
+                    + place.second.position.latitude + "," + place.second.position.longitude
             )
         )
         startActivity(intent)

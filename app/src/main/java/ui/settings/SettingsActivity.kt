@@ -48,7 +48,9 @@ import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.File
-import java.util.*
+import java.util.ArrayList
+import java.util.Comparator
+import java.util.Locale
 
 /**
  * Allows the user to change the app settings
@@ -91,19 +93,19 @@ class SettingsActivity : DrawerActivity() {
             icon(Position.START, R.drawable.ic_phone_android)
             onClick { item: TextViewItem ->
                 val homePages = listOf(
-                        HomepageManager.HomePage.SCHEDULE,
-                        HomepageManager.HomePage.TRANSCRIPT,
-                        HomepageManager.HomePage.MY_COURSES,
-                        HomepageManager.HomePage.COURSES,
-                        HomepageManager.HomePage.WISHLIST,
-                        HomepageManager.HomePage.SEARCH_COURSES,
-                        HomepageManager.HomePage.EBILL,
-                        HomepageManager.HomePage.MAP,
-                        HomepageManager.HomePage.DESKTOP,
-                        HomepageManager.HomePage.SETTINGS
+                    HomepageManager.HomePage.SCHEDULE,
+                    HomepageManager.HomePage.TRANSCRIPT,
+                    HomepageManager.HomePage.MY_COURSES,
+                    HomepageManager.HomePage.COURSES,
+                    HomepageManager.HomePage.WISHLIST,
+                    HomepageManager.HomePage.SEARCH_COURSES,
+                    HomepageManager.HomePage.EBILL,
+                    HomepageManager.HomePage.MAP,
+                    HomepageManager.HomePage.DESKTOP,
+                    HomepageManager.HomePage.SETTINGS
                 )
-                        .map { Pair(it, homePageManager.getTitle(it)) }
-                        .sortedWith(Comparator { o1, o2 -> o1.second.compareTo(o2.second) })
+                    .map { Pair(it, homePageManager.getTitle(it)) }
+                    .sortedWith(Comparator { o1, o2 -> o1.second.compareTo(o2.second) })
 
                 val currentChoice = homePages.indexOfFirst { it.first == homePageManager.homePage }
 
@@ -173,18 +175,18 @@ class SettingsActivity : DrawerActivity() {
                 var connection = "Connection Type: N/A"
                 if (info != null) {
                     connection = "Connection Type: " + info.typeName + " " +
-                            info.subtypeName
+                        info.subtypeName
                 }
 
                 val content = "===============" +
-                        "\nDebug Info" +
-                        "\n===============" +
-                        "\n" + device +
-                        "\n" + sdkVersion +
-                        "\n" + appVersion +
-                        "\n" + language +
-                        "\n" + connection +
-                        "\n===============\n\n"
+                    "\nDebug Info" +
+                    "\n===============" +
+                    "\n" + device +
+                    "\n" + sdkVersion +
+                    "\n" + appVersion +
+                    "\n" + language +
+                    "\n" + connection +
+                    "\n===============\n\n"
                 intent.putExtra(Intent.EXTRA_TEXT, content)
 
                 // Log everything before printing the logs so it's included

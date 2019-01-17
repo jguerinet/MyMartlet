@@ -18,7 +18,12 @@ package com.guerinet.mymartlet.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -64,7 +69,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
-import java.util.*
+import java.util.Stack
 
 /**
  * Displays the user's schedule
@@ -126,7 +131,7 @@ class ScheduleActivity : DrawerActivity() {
 
     // Only show the menu in portrait mode
     override fun onPrepareOptionsMenu(menu: Menu): Boolean =
-            resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE
+        resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.refresh, menu)
@@ -238,8 +243,10 @@ class ScheduleActivity : DrawerActivity() {
 
                 // Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.transcript().enqueue(object : Callback<TranscriptResponse> {
-                    override fun onResponse(call: Call<TranscriptResponse>,
-                            response: Response<TranscriptResponse>) {
+                    override fun onResponse(
+                        call: Call<TranscriptResponse>,
+                        response: Response<TranscriptResponse>
+                    ) {
                         launch(Dispatchers.IO) {
                             transcriptDao.update(response.body()?.transcript!!)
                         }
@@ -346,8 +353,10 @@ class ScheduleActivity : DrawerActivity() {
      * @param clickable          True if the user can click on the courses (portrait),
      * false otherwise (landscape)
      */
-    private fun fillSchedule(timetableContainer: LinearLayout?, scheduleContainer: LinearLayout?,
-            date: LocalDate, clickable: Boolean) {
+    private fun fillSchedule(
+        timetableContainer: LinearLayout?, scheduleContainer: LinearLayout?,
+        date: LocalDate, clickable: Boolean
+    ) {
         // Clear everything out
         timetableContainer?.removeAllViews()
         scheduleContainer?.removeAllViews()
@@ -422,14 +431,16 @@ class ScheduleActivity : DrawerActivity() {
 
                         // Find out how long this course is in terms of blocks of 30 min
                         val length = ChronoUnit.MINUTES.between(
-                                currentCourse.roundedStartTime,
-                                currentCourse.roundedEndTime).toInt() / 30
+                            currentCourse.roundedStartTime,
+                            currentCourse.roundedEndTime
+                        ).toInt() / 30
 
                         // Set the height of the view depending on this height
                         val lp = LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                resources
-                                        .getDimension(R.dimen.cell_30min_height).toInt() * length)
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            resources
+                                .getDimension(R.dimen.cell_30min_height).toInt() * length
+                        )
                         scheduleCell.layoutParams = lp
 
                         // Check if we need to make the course clickable
@@ -470,10 +481,10 @@ class ScheduleActivity : DrawerActivity() {
 
         // Create the dialog
         val alert = AlertDialog.Builder(this)
-                .setView(view)
-                .setCancelable(true)
+            .setView(view)
+            .setCancelable(true)
             .setNeutralButton(R.string.done) { dialog, _ -> dialog.dismiss() }
-                .show()
+            .show()
 
         // Populate the form
         val shape = Morf.shape
@@ -522,7 +533,7 @@ class ScheduleActivity : DrawerActivity() {
                 onClick {
                     openUrl(
                         "http://www.docuum.com/mcgill/${course.subject.toLowerCase()}" +
-                                "/${course.number}"
+                            "/${course.number}"
                     )
                 }
             }
@@ -610,7 +621,7 @@ class ScheduleActivity : DrawerActivity() {
         override fun getCount() = 1000000
 
         fun getDate(position: Int): LocalDate =
-                startingDate.plusDays((position - startingDateIndex).toLong())
+            startingDate.plusDays((position - startingDateIndex).toLong())
 
         // This is to force the refreshing of all of the views when the view is reloaded
         override fun getItemPosition(`object`: Any): Int =

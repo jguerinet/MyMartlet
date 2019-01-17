@@ -34,12 +34,12 @@ internal class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback(
      * Updates the list of [transcriptCourses] shown
      */
     fun update(transcriptCourses: List<TranscriptCourse>?) =
-            submitList(transcriptCourses?.toMutableList())
+        submitList(transcriptCourses?.toMutableList())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CourseHolder(parent)
 
     internal class CourseHolder(parent: ViewGroup) :
-            BaseHolder<TranscriptCourse>(parent, R.layout.item_transcript_course) {
+        BaseHolder<TranscriptCourse>(parent, R.layout.item_transcript_course) {
 
         override fun bind(position: Int, item: TranscriptCourse) {
             itemView.apply {
@@ -59,9 +59,9 @@ internal class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback(
     class ItemCallback : DiffUtil.ItemCallback<TranscriptCourse>() {
 
         override fun areItemsTheSame(oldItem: TranscriptCourse, newItem: TranscriptCourse) =
-                oldItem.courseCode == newItem.courseCode && oldItem.term == newItem.term
+            oldItem.courseCode == newItem.courseCode && oldItem.term == newItem.term
 
         override fun areContentsTheSame(oldItem: TranscriptCourse, newItem: TranscriptCourse) =
-                oldItem == newItem
+            oldItem == newItem
     }
 }

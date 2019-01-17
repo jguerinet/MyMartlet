@@ -71,7 +71,7 @@ val appModule: Module = module {
         object : GAManager(androidContext(), R.xml.global_tracker) {
 
             override val isDisabled: Boolean = BuildConfig.DEBUG ||
-                    !get<BooleanPref>(Prefs.STATS).value
+                !get<BooleanPref>(Prefs.STATS).value
         }
     }
 

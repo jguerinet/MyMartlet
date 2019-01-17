@@ -20,7 +20,7 @@ import android.content.Context
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.guerinet.mymartlet.R
-import java.util.*
+import java.util.Locale
 
 /**
  * A type of place that the user can filter by

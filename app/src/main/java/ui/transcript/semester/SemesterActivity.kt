@@ -47,7 +47,7 @@ class SemesterActivity : BaseActivity() {
 
         list.apply {
             list.layoutManager =
-                    androidx.recyclerview.widget.LinearLayoutManager(this@SemesterActivity)
+                androidx.recyclerview.widget.LinearLayoutManager(this@SemesterActivity)
             list.adapter = this@SemesterActivity.adapter
         }
 
@@ -62,11 +62,13 @@ class SemesterActivity : BaseActivity() {
             program.text = semester.program
             gpa.text = getString(R.string.transcript_termGPA, semester.gpa.toString())
             credits.text = getString(R.string.semester_termCredits, semester.credits.toString())
-            fullTime.setText(if (semester.isFullTime) {
-                R.string.semester_fullTime
-            } else {
-                R.string.semester_partTime
-            })
+            fullTime.setText(
+                if (semester.isFullTime) {
+                    R.string.semester_fullTime
+                } else {
+                    R.string.semester_partTime
+                }
+            )
         }
 
         observe(semesterViewModel.getTranscriptCourses(semesterId)) {

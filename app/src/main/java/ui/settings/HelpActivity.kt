@@ -95,17 +95,18 @@ class HelpActivity : BaseActivity() {
     private inner class FAQAdapter : BaseRecyclerViewAdapter() {
 
         private val faqs = mutableListOf(
-                Pair(R.string.help_question1, R.string.help_answer1),
-                Pair(R.string.help_question2, R.string.help_answer2),
-                Pair(R.string.help_question3, R.string.help_answer3))
+            Pair(R.string.help_question1, R.string.help_answer1),
+            Pair(R.string.help_question2, R.string.help_answer2),
+            Pair(R.string.help_question3, R.string.help_answer3)
+        )
 
         override fun getItemCount(): Int = faqs.size
 
         override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): FAQHolder =
-                FAQHolder(viewGroup)
+            FAQHolder(viewGroup)
 
         internal inner class FAQHolder(parent: ViewGroup) :
-                BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_faq) {
+            BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_faq) {
 
             override fun bind(position: Int) {
                 val faq = faqs[position]

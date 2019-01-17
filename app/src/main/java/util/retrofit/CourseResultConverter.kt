@@ -32,7 +32,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Retrofit converter to parse a list of course results when searching for courses
@@ -187,7 +187,6 @@ class CourseResultConverter : Converter.Factory(), Converter<ResponseBody, List<
                                 startTime = ScheduleConverter.defaultStartTime
                                 endTime = ScheduleConverter.defaultEndTime
                             }
-
                         }
                         // Capacity
                         10 -> capacity = Integer.parseInt(rowString)

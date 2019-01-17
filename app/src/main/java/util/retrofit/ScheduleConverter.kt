@@ -33,7 +33,8 @@ import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.*
+import java.util.ArrayList
+import java.util.Locale
 
 /**
  * Retrofit converter to parse the user's schedule as a list of courses (for one currentTerm)

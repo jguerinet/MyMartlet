@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.item_course.view.*
  * @since 1.0.0
  */
 internal class CoursesAdapter(emptyView: TextView) :
-        BaseListAdapter<Course>(ItemCallback(), emptyView) {
+    BaseListAdapter<Course>(ItemCallback(), emptyView) {
 
     val checkedCourses = mutableListOf<Course>()
 
@@ -47,7 +47,7 @@ internal class CoursesAdapter(emptyView: TextView) :
     }
 
     internal inner class CourseHolder(parent: ViewGroup) :
-            BaseHolder<Course>(parent, R.layout.item_course) {
+        BaseHolder<Course>(parent, R.layout.item_course) {
 
         override fun bind(position: Int, item: Course) {
             itemView.apply {
@@ -83,7 +83,8 @@ internal class CoursesAdapter(emptyView: TextView) :
 
     class ItemCallback : DiffUtil.ItemCallback<Course>() {
 
-        override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean = oldItem.term == newItem.term && oldItem.crn == newItem.crn
+        override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean =
+            oldItem.term == newItem.term && oldItem.crn == newItem.crn
 
         override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean = oldItem == newItem
     }

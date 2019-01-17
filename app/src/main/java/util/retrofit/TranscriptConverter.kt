@@ -35,10 +35,12 @@ import java.lang.reflect.Type
  * @since 1.0.0
  */
 class TranscriptConverter : Converter.Factory(),
-        Converter<ResponseBody, TranscriptConverter.TranscriptResponse> {
+    Converter<ResponseBody, TranscriptConverter.TranscriptResponse> {
 
-    override fun responseBodyConverter(type: Type?, annotations: Array<Annotation>?,
-            retrofit: Retrofit?): Converter<ResponseBody, *>? {
+    override fun responseBodyConverter(
+        type: Type?, annotations: Array<Annotation>?,
+        retrofit: Retrofit?
+    ): Converter<ResponseBody, *>? {
         return if (type != TranscriptResponse::class.java) {
             // This can only convert transcripts
             null
@@ -94,12 +96,14 @@ class TranscriptConverter : Converter.Factory(),
                 val (season, yearString) = when {
                     // Normal Semester that starts with a season name
                     text.startsWith(Season.FALL.title) ||
-                            text.startsWith(Season.WINTER.title) ||
-                            text.startsWith(Season.SUMMER.title) ->
+                        text.startsWith(Season.WINTER.title) ||
+                        text.startsWith(Season.SUMMER.title) ->
                         Pair(Season.getSeasonFromTitle(semesterItems[0]), semesterItems[1])
                     // Change Semester
-                    text.startsWith("Change") -> Pair(Season.getSeasonFromTitle(semesterItems[3]),
-                            semesterItems[4])
+                    text.startsWith("Change") -> Pair(
+                        Season.getSeasonFromTitle(semesterItems[3]),
+                        semesterItems[4]
+                    )
                     // Readmitted
                     else -> Pair(Season.getSeasonFromTitle(semesterItems[1]), semesterItems[2])
                 }
@@ -123,7 +127,8 @@ class TranscriptConverter : Converter.Factory(),
                         // Student has graduated
                         break
                     } else if (text.startsWith("Dip") || text.startsWith("Bachelor") ||
-                            text.startsWith("Master") || text.startsWith("Doctor")) {
+                        text.startsWith("Master") || text.startsWith("Doctor")
+                    ) {
                         // Semester Info
 
                         // Example strings:
@@ -155,8 +160,9 @@ class TranscriptConverter : Converter.Factory(),
                             termCredits = rows[semesterIndex + 2].text().toDouble()
                         }
                     } else if (text.matches("[A-Za-z]{4} [0-9]{3}.*".toRegex()) ||
-                            text.matches("[A-Za-z]{3}[0-9] [0-9]{3}".toRegex()) ||
-                            text.startsWith("Credits/Exemptions")) {
+                        text.matches("[A-Za-z]{3}[0-9] [0-9]{3}".toRegex()) ||
+                        text.startsWith("Credits/Exemptions")
+                    ) {
                         // Course Info
                         var title = ""
                         var code = ""
@@ -167,9 +173,11 @@ class TranscriptConverter : Converter.Factory(),
                         // Extract course information if row contains a course code
                         //  Regex looks for a string in the form "ABCD ###"
                         if (text.matches("[A-Za-z]{4} [0-9]{3}.*".toRegex()) ||
-                                text.matches("[A-Za-z]{3}[0-9] [0-9]{3}".toRegex())) {
+                            text.matches("[A-Za-z]{3}[0-9] [0-9]{3}".toRegex())
+                        ) {
                             if (text.matches("[A-Za-z]{4} [0-9]{3}".toRegex()) ||
-                                    text.matches("[A-Za-z]{3}[0-9] [0-9]{3}".toRegex())) {
+                                text.matches("[A-Za-z]{3}[0-9] [0-9]{3}".toRegex())
+                            ) {
                                 // One semester courses are in the form ABCD ###
                                 // Some courses have the form ABC#
                                 code = text
@@ -202,20 +210,22 @@ class TranscriptConverter : Converter.Factory(),
                             averageGrade = ""
                             runCodeWithException {
                                 if (rows[semesterIndex + 7].text()
-                                                .matches("[ABCDF].|[ABCDF]".toRegex())) {
+                                        .matches("[ABCDF].|[ABCDF]".toRegex())
+                                ) {
                                     // Regex looks for a letter grade
                                     averageGrade = rows[semesterIndex + 7].text()
                                 } else if (rows[semesterIndex + 6].text()
-                                                .matches("[ABCDF].|[ABCDF]".toRegex())) {
+                                        .matches("[ABCDF].|[ABCDF]".toRegex())
+                                ) {
                                     // Failed course, average grade appears one row earlier
                                     averageGrade = rows[semesterIndex + 6].text()
                                 }
                             }
-
                         } else {
                             // Extract transfer credit information
                             if (!rows[semesterIndex + 3].text()
-                                            .matches("[A-Za-z]{4}.*".toRegex())) {
+                                    .matches("[A-Za-z]{4}.*".toRegex())
+                            ) {
                                 // Individual transferred courses not listed
                                 code = rows[semesterIndex + 2].text()
 
@@ -229,7 +239,7 @@ class TranscriptConverter : Converter.Factory(),
                                     // Try checking for the number of credits transferred per course
                                     code = rows[semesterIndex + 2].text()
                                     title = rows[semesterIndex + 3].text() + " " +
-                                            rows[semesterIndex + 4].text()
+                                        rows[semesterIndex + 4].text()
                                     credits = rows[semesterIndex + 5].text().toDouble()
                                 } catch (e: NumberFormatException) {
                                     // Number of credits per course not listed
@@ -243,28 +253,31 @@ class TranscriptConverter : Converter.Factory(),
                                         var addedIndex = 3
                                         var first = true
                                         while (rows[semesterIndex + addedIndex].text()
-                                                        .matches("[A-Za-z]{4}.*".toRegex())) {
+                                                .matches("[A-Za-z]{4}.*".toRegex())
+                                        ) {
                                             if (!first) {
                                                 title += "\n"
                                             }
                                             first = false
                                             title = title +
-                                                    rows[semesterIndex + addedIndex].text() + " " +
-                                                    rows[semesterIndex + addedIndex + 1].text()
+                                                rows[semesterIndex + addedIndex].text() + " " +
+                                                rows[semesterIndex + addedIndex + 1].text()
                                             addedIndex += 2
                                         }
                                     }
-
                                 }
-
                             }
                             termCredits = credits
                         }
 
                         // There is at least one course
                         hasCourse = true
-                        courses.add(TranscriptCourse(semesterId, Term(season, year), code,
-                                title, credits, grade, averageGrade))
+                        courses.add(
+                            TranscriptCourse(
+                                semesterId, Term(season, year), code,
+                                title, credits, grade, averageGrade
+                            )
+                        )
                     }
 
                     // Breaks the loop if the next semester is reached
@@ -281,17 +294,19 @@ class TranscriptConverter : Converter.Factory(),
                     } catch (e: IndexOutOfBoundsException) {
                         break
                     }
-
                 }
 
                 // Check if there are any courses associated with the semester
                 //  If not, don't add the semester to the list of semesters
                 if (hasCourse) {
-                    semesters.add(Semester(semesterId, Term(season, year), program,
-                            bachelor, termCredits, termGPA, isFullTime))
+                    semesters.add(
+                        Semester(
+                            semesterId, Term(season, year), program,
+                            bachelor, termCredits, termGPA, isFullTime
+                        )
+                    )
                     semesterId++
                 }
-
             }
         }
 
@@ -315,10 +330,10 @@ class TranscriptConverter : Converter.Factory(),
      * Returns true if the [text] of the data row is the start of a semester, false otherwise
      */
     private fun isSemesterStart(text: String): Boolean =
-            text.startsWith(Season.FALL.title) || text.startsWith(Season.WINTER.title) ||
-                    text.startsWith(Season.SUMMER.title) || text.startsWith("Readmitted Fall") ||
-                    text.startsWith("Readmitted Winter") || text.startsWith("Readmitted Summer") ||
-                    text.startsWith("Change")
+        text.startsWith(Season.FALL.title) || text.startsWith(Season.WINTER.title) ||
+            text.startsWith(Season.SUMMER.title) || text.startsWith("Readmitted Fall") ||
+            text.startsWith("Readmitted Winter") || text.startsWith("Readmitted Summer") ||
+            text.startsWith("Change")
 
     /**
      * Returns the number of credits extracted from the [credits] String
@@ -334,6 +349,8 @@ class TranscriptConverter : Converter.Factory(),
     /**
      * Response object with all of the parsed info
      */
-    class TranscriptResponse(val transcript: Transcript, val semesters: List<Semester>,
-            val courses: List<TranscriptCourse>)
+    class TranscriptResponse(
+        val transcript: Transcript, val semesters: List<Semester>,
+        val courses: List<TranscriptCourse>
+    )
 }

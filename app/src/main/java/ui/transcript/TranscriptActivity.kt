@@ -49,7 +49,7 @@ class TranscriptActivity : DrawerActivity() {
 
         list.apply {
             layoutManager =
-                    androidx.recyclerview.widget.LinearLayoutManager(this@TranscriptActivity)
+                androidx.recyclerview.widget.LinearLayoutManager(this@TranscriptActivity)
             adapter = this@TranscriptActivity.adapter
         }
 

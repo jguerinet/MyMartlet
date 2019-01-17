@@ -30,4 +30,4 @@ import androidx.lifecycle.Observer
  * Observes the [liveData] and calls the [body] when it changes
  */
 fun <T : Any?, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
-        liveData.observe(this, Observer(body))
+    liveData.observe(this, Observer(body))

@@ -20,7 +20,11 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.guerinet.morf.Morf
-import com.guerinet.mymartlet.util.*
+import com.guerinet.mymartlet.util.appModule
+import com.guerinet.mymartlet.util.dbModule
+import com.guerinet.mymartlet.util.networkModule
+import com.guerinet.mymartlet.util.prefsModule
+import com.guerinet.mymartlet.util.viewModelsModule
 import com.guerinet.suitcase.log.KoinLogger
 import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat

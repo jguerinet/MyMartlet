@@ -24,7 +24,7 @@ import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistHelper
 import com.guerinet.mymartlet.util.Constants
 import kotlinx.android.synthetic.main.view_courses.*
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Shows the results of the search from the SearchActivity

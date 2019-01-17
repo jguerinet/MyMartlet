@@ -25,7 +25,7 @@ import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.orhanobut.hawk.Hawk
-import java.util.*
+import java.util.Calendar
 
 /**
  * TODO Clean up
@@ -47,8 +47,10 @@ class BootReceiver : BroadcastReceiver() {
     var gradeCheckerPref: BooleanPref? = null
 
     override fun onReceive(context: Context, intent: Intent) {
-        setAlarm(context, usernamePref!!.value, Hawk.get<String>(Prefs.PASSWORD),
-                seatCheckerPref!!.value, gradeCheckerPref!!.value)
+        setAlarm(
+            context, usernamePref!!.value, Hawk.get<String>(Prefs.PASSWORD),
+            seatCheckerPref!!.value, gradeCheckerPref!!.value
+        )
     }
 
     companion object {
@@ -58,8 +60,10 @@ class BootReceiver : BroadcastReceiver() {
          *
          * @param context The app context
          */
-        fun setAlarm(context: Context, username: String?, password: String?,
-                seatChecker: Boolean, gradeChecker: Boolean) {
+        fun setAlarm(
+            context: Context, username: String?, password: String?,
+            seatChecker: Boolean, gradeChecker: Boolean
+        ) {
             //If we don't need it, don't start it
             if (username == null || password == null || !seatChecker && !gradeChecker) {
                 //Make sure it's cancelled
@@ -77,8 +81,10 @@ class BootReceiver : BroadcastReceiver() {
             calendar.set(Calendar.HOUR_OF_DAY, 8)
             calendar.set(Calendar.MINUTE, 30)
 
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-                    AlarmManager.INTERVAL_DAY, getPendingIntent(context))
+            manager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY, getPendingIntent(context)
+            )
         }
 
         /**

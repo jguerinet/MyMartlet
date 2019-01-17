@@ -48,8 +48,10 @@ import retrofit2.Response
  * @param container View to manipulate
  * @param canAdd    True if the user can add courses to the wishlist, false otherwise
  */
-class WishlistHelper(private val activity: BaseActivity, container: View,
-        private val canAdd: Boolean) : KoinComponent {
+class WishlistHelper(
+    private val activity: BaseActivity, container: View,
+    private val canAdd: Boolean
+) : KoinComponent {
 
     private val courseResultDao by inject<CourseResultDao>()
 
@@ -126,34 +128,36 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
 
     private fun register(courses: List<CourseResult>) {
         mcGillService.registration(McGillManager.getRegistrationURL(courses, false))
-                .enqueue(object : Callback<List<RegistrationError>> {
+            .enqueue(object : Callback<List<RegistrationError>> {
 
-                    override fun onResponse(call: Call<List<RegistrationError>>,
-                            response: Response<List<RegistrationError>>) {
-                        activity.toolbarProgress.isVisible = false
+                override fun onResponse(
+                    call: Call<List<RegistrationError>>,
+                    response: Response<List<RegistrationError>>
+                ) {
+                    activity.toolbarProgress.isVisible = false
 
-                        val body = response.body()
+                    val body = response.body()
 
-                        if (body == null || body.isEmpty()) {
-                            // If there are no errors, show the success message
-                            activity.toast(R.string.registration_success)
-                            courses.forEach { courseResultDao.delete(it) }
-                            return
-                        }
-
-                        val errorCourses = courses.map { it as Course }.toMutableList()
-
-                        // Prepare the error message String
-                        val errorMessage = body.joinToString(separator = "\n") {
-                            it.getString(errorCourses)
-                        }
-
-                        activity.errorDialog(errorMessage)
+                    if (body == null || body.isEmpty()) {
+                        // If there are no errors, show the success message
+                        activity.toast(R.string.registration_success)
+                        courses.forEach { courseResultDao.delete(it) }
+                        return
                     }
 
-                    override fun onFailure(call: Call<List<RegistrationError>>, t: Throwable) =
-                            activity.handleError("(un)registering for courses", t)
-                })
+                    val errorCourses = courses.map { it as Course }.toMutableList()
+
+                    // Prepare the error message String
+                    val errorMessage = body.joinToString(separator = "\n") {
+                        it.getString(errorCourses)
+                    }
+
+                    activity.errorDialog(errorMessage)
+                }
+
+                override fun onFailure(call: Call<List<RegistrationError>>, t: Throwable) =
+                    activity.handleError("(un)registering for courses", t)
+            })
     }
 
     /**

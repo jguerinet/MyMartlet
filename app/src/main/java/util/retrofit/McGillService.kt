@@ -16,11 +16,20 @@
 
 package com.guerinet.mymartlet.util.retrofit
 
-import com.guerinet.mymartlet.model.*
+import com.guerinet.mymartlet.model.Course
+import com.guerinet.mymartlet.model.CourseResult
+import com.guerinet.mymartlet.model.RegistrationError
+import com.guerinet.mymartlet.model.Statement
+import com.guerinet.mymartlet.model.Term
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
+import retrofit2.http.Url
 
 /**
  * Retrieves information from McGill
@@ -65,15 +74,19 @@ interface McGillService {
      *  [maxCredits], [startHour], [startMinute], [startAM], [endHour], [endMinute], [endAM], and
      *  [days]
      */
-    @GET("bwskfcls.P_GetCrse_Advanced?rsts=dummy&crn=dummy&sel_subj=dummy&sel_day=dummy&" +
+    @GET(
+        "bwskfcls.P_GetCrse_Advanced?rsts=dummy&crn=dummy&sel_subj=dummy&sel_day=dummy&" +
             "sel_schd=dummy&sel_insm=dummy&sel_camp=dummy&sel_levl=dummy&sel_sess=dummy&" +
             "sel_instr=dummy&sel_ptrm=dummy&sel_instr=%25&sel_attr=dummy&sel_schd=%25&" +
-            "sel_levl=%25&sel_ptrm=%25&sel_attr=%25&SUB_BTN=Get+Course+Sections&path=1")
-    fun search(@Query("term_in") term: Term, @Query("sel_subj") subject: String,
-            @Query("sel_crse") courseNumber: String, @Query("sel_title") title: String,
-            @Query("sel_from_cred") minCredits: Int, @Query("sel_to_cred") maxCredits: Int,
-            @Query("begin_hh") startHour: Int, @Query("begin_mi") startMinute: Int,
-            @Query("begin_ap") startAM: String, @Query("end_hh") endHour: Int,
-            @Query("end_mi") endMinute: Int, @Query("end_ap") endAM: String,
-            @Query("sel_day") days: List<Char>): Call<List<CourseResult>>
+            "sel_levl=%25&sel_ptrm=%25&sel_attr=%25&SUB_BTN=Get+Course+Sections&path=1"
+    )
+    fun search(
+        @Query("term_in") term: Term, @Query("sel_subj") subject: String,
+        @Query("sel_crse") courseNumber: String, @Query("sel_title") title: String,
+        @Query("sel_from_cred") minCredits: Int, @Query("sel_to_cred") maxCredits: Int,
+        @Query("begin_hh") startHour: Int, @Query("begin_mi") startMinute: Int,
+        @Query("begin_ap") startAM: String, @Query("end_hh") endHour: Int,
+        @Query("end_mi") endMinute: Int, @Query("end_ap") endAM: String,
+        @Query("sel_day") days: List<Char>
+    ): Call<List<CourseResult>>
 }
