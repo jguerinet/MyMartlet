@@ -103,17 +103,17 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
             itemView.apply {
                 // Name
-                name.setText(person.nameId)
+                name.setText(person.nameRes)
 
                 // Picture
                 Picasso.get()
-                    .load(person.pictureId)
+                    .load(person.pictureRes)
                     .into(picture)
 
                 // LinkedIn
                 linkedIn.setOnClickListener {
                     ga.sendEvent("About", "Linkedin", person.name)
-                    context.openUrl(context.getString(person.linkedInId))
+                    context.openUrl(context.getString(person.linkedInRes))
                 }
 
                 // Email
@@ -122,7 +122,7 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
                     // Send an email
                     val intent = Intent(Intent.ACTION_SEND)
-                        .putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(person.emailId)))
+                        .putExtra(Intent.EXTRA_EMAIL, arrayOf(context.getString(person.emailRes)))
                         .setType("message/rfc822")
                     context.startActivity(Intent.createChooser(intent, null))
                 }
@@ -131,10 +131,10 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
     }
 
     private enum class Person(
-        @StringRes val nameId: Int,
-        @DrawableRes val pictureId: Int,
-        @StringRes val emailId: Int,
-        @StringRes val linkedInId: Int
+        @StringRes val nameRes: Int,
+        @DrawableRes val pictureRes: Int,
+        @StringRes val emailRes: Int,
+        @StringRes val linkedInRes: Int
     ) {
         JULIEN(
             R.string.about_julien,
