@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.guerinet.mymartlet.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
@@ -35,10 +36,11 @@ class SemesterViewModel(
     /**
      * Returns the observable [Semester] for the [semesterId]
      */
-    fun getSemester(semesterId: Int) = semesterDao.get(semesterId)
+    fun getSemester(semesterId: Int): LiveData<Semester> = semesterDao.get(semesterId)
 
     /**
      * Returns the observable list of [TranscriptCourse]s for the [semesterId]
      */
-    fun getTranscriptCourses(semesterId: Int) = transcriptCourseDao.get(semesterId)
+    fun getTranscriptCourses(semesterId: Int): LiveData<List<TranscriptCourse>> =
+        transcriptCourseDao.get(semesterId)
 }

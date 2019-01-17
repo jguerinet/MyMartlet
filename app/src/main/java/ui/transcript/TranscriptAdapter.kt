@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ internal class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SemesterHolder(parent)
 
     internal class SemesterHolder(parent: ViewGroup) :
-            BaseHolder<Semester>(parent, R.layout.item_semester) {
+        BaseHolder<Semester>(parent, R.layout.item_semester) {
 
         override fun bind(position: Int, item: Semester) {
             itemView.apply {
@@ -55,13 +55,13 @@ internal class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<Semester>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<Semester>() {
 
         override fun areItemsTheSame(oldItem: Semester, newItem: Semester): Boolean =
-                oldItem.term == newItem.term
+            oldItem.term == newItem.term
 
         override fun areContentsTheSame(oldItem: Semester, newItem: Semester): Boolean =
-                oldItem == newItem
+            oldItem == newItem
 
     }
 }
