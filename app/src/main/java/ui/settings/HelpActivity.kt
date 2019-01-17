@@ -17,18 +17,14 @@
 package com.guerinet.mymartlet.ui.settings
 
 import android.os.Bundle
-import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.morf.morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
 import com.guerinet.suitcase.dialog.neutralDialog
-import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
 import com.guerinet.suitcase.util.extensions.openUrl
 import kotlinx.android.synthetic.main.activity_help.*
-import kotlinx.android.synthetic.main.item_faq.view.*
 import org.jetbrains.anko.startActivity
 
 /**
@@ -82,39 +78,6 @@ class HelpActivity : BaseActivity() {
             text {
                 textId = R.string.help_beta_tester
                 onClick { openUrl("https://play.google.com/apps/testing/com.guerinet.mymartlet") }
-            }
-        }
-
-
-        // FAQ
-        list.layoutManager = LinearLayoutManager(this)
-        list.adapter = FaqAdapter()
-    }
-
-    /**
-     * Displays the Faqs
-     */
-    private inner class FaqAdapter : BaseRecyclerViewAdapter() {
-
-        private val faqs = listOf(
-            R.string.help_question1 to R.string.help_answer1,
-            R.string.help_question2 to R.string.help_answer2,
-            R.string.help_question3 to R.string.help_answer3
-        )
-
-        override fun getItemCount(): Int = faqs.size
-
-        override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int) = FAQHolder(viewGroup)
-
-        internal inner class FAQHolder(parent: ViewGroup) :
-            BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_faq) {
-
-            override fun bind(position: Int) {
-                val faq = faqs[position]
-                itemView.apply {
-                    question.setText(faq.first)
-                    answer.setText(faq.second)
-                }
             }
         }
     }
