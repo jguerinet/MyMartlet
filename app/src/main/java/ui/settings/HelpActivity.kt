@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.ui.settings
 
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.core.util.Pair
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.morf.morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
@@ -87,7 +87,7 @@ class HelpActivity : BaseActivity() {
 
 
         // FAQ
-        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        list.layoutManager = LinearLayoutManager(this)
         list.adapter = FAQAdapter()
     }
 
@@ -96,25 +96,25 @@ class HelpActivity : BaseActivity() {
      */
     private inner class FAQAdapter : BaseRecyclerViewAdapter() {
 
-        private val faqs = mutableListOf(
-                Pair(R.string.help_question1, R.string.help_answer1),
-                Pair(R.string.help_question2, R.string.help_answer2),
-                Pair(R.string.help_question3, R.string.help_answer3))
+        private val faqs = listOf(
+            R.string.help_question1 to R.string.help_answer1,
+            R.string.help_question2 to R.string.help_answer2,
+            R.string.help_question3 to R.string.help_answer3
+        )
 
         override fun getItemCount(): Int = faqs.size
 
-        override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): FAQHolder =
-                FAQHolder(viewGroup)
+        override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int) = FAQHolder(viewGroup)
 
         internal inner class FAQHolder(parent: ViewGroup) :
-                BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_faq) {
+            BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_faq) {
 
             override fun bind(position: Int) {
                 val faq = faqs[position]
-                val question = faq.first ?: return
-                val answer = faq.second ?: return
-                itemView.question.setText(question)
-                itemView.answer.setText(answer)
+                itemView.apply {
+                    question.setText(faq.first)
+                    answer.setText(faq.second)
+                }
             }
         }
     }
