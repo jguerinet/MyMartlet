@@ -110,28 +110,27 @@ private fun Elements.parseCourse(
         .map { it.map { e -> e.text().trim() } }
         .forEach { cells ->
 
-            val times = cells[0].split("-").mapNotNull { it.parseTime() }
-            if (times.size != 2)
-                return@forEach warning("Invalid time range")
-
-            val (startTime, endTime) = times
+            val (startTime, endTime) = cells[0]
+                .split("-")
+                .mapNotNull { it.parseTime() }
+                .takeIf { it.size == 2 }
+                ?: return@forEach warning("Time range mismatch; expected two entries")
 
             val days = cells[1].mapNotNull { DayUtils.charToDay(it) }
 
             val location = cells[2]
 
-            val dates = cells[3].split("-").mapNotNull {
-                try {
-                    LocalDate.parse(it.trim(), dtf)
-                } catch (e: DateTimeParseException) {
-                    debugger.debug("Date parse error: ${e.message}")
-                    null
-                }
-            }
-            if (dates.size != 2)
-                return@forEach warning("Invalid date range")
-
-            val (startDate, endDate) = dates
+            val (startDate, endDate) = cells[3]
+                .split("-")
+                .mapNotNull {
+                    try {
+                        LocalDate.parse(it.trim(), dtf)
+                    } catch (e: DateTimeParseException) {
+                        debugger.debug("Date parse error: ${e.message}")
+                        null
+                    }
+                }.takeIf { it.size == 2 }
+                ?: return@forEach warning("Date range mismatch; expected two entries")
 
             val type = cells[4]
 
