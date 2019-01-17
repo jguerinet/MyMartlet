@@ -18,6 +18,7 @@ package com.guerinet.mymartlet.ui.settings.about
 
 import android.content.Intent
 import android.graphics.Typeface
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.guerinet.mymartlet.R
@@ -105,6 +106,8 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
                 val nameId = getResourceId(idPrefix)
                 if (nameId != 0) {
                     name.setText(nameId)
+                } else {
+                    name.text = ""
                 }
 
                 // Picture
@@ -113,12 +116,16 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
                     Picasso.get()
                         .load(pictureId)
                         .into(picture)
+                } else {
+                    picture.visibility = View.GONE
                 }
 
                 // Role
                 val roleId = getResourceId(idPrefix + "_role")
                 if (roleId != 0) {
                     role.setText(roleId)
+                } else {
+                    role.text = ""
                 }
 
                 // LinkedIn
@@ -128,6 +135,8 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
                         ga.sendEvent("About", "Linkedin", personName)
                         context.openUrl(context.getString(linkedInId))
                     }
+                } else {
+                    linkedIn.visibility = View.GONE
                 }
 
                 // Email
@@ -142,6 +151,8 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
                             .setType("message/rfc822")
                         context.startActivity(Intent.createChooser(intent, null))
                     }
+                } else {
+                    email.visibility = View.GONE
                 }
             }
         }
