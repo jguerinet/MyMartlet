@@ -46,9 +46,7 @@ class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
 
     val mcGillService: McGillService
 
-    /**
-     * Cookie jar to use to store any McGill related cookies
-     */
+    // Stores McGill related cookies
     private val cookieJar = object : CookieJar {
         private val cookieStore = mutableMapOf<String, List<Cookie>>()
 
