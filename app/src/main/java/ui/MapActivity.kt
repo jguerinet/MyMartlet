@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -327,10 +327,10 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         map?.setOnMarkerClickListener(this)
 
         doAsync {
-            val places = placeDao.getPlaces()
+            val thePlaces = placeDao.getPlaces()
             val placeId = intent.getIntExtra(Constants.ID, -1)
             var theMarker: Marker? = null
-            places.mapNotNullTo(this@MapActivity.places) {
+            thePlaces.mapNotNullTo(places) {
                 // Create a marker for this
                 val marker = map?.addMarker(
                     MarkerOptions()
