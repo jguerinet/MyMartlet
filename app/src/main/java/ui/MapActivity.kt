@@ -337,15 +337,19 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                         .position(it.coordinates)
                         .draggable(false)
                         .visible(true)
-                ) ?: return@mapNotNullTo null
+                )
 
-                // Check if there was a place with the intent
-                if (theMarker == null && it.id == placeId) {
-                    // If the right place is found, perform a click later
-                    theMarker = marker
+                if (marker == null) {
+                    null
+                } else {
+                    // Check if there was a place with the intent
+                    if (theMarker == null && it.id == placeId) {
+                        // If the right place is found, perform a click later
+                        theMarker = marker
+                    }
+
+                    Pair(it, marker)
                 }
-
-                Pair(it, marker)
             }
 
             // Filter
