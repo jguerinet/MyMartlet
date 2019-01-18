@@ -21,6 +21,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.DialogAction
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
@@ -78,16 +79,18 @@ class CoursesActivity : DrawerActivity(), TimberTag {
         setContentView(R.layout.activity_wishlist)
         ga.sendScreen("View Courses")
 
-        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        list.layoutManager = LinearLayoutManager(this)
         list.adapter = adapter
 
         // Format the unregister button
-        register.setText(R.string.courses_unregister)
-        register.setWidthAndHeight(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        register.setOnClickListener { unregister() }
+        register.apply {
+            setText(R.string.courses_unregister)
+            setWidthAndHeight(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            setOnClickListener { unregister() }
+        }
 
         // Remove the wishlist button
         wishlist.isVisible = false
