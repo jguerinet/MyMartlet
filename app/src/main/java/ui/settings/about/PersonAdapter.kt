@@ -81,7 +81,7 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
         BaseRecyclerViewAdapter.BaseHolder(view) {
 
         override fun bind(position: Int) {
-            val title = items[position] as? Int ?: return
+            val title = items[position] as? Int ?: error("Item at position $position not an Int")
             view.setText(title)
         }
     }
@@ -93,7 +93,8 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
         BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_person) {
 
         override fun bind(position: Int) {
-            val person = items[position] as? Person ?: return
+            val person = items[position] as? Person
+                ?: error("Item at position $position not a Person")
 
             itemView.apply {
                 // Name
