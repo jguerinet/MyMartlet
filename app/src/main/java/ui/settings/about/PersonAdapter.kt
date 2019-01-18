@@ -107,7 +107,7 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
                 // LinkedIn
                 linkedIn.setOnClickListener {
-                    ga.sendEvent("About", "Linkedin", person.name)
+                    ga.sendEvent("About", "LinkedIn", person.name)
                     context.openUrl(context.getString(person.linkedInRes))
                 }
 
