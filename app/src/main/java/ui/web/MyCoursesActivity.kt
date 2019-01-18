@@ -155,9 +155,7 @@ class MyCoursesActivity : DrawerActivity() {
 
     companion object {
 
-        /**
-         * Code used to get the external storage permission for downloads
-         */
+        // Needed for downloads
         private const val EXTERNAL_STORAGE_PERMISSION = 100
     }
 }
