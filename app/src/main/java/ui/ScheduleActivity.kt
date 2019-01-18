@@ -618,7 +618,7 @@ class ScheduleActivity : DrawerActivity() {
 
         inner class DayHolder(val view: View) {
 
-            fun bind(date: LocalDate) {
+            internal fun bind(date: LocalDate) {
                 // Set the titles
                 view.apply {
                     dayTitle.setText(DayUtils.getStringId(date.dayOfWeek))
