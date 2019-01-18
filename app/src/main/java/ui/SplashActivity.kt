@@ -122,9 +122,6 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    /**
-     * Shows the first screen to the user depending on their situation
-     */
     private fun showNextScreen() {
         if (minVersionPref.value > BuildConfig.VERSION_CODE) {
             // If we don't have the min required version, show the right container
@@ -138,9 +135,6 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    /**
-     * Shows the login screen and an eventual error message [e]
-     */
     private fun showLoginScreen(e: IOException?) {
         // Show the login container
         loginContainer.isVisible = true
@@ -176,9 +170,6 @@ class SplashActivity : BaseActivity() {
         ga.sendScreen("Login")
     }
 
-    /**
-     * Called when the login button is pressed
-     */
     private fun loginPressed() {
         // Hide the keyboard
         username.clearFocus()
@@ -318,9 +309,6 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    /**
-     * Updates the progress [message]
-     */
     private fun updateProgress(message: String) {
         launch(uiDispatcher) {
             progressText.text = message
