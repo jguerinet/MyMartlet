@@ -42,21 +42,15 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
     private val ga by inject<GAManager>()
 
-    private val items = listOf(
-        R.string.contributors_current,
-        Person.JULIEN,
-        R.string.contributors_past,
-        Person.ADNAN,
-        Person.HERNAN,
-        Person.JOSHUA,
-        Person.JULIA,
-        Person.QUANG,
-        Person.RYAN,
-        Person.SELIM,
-        Person.SHABBIR,
-        Person.XAVIER,
-        Person.YULRIC
-    )
+    private val items: List<Any> by lazy {
+        val (currentContributors, pastContributors) = Person.values().partition { it.isCurrent }
+        mutableListOf<Any>().apply {
+            add(R.string.contributors_current)
+            addAll(currentContributors)
+            add(R.string.contributors_past)
+            addAll(pastContributors)
+        }
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -134,13 +128,15 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
         @StringRes val nameRes: Int,
         @DrawableRes val pictureRes: Int,
         @StringRes val emailRes: Int,
-        @StringRes val linkedInRes: Int
+        @StringRes val linkedInRes: Int,
+        val isCurrent: Boolean = false
     ) {
         JULIEN(
             R.string.about_julien,
             R.drawable.about_julien,
             R.string.about_julien_email,
-            R.string.about_julien_linkedin
+            R.string.about_julien_linkedin,
+            true
         ),
         ADNAN(
             R.string.about_adnan,
