@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -336,9 +336,6 @@ class SplashActivity : BaseActivity() {
 
     companion object {
 
-        /**
-         * Code used when starting the AgreementActivity
-         */
         private const val AGREEMENT_CODE = 100
     }
 }
