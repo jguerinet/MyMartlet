@@ -600,7 +600,7 @@ class ScheduleActivity : DrawerActivity() {
         }
 
         override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
-            val dayView = view as View
+            val dayView = view as? View ?: error("PagerAdapter item was not View type")
             collection.removeView(dayView)
             holders.push(DayHolder(view))
         }
