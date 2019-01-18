@@ -370,7 +370,7 @@ class ScheduleActivity : DrawerActivity() {
             time.text = LocalTime.MIDNIGHT.withHour(hour).format(formatter)
 
             // Add it to the right container
-            timetableContainer!!.addView(timetableCell)
+            timetableContainer?.addView(timetableCell)
 
             // Cycle through the half hours
             var min = 0
