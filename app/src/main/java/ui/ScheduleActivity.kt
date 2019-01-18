@@ -89,9 +89,7 @@ class ScheduleActivity : DrawerActivity() {
 
     private val courses: MutableList<Course> = mutableListOf()
 
-    /**
-     * Current date (to know which week to show in the landscape orientation)
-     */
+    // We need this to know which week to show in the landscape orientation
     private var date: LocalDate = LocalDate.now()
 
     override val currentPage = HomepageManager.HomePage.SCHEDULE
