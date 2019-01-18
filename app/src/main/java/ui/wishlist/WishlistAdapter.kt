@@ -95,7 +95,7 @@ internal class WishlistAdapter(private val empty: TextView) :
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<CourseResult>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<CourseResult>() {
         override fun areItemsTheSame(oldItem: CourseResult, newItem: CourseResult): Boolean =
                 oldItem.term == newItem.term && oldItem.crn == newItem.crn
 
