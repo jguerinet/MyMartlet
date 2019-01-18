@@ -37,6 +37,7 @@ import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptRespon
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.dialog.alertDialog
+import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
 import kotlinx.coroutines.Dispatchers
@@ -54,21 +55,23 @@ import retrofit2.Response
  * @author Joshua David Alfaro
  * @since 1.0.0
  */
-class CoursesActivity : DrawerActivity() {
+class CoursesActivity : DrawerActivity(), TimberTag {
+
+    override val tag: String = "CoursesActivity"
+
+    override val currentPage = HomepageManager.HomePage.COURSES
+
+    private val courseDao by inject<CourseDao>()
 
     private val defaultTermPref by inject<DefaultTermPref>()
 
     private val registerTermsPref by inject<RegisterTermsPref>()
-
-    private val courseDao by inject<CourseDao>()
 
     private val transcriptDao by inject<TranscriptDao>()
 
     private val adapter: CoursesAdapter by lazy { CoursesAdapter(empty) }
 
     private var term: Term = defaultTermPref.term
-
-    override val currentPage = HomepageManager.HomePage.COURSES
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
