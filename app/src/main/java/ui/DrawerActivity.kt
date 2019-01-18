@@ -60,9 +60,6 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
 
     private val drawerLayout by lazy { find<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawerLayout) }
 
-    /**
-     * Callback manager used for Facebook
-     */
     private val facebookCallbackManager: CallbackManager = CallbackManager.Factory.create()
 
     /**
@@ -164,9 +161,6 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
 
     /* HELPERS */
 
-    /**
-     * Logs the user out
-     */
     private fun logout() {
         alertDialog(R.string.warning, R.string.logout_dialog_message) { _, which ->
             if (which == DialogAction.POSITIVE) {
@@ -179,9 +173,6 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-    /**
-     * Shares the app on Facebook
-     */
     private fun shareOnFacebook() {
         val facebookGa = "facebook"
         ga.sendEvent(facebookGa, "attempt_post")
@@ -221,9 +212,6 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
         dialog.show(content)
     }
 
-    /**
-     * Shares the app on Twitter
-     */
     private fun shareOnTwitter() {
         try {
             TweetComposer.Builder(this)
