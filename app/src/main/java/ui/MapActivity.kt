@@ -108,14 +108,15 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         favorite.setDrawableTint(0, red)
 
         //Set up the place filter
+        val context = this
         morf.text {
-            text(category.getString(this@MapActivity))
+            text(category.getString(context))
             icon(Position.START, R.drawable.ic_location)
             icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
             onClick { textViewItem ->
                 doAsync {
                     val categories =
-                        categoryDao.getCategories().map { Pair(it, it.getString(this@MapActivity)) }
+                        categoryDao.getCategories().map { Pair(it, it.getString(context)) }
 
                     uiThread {
                         singleListDialog(categories.map { it.second }.toTypedArray(),
@@ -125,7 +126,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                             category = categories[it].first
 
                             // Update the text
-                            textViewItem.text(category.getString(this@MapActivity))
+                            textViewItem.text(category.getString(context))
 
                             // Update the filtered places
                             filterByCategory()
