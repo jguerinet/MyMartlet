@@ -43,7 +43,7 @@ abstract class PlaceDao : BaseDao<Place>() {
     abstract fun getFavoritePlaces(): List<Int>
 
     /**
-     * Delete the [Place]s with the given [ids]
+     * Delete the [Place]s that are not contained within the [ids]
      */
     @Query("DELETE FROM Place WHERE Place.id NOT IN(:ids)")
     abstract fun deletePlaces(ids: List<Int>)
