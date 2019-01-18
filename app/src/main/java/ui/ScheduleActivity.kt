@@ -445,7 +445,7 @@ class ScheduleActivity : DrawerActivity() {
                     }
 
                     // Add the given view to the schedule container
-                    scheduleContainer!!.addView(scheduleCell)
+                    scheduleContainer?.addView(scheduleCell)
                 }
                 min += 30
             }
