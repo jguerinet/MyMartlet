@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,14 +29,9 @@ import com.guerinet.suitcase.prefs.NullStringPref
 class UsernamePref(context: Context, prefs: SharedPreferences) :
         NullStringPref(prefs, "username", null) {
 
-    /**
-     * McGill email suffix
-     */
     private val emailSuffix: String = context.getString(R.string.login_email)
 
-    /**
-     * User's full email, null if none
-     */
+    /** User's full email, null if none */
     val full: String?
         get() = super.value?.run { super.value + emailSuffix }
 }
