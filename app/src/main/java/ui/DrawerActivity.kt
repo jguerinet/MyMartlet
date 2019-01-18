@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -183,7 +183,8 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
      * Shares the app on Facebook
      */
     private fun shareOnFacebook() {
-        ga.sendEvent("facebook", "attempt_post")
+        val facebookGa = "facebook"
+        ga.sendEvent(facebookGa, "attempt_post")
 
         // Set up all of the info
         // TODO Update Facebook Usage
@@ -201,7 +202,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
                 if (result.postId != null) {
                     // Let the user know they posted successfully
                     toast(R.string.social_post_success)
-                    ga.sendEvent("facebook", "successful_post")
+                    ga.sendEvent(facebookGa, "successful_post")
                 } else {
                     Timber.i("Facebook post cancelled")
                 }
@@ -214,7 +215,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
             override fun onError(e: FacebookException) {
                 Timber.e(e, "Error posting to Facebook")
                 toast(R.string.social_post_failure)
-                ga.sendEvent("facebook", "failed_post")
+                ga.sendEvent(facebookGa, "failed_post")
             }
         })
         dialog.show(content)
