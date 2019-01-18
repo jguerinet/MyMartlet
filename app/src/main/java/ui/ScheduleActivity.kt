@@ -346,9 +346,13 @@ class ScheduleActivity : DrawerActivity() {
      */
     private fun fillSchedule(timetableContainer: LinearLayout?, scheduleContainer: LinearLayout?,
             date: LocalDate, clickable: Boolean) {
+        if (timetableContainer == null || scheduleContainer == null) {
+            return
+        }
+
         // Clear everything out
-        timetableContainer?.removeAllViews()
-        scheduleContainer?.removeAllViews()
+        timetableContainer.removeAllViews()
+        scheduleContainer.removeAllViews()
 
         // Go through the list of courses, find which ones are for the given date
         val courses = this.courses.filter { it.isForDate(date) }
@@ -370,7 +374,7 @@ class ScheduleActivity : DrawerActivity() {
             time.text = LocalTime.MIDNIGHT.withHour(hour).format(formatter)
 
             // Add it to the right container
-            timetableContainer?.addView(timetableCell)
+            timetableContainer.addView(timetableCell)
 
             // Cycle through the half hours
             var min = 0
@@ -445,7 +449,7 @@ class ScheduleActivity : DrawerActivity() {
                     }
 
                     // Add the given view to the schedule container
-                    scheduleContainer?.addView(scheduleCell)
+                    scheduleContainer.addView(scheduleCell)
                 }
                 min += 30
             }
