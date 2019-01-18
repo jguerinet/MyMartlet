@@ -217,9 +217,6 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         }
     }
 
-    /**
-     * Opens Google Maps with directions to the chosen place
-     */
     private fun getDirections() {
         // Open Google Maps
         val place = this.place ?: return
