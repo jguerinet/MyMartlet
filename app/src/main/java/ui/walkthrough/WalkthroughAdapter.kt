@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,7 +116,9 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
     }
 
     override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
-        collection.removeView(view as View)
+        if (view is View) {
+            collection.removeView(view)
+        }
     }
 
     override fun getCount() = if (isFirstOpen) 5 else 4
