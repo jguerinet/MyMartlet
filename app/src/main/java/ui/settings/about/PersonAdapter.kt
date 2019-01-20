@@ -218,11 +218,11 @@ class PersonAdapter internal constructor() : BaseRecyclerViewAdapter(), KoinComp
  * @author Julien Guerinet
  * @since 2.0.0
  *
- * @param name        Person's name
- * @param pictureId   Person's picture
- * @param role        Person's role
- * @param email       Person's email
- * @param linkedIn    URL to the person's LinkedIn
+ * @property name        Person's name
+ * @property pictureId   Person's picture
+ * @property role        Person's role
+ * @property email       Person's email
+ * @property linkedIn    URL to the person's LinkedIn
  */
 private class Person(
     @StringRes val name: Int,
