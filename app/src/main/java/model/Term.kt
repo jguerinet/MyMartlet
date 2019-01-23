@@ -25,8 +25,8 @@ import java.io.Serializable
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param season    Term [Season]
- * @param year      Term year
+ * @property season    Term [Season]
+ * @property year      Term year
  */
 @Suppress("EqualsOrHashCode")
 class Term(val season: Season, val year: Int) : Serializable {

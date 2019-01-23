@@ -27,9 +27,9 @@ import java.util.Locale
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param id    Category Id
- * @param en    Category name in English
- * @param fr    Category name in French
+ * @property id    Category Id
+ * @property en    Category name in English
+ * @property fr    Category name in French
  */
 @Entity
 data class Category(
