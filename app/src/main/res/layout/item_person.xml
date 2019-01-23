@@ -1,75 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:paddingTop="@dimen/padding_medium"
     android:paddingLeft="@dimen/padding_small"
-    android:paddingRight="@dimen/padding_small">
+    android:paddingRight="@dimen/padding_small"
+    android:paddingTop="@dimen/padding_medium">
 
     <ImageView
-        android:layout_width="@dimen/about_image"
-        android:layout_height="@dimen/about_image"
         android:id="@+id/picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:clickable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription"
         tools:src="@drawable/about_julien"/>
 
     <TextView
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/name"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         android:textSize="@dimen/text_medium"
         android:textStyle="bold"
-        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/picture"
         tools:text="@string/about_julien"/>
 
-    <TextView
+    <ImageView
+        android:id="@+id/linkedIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/role"
-        android:textSize="@dimen/text_medium"
-        android:gravity="center"
-        tools:text="@string/about_julien_role"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@null"
+        android:padding="@dimen/padding_micro"
+        android:tint="@color/red"
+        app:layout_constraintEnd_toStartOf="@+id/email"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:srcCompat="@drawable/ic_linkedin"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/linkedIn"
-            app:srcCompat="@drawable/ic_linkedin"
-            android:tint="@color/red"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="@dimen/padding_micro"
-            android:contentDescription="@null"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/email"
-            app:srcCompat="@drawable/ic_email"
-            android:tint="@color/red"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="@dimen/padding_micro"
-            android:contentDescription="@null"/>
-
-    </LinearLayout>
-
-    <TextView
+    <ImageView
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/description"
-        android:textSize="@dimen/text_small"
-        android:textStyle="italic"
-        android:gravity="center"
-        tools:text="@string/about_julien_description"/>
-</LinearLayout>
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@null"
+        android:padding="@dimen/padding_micro"
+        android:tint="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linkedIn"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:srcCompat="@drawable/ic_email"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

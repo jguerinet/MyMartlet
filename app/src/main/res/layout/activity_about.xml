@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -9,11 +8,15 @@
     <include layout="@layout/toolbar"/>
 
     <Button
+        style="?android:borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/github"
         android:text="@string/about_github"
-        android:gravity="center"/>
+        android:background="?android:colorBackground"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:textColor="@color/red"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
