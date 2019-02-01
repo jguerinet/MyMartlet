@@ -59,8 +59,6 @@ class SettingsActivity : DrawerActivity(), TimberTag {
 
     override val currentPage = HomepageManager.HomePage.SETTINGS
 
-    private val statsPref by inject<BooleanPref>(Prefs.STATS)
-
     private val twentyFourHourPref by inject<BooleanPref>(Prefs.SCHEDULE_24HR)
 
     private val updateDao by inject<UpdateDao>()
@@ -106,16 +104,6 @@ class SettingsActivity : DrawerActivity(), TimberTag {
 
                         fa.event("settings", "homepage" to homePageManager.title)
                     }
-                }
-            }
-
-            // Statistics
-            aSwitch {
-                textId = R.string.settings_statistics
-                icon(Position.START, R.drawable.ic_trending_up)
-                isChecked = statsPref.value
-                onCheckChanged { _, isChecked ->
-                    statsPref.value = isChecked
                 }
             }
 
