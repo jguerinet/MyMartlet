@@ -49,7 +49,7 @@ class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         setAlarm(
             context, usernamePref?.value, Hawk.get<String>(Prefs.PASSWORD),
-            seatCheckerPref?.value ?: false, gradeCheckerPref!!.value
+            seatCheckerPref?.value ?: false, gradeCheckerPref?.value ?: false
         )
     }
 
