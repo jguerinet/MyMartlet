@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.Result
 import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import com.guerinet.mymartlet.util.thread.UserDownloader
+import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.prefs.BooleanPref
@@ -172,8 +173,6 @@ class SplashActivity : BaseActivity() {
                 if (e is MinervaException) R.string.login_error_wrong_data else R.string.error_other
             )
         }
-
-        ga.sendScreen("Login")
     }
 
     /**
@@ -210,13 +209,10 @@ class SplashActivity : BaseActivity() {
                     // Store the login info
                     usernamePref.value = username
                     Hawk.put(Prefs.PASSWORD, password)
-                    rememberUsernamePref.value = rememberUsername.isChecked
+                    val isUsernameRemembered = rememberUsername.isChecked
+                    rememberUsernamePref.value = isUsernameRemembered
 
-                    ga.sendEvent(
-                        "Login",
-                        "Remember Username",
-                        rememberUsername.isChecked.toString()
-                    )
+                    fa.event("splash_login", "remember_username" to isUsernameRemembered.toString())
 
                     withContext(uiDispatcher) {
                         // Hide the login container
@@ -255,7 +251,7 @@ class SplashActivity : BaseActivity() {
             // Reset the progress text (if it was set during a previous login attempt
             progressText.text = ""
 
-            ga.sendEvent("Splash", "Auto-Login", autoLogin.toString())
+            fa.event("splash_login", "auto" to autoLogin.toString())
 
             // If we're auto-logging in and there's no internet, skip everything
             if (autoLogin && !isConnected) {
