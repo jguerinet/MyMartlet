@@ -186,8 +186,6 @@ val prefsModule: Module = module {
     single(Prefs.SCHEDULE_24HR) { BooleanPref(get(), Prefs.SCHEDULE_24HR, false) }
 
     single(Prefs.SEAT_CHECKER) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
-
-    single(Prefs.STATS) { BooleanPref(get(), Prefs.STATS, true) }
 }
 
 val viewModelsModule = module {
