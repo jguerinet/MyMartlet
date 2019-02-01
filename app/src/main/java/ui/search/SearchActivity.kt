@@ -62,7 +62,6 @@ class SearchActivity : DrawerActivity(), TimberTag {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        ga.sendScreen("Registration")
 
         // Check if there are any terms to register for
         val registerTerms = registerTermsPref.terms
