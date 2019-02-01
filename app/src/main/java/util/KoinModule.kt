@@ -19,8 +19,6 @@ package com.guerinet.mymartlet.util
 import android.content.Context
 import android.preference.PreferenceManager
 import android.view.inputmethod.InputMethodManager
-import com.guerinet.mymartlet.BuildConfig
-import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
@@ -35,7 +33,6 @@ import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.room.UpdateDb
-import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
@@ -65,15 +62,6 @@ val appModule: Module = module {
 
     // Clear Manager
     single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get(), get()) }
-
-    // GAManager
-    single<GAManager> {
-        object : GAManager(androidContext(), R.xml.global_tracker) {
-
-            override val isDisabled: Boolean = BuildConfig.DEBUG ||
-                    !get<BooleanPref>(Prefs.STATS).value
-        }
-    }
 
     // HomePageManager
     single { HomepageManager(get(), androidContext()) }
