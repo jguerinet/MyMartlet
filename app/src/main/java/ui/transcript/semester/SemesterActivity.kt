@@ -45,7 +45,6 @@ class SemesterActivity : BaseActivity(), TimberTag {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_semester)
         setUpToolbar()
-        ga.sendScreen("Transcript - Semester")
 
         val semesterId = intent.getIntExtra(Constants.ID, -1)
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import androidx.viewpager.widget.ViewPager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
+import com.guerinet.suitcase.analytics.event
 import kotlinx.android.synthetic.main.activity_walkthrough.*
 
 /**
@@ -46,7 +47,6 @@ class WalkthroughActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_walkthrough)
-        ga.sendScreen("Walkthrough")
 
         // Load the adapter
         viewPager.adapter = adapter
@@ -86,7 +86,7 @@ class WalkthroughActivity : BaseActivity() {
         }
 
         close.setOnClickListener {
-            ga.sendEvent("Walkthrough", "Skip")
+            fa.event("skip_walkthrough")
             finish()
         }
     }
