@@ -22,8 +22,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.guerinet.mymartlet.R
-import com.guerinet.suitcase.analytics.GAManager
+import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter
 import com.guerinet.suitcase.ui.extensions.setPaddingId
 import com.guerinet.suitcase.ui.extensions.setTextSizeId
@@ -31,7 +32,6 @@ import com.guerinet.suitcase.util.extensions.openUrl
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_person.view.*
 import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 
 /**
  * Displays the developer in the About page
@@ -39,8 +39,6 @@ import org.koin.standalone.inject
  * @since 1.0.0
  */
 class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
-
-    private val ga by inject<GAManager>()
 
     private val items: List<Any> by lazy {
         val (currentContributors, pastContributors) = Person.values().partition { it.isCurrent }
@@ -107,13 +105,16 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
                 // LinkedIn
                 linkedIn.setOnClickListener {
-                    ga.sendEvent("About", "LinkedIn", person.name)
+                    FirebaseAnalytics.getInstance(it.context)
+                        .event("about_linkedin", "person" to person.name)
+
                     context.openUrl(context.getString(person.linkedInRes))
                 }
 
                 // Email
                 email.setOnClickListener {
-                    ga.sendEvent("About", "Email", person.name)
+                    FirebaseAnalytics.getInstance(it.context)
+                        .event("about_email", "person" to person.name)
 
                     // Send an email
                     val intent = Intent(Intent.ACTION_SEND)
