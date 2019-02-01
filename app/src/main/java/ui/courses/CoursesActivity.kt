@@ -73,7 +73,6 @@ class CoursesActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wishlist)
-        ga.sendScreen("View Courses")
 
         list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         list.adapter = adapter
