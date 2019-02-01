@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,17 +63,11 @@ open class BaseActivity : CoroutineActivity() {
      */
     protected var handler = Handler()
 
-    /**
-     * BroadcastReceiver for any local broadcasts
-     */
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             onReceivedBroadcast(intent)
         }
     }
-    /**
-     * Intent filter for the broadcast receiver
-     */
     private val filter = IntentFilter()
 
     override fun onCreate(savedInstanceState: Bundle?) {

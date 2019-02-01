@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,8 @@ class MyCoursesActivity : DrawerActivity() {
             }
 
             // Get the download manager and enqueue download
-            val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            val manager = getSystemService(Context.DOWNLOAD_SERVICE)
+                    as? DownloadManager ?: error("DownloadManager not available")
             manager.enqueue(request)
         })
 
@@ -154,9 +155,7 @@ class MyCoursesActivity : DrawerActivity() {
 
     companion object {
 
-        /**
-         * Code used to get the external storage permission for downloads
-         */
+        // Needed for downloads
         private const val EXTERNAL_STORAGE_PERMISSION = 100
     }
 }

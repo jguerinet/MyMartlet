@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,13 +32,14 @@ import kotlinx.android.synthetic.main.item_course.view.*
  * @since 1.0.0
  */
 internal class CoursesAdapter(emptyView: TextView) :
-        BaseListAdapter<Course>(ItemCallback(), emptyView) {
+    BaseListAdapter<Course>(ItemCallback(), emptyView) {
 
     val checkedCourses = mutableListOf<Course>()
 
     private var canUnregister: Boolean = false
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CourseHolder = CourseHolder(viewGroup)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CourseHolder =
+        CourseHolder(viewGroup)
 
     fun update(courses: List<Course>, canUnregister: Boolean) {
         this.canUnregister = canUnregister
@@ -47,7 +48,7 @@ internal class CoursesAdapter(emptyView: TextView) :
     }
 
     internal inner class CourseHolder(parent: ViewGroup) :
-            BaseHolder<Course>(parent, R.layout.item_course) {
+        BaseHolder<Course>(parent, R.layout.item_course) {
 
         override fun bind(position: Int, item: Course) {
             itemView.apply {
@@ -81,10 +82,12 @@ internal class CoursesAdapter(emptyView: TextView) :
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<Course>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<Course>() {
 
-        override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean = oldItem.term == newItem.term && oldItem.crn == newItem.crn
+        override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean =
+            oldItem.term == newItem.term && oldItem.crn == newItem.crn
 
-        override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean =
+            oldItem == newItem
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,16 +116,15 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
     }
 
     override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
-        collection.removeView(view as View)
+        if (view is View) {
+            collection.removeView(view)
+        }
     }
 
     override fun getCount() = if (isFirstOpen) 5 else 4
 
     override fun isViewFromObject(view: View, `object`: Any) = view == `object`
 
-    /**
-     * Called when the home page [item] is clicked. Uses the the [context]
-     */
     private fun onHomePageClick(context: Context, item: TextViewItem) {
         val homePages = listOf(
                 HomepageManager.HomePage.SCHEDULE,
@@ -158,9 +157,6 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
         }
     }
 
-    /**
-     * Called with the faculty [item] is clicked. Uses the [context]
-     */
     private fun onFacultyClick(context: Context, item: TextViewItem) {
         val faculties = listOf(R.string.faculty_enviro,
                 R.string.faculty_arts,

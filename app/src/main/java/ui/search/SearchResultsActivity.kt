@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,9 +40,10 @@ class SearchResultsActivity : BaseActivity() {
         ga.sendScreen("Search Results")
 
         // Get the info from the intent
-        val term = intent.getSerializableExtra(Constants.TERM) as Term
+        val term = intent.getSerializableExtra(Constants.TERM) as? Term ?: error("Missing term")
         @Suppress("UNCHECKED_CAST")
-        val courses = intent.getSerializableExtra(Constants.COURSES) as ArrayList<CourseResult>
+        val courses = intent.getSerializableExtra(Constants.COURSES)
+                as? ArrayList<CourseResult> ?: error("Missing course results")
 
         // Set the title and the content
         title = term.getString(this)

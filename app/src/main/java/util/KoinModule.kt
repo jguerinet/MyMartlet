@@ -80,7 +80,8 @@ val appModule: Module = module {
 
     // InputMethodManager
     factory {
-        androidContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        androidContext().getSystemService(Context.INPUT_METHOD_SERVICE)
+                as? InputMethodManager ?: error("InputMethodManager not available")
     }
 
     // McGillManager

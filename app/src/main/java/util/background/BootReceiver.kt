@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,8 +47,10 @@ class BootReceiver : BroadcastReceiver() {
     var gradeCheckerPref: BooleanPref? = null
 
     override fun onReceive(context: Context, intent: Intent) {
-        setAlarm(context, usernamePref!!.value, Hawk.get<String>(Prefs.PASSWORD),
-                seatCheckerPref!!.value, gradeCheckerPref!!.value)
+        setAlarm(
+            context, usernamePref?.value, Hawk.get<String>(Prefs.PASSWORD),
+            seatCheckerPref?.value ?: false, gradeCheckerPref?.value ?: false
+        )
     }
 
     companion object {

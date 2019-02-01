@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,9 +112,6 @@ class WishlistActivity : DrawerActivity() {
         }
     }
 
-    /**
-     * Updates the view
-     */
     private fun update() {
         // Set the title if there is a currentTerm
         title = term?.getString(this)

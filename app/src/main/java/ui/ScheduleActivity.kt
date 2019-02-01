@@ -89,9 +89,7 @@ class ScheduleActivity : DrawerActivity() {
 
     private val courses: MutableList<Course> = mutableListOf()
 
-    /**
-     * Current date (to know which week to show in the landscape orientation)
-     */
+    // We need this to know which week to show in the landscape orientation
     private var date: LocalDate = LocalDate.now()
 
     override val currentPage = HomepageManager.HomePage.SCHEDULE
@@ -348,9 +346,13 @@ class ScheduleActivity : DrawerActivity() {
      */
     private fun fillSchedule(timetableContainer: LinearLayout?, scheduleContainer: LinearLayout?,
             date: LocalDate, clickable: Boolean) {
+        if (timetableContainer == null || scheduleContainer == null) {
+            return
+        }
+
         // Clear everything out
-        timetableContainer?.removeAllViews()
-        scheduleContainer?.removeAllViews()
+        timetableContainer.removeAllViews()
+        scheduleContainer.removeAllViews()
 
         // Go through the list of courses, find which ones are for the given date
         val courses = this.courses.filter { it.isForDate(date) }
@@ -372,7 +374,7 @@ class ScheduleActivity : DrawerActivity() {
             time.text = LocalTime.MIDNIGHT.withHour(hour).format(formatter)
 
             // Add it to the right container
-            timetableContainer!!.addView(timetableCell)
+            timetableContainer.addView(timetableCell)
 
             // Cycle through the half hours
             var min = 0
@@ -447,7 +449,7 @@ class ScheduleActivity : DrawerActivity() {
                     }
 
                     // Add the given view to the schedule container
-                    scheduleContainer!!.addView(scheduleCell)
+                    scheduleContainer.addView(scheduleCell)
                 }
                 min += 30
             }
@@ -602,7 +604,7 @@ class ScheduleActivity : DrawerActivity() {
         }
 
         override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
-            val dayView = view as View
+            val dayView = view as? View ?: error("PagerAdapter item was not View type")
             collection.removeView(dayView)
             holders.push(DayHolder(view))
         }
@@ -620,7 +622,7 @@ class ScheduleActivity : DrawerActivity() {
 
         inner class DayHolder(val view: View) {
 
-            fun bind(date: LocalDate) {
+            internal fun bind(date: LocalDate) {
                 // Set the titles
                 view.apply {
                     dayTitle.setText(DayUtils.getStringId(date.dayOfWeek))

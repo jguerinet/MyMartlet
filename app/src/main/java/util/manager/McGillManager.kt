@@ -46,9 +46,7 @@ class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
 
     val mcGillService: McGillService
 
-    /**
-     * Cookie jar to use to store any McGill related cookies
-     */
+    // Stores McGill related cookies
     private val cookieJar = object : CookieJar {
         private val cookieStore = mutableMapOf<String, List<Cookie>>()
 
@@ -79,24 +77,24 @@ class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
                     // If this is the login request, don't continue
                     if (request.method().equals("POST", ignoreCase = true)) {
                         // This is counting on the fact that the only POST request is for login
-                        return@addInterceptor response
-                    }
-
-                    // Go through the cookies
-                    val cookie = response.headers().values("Set-Cookie")
+                        response
+                    } else {
+                        // Go through the cookies
+                        val cookie = response.headers().values("Set-Cookie")
                             // Filter the cookies to check if there is an empty session Id
                             .firstOrNull { it.contains("SESSID=;") }
 
-                    if (cookie != null) {
-                        // Try logging in (if there's an error, it will be thrown)
-                        login()
+                        if (cookie != null) {
+                            // Try logging in (if there's an error, it will be thrown)
+                            login()
 
-                        // Successfully logged them back in, try retrieving the data again
-                        return@addInterceptor chain.proceed(request)
+                            // Successfully logged them back in, try retrieving the data again
+                            chain.proceed(request)
+                        } else {
+                            // If we have the session Id in the cookies, return original response
+                            response
+                        }
                     }
-
-                    // If we have the session Id in the cookies, return the original response
-                    return@addInterceptor response
                 }
                 .build()
 
