@@ -325,35 +325,27 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         map?.setOnMarkerClickListener(this)
 
         doAsync {
-            val thePlaces = placeDao.getPlaces()
             val placeId = intent.getIntExtra(Constants.ID, -1)
-            var theMarker: Marker? = null
-            thePlaces.mapNotNullTo(places) {
+
+            placeDao.getPlaces().mapNotNullTo(places) {
                 // Create a marker for this
-                val marker = map?.addMarker(
+                val marker = googleMap.addMarker(
                     MarkerOptions()
                         .position(it.coordinates)
                         .draggable(false)
                         .visible(true)
-                )
+                ) ?: return@mapNotNullTo null
 
-                if (marker == null) {
-                    null
-                } else {
-                    // Check if there was a place with the intent
-                    if (theMarker == null && it.id == placeId) {
-                        // If the right place is found, perform a click later
-                        theMarker = marker
-                    }
-
-                    Pair(it, marker)
-                }
+                Pair(it, marker)
             }
+
+            // Find the place that was in the intent, if there was one
+            val marker = places.firstOrNull { it.first.id == placeId }?.second
 
             // Filter
             filterByCategory()
 
-            onMarkerClick(theMarker)
+            onMarkerClick(marker)
         }
     }
 
