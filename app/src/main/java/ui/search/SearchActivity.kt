@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
+import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.util.Device
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.startActivity
@@ -46,7 +47,9 @@ import java.util.*
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class SearchActivity : DrawerActivity() {
+class SearchActivity : DrawerActivity(), TimberTag {
+
+    override val tag: String = "SearchActivity"
 
     private val registerTermsPref by inject<RegisterTermsPref>()
 
