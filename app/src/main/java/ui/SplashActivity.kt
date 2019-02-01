@@ -316,9 +316,8 @@ class SplashActivity : BaseActivity() {
     }
 
     private suspend fun openHomePage() {
-        val context = this
         withContext(uiDispatcher) {
-            startActivity(Intent(context, homePageManager.activity))
+            startActivity(Intent(this@SplashActivity, homePageManager.activity))
             finish()
         }
     }
