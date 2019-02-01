@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.CourseResultDao
-import com.guerinet.suitcase.analytics.GAManager
+import com.guerinet.suitcase.analytics.event
+import com.guerinet.suitcase.analytics.firebase
 import com.guerinet.suitcase.dialog.alertDialog
 import kotlinx.android.synthetic.main.view_courses.view.*
 import org.jetbrains.anko.toast
@@ -51,11 +52,11 @@ import retrofit2.Response
 class WishlistHelper(private val activity: BaseActivity, container: View,
         private val canAdd: Boolean) : KoinComponent {
 
+    private val fa by activity.firebase()
+
     private val courseResultDao by inject<CourseResultDao>()
 
     private val mcGillService by inject<McGillService>()
-
-    private val ga by inject<GAManager>()
 
     private val adapter: WishlistAdapter by lazy { WishlistAdapter(container.empty) }
 
@@ -175,7 +176,7 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
                     isPresent
                 }.size
 
-                ga.sendEvent("Search Results", "Add to Wishlist", coursesAdded.toString())
+                fa.event("wishlist", "added" to coursesAdded.toString())
                 activity.getString(R.string.wishlist_add, coursesAdded)
             }
             else -> {
@@ -184,7 +185,7 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
                 // Get the term from the first course (they will all be in the same term)
                 update(courses[0].term)
 
-                ga.sendEvent("Wishlist", "Remove", courses.size.toString())
+                fa.event("wishlist", "removed" to courses.size.toString())
                 activity.getString(R.string.wishlist_remove, courses.size)
             }
         }
