@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.viewpager.widget.PagerAdapter
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.guerinet.morf.Morf
 import com.guerinet.morf.TextViewItem
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.suitcase.analytics.GAManager
+import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.dialog.singleListDialog
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -43,10 +45,7 @@ import java.util.*
  * @param isFirstOpen   True if this is the first open, false otherwise
  *                      For a first open there is an extra page at the end
  */
-class WalkthroughAdapter(private val isFirstOpen: Boolean) :
-    androidx.viewpager.widget.PagerAdapter(), KoinComponent {
-
-    private val ga by inject<GAManager>()
+class WalkthroughAdapter(private val isFirstOpen: Boolean) : PagerAdapter(), KoinComponent {
 
     private val homePageManager by inject<HomepageManager>()
 
@@ -154,7 +153,8 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
 
             item.text(homePageManager.titleString)
 
-            ga.sendEvent("Walkthrough", "HomepageManager", homePageManager.title)
+            FirebaseAnalytics.getInstance(context)
+                .event("walkthrough", "homepage" to homePageManager)
         }
     }
 
@@ -190,7 +190,7 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
 
             // Update the view
             item.text(faculty)
-            ga.sendEvent("Walkthrough", "Faculty", faculty)
+            FirebaseAnalytics.getInstance(context).event("walkthrough", "faculty" to faculty)
         }
     }
 }
