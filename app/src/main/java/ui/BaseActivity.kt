@@ -34,7 +34,6 @@ import com.guerinet.mymartlet.util.extensions.broadcast
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
-import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.analytics.firebase
 import com.guerinet.suitcase.coroutines.CoroutineActivity
 import com.guerinet.suitcase.util.extensions.isConnected
@@ -54,8 +53,6 @@ open class BaseActivity : CoroutineActivity() {
     val toolbarProgress: ProgressBar by lazy { findViewById<ProgressBar>(R.id.toolbar_progress) }
 
     val fa by firebase()
-
-    val ga by inject<GAManager>()
 
     val mcGillService by inject<McGillService>()
 
