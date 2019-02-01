@@ -39,9 +39,10 @@ class SearchResultsActivity : BaseActivity() {
         setUpToolbar()
 
         // Get the info from the intent
-        val term = intent.getSerializableExtra(Constants.TERM) as Term
+        val term = intent.getSerializableExtra(Constants.TERM) as? Term ?: error("Missing term")
         @Suppress("UNCHECKED_CAST")
-        val courses = intent.getSerializableExtra(Constants.COURSES) as ArrayList<CourseResult>
+        val courses = intent.getSerializableExtra(Constants.COURSES)
+                as? ArrayList<CourseResult> ?: error("Missing course results")
 
         // Set the title and the content
         title = term.getString(this)

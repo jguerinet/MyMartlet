@@ -88,9 +88,6 @@ class TranscriptActivity : DrawerActivity(), TimberTag {
         }
     }
 
-    /**
-     * Refreshes the transcript
-     */
     private fun refresh() {
         if (!canRefresh()) {
             return

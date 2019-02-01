@@ -223,9 +223,6 @@ class SearchActivity : DrawerActivity(), TimberTag {
         }
     }
 
-    /**
-     * Resets all of the fields
-     */
     @Suppress("DEPRECATION")
     @SuppressLint("NewApi")
     private fun reset() {

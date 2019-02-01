@@ -81,9 +81,6 @@ class EbillActivity : DrawerActivity(), TimberTag {
         }
     }
 
-    /**
-     * Refreshes the list of statements
-     */
     private fun refresh() {
         if (!canRefresh()) {
             return

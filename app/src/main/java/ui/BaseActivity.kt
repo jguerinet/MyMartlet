@@ -63,17 +63,11 @@ open class BaseActivity : CoroutineActivity() {
      */
     protected var handler = Handler()
 
-    /**
-     * BroadcastReceiver for any local broadcasts
-     */
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             onReceivedBroadcast(intent)
         }
     }
-    /**
-     * Intent filter for the broadcast receiver
-     */
     private val filter = IntentFilter()
 
     override fun onCreate(savedInstanceState: Bundle?) {

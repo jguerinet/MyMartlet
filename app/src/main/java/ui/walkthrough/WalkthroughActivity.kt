@@ -32,17 +32,12 @@ import kotlinx.android.synthetic.main.activity_walkthrough.*
  */
 class WalkthroughActivity : BaseActivity() {
 
-    /**
-     * Adapter used for the walkthrough
-     */
     private val adapter: WalkthroughAdapter by lazy {
         val isFirstOpen = intent.getBooleanExtra(Constants.FIRST_OPEN, false)
         WalkthroughAdapter(isFirstOpen)
     }
-    /**
-     * Current position in the walkthrough
-     */
-    private var position = 0
+
+    private var currentPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +59,7 @@ class WalkthroughActivity : BaseActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                this@WalkthroughActivity.position = position
+                currentPosition = position
                 // Hide the back button on the first page
                 back.isInvisible = position == 0
                 // Set the right text on the next button if we are on the last page
@@ -74,7 +69,7 @@ class WalkthroughActivity : BaseActivity() {
 
         next.setOnClickListener {
             // We've reached the end of the walkthrough
-            if (position == adapter.count - 1) {
+            if (currentPosition == adapter.count - 1) {
                 finish()
             } else {
                 viewPager.setCurrentItem(viewPager.currentItem + 1, true)

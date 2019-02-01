@@ -111,9 +111,6 @@ class WishlistActivity : DrawerActivity() {
         }
     }
 
-    /**
-     * Updates the view
-     */
     private fun update() {
         // Set the title if there is a currentTerm
         title = term?.getString(this)

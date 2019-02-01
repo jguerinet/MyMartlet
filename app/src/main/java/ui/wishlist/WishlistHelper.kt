@@ -146,7 +146,7 @@ class WishlistHelper(
                         return
                     }
 
-                    val errorCourses = courses.map { it as Course }.toMutableList()
+                        val errorCourses = courses.mapNotNull { it as? Course }.toMutableList()
 
                     // Prepare the error message String
                     val errorMessage = body.joinToString(separator = "\n") {

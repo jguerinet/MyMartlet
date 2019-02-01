@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ import kotlinx.android.synthetic.main.item_course.view.*
  * @author Julien Guerinet
  * @since 1.0.0
  */
-internal class WishlistAdapter(emptyView: TextView) :
-        BaseListAdapter<CourseResult>(ItemCallback(), emptyView) {
+internal class WishlistAdapter(private val empty: TextView) :
+    BaseListAdapter<CourseResult>(ItemCallback(), empty) {
 
     val checkedCourses = mutableListOf<CourseResult>()
 
@@ -51,7 +51,7 @@ internal class WishlistAdapter(emptyView: TextView) :
     fun update(term: Term?, courses: List<CourseResult>) {
         if (term == null) {
             // Hide all of the main content and show explanatory text if the currentTerm is null
-            (emptyView as TextView).setText(R.string.registration_no_semesters)
+            empty.setText(R.string.registration_no_semesters)
             submitList(mutableListOf())
             return
         }
@@ -95,7 +95,7 @@ internal class WishlistAdapter(emptyView: TextView) :
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<CourseResult>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<CourseResult>() {
         override fun areItemsTheSame(oldItem: CourseResult, newItem: CourseResult): Boolean =
                 oldItem.term == newItem.term && oldItem.crn == newItem.crn
 
