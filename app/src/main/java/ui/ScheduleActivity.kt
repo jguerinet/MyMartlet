@@ -41,6 +41,7 @@ import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptRespon
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.date.extensions.getLongDateString
@@ -460,7 +461,7 @@ class ScheduleActivity : DrawerActivity() {
      * @param course Clicked [Course]
      */
     private fun showCourseDialog(course: Course) {
-        ga.sendScreen("Schedule - Course")
+        fa.event("schedule_course_details")
 
         // Set up the view in the dialog
         val view = ScrollView(this)
