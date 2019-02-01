@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import com.facebook.share.widget.ShareDialog
 import com.google.android.material.navigation.NavigationView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.HomepageManager
+import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.dialog.alertDialog
 import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import kotlinx.android.synthetic.main.activity_ebill.*
@@ -170,7 +171,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
     private fun logout() {
         alertDialog(R.string.warning, R.string.logout_dialog_message) { _, which ->
             if (which == DialogAction.POSITIVE) {
-                ga.sendEvent("Logout", "Clicked")
+                fa.event("logout")
                 clearManager.clearUserInfo()
                 // Go back to SplashActivity
                 startActivity<SplashActivity>()
@@ -183,7 +184,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
      * Shares the app on Facebook
      */
     private fun shareOnFacebook() {
-        ga.sendEvent("facebook", "attempt_post")
+        fa.event("facebook_attempt_post")
 
         // Set up all of the info
         // TODO Update Facebook Usage
@@ -201,7 +202,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
                 if (result.postId != null) {
                     // Let the user know they posted successfully
                     toast(R.string.social_post_success)
-                    ga.sendEvent("facebook", "successful_post")
+                    fa.event("facebook_successful_post")
                 } else {
                     Timber.i("Facebook post cancelled")
                 }
@@ -214,7 +215,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
             override fun onError(e: FacebookException) {
                 Timber.e(e, "Error posting to Facebook")
                 toast(R.string.social_post_failure)
-                ga.sendEvent("facebook", "failed_post")
+                fa.event("facebook_failed_post")
             }
         })
         dialog.show(content)
