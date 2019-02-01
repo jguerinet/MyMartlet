@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,14 +31,20 @@ import com.guerinet.mymartlet.model.place.Place
 abstract class PlaceDao : BaseDao<Place>() {
 
     /**
-     * Returns all of the places as an observable
+     * Returns all of the [Place]s as an observable
      */
     @Query("SELECT * FROM Place")
     abstract fun getPlaces(): List<Place>
 
+    /**
+     * Returns all of the user's favorite [Place]s
+     */
     @Query("SELECT id FROM Place WHERE ${Category.FAVORITES} IN(categories)")
     abstract fun getFavoritePlaces(): List<Int>
 
+    /**
+     * Delete the [Place]s that are not contained within the [ids]
+     */
     @Query("DELETE FROM Place WHERE Place.id NOT IN(:ids)")
     abstract fun deletePlaces(ids: List<Int>)
 

@@ -13,22 +13,4 @@
         android:orientation="vertical"
         android:id="@+id/container"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/about_FAQ"
-        android:layout_gravity="center"
-        android:padding="@dimen/padding_micro"
-        android:textSize="@dimen/text_medium"
-        android:textStyle="bold|italic"/>
-
-    <include layout="@layout/line"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clickable="false"
-        android:id="@android:id/list"/>
-
 </LinearLayout>

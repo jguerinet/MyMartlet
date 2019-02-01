@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,34 +17,14 @@
 package com.guerinet.mymartlet.util.room.daos
 
 import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
+import com.guerinet.room.dao.BaseDao
 
 /**
  * Basic Dao functions
  * @author Julien Guerinet
  * @since 2.0.0
  */
-abstract class BaseDao<T> {
-
-    /**
-     * Inserts 1 [obj] into the database
-     */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(obj: T)
-
-    /**
-     * Inserts a list of [objects] into the database
-     */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(objects: List<T>)
-
-    /**
-     * Updates the [obj]
-     */
-    @Update
-    abstract fun update(obj: T)
+abstract class BaseDao<T> : BaseDao<T> {
 
     /**
      * Deletes the [obj]
