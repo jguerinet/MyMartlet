@@ -51,7 +51,6 @@ class EbillActivity : DrawerActivity(), TimberTag {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ebill)
-        ga.sendScreen("Ebill")
 
         list.layoutManager = LinearLayoutManager(this)
         list.adapter = adapter
