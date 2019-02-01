@@ -164,11 +164,13 @@ dependencies {
     implementation "com.google.android.gms:play-services-analytics:$play_services_version"
     implementation "com.google.android.gms:play-services-maps:$play_services_version"
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation "com.guerinet:morf:6.0.0"
     implementation "com.guerinet.suitcase:analytics:$suitcase_version"
     implementation "com.guerinet.suitcase:coroutines:$suitcase_version"
     implementation "com.guerinet.suitcase:date:$suitcase_version"
     implementation "com.guerinet.suitcase:dialog:$suitcase_version"
+    implementation "com.guerinet.suitcase:firebase-analytics:$suitcase_version"
     implementation "com.guerinet.suitcase:io:$suitcase_version"
     implementation "com.guerinet.suitcase:lifecycle:$suitcase_version"
     implementation "com.guerinet.suitcase:log:$suitcase_version"
