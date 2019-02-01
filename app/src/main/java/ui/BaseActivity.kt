@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.suitcase.analytics.GAManager
+import com.guerinet.suitcase.analytics.firebase
 import com.guerinet.suitcase.coroutines.CoroutineActivity
 import com.guerinet.suitcase.util.extensions.isConnected
 import org.jetbrains.anko.startActivity
@@ -51,6 +52,8 @@ open class BaseActivity : CoroutineActivity() {
     val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
 
     val toolbarProgress: ProgressBar by lazy { findViewById<ProgressBar>(R.id.toolbar_progress) }
+
+    val fa by firebase()
 
     val ga by inject<GAManager>()
 
