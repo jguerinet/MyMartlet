@@ -23,11 +23,7 @@ import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.retrofit.McGillService
-import com.guerinet.mymartlet.util.room.daos.CourseDao
-import com.guerinet.mymartlet.util.room.daos.SemesterDao
-import com.guerinet.mymartlet.util.room.daos.StatementDao
-import com.guerinet.mymartlet.util.room.daos.TranscriptCourseDao
-import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.mymartlet.util.room.daos.*
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.util.extensions.isConnected
@@ -158,7 +154,7 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
     private fun handleException(e: IOException, section: String) {
         if (e is MinervaException) {
             androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context)
-                .sendBroadcast(Intent(Constants.BROADCAST_MINERVA))
+                    .sendBroadcast(Intent(Constants.BROADCAST_MINERVA))
         } else if (e !is SSLException) {
             // Don't log SSLExceptions
             Timber.e(Exception("Exception: $section", e))

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,7 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.guerinet.morf.Morf
-import com.guerinet.mymartlet.util.appModule
-import com.guerinet.mymartlet.util.dbModule
-import com.guerinet.mymartlet.util.networkModule
-import com.guerinet.mymartlet.util.prefsModule
-import com.guerinet.mymartlet.util.viewModelsModule
+import com.guerinet.mymartlet.util.*
 import com.guerinet.suitcase.log.KoinLogger
 import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat
@@ -113,7 +109,7 @@ class App : Application() {
         Twitter.initialize(twitterConfig)
     }
 
-    companion object {
+//    companion object {
 
 //        fun setAlarm(context: Context) {
 //            BootReceiver.setAlarm(context)
@@ -122,5 +118,5 @@ class App : Application() {
 //        fun cancelAlarm(context: Context) {
 //            BootReceiver.cancelAlarm(context)
 //        }
-    }
+//    }
 }

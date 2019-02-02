@@ -28,7 +28,7 @@ import com.guerinet.suitcase.util.BaseUpdateManager
  * @since 1.0.0
  *
  * @param prefs     [SharedPreferences] instance
- * @property updateDao Dao to save the [AppUpdate]
+ * @param updateDao Dao to save the [AppUpdate]
  */
 class UpdateManager(
     prefs: SharedPreferences,

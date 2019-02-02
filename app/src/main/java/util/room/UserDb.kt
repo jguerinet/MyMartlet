@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,12 +29,7 @@ import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 import com.guerinet.mymartlet.util.room.converters.DayOfWeekListConverter
 import com.guerinet.mymartlet.util.room.converters.TermConverter
-import com.guerinet.mymartlet.util.room.daos.CourseDao
-import com.guerinet.mymartlet.util.room.daos.CourseResultDao
-import com.guerinet.mymartlet.util.room.daos.SemesterDao
-import com.guerinet.mymartlet.util.room.daos.StatementDao
-import com.guerinet.mymartlet.util.room.daos.TranscriptCourseDao
-import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.mymartlet.util.room.daos.*
 import com.guerinet.room.converter.LocalDateConverter
 import com.guerinet.room.converter.LocalTimeConverter
 
@@ -55,20 +50,41 @@ import com.guerinet.room.converter.LocalTimeConverter
 )
 abstract class UserDb : RoomDatabase() {
 
+    /**
+     * Returns the [CourseDao] instance for all [Course] related DB operations
+     */
     abstract fun courseDao(): CourseDao
 
+    /**
+     * Returns the [CourseResultDao] instance for all [CourseResult] related DB operations
+     */
     abstract fun courseResultDao(): CourseResultDao
 
+    /**
+     * Returns the [SemesterDao] instance for all [Semester] related DB operations
+     */
     abstract fun semesterDao(): SemesterDao
 
+    /**
+     * Returns the [StatementDao] instance for all [Statement] related DB operations
+     */
     abstract fun statementDao(): StatementDao
 
+    /**
+     * Returns the [TranscriptDao] instance for all [Transcript] related DB operations
+     */
     abstract fun transcriptDao(): TranscriptDao
 
+    /**
+     * Returns the [TranscriptCourseDao] instance for all [TranscriptCourse] related DB operations
+     */
     abstract fun transcriptCourseDao(): TranscriptCourseDao
 
     companion object {
 
+        /**
+         * Initializes the [UserDb] using the app [context]
+         */
         fun init(context: Context): UserDb =
             Room.databaseBuilder(context, UserDb::class.java, "user-db").build()
     }

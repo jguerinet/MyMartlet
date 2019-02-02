@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,14 +33,14 @@ import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.dialog.singleListDialog
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
-import java.util.Comparator
+import java.util.*
 
 /**
  * Initial walkthrough
  * @author Julien Guerinet
  * @version 2.1.0
  *
- * @property isFirstOpen   True if this is the first open, false otherwise
+ * @param isFirstOpen   True if this is the first open, false otherwise
  *                      For a first open there is an extra page at the end
  */
 class WalkthroughAdapter(private val isFirstOpen: Boolean) :
@@ -116,31 +116,30 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
     }
 
     override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
-        collection.removeView(view as View)
+        if (view is View) {
+            collection.removeView(view)
+        }
     }
 
     override fun getCount() = if (isFirstOpen) 5 else 4
 
     override fun isViewFromObject(view: View, `object`: Any) = view == `object`
 
-    /**
-     * Called when the home page [item] is clicked. Uses the the [context]
-     */
     private fun onHomePageClick(context: Context, item: TextViewItem) {
         val homePages = listOf(
-            HomepageManager.HomePage.SCHEDULE,
-            HomepageManager.HomePage.TRANSCRIPT,
-            HomepageManager.HomePage.MY_COURSES,
-            HomepageManager.HomePage.COURSES,
-            HomepageManager.HomePage.WISHLIST,
-            HomepageManager.HomePage.SEARCH_COURSES,
-            HomepageManager.HomePage.EBILL,
-            HomepageManager.HomePage.MAP,
-            HomepageManager.HomePage.DESKTOP,
-            HomepageManager.HomePage.SETTINGS
+                HomepageManager.HomePage.SCHEDULE,
+                HomepageManager.HomePage.TRANSCRIPT,
+                HomepageManager.HomePage.MY_COURSES,
+                HomepageManager.HomePage.COURSES,
+                HomepageManager.HomePage.WISHLIST,
+                HomepageManager.HomePage.SEARCH_COURSES,
+                HomepageManager.HomePage.EBILL,
+                HomepageManager.HomePage.MAP,
+                HomepageManager.HomePage.DESKTOP,
+                HomepageManager.HomePage.SETTINGS
         )
-            .map { Pair(it, homePageManager.getTitle(it)) }
-            .sortedWith(Comparator { o1, o2 -> o1.second.compareTo(o2.second) })
+                .map { Pair(it, homePageManager.getTitle(it)) }
+                .sortedWith(Comparator { o1, o2 -> o1.second.compareTo(o2.second) })
 
         val currentChoice = homePages.indexOfFirst { it.first == homePageManager.homePage }
 
@@ -158,28 +157,23 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
         }
     }
 
-    /**
-     * Called with the faculty [item] is clicked. Uses the [context]
-     */
     private fun onFacultyClick(context: Context, item: TextViewItem) {
-        val faculties = listOf(
-            R.string.faculty_enviro,
-            R.string.faculty_arts,
-            R.string.faculty_continuing_studies,
-            R.string.faculty_dentistry,
-            R.string.faculty_education,
-            R.string.faculty_engineering,
-            R.string.faculty_graduate,
-            R.string.faculty_law,
-            R.string.faculty_management,
-            R.string.faculty_medicine,
-            R.string.faculty_music,
-            R.string.faculty_religion,
-            R.string.faculty_science
-        )
-            .map { context.getString(it) }
-            .sortedWith(kotlin.Comparator { o1, o2 -> o1.compareTo(o2, true) })
-            .toMutableList()
+        val faculties = listOf(R.string.faculty_enviro,
+                R.string.faculty_arts,
+                R.string.faculty_continuing_studies,
+                R.string.faculty_dentistry,
+                R.string.faculty_education,
+                R.string.faculty_engineering,
+                R.string.faculty_graduate,
+                R.string.faculty_law,
+                R.string.faculty_management,
+                R.string.faculty_medicine,
+                R.string.faculty_music,
+                R.string.faculty_religion,
+                R.string.faculty_science)
+                .map { context.getString(it) }
+                .sortedWith(kotlin.Comparator { o1, o2 -> o1.compareTo(o2, true) })
+                .toMutableList()
 
         // Add undefined to the top of the list
         faculties.add(0, context.getString(R.string.faculty_none))

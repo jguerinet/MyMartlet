@@ -26,10 +26,10 @@ import org.threeten.bp.LocalDate
  * @author Quang Dao
  * @since 1.0.0
  *
- * @property date      Statement date
- * @property dueDate   Due date
- * @property amount    Total amount due or owed
- * @property id        Randomly generated Id for this statement, used as a primary key
+ * @param date      Statement date
+ * @param dueDate   Due date
+ * @param amount    Total amount due or owed
+ * @param id        Randomly generated Id for this statement, used as a primary key
  */
 @Entity
 data class Statement(

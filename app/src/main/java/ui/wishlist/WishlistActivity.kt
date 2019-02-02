@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,9 +112,6 @@ class WishlistActivity : DrawerActivity() {
         }
     }
 
-    /**
-     * Updates the view
-     */
     private fun update() {
         // Set the title if there is a currentTerm
         title = term?.getString(this)
@@ -136,6 +133,7 @@ class WishlistActivity : DrawerActivity() {
                 .distinct()
             launch { performUpdateCalls(holders) }
         }
+
     }
 
     /**
@@ -162,14 +160,10 @@ class WishlistActivity : DrawerActivity() {
             val subject = code[0]
             val number = code[1]
 
-            mcGillService.search(
-                course.term, subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
-                mutableListOf()
-            ).enqueue(object : retrofit2.Callback<List<CourseResult>> {
-                override fun onResponse(
-                    call: Call<List<CourseResult>>,
-                    response: Response<List<CourseResult>>
-                ) {
+            mcGillService.search(course.term, subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
+                    mutableListOf()).enqueue(object : retrofit2.Callback<List<CourseResult>> {
+                override fun onResponse(call: Call<List<CourseResult>>,
+                        response: Response<List<CourseResult>>) {
                     // Go through the received courses, check if they are on the user's wishlist
                     val receivedCourses = response.body()
                     if (receivedCourses == null) {

@@ -47,5 +47,5 @@ abstract class TranscriptCourseDao : BaseDao<TranscriptCourse>() {
      */
     @Transaction
     open fun update(transcriptCourses: List<TranscriptCourse>) =
-        update(transcriptCourses, this::deleteAll)
+            update(transcriptCourses, this::deleteAll)
 }

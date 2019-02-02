@@ -20,20 +20,10 @@ import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.UsernamePref
-import com.guerinet.mymartlet.util.retrofit.CourseResultConverter
-import com.guerinet.mymartlet.util.retrofit.EbillConverter
-import com.guerinet.mymartlet.util.retrofit.McGillService
-import com.guerinet.mymartlet.util.retrofit.RegistrationErrorConverter
-import com.guerinet.mymartlet.util.retrofit.Result
-import com.guerinet.mymartlet.util.retrofit.ScheduleConverter
-import com.guerinet.mymartlet.util.retrofit.TranscriptConverter
+import com.guerinet.mymartlet.util.retrofit.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.orhanobut.hawk.Hawk
-import okhttp3.Cookie
-import okhttp3.CookieJar
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -49,18 +39,14 @@ import java.io.IOException
  * @since 1.0.0
  *
  * @param loggingInterceptor    [HttpLoggingInterceptor] instance
- * @property usernamePref          [UsernamePref] instance
+ * @param usernamePref          [UsernamePref] instance
  */
-class McGillManager(
-    loggingInterceptor: HttpLoggingInterceptor,
-    private val usernamePref: UsernamePref
-) {
+class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
+        private val usernamePref: UsernamePref) {
 
     val mcGillService: McGillService
 
-    /**
-     * Cookie jar to use to store any McGill related cookies
-     */
+    // Stores McGill related cookies
     private val cookieJar = object : CookieJar {
         private val cookieStore = mutableMapOf<String, List<Cookie>>()
 
@@ -81,36 +67,36 @@ class McGillManager(
     init {
         // Set up the client here in order to have access to the login methods
         val client = OkHttpClient.Builder()
-            .cookieJar(cookieJar)
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor { chain ->
-                // Get the request and the response
-                val request = chain.request()
-                val response = chain.proceed(request)
+                .cookieJar(cookieJar)
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor { chain ->
+                    // Get the request and the response
+                    val request = chain.request()
+                    val response = chain.proceed(request)
 
-                // If this is the login request, don't continue
-                if (request.method().equals("POST", ignoreCase = true)) {
-                    // This is counting on the fact that the only POST request is for login
-                    return@addInterceptor response
+                    // If this is the login request, don't continue
+                    if (request.method().equals("POST", ignoreCase = true)) {
+                        // This is counting on the fact that the only POST request is for login
+                        response
+                    } else {
+                        // Go through the cookies
+                        val cookie = response.headers().values("Set-Cookie")
+                            // Filter the cookies to check if there is an empty session Id
+                            .firstOrNull { it.contains("SESSID=;") }
+
+                        if (cookie != null) {
+                            // Try logging in (if there's an error, it will be thrown)
+                            login()
+
+                            // Successfully logged them back in, try retrieving the data again
+                            chain.proceed(request)
+                        } else {
+                            // If we have the session Id in the cookies, return original response
+                            response
+                        }
+                    }
                 }
-
-                // Go through the cookies
-                val cookie = response.headers().values("Set-Cookie")
-                    // Filter the cookies to check if there is an empty session Id
-                    .firstOrNull { it.contains("SESSID=;") }
-
-                if (cookie != null) {
-                    // Try logging in (if there's an error, it will be thrown)
-                    login()
-
-                    // Successfully logged them back in, try retrieving the data again
-                    return@addInterceptor chain.proceed(request)
-                }
-
-                // If we have the session Id in the cookies, return the original response
-                return@addInterceptor response
-            }
-            .build()
+                .build()
 
         mcGillService = Retrofit.Builder()
             .client(client)

@@ -26,13 +26,13 @@ import com.google.android.gms.maps.model.LatLng
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @property id            Place Id
- * @property name          Place name
- * @property categories    List of categories
- * @property address       Address of this place
- * @property courseName    Name of the place when listed under a course location
- * @property latitude      Latitude coordinate of this place
- * @property longitude     Longitude coordinate of this place
+ * @param id            Place Id
+ * @param name          Place name
+ * @param categories    List of categories
+ * @param address       Address of this place
+ * @param courseName    Name of the place when listed under a course location
+ * @param latitude      Latitude coordinate of this place
+ * @param longitude     Longitude coordinate of this place
  */
 @Entity
 data class Place(

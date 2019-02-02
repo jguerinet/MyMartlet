@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,9 +60,6 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
 
     private val drawerLayout by lazy { find<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawerLayout) }
 
-    /**
-     * Callback manager used for Facebook
-     */
     private val facebookCallbackManager: CallbackManager = CallbackManager.Factory.create()
 
     /**
@@ -101,7 +98,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+            drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -164,9 +161,6 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
 
     /* HELPERS */
 
-    /**
-     * Logs the user out
-     */
     private fun logout() {
         alertDialog(R.string.warning, R.string.logout_dialog_message) { _, which ->
             if (which == DialogAction.POSITIVE) {
@@ -179,20 +173,18 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-    /**
-     * Shares the app on Facebook
-     */
     private fun shareOnFacebook() {
-        ga.sendEvent("facebook", "attempt_post")
+        val facebookGa = "facebook"
+        ga.sendEvent(facebookGa, "attempt_post")
 
         // Set up all of the info
         // TODO Update Facebook Usage
         val content = ShareLinkContent.Builder()
-            .setContentTitle(getString(R.string.social_facebook_title, "Android"))
-            .setContentDescription(getString(R.string.social_facebook_description_android))
-            .setContentUrl(getString(R.string.social_link_android).toUri())
-            .setImageUrl(getString(R.string.social_facebook_image).toUri())
-            .build()
+                .setContentTitle(getString(R.string.social_facebook_title, "Android"))
+                .setContentDescription(getString(R.string.social_facebook_description_android))
+                .setContentUrl(getString(R.string.social_link_android).toUri())
+                .setImageUrl(getString(R.string.social_facebook_image).toUri())
+                .build()
 
         // Show the dialog
         val dialog = ShareDialog(this)
@@ -201,7 +193,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
                 if (result.postId != null) {
                     // Let the user know they posted successfully
                     toast(R.string.social_post_success)
-                    ga.sendEvent("facebook", "successful_post")
+                    ga.sendEvent(facebookGa, "successful_post")
                 } else {
                     Timber.i("Facebook post cancelled")
                 }
@@ -214,21 +206,18 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
             override fun onError(e: FacebookException) {
                 Timber.e(e, "Error posting to Facebook")
                 toast(R.string.social_post_failure)
-                ga.sendEvent("facebook", "failed_post")
+                ga.sendEvent(facebookGa, "failed_post")
             }
         })
         dialog.show(content)
     }
 
-    /**
-     * Shares the app on Twitter
-     */
     private fun shareOnTwitter() {
         try {
             TweetComposer.Builder(this)
-                .text(getString(R.string.social_twitter_message_android, "Android"))
-                .url(URL(getString(R.string.social_link_android)))
-                .show()
+                    .text(getString(R.string.social_twitter_message_android, "Android"))
+                    .url(URL(getString(R.string.social_link_android)))
+                    .show()
         } catch (e: MalformedURLException) {
             Timber.e(e, "Twitter URL malformed")
         }

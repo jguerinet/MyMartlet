@@ -30,13 +30,11 @@ import com.orhanobut.hawk.Hawk
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class ClearManager(
-    private val usernamePref: UsernamePref,
-    private val homepageManager: HomepageManager, private val defaultTermPref: DefaultTermPref,
-    private val registerTermsPref: RegisterTermsPref,
-    private val rememberUsernamePref: BooleanPref, private val userDb: UserDb,
-    private val configDb: ConfigDb
-) {
+class ClearManager(private val usernamePref: UsernamePref,
+        private val homepageManager: HomepageManager, private val defaultTermPref: DefaultTermPref,
+        private val registerTermsPref: RegisterTermsPref,
+        private val rememberUsernamePref: BooleanPref, private val userDb: UserDb,
+        private val configDb: ConfigDb) {
 
     /**
      * Clears all of the user's info

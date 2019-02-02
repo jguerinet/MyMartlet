@@ -80,10 +80,8 @@ class CoursesActivity : DrawerActivity() {
 
         // Format the unregister button
         register.setText(R.string.courses_unregister)
-        register.setWidthAndHeight(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        register.setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
         register.setOnClickListener { unregister() }
 
         // Remove the wishlist button
@@ -176,12 +174,12 @@ class CoursesActivity : DrawerActivity() {
                     }
 
                     override fun onFailure(call: Call<TranscriptResponse>, t: Throwable) =
-                        handleError("refreshing transcript", t)
+                            handleError("refreshing transcript", t)
                 })
             }
 
             override fun onFailure(call: Call<List<Course>>, t: Throwable) =
-                handleError("refreshing courses", t)
+                    handleError("refreshing courses", t)
         })
     }
 
@@ -217,36 +215,32 @@ class CoursesActivity : DrawerActivity() {
 
             // Run the registration thread
             mcGillService.registration(McGillManager.getRegistrationURL(courses, true))
-                .enqueue(object : Callback<List<RegistrationError>> {
-                    override fun onResponse(
-                        call: Call<List<RegistrationError>>,
-                        response: Response<List<RegistrationError>>
-                    ) {
-                        toolbarProgress.isVisible = false
+                    .enqueue(object : Callback<List<RegistrationError>> {
+                        override fun onResponse(call: Call<List<RegistrationError>>,
+                                response: Response<List<RegistrationError>>) {
+                            toolbarProgress.isVisible = false
 
-                        // If there are no errors, show the success message
-                        val body = response.body()
-                        if (body == null || body.isEmpty()) {
-                            toast(R.string.unregistration_success)
-                            return
+                            // If there are no errors, show the success message
+                            val body = response.body()
+                            if (body == null || body.isEmpty()) {
+                                toast(R.string.unregistration_success)
+                                return
+                            }
+
+                            // Prepare the error message String
+                            val errorMessage = body.joinToString("\n",
+                                    transform = { error -> error.getString(courses) })
+                            errorDialog(errorMessage)
+
+                            // Refresh the courses
+                            refresh()
                         }
 
-                        // Prepare the error message String
-                        val errorMessage = body.joinToString("\n",
-                            transform = { error -> error.getString(courses) })
-                        errorDialog(errorMessage)
-
-                        // Refresh the courses
-                        refresh()
-                    }
-
-                    override fun onFailure(
-                        call: Call<List<RegistrationError>>,
-                        t: Throwable
-                    ) {
-                        handleError("unregistering for courses", t)
-                    }
-                })
+                        override fun onFailure(call: Call<List<RegistrationError>>,
+                                t: Throwable) {
+                            handleError("unregistering for courses", t)
+                        }
+                    })
         }
     }
 }

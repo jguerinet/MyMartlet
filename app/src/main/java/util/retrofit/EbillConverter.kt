@@ -29,7 +29,7 @@ import java.io.IOException
 import java.lang.reflect.Type
 import java.text.NumberFormat
 import java.text.ParseException
-import java.util.Locale
+import java.util.*
 
 /**
  * Retrofit converter to parse the user's ebill
@@ -41,12 +41,10 @@ class EbillConverter : Converter.Factory(), Converter<ResponseBody, List<Stateme
     private val type = Types.newParameterizedType(List::class.java, Statement::class.java)
 
     private val dtf: DateTimeFormatter =
-        DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US)
+            DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US)
 
-    override fun responseBodyConverter(
-        type: Type?, annotations: Array<Annotation>?,
-        retrofit: Retrofit?
-    ): Converter<ResponseBody, *>? {
+    override fun responseBodyConverter(type: Type?, annotations: Array<Annotation>?,
+            retrofit: Retrofit?): Converter<ResponseBody, *>? {
         return if (type?.toString() != this.type.toString()) {
             // This can only convert a list of statements
             null
@@ -60,7 +58,7 @@ class EbillConverter : Converter.Factory(), Converter<ResponseBody, List<Stateme
         // Get the table
         //  If there is no table (no statements), return an empty list
         val table = Jsoup.parse(value.string()).getElementsByClass("datadisplaytable").first()
-            ?: return statements
+                ?: return statements
 
         // Go through the rows and extract the necessary information
         val rows = table.getElementsByTag("tr")
@@ -82,15 +80,15 @@ class EbillConverter : Converter.Factory(), Converter<ResponseBody, List<Stateme
                     // If the String ends with a dash (McGill owes the student),
                     //  remove it and parse the resulting amount
                     amount = NumberFormat.getNumberInstance(java.util.Locale.US)
-                        .parse(amountString.substring(0, amountString.length - 1))
-                        .toDouble()
+                            .parse(amountString.substring(0, amountString.length - 1))
+                            .toDouble()
                     // Negate the amount
                     amount *= -1.0
                 } else {
                     // If not, just parse the amount
                     amount = NumberFormat.getNumberInstance(java.util.Locale.US)
-                        .parse(amountString)
-                        .toDouble()
+                            .parse(amountString)
+                            .toDouble()
                 }
             } catch (e: ParseException) {
                 Timber.e(e, "Ebill Parser Error: Amount")

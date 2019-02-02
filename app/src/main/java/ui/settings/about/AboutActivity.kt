@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.guerinet.mymartlet.ui.settings.about
 
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.suitcase.util.extensions.openUrl
@@ -24,8 +25,8 @@ import kotlinx.android.synthetic.main.activity_about.*
 
 /**
  * Displays information about the team
- * @author Rafi Uddin
  * @author Julien Guerinet
+ * @author Rafi Uddin
  * @since 1.0.0
  */
 class AboutActivity : BaseActivity() {
@@ -37,7 +38,7 @@ class AboutActivity : BaseActivity() {
         ga.sendScreen("About")
 
         // Set up the list
-        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        list.layoutManager = LinearLayoutManager(this)
         list.adapter = PersonAdapter()
 
         github.setOnClickListener { openUrl("https://github.com/jguerinet/MyMartlet/") }

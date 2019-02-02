@@ -74,20 +74,15 @@ class ConfigDownloadService : JobIntentService() {
         }
 
         // Categories
-        val categories = executeRequest(
-            configService.categories(getIMS(imsCategoriesPref)),
-            imsCategoriesPref
-        )
+        val categories = executeRequest(configService.categories(getIMS(imsCategoriesPref)),
+                imsCategoriesPref)
         if (categories != null) {
             categoryDao.update(categories)
         }
 
         // Registration Terms
-        val registerTerms = executeRequest(
-            configService.registrationTerms(
-                getIMS(imsRegistrationPref)
-            ), imsRegistrationPref
-        )
+        val registerTerms = executeRequest(configService.registrationTerms(
+                getIMS(imsRegistrationPref)), imsRegistrationPref)
         registerTerms?.apply { registerTermsPref.terms = toMutableList() }
     }
 

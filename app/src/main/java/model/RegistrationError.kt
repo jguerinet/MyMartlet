@@ -23,8 +23,8 @@ import timber.log.Timber
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @property crn     Course CRN with the error
- * @property message Error message
+ * @param crn     Course CRN with the error
+ * @param message Error message
  */
 class RegistrationError(
     private val crn: Int,

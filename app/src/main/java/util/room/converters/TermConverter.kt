@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,15 @@ import com.guerinet.mymartlet.model.Term
  */
 class TermConverter {
 
+    /**
+     * Converts the [Term] [value] to a String
+     */
     @TypeConverter
     fun termToString(value: Term): String = value.id
 
+    /**
+     * Converts the String [value] to a [Term]
+     */
     @TypeConverter
     fun stringToTerm(value: String): Term = Term.parseTerm(value)
 }
