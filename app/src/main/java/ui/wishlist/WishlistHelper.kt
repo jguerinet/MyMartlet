@@ -44,9 +44,9 @@ import retrofit2.Response
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param activity  Calling activity instance
+ * @property activity  Calling activity instance
  * @param container View to manipulate
- * @param canAdd    True if the user can add courses to the wishlist, false otherwise
+ * @property canAdd    True if the user can add courses to the wishlist, false otherwise
  */
 class WishlistHelper(private val activity: BaseActivity, container: View,
         private val canAdd: Boolean) : KoinComponent {

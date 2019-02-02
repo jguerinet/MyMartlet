@@ -82,4 +82,3 @@ class HelpActivity : BaseActivity() {
         }
     }
 }
-

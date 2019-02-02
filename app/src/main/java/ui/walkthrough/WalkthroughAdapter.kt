@@ -40,7 +40,7 @@ import java.util.*
  * @author Julien Guerinet
  * @version 2.1.0
  *
- * @param isFirstOpen   True if this is the first open, false otherwise
+ * @property isFirstOpen   True if this is the first open, false otherwise
  *                      For a first open there is an extra page at the end
  */
 class WalkthroughAdapter(private val isFirstOpen: Boolean) :

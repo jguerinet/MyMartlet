@@ -39,7 +39,7 @@ import java.io.IOException
  * @since 1.0.0
  *
  * @param loggingInterceptor    [HttpLoggingInterceptor] instance
- * @param usernamePref          [UsernamePref] instance
+ * @property usernamePref          [UsernamePref] instance
  */
 class McGillManager(loggingInterceptor: HttpLoggingInterceptor,
         private val usernamePref: UsernamePref) {
