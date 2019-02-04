@@ -41,7 +41,7 @@ sealed class Result {
     /**
      * A failed request
      *
-     * @property exception  Exception returned when making the request
+     * @property exception Exception returned when making the request
      */
     class Failure(val exception: IOException) : Result()
 }

@@ -98,7 +98,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-            drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+        drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -180,11 +180,11 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
         // Set up all of the info
         // TODO Update Facebook Usage
         val content = ShareLinkContent.Builder()
-                .setContentTitle(getString(R.string.social_facebook_title, "Android"))
-                .setContentDescription(getString(R.string.social_facebook_description_android))
-                .setContentUrl(getString(R.string.social_link_android).toUri())
-                .setImageUrl(getString(R.string.social_facebook_image).toUri())
-                .build()
+            .setContentTitle(getString(R.string.social_facebook_title, "Android"))
+            .setContentDescription(getString(R.string.social_facebook_description_android))
+            .setContentUrl(getString(R.string.social_link_android).toUri())
+            .setImageUrl(getString(R.string.social_facebook_image).toUri())
+            .build()
 
         // Show the dialog
         val dialog = ShareDialog(this)
@@ -215,9 +215,9 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
     private fun shareOnTwitter() {
         try {
             TweetComposer.Builder(this)
-                    .text(getString(R.string.social_twitter_message_android, "Android"))
-                    .url(URL(getString(R.string.social_link_android)))
-                    .show()
+                .text(getString(R.string.social_twitter_message_android, "Android"))
+                .url(URL(getString(R.string.social_link_android)))
+                .show()
         } catch (e: MalformedURLException) {
             Timber.e(e, "Twitter URL malformed")
         }

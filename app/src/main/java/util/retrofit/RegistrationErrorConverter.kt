@@ -26,7 +26,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Retrofit converter to parse any registration errors that arise during (un)registration
@@ -40,7 +40,8 @@ class RegistrationErrorConverter : Converter.Factory(),
     private val type = Types.newParameterizedType(List::class.java, RegistrationError::class.java)
 
     override fun responseBodyConverter(
-        type: Type?, annotations: Array<Annotation>?,
+        type: Type?,
+        annotations: Array<Annotation>?,
         retrofit: Retrofit?
     ): Converter<ResponseBody, *>? {
         return if (type!!.toString() != this.type.toString()) {

@@ -27,7 +27,7 @@ import com.guerinet.suitcase.prefs.NullStringPref
  * @since 1.0.0
  */
 class UsernamePref(context: Context, prefs: SharedPreferences) :
-        NullStringPref(prefs, "username", null) {
+    NullStringPref(prefs, "username", null) {
 
     private val emailSuffix: String = context.getString(R.string.login_email)
 
