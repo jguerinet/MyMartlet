@@ -27,13 +27,13 @@ import androidx.room.PrimaryKey
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param id            Unique semester Id
- * @param term          Semester term
- * @param program       User's program for this semester
- * @param bachelor      User's bachelor's name for this semester
- * @param credits       Number of credits for this semester
- * @param gpa           Semester GPA
- * @param isFullTime    True if the user was full time during this semester, false otherwise
+ * @property id Unique semester Id
+ * @property term Semester term
+ * @property program User's program for this semester
+ * @property bachelor User's bachelor's name for this semester
+ * @property credits Number of credits for this semester
+ * @property gpa Semester GPA
+ * @property isFullTime True if the user was full time during this semester, false otherwise
  */
 @Entity
 data class Semester(

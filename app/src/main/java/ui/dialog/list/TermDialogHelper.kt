@@ -37,7 +37,10 @@ import org.koin.standalone.inject
  * @since 2.0.0
  */
 class TermDialogHelper(
-    context: Context, mainScope: CoroutineScope, currentTerm: Term?, registration: Boolean,
+    context: Context,
+    mainScope: CoroutineScope,
+    currentTerm: Term?,
+    registration: Boolean,
     onTermSelected: ((Term) -> Unit)
 ) : KoinComponent {
 

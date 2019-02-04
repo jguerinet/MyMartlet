@@ -69,7 +69,7 @@ val appModule: Module = module {
     // InputMethodManager
     factory {
         androidContext().getSystemService(Context.INPUT_METHOD_SERVICE)
-                as? InputMethodManager ?: error("InputMethodManager not available")
+            as? InputMethodManager ?: error("InputMethodManager not available")
     }
 
     // McGillManager
@@ -199,5 +199,4 @@ val viewModelsModule = module {
 
     // TranscriptViewModel
     viewModel { TranscriptViewModel(get(), get(), get(), get()) }
-
 }

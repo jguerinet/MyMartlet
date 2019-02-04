@@ -25,9 +25,9 @@ import androidx.room.PrimaryKey
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param totalCredits  User's total number of credits
- * @param cgpa          User's cumulative GPA
- * @param id            Transcript Id
+ * @property totalCredits User's total number of credits
+ * @property cgpa User's cumulative GPA
+ * @property id Transcript Id
  */
 @Entity
 data class Transcript(

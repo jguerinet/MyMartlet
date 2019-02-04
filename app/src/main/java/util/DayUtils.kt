@@ -28,28 +28,28 @@ import org.threeten.bp.DayOfWeek
 object DayUtils {
 
     val days = listOf(
-            Triple('M', DayOfWeek.MONDAY, R.string.monday),
-            Triple('T', DayOfWeek.TUESDAY, R.string.tuesday),
-            Triple('W', DayOfWeek.WEDNESDAY, R.string.wednesday),
-            Triple('R', DayOfWeek.THURSDAY, R.string.thursday),
-            Triple('F', DayOfWeek.FRIDAY, R.string.friday),
-            Triple('S', DayOfWeek.SATURDAY, R.string.saturday),
-            Triple('U', DayOfWeek.SUNDAY, R.string.sunday)
+        Triple('M', DayOfWeek.MONDAY, R.string.monday),
+        Triple('T', DayOfWeek.TUESDAY, R.string.tuesday),
+        Triple('W', DayOfWeek.WEDNESDAY, R.string.wednesday),
+        Triple('R', DayOfWeek.THURSDAY, R.string.thursday),
+        Triple('F', DayOfWeek.FRIDAY, R.string.friday),
+        Triple('S', DayOfWeek.SATURDAY, R.string.saturday),
+        Triple('U', DayOfWeek.SUNDAY, R.string.sunday)
     )
 
     /**
      * Returns the day based on a [dayChar] (M, T, W, R, F, S, N). Characters taken from Minerva
      */
     fun getDay(dayChar: Char): DayOfWeek =
-            days.find { it.first == dayChar }?.second
-                    ?: throw IllegalStateException("Unknown day character: $dayChar")
+        days.find { it.first == dayChar }?.second
+            ?: throw IllegalStateException("Unknown day character: $dayChar")
 
     /**
      * Returns the day character for a [day]
      */
     fun getDayChar(day: DayOfWeek): Char =
-            days.find { it.second == day }?.first
-                    ?: throw IllegalStateException("Unknown day: $day")
+        days.find { it.second == day }?.first
+            ?: throw IllegalStateException("Unknown day: $day")
 
     /**
      * Returns the String Id for this given day
@@ -59,12 +59,12 @@ object DayUtils {
      */
     @StringRes
     fun getStringId(day: DayOfWeek): Int =
-            days.find { it.second == day }?.third
-                    ?: throw IllegalStateException("Unknown day $day")
+        days.find { it.second == day }?.third
+            ?: throw IllegalStateException("Unknown day $day")
 
     /**
      * Returns a String representing all of the [days] by their character
      */
     fun getDayStrings(days: List<DayOfWeek>): String =
-            days.joinToString("") { getDayChar(it).toString() }
+        days.joinToString("") { getDayChar(it).toString() }
 }

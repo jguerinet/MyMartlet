@@ -45,12 +45,13 @@ import retrofit2.Response
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param activity  Calling activity instance
+ * @property activity Calling activity instance
  * @param container View to manipulate
- * @param canAdd    True if the user can add courses to the wishlist, false otherwise
+ * @property canAdd True if the user can add courses to the wishlist, false otherwise
  */
 class WishlistHelper(
-    private val activity: BaseActivity, container: View,
+    private val activity: BaseActivity,
+    container: View,
     private val canAdd: Boolean
 ) : KoinComponent {
 
@@ -113,8 +114,7 @@ class WishlistHelper(
                 }
 
                 // Confirm with the user before continuing
-                activity.alertDialog(R.string.warning, R.string.registration_disclaimer)
-                { _, which ->
+                activity.alertDialog(R.string.warning, R.string.registration_disclaimer) { _, which ->
                     if (which === DialogAction.POSITIVE) {
                         register(courses)
                     } else {
@@ -146,7 +146,7 @@ class WishlistHelper(
                         return
                     }
 
-                        val errorCourses = courses.mapNotNull { it as? Course }.toMutableList()
+                    val errorCourses = courses.mapNotNull { it as? Course }.toMutableList()
 
                     // Prepare the error message String
                     val errorMessage = body.joinToString(separator = "\n") {

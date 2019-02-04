@@ -24,7 +24,7 @@ import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistHelper
 import com.guerinet.mymartlet.util.Constants
 import kotlinx.android.synthetic.main.view_courses.*
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Shows the results of the search from the SearchActivity
@@ -42,7 +42,7 @@ class SearchResultsActivity : BaseActivity() {
         val term = intent.getSerializableExtra(Constants.TERM) as? Term ?: error("Missing term")
         @Suppress("UNCHECKED_CAST")
         val courses = intent.getSerializableExtra(Constants.COURSES)
-                as? ArrayList<CourseResult> ?: error("Missing course results")
+            as? ArrayList<CourseResult> ?: error("Missing course results")
 
         // Set the title and the content
         title = term.getString(this)
