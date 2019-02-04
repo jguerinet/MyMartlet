@@ -62,6 +62,5 @@ internal class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
 
         override fun areContentsTheSame(oldItem: Semester, newItem: Semester): Boolean =
             oldItem == newItem
-
     }
 }

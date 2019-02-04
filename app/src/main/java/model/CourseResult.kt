@@ -27,8 +27,8 @@ import org.threeten.bp.LocalTime
  * @author Quang Dao
  * @since 1.0.0
  *
- * @property capacity          Course total capacity (for registration)
- * @property seatsRemaining    Number of seats remaining (for registration)
+ * @property capacity Course total capacity (for registration)
+ * @property seatsRemaining Number of seats remaining (for registration)
  * @property waitlistRemaining Number of waitlist spots remaining
  */
 @Entity

@@ -32,22 +32,22 @@ import timber.log.Timber
  * @author Quang Dao
  * @since 1.0.0
  *
- * @property term          Term this class is for
- * @property subject       Course's 4-letter subject (ex: MATH)
- * @property number        Course's number (ex: 263)
- * @property title         Course title
- * @property crn           Course CRN number
- * @property section       Course section (ex: 001)
- * @property startTime     Course's start time
- * @property endTime       Course's end time
- * @property days          Days this course is on
- * @property type          Course type (ex: lecture, tutorial...)
- * @property location      Course location (generally building and room number)
- * @property instructor    Course's instructor's name
- * @property credits       Number of credits for this course
- * @property startDate     Course start date
- * @property endDate       Course end date
- * @property id            Unique Id for this course
+ * @property term Term this class is for
+ * @property subject Course's 4-letter subject (ex: MATH)
+ * @property number Course's number (ex: 263)
+ * @property title Course title
+ * @property crn Course CRN number
+ * @property section Course section (ex: 001)
+ * @property startTime Course's start time
+ * @property endTime Course's end time
+ * @property days Days this course is on
+ * @property type Course type (ex: lecture, tutorial...)
+ * @property location Course location (generally building and room number)
+ * @property instructor Course's instructor's name
+ * @property credits Number of credits for this course
+ * @property startDate Course start date
+ * @property endDate Course end date
+ * @property id Unique Id for this course
  */
 @Entity
 open class Course(

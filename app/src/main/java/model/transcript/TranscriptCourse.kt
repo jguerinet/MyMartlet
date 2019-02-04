@@ -27,14 +27,14 @@ import com.guerinet.mymartlet.model.Term
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @property semesterId    Id of the [Semester] this is for
- * @property term          Course currentTerm
- * @property courseCode    Course code (e.g. ECSE 428)
- * @property courseTitle   Course title
- * @property credits       Course credits
- * @property userGrade     User's grade in this course
- * @property averageGrade  Average grade in this course
- * @property id            Self managed Id, used as primary key
+ * @property semesterId Id of the [Semester] this is for
+ * @property term Course currentTerm
+ * @property courseCode Course code (e.g. ECSE 428)
+ * @property courseTitle Course title
+ * @property credits Course credits
+ * @property userGrade User's grade in this course
+ * @property averageGrade Average grade in this course
+ * @property id Self managed Id, used as primary key
  */
 @Entity
 data class TranscriptCourse(

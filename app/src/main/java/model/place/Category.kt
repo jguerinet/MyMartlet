@@ -20,16 +20,16 @@ import android.content.Context
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.guerinet.mymartlet.R
-import java.util.*
+import java.util.Locale
 
 /**
  * A type of place that the user can filter by
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @property id    Category Id
- * @property en    Category name in English
- * @property fr    Category name in French
+ * @property id Category Id
+ * @property en Category name in English
+ * @property fr Category name in French
  */
 @Entity
 data class Category(

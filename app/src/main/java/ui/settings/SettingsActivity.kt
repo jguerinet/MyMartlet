@@ -45,7 +45,7 @@ import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import java.io.File
 import java.io.IOException
-import java.util.*
+import java.util.Comparator
 
 /**
  * Allows the user to change the app settings

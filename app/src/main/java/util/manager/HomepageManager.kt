@@ -41,11 +41,13 @@ import kotlin.reflect.KClass
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param prefs     [SharedPreferences] instance
- * @property context   App context
+ * @param prefs [SharedPreferences] instance
+ * @property context App context
  */
-class HomepageManager(prefs: SharedPreferences, private val context: Context) : IntPref(prefs,
-        "home_page", HomePage.SCHEDULE.ordinal) {
+class HomepageManager(prefs: SharedPreferences, private val context: Context) : IntPref(
+    prefs,
+    "home_page", HomePage.SCHEDULE.ordinal
+) {
 
     var homePage: HomePage
         get() = HomePage.values()[value]
@@ -84,12 +86,15 @@ class HomepageManager(prefs: SharedPreferences, private val context: Context) : 
     /**
      * A potential home page for the app
      *
-     * @property titleId   Id of the title of the his home page
-     * @property menuId    Id of the menu item for this home page
-     * @property activity  Corresponding activity to open for this home page
+     * @property titleId Id of the title of the his home page
+     * @property menuId Id of the menu item for this home page
+     * @property activity Corresponding activity to open for this home page
      */
-    enum class HomePage(@StringRes val titleId: Int, @IdRes val menuId: Int,
-            val activity: KClass<out Activity>) {
+    enum class HomePage(
+        @StringRes val titleId: Int,
+        @IdRes val menuId: Int,
+        val activity: KClass<out Activity>
+    ) {
 
         SCHEDULE(R.string.homepage_schedule, R.id.schedule, ScheduleActivity::class),
         TRANSCRIPT(R.string.homepage_transcript, R.id.transcript, TranscriptActivity::class),

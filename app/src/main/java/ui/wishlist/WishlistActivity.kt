@@ -133,7 +133,6 @@ class WishlistActivity : DrawerActivity() {
                 .distinct()
             launch { performUpdateCalls(holders) }
         }
-
     }
 
     /**
@@ -160,10 +159,14 @@ class WishlistActivity : DrawerActivity() {
             val subject = code[0]
             val number = code[1]
 
-            mcGillService.search(course.term, subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
-                    mutableListOf()).enqueue(object : retrofit2.Callback<List<CourseResult>> {
-                override fun onResponse(call: Call<List<CourseResult>>,
-                        response: Response<List<CourseResult>>) {
+            mcGillService.search(
+                course.term, subject, number, "", 0, 0, 0, 0, "a", 0, 0, "a",
+                mutableListOf()
+            ).enqueue(object : retrofit2.Callback<List<CourseResult>> {
+                override fun onResponse(
+                    call: Call<List<CourseResult>>,
+                    response: Response<List<CourseResult>>
+                ) {
                     // Go through the received courses, check if they are on the user's wishlist
                     val receivedCourses = response.body()
                     if (receivedCourses == null) {
@@ -206,7 +209,7 @@ class WishlistActivity : DrawerActivity() {
     /**
      * [CourseResult] holder to update the user's wishlist
      *
-     * @param course    [CourseResult] instance to hold the information for
+     * @param course [CourseResult] instance to hold the information for
      */
     @Suppress("EqualsOrHashCode")
     private inner class CourseHolder(course: CourseResult) {
