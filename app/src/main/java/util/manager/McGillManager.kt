@@ -96,9 +96,9 @@ class McGillManager(
                         // Filter the cookies to check if there is an empty session Id
                         .firstOrNull { it.contains("SESSID=;") }
 
-                    if (cookie != null) {
-                        // Try logging in (if there's an error, it will be thrown)
-                        login()
+                        if (cookie != null) {
+                            // Try logging in (if there's an error, it will be thrown)
+                            login()
 
                         // Successfully logged them back in, try retrieving the data again
                         chain.proceed(request)
