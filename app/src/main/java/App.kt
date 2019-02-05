@@ -57,9 +57,6 @@ class App : Application() {
     }
 
     private fun initializeTimber() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
 
         if (BuildConfig.DEBUG) {
             Timber.plant(object : ProductionTree() {
