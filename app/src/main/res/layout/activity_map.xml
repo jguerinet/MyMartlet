@@ -38,7 +38,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
             android:paddingLeft="@dimen/padding_micro"
             android:paddingRight="@dimen/padding_micro"
             android:textSize="@dimen/text_medium"
@@ -52,7 +51,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
             android:paddingLeft="@dimen/padding_micro"
             android:paddingRight="@dimen/padding_micro"
             android:textSize="@dimen/text_small"
@@ -62,19 +60,16 @@
 
         <Button
             android:id="@+id/directions"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:drawableStart="@drawable/ic_directions"
-            android:drawablePadding="@dimen/padding_micro"
+            android:drawablePadding="8dp"
             android:singleLine="true"
             android:text="@string/map_directions"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
 

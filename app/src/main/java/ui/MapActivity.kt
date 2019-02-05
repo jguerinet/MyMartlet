@@ -48,7 +48,6 @@ import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.ui.extensions.setDrawableTint
 import com.guerinet.suitcase.util.Utils
-import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.guerinet.suitcase.util.extensions.hasPermission
 import kotlinx.android.synthetic.main.activity_map.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -77,10 +76,6 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-
-        // Icon coloring
-        val red = getColorCompat(R.color.red)
-        directions.setDrawableTint(0, red)
 
         // Set up the category filter
         container.morf {
@@ -156,7 +151,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         // Request the map
         fragment.getMapAsync(this)
 
-        // OnClickListeners
+        directions.setDrawableTint(0, Color.WHITE)
         directions.setOnClickListener { getDirections() }
     }
 
