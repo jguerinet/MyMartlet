@@ -16,15 +16,16 @@
 
 package com.guerinet.mymartlet.ui.settings.about
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.guerinet.mymartlet.R
 import com.guerinet.suitcase.analytics.event
+import com.guerinet.suitcase.analytics.firebase
 import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter
 import com.guerinet.suitcase.ui.extensions.setPaddingId
 import com.guerinet.suitcase.ui.extensions.setTextSizeId
@@ -38,7 +39,9 @@ import org.koin.standalone.KoinComponent
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
+class PersonAdapter(context: Context) : BaseRecyclerViewAdapter(), KoinComponent {
+
+    private val fa by context.firebase()
 
     private val items: List<Any> by lazy {
         val (currentContributors, pastContributors) = Person.values().partition { it.isCurrent }
@@ -105,16 +108,14 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
                 // LinkedIn
                 linkedIn.setOnClickListener {
-                    FirebaseAnalytics.getInstance(it.context)
-                        .event("about_linkedin", "person" to person.name)
+                    fa.event("about_linkedin", "person" to person.name)
 
                     context.openUrl(context.getString(person.linkedInRes))
                 }
 
                 // Email
                 email.setOnClickListener {
-                    FirebaseAnalytics.getInstance(it.context)
-                        .event("about_email", "person" to person.name)
+                    fa.event("about_email", "person" to person.name)
 
                     // Send an email
                     val intent = Intent(Intent.ACTION_SEND)
