@@ -16,6 +16,7 @@
 
 package com.guerinet.mymartlet.util.room.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -35,6 +36,9 @@ abstract class PlaceDao : BaseDao<Place>() {
      */
     @Query("SELECT * FROM Place")
     abstract fun getPlaces(): List<Place>
+
+    @Query("SELECT * FROM Place")
+    abstract fun getLivePlaces(): LiveData<List<Place>>
 
     /**
      * Returns all of the user's favorite [Place]s

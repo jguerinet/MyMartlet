@@ -197,7 +197,7 @@ val viewModelsModule = module {
     viewModel { EbillViewModel(get(), get()) }
 
     // MapViewModel
-    viewModel { MapViewModel(androidApplication()) }
+    viewModel { MapViewModel(androidApplication(), get()) }
 
     // SemesterViewModel
     viewModel { SemesterViewModel(get(), get()) }
