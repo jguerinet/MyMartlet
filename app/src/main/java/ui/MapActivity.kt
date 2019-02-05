@@ -26,6 +26,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.fragment.app.transaction
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -80,7 +81,6 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         // Icon coloring
         val red = getColorCompat(R.color.red)
         directions.setDrawableTint(0, red)
-        favorite.setDrawableTint(0, red)
 
         // Set up the category filter
         container.morf {
@@ -146,6 +146,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             // Set up the info
             placeTitle.text = place.name
             address.text = place.address
+            directions.isVisible = true
         }
 
         // Get the MapFragment (Create it if null)
