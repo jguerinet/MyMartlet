@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,25 +48,4 @@ data class Place(
     /** Place coordinates */
     @Ignore
     val coordinates = LatLng(latitude, longitude)
-
-    /** True if this place is in the user's favorites, false otherwise */
-    // Place is now a favorite, add the Id to the list of categories
-    // Place is no longer a favorite, remove the Id from the list of categories
-    // Save the object back
-    var isFavorite: Boolean
-        get() = categories.contains(Category.FAVORITES)
-        set(value) {
-            if (value && !categories.contains(Category.FAVORITES)) {
-                categories.add(Category.FAVORITES)
-            } else if (!value) {
-                categories.remove(Category.FAVORITES)
-            }
-        }
-
-    /**
-     * Returns True if the place is within the [category], false otherwise
-     *  Note: every place is within [Category.ALL]
-     */
-    fun isWithinCategory(category: Category): Boolean =
-        category.id == Category.ALL || categories.contains(category.id)
 }

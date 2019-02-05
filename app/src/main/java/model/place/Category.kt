@@ -31,7 +31,7 @@ import java.util.Locale
  */
 class Category() {
 
-    var id: Int = 0
+    var id: Int = ALL
 
     var en: String = ""
 

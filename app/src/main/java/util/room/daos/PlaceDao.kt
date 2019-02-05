@@ -60,12 +60,6 @@ abstract class PlaceDao : BaseDao<Place>() {
         // Get the list of Ids
         val placeIds = places.map { it.id }
 
-        // Get the list of favorites
-        val favorites = getFavoritePlaces()
-
-        // Set the favorites boolean
-        places.filter { favorites.contains(it.id) }.forEach { it.isFavorite = true }
-
         // Insert the new places
         insert(places)
 

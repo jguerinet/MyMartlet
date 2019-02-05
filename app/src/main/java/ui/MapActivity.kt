@@ -146,9 +146,6 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             // Set up the info
             placeTitle.text = place.name
             address.text = place.address
-
-            // Set up the favorite text
-            favorite.setText(if (place.isFavorite) R.string.map_favorites_remove else R.string.map_favorites_add)
         }
 
         // Get the MapFragment (Create it if null)
