@@ -30,6 +30,11 @@ import com.guerinet.mymartlet.util.Constants
  */
 class MapViewModel(app: Application) : AndroidViewModel(app) {
 
+    val category = MutableLiveData<Category>().apply {
+        // First category is always ALL
+        postValue(Category(false, app))
+    }
+
     val categories = MutableLiveData<List<Category>>()
 
     init {
