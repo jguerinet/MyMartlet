@@ -17,8 +17,6 @@
 package com.guerinet.mymartlet.model.place
 
 import android.content.Context
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.guerinet.mymartlet.R
 import java.util.Locale
 
@@ -31,10 +29,8 @@ import java.util.Locale
  * @property en Category name in English
  * @property fr Category name in French
  */
-@Entity
 class Category() {
 
-    @PrimaryKey
     var id: Int = 0
 
     var en: String = ""

@@ -23,7 +23,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
-import com.guerinet.mymartlet.util.room.daos.CategoryDao
 import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.room.converter.IntMutableListConverter
 
@@ -35,11 +34,6 @@ import com.guerinet.room.converter.IntMutableListConverter
 @Database(exportSchema = false, entities = [Category::class, Place::class], version = 1)
 @TypeConverters(IntMutableListConverter::class)
 abstract class ConfigDb : RoomDatabase() {
-
-    /**
-     * Returns the [CategoryDao] instance for all [Category] related DB operations
-     */
-    abstract fun categoryDao(): CategoryDao
 
     /**
      * Returns the [PlaceDao] instance for all [Place] related DB operations
