@@ -21,7 +21,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.room.converter.IntMutableListConverter
@@ -31,7 +30,7 @@ import com.guerinet.room.converter.IntMutableListConverter
  * @author Julien Guerinet
  * @since 2.0.0
  */
-@Database(exportSchema = false, entities = [Category::class, Place::class], version = 1)
+@Database(exportSchema = false, entities = [Place::class], version = 2)
 @TypeConverters(IntMutableListConverter::class)
 abstract class ConfigDb : RoomDatabase() {
 
