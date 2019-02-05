@@ -46,25 +46,13 @@ class Category() {
         get() = if (Locale.getDefault().language == "fr") fr else en
 
     /**
-     * Constructor used to create the Favorites (is [isFavorites] is true) and All types.
-     *  Uses the app [context] to retrieve the necessary Strings
+     * Constructor used to create the All category. Uses the app [context] to retrieve the necessary String
      */
-    constructor(isFavorites: Boolean, context: Context) : this() {
-        id = if (isFavorites) FAVORITES else ALL
+    constructor(context: Context) : this() {
+        id = ALL
         // Set the same translation for both languages, as this get regenerated every time the map is opened anyway
-        val stringId = if (isFavorites) R.string.map_favorites else R.string.map_all
-        en = context.getString(stringId)
-        fr = context.getString(stringId)
-    }
-
-    /**
-     * Returns the String to use. Uses the app [context]
-     */
-    fun getString(context: Context): String = when {
-        id == FAVORITES -> context.getString(R.string.map_favorites)
-        id == ALL -> context.getString(R.string.map_all)
-        Locale.getDefault().language == "fr" -> fr
-        else -> en
+        en = context.getString(R.string.map_all)
+        fr = en
     }
 
     companion object {

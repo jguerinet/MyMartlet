@@ -39,7 +39,7 @@ class MapViewModel(app: Application, placeDao: PlaceDao) : AndroidViewModel(app)
     /** Currently chosen category we're filtering by */
     val category = MutableLiveData<Category>().apply {
         // First category is always ALL
-        postValue(Category(false, app))
+        postValue(Category(app))
     }
 
     /** List of all categories */
@@ -88,9 +88,8 @@ class MapViewModel(app: Application, placeDao: PlaceDao) : AndroidViewModel(app)
                 // Get the categories from Firebase
                 val firebaseCategories = task.documents.mapNotNull { it.toObject(Category::class.java) }.toMutableList()
 
-                // Add All and Favorites
-                firebaseCategories.add(0, Category(true, app))
-                firebaseCategories.add(0, Category(false, app))
+                // Add All category
+                firebaseCategories.add(0, Category(app))
 
                 categories.postValue(firebaseCategories)
             }
