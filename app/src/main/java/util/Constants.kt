@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,14 @@ object Constants {
     /* BROADCASTS */
 
     const val BROADCAST_MINERVA = "broadcast_minerva"
+
+    /**
+     * Db names within Firebase
+     */
+    object Firebase {
+
+        const val CATEGORIES = "categories"
+    }
 }
 
 /**
