@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,16 +32,26 @@ import java.util.Locale
  * @property fr Category name in French
  */
 @Entity
-data class Category(
-    @PrimaryKey var id: Int = 0,
-    var en: String,
-    var fr: String
-) {
+class Category() {
+
+    @PrimaryKey
+    var id: Int = 0
+
+    var en: String = ""
+
+    var fr: String = ""
 
     /**
-     * Constructor used to create the Favorites (is [isFavorites] is true) and All types
+     * Constructor used to create the Favorites (is [isFavorites] is true) and All types.
+     *  Uses the app [context] to retrieve the necessary Strings
      */
-    constructor(isFavorites: Boolean) : this(if (isFavorites) FAVORITES else ALL, "", "")
+    constructor(isFavorites: Boolean, context: Context) : this() {
+        id = if (isFavorites) FAVORITES else ALL
+        // Set the same translation for both languages, as this get regenerated every time the map is opened anyway
+        val stringId = if (isFavorites) R.string.map_favorites else R.string.map_all
+        en = context.getString(stringId)
+        fr = context.getString(stringId)
+    }
 
     /**
      * Returns the String to use. Uses the app [context]
