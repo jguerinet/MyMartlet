@@ -25,13 +25,16 @@ import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.room.daos.PlaceDao
+import com.guerinet.suitcase.coroutines.ioDispatcher
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel used for the Map section
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class MapViewModel(app: Application, placeDao: PlaceDao) : AndroidViewModel(app) {
+class MapViewModel(app: Application, val placeDao: PlaceDao) : AndroidViewModel(app) {
 
     /** User inputted search term, null/empty String if none */
     val searchTerm = MutableLiveData<String>()
@@ -49,7 +52,9 @@ class MapViewModel(app: Application, placeDao: PlaceDao) : AndroidViewModel(app)
     val place = MutableLiveData<Place>()
 
     /** List of all places */
-    val places = placeDao.getLivePlaces()
+    val places = MutableLiveData<List<Place>>().apply {
+        GlobalScope.launch(ioDispatcher) { postValue(placeDao.getPlaces()) }
+    }
 
     /** List of places that fit the current category */
     val categoryPlaces = MediatorLiveData<List<Place>>().apply {

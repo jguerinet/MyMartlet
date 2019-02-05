@@ -43,7 +43,6 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.MapViewModel
-import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.ui.extensions.setDrawableTint
@@ -51,7 +50,6 @@ import com.guerinet.suitcase.util.Utils
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.guerinet.suitcase.util.extensions.hasPermission
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -258,27 +256,25 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
 
         googleMap.setOnMarkerClickListener(this)
 
-        launch(bgDispatcher) {
-            // Create a marker for each place
-            val places = mapViewModel.places.value ?: return@launch
+        // Create a marker for each place
+        val places = mapViewModel.places.value ?: return
 
-            places.mapTo(markers) {
-                val marker = googleMap.addMarker(
-                    MarkerOptions()
-                        .position(it.coordinates)
-                        .draggable(false)
-                        .visible(true)
-                )
+        places.mapTo(markers) {
+            val marker = googleMap.addMarker(
+                MarkerOptions()
+                    .position(it.coordinates)
+                    .draggable(false)
+                    .visible(true)
+            )
 
-                Pair(it.id, marker)
-            }
-
-            // Re-post the shown places to show them on the now loaded map
-            mapViewModel.shownPlaces.postValue(mapViewModel.shownPlaces.value)
-
-            // Click on the place sent with the intent, if there is one
-            mapViewModel.getPlace(intent.getIntExtra(Constants.ID, -1))
+            Pair(it.id, marker)
         }
+
+        // Re-post the shown places to show them on the now loaded map
+        mapViewModel.shownPlaces.postValue(mapViewModel.shownPlaces.value)
+
+        // Click on the place sent with the intent, if there is one
+        mapViewModel.getPlace(intent.getIntExtra(Constants.ID, -1))
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
