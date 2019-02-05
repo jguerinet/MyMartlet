@@ -89,9 +89,6 @@ val appModule: Module = module {
 
 val dbModule = module {
 
-    // CategoryDao
-    single { get<ConfigDb>().categoryDao() }
-
     // ConfigDb
     single { ConfigDb.init(androidContext()) }
 
@@ -171,8 +168,6 @@ val prefsModule: Module = module {
     single(Prefs.EULA) { BooleanPref(get(), Prefs.EULA, false) }
 
     single(Prefs.GRADE_CHECKER) { BooleanPref(get(), Prefs.GRADE_CHECKER, false) }
-
-    single(Prefs.IMS_CATEGORIES) { NullDatePref(get(), Prefs.IMS_CATEGORIES, null) }
 
     single(Prefs.IMS_CONFIG) { NullDatePref(get(), Prefs.IMS_CONFIG, null) }
 

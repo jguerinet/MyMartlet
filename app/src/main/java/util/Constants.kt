@@ -55,7 +55,6 @@ object Prefs {
 
     const val EULA = "user_agreement"
     const val GRADE_CHECKER = "grade_checker"
-    const val IMS_CATEGORIES = "ims_categories"
     const val IMS_CONFIG = "ims_config"
     const val IMS_PLACES = "ims_places"
     const val IMS_REGISTRATION = "ims_registration"
