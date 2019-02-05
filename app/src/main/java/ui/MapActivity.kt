@@ -45,6 +45,7 @@ import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.room.daos.CategoryDao
 import com.guerinet.mymartlet.util.room.daos.PlaceDao
+import com.guerinet.mymartlet.viewmodel.MapViewModel
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.ui.extensions.setDrawableTint
 import com.guerinet.suitcase.util.Utils
@@ -53,8 +54,8 @@ import com.guerinet.suitcase.util.extensions.hasPermission
 import kotlinx.android.synthetic.main.activity_map.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 /**
@@ -69,6 +70,8 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
     private val placeDao by inject<PlaceDao>()
 
     private val categoryDao by inject<CategoryDao>()
+
+    private val mapViewModel by viewModel<MapViewModel>()
 
     private var map: GoogleMap? = null
 
@@ -87,10 +90,8 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
      */
     private var place: Pair<Place, Marker>? = null
 
-    /**
-     * Currently selected category
-     */
-    private var category: Category = Category(false)
+    /** Currently selected category */
+    private var category: Category = Category(false, this)
 
     /**
      * Current search String
@@ -103,6 +104,8 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
+        mapViewModel
+
         val morf = Morf.bind(container)
 
         // Icon coloring
@@ -110,31 +113,26 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         directions.setDrawableTint(0, red)
         favorite.setDrawableTint(0, red)
 
-        //Set up the place filter
-        val context = this
+        // Set up the place filter
         morf.text {
-            text(category.getString(context))
+            text(category.name)
             icon(Position.START, R.drawable.ic_location)
             icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
             onClick { textViewItem ->
-                doAsync {
-                    val categories =
-                        categoryDao.getCategories().map { Pair(it, it.getString(context)) }
+                // Get the categories from the ViewModel and transform them into
+                val categories = mapViewModel.categories.value ?: listOf()
 
-                    uiThread {
-                        singleListDialog(categories.map { it.second }.toTypedArray(),
-                            R.string.map_filter,
-                            categories.indexOfFirst { it.first == category }) {
+                singleListDialog(categories.map { it.name }.toTypedArray(),
+                    R.string.map_filter,
+                    categories.indexOfFirst { it == category }) {
 
-                            category = categories[it].first
+                    category = categories[it]
 
-                            // Update the text
-                            textViewItem.text(category.getString(context))
+                    // Update the text
+                    textViewItem.text(category.name)
 
-                            // Update the filtered places
-                            filterByCategory()
-                        }
-                    }
+                    // Update the filtered places
+                    filterByCategory()
                 }
             }
         }
