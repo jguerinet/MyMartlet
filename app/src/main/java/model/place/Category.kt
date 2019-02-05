@@ -41,6 +41,10 @@ class Category() {
 
     var fr: String = ""
 
+    /** Localized category name */
+    val name: String
+        get() = if (Locale.getDefault().language == "fr") fr else en
+
     /**
      * Constructor used to create the Favorites (is [isFavorites] is true) and All types.
      *  Uses the app [context] to retrieve the necessary Strings
