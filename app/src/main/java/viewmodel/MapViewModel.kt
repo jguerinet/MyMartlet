@@ -16,10 +16,10 @@
 
 package com.guerinet.mymartlet.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
-import com.guerinet.mymartlet.App
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.util.Constants
 
@@ -28,7 +28,7 @@ import com.guerinet.mymartlet.util.Constants
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class MapViewModel(app: App) : AndroidViewModel(app) {
+class MapViewModel(app: Application) : AndroidViewModel(app) {
 
     val categories = MutableLiveData<List<Category>>()
 

@@ -42,6 +42,7 @@ import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.Module
@@ -196,7 +197,7 @@ val viewModelsModule = module {
     viewModel { EbillViewModel(get(), get()) }
 
     // MapViewModel
-    viewModel { MapViewModel() }
+    viewModel { MapViewModel(androidApplication()) }
 
     // SemesterViewModel
     viewModel { SemesterViewModel(get(), get()) }
