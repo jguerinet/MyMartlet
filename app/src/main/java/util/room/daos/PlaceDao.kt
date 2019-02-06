@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 
 /**
@@ -39,12 +38,6 @@ abstract class PlaceDao : BaseDao<Place>() {
 
     @Query("SELECT * FROM Place")
     abstract fun getLivePlaces(): LiveData<List<Place>>
-
-    /**
-     * Returns all of the user's favorite [Place]s
-     */
-    @Query("SELECT id FROM Place WHERE ${Category.FAVORITES} IN(categories)")
-    abstract fun getFavoritePlaces(): List<Int>
 
     /**
      * Delete the [Place]s that are not contained within the [ids]

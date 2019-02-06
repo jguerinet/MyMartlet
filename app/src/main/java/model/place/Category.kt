@@ -54,9 +54,6 @@ class Category() {
 
     companion object {
 
-        /** User's saved favorite places */
-        const val FAVORITES = -2
-
         /** All of the places */
         internal const val ALL = -1
 
