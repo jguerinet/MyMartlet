@@ -91,7 +91,7 @@ class MapViewModel(app: Application, val placeDao: PlaceDao) : AndroidViewModel(
             .get()
             .addOnSuccessListener { task ->
                 // Get the categories from Firebase
-                val firebaseCategories = task.documents.mapNotNull { it.toObject(Category::class.java) }.toMutableList()
+                val firebaseCategories = task.documents.mapNotNull { Category.fromDocument(it) }.toMutableList()
 
                 // Add All category
                 firebaseCategories.add(0, Category(app))

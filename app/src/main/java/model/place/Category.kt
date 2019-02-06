@@ -17,6 +17,7 @@
 package com.guerinet.mymartlet.model.place
 
 import android.content.Context
+import com.google.firebase.firestore.DocumentSnapshot
 import com.guerinet.mymartlet.R
 import java.util.Locale
 
@@ -58,5 +59,12 @@ class Category() {
 
         /** All of the places */
         internal const val ALL = -1
+
+        /**
+         * Converts a Firestore [document] into a [Category] (null if error during the parsing)
+         */
+        fun fromDocument(document: DocumentSnapshot): Category? = document.toObject(Category::class.java)?.apply {
+            id = document.id.toInt()
+        }
     }
 }
