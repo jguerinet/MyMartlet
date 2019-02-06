@@ -92,7 +92,10 @@ class SplashActivity : BaseActivity() {
             mcGillManager.init()
 
             // Get the Firestore info to refresh it all
-            FirebaseFirestore.getInstance().collection(Constants.Firebase.CATEGORIES).get()
+            FirebaseFirestore.getInstance().apply {
+                collection(Constants.Firebase.CATEGORIES).get()
+                collection(Constants.Firebase.PLACES).get()
+            }
 
             // Start downloading the Config
             startService<ConfigDownloadService>()

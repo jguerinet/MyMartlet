@@ -45,6 +45,7 @@ object Constants {
     object Firebase {
 
         const val CATEGORIES = "categories"
+        const val PLACES = "places"
     }
 }
 
