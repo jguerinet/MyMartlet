@@ -25,10 +25,6 @@ import java.util.Locale
  * A type of place that the user can filter by
  * @author Julien Guerinet
  * @since 1.0.0
- *
- * @property id Category Id
- * @property en Category name in English
- * @property fr Category name in French
  */
 class Category() {
 
