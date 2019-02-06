@@ -46,12 +46,12 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.MapViewModel
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.lifecycle.observe
+import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.ui.extensions.setDrawableTint
 import com.guerinet.suitcase.util.Utils
 import com.guerinet.suitcase.util.extensions.hasPermission
 import kotlinx.android.synthetic.main.activity_map.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 /**
  * Displays a campus map
@@ -60,9 +60,11 @@ import timber.log.Timber
  * @author Quang Dao
  * @since 1.0.0
  */
-class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, TimberTag {
 
     override val currentPage = HomepageManager.HomePage.MAP
+
+    override val tag: String = "MapActivity"
 
     private val mapViewModel by viewModel<MapViewModel>()
 
@@ -131,7 +133,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             val marker = markers.firstOrNull { marker -> marker.first == place.id }
 
             if (marker == null) {
-                Timber.e("Tapped place marker with id ${place.id} not found")
+                timber.e("Tapped place marker with id ${place.id} not found")
                 return@observe
             }
 
@@ -169,7 +171,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             cursorDrawable.isAccessible = true
             cursorDrawable.set(searchTextView, 0)
         } catch (e: Exception) {
-            Timber.e(e, "Cannot change color of cursor")
+            timber.e(e, "Cannot change color of cursor")
         }
 
         // Set up the query listener
