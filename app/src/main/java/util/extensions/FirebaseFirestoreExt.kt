@@ -19,6 +19,7 @@ package com.guerinet.mymartlet.util.extensions
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
+import timber.log.Timber
 import kotlin.coroutines.resume
 
 /**
@@ -43,4 +44,5 @@ suspend inline fun <reified T : Any> FirebaseFirestore.get(
 
             block.resume(objects)
         }
+        .addOnFailureListener { Timber.tag("Firestore").e(it, "Failed to load from $collectionName") }
 }
