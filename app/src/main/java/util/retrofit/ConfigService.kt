@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.util.retrofit
 
-import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import retrofit2.Call
 import retrofit2.http.GET
@@ -34,10 +33,4 @@ interface ConfigService {
      */
     @GET("config")
     fun config(@Header("If-Modified-Since") ims: String?): Call<ConfigDownloadService.Config>
-
-    /**
-     * Retrieves the list of [Term]s one can currently register for. Uses the [ims] header
-     */
-    @GET("registration-terms")
-    fun registrationTerms(@Header("If-Modified-Since") ims: String?): Call<List<Term>>
 }

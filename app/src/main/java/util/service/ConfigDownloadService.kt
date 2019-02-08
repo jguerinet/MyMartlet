@@ -19,7 +19,6 @@ package com.guerinet.mymartlet.util.service
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.date.extensions.rfc1123String
@@ -41,11 +40,7 @@ class ConfigDownloadService : JobIntentService() {
 
     private val imsConfigPref by inject<NullDatePref>(Prefs.IMS_CONFIG)
 
-    private val imsRegistrationPref by inject<NullDatePref>(Prefs.IMS_REGISTRATION)
-
     private val minVersionPref by inject<IntPref>(Prefs.MIN_VERSION)
-
-    private val registerTermsPref by inject<RegisterTermsPref>()
 
     override fun onHandleWork(intent: Intent) {
         if (!isConnected) {
@@ -56,14 +51,6 @@ class ConfigDownloadService : JobIntentService() {
         // Config
         val config = executeRequest(configService.config(getIMS(imsConfigPref)), imsConfigPref)
         config?.apply { minVersionPref.value = androidMinVersion }
-
-        // Registration Terms
-        val registerTerms = executeRequest(
-            configService.registrationTerms(
-                getIMS(imsRegistrationPref)
-            ), imsRegistrationPref
-        )
-        registerTerms?.apply { registerTermsPref.terms = toMutableList() }
     }
 
     /**
