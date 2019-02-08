@@ -21,7 +21,6 @@ import androidx.core.app.JobIntentService
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
-import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.date.extensions.rfc1123String
 import com.guerinet.suitcase.prefs.IntPref
@@ -42,15 +41,11 @@ class ConfigDownloadService : JobIntentService() {
 
     private val imsConfigPref by inject<NullDatePref>(Prefs.IMS_CONFIG)
 
-    private val imsPlacesPref by inject<NullDatePref>(Prefs.IMS_PLACES)
-
     private val imsRegistrationPref by inject<NullDatePref>(Prefs.IMS_REGISTRATION)
 
     private val minVersionPref by inject<IntPref>(Prefs.MIN_VERSION)
 
     private val registerTermsPref by inject<RegisterTermsPref>()
-
-    private val placesDao by inject<PlaceDao>()
 
     override fun onHandleWork(intent: Intent) {
         if (!isConnected) {
@@ -61,12 +56,6 @@ class ConfigDownloadService : JobIntentService() {
         // Config
         val config = executeRequest(configService.config(getIMS(imsConfigPref)), imsConfigPref)
         config?.apply { minVersionPref.value = androidMinVersion }
-
-        // Places
-        val places = executeRequest(configService.places(getIMS(imsPlacesPref)), imsPlacesPref)
-        if (places != null) {
-            placesDao.updatePlaces(places)
-        }
 
         // Registration Terms
         val registerTerms = executeRequest(
