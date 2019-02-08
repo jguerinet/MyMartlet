@@ -1,31 +1,33 @@
 language: android
 jdk:
-- oraclejdk8
+    - oraclejdk8
 android:
-  components:
-  - tools
-  - platform-tools
-  - tools
-  - build-tools-28.0.3
-  - android-28
-  - extra-google-m2repository
-  - extra-android-m2repository
-  licenses:
-  - ".+"
+    components:
+        - tools
+        - platform-tools
+        - tools
+        - build-tools-28.0.3
+        - android-28
+        - extra-google-m2repository
+        - extra-android-m2repository
+    licenses:
+        - ".+"
 branches:
-  except:
-    - /^v[0-9]+/
+    except:
+        - "/^v[0-9]+/"
 before_install:
-- yes | sdkmanager "platforms;android-28"
+    - openssl aes-256-cbc -K $encrypted_086c609a4c10_key -iv $encrypted_086c609a4c10_iv
+      -in google-services.json.enc -out app/google-services.json -d
+    - yes | sdkmanager "platforms;android-28"
 script:
-- chmod +x gradlew
-- "./gradlew assembleDebug"
+    - chmod +x gradlew
+    - "./gradlew assembleDebug"
 notifications:
-  email: false
+    email: false
 sudo: false
 cache:
-  directories:
-  - $HOME/.m2
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
-  - $HOME/.android/build-cache
+    directories:
+        - "$HOME/.m2"
+        - "$HOME/.gradle/caches/"
+        - "$HOME/.gradle/wrapper/"
+        - "$HOME/.android/build-cache"
