@@ -80,7 +80,7 @@ class SearchActivity : DrawerActivity(), TimberTag {
             term = registrationTerms.first()
             termSelector.text = term.getString(this@SearchActivity)
             termContainer.setOnClickListener {
-                TermDialogHelper(this@SearchActivity, this@SearchActivity, term, true) {
+                TermDialogHelper(this@SearchActivity, this@SearchActivity, term, registrationTerms) {
                     term = it
                     termSelector.text = term.getString(this@SearchActivity)
                 }

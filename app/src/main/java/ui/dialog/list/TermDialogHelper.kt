@@ -21,7 +21,6 @@ import android.util.Pair
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.room.daos.SemesterDao
 import com.guerinet.suitcase.dialog.singleListDialog
 import kotlinx.coroutines.CoroutineScope
@@ -40,26 +39,17 @@ class TermDialogHelper(
     context: Context,
     mainScope: CoroutineScope,
     currentTerm: Term?,
-    registration: Boolean,
+    registrationTerms: List<Term>? = null,
     onTermSelected: ((Term) -> Unit)
 ) : KoinComponent {
 
     private val defaultTermPref by inject<DefaultTermPref>()
 
-    private val registerTermsPref by inject<RegisterTermsPref>()
-
     private val semesterDao by inject<SemesterDao>()
 
     init {
         mainScope.launch(Dispatchers.Default) {
-            val terms = if (!registration) {
-                // We are using the user's existing terms
-                semesterDao.getSemesters()
-                    .map { it.term }
-            } else {
-                // We are using the registration terms
-                registerTermsPref.terms.toList()
-            }
+            val terms = (registrationTerms ?: semesterDao.getSemesters().map { it.term })
                 .sortedWith(kotlin.Comparator { o1, o2 -> if (o1.isAfter(o2)) -1 else 1 })
                 .map { Pair(it, it.getString(context)) }
 
