@@ -227,6 +227,9 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         return fragment
     }
 
+    /**
+     * Provides the users directions to the chosen building by opening Google Maps
+     */
     private fun getDirections() {
         // Open Google Maps
         val place = mapViewModel.place.value ?: return
