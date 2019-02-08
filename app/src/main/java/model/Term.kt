@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 package com.guerinet.mymartlet.model
 
 import android.content.Context
+import com.guerinet.mymartlet.util.Constants
+import com.guerinet.mymartlet.util.extensions.get
+import com.guerinet.mymartlet.util.firestore
 import org.threeten.bp.LocalDate
 import java.io.Serializable
 
@@ -97,6 +100,23 @@ class Term(val season: Season, val year: Int) : Serializable {
                 in 1..4 -> Term(Season.WINTER, year)
                 else -> Term(Season.SUMMER, year)
             }
+        }
+
+        /**
+         * Loads the registration [Term]s from the Firestore
+         */
+        suspend fun loadRegistrationTerms(): List<Term> = firestore.get(Constants.Firebase.REGISTRATION_TERMS) {
+            // Load and parse the season
+            val season = try {
+                Season.getSeasonFromTitle(it["season"] as? String)
+            } catch (e: Exception) {
+                null
+            }
+
+            val year = it["year"] as? Int
+
+            // If the season or year is null, something went wrong during parsing so don't continue
+            return@get if (season != null && year != null) Term(season, year) else null
         }
     }
 }
