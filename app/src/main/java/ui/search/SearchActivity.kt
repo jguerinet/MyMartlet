@@ -29,13 +29,14 @@ import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
+import com.guerinet.suitcase.coroutines.ioDispatcher
 import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.util.Device
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-import org.koin.android.ext.android.inject
 import org.threeten.bp.DayOfWeek
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,7 +52,7 @@ class SearchActivity : DrawerActivity(), TimberTag {
 
     override val tag: String = "SearchActivity"
 
-    private val registerTermsPref by inject<RegisterTermsPref>()
+    private var registrationTerms = listOf<Term>()
 
     private lateinit var term: Term
 
@@ -63,33 +64,36 @@ class SearchActivity : DrawerActivity(), TimberTag {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        // Check if there are any terms to register for
-        val registerTerms = registerTermsPref.terms
-        if (registerTerms.isEmpty()) {
-            // Hide all of the search related stuff, show explanatory text, and return
-            searchEmpty.isVisible = true
-            searchContainer.isVisible = false
-            searchButton.isVisible = false
-            return
-        }
+        launch {
+            // Check if there are any terms to register for
+            registrationTerms = withContext(ioDispatcher) { Term.loadRegistrationTerms() }
 
-        // Set the currentTerm to the first one
-        term = registerTerms[0]
-        termSelector.text = term.getString(this)
-        termContainer.setOnClickListener { _ ->
-            TermDialogHelper(this@SearchActivity, this@SearchActivity, term, true) {
-                term = it
-                termSelector.text = term.getString(this@SearchActivity)
+            if (registrationTerms.isEmpty()) {
+                // Hide all of the search related stuff, show explanatory text, and return
+                searchEmpty.isVisible = true
+                searchContainer.isVisible = false
+                searchButton.isVisible = false
+                return@launch
             }
+
+            // Set the currentTerm to the first one
+            term = registrationTerms.first()
+            termSelector.text = term.getString(this@SearchActivity)
+            termContainer.setOnClickListener {
+                TermDialogHelper(this@SearchActivity, this@SearchActivity, term, true) {
+                    term = it
+                    termSelector.text = term.getString(this@SearchActivity)
+                }
+            }
+
+            startTime.setIs24HourView(false)
+            endTime.setIs24HourView(false)
+
+            moreOptionsButton.setOnClickListener { showMoreOptions() }
+            searchButton.setOnClickListener { searchCourses() }
+
+            reset()
         }
-
-        startTime.setIs24HourView(false)
-        endTime.setIs24HourView(false)
-
-        moreOptionsButton.setOnClickListener { showMoreOptions() }
-        searchButton.setOnClickListener { searchCourses() }
-
-        reset()
     }
 
     private fun showMoreOptions() {
@@ -214,7 +218,7 @@ class SearchActivity : DrawerActivity(), TimberTag {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Only inflate the menu if there are semesters to register for
-        if (!registerTermsPref.terms.isEmpty()) {
+        if (registrationTerms.isNotEmpty()) {
             menuInflater.inflate(R.menu.reset, menu)
             return true
         }
