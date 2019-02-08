@@ -95,6 +95,7 @@ class SplashActivity : BaseActivity() {
             FirebaseFirestore.getInstance().apply {
                 collection(Constants.Firebase.CATEGORIES).get()
                 collection(Constants.Firebase.PLACES).get()
+                collection(Constants.Firebase.REGISTRATION_TERMS).get()
             }
 
             // Start downloading the Config
