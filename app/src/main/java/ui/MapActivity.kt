@@ -41,6 +41,7 @@ import com.guerinet.morf.TextViewItem
 import com.guerinet.morf.morf
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
+import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.MapViewModel
@@ -146,6 +147,11 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             directions.isVisible = true
         }
 
+        observe(mapViewModel.places) {
+            // When the places get loaded, populate the map
+            populateMarkers(it)
+        }
+
         // Get the MapFragment (Create it if null)
         val fragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
             ?: createAndGetMapFragment()
@@ -226,9 +232,43 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         val place = mapViewModel.place.value ?: return
         val intent = Intent(
             Intent.ACTION_VIEW,
-            "http://maps.google.com/maps?f=d &daddr=${place.latitude},${place.longitude}".toUri()
+            "http://maps.google.com/maps?f=d &daddr=${place.coordinates.latitude},${place.coordinates.longitude}".toUri()
         )
         startActivity(intent)
+    }
+
+    /**
+     * Adds the markers for the [places] to the map, only after they have been loaded and the map is ready
+     *  This will also open the place sent via the intent, if there is one
+     */
+    private fun populateMarkers(places: List<Place>?) {
+        if (places == null) {
+            // Don't continue if the places aren't loaded
+            return
+        }
+        // Don't continue if the map isn't loaded
+        val map = this.map ?: return
+
+        if (markers.isNotEmpty()) {
+            // Don't continue if the markers have already been created
+            return
+        }
+
+        places.mapTo(markers) {
+            val marker = map.addMarker(
+                MarkerOptions()
+                    .position(LatLng(it.coordinates.latitude, it.coordinates.longitude))
+                    .draggable(false)
+            )
+
+            Pair(it.id, marker)
+        }
+
+        // Re-post the shown places to show them on the now loaded map
+        mapViewModel.shownPlaces.postValue(mapViewModel.shownPlaces.value)
+
+        // Click on the place sent with the intent, if there is one
+        mapViewModel.getPlace(intent.getIntExtra(Constants.ID, -1))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -241,7 +281,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             .bearing(-54f)
             .tilt(0f)
             .build()
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
         if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_REQUEST)) {
             // Show the user's location if we have the permission to
@@ -251,25 +291,8 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
 
         googleMap.setOnMarkerClickListener(this)
 
-        // Create a marker for each place
-        val places = mapViewModel.places.value ?: return
-
-        places.mapTo(markers) {
-            val marker = googleMap.addMarker(
-                MarkerOptions()
-                    .position(it.coordinates)
-                    .draggable(false)
-                    .visible(true)
-            )
-
-            Pair(it.id, marker)
-        }
-
-        // Re-post the shown places to show them on the now loaded map
-        mapViewModel.shownPlaces.postValue(mapViewModel.shownPlaces.value)
-
-        // Click on the place sent with the intent, if there is one
-        mapViewModel.getPlace(intent.getIntExtra(Constants.ID, -1))
+        // Populate the markers
+        populateMarkers(mapViewModel.places.value)
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
