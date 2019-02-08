@@ -16,36 +16,36 @@
 
 package com.guerinet.mymartlet.model.place
 
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.GeoPoint
 
 /**
  * A place on the campus map
  * @author Julien Guerinet
  * @since 1.0.0
- *
- * @property id Place Id
- * @property name Place name
- * @property categories List of categories
- * @property address Address of this place
- * @property courseName Name of the place when listed under a course location
- * @property latitude Latitude coordinate of this place
- * @property longitude Longitude coordinate of this place
  */
-@Entity
-data class Place(
-    @PrimaryKey val id: Int = 0,
-    val name: String,
-    val categories: MutableList<Int>,
-    val address: String,
-    val courseName: String?,
-    val latitude: Double,
-    val longitude: Double
-) {
+class Place {
 
-    /** Place coordinates */
-    @Ignore
-    val coordinates = LatLng(latitude, longitude)
+    var id: Int = 0
+
+    var name: String = ""
+
+    var categories: List<Int> = listOf()
+
+    var address: String = ""
+
+    /** Name of the place when listed under a course location, an empty String if equivalent to the [name]  */
+    var courseName: String = ""
+
+    var coordinates: GeoPoint = GeoPoint(0.0, 0.0)
+
+    companion object {
+
+        /**
+         * Converts a Firestore [document] into a [Place] (null if error during parsing)
+         */
+        fun fromDocument(document: DocumentSnapshot): Place? = document.toObject(Place::class.java)?.apply {
+            id = document.id.toInt()
+        }
+    }
 }
