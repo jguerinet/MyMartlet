@@ -17,16 +17,15 @@
 package com.guerinet.mymartlet.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.firestore.FirebaseFirestore
 import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.Constants
-import com.guerinet.mymartlet.util.room.daos.PlaceDao
+import com.guerinet.mymartlet.util.extensions.get
+import com.guerinet.mymartlet.util.firestore
+import com.guerinet.suitcase.coroutines.ScopedAndroidViewModel
 import com.guerinet.suitcase.coroutines.ioDispatcher
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
@@ -34,7 +33,7 @@ import kotlinx.coroutines.launch
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class MapViewModel(app: Application, val placeDao: PlaceDao) : AndroidViewModel(app) {
+class MapViewModel(app: Application) : ScopedAndroidViewModel(app) {
 
     /** User inputted search term, null/empty String if none */
     val searchTerm = MutableLiveData<String>()
@@ -52,52 +51,51 @@ class MapViewModel(app: Application, val placeDao: PlaceDao) : AndroidViewModel(
     val place = MutableLiveData<Place>()
 
     /** List of all places */
-    val places = MutableLiveData<List<Place>>().apply {
-        GlobalScope.launch(ioDispatcher) { postValue(placeDao.getPlaces()) }
-    }
+    val places = MutableLiveData<List<Place>>()
 
     /** List of places that fit the current category */
-    val categoryPlaces = MediatorLiveData<List<Place>>().apply {
-        // Add the category as a source
+    private val categoryPlaces = MediatorLiveData<List<Place>>().apply {
+        // Update the list of category places if the category or the places are updated
         addSource(category) {
-            val category = it ?: return@addSource
-            val places = places.value ?: listOf()
+            updateCategoryPlaces()
+        }
 
-            // Whenever the category changes, update the list of places that fit that requirement
-            val categoryPlaces = when (category.id) {
-                Category.ALL -> places
-                else -> places.filter { place -> place.categories.contains(category.id) }
-            }
-
-            postValue(categoryPlaces)
+        addSource(places) {
+            updateCategoryPlaces()
         }
     }
 
     /** List of places currently shown on the map */
     val shownPlaces = MediatorLiveData<List<Place>>().apply {
-        // Keep track of the list of category places. Whenever that changes, we need to update the shown places
+        // Update the list of shown places if the list of categor places or the search term are updated
         addSource(categoryPlaces) {
             updateShownPlaces()
         }
 
-        // Also keep track of the search term
         addSource(searchTerm) {
             updateShownPlaces()
         }
     }
 
     init {
-        FirebaseFirestore.getInstance().collection(Constants.Firebase.CATEGORIES)
-            .get()
-            .addOnSuccessListener { task ->
-                // Get the categories from Firebase
-                val firebaseCategories = task.documents.mapNotNull { Category.fromDocument(it) }.toMutableList()
+        // Load the categories from Firebase
+        launch(ioDispatcher) {
+            val firebaseCategories = firestore
+                .get(Constants.Firebase.CATEGORIES, Category.Companion::fromDocument)
+                .toMutableList()
 
-                // Add All category
-                firebaseCategories.add(0, Category(app))
+            // Add the all category
+            firebaseCategories.add(0, Category(app))
 
-                categories.postValue(firebaseCategories)
-            }
+            categories.postValue(firebaseCategories)
+        }
+
+        // Load the places from Firebase
+        launch(ioDispatcher) {
+            val firebasePlaces = firestore.get(Constants.Firebase.PLACES, Place.Companion::fromDocument)
+
+            places.postValue(firebasePlaces)
+        }
     }
 
     fun getPlace(placeId: Int) {
@@ -105,6 +103,22 @@ class MapViewModel(app: Application, val placeDao: PlaceDao) : AndroidViewModel(
         if (place != null) {
             this.place.postValue(place)
         }
+    }
+
+    /**
+     * Updates the list of places that are part of the chosen [category]
+     */
+    private fun updateCategoryPlaces() {
+        val category = category.value ?: return
+        val places = places.value ?: listOf()
+
+        // Whenever the category changes, update the list of places that fit that requirement
+        val categoryPlaces = when (category.id) {
+            Category.ALL -> places
+            else -> places.filter { place -> place.categories.contains(category.id) }
+        }
+
+        this.categoryPlaces.postValue(categoryPlaces)
     }
 
     /**
