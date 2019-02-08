@@ -32,7 +32,6 @@ import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
@@ -58,8 +57,6 @@ import retrofit2.Response
 class CoursesActivity : DrawerActivity() {
 
     private val defaultTermPref by inject<DefaultTermPref>()
-
-    private val registerTermsPref by inject<RegisterTermsPref>()
 
     private val courseDao by inject<CourseDao>()
 
