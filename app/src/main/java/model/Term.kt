@@ -113,10 +113,10 @@ class Term(val season: Season, val year: Int) : Serializable {
                 null
             }
 
-            val year = it["year"] as? Int
+            val year = it["year"] as? Long
 
             // If the season or year is null, something went wrong during parsing so don't continue
-            return@get if (season != null && year != null) Term(season, year) else null
+            return@get if (season != null && year != null) Term(season, year.toInt()) else null
         }
     }
 }
