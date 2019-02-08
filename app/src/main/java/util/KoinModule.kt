@@ -27,7 +27,6 @@ import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
-import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import com.guerinet.mymartlet.viewmodel.MapViewModel
@@ -63,7 +62,7 @@ import timber.log.Timber
 val appModule: Module = module {
 
     // Clear Manager
-    single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get(), get()) }
+    single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get()) }
 
     // HomePageManager
     single { HomepageManager(get(), androidContext()) }
@@ -89,17 +88,11 @@ val appModule: Module = module {
 
 val dbModule = module {
 
-    // ConfigDb
-    single { ConfigDb.init(androidContext()) }
-
     // CourseDao
     single { get<UserDb>().courseDao() }
 
     // CourseResultDao
     single { get<UserDb>().courseResultDao() }
-
-    // PlaceDao
-    single { get<ConfigDb>().placeDao() }
 
     // SemesterDao
     single { get<UserDb>().semesterDao() }
@@ -192,7 +185,7 @@ val viewModelsModule = module {
     viewModel { EbillViewModel(get(), get()) }
 
     // MapViewModel
-    viewModel { MapViewModel(androidApplication(), get()) }
+    viewModel { MapViewModel(androidApplication()) }
 
     // SemesterViewModel
     viewModel { SemesterViewModel(get(), get()) }
