@@ -16,8 +16,10 @@
 
 package com.guerinet.mymartlet.model.place
 
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
+import com.guerinet.mymartlet.util.Constants
+import com.guerinet.mymartlet.util.extensions.get
+import com.guerinet.mymartlet.util.firestore
 
 /**
  * A place on the campus map
@@ -36,16 +38,22 @@ class Place {
 
     /** Name of the place when listed under a course location, an empty String if equivalent to the [name]  */
     var courseName: String = ""
+        get() {
+            // If there is no override, simply use the name
+            return if (field.isEmpty()) name else field
+        }
 
     var coordinates: GeoPoint = GeoPoint(0.0, 0.0)
 
     companion object {
 
         /**
-         * Converts a Firestore [document] into a [Place] (null if error during parsing)
+         * Loads the places from the Firestore
          */
-        fun fromDocument(document: DocumentSnapshot): Place? = document.toObject(Place::class.java)?.apply {
-            id = document.id.toInt()
+        suspend fun loadPlaces(): List<Place> = firestore.get(Constants.Firebase.PLACES) {
+            it.toObject(Place::class.java)?.apply {
+                id = it.id.toInt()
+            }
         }
     }
 }

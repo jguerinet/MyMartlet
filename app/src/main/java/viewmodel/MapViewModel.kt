@@ -20,6 +20,7 @@ import android.app.Application
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.guerinet.mymartlet.model.place.Category
+import com.guerinet.mymartlet.model.place.Category.Companion.fromDocument
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.extensions.get
@@ -92,9 +93,7 @@ class MapViewModel(app: Application) : ScopedAndroidViewModel(app) {
 
         // Load the places from Firebase
         launch(ioDispatcher) {
-            val firebasePlaces = firestore.get(Constants.Firebase.PLACES, Place.Companion::fromDocument)
-
-            places.postValue(firebasePlaces)
+            places.postValue(Place.loadPlaces())
         }
     }
 
