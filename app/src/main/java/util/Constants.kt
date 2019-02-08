@@ -57,7 +57,6 @@ object Prefs {
     const val EULA = "user_agreement"
     const val GRADE_CHECKER = "grade_checker"
     const val IMS_CONFIG = "ims_config"
-    const val IMS_PLACES = "ims_places"
     const val IMS_REGISTRATION = "ims_registration"
     const val IS_FIRST_OPEN = "first_open"
     const val MIN_VERSION = "min_version"
@@ -65,5 +64,4 @@ object Prefs {
     const val PASSWORD = "password"
     const val SCHEDULE_24HR = "24hr Schedule"
     const val SEAT_CHECKER = "seat_checker"
-    const val STATS = "statistics"
 }

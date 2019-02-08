@@ -164,8 +164,6 @@ val prefsModule: Module = module {
 
     single(Prefs.IMS_CONFIG) { NullDatePref(get(), Prefs.IMS_CONFIG, null) }
 
-    single(Prefs.IMS_PLACES) { NullDatePref(get(), Prefs.IMS_PLACES, null) }
-
     single(Prefs.IMS_REGISTRATION) { NullDatePref(get(), Prefs.IMS_REGISTRATION, null) }
 
     single(Prefs.IS_FIRST_OPEN) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
