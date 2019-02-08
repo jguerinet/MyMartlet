@@ -18,7 +18,6 @@ package com.guerinet.mymartlet.util.manager
 
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.suitcase.prefs.BooleanPref
@@ -33,7 +32,6 @@ class ClearManager(
     private val usernamePref: UsernamePref,
     private val homepageManager: HomepageManager,
     private val defaultTermPref: DefaultTermPref,
-    private val registerTermsPref: RegisterTermsPref,
     private val rememberUsernamePref: BooleanPref,
     private val userDb: UserDb
 ) {
@@ -58,13 +56,5 @@ class ClearManager(
 
         // Default term
         defaultTermPref.clear()
-    }
-
-    /**
-     * Clears all config info
-     */
-    fun clearConfig() {
-        // Register terms
-        registerTermsPref.clear()
     }
 }

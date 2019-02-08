@@ -62,7 +62,7 @@ import timber.log.Timber
 val appModule: Module = module {
 
     // Clear Manager
-    single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get()) }
+    single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME)) }
 
     // HomePageManager
     single { HomepageManager(get(), androidContext()) }
