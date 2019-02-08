@@ -36,6 +36,7 @@ import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.suitcase.coroutines.ioDispatcher
 import com.guerinet.suitcase.dialog.alertDialog
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
@@ -126,21 +127,24 @@ class CoursesActivity : DrawerActivity() {
      * Updates all of the info in the view
      */
     private fun update() {
-        // Set the title
-        title = term.getString(this)
+        launch {
+            // Set the title
+            title = term.getString(this@CoursesActivity)
 
-        // User can unregister if the current currentTerm is in the list of terms to register for
-        val canUnregister = registerTermsPref.terms.contains(term)
-
-        // Change the text and the visibility if we are in the list of currently registered courses
-        register.isVisible = canUnregister
-
-        // Update the list
-        launch(Dispatchers.IO) {
-            val courses = courseDao.getTermCourses(term)
-            withContext(Dispatchers.Main) {
-                adapter.update(courses, canUnregister)
+            // User can unregister if the current currentTerm is in the list of terms to register for
+            val canUnregister = withContext(ioDispatcher) {
+                Term.loadRegistrationTerms().contains(term)
             }
+
+            // Load the courses for the current term
+            val courses = withContext(ioDispatcher) {
+                courseDao.getTermCourses(term)
+            }
+
+            adapter.update(courses, canUnregister)
+
+            // Change the text and the visibility if we are in the list of currently registered courses
+            register.isVisible = canUnregister
         }
     }
 
