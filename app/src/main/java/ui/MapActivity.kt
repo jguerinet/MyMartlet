@@ -235,7 +235,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         val place = mapViewModel.place.value ?: return
         val intent = Intent(
             Intent.ACTION_VIEW,
-            "http://maps.google.com/maps?f=d &daddr=${place.coordinates.latitude},${place.coordinates.longitude}".toUri()
+            "http://maps.google.com/maps?f=d&daddr=${place.coordinates.latitude},${place.coordinates.longitude}".toUri()
         )
         startActivity(intent)
     }
