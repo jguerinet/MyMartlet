@@ -268,7 +268,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         mapViewModel.shownPlaces.postValue(mapViewModel.shownPlaces.value)
 
         // Click on the place sent with the intent, if there is one
-        mapViewModel.getPlace(intent.getIntExtra(Constants.ID, -1))
+        mapViewModel.onPlaceChosen(intent.getIntExtra(Constants.ID, -1))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -299,7 +299,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         // Find the corresponding place Id
         val placeId = markers.firstOrNull { it.second == marker }?.first ?: -1
 
-        mapViewModel.getPlace(placeId)
+        mapViewModel.onPlaceChosen(placeId)
 
         return false
     }

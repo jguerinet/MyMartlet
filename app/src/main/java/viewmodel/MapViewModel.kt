@@ -98,7 +98,10 @@ class MapViewModel(app: Application) : ScopedAndroidViewModel(app) {
         }
     }
 
-    fun getPlace(placeId: Int) {
+    /**
+     * Chooses the place with [placeId] to show its details
+     */
+    fun onPlaceChosen(placeId: Int) {
         val place = places.value?.firstOrNull { it.id == placeId }
         if (place != null) {
             this.place.postValue(place)
