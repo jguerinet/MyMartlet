@@ -46,6 +46,7 @@ object Constants {
 
         const val CATEGORIES = "categories"
         const val PLACES = "places"
+        const val REGISTRATION_TERMS = "registration_terms"
     }
 }
 
