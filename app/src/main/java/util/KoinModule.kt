@@ -24,7 +24,6 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.manager.UpdateManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.UserDb
@@ -151,9 +150,6 @@ val prefsModule: Module = module {
 
     // DefaultTermPref
     single { DefaultTermPref(get()) }
-
-    // RegisterTermsPref
-    single { RegisterTermsPref(get()) }
 
     // UsernamePref
     single { UsernamePref(get(), get()) }
