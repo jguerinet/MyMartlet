@@ -44,6 +44,7 @@ import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.net.MalformedURLException
 import java.net.URL
+import java.nio.file.Files.find
 
 /**
  * Base class for all of the activities with the main navigation drawer

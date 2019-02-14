@@ -19,6 +19,9 @@ package com.guerinet.mymartlet.parser
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.DateTimeParseException
+import java.util.Locale
 
 /**
  * Attempts to parse any [LocalTime] within the provided string
@@ -27,7 +30,7 @@ import org.threeten.bp.LocalTime
  * @since 2.3.2
  */
 internal fun String.parseTime(): LocalTime? {
-    val matches = REGEX_TIME.find(this)?.groupValues ?: return null
+    val matches = REGEX_TIME.find(trim())?.groupValues ?: return null
     var hour = matches[1].toInt()
     val minute = matches[2].toInt()
     val pm = matches[3] == "pm"
@@ -40,10 +43,20 @@ internal fun String.parseTime(): LocalTime? {
     return LocalTime.of(hour, minute)
 }
 
+private val dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.CANADA)
+
 /**
- * Parses a String into a LocalDate object
- *
- * TODO should just use a regex and return null if not found?
+ * Attempt to parse date of the format Jan 01, 2019
+ */
+fun String.parseDateAbbrev(): LocalDate? = try {
+    LocalDate.parse(trim(), dtf)
+} catch (ignore: DateTimeParseException) {
+    null
+}
+
+/**
+ * Parses a String into a LocalDate object.
+ * String should be of the format MM/DD
  *
  * @author Allan Wang
  * @since 2.3.2
@@ -51,12 +64,11 @@ internal fun String.parseTime(): LocalTime? {
  * @param year The current year
  * @return The corresponding local date
  */
-fun String.parseDate(year: Int): LocalDate {
-    val (month, day) = split("/")
-    return LocalDate.of(
-        year, month.toInt(),
-        day.toInt()
-    )
+fun String.parseDateMD(year: Int): LocalDate? {
+    val matches = REGEX_DATE_MD.find(trim())?.groupValues ?: return null
+    val month = matches[1].toInt()
+    val day = matches[2].toInt()
+    return LocalDate.of(year, month, day)
 }
 
 /**
@@ -69,14 +81,13 @@ fun String.parseDate(year: Int): LocalDate {
  * @return A pair representing the starting and ending dates of the range
  * @throws IllegalArgumentException
  */
-fun String.parseDateRange(year: Int): Pair<LocalDate, LocalDate> {
+fun String.parseDateMDRange(year: Int): Pair<LocalDate, LocalDate>? {
     //Split the range into the 2 date Strings
     val dates = split("-")
-    val startDate = dates[0].trim()
-    val endDate = dates[1].trim()
-
+    val startDate = dates[0].parseDateMD(year) ?: return null
+    val endDate = dates[1].parseDateMD(year) ?: return null
     //Parse the dates, return them as a pair
-    return startDate.parseDate(year) to endDate.parseDate(year)
+    return startDate to endDate
 }
 
 /**
@@ -109,5 +120,4 @@ object DayUtils {
      */
     fun dayToChar(day: DayOfWeek): Char =
         days.first { it.second == day }.first
-
 }
