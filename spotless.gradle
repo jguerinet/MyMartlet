@@ -20,7 +20,7 @@ spotless {
     kotlin {
         target "**/*.kt"
         ktlint()
-//        licenseHeaderFile '../spotless.license.kt'
+        // licenseHeaderFile '../spotless.license.kt'
         trimTrailingWhitespace()
         endWithNewline()
     }
