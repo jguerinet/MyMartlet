@@ -45,7 +45,7 @@ import org.threeten.bp.LocalTime
  * @property endDate Course end date
  */
 data class Course(
-    var term: Term,
+    val term: Term,
     val subject: String,
     val number: String,
     val title: String,

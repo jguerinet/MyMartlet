@@ -35,13 +35,14 @@ internal fun Element.parseSchedule(debugger: ParseDebugger = ParseDebuggerNoOp):
         return emptyList()
     }
 
-    val tableRows = selectFirst(DISPLAY_TABLE_QUERY)?.getElementsByTag("tr")
-        ?: return notFound(DISPLAY_TABLE_QUERY)
-
+    val tables = select(DISPLAY_TABLE_QUERY)
+    if (tables.isEmpty()) {
+        return notFound(DISPLAY_TABLE_QUERY)
+    }
     val courses: MutableList<Course> = mutableListOf()
     var i = 0
-    while (i < tableRows.size) {
-        i = tableRows.parseCourse(i, courses, debugger)
+    while (i < tables.size) {
+        i = tables.parseCourse(i, courses, debugger)
     }
     return courses
 }
@@ -70,10 +71,10 @@ private fun Elements.parseCourse(
         return index + 1
     }
 
-    val row = getOrNull(index) ?: return notFound("Elements is empty")
+    val table = getOrNull(index) ?: return notFound("Elements is empty")
     val nextRow = getOrNull(index + 1) ?: return notFound("Element only has one row")
     // Fast track; not expected data
-    if (!row.`is`(DISPLAY_TABLE_QUERY) || !nextRow.`is`(DISPLAY_TABLE_QUERY)) {
+    if (!table.`is`(DISPLAY_TABLE_QUERY) || !nextRow.`is`(DISPLAY_TABLE_QUERY)) {
         return notFound("Elements are not $DISPLAY_TABLE_QUERY")
     }
     // Fast track; second row doesn't match
@@ -82,12 +83,12 @@ private fun Elements.parseCourse(
     }
     // Get content from first row
     val caption =
-        row.getElementsByTag("caption").first()?.text() ?: return notFound("No caption found")
+        table.getElementsByTag("caption").first()?.text() ?: return notFound("No caption found")
     val courseValues =
         REGEX_COURSE_NUMBER_SECTION.matchEntire(caption)?.groupValues
             ?: return notFound("No course value found")
     val (_, title, subject, number, section) = courseValues
-    val tds = row.getElementsByTag("tr").mapNotNull { it.getElementsByTag("td").first() }
+    val tds = table.getElementsByTag("tr").mapNotNull { it.getElementsByTag("td").first() }
     if (tds.size < 5) {
         return notFound("Not enough bullet points")
     }
