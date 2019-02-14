@@ -137,19 +137,20 @@ android.buildTypes.each { type ->
 }
 
 // Versions for libraries with multiple dependencies
+def anko_version='0.10.7'
 def koin_version = "1.0.1"
 def okhttp_version = "3.11.0"
-def play_services_version = "11.0.4"
+def play_services_version = "16.0.7"
 def retrofit_version = "2.4.0"
 def room_version = "2.0.0"
 def suitcase_version = "4.9.0"
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.core:core-ktx:1.0.0'
+    implementation 'androidx.core:core-ktx:1.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     kapt "androidx.lifecycle:lifecycle-compiler:$room_version"
@@ -157,7 +158,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt 'androidx.room:room-compiler:2.0.0'
     implementation "com.afollestad.material-dialogs:commons:0.9.6.0"
-    implementation("com.crashlytics.sdk.android:crashlytics:2.9.5@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics:2.9.9@aar") {
         transitive = true
     }
     implementation "com.facebook.android:facebook-android-sdk:4.38.0"
@@ -193,7 +194,7 @@ dependencies {
     }
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0"
     // Don't update this as 1.10.x breaks the converters
     implementation "org.jsoup:jsoup:1.9.1"
     implementation "org.koin:koin-android:$koin_version"
