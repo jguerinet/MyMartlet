@@ -25,8 +25,8 @@ import org.threeten.bp.LocalDate
  *
  * Migrated since 2.3.2
  *
- * @param season    Term [Season]
- * @param year      Term year
+ * @param season Term [Season]
+ * @param year Term year
  */
 data class Term(val season: Season, val year: Int) : Comparable<Term> {
 

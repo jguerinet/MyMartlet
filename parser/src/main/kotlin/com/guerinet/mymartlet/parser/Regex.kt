@@ -41,4 +41,3 @@ internal val REGEX_DATE_MD = Regex("(\\d+)/(\\d+)", RegexOption.IGNORE_CASE)
  * @since 2.3.2
  */
 internal val REGEX_COURSE_NUMBER_SECTION = Regex("(.+?)\\.\\s*-\\s*(.+?)\\s+(.+?)\\s*-\\s*(\\d+)")
-

@@ -89,7 +89,6 @@ class EbillTest : ParseTestBase() {
             )
         )
 
-
         assertEquals(expectedStatements, statements, "Statement list mismatch")
     }
 }

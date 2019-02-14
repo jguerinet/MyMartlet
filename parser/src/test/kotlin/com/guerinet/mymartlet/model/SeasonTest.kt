@@ -36,5 +36,4 @@ class SeasonTest {
         assertTrue(Season.WINTER < Season.SUMMER, "winter < summer")
         assertTrue(Season.SUMMER < Season.FALL, "summer < fall")
     }
-
 }
