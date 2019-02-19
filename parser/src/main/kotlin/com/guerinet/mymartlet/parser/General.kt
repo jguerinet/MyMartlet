@@ -82,11 +82,11 @@ fun String.parseDateMD(year: Int): LocalDate? {
  * @throws IllegalArgumentException
  */
 fun String.parseDateMDRange(year: Int): Pair<LocalDate, LocalDate>? {
-    //Split the range into the 2 date Strings
+    // Split the range into the 2 date Strings
     val dates = split("-")
     val startDate = dates[0].parseDateMD(year) ?: return null
     val endDate = dates[1].parseDateMD(year) ?: return null
-    //Parse the dates, return them as a pair
+    // Parse the dates, return them as a pair
     return startDate to endDate
 }
 
