@@ -55,7 +55,7 @@ class HelpActivity : BaseActivity() {
                     analytics.event("help_mcgill_email")
 
                     // Show the user the info about the Chrome bug
-                    neutralDialog(message = R.string.help_email_walkthrough_info) { _, _ ->
+                    neutralDialog(message = R.string.help_email_walkthrough_info) {
                         // Open the official McGill Guide
                         openUrl("http://kb.mcgill.ca/kb/article?ArticleId=4774")
                     }
