@@ -142,7 +142,7 @@ def koin_version = "1.0.2"
 def okhttp_version = "3.13.1"
 def retrofit_version = "2.4.0"
 def room_version = "2.0.0"
-def suitcase_version = "5.0.0"
+def suitcase_version = "5.0.1"
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
