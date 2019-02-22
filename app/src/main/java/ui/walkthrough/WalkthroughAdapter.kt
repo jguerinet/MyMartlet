@@ -142,9 +142,7 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) : PagerAdapter(), Koi
 
         val currentChoice = homePages.indexOfFirst { it.first == homePageManager.homePage }
 
-        val choices = homePages.map { it.second }.toTypedArray()
-
-        context.singleListDialog(choices, R.string.settings_homepage_title, currentChoice) {
+        context.singleListDialog(homePages.map { it.second }, R.string.settings_homepage_title, currentChoice) {
             val homePage = homePages[it].first
 
             // Update it
@@ -183,7 +181,7 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) : PagerAdapter(), Koi
         // Get the current choice index
         val currentChoice = faculties.indexOf(item.view.text.toString())
 
-        context.singleListDialog(faculties.toTypedArray(), R.string.faculty_title, currentChoice) {
+        context.singleListDialog(faculties, R.string.faculty_title, currentChoice) {
             val faculty = faculties[it]
 
             // Update the view
