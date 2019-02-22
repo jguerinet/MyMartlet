@@ -47,6 +47,9 @@ suspend inline fun <reified T : Any> FirebaseFirestore.get(
 
                 block.resume(objects)
             }
-            .addOnFailureListener { Timber.tag("Firestore").e(it, "Failed to load from $collectionName") }
+            .addOnFailureListener {
+                block.cancel()
+                Timber.tag("Firestore").e(it, "Failed to load from $collectionName")
+            }
     }
 }
