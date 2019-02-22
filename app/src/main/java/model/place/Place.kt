@@ -51,12 +51,12 @@ data class Place(
             val id = it.id.toInt()
             val name = it["name"] as? String ?: ""
             @Suppress("UNCHECKED_CAST")
-            val categories = it["categories"] as? List<Int> ?: listOf()
+            val categories = it["categories"] as? List<Long> ?: listOf()
             val address = it["address"] as? String ?: ""
             val courseName = it["courseName"] as? String ?: ""
             val coordinates = it["coordinates"] as? GeoPoint ?: GeoPoint(0.0, 0.0)
 
-            Place(id, name, categories, address, courseName, coordinates)
+            Place(id, name, categories.map { category -> category.toInt() }, address, courseName, coordinates)
         }
     }
 }
