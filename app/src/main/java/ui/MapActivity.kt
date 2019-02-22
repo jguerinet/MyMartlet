@@ -89,7 +89,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                     // Get the categories from the ViewModel and transform them into
                     val categories = mapViewModel.categories.value ?: listOf()
 
-                    singleListDialog(categories.map { it.name }.toTypedArray(),
+                    singleListDialog(categories.map { it.name },
                         R.string.map_filter,
                         categories.indexOfFirst { it == mapViewModel.category.value }) {
 

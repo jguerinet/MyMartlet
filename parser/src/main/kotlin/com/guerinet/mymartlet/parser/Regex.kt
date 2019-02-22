@@ -39,4 +39,3 @@ internal val REGEX_TIME = Regex("(\\d+):(\\d+)\\s*(am|pm)", RegexOption.IGNORE_C
  * @since 2.3.2
  */
 internal val REGEX_COURSE_NUMBER_SECTION = Regex("(.+?)\\.\\s*-\\s*(.+?)\\s+(.+?)\\s*-\\s*(\\d+)")
-

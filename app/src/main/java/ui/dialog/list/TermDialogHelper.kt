@@ -60,10 +60,8 @@ class TermDialogHelper(
             // Use the default currentTerm if no currentTerm was sent
             val currentChoice = terms.indexOfFirst { it.first == term }
 
-            val choices = terms.map { it.second }.toTypedArray()
-
             withContext(Dispatchers.Main) {
-                context.singleListDialog(choices, R.string.title_change_semester, currentChoice) {
+                context.singleListDialog(terms.map { it.second }, R.string.title_change_semester, currentChoice) {
                     onTermSelected(terms[it].first)
                 }
             }

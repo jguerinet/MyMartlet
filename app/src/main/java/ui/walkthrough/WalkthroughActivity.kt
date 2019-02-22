@@ -22,7 +22,6 @@ import androidx.viewpager.widget.ViewPager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
-import com.guerinet.suitcase.analytics.event
 import kotlinx.android.synthetic.main.activity_walkthrough.*
 
 /**
@@ -81,7 +80,7 @@ class WalkthroughActivity : BaseActivity() {
         }
 
         close.setOnClickListener {
-            fa.event("skip_walkthrough")
+            analytics.event("skip_walkthrough")
             finish()
         }
     }

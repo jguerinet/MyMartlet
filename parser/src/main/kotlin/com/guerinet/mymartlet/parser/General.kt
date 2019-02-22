@@ -109,5 +109,4 @@ object DayUtils {
      */
     fun dayToChar(day: DayOfWeek): Char =
         days.first { it.second == day }.first
-
 }

@@ -29,7 +29,6 @@ import com.guerinet.mymartlet.ui.settings.about.AboutActivity
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.room.UpdateDao
-import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.dialog.singleListDialog
@@ -93,16 +92,14 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                     val currentChoice =
                         homePages.indexOfFirst { it.first == homePageManager.homePage }
 
-                    val choices = homePages.map { it.second }.toTypedArray()
-
-                    singleListDialog(choices, R.string.settings_homepage_title, currentChoice) {
+                    singleListDialog(homePages.map { it.second }, R.string.settings_homepage_title, currentChoice) {
                         // Update the instance
                         homePageManager.homePage = homePages[it].first
 
                         // Update the TextView
                         item.text = homePageManager.titleString
 
-                        fa.event("settings", "homepage" to homePageManager.title)
+                        analytics.event("settings", "homepage" to homePageManager.title)
                     }
                 }
             }
@@ -126,7 +123,7 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                 textId = R.string.title_report_bug
                 icon(Position.START, R.drawable.ic_bug_report)
                 onClick {
-                    fa.event("report_bug")
+                    analytics.event("report_bug")
 
                     val intent = Intent(Intent.ACTION_SEND).apply {
 

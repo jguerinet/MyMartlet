@@ -32,6 +32,8 @@ import com.guerinet.mymartlet.viewmodel.MapViewModel
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.room.UpdateDb
+import com.guerinet.suitcase.analytics.Analytics
+import com.guerinet.suitcase.analytics.FAnalytics
 import com.guerinet.suitcase.date.NullDatePref
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.prefs.IntPref
@@ -59,6 +61,9 @@ import timber.log.Timber
  * Base module with generic providers
  */
 val appModule: Module = module {
+
+    // Analytics
+    single { FAnalytics(androidContext()) } bind Analytics::class
 
     // Clear Manager
     single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME)) }

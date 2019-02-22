@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.guerinet.mymartlet.model
 
-import org.threeten.bp.LocalDate
 import org.threeten.bp.DayOfWeek
+import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 
 /**
@@ -28,21 +28,21 @@ import org.threeten.bp.LocalTime
  *
  * Migrated since 2.3.2
  *
- * @param term          Term this class is for
- * @param subject       Course's 4-letter subject (ex: MATH)
- * @param number        Course's number (ex: 263)
- * @param title         Course title
- * @param crn           Course CRN number
- * @param section       Course section (ex: 001)
- * @param startTime     Course's start time
- * @param endTime       Course's end time
- * @param days          Days this course is on
- * @param type          Course type (ex: lecture, tutorial...)
- * @param location      Course location (generally building and room number)
- * @param instructor    Course's instructor's name
- * @param credits       Number of credits for this course
- * @param startDate     Course start date
- * @param endDate       Course end date
+ * @param term Term this class is for
+ * @param subject Course's 4-letter subject (ex: MATH)
+ * @param number Course's number (ex: 263)
+ * @param title Course title
+ * @param crn Course CRN number
+ * @param section Course section (ex: 001)
+ * @param startTime Course's start time
+ * @param endTime Course's end time
+ * @param days Days this course is on
+ * @param type Course type (ex: lecture, tutorial...)
+ * @param location Course location (generally building and room number)
+ * @param instructor Course's instructor's name
+ * @param credits Number of credits for this course
+ * @param startDate Course start date
+ * @param endDate Course end date
  */
 data class Course(
     var term: Term,

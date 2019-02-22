@@ -38,7 +38,7 @@ class AboutActivity : BaseActivity() {
 
         // Set up the list
         list.layoutManager = LinearLayoutManager(this)
-        list.adapter = PersonAdapter(this)
+        list.adapter = PersonAdapter()
 
         github.setOnClickListener { openUrl("https://github.com/jguerinet/MyMartlet/") }
     }

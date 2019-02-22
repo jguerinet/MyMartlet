@@ -21,7 +21,6 @@ import com.guerinet.morf.morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
-import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.dialog.neutralDialog
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
 import com.guerinet.suitcase.util.extensions.openUrl
@@ -53,10 +52,10 @@ class HelpActivity : BaseActivity() {
             text {
                 textId = R.string.help_email_walkthrough
                 onClick {
-                    fa.event("help_mcgill_email")
+                    analytics.event("help_mcgill_email")
 
                     // Show the user the info about the Chrome bug
-                    neutralDialog(message = R.string.help_email_walkthrough_info) { _, _ ->
+                    neutralDialog(message = R.string.help_email_walkthrough_info) {
                         // Open the official McGill Guide
                         openUrl("http://kb.mcgill.ca/kb/article?ArticleId=4774")
                     }

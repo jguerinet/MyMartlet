@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.ui.settings.about
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.view.ViewGroup
@@ -24,8 +23,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.guerinet.mymartlet.R
-import com.guerinet.suitcase.analytics.event
-import com.guerinet.suitcase.analytics.firebase
+import com.guerinet.suitcase.analytics.Analytics
 import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter
 import com.guerinet.suitcase.ui.extensions.setPaddingId
 import com.guerinet.suitcase.ui.extensions.setTextSizeId
@@ -33,15 +31,16 @@ import com.guerinet.suitcase.util.extensions.openUrl
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_person.view.*
 import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
 /**
  * Displays the developer in the About page
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class PersonAdapter(context: Context) : BaseRecyclerViewAdapter(), KoinComponent {
+class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
-    private val fa by context.firebase()
+    private val analytics by inject<Analytics>()
 
     private val items: List<Any> by lazy {
         val (currentContributors, pastContributors) = Person.values().partition { it.isCurrent }
@@ -108,14 +107,14 @@ class PersonAdapter(context: Context) : BaseRecyclerViewAdapter(), KoinComponent
 
                 // LinkedIn
                 linkedIn.setOnClickListener {
-                    fa.event("about_linkedin", "person" to person.name)
+                    analytics.event("about_linkedin", "person" to person.name)
 
                     context.openUrl(context.getString(person.linkedInRes))
                 }
 
                 // Email
                 email.setOnClickListener {
-                    fa.event("about_email", "person" to person.name)
+                    analytics.event("about_email", "person" to person.name)
 
                     // Send an email
                     val intent = Intent(Intent.ACTION_SEND)
