@@ -26,13 +26,11 @@ import java.util.Locale
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class Category() {
-
-    var id: Int = ALL
-
-    var en: String = ""
-
-    var fr: String = ""
+data class Category(
+    val id: Int,
+    val en: String,
+    val fr: String
+) {
 
     /** Localized category name */
     val name: String
@@ -40,13 +38,9 @@ class Category() {
 
     /**
      * Constructor used to create the All category. Uses the app [context] to retrieve the necessary String
+     *  Set the same translation for both languages, as this gets regenerated every time the map is opened anyway
      */
-    constructor(context: Context) : this() {
-        id = ALL
-        // Set the same translation for both languages, as this get regenerated every time the map is opened anyway
-        en = context.getString(R.string.map_all)
-        fr = en
-    }
+    constructor(context: Context) : this(ALL, context.getString(R.string.map_all), context.getString(R.string.map_all))
 
     companion object {
 
@@ -56,8 +50,11 @@ class Category() {
         /**
          * Converts a Firestore [document] into a [Category] (null if error during the parsing)
          */
-        fun fromDocument(document: DocumentSnapshot): Category? = document.toObject(Category::class.java)?.apply {
-            id = document.id.toInt()
+        fun fromDocument(document: DocumentSnapshot): Category? {
+            val id = document.id.toInt()
+            val en = document["en"] as? String ?: ""
+            val fr = document["fr"] as? String ?: ""
+            return Category(id, en, fr)
         }
     }
 }
