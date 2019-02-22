@@ -47,7 +47,6 @@ abstract class ParseTestBase {
     fun baseAfter() {
         debugger.check()
     }
-
 }
 
 /**

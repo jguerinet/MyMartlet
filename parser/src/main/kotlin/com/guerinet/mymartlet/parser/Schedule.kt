@@ -23,7 +23,7 @@ import org.jsoup.select.Elements
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.DateTimeParseException
-import java.util.*
+import java.util.Locale
 
 private const val SCHEDULE_TABLE_QUERY = "table.datadisplaytable"
 
