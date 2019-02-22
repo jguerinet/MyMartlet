@@ -29,6 +29,9 @@ import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.CourseResultDao
 import com.guerinet.suitcase.analytics.Analytics
+import com.guerinet.suitcase.dialog.cancelButton
+import com.guerinet.suitcase.dialog.okButton
+import com.guerinet.suitcase.dialog.showDialog
 import kotlinx.android.synthetic.main.view_courses.view.*
 import org.jetbrains.anko.toast
 import org.koin.standalone.KoinComponent
@@ -111,10 +114,11 @@ class WishlistHelper(
                 }
 
                 // Confirm with the user before continuing
-                activity.alertDialog(R.string.warning, R.string.registration_disclaimer) { _, which ->
-                    if (which === DialogAction.POSITIVE) {
+                activity.showDialog(R.string.warning, R.string.registration_disclaimer) {
+                    okButton {
                         register(courses)
-                    } else {
+                    }
+                    cancelButton {
                         activity.toolbarProgress.isVisible = false
                     }
                 }
