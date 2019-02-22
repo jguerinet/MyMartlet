@@ -25,7 +25,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.afollestad.materialdialogs.DialogAction
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
