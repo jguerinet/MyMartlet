@@ -32,6 +32,9 @@ import com.facebook.share.widget.ShareDialog
 import com.google.android.material.navigation.NavigationView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.HomepageManager
+import com.guerinet.suitcase.dialog.cancelButton
+import com.guerinet.suitcase.dialog.okButton
+import com.guerinet.suitcase.dialog.showDialog
 import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import kotlinx.android.synthetic.main.activity_ebill.*
 import kotlinx.android.synthetic.main.drawer.*
@@ -160,14 +163,15 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
     /* HELPERS */
 
     private fun logout() {
-        alertDialog(R.string.warning, R.string.logout_dialog_message) { _, which ->
-            if (which == DialogAction.POSITIVE) {
+        showDialog(R.string.warning, R.string.logout_dialog_message) {
+            okButton {
                 analytics.event("logout")
                 clearManager.clearUserInfo()
                 // Go back to SplashActivity
                 startActivity<SplashActivity>()
                 finish()
             }
+            cancelButton {}
         }
     }
 
