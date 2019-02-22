@@ -36,7 +36,6 @@ import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.Result
 import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import com.guerinet.mymartlet.util.thread.UserDownloader
-import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.prefs.BooleanPref
@@ -203,7 +202,7 @@ class SplashActivity : BaseActivity() {
                     val isUsernameRemembered = rememberUsername.isChecked
                     rememberUsernamePref.value = isUsernameRemembered
 
-                    fa.event("splash_login", "remember_username" to isUsernameRemembered.toString())
+                    analytics.event("splash_login", "remember_username" to isUsernameRemembered.toString())
 
                     withContext(uiDispatcher) {
                         // Hide the login container
@@ -242,7 +241,7 @@ class SplashActivity : BaseActivity() {
             // Reset the progress text (if it was set during a previous login attempt
             progressText.text = ""
 
-            fa.event("splash_login", "auto" to autoLogin.toString())
+            analytics.event("splash_login", "auto" to autoLogin.toString())
 
             // If we're auto-logging in and there's no internet, skip everything
             if (autoLogin && !isConnected) {

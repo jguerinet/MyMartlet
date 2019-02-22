@@ -18,7 +18,6 @@ package com.guerinet.mymartlet.ui.wishlist
 
 import android.view.View
 import androidx.core.view.isVisible
-import com.afollestad.materialdialogs.DialogAction
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.CourseResult
@@ -29,9 +28,7 @@ import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.CourseResultDao
-import com.guerinet.suitcase.analytics.event
-import com.guerinet.suitcase.analytics.firebase
-import com.guerinet.suitcase.dialog.alertDialog
+import com.guerinet.suitcase.analytics.Analytics
 import kotlinx.android.synthetic.main.view_courses.view.*
 import org.jetbrains.anko.toast
 import org.koin.standalone.KoinComponent
@@ -55,7 +52,7 @@ class WishlistHelper(
     private val canAdd: Boolean
 ) : KoinComponent {
 
-    private val fa by activity.firebase()
+    private val analytics by inject<Analytics>()
 
     private val courseResultDao by inject<CourseResultDao>()
 
@@ -180,7 +177,7 @@ class WishlistHelper(
                     isPresent
                 }.size
 
-                fa.event("wishlist", "added" to coursesAdded.toString())
+                analytics.event("wishlist", "added" to coursesAdded.toString())
                 activity.getString(R.string.wishlist_add, coursesAdded)
             }
             else -> {
@@ -189,7 +186,7 @@ class WishlistHelper(
                 // Get the term from the first course (they will all be in the same term)
                 update(courses[0].term)
 
-                fa.event("wishlist", "removed" to courses.size.toString())
+                analytics.event("wishlist", "removed" to courses.size.toString())
                 activity.getString(R.string.wishlist_remove, courses.size)
             }
         }
