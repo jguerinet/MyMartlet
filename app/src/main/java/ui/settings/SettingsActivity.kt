@@ -92,9 +92,7 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                     val currentChoice =
                         homePages.indexOfFirst { it.first == homePageManager.homePage }
 
-                    val choices = homePages.map { it.second }.toTypedArray()
-
-                    singleListDialog(choices, R.string.settings_homepage_title, currentChoice) {
+                    singleListDialog(homePages.map { it.second }, R.string.settings_homepage_title, currentChoice) {
                         // Update the instance
                         homePageManager.homePage = homePages[it].first
 
