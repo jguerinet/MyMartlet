@@ -18,7 +18,9 @@ package com.guerinet.mymartlet.util.extensions
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.guerinet.suitcase.coroutines.ioDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import kotlin.coroutines.resume
 
@@ -35,14 +37,16 @@ import kotlin.coroutines.resume
 suspend inline fun <reified T : Any> FirebaseFirestore.get(
     collectionName: String,
     crossinline init: (DocumentSnapshot) -> T?
-): List<T> = suspendCancellableCoroutine { block ->
-    collection(collectionName)
-        .get()
-        .addOnSuccessListener { task ->
-            // Get the documents from Firebase and map them to local classes
-            val objects = task.documents.mapNotNull { init(it) }
+): List<T> = withContext(ioDispatcher) {
+    suspendCancellableCoroutine<List<T>> { block ->
+        collection(collectionName)
+            .get()
+            .addOnSuccessListener { task ->
+                // Get the documents from Firebase and map them to local classes
+                val objects = task.documents.mapNotNull { init(it) }
 
-            block.resume(objects)
-        }
-        .addOnFailureListener { Timber.tag("Firestore").e(it, "Failed to load from $collectionName") }
+                block.resume(objects)
+            }
+            .addOnFailureListener { Timber.tag("Firestore").e(it, "Failed to load from $collectionName") }
+    }
 }
