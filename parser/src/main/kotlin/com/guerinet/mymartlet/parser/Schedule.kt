@@ -20,12 +20,6 @@ import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.Term
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import org.threeten.bp.LocalDate
-import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.format.DateTimeParseException
-import java.util.*
-
-private const val SCHEDULE_TABLE_QUERY = "table.datadisplaytable"
 
 /**
  * Parses student schedule
@@ -41,14 +35,14 @@ internal fun Element.parseSchedule(debugger: ParseDebugger = ParseDebuggerNoOp):
         return emptyList()
     }
 
-    val table = select(SCHEDULE_TABLE_QUERY)
-    if (table.isEmpty()) {
-        return notFound(SCHEDULE_TABLE_QUERY)
+    val tables = select(DISPLAY_TABLE_QUERY)
+    if (tables.isEmpty()) {
+        return notFound(DISPLAY_TABLE_QUERY)
     }
     val courses: MutableList<Course> = mutableListOf()
     var i = 0
-    while (i < table.size) {
-        i = table.parseCourse(i, courses, debugger)
+    while (i < tables.size) {
+        i = tables.parseCourse(i, courses, debugger)
     }
     return courses
 }
@@ -77,11 +71,11 @@ private fun Elements.parseCourse(
         return index + 1
     }
 
-    val row = getOrNull(index) ?: return notFound("Elements is empty")
+    val table = getOrNull(index) ?: return notFound("Elements is empty")
     val nextRow = getOrNull(index + 1) ?: return notFound("Element only has one row")
     // Fast track; not expected data
-    if (!row.`is`(SCHEDULE_TABLE_QUERY) || !nextRow.`is`(SCHEDULE_TABLE_QUERY)) {
-        return notFound("Elements are not $SCHEDULE_TABLE_QUERY")
+    if (!table.`is`(DISPLAY_TABLE_QUERY) || !nextRow.`is`(DISPLAY_TABLE_QUERY)) {
+        return notFound("Elements are not $DISPLAY_TABLE_QUERY")
     }
     // Fast track; second row doesn't match
     if (nextRow.attr("summary") != "This table lists the scheduled meeting times and assigned instructors for this class..") {
@@ -89,12 +83,12 @@ private fun Elements.parseCourse(
     }
     // Get content from first row
     val caption =
-        row.getElementsByTag("caption").first()?.text() ?: return notFound("No caption found")
+        table.getElementsByTag("caption").first()?.text() ?: return notFound("No caption found")
     val courseValues =
         REGEX_COURSE_NUMBER_SECTION.matchEntire(caption)?.groupValues
             ?: return notFound("No course value found")
     val (_, title, subject, number, section) = courseValues
-    val tds = row.getElementsByTag("tr").mapNotNull { it.getElementsByTag("td").first() }
+    val tds = table.getElementsByTag("tr").mapNotNull { it.getElementsByTag("td").first() }
     if (tds.size < 5) {
         return notFound("Not enough bullet points")
     }
@@ -104,8 +98,6 @@ private fun Elements.parseCourse(
     fun warning(message: String) {
         debugger.debug("parseCourse:timeRow: $message")
     }
-
-    val dtf = DateTimeFormatter.ofPattern("MMM dd, yyyy").withLocale(Locale.US)
 
     nextRow.getElementsByTag("tr")
         .map { it.getElementsByTag("td") }
@@ -126,12 +118,7 @@ private fun Elements.parseCourse(
             val (startDate, endDate) = cells[3]
                 .split("-")
                 .mapNotNull {
-                    try {
-                        LocalDate.parse(it.trim(), dtf)
-                    } catch (e: DateTimeParseException) {
-                        debugger.debug("Date parse error: ${e.message}")
-                        null
-                    }
+                    it.parseDateAbbrev().ifNull { debugger.debug("Date parse error") }
                 }.takeIf { it.size == 2 }
                 ?: return@forEach warning("Date range mismatch; expected two entries")
 
