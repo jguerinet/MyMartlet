@@ -16,7 +16,6 @@
 
 package com.guerinet.mymartlet.ui.settings.about
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.view.ViewGroup
@@ -39,7 +38,7 @@ import org.koin.standalone.inject
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class PersonAdapter(context: Context) : BaseRecyclerViewAdapter(), KoinComponent {
+class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
     private val analytics by inject<Analytics>()
 
