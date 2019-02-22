@@ -555,7 +555,8 @@ class ScheduleActivity : DrawerActivity() {
                     // Try to find a place that has the right name
                     launch(ioDispatcher) {
                         // Load the places from the Firestore
-                        val place = Place.loadPlaces().firstOrNull { course.location.contains(it.courseName, true) }
+                        val place =
+                            Place.loadPlaces().firstOrNull { course.location.contains(it.coursePlaceName, true) }
 
                         if (place == null) {
                             // Tell the user

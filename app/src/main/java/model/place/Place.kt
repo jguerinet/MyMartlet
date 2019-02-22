@@ -26,24 +26,21 @@ import com.guerinet.mymartlet.util.firestore
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class Place {
-
-    var id: Int = 0
-
-    var name: String = ""
-
-    var categories: List<Int> = listOf()
-
-    var address: String = ""
+data class Place(
+    val id: Int,
+    val name: String,
+    val categories: List<Int>,
+    val address: String,
+    private val courseName: String,
+    val coordinates: GeoPoint
+) {
 
     /** Name of the place when listed under a course location, an empty String if equivalent to the [name]  */
-    var courseName: String = ""
+    val coursePlaceName: String
         get() {
             // If there is no override, simply use the name
-            return if (field.isEmpty()) name else field
+            return if (courseName.isEmpty()) name else courseName
         }
-
-    var coordinates: GeoPoint = GeoPoint(0.0, 0.0)
 
     companion object {
 
@@ -51,9 +48,15 @@ class Place {
          * Loads the places from the Firestore
          */
         suspend fun loadPlaces(): List<Place> = firestore.get(Constants.Firebase.PLACES) {
-            it.toObject(Place::class.java)?.apply {
-                id = it.id.toInt()
-            }
+            val id = it.id.toInt()
+            val name = it["name"] as? String ?: ""
+            @Suppress("UNCHECKED_CAST")
+            val categories = it["categories"] as? List<Int> ?: listOf()
+            val address = it["address"] as? String ?: ""
+            val courseName = it["courseName"] as? String ?: ""
+            val coordinates = it["coordinates"] as? GeoPoint ?: GeoPoint(0.0, 0.0)
+
+            Place(id, name, categories, address, courseName, coordinates)
         }
     }
 }
