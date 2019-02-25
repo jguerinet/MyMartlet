@@ -16,28 +16,9 @@
 
 package com.guerinet.mymartlet.parser
 
-/**
- * Parses time
- * Example:
- * - 10:10 am
- *
- * @author Allan Wang
- * @since 2.3.2
- */
-internal val REGEX_TIME = Regex("(\\d+):(\\d+)\\s*(am|pm)", RegexOption.IGNORE_CASE)
-
-internal val REGEX_DATE_MD = Regex("(\\d+)/(\\d+)", RegexOption.IGNORE_CASE)
-
-/**
- * Parses course title, number, and section.
- * It is assumed that
- * - the title ends with a period
- * - the components are separated by '-'
- * - the section is a number
- * Example:
- * - Algorithm Design. - COMP 360 - 001
- *
- * @author Allan Wang
- * @since 2.3.2
- */
-internal val REGEX_COURSE_NUMBER_SECTION = Regex("(.+?)\\.\\s*-\\s*(.+?)\\s+(.+?)\\s*-\\s*(\\d+)")
+internal inline fun <T : Any?> T.ifNull(action: () -> Unit): T {
+    if (this == null) {
+        action()
+    }
+    return this
+}
