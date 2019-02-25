@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-apply plugin: "com.diffplug.gradle.spotless"
+package com.guerinet.mymartlet.model
 
-spotless {
-    kotlin {
-        target "**/*.kt"
-        ktlint()
-        // licenseHeaderFile '../spotless.license.kt'
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-}
+import org.threeten.bp.LocalDate
+
+/**
+ * Ebil entry
+ */
+data class Statement(
+    val date: LocalDate,
+    val dueDate: LocalDate,
+    val amount: Double
+)
