@@ -50,7 +50,6 @@ class TranscriptActivity : DrawerActivity(), TimberTag {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transcript)
-        ga.sendScreen("Transcript")
 
         list.layoutManager = LinearLayoutManager(this)
         list.adapter = adapter

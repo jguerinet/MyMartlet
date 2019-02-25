@@ -21,7 +21,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import com.afollestad.materialdialogs.DialogAction
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.RegistrationError
@@ -36,7 +35,9 @@ import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
-import com.guerinet.suitcase.dialog.alertDialog
+import com.guerinet.suitcase.dialog.cancelButton
+import com.guerinet.suitcase.dialog.okButton
+import com.guerinet.suitcase.dialog.showDialog
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
 import kotlinx.coroutines.Dispatchers
@@ -73,7 +74,6 @@ class CoursesActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wishlist)
-        ga.sendScreen("View Courses")
 
         list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         list.adapter = adapter
@@ -206,48 +206,46 @@ class CoursesActivity : DrawerActivity() {
             return
         }
 
-        alertDialog(R.string.unregister_dialog_title, R.string.unregister_dialog_message) { _, which ->
-            // Don't continue if the positive button has not been clicked on
-            if (which != DialogAction.POSITIVE) {
-                return@alertDialog
-            }
+        showDialog(R.string.unregister_dialog_title, R.string.unregister_dialog_message) {
+            cancelButton {}
+            okButton {
+                if (!canRefresh()) {
+                    return@okButton
+                }
 
-            if (!canRefresh()) {
-                return@alertDialog
-            }
+                // Run the registration thread
+                mcGillService.registration(McGillManager.getRegistrationURL(courses, true))
+                    .enqueue(object : Callback<List<RegistrationError>> {
+                        override fun onResponse(
+                            call: Call<List<RegistrationError>>,
+                            response: Response<List<RegistrationError>>
+                        ) {
+                            toolbarProgress.isVisible = false
 
-            // Run the registration thread
-            mcGillService.registration(McGillManager.getRegistrationURL(courses, true))
-                .enqueue(object : Callback<List<RegistrationError>> {
-                    override fun onResponse(
-                        call: Call<List<RegistrationError>>,
-                        response: Response<List<RegistrationError>>
-                    ) {
-                        toolbarProgress.isVisible = false
+                            // If there are no errors, show the success message
+                            val body = response.body()
+                            if (body == null || body.isEmpty()) {
+                                toast(R.string.unregistration_success)
+                                return
+                            }
 
-                        // If there are no errors, show the success message
-                        val body = response.body()
-                        if (body == null || body.isEmpty()) {
-                            toast(R.string.unregistration_success)
-                            return
+                            // Prepare the error message String
+                            val errorMessage = body.joinToString("\n",
+                                transform = { error -> error.getString(courses) })
+                            errorDialog(errorMessage)
+
+                            // Refresh the courses
+                            refresh()
                         }
 
-                        // Prepare the error message String
-                        val errorMessage = body.joinToString("\n",
-                            transform = { error -> error.getString(courses) })
-                        errorDialog(errorMessage)
-
-                        // Refresh the courses
-                        refresh()
-                    }
-
-                    override fun onFailure(
-                        call: Call<List<RegistrationError>>,
-                        t: Throwable
-                    ) {
-                        handleError("unregistering for courses", t)
-                    }
-                })
+                        override fun onFailure(
+                            call: Call<List<RegistrationError>>,
+                            t: Throwable
+                        ) {
+                            handleError("unregistering for courses", t)
+                        }
+                    })
+            }
         }
     }
 }

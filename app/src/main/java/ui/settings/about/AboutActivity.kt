@@ -35,7 +35,6 @@ class AboutActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
         setUpToolbar(true)
-        ga.sendScreen("About")
 
         // Set up the list
         list.layoutManager = LinearLayoutManager(this)

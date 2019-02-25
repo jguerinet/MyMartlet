@@ -475,7 +475,7 @@ class ScheduleActivity : DrawerActivity() {
      * @param course Clicked [Course]
      */
     private fun showCourseDialog(course: Course) {
-        ga.sendScreen("Schedule - Course")
+        analytics.event("schedule_course_details")
 
         // Set up the view in the dialog
         val view = ScrollView(this)

@@ -23,7 +23,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.guerinet.mymartlet.R
-import com.guerinet.suitcase.analytics.GAManager
+import com.guerinet.suitcase.analytics.Analytics
 import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter
 import com.guerinet.suitcase.ui.extensions.setPaddingId
 import com.guerinet.suitcase.ui.extensions.setTextSizeId
@@ -40,7 +40,7 @@ import org.koin.standalone.inject
  */
 class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
-    private val ga by inject<GAManager>()
+    private val analytics by inject<Analytics>()
 
     private val items: List<Any> by lazy {
         val (currentContributors, pastContributors) = Person.values().partition { it.isCurrent }
@@ -107,13 +107,14 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
 
                 // LinkedIn
                 linkedIn.setOnClickListener {
-                    ga.sendEvent("About", "LinkedIn", person.name)
+                    analytics.event("about_linkedin", "person" to person.name)
+
                     context.openUrl(context.getString(person.linkedInRes))
                 }
 
                 // Email
                 email.setOnClickListener {
-                    ga.sendEvent("About", "Email", person.name)
+                    analytics.event("about_email", "person" to person.name)
 
                     // Send an email
                     val intent = Intent(Intent.ACTION_SEND)

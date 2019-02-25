@@ -24,12 +24,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.viewpager.widget.PagerAdapter
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.guerinet.morf.Morf
 import com.guerinet.morf.TextViewItem
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.suitcase.analytics.GAManager
+import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.dialog.singleListDialog
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -43,10 +45,7 @@ import java.util.Comparator
  * @property isFirstOpen True if this is the first open, false otherwise
  *                      For a first open there is an extra page at the end
  */
-class WalkthroughAdapter(private val isFirstOpen: Boolean) :
-    androidx.viewpager.widget.PagerAdapter(), KoinComponent {
-
-    private val ga by inject<GAManager>()
+class WalkthroughAdapter(private val isFirstOpen: Boolean) : PagerAdapter(), KoinComponent {
 
     private val homePageManager by inject<HomepageManager>()
 
@@ -143,9 +142,7 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
 
         val currentChoice = homePages.indexOfFirst { it.first == homePageManager.homePage }
 
-        val choices = homePages.map { it.second }.toTypedArray()
-
-        context.singleListDialog(choices, R.string.settings_homepage_title, currentChoice) {
+        context.singleListDialog(homePages.map { it.second }, R.string.settings_homepage_title, currentChoice) {
             val homePage = homePages[it].first
 
             // Update it
@@ -153,7 +150,8 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
 
             item.text(homePageManager.titleString)
 
-            ga.sendEvent("Walkthrough", "HomepageManager", homePageManager.title)
+            FirebaseAnalytics.getInstance(context)
+                .event("walkthrough", "homepage" to homePageManager)
         }
     }
 
@@ -183,12 +181,12 @@ class WalkthroughAdapter(private val isFirstOpen: Boolean) :
         // Get the current choice index
         val currentChoice = faculties.indexOf(item.view.text.toString())
 
-        context.singleListDialog(faculties.toTypedArray(), R.string.faculty_title, currentChoice) {
+        context.singleListDialog(faculties, R.string.faculty_title, currentChoice) {
             val faculty = faculties[it]
 
             // Update the view
             item.text(faculty)
-            ga.sendEvent("Walkthrough", "Faculty", faculty)
+            FirebaseAnalytics.getInstance(context).event("walkthrough", "faculty" to faculty)
         }
     }
 }

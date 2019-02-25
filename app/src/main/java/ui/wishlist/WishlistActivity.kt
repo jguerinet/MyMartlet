@@ -67,7 +67,6 @@ class WishlistActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wishlist)
-        ga.sendScreen("Wishlist")
 
         // Load the first registration currentTerm if there is one
         term = registerTermsPref.terms.firstOrNull()

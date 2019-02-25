@@ -37,7 +37,6 @@ class SearchResultsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_courses)
         setUpToolbar()
-        ga.sendScreen("Search Results")
 
         // Get the info from the intent
         val term = intent.getSerializableExtra(Constants.TERM) as? Term ?: error("Missing term")

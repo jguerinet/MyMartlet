@@ -142,7 +142,7 @@ def koin_version = "1.0.2"
 def okhttp_version = "3.13.1"
 def retrofit_version = "2.4.0"
 def room_version = "2.0.0"
-def suitcase_version = "4.9.0"
+def suitcase_version = "5.0.1"
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -156,7 +156,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation "androidx.room:room-runtime:$room_version"
     kapt 'androidx.room:room-compiler:2.0.0'
-    implementation "com.afollestad.material-dialogs:commons:0.9.6.0"
+    implementation "com.afollestad.material-dialogs:core:2.0.0"
     implementation("com.crashlytics.sdk.android:crashlytics:2.9.9@aar") {
         transitive = true
     }
@@ -164,11 +164,14 @@ dependencies {
     implementation "com.google.android.gms:play-services-analytics:16.0.7"
     implementation "com.google.android.gms:play-services-maps:16.1.0"
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-firestore:18.0.0'
     implementation "com.guerinet:morf:6.0.0"
     implementation "com.guerinet.suitcase:analytics:$suitcase_version"
     implementation "com.guerinet.suitcase:coroutines:$suitcase_version"
     implementation "com.guerinet.suitcase:date:$suitcase_version"
     implementation "com.guerinet.suitcase:dialog:$suitcase_version"
+    implementation "com.guerinet.suitcase:firebase-analytics:$suitcase_version"
     implementation "com.guerinet.suitcase:io:$suitcase_version"
     implementation "com.guerinet.suitcase:lifecycle:$suitcase_version"
     implementation "com.guerinet.suitcase:log:$suitcase_version"

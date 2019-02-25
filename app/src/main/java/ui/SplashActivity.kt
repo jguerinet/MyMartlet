@@ -166,8 +166,6 @@ class SplashActivity : BaseActivity() {
                 if (e is MinervaException) R.string.login_error_wrong_data else R.string.error_other
             )
         }
-
-        ga.sendScreen("Login")
     }
 
     private fun loginPressed() {
@@ -201,13 +199,10 @@ class SplashActivity : BaseActivity() {
                     // Store the login info
                     usernamePref.value = username
                     Hawk.put(Prefs.PASSWORD, password)
-                    rememberUsernamePref.value = rememberUsername.isChecked
+                    val isUsernameRemembered = rememberUsername.isChecked
+                    rememberUsernamePref.value = isUsernameRemembered
 
-                    ga.sendEvent(
-                        "Login",
-                        "Remember Username",
-                        rememberUsername.isChecked.toString()
-                    )
+                    analytics.event("splash_login", "remember_username" to isUsernameRemembered.toString())
 
                     withContext(uiDispatcher) {
                         // Hide the login container
@@ -246,7 +241,7 @@ class SplashActivity : BaseActivity() {
             // Reset the progress text (if it was set during a previous login attempt
             progressText.text = ""
 
-            ga.sendEvent("Splash", "Auto-Login", autoLogin.toString())
+            analytics.event("splash_login", "auto" to autoLogin.toString())
 
             // If we're auto-logging in and there's no internet, skip everything
             if (autoLogin && !isConnected) {

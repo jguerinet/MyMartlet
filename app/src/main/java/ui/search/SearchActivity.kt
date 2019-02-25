@@ -30,6 +30,7 @@ import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
+import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.util.Device
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.startActivity
@@ -46,7 +47,9 @@ import java.util.ArrayList
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class SearchActivity : DrawerActivity() {
+class SearchActivity : DrawerActivity(), TimberTag {
+
+    override val tag: String = "SearchActivity"
 
     private val registerTermsPref by inject<RegisterTermsPref>()
 
@@ -59,7 +62,6 @@ class SearchActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        ga.sendScreen("Registration")
 
         // Check if there are any terms to register for
         val registerTerms = registerTermsPref.terms

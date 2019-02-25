@@ -102,7 +102,6 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-        ga.sendScreen("Map")
 
         val morf = Morf.bind(container)
 
@@ -123,8 +122,8 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
                         categoryDao.getCategories().map { Pair(it, it.getString(context)) }
 
                     uiThread {
-                        singleListDialog(categories.map { it.second }.toTypedArray(),
-                            R.string.map_filter,
+                        singleListDialog(
+                            categories.map { it.second }, R.string.map_filter,
                             categories.indexOfFirst { it.first == category }) {
 
                             category = categories[it].first

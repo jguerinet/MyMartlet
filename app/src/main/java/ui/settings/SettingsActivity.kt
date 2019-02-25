@@ -58,8 +58,6 @@ class SettingsActivity : DrawerActivity(), TimberTag {
 
     override val currentPage = HomepageManager.HomePage.SETTINGS
 
-    private val statsPref by inject<BooleanPref>(Prefs.STATS)
-
     private val twentyFourHourPref by inject<BooleanPref>(Prefs.SCHEDULE_24HR)
 
     private val updateDao by inject<UpdateDao>()
@@ -68,7 +66,6 @@ class SettingsActivity : DrawerActivity(), TimberTag {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         title = getString(R.string.settings_version, BuildConfig.VERSION_NAME)
-        ga.sendScreen("Settings")
 
         container.morf {
 
@@ -95,27 +92,15 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                     val currentChoice =
                         homePages.indexOfFirst { it.first == homePageManager.homePage }
 
-                    val choices = homePages.map { it.second }.toTypedArray()
-
-                    singleListDialog(choices, R.string.settings_homepage_title, currentChoice) {
+                    singleListDialog(homePages.map { it.second }, R.string.settings_homepage_title, currentChoice) {
                         // Update the instance
                         homePageManager.homePage = homePages[it].first
 
                         // Update the TextView
                         item.text = homePageManager.titleString
 
-                        ga.sendEvent("Settings", "HomePageManager", homePageManager.title)
+                        analytics.event("settings", "homepage" to homePageManager.title)
                     }
-                }
-            }
-
-            // Statistics
-            aSwitch {
-                textId = R.string.settings_statistics
-                icon(Position.START, R.drawable.ic_trending_up)
-                isChecked = statsPref.value
-                onCheckChanged { _, isChecked ->
-                    statsPref.value = isChecked
                 }
             }
 
@@ -138,7 +123,7 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                 textId = R.string.title_report_bug
                 icon(Position.START, R.drawable.ic_bug_report)
                 onClick {
-                    ga.sendEvent("About", "Report a Bug")
+                    analytics.event("report_bug")
 
                     val intent = Intent(Intent.ACTION_SEND).apply {
 

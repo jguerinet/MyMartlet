@@ -59,7 +59,6 @@ class MyCoursesActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
-        ga.sendScreen("MyCourses")
 
         // Check internet first
         if (!isConnected) {

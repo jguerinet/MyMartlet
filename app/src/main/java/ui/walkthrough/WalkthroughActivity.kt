@@ -41,7 +41,6 @@ class WalkthroughActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_walkthrough)
-        ga.sendScreen("Walkthrough")
 
         // Load the adapter
         viewPager.adapter = adapter
@@ -81,7 +80,7 @@ class WalkthroughActivity : BaseActivity() {
         }
 
         close.setOnClickListener {
-            ga.sendEvent("Walkthrough", "Skip")
+            analytics.event("skip_walkthrough")
             finish()
         }
     }
