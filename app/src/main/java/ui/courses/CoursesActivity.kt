@@ -22,7 +22,6 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.afollestad.materialdialogs.DialogAction
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.RegistrationError
@@ -40,6 +39,7 @@ import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
+import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
 import kotlinx.coroutines.Dispatchers
