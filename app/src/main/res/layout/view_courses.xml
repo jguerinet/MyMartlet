@@ -1,62 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/mainView">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
         android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="@dimen/padding_medium"
         android:text="@string/courses_empty"
-        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_medium"
         android:textStyle="italic"
         android:visibility="gone"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_medium"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@android:id/list"/>
+        app:layout_constraintBottom_toTopOf="@+id/wishlist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@android:id/empty" />
 
-    <LinearLayout
-        android:id="@+id/courses_button_container"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/register"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:padding="@dimen/padding_micro"
+        android:text="@string/courses_register"
+        android:textColor="@color/red"
+        android:textSize="@dimen/text_medium"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wishlist"
+        app:layout_constraintEnd_toStartOf="@+id/wishlist"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/courses_register"
-            android:padding="@dimen/padding_micro"
-            android:textSize="@dimen/text_medium"
-            android:gravity="center"
-            android:id="@+id/register"
-            android:textColor="@color/red"/>
+    <Button
+        android:id="@+id/wishlist"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/padding_micro"
+        android:text="@string/courses_add_wishlist"
+        android:textColor="@color/red"
+        android:textSize="@dimen/text_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/register"
+        app:layout_constraintTop_toBottomOf="@android:id/list" />
 
-        <Button
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/courses_add_wishlist"
-            android:padding="@dimen/padding_micro"
-            android:textSize="@dimen/text_medium"
-            android:gravity="center"
-            android:id="@+id/wishlist"
-            android:textColor="@color/red"/>
 
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
