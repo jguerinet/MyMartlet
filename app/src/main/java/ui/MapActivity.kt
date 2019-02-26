@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.guerinet.morf.Morf
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
@@ -98,7 +102,6 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-        ga.sendScreen("Map")
 
         val morf = Morf.bind(container)
 
@@ -108,24 +111,25 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         favorite.setDrawableTint(0, red)
 
         //Set up the place filter
+        val context = this
         morf.text {
-            text(category.getString(this@MapActivity))
+            text(category.getString(context))
             icon(Position.START, R.drawable.ic_location)
             icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
             onClick { textViewItem ->
                 doAsync {
                     val categories =
-                        categoryDao.getCategories().map { Pair(it, it.getString(this@MapActivity)) }
+                        categoryDao.getCategories().map { Pair(it, it.getString(context)) }
 
                     uiThread {
-                        singleListDialog(categories.map { it.second }.toTypedArray(),
-                            R.string.map_filter,
+                        singleListDialog(
+                            categories.map { it.second }, R.string.map_filter,
                             categories.indexOfFirst { it.first == category }) {
 
                             category = categories[it].first
 
                             // Update the text
-                            textViewItem.text(category.getString(this@MapActivity))
+                            textViewItem.text(category.getString(context))
 
                             // Update the filtered places
                             filterByCategory()
@@ -201,8 +205,10 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         return true
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         when (requestCode) {
             LOCATION_REQUEST ->
@@ -216,16 +222,13 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         }
     }
 
-    /**
-     * Opens Google Maps with directions to the chosen place
-     */
     private fun getDirections() {
         // Open Google Maps
         val place = this.place ?: return
         val intent = Intent(
             Intent.ACTION_VIEW, Uri.parse(
-                "http://maps.google.com/maps?f=d &daddr="
-                        + place.second.position.latitude + "," + place.second.position.longitude
+                "http://maps.google.com/maps?f=d &daddr=" +
+                    place.second.position.latitude + "," + place.second.position.longitude
             )
         )
         startActivity(intent)
@@ -327,31 +330,27 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         map?.setOnMarkerClickListener(this)
 
         doAsync {
-            val places = placeDao.getPlaces()
             val placeId = intent.getIntExtra(Constants.ID, -1)
-            var theMarker: Marker? = null
-            places.mapNotNullTo(this@MapActivity.places) {
+
+            placeDao.getPlaces().mapNotNullTo(places) {
                 // Create a marker for this
-                val marker = map?.addMarker(
+                val marker = googleMap.addMarker(
                     MarkerOptions()
                         .position(it.coordinates)
                         .draggable(false)
                         .visible(true)
                 ) ?: return@mapNotNullTo null
 
-                // Check if there was a place with the intent
-                if (theMarker == null && it.id == placeId) {
-                    // If the right place is found, perform a click later
-                    theMarker = marker
-                }
-
                 Pair(it, marker)
             }
+
+            // Find the place that was in the intent, if there was one
+            val marker = places.firstOrNull { it.first.id == placeId }?.second
 
             // Filter
             filterByCategory()
 
-            onMarkerClick(theMarker)
+            onMarkerClick(marker)
         }
     }
 

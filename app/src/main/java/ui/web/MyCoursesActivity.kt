@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,11 @@ import android.app.DownloadManager
 import android.content.Context
 import android.os.Bundle
 import android.os.Environment
-import android.webkit.*
+import android.webkit.CookieManager
+import android.webkit.DownloadListener
+import android.webkit.MimeTypeMap
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
@@ -55,7 +59,6 @@ class MyCoursesActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
-        ga.sendScreen("MyCourses")
 
         // Check internet first
         if (!isConnected) {
@@ -73,8 +76,11 @@ class MyCoursesActivity : DrawerActivity() {
         // Set up any eventual downloads
         webView.setDownloadListener(DownloadListener { url, _, _, mimeType, _ ->
             // Check that we have the external storage permission
-            if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            EXTERNAL_STORAGE_PERMISSION)) {
+            if (!hasPermission(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    EXTERNAL_STORAGE_PERMISSION
+                )
+            ) {
                 return@DownloadListener
             }
 
@@ -93,36 +99,42 @@ class MyCoursesActivity : DrawerActivity() {
                 setTitle(fileName)
                 allowScanningByMediaScanner()
                 setNotificationVisibility(
-                        DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
+                )
 
                 // Save the file in the "Downloads" folder of SDCARD
                 setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
             }
 
             // Get the download manager and enqueue download
-            val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            val manager = getSystemService(Context.DOWNLOAD_SERVICE)
+                as? DownloadManager ?: error("DownloadManager not available")
             manager.enqueue(request)
         })
 
         // Load the info into the WebView
         webView.settings.javaScriptEnabled = true
         webView.settings.userAgentString = "Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; " +
-                "LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) " +
-                "Version/4.0 Mobile Safari/534.30"
+            "LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) " +
+            "Version/4.0 Mobile Safari/534.30"
         @Suppress("DEPRECATION")
         webView.settings.saveFormData = false
-        webView.loadUrl("https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=" +
+        webView.loadUrl(
+            "https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=" +
                 "https://shibboleth.mcgill.ca/idp/shibboleth&target=https%3A%2F%2Fmycourses2" +
-                ".mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l")
+                ".mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l"
+        )
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 // Preload the user's information
-                view.loadUrl("javascript:(function f(){" +
+                view.loadUrl(
+                    "javascript:(function f(){" +
                         "(document.getElementsByName('j_username')[0]).value='" +
                         usernamePref.full + "';" +
                         "(document.getElementsByName('j_password')[0]).value='" +
                         Hawk.get<String>(Prefs.PASSWORD) +
-                        "'; document.getElementsByName('_eventId_proceed')[0].click();})()")
+                        "'; document.getElementsByName('_eventId_proceed')[0].click();})()"
+                )
                 view.isVisible = true
             }
         }
@@ -137,8 +149,11 @@ class MyCoursesActivity : DrawerActivity() {
         super.onBackPressed()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             EXTERNAL_STORAGE_PERMISSION -> {
                 val stringId = if (Utils.isPermissionGranted(grantResults)) {
@@ -154,9 +169,7 @@ class MyCoursesActivity : DrawerActivity() {
 
     companion object {
 
-        /**
-         * Code used to get the external storage permission for downloads
-         */
+        // Needed for downloads
         private const val EXTERNAL_STORAGE_PERMISSION = 100
     }
 }

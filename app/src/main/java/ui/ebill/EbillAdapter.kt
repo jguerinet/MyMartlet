@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.item_statement.view.*
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
+internal class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
 
     /**
      * Updates the list of [Statement]s shown
@@ -40,7 +40,7 @@ class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int) = StatementHolder(viewGroup)
 
-    class StatementHolder(parent: ViewGroup) :
+    internal class StatementHolder(parent: ViewGroup) :
         BaseHolder<Statement>(parent, R.layout.item_statement) {
 
         @SuppressLint("SetTextI18n")
@@ -70,7 +70,7 @@ class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<Statement>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<Statement>() {
 
         // Note: we check some of the data and not the Id here because the Id is auto-generated
         override fun areItemsTheSame(oldItem: Statement, newItem: Statement): Boolean =

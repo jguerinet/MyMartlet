@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,12 +36,21 @@ import com.guerinet.room.converter.IntMutableListConverter
 @TypeConverters(IntMutableListConverter::class)
 abstract class ConfigDb : RoomDatabase() {
 
+    /**
+     * Returns the [CategoryDao] instance for all [Category] related DB operations
+     */
     abstract fun categoryDao(): CategoryDao
 
+    /**
+     * Returns the [PlaceDao] instance for all [Place] related DB operations
+     */
     abstract fun placeDao(): PlaceDao
 
     companion object {
 
+        /**
+         * Initializes the [ConfigDb] using the app [context]
+         */
         fun init(context: Context): ConfigDb =
             Room.databaseBuilder(context, ConfigDb::class.java, "config-db").build()
     }

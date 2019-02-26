@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
+import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.util.Device
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.startActivity
@@ -39,14 +40,16 @@ import org.threeten.bp.DayOfWeek
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Allows a user to search for courses that they can register for
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class SearchActivity : DrawerActivity() {
+class SearchActivity : DrawerActivity(), TimberTag {
+
+    override val tag: String = "SearchActivity"
 
     private val registerTermsPref by inject<RegisterTermsPref>()
 
@@ -59,7 +62,6 @@ class SearchActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        ga.sendScreen("Registration")
 
         // Check if there are any terms to register for
         val registerTerms = registerTermsPref.terms
@@ -95,10 +97,12 @@ class SearchActivity : DrawerActivity() {
         isAllOptionsShown = !isAllOptionsShown
 
         moreOptionsContainer.isVisible = isAllOptionsShown
-        moreOptionsButton.setText(if (isAllOptionsShown)
-            R.string.registration_hide_options
-        else
-            R.string.registration_show_options)
+        moreOptionsButton.setText(
+            if (isAllOptionsShown)
+                R.string.registration_hide_options
+            else
+                R.string.registration_show_options
+        )
     }
 
     @SuppressLint("NewApi")
@@ -182,24 +186,30 @@ class SearchActivity : DrawerActivity() {
         }
 
         // Execute the request
-        mcGillService.search(term, subject, number.text.toString(), courseTitle.text.toString(),
-                minCredits, maxCredits, startHour, startMinute,
-                if (startAM) "a" else "p", endHour, endMinute, if (endAM) "a" else "p", dayChars)
-                .enqueue(object : Callback<List<CourseResult>> {
-                    override fun onResponse(call: Call<List<CourseResult>>,
-                            response: Response<List<CourseResult>>) {
-                        toolbarProgress.isVisible = false
-                        val body = response.body()
-                        if (body != null) {
-                            startActivity<SearchResultsActivity>(Constants.TERM to term,
-                                    Constants.COURSES to (body as ArrayList<CourseResult>))
-                        }
+        mcGillService.search(
+            term, subject, number.text.toString(), courseTitle.text.toString(),
+            minCredits, maxCredits, startHour, startMinute,
+            if (startAM) "a" else "p", endHour, endMinute, if (endAM) "a" else "p", dayChars
+        )
+            .enqueue(object : Callback<List<CourseResult>> {
+                override fun onResponse(
+                    call: Call<List<CourseResult>>,
+                    response: Response<List<CourseResult>>
+                ) {
+                    toolbarProgress.isVisible = false
+                    val body = response.body()
+                    if (body != null) {
+                        startActivity<SearchResultsActivity>(
+                            Constants.TERM to term,
+                            Constants.COURSES to (body as ArrayList<CourseResult>)
+                        )
                     }
+                }
 
-                    override fun onFailure(call: Call<List<CourseResult>>, t: Throwable) {
-                        handleError("searching for courses", t)
-                    }
-                })
+                override fun onFailure(call: Call<List<CourseResult>>, t: Throwable) {
+                    handleError("searching for courses", t)
+                }
+            })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -221,9 +231,6 @@ class SearchActivity : DrawerActivity() {
         }
     }
 
-    /**
-     * Resets all of the fields
-     */
     @Suppress("DEPRECATION")
     @SuppressLint("NewApi")
     private fun reset() {

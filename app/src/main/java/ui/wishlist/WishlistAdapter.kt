@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,13 +32,13 @@ import kotlinx.android.synthetic.main.item_course.view.*
  * @author Julien Guerinet
  * @since 1.0.0
  */
-internal class WishlistAdapter(emptyView: TextView) :
-        BaseListAdapter<CourseResult>(ItemCallback(), emptyView) {
+internal class WishlistAdapter(private val empty: TextView) :
+    BaseListAdapter<CourseResult>(ItemCallback(), empty) {
 
     val checkedCourses = mutableListOf<CourseResult>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseHolder =
-            CourseHolder(parent)
+        CourseHolder(parent)
 
     /**
      * Updates the list of [courses] shown
@@ -51,7 +51,7 @@ internal class WishlistAdapter(emptyView: TextView) :
     fun update(term: Term?, courses: List<CourseResult>) {
         if (term == null) {
             // Hide all of the main content and show explanatory text if the currentTerm is null
-            (emptyView as TextView).setText(R.string.registration_no_semesters)
+            empty.setText(R.string.registration_no_semesters)
             submitList(mutableListOf())
             return
         }
@@ -59,7 +59,7 @@ internal class WishlistAdapter(emptyView: TextView) :
     }
 
     internal inner class CourseHolder(parent: ViewGroup) :
-            BaseHolder<CourseResult>(parent, R.layout.item_course) {
+        BaseHolder<CourseResult>(parent, R.layout.item_course) {
 
         override fun bind(position: Int, item: CourseResult) {
             itemView.apply {
@@ -67,12 +67,16 @@ internal class WishlistAdapter(emptyView: TextView) :
                 credits.text = context.getString(R.string.course_credits, item.credits.toString())
                 title.text = item.title
                 spots.visibility = View.VISIBLE
-                spots.text = context.getString(R.string.registration_spots,
-                        item.seatsRemaining.toString())
+                spots.text = context.getString(
+                    R.string.registration_spots,
+                    item.seatsRemaining.toString()
+                )
                 type.text = item.type
                 waitlistRemaining.visibility = View.VISIBLE
-                waitlistRemaining.text = context.getString(R.string.registration_waitlist,
-                        item.waitlistRemaining.toString())
+                waitlistRemaining.text = context.getString(
+                    R.string.registration_waitlist,
+                    item.waitlistRemaining.toString()
+                )
                 days.text = DayUtils.getDayStrings(item.days)
                 hours.text = item.timeString
                 dates.text = item.dateString
@@ -95,11 +99,11 @@ internal class WishlistAdapter(emptyView: TextView) :
         }
     }
 
-    class ItemCallback : DiffUtil.ItemCallback<CourseResult>() {
+    internal class ItemCallback : DiffUtil.ItemCallback<CourseResult>() {
         override fun areItemsTheSame(oldItem: CourseResult, newItem: CourseResult): Boolean =
-                oldItem.term == newItem.term && oldItem.crn == newItem.crn
+            oldItem.term == newItem.term && oldItem.crn == newItem.crn
 
         override fun areContentsTheSame(oldItem: CourseResult, newItem: CourseResult): Boolean =
-                oldItem == newItem
+            oldItem == newItem
     }
 }

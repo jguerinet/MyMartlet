@@ -26,6 +26,8 @@ package com.guerinet.mymartlet.parser
  */
 internal val REGEX_TIME = Regex("(\\d+):(\\d+)\\s*(am|pm)", RegexOption.IGNORE_CASE)
 
+internal val REGEX_DATE_MD = Regex("(\\d+)/(\\d+)", RegexOption.IGNORE_CASE)
+
 /**
  * Parses course title, number, and section.
  * It is assumed that
@@ -39,4 +41,3 @@ internal val REGEX_TIME = Regex("(\\d+):(\\d+)\\s*(am|pm)", RegexOption.IGNORE_C
  * @since 2.3.2
  */
 internal val REGEX_COURSE_NUMBER_SECTION = Regex("(.+?)\\.\\s*-\\s*(.+?)\\s+(.+?)\\s*-\\s*(\\d+)")
-

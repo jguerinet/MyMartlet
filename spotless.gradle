@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.extensions
+apply plugin: "com.diffplug.gradle.spotless"
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-
-/**
- * LifecycleOwner extensions
- * @author Julien Guerinet
- * @since 2.0.0
- */
-
-/**
- * Observes the [liveData] and calls the [body] when it changes
- */
-fun <T : Any?, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
-        liveData.observe(this, Observer(body))
+spotless {
+    kotlin {
+        target "**/*.kt"
+        ktlint()
+        // licenseHeaderFile '../spotless.license.kt'
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.room.daos
-
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Query
-import com.guerinet.mymartlet.model.transcript.Transcript
+package com.guerinet.mymartlet.parser
 
 /**
- * Dao for accessing all Transcript related models
- * @author Julien Guerinet
- * @since 2.0.0
+ * Default table entry for most parsers
  */
-@Dao
-abstract class TranscriptDao : BaseDao<Transcript>() {
-
-    /**
-     * Returns the [Transcript] instance
-     */
-    @Query("SELECT * FROM Transcript")
-    abstract fun get(): LiveData<Transcript>
-}
+internal const val DISPLAY_TABLE_QUERY = "table.datadisplaytable"

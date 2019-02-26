@@ -51,6 +51,8 @@ internal class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback(
                 // Don't display average if it does not exist
                 if (item.averageGrade.isNotBlank()) {
                     average.text = context.getString(R.string.course_average, item.averageGrade)
+                } else {
+                    average.text = ""
                 }
             }
         }

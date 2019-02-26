@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.guerinet.mymartlet.ui.wishlist
 
 import android.view.View
 import androidx.core.view.isVisible
-import com.afollestad.materialdialogs.DialogAction
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.CourseResult
@@ -29,8 +28,10 @@ import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.CourseResultDao
-import com.guerinet.suitcase.analytics.GAManager
-import com.guerinet.suitcase.dialog.alertDialog
+import com.guerinet.suitcase.analytics.Analytics
+import com.guerinet.suitcase.dialog.cancelButton
+import com.guerinet.suitcase.dialog.okButton
+import com.guerinet.suitcase.dialog.showDialog
 import kotlinx.android.synthetic.main.view_courses.view.*
 import org.jetbrains.anko.toast
 import org.koin.standalone.KoinComponent
@@ -44,18 +45,21 @@ import retrofit2.Response
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param activity  Calling activity instance
+ * @property activity Calling activity instance
  * @param container View to manipulate
- * @param canAdd    True if the user can add courses to the wishlist, false otherwise
+ * @property canAdd True if the user can add courses to the wishlist, false otherwise
  */
-class WishlistHelper(private val activity: BaseActivity, container: View,
-        private val canAdd: Boolean) : KoinComponent {
+class WishlistHelper(
+    private val activity: BaseActivity,
+    container: View,
+    private val canAdd: Boolean
+) : KoinComponent {
+
+    private val analytics by inject<Analytics>()
 
     private val courseResultDao by inject<CourseResultDao>()
 
     private val mcGillService by inject<McGillService>()
-
-    private val ga by inject<GAManager>()
 
     private val adapter: WishlistAdapter by lazy { WishlistAdapter(container.empty) }
 
@@ -110,11 +114,11 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
                 }
 
                 // Confirm with the user before continuing
-                activity.alertDialog(R.string.warning, R.string.registration_disclaimer)
-                { _, which ->
-                    if (which === DialogAction.POSITIVE) {
+                activity.showDialog(R.string.warning, R.string.registration_disclaimer) {
+                    okButton {
                         register(courses)
-                    } else {
+                    }
+                    cancelButton {
                         activity.toolbarProgress.isVisible = false
                     }
                 }
@@ -126,34 +130,36 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
 
     private fun register(courses: List<CourseResult>) {
         mcGillService.registration(McGillManager.getRegistrationURL(courses, false))
-                .enqueue(object : Callback<List<RegistrationError>> {
+            .enqueue(object : Callback<List<RegistrationError>> {
 
-                    override fun onResponse(call: Call<List<RegistrationError>>,
-                            response: Response<List<RegistrationError>>) {
-                        activity.toolbarProgress.isVisible = false
+                override fun onResponse(
+                    call: Call<List<RegistrationError>>,
+                    response: Response<List<RegistrationError>>
+                ) {
+                    activity.toolbarProgress.isVisible = false
 
-                        val body = response.body()
+                    val body = response.body()
 
-                        if (body == null || body.isEmpty()) {
-                            // If there are no errors, show the success message
-                            activity.toast(R.string.registration_success)
-                            courses.forEach { courseResultDao.delete(it) }
-                            return
-                        }
-
-                        val errorCourses = courses.map { it as Course }.toMutableList()
-
-                        // Prepare the error message String
-                        val errorMessage = body.joinToString(separator = "\n") {
-                            it.getString(errorCourses)
-                        }
-
-                        activity.errorDialog(errorMessage)
+                    if (body == null || body.isEmpty()) {
+                        // If there are no errors, show the success message
+                        activity.toast(R.string.registration_success)
+                        courses.forEach { courseResultDao.delete(it) }
+                        return
                     }
 
-                    override fun onFailure(call: Call<List<RegistrationError>>, t: Throwable) =
-                            activity.handleError("(un)registering for courses", t)
-                })
+                    val errorCourses = courses.mapNotNull { it as? Course }.toMutableList()
+
+                    // Prepare the error message String
+                    val errorMessage = body.joinToString(separator = "\n") {
+                        it.getString(errorCourses)
+                    }
+
+                    activity.errorDialog(errorMessage)
+                }
+
+                override fun onFailure(call: Call<List<RegistrationError>>, t: Throwable) =
+                    activity.handleError("(un)registering for courses", t)
+            })
     }
 
     /**
@@ -175,7 +181,7 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
                     isPresent
                 }.size
 
-                ga.sendEvent("Search Results", "Add to Wishlist", coursesAdded.toString())
+                analytics.event("wishlist", "added" to coursesAdded.toString())
                 activity.getString(R.string.wishlist_add, coursesAdded)
             }
             else -> {
@@ -184,7 +190,7 @@ class WishlistHelper(private val activity: BaseActivity, container: View,
                 // Get the term from the first course (they will all be in the same term)
                 update(courses[0].term)
 
-                ga.sendEvent("Wishlist", "Remove", courses.size.toString())
+                analytics.event("wishlist", "removed" to courses.size.toString())
                 activity.getString(R.string.wishlist_remove, courses.size)
             }
         }

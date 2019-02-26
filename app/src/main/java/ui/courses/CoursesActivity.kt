@@ -37,8 +37,9 @@ import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
-import com.guerinet.suitcase.dialog.alertDialog
-import com.guerinet.suitcase.log.TimberTag
+import com.guerinet.suitcase.dialog.cancelButton
+import com.guerinet.suitcase.dialog.okButton
+import com.guerinet.suitcase.dialog.showDialog
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
 import kotlinx.coroutines.Dispatchers
@@ -77,7 +78,6 @@ class CoursesActivity : DrawerActivity(), TimberTag {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wishlist)
-        ga.sendScreen("View Courses")
 
         list.layoutManager = LinearLayoutManager(this)
         list.adapter = adapter
@@ -212,16 +212,12 @@ class CoursesActivity : DrawerActivity(), TimberTag {
             return
         }
 
-        alertDialog(R.string.unregister_dialog_title, R.string.unregister_dialog_message)
-        { _, which ->
-            // Don't continue if the positive button has not been clicked on
-            if (which != DialogAction.POSITIVE) {
-                return@alertDialog
-            }
-
-            if (!canRefresh()) {
-                return@alertDialog
-            }
+        showDialog(R.string.unregister_dialog_title, R.string.unregister_dialog_message) {
+            cancelButton {}
+            okButton {
+                if (!canRefresh()) {
+                    return@okButton
+                }
 
             // Run the registration thread
             mcGillService.registration(McGillManager.getRegistrationURL(courses, true))
@@ -251,10 +247,10 @@ class CoursesActivity : DrawerActivity(), TimberTag {
                     override fun onFailure(
                         call: Call<List<RegistrationError>>,
                         t: Throwable
-                    ) {
-                        handleError("unregistering for courses", t)
+
+                        ) {handleError("unregistering for courses", t)
                     }
-                })
+                })}
         }
     }
 }

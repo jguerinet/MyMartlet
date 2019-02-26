@@ -232,9 +232,9 @@ class CheckerService : IntentService("CheckerService") {
      * Generates a local notification which will redirect the user to the right portion of the app
      * when clicked
      *
-     * @param intent  The intent to use when clicked
+     * @param intent The intent to use when clicked
      * @param message The message to display
-     * @param id      The notification Id (to update any existing ones)
+     * @param id The notification Id (to update any existing ones)
      */
     private fun createNotification(intent: Intent, message: String, id: Int) {
         //Get the notification manager

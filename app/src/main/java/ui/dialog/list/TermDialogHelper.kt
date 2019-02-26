@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.room.daos.SemesterDao
-import com.guerinet.suitcase.analytics.GAManager
 import com.guerinet.suitcase.dialog.singleListDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,11 +37,12 @@ import org.koin.standalone.inject
  * @since 2.0.0
  */
 class TermDialogHelper(
-    context: Context, mainScope: CoroutineScope, currentTerm: Term?, registration: Boolean,
+    context: Context,
+    mainScope: CoroutineScope,
+    currentTerm: Term?,
+    registration: Boolean,
     onTermSelected: ((Term) -> Unit)
 ) : KoinComponent {
-
-    private val ga by inject<GAManager>()
 
     private val defaultTermPref by inject<DefaultTermPref>()
 
@@ -51,8 +51,6 @@ class TermDialogHelper(
     private val semesterDao by inject<SemesterDao>()
 
     init {
-        ga.sendScreen("Change Semester")
-
         mainScope.launch(Dispatchers.Default) {
             val terms = if (!registration) {
                 // We are using the user's existing terms
@@ -72,10 +70,8 @@ class TermDialogHelper(
             // Use the default currentTerm if no currentTerm was sent
             val currentChoice = terms.indexOfFirst { it.first == term }
 
-            val choices = terms.map { it.second }.toTypedArray()
-
             withContext(Dispatchers.Main) {
-                context.singleListDialog(choices, R.string.title_change_semester, currentChoice) {
+                context.singleListDialog(terms.map { it.second }, R.string.title_change_semester, currentChoice) {
                     onTermSelected(terms[it].first)
                 }
             }

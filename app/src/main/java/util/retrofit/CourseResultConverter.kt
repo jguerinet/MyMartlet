@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Retrofit converter to parse a list of course results when searching for courses
@@ -45,7 +45,8 @@ class CourseResultConverter : Converter.Factory(), Converter<ResponseBody, List<
     private val type = Types.newParameterizedType(List::class.java, CourseResult::class.java)
 
     override fun responseBodyConverter(
-        type: Type?, annotations: Array<Annotation>?,
+        type: Type?,
+        annotations: Array<Annotation>?,
         retrofit: Retrofit?
     ): Converter<ResponseBody, *>? {
         return if (type?.toString() != this.type.toString()) {
@@ -187,7 +188,6 @@ class CourseResultConverter : Converter.Factory(), Converter<ResponseBody, List<
                                 startTime = ScheduleConverter.defaultStartTime
                                 endTime = ScheduleConverter.defaultEndTime
                             }
-
                         }
                         // Capacity
                         10 -> capacity = Integer.parseInt(rowString)
@@ -247,7 +247,7 @@ class CourseResultConverter : Converter.Factory(), Converter<ResponseBody, List<
     /**
      * Parses the date range String into 2 dates
      *
-     * @param term      Current currentTerm
+     * @param term Current currentTerm
      * @param dateRange The date range String
      * @return A pair representing the starting and ending dates of the range
      * @throws IllegalArgumentException

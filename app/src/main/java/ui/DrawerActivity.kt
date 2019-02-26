@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
-import com.afollestad.materialdialogs.DialogAction
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -33,7 +32,9 @@ import com.facebook.share.widget.ShareDialog
 import com.google.android.material.navigation.NavigationView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.suitcase.dialog.alertDialog
+import com.guerinet.suitcase.dialog.cancelButton
+import com.guerinet.suitcase.dialog.okButton
+import com.guerinet.suitcase.dialog.showDialog
 import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import kotlinx.android.synthetic.main.activity_ebill.*
 import kotlinx.android.synthetic.main.drawer.*
@@ -60,9 +61,6 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
 
     private val drawerLayout by lazy { find<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawerLayout) }
 
-    /**
-     * Callback manager used for Facebook
-     */
     private val facebookCallbackManager: CallbackManager = CallbackManager.Factory.create()
 
     /**
@@ -101,7 +99,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-            drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+        drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -164,35 +162,30 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
 
     /* HELPERS */
 
-    /**
-     * Logs the user out
-     */
     private fun logout() {
-        alertDialog(R.string.warning, R.string.logout_dialog_message) { _, which ->
-            if (which == DialogAction.POSITIVE) {
-                ga.sendEvent("Logout", "Clicked")
+        showDialog(R.string.warning, R.string.logout_dialog_message) {
+            okButton {
+                analytics.event("logout")
                 clearManager.clearUserInfo()
                 // Go back to SplashActivity
                 startActivity<SplashActivity>()
                 finish()
             }
+            cancelButton {}
         }
     }
 
-    /**
-     * Shares the app on Facebook
-     */
     private fun shareOnFacebook() {
-        ga.sendEvent("facebook", "attempt_post")
+        analytics.event("facebook_attempt_post")
 
         // Set up all of the info
         // TODO Update Facebook Usage
         val content = ShareLinkContent.Builder()
-                .setContentTitle(getString(R.string.social_facebook_title, "Android"))
-                .setContentDescription(getString(R.string.social_facebook_description_android))
-                .setContentUrl(getString(R.string.social_link_android).toUri())
-                .setImageUrl(getString(R.string.social_facebook_image).toUri())
-                .build()
+            .setContentTitle(getString(R.string.social_facebook_title, "Android"))
+            .setContentDescription(getString(R.string.social_facebook_description_android))
+            .setContentUrl(getString(R.string.social_link_android).toUri())
+            .setImageUrl(getString(R.string.social_facebook_image).toUri())
+            .build()
 
         // Show the dialog
         val dialog = ShareDialog(this)
@@ -201,7 +194,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
                 if (result.postId != null) {
                     // Let the user know they posted successfully
                     toast(R.string.social_post_success)
-                    ga.sendEvent("facebook", "successful_post")
+                    analytics.event("facebook_successful_post")
                 } else {
                     Timber.i("Facebook post cancelled")
                 }
@@ -214,21 +207,18 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
             override fun onError(e: FacebookException) {
                 Timber.e(e, "Error posting to Facebook")
                 toast(R.string.social_post_failure)
-                ga.sendEvent("facebook", "failed_post")
+                analytics.event("facebook_failed_post")
             }
         })
         dialog.show(content)
     }
 
-    /**
-     * Shares the app on Twitter
-     */
     private fun shareOnTwitter() {
         try {
             TweetComposer.Builder(this)
-                    .text(getString(R.string.social_twitter_message_android, "Android"))
-                    .url(URL(getString(R.string.social_link_android)))
-                    .show()
+                .text(getString(R.string.social_twitter_message_android, "Android"))
+                .url(URL(getString(R.string.social_link_android)))
+                .show()
         } catch (e: MalformedURLException) {
             Timber.e(e, "Twitter URL malformed")
         }

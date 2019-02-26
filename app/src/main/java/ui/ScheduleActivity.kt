@@ -18,7 +18,12 @@ package com.guerinet.mymartlet.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -64,7 +69,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
-import java.util.*
+import java.util.Stack
 
 /**
  * Displays the user's schedule
@@ -89,9 +94,7 @@ class ScheduleActivity : DrawerActivity() {
 
     private val courses: MutableList<Course> = mutableListOf()
 
-    /**
-     * Current date (to know which week to show in the landscape orientation)
-     */
+    // We need this to know which week to show in the landscape orientation
     private var date: LocalDate = LocalDate.now()
 
     override val currentPage = HomepageManager.HomePage.SCHEDULE
@@ -126,7 +129,7 @@ class ScheduleActivity : DrawerActivity() {
 
     // Only show the menu in portrait mode
     override fun onPrepareOptionsMenu(menu: Menu): Boolean =
-            resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE
+        resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.refresh, menu)
@@ -238,8 +241,10 @@ class ScheduleActivity : DrawerActivity() {
 
                 // Download the transcript (if ever the user has new semesters on their transcript)
                 mcGillService.oldTranscript().enqueue(object : Callback<TranscriptResponse> {
-                    override fun onResponse(call: Call<TranscriptResponse>,
-                            response: Response<TranscriptResponse>) {
+                    override fun onResponse(
+                        call: Call<TranscriptResponse>,
+                        response: Response<TranscriptResponse>
+                    ) {
                         launch(Dispatchers.IO) {
                             transcriptDao.update(response.body()?.transcript!!)
                         }
@@ -341,16 +346,24 @@ class ScheduleActivity : DrawerActivity() {
      * Fills the schedule based on given data
      *
      * @param timetableContainer Container for the timetable
-     * @param scheduleContainer  Container for the schedule
-     * @param date               Date to fill the schedule for
-     * @param clickable          True if the user can click on the courses (portrait),
+     * @param scheduleContainer Container for the schedule
+     * @param date Date to fill the schedule for
+     * @param clickable True if the user can click on the courses (portrait),
      * false otherwise (landscape)
      */
-    private fun fillSchedule(timetableContainer: LinearLayout?, scheduleContainer: LinearLayout?,
-            date: LocalDate, clickable: Boolean) {
+    private fun fillSchedule(
+        timetableContainer: LinearLayout?,
+        scheduleContainer: LinearLayout?,
+        date: LocalDate,
+        clickable: Boolean
+    ) {
+        if (timetableContainer == null || scheduleContainer == null) {
+            return
+        }
+
         // Clear everything out
-        timetableContainer?.removeAllViews()
-        scheduleContainer?.removeAllViews()
+        timetableContainer.removeAllViews()
+        scheduleContainer.removeAllViews()
 
         // Go through the list of courses, find which ones are for the given date
         val courses = this.courses.filter { it.isForDate(date) }
@@ -372,7 +385,7 @@ class ScheduleActivity : DrawerActivity() {
             time.text = LocalTime.MIDNIGHT.withHour(hour).format(formatter)
 
             // Add it to the right container
-            timetableContainer!!.addView(timetableCell)
+            timetableContainer.addView(timetableCell)
 
             // Cycle through the half hours
             var min = 0
@@ -422,14 +435,16 @@ class ScheduleActivity : DrawerActivity() {
 
                         // Find out how long this course is in terms of blocks of 30 min
                         val length = ChronoUnit.MINUTES.between(
-                                currentCourse.roundedStartTime,
-                                currentCourse.roundedEndTime).toInt() / 30
+                            currentCourse.roundedStartTime,
+                            currentCourse.roundedEndTime
+                        ).toInt() / 30
 
                         // Set the height of the view depending on this height
                         val lp = LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                resources
-                                        .getDimension(R.dimen.cell_30min_height).toInt() * length)
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            resources
+                                .getDimension(R.dimen.cell_30min_height).toInt() * length
+                        )
                         scheduleCell.layoutParams = lp
 
                         // Check if we need to make the course clickable
@@ -447,7 +462,7 @@ class ScheduleActivity : DrawerActivity() {
                     }
 
                     // Add the given view to the schedule container
-                    scheduleContainer!!.addView(scheduleCell)
+                    scheduleContainer.addView(scheduleCell)
                 }
                 min += 30
             }
@@ -460,7 +475,7 @@ class ScheduleActivity : DrawerActivity() {
      * @param course Clicked [Course]
      */
     private fun showCourseDialog(course: Course) {
-        ga.sendScreen("Schedule - Course")
+        analytics.event("schedule_course_details")
 
         // Set up the view in the dialog
         val view = ScrollView(this)
@@ -470,10 +485,10 @@ class ScheduleActivity : DrawerActivity() {
 
         // Create the dialog
         val alert = AlertDialog.Builder(this)
-                .setView(view)
-                .setCancelable(true)
+            .setView(view)
+            .setCancelable(true)
             .setNeutralButton(R.string.done) { dialog, _ -> dialog.dismiss() }
-                .show()
+            .show()
 
         // Populate the form
         val shape = Morf.shape
@@ -522,7 +537,7 @@ class ScheduleActivity : DrawerActivity() {
                 onClick {
                     openUrl(
                         "http://www.docuum.com/mcgill/${course.subject.toLowerCase()}" +
-                                "/${course.number}"
+                            "/${course.number}"
                     )
                 }
             }
@@ -602,7 +617,7 @@ class ScheduleActivity : DrawerActivity() {
         }
 
         override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
-            val dayView = view as View
+            val dayView = view as? View ?: error("PagerAdapter item was not View type")
             collection.removeView(dayView)
             holders.push(DayHolder(view))
         }
@@ -610,7 +625,7 @@ class ScheduleActivity : DrawerActivity() {
         override fun getCount() = 1000000
 
         fun getDate(position: Int): LocalDate =
-                startingDate.plusDays((position - startingDateIndex).toLong())
+            startingDate.plusDays((position - startingDateIndex).toLong())
 
         // This is to force the refreshing of all of the views when the view is reloaded
         override fun getItemPosition(`object`: Any): Int =
@@ -620,7 +635,7 @@ class ScheduleActivity : DrawerActivity() {
 
         inner class DayHolder(val view: View) {
 
-            fun bind(date: LocalDate) {
+            internal fun bind(date: LocalDate) {
                 // Set the titles
                 view.apply {
                     dayTitle.setText(DayUtils.getStringId(date.dayOfWeek))

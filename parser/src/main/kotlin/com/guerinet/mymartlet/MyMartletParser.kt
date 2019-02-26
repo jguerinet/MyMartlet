@@ -36,5 +36,4 @@ object MyMartletParser {
      */
     fun parseSchedule(html: String, debugger: ParseDebugger = ParseDebuggerNoOp): List<Course> =
         Jsoup.parse(html, "UTF-8").parseSchedule(debugger = debugger)
-
 }
