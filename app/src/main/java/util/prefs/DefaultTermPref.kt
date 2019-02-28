@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,19 @@ package com.guerinet.mymartlet.util.prefs
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.suitcase.prefs.NullStringPref
+import com.guerinet.suitcase.prefs.SharedPrefLiveData
 
 /**
  * Stores the user's default [Term] in the [SharedPreferences]
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class DefaultTermPref(prefs: SharedPreferences) : NullStringPref(prefs, "default_term", null) {
+class DefaultTermPref(prefs: SharedPreferences) : NullStringPref(prefs, KEY, null) {
 
     private var currentTerm: Term? = null
 
-    var term: Term = value?.run { Term.parseTerm(this) } ?: Term.currentTerm()
+    var term: Term
+        get() = value?.run { Term.parseTerm(this) } ?: Term.currentTerm()
         set(value) {
             this.currentTerm = value
             super.value = value.id
@@ -39,5 +41,15 @@ class DefaultTermPref(prefs: SharedPreferences) : NullStringPref(prefs, "default
         super.clear()
         // Clear the instance
         currentTerm = null
+    }
+
+    /**
+     * Returns a LiveData object observing this Term in the SharedPrefs
+     */
+    fun termLiveData() = SharedPrefLiveData(prefs, KEY, this::term)
+
+    companion object {
+
+        const val KEY = "default_term"
     }
 }
