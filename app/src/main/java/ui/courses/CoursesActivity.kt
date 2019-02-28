@@ -37,9 +37,12 @@ import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptRespon
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.mymartlet.viewmodel.CoursesViewModel
+import com.guerinet.suitcase.coroutines.ioDispatcher
+import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
+import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
@@ -98,6 +101,13 @@ class CoursesActivity : DrawerActivity(), TimberTag {
 
         // Remove the wishlist button
         wishlist.isVisible = false
+
+        observe(coursesViewModel.term) {
+            val term = it ?: return@observe
+
+            // Set the title
+            title = term.getString(this)
+        }
     }
 
     override fun onResume() {
@@ -114,11 +124,9 @@ class CoursesActivity : DrawerActivity(), TimberTag {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_change_semester -> {
-                TermDialogHelper(this, this, term, false) {
+                TermDialogHelper(this, this, coursesViewModel.term.value, false) {
                     // Set the default currentTerm
                     defaultTermPref.term = it
-
-                    term = it
 
                     update()
                     refresh()
@@ -137,9 +145,6 @@ class CoursesActivity : DrawerActivity(), TimberTag {
      * Updates all of the info in the view
      */
     private fun update() {
-        // Set the title
-        title = term.getString(this)
-
         // User can unregister if the current currentTerm is in the list of terms to register for
         val canUnregister = registerTermsPref.terms.contains(term)
 
@@ -163,17 +168,20 @@ class CoursesActivity : DrawerActivity(), TimberTag {
             return
         }
 
+        val term = coursesViewModel.term.value ?: error("Term was null")
+
         // Download the courses for this currentTerm
         mcGillService.schedule(term).enqueue(object : Callback<List<Course>> {
             override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>) {
-                launch(Dispatchers.IO) {
-                    courseDao.update(response.body() ?: listOf(), term)
+                launch(uiDispatcher) {
 
-                    withContext(Dispatchers.Main) {
-                        // Update the view
-                        update()
-                        toolbarProgress.isVisible = false
+                    withContext(ioDispatcher) {
+                        courseDao.update(response.body() ?: listOf(), term)
                     }
+
+                    // Update the view
+                    update()
+                    toolbarProgress.isVisible = false
                 }
 
                 // Download the transcript (if ever the user has new semesters on their transcript)

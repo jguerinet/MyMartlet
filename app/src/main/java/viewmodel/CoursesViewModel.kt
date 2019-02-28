@@ -17,10 +17,15 @@
 package com.guerinet.mymartlet.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 
 /**
  * [ViewModel] for the list of [Course]s
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class CoursesViewModel : BaseViewModel()
+class CoursesViewModel(defaultTermPref: DefaultTermPref) : BaseViewModel() {
+
+    /** Observable current term */
+    val term = defaultTermPref.termLiveData()
+}
