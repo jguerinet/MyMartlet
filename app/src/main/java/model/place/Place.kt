@@ -20,6 +20,8 @@ import com.google.firebase.firestore.GeoPoint
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.extensions.get
 import com.guerinet.mymartlet.util.firestore
+import com.guerinet.suitcase.coroutines.ioDispatcher
+import kotlinx.coroutines.withContext
 
 /**
  * A place on the campus map
@@ -47,16 +49,18 @@ data class Place(
         /**
          * Loads the places from the Firestore
          */
-        suspend fun loadPlaces(): List<Place> = firestore.get(Constants.Firebase.PLACES) {
-            val id = it.id.toInt()
-            val name = it["name"] as? String ?: ""
-            @Suppress("UNCHECKED_CAST")
-            val categories = it["categories"] as? List<Long> ?: listOf()
-            val address = it["address"] as? String ?: ""
-            val courseName = it["courseName"] as? String ?: ""
-            val coordinates = it["coordinates"] as? GeoPoint ?: GeoPoint(0.0, 0.0)
+        suspend fun loadPlaces(): List<Place> = withContext(ioDispatcher) {
+            firestore.get(Constants.Firebase.PLACES) {
+                val id = it.id.toInt()
+                val name = it["name"] as? String ?: ""
+                @Suppress("UNCHECKED_CAST")
+                val categories = it["categories"] as? List<Long> ?: listOf()
+                val address = it["address"] as? String ?: ""
+                val courseName = it["courseName"] as? String ?: ""
+                val coordinates = it["coordinates"] as? GeoPoint ?: GeoPoint(0.0, 0.0)
 
-            Place(id, name, categories.map { category -> category.toInt() }, address, courseName, coordinates)
+                Place(id, name, categories.map { category -> category.toInt() }, address, courseName, coordinates)
+            }
         }
     }
 }

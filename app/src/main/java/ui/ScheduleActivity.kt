@@ -47,7 +47,6 @@ import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptRespon
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.coroutines.bgDispatcher
-import com.guerinet.suitcase.coroutines.ioDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.date.extensions.getLongDateString
 import com.guerinet.suitcase.prefs.BooleanPref
@@ -553,7 +552,7 @@ class ScheduleActivity : DrawerActivity() {
                 textColor = color
                 onClick {
                     // Try to find a place that has the right name
-                    launch(ioDispatcher) {
+                    launch(uiDispatcher) {
                         // Load the places from the Firestore
                         val place =
                             Place.loadPlaces().firstOrNull { course.location.contains(it.coursePlaceName, true) }
@@ -568,9 +567,7 @@ class ScheduleActivity : DrawerActivity() {
                             alert.dismiss()
                             // Open the map to the given place
                             val intent = intentFor<MapActivity>(Constants.ID to place.id)
-                            withContext(uiDispatcher) {
-                                switchDrawerActivity(intent)
-                            }
+                            switchDrawerActivity(intent)
                         }
                     }
                 }
