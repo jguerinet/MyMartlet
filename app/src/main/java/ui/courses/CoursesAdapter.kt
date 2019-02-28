@@ -31,24 +31,23 @@ import kotlinx.android.synthetic.main.item_course.view.*
  * @author Julien Guerinet
  * @since 1.0.0
  */
-internal class CoursesAdapter(emptyView: TextView) :
-    BaseListAdapter<Course>(ItemCallback(), emptyView) {
+internal class CoursesAdapter(emptyView: TextView) : BaseListAdapter<Course>(ItemCallback(), emptyView) {
 
+    /** List of courses the user has checked off */
     val checkedCourses = mutableListOf<Course>()
 
-    private var canUnregister: Boolean = false
+    /** True if the user can unregister from these courses, false otherwise */
+    private var isUnregisterPossible: Boolean = false
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CourseHolder =
-        CourseHolder(viewGroup)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CourseHolder = CourseHolder(viewGroup)
 
-    fun update(courses: List<Course>, canUnregister: Boolean) {
-        this.canUnregister = canUnregister
+    fun update(courses: List<Course>, isUnregisterPossible: Boolean) {
+        this.isUnregisterPossible = isUnregisterPossible
         checkedCourses.clear()
         submitList(courses.toMutableList())
     }
 
-    internal inner class CourseHolder(parent: ViewGroup) :
-        BaseHolder<Course>(parent, R.layout.item_course) {
+    internal inner class CourseHolder(parent: ViewGroup) : BaseHolder<Course>(parent, R.layout.item_course) {
 
         override fun bind(position: Int, item: Course) {
             itemView.apply {
@@ -60,18 +59,19 @@ internal class CoursesAdapter(emptyView: TextView) :
                 hours.text = item.timeString
 
                 // Show the check box if the user can unregister
-                checkBox.isVisible = canUnregister
+                checkBox.isVisible = isUnregisterPossible
                 // Only set the view selectable if the user can unregister
-                isClickable = canUnregister
-                if (canUnregister) {
+                isClickable = isUnregisterPossible
+                if (isUnregisterPossible) {
+                    // If they click on the item, inverse whatever the checkbox's state is
                     setOnClickListener { checkBox.isChecked = !checkBox.isChecked }
 
                     // Remove any other listeners
                     checkBox.setOnCheckedChangeListener(null)
                     checkBox.isChecked = checkedCourses.contains(item)
-                    checkBox.setOnCheckedChangeListener { _, checked ->
+                    checkBox.setOnCheckedChangeListener { _, isChecked ->
                         // If it becomes checked, add it to the list. If not, remove it
-                        if (checked) {
+                        if (isChecked) {
                             checkedCourses.add(item)
                         } else {
                             checkedCourses.remove(item)
