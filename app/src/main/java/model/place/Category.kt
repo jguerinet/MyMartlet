@@ -59,7 +59,7 @@ data class Category(
             return if (en != null && fr != null) {
                 Category(id, en, fr)
             } else {
-                Timber.e(Exception("Category with id $id has null name. en: $en, fr: $fr"))
+                Timber.tag("LoadCategories").e(Exception("Error parsing Category with id $id. en: $en, fr: $fr"))
                 null
             }
         }
