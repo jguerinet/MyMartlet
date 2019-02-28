@@ -40,10 +40,8 @@ data class Place(
 
     /** Name of the place when listed under a course location, an empty String if equivalent to the [name]  */
     val coursePlaceName: String
-        get() {
-            // If there is no override, simply use the name
-            return if (courseName.isEmpty()) name else courseName
-        }
+        // If there is no override, simply use the name
+        get() = courseName.takeIf { it.isNotEmpty() } ?: name
 
     companion object {
 
