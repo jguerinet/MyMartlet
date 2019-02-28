@@ -19,6 +19,7 @@ package com.guerinet.mymartlet.model.place
 import android.content.Context
 import com.google.firebase.firestore.DocumentSnapshot
 import com.guerinet.mymartlet.R
+import timber.log.Timber
 import java.util.Locale
 
 /**
@@ -52,9 +53,15 @@ data class Category(
          */
         fun fromDocument(document: DocumentSnapshot): Category? {
             val id = document.id.toInt()
-            val en = document["en"] as? String ?: ""
-            val fr = document["fr"] as? String ?: ""
-            return Category(id, en, fr)
+            val en = document["en"] as? String
+            val fr = document["fr"] as? String
+
+            return if (en != null && fr != null) {
+                Category(id, en, fr)
+            } else {
+                Timber.e(Exception("Category with id $id has null name. en: $en, fr: $fr"))
+                null
+            }
         }
     }
 }
