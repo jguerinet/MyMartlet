@@ -29,6 +29,7 @@ import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
 import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
+import com.guerinet.mymartlet.viewmodel.CoursesViewModel
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
@@ -195,6 +196,9 @@ val prefsModule: Module = module {
 }
 
 val viewModelsModule = module {
+
+    // CoursesViewModel
+    viewModel { CoursesViewModel() }
 
     // EbillViewModel
     viewModel { EbillViewModel(get(), get()) }

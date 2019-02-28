@@ -36,6 +36,7 @@ import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.mymartlet.viewmodel.CoursesViewModel
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
@@ -47,6 +48,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,6 +64,8 @@ class CoursesActivity : DrawerActivity(), TimberTag {
     override val tag: String = "CoursesActivity"
 
     override val currentPage = HomepageManager.HomePage.COURSES
+
+    private val coursesViewModel by viewModel<CoursesViewModel>()
 
     private val courseDao by inject<CourseDao>()
 
