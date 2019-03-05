@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.guerinet.mymartlet.util.room.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -34,7 +35,13 @@ abstract class CourseDao : BaseDao<Course>() {
      * Returns the list of [Course]s for the [term]
      */
     @Query("SELECT * FROM Course WHERE term = :term")
-    abstract fun getTermCourses(term: Term): List<Course>
+    abstract fun getTermCourses(term: Term): LiveData<List<Course>>
+
+    /**
+     * Returns the list of all [Course]s
+     */
+    @Query("SELECT * FROM Course")
+    abstract fun getCourses(): LiveData<List<Course>>
 
     /**
      * Deletes all of the stored [Course]s

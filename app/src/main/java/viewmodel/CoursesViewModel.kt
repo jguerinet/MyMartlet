@@ -16,16 +16,45 @@
 
 package com.guerinet.mymartlet.viewmodel
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
+import com.guerinet.mymartlet.util.room.daos.CourseDao
 
 /**
  * [ViewModel] for the list of [Course]s
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class CoursesViewModel(defaultTermPref: DefaultTermPref) : BaseViewModel() {
+class CoursesViewModel(defaultTermPref: DefaultTermPref, private val courseDao: CourseDao) : BaseViewModel() {
 
     /** Observable current term */
     val term = defaultTermPref.termLiveData()
+
+    /** Observable list of all courses */
+    private val courses = courseDao.getCourses()
+
+    /** Observable list of [Course]s for the current [term] */
+    val termCourses = MediatorLiveData<List<Course>>().apply {
+
+        addSource(term) {
+            // Update the courses when the term changes
+            updateCourses()
+        }
+
+        addSource(courses) {
+            // Update the courses when the courses are updated
+            updateCourses()
+        }
+    }
+
+    /**
+     * Updates the list of [Course]s for this term
+     */
+    private fun updateCourses() {
+        val courses = this.courses.value ?: listOf()
+        val term = this.term.value ?: error("Missing term")
+        termCourses.postValue(courses.filter { it.term == term })
+    }
 }
