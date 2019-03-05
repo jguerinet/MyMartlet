@@ -108,6 +108,14 @@ class CoursesActivity : DrawerActivity(), TimberTag {
             // Set the title
             title = term.getString(this)
         }
+
+        observe(coursesViewModel.termCourses) {
+            val courses = it ?: return@observe
+
+            // Update the list of shown courses
+            //  TODO Add the isUnregisterPossible boolean hee
+            adapter.update(courses, false)
+        }
     }
 
     override fun onResume() {
@@ -150,14 +158,6 @@ class CoursesActivity : DrawerActivity(), TimberTag {
 
         // Change the text and the visibility if we are in the list of currently registered courses
         register.isVisible = canUnregister
-
-        // Update the list
-        launch(Dispatchers.IO) {
-            val courses = courseDao.getTermCourses(term)
-            withContext(Dispatchers.Main) {
-                adapter.update(courses, canUnregister)
-            }
-        }
     }
 
     /**
