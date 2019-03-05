@@ -120,7 +120,7 @@ abstract class UserDownloader(val context: Context) : Thread(), KoinComponent {
 
                     //Download the schedule
                     try {
-                        val courses = mcGillService.schedule(term).execute().body()
+                        val courses = mcGillService.oldSchedule(term).execute().body()
                         if (courses != null) {
                             courseDao.update(courses, term)
                         }

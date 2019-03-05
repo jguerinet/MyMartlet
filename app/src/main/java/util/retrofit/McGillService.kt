@@ -49,7 +49,7 @@ interface McGillService {
      * Retrieves the user's schedule for the [term]
      */
     @GET("bwskfshd.P_CrseSchdDetl")
-    fun schedule(@Query("term_in") term: Term): Call<List<Course>>
+    fun oldSchedule(@Query("term_in") term: Term): Call<List<Course>>
 
     /**
      * Old way of getting the transcript. Should be phased out completely

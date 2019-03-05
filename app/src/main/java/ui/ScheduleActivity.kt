@@ -226,7 +226,7 @@ class ScheduleActivity : DrawerActivity() {
         }
 
         // Download the courses for this currentTerm
-        mcGillService.schedule(term).enqueue(object : Callback<List<Course>> {
+        mcGillService.oldSchedule(term).enqueue(object : Callback<List<Course>> {
             override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>) {
                 launch(Dispatchers.IO) {
                     courseDao.update(response.body() ?: listOf(), term)
