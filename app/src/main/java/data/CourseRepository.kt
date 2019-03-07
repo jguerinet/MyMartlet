@@ -32,6 +32,9 @@ import timber.log.Timber
  */
 class CourseRepository(private val mcGillService: McGillService, private val courseDao: CourseDao) {
 
+    /**
+     * Returns the list of [Course]s wrapped in LiveData
+     */
     fun getCourses() = courseDao.getCourses()
 
     /**

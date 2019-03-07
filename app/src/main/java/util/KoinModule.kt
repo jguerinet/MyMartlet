@@ -19,6 +19,7 @@ package com.guerinet.mymartlet.util
 import android.content.Context
 import android.preference.PreferenceManager
 import android.view.inputmethod.InputMethodManager
+import com.guerinet.mymartlet.data.CourseRepository
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
@@ -195,10 +196,16 @@ val prefsModule: Module = module {
     single(Prefs.SEAT_CHECKER) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
 }
 
+val respositoriesModule = module {
+
+    // CourseRepository
+    single { CourseRepository(get(), get()) }
+}
+
 val viewModelsModule = module {
 
     // CoursesViewModel
-    viewModel { CoursesViewModel() }
+    viewModel { CoursesViewModel(get(), get()) }
 
     // EbillViewModel
     viewModel { EbillViewModel(get(), get()) }
