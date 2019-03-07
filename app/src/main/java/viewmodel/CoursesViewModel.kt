@@ -16,25 +16,39 @@
 
 package com.guerinet.mymartlet.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.guerinet.mymartlet.data.CourseRepository
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
+import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 
 /**
  * [ViewModel] for the list of [Course]s
  * @author Julien Guerinet
  * @since 2.0.0
  */
-class CoursesViewModel(defaultTermPref: DefaultTermPref, private val courseRepository: CourseRepository) :
-    BaseViewModel() {
+class CoursesViewModel(
+    defaultTermPref: DefaultTermPref,
+    private val registerTermsPref: RegisterTermsPref,
+    private val courseRepository: CourseRepository
+) : BaseViewModel() {
 
     /** Observable current term */
     val term = defaultTermPref.termLiveData()
 
     /** Observable list of all courses */
     private val courses = courseRepository.getCourses()
+
+    /** Observable boolean determining whether the user can unregister for courses in this term */
+    val isUnregisterPossible: LiveData<Boolean> = Transformations.map(term) {
+        val term = it ?: return@map false
+
+        // Check if the term is contained within the list of registration terms
+        registerTermsPref.terms.contains(term)
+    }
 
     /** Observable list of [Course]s for the current [term] */
     val termCourses = MediatorLiveData<List<Course>>().apply {

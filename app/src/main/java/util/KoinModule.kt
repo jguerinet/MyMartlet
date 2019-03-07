@@ -205,7 +205,7 @@ val respositoriesModule = module {
 val viewModelsModule = module {
 
     // CoursesViewModel
-    viewModel { CoursesViewModel(get(), get()) }
+    viewModel { CoursesViewModel(get(), get(), get()) }
 
     // EbillViewModel
     viewModel { EbillViewModel(get(), get()) }

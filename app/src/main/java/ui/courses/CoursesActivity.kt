@@ -101,8 +101,14 @@ class CoursesActivity : DrawerActivity(), TimberTag {
             val courses = it ?: return@observe
 
             // Update the list of shown courses
-            //  TODO Add the isUnregisterPossible boolean hee
-            adapter.update(courses, false)
+            //  TODO Better way of doing this
+            adapter.update(courses, coursesViewModel.isUnregisterPossible.value ?: false)
+        }
+
+        observe(coursesViewModel.isUnregisterPossible) {
+            val isUnregisterPossible = it ?: return@observe
+            // Change the visibility of the register button if we are in the list of currently registered courses
+            register.isVisible = isUnregisterPossible
         }
     }
 
@@ -149,7 +155,7 @@ class CoursesActivity : DrawerActivity(), TimberTag {
     }
 
     /**
-     * Refreshes the list of courses for the current [term]
+     * Refreshes the list of courses for the current term
      */
     private fun refresh() {
         if (!canRefresh()) {
