@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,48 +17,51 @@
 package com.guerinet.mymartlet.model.place
 
 import android.content.Context
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.google.firebase.firestore.DocumentSnapshot
 import com.guerinet.mymartlet.R
+import timber.log.Timber
 import java.util.Locale
 
 /**
  * A type of place that the user can filter by
  * @author Julien Guerinet
  * @since 1.0.0
- *
- * @property id Category Id
- * @property en Category name in English
- * @property fr Category name in French
  */
-@Entity
 data class Category(
-    @PrimaryKey var id: Int = 0,
-    var en: String,
-    var fr: String
+    val id: Int,
+    val en: String,
+    val fr: String
 ) {
 
-    /**
-     * Constructor used to create the Favorites (is [isFavorites] is true) and All types
-     */
-    constructor(isFavorites: Boolean) : this(if (isFavorites) FAVORITES else ALL, "", "")
+    /** Localized category name */
+    val name: String
+        get() = if (Locale.getDefault().language == "fr") fr else en
 
     /**
-     * Returns the String to use. Uses the app [context]
+     * Constructor used to create the All category. Uses the app [context] to retrieve the necessary String
+     *  Set the same translation for both languages, as this gets regenerated every time the map is opened anyway
      */
-    fun getString(context: Context): String = when {
-        id == FAVORITES -> context.getString(R.string.map_favorites)
-        id == ALL -> context.getString(R.string.map_all)
-        Locale.getDefault().language == "fr" -> fr
-        else -> en
-    }
+    constructor(context: Context) : this(ALL, context.getString(R.string.map_all), context.getString(R.string.map_all))
 
     companion object {
 
-        /** User's saved favorite places */
-        const val FAVORITES = -2
-
         /** All of the places */
         internal const val ALL = -1
+
+        /**
+         * Converts a Firestore [document] into a [Category] (null if error during the parsing)
+         */
+        fun fromDocument(document: DocumentSnapshot): Category? {
+            val id = document.id.toInt()
+            val en = document["en"] as? String
+            val fr = document["fr"] as? String
+
+            return if (en != null && fr != null) {
+                Category(id, en, fr)
+            } else {
+                Timber.tag("LoadCategories").e(Exception("Error parsing Category with id $id. en: $en, fr: $fr"))
+                null
+            }
+        }
     }
 }

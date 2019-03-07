@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,16 @@ object Constants {
     /* BROADCASTS */
 
     const val BROADCAST_MINERVA = "broadcast_minerva"
+
+    /**
+     * Db names within Firebase
+     */
+    object Firebase {
+
+        const val CATEGORIES = "categories"
+        const val PLACES = "places"
+        const val REGISTRATION_TERMS = "registration-terms"
+    }
 }
 
 /**
@@ -47,15 +57,11 @@ object Prefs {
 
     const val EULA = "user_agreement"
     const val GRADE_CHECKER = "grade_checker"
-    const val IMS_CATEGORIES = "ims_categories"
     const val IMS_CONFIG = "ims_config"
-    const val IMS_PLACES = "ims_places"
-    const val IMS_REGISTRATION = "ims_registration"
     const val IS_FIRST_OPEN = "first_open"
     const val MIN_VERSION = "min_version"
     const val REMEMBER_USERNAME = "remember_username"
     const val PASSWORD = "password"
     const val SCHEDULE_24HR = "24hr Schedule"
     const val SEAT_CHECKER = "seat_checker"
-    const val STATS = "statistics"
 }

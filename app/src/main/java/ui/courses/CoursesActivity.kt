@@ -31,10 +31,10 @@ import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
+import com.guerinet.suitcase.coroutines.ioDispatcher
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
@@ -58,8 +58,6 @@ import retrofit2.Response
 class CoursesActivity : DrawerActivity() {
 
     private val defaultTermPref by inject<DefaultTermPref>()
-
-    private val registerTermsPref by inject<RegisterTermsPref>()
 
     private val courseDao by inject<CourseDao>()
 
@@ -104,7 +102,7 @@ class CoursesActivity : DrawerActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_change_semester -> {
-                TermDialogHelper(this, this, term, false) {
+                TermDialogHelper(this, this, term) {
                     // Set the default currentTerm
                     defaultTermPref.term = it
 
@@ -127,21 +125,24 @@ class CoursesActivity : DrawerActivity() {
      * Updates all of the info in the view
      */
     private fun update() {
-        // Set the title
-        title = term.getString(this)
+        launch {
+            // Set the title
+            title = term.getString(this@CoursesActivity)
 
-        // User can unregister if the current currentTerm is in the list of terms to register for
-        val canUnregister = registerTermsPref.terms.contains(term)
-
-        // Change the text and the visibility if we are in the list of currently registered courses
-        register.isVisible = canUnregister
-
-        // Update the list
-        launch(Dispatchers.IO) {
-            val courses = courseDao.getTermCourses(term)
-            withContext(Dispatchers.Main) {
-                adapter.update(courses, canUnregister)
+            // User can unregister if the current currentTerm is in the list of terms to register for
+            val canUnregister = withContext(ioDispatcher) {
+                Term.loadRegistrationTerms().contains(term)
             }
+
+            // Load the courses for the current term
+            val courses = withContext(ioDispatcher) {
+                courseDao.getTermCourses(term)
+            }
+
+            adapter.update(courses, canUnregister)
+
+            // Change the text and the visibility if we are in the list of currently registered courses
+            register.isVisible = canUnregister
         }
     }
 

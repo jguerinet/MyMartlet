@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,57 +16,62 @@
 
 package com.guerinet.mymartlet.model.place
 
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.GeoPoint
+import com.guerinet.mymartlet.util.Constants
+import com.guerinet.mymartlet.util.extensions.get
+import com.guerinet.mymartlet.util.firestore
+import com.guerinet.suitcase.coroutines.ioDispatcher
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * A place on the campus map
  * @author Julien Guerinet
  * @since 1.0.0
- *
- * @property id Place Id
- * @property name Place name
- * @property categories List of categories
- * @property address Address of this place
- * @property courseName Name of the place when listed under a course location
- * @property latitude Latitude coordinate of this place
- * @property longitude Longitude coordinate of this place
  */
-@Entity
 data class Place(
-    @PrimaryKey val id: Int = 0,
+    val id: Int,
     val name: String,
-    val categories: MutableList<Int>,
+    val categories: List<Int>,
     val address: String,
-    val courseName: String?,
-    val latitude: Double,
-    val longitude: Double
+    private val courseName: String,
+    val coordinates: GeoPoint
 ) {
 
-    /** Place coordinates */
-    @Ignore
-    val coordinates = LatLng(latitude, longitude)
+    /** Name of the place when listed under a course location, an empty String if equivalent to the [name]  */
+    val coursePlaceName: String
+        // If there is no override, simply use the name
+        get() = courseName.takeIf { it.isNotEmpty() } ?: name
 
-    /** True if this place is in the user's favorites, false otherwise */
-    // Place is now a favorite, add the Id to the list of categories
-    // Place is no longer a favorite, remove the Id from the list of categories
-    // Save the object back
-    var isFavorite: Boolean
-        get() = categories.contains(Category.FAVORITES)
-        set(value) {
-            if (value && !categories.contains(Category.FAVORITES)) {
-                categories.add(Category.FAVORITES)
-            } else if (!value) {
-                categories.remove(Category.FAVORITES)
+    companion object {
+
+        /**
+         * Loads the places from the Firestore
+         */
+        suspend fun loadPlaces(): List<Place> = withContext(ioDispatcher) {
+            firestore.get(Constants.Firebase.PLACES) {
+                val id = it.id.toInt()
+                val name = it["name"] as? String
+                @Suppress("UNCHECKED_CAST")
+                val categories = it["categories"] as? List<Long>
+                val address = it["address"] as? String
+                val courseName = it["courseName"] as? String ?: ""
+                val coordinates = it["coordinates"] as? GeoPoint
+
+                if (name != null && categories != null && address != null && coordinates != null) {
+                    // Note: not checking courseName here as it is an optional field, and if missing can be
+                    //  safely cast to an empty String
+                    Place(id, name, categories.map { category -> category.toInt() }, address, courseName, coordinates)
+                } else {
+                    Timber.tag("LoadPlaces").e(
+                        Exception(
+                            "Error parsing Place with id $id. name: $name, " +
+                                "categories: $categories, address: $address, coordinates: $coordinates"
+                        )
+                    )
+                    null
+                }
             }
         }
-
-    /**
-     * Returns True if the place is within the [category], false otherwise
-     *  Note: every place is within [Category.ALL]
-     */
-    fun isWithinCategory(category: Category): Boolean =
-        category.id == Category.ALL || categories.contains(category.id)
+    }
 }

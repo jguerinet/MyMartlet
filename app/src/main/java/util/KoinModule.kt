@@ -24,12 +24,11 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.manager.UpdateManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.retrofit.ConfigService
-import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.mymartlet.viewmodel.EbillViewModel
+import com.guerinet.mymartlet.viewmodel.MapViewModel
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.room.UpdateDb
@@ -43,6 +42,7 @@ import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.Module
@@ -66,7 +66,7 @@ val appModule: Module = module {
     single { FAnalytics(androidContext()) } bind Analytics::class
 
     // Clear Manager
-    single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get(), get()) }
+    single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME)) }
 
     // HomePageManager
     single { HomepageManager(get(), androidContext()) }
@@ -92,20 +92,11 @@ val appModule: Module = module {
 
 val dbModule = module {
 
-    // CategoryDao
-    single { get<ConfigDb>().categoryDao() }
-
-    // ConfigDb
-    single { ConfigDb.init(androidContext()) }
-
     // CourseDao
     single { get<UserDb>().courseDao() }
 
     // CourseResultDao
     single { get<UserDb>().courseResultDao() }
-
-    // PlaceDao
-    single { get<ConfigDb>().placeDao() }
 
     // SemesterDao
     single { get<UserDb>().semesterDao() }
@@ -165,9 +156,6 @@ val prefsModule: Module = module {
     // DefaultTermPref
     single { DefaultTermPref(get()) }
 
-    // RegisterTermsPref
-    single { RegisterTermsPref(get()) }
-
     // UsernamePref
     single { UsernamePref(get(), get()) }
 
@@ -175,13 +163,7 @@ val prefsModule: Module = module {
 
     single(Prefs.GRADE_CHECKER) { BooleanPref(get(), Prefs.GRADE_CHECKER, false) }
 
-    single(Prefs.IMS_CATEGORIES) { NullDatePref(get(), Prefs.IMS_CATEGORIES, null) }
-
     single(Prefs.IMS_CONFIG) { NullDatePref(get(), Prefs.IMS_CONFIG, null) }
-
-    single(Prefs.IMS_PLACES) { NullDatePref(get(), Prefs.IMS_PLACES, null) }
-
-    single(Prefs.IMS_REGISTRATION) { NullDatePref(get(), Prefs.IMS_REGISTRATION, null) }
 
     single(Prefs.IS_FIRST_OPEN) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
 
@@ -198,6 +180,9 @@ val viewModelsModule = module {
 
     // EbillViewModel
     viewModel { EbillViewModel(get(), get()) }
+
+    // MapViewModel
+    viewModel { MapViewModel(androidApplication()) }
 
     // SemesterViewModel
     viewModel { SemesterViewModel(get(), get()) }

@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package com.guerinet.mymartlet.util.retrofit
+package com.guerinet.mymartlet.util
 
-import com.guerinet.mymartlet.util.service.ConfigDownloadService
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
+import com.google.firebase.firestore.FirebaseFirestore
 
 /**
- * Retrofit service used for the config server
+ * General utility methods
  * @author Julien Guerinet
- * @since 1.0.0
+ * @since 2.0.0
  */
-interface ConfigService {
 
-    /**
-     * Retrieves the [ConfigDownloadService.Config]. Uses the [ims] header
-     */
-    @GET("config")
-    fun config(@Header("If-Modified-Since") ims: String?): Call<ConfigDownloadService.Config>
-}
+/** Convenience variable for the Firestore instance */
+val firestore: FirebaseFirestore
+    get() = FirebaseFirestore.getInstance()

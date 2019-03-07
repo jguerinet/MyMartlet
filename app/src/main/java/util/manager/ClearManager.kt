@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,7 @@ package com.guerinet.mymartlet.util.manager
 
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
-import com.guerinet.mymartlet.util.room.ConfigDb
 import com.guerinet.mymartlet.util.room.UserDb
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.orhanobut.hawk.Hawk
@@ -34,10 +32,8 @@ class ClearManager(
     private val usernamePref: UsernamePref,
     private val homepageManager: HomepageManager,
     private val defaultTermPref: DefaultTermPref,
-    private val registerTermsPref: RegisterTermsPref,
     private val rememberUsernamePref: BooleanPref,
-    private val userDb: UserDb,
-    private val configDb: ConfigDb
+    private val userDb: UserDb
 ) {
 
     /**
@@ -60,16 +56,5 @@ class ClearManager(
 
         // Default term
         defaultTermPref.clear()
-    }
-
-    /**
-     * Clears all config info
-     */
-    fun clearConfig() {
-        // Config Db
-        configDb.clearAllTables()
-
-        // Register terms
-        registerTermsPref.clear()
     }
 }

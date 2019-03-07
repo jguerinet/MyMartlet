@@ -35,6 +35,7 @@ import com.guerinet.morf.morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.Term
+import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
 import com.guerinet.mymartlet.util.Constants
@@ -44,7 +45,6 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
-import com.guerinet.mymartlet.util.room.daos.PlaceDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
@@ -87,8 +87,6 @@ class ScheduleActivity : DrawerActivity() {
     private val courseDao by inject<CourseDao>()
 
     private val transcriptDao by inject<TranscriptDao>()
-
-    private val placeDao by inject<PlaceDao>()
 
     private var term: Term = defaultTermPref.term
 
@@ -140,7 +138,7 @@ class ScheduleActivity : DrawerActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_change_semester -> {
-                TermDialogHelper(this, this, term, false) {
+                TermDialogHelper(this, this, term) {
                     // If it's the same currentTerm as now, do nothing
                     if (it == term) {
                         return@TermDialogHelper
@@ -554,11 +552,11 @@ class ScheduleActivity : DrawerActivity() {
                 textColor = color
                 onClick {
                     // Try to find a place that has the right name
-                    launch(Dispatchers.IO) {
-                        val places = placeDao.getPlaces()
-                        val place = places.firstOrNull { place ->
-                            course.location.contains(place.name, true)
-                        }
+                    launch(uiDispatcher) {
+                        // Load the places from the Firestore
+                        val place =
+                            Place.loadPlaces().firstOrNull { course.location.contains(it.coursePlaceName, true) }
+
                         if (place == null) {
                             // Tell the user
                             toast(getString(R.string.error_place_not_found, course.location))
@@ -569,7 +567,7 @@ class ScheduleActivity : DrawerActivity() {
                             alert.dismiss()
                             // Open the map to the given place
                             val intent = intentFor<MapActivity>(Constants.ID to place.id)
-                            handler.post { switchDrawerActivity(intent) }
+                            switchDrawerActivity(intent)
                         }
                     }
                 }

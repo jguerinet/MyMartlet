@@ -20,13 +20,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.widget.AutoCompleteTextView
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
+import androidx.fragment.app.transaction
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -36,26 +37,22 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.guerinet.morf.Morf
+import com.guerinet.morf.TextViewItem
+import com.guerinet.morf.morf
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.place.Category
 import com.guerinet.mymartlet.model.place.Place
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.mymartlet.util.room.daos.CategoryDao
-import com.guerinet.mymartlet.util.room.daos.PlaceDao
+import com.guerinet.mymartlet.viewmodel.MapViewModel
 import com.guerinet.suitcase.dialog.singleListDialog
+import com.guerinet.suitcase.lifecycle.observe
+import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.ui.extensions.setDrawableTint
 import com.guerinet.suitcase.util.Utils
-import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.guerinet.suitcase.util.extensions.hasPermission
 import kotlinx.android.synthetic.main.activity_map.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
-import org.koin.android.ext.android.inject
-import timber.log.Timber
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Displays a campus map
@@ -64,101 +61,106 @@ import timber.log.Timber
  * @author Quang Dao
  * @since 1.0.0
  */
-class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, TimberTag {
 
-    private val placeDao by inject<PlaceDao>()
+    override val currentPage = HomepageManager.HomePage.MAP
 
-    private val categoryDao by inject<CategoryDao>()
+    override val tag: String = "MapActivity"
+
+    private val mapViewModel by viewModel<MapViewModel>()
 
     private var map: GoogleMap? = null
 
-    /**
-     * Total list of places with their associated markers
-     */
-    private val places: MutableList<Pair<Place, Marker>> = mutableListOf()
+    /** List of markers on the map with their associated place Ids */
+    private val markers = mutableListOf<Pair<Int, Marker>>()
 
-    /**
-     * Currently shown map places with their associated markers
-     */
-    private val shownPlaces: MutableList<Pair<Place, Marker>> = mutableListOf()
-
-    /**
-     * Currently shown place with its associated marker
-     */
-    private var place: Pair<Place, Marker>? = null
-
-    /**
-     * Currently selected category
-     */
-    private var category: Category = Category(false)
-
-    /**
-     * Current search String
-     */
-    private var searchString: String = ""
-
-    override val currentPage = HomepageManager.HomePage.MAP
+    private lateinit var categoryItem: TextViewItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
-        val morf = Morf.bind(container)
+        // Set up the category filter
+        container.morf {
+            categoryItem = text {
+                icon(Position.START, R.drawable.ic_location)
+                icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
+                onClick {
+                    // Get the categories from the ViewModel and transform them into
+                    val categories = mapViewModel.categories.value ?: listOf()
 
-        // Icon coloring
-        val red = getColorCompat(R.color.red)
-        directions.setDrawableTint(0, red)
-        favorite.setDrawableTint(0, red)
+                    singleListDialog(categories.map { it.name },
+                        R.string.map_filter,
+                        categories.indexOfFirst { it == mapViewModel.category.value }) {
 
-        //Set up the place filter
-        val context = this
-        morf.text {
-            text(category.getString(context))
-            icon(Position.START, R.drawable.ic_location)
-            icon(Position.END, R.drawable.ic_chevron_right, true, Color.GRAY)
-            onClick { textViewItem ->
-                doAsync {
-                    val categories =
-                        categoryDao.getCategories().map { Pair(it, it.getString(context)) }
-
-                    uiThread {
-                        singleListDialog(
-                            categories.map { it.second }, R.string.map_filter,
-                            categories.indexOfFirst { it.first == category }) {
-
-                            category = categories[it].first
-
-                            // Update the text
-                            textViewItem.text(category.getString(context))
-
-                            // Update the filtered places
-                            filterByCategory()
-                        }
+                        mapViewModel.category.postValue(categories[it])
                     }
                 }
             }
         }
 
-        val manager = supportFragmentManager
+        observe(mapViewModel.category) {
+            val category = it ?: return@observe
 
-        // Get the MapFragment
-        var fragment: SupportMapFragment? =
-            manager.findFragmentById(R.id.map) as? SupportMapFragment
-
-        // If it's null, initialize it and put it in its view
-        if (fragment == null) {
-            fragment = SupportMapFragment.newInstance()
-            manager.beginTransaction()
-                .replace(R.id.map, fragment)
-                .addToBackStack(null)
-                .commit()
+            // Update the text
+            categoryItem.text = category.name
         }
 
-        fragment?.getMapAsync(this)
+        observe(mapViewModel.shownPlaces) {
+            val shownPlaces = it ?: return@observe
 
-        // OnClickListeners
+            markers.forEach { marker ->
+                // Show the marker if the shown places contains a place with the Id of this marker
+                marker.second.isVisible = shownPlaces.any { place -> place.id == marker.first }
+            }
+
+            if (shownPlaces.size == 1) {
+                // Get the corresponding marker
+                val marker = markers.first { marker -> marker.first == shownPlaces.first().id }
+                // Zoom in on that place
+                map?.animateCamera(CameraUpdateFactory.newLatLng(marker.second.position))
+            }
+        }
+
+        observe(mapViewModel.place) {
+            val place = it ?: return@observe
+
+            // Set all markers to red
+            markers.forEach { marker ->
+                marker.second.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            }
+
+            // Find the marker for this place
+            val marker = markers.firstOrNull { marker -> marker.first == place.id }
+
+            if (marker == null) {
+                timber.e("Tapped place marker with id ${place.id} not found")
+                return@observe
+            }
+
+            // Set the icon to blue
+            marker.second.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+
+            // Set up the info
+            placeTitle.text = place.name
+            address.text = place.address
+            directions.isVisible = true
+        }
+
+        observe(mapViewModel.places) {
+            // When the places get loaded, populate the map
+            populateMarkers(it)
+        }
+
+        // Get the MapFragment (Create it if null)
+        val fragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+            ?: createAndGetMapFragment()
+
+        // Request the map
+        fragment.getMapAsync(this)
+
+        directions.setDrawableTint(0, Color.WHITE)
         directions.setOnClickListener { getDirections() }
-        favorite.setOnClickListener { favorites() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -167,8 +169,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         // Get the SearchView
         val item = menu.findItem(R.id.action_search)
         val searchView = SearchView(this)
-        val textViewID = searchView.context.resources
-            .getIdentifier("android:id/search_src_text", null, null)
+        val textViewID = searchView.context.resources.getIdentifier("android:id/search_src_text", null, null)
         val searchTextView = searchView.findViewById<AutoCompleteTextView>(textViewID)
         try {
             // Set the cursor to the same color as the text
@@ -176,137 +177,101 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             cursorDrawable.isAccessible = true
             cursorDrawable.set(searchTextView, 0)
         } catch (e: Exception) {
-            Timber.e(e, "Cannot change color of cursor")
+            timber.e(e, "Cannot change color of cursor")
         }
 
         // Set up the query listener
         item.actionView = searchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                searchString = query
-                filterBySearchString()
+                mapViewModel.searchTerm.postValue(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                searchString = newText
-                filterBySearchString()
+                mapViewModel.searchTerm.postValue(newText)
                 return false
             }
         })
 
         // Reset the search view
         searchView.setOnCloseListener {
-            searchString = ""
-            filterBySearchString()
+            mapViewModel.searchTerm.postValue("")
             false
         }
 
         return true
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            LOCATION_REQUEST ->
-                // Check if the permission has been granted
-                if (Utils.isPermissionGranted(grantResults)) {
-                    // Show the user on the map if that is the case
-                    @SuppressLint("MissingPermission")
-                    map?.isMyLocationEnabled = true
-                }
+            // Check if the permission has been granted
+            LOCATION_REQUEST -> if (Utils.isPermissionGranted(grantResults)) {
+                // Show the user on the map if that is the case
+                @SuppressLint("MissingPermission")
+                map?.isMyLocationEnabled = true
+            }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
 
+    /**
+     * Creates the [SupportMapFragment], adds it to the layout, and returns it
+     */
+    private fun createAndGetMapFragment(): SupportMapFragment {
+        val fragment = SupportMapFragment.newInstance()
+        supportFragmentManager.transaction {
+            replace(R.id.map, fragment)
+            addToBackStack(null)
+        }
+        return fragment
+    }
+
+    /**
+     * Provides the users directions to the chosen building by opening Google Maps
+     */
     private fun getDirections() {
         // Open Google Maps
-        val place = this.place ?: return
+        val place = mapViewModel.place.value ?: return
         val intent = Intent(
-            Intent.ACTION_VIEW, Uri.parse(
-                "http://maps.google.com/maps?f=d &daddr=" +
-                    place.second.position.latitude + "," + place.second.position.longitude
-            )
+            Intent.ACTION_VIEW,
+            "http://maps.google.com/maps?f=d&daddr=${place.coordinates.latitude},${place.coordinates.longitude}".toUri()
         )
         startActivity(intent)
     }
 
     /**
-     * Adds or remove a place from the user's favorites
+     * Adds the markers for the [places] to the map, only after they have been loaded and the map is ready
+     *  This will also open the place sent via the intent, if there is one
      */
-    private fun favorites() {
-        val place = this.place ?: return
-
-        // Choose the right Strings depending on whether this place was in the favorites
-        val stringIds = if (place.first.isFavorite) {
-            Pair(R.string.map_favorites_removed, R.string.map_favorites_add)
-        } else {
-            Pair(R.string.map_favorites_added, R.string.map_favorites_remove)
+    private fun populateMarkers(places: List<Place>?) {
+        if (places == null) {
+            // Don't continue if the places aren't loaded
+            return
         }
+        // Don't continue if the map isn't loaded
+        val map = this.map ?: return
 
-        // Inverse the current favorite setting
-        place.first.isFavorite = !place.first.isFavorite
-
-        // Change the button text
-        favorite.setText(stringIds.second)
-
-        if (category.id == Category.FAVORITES) {
-            // If we are in the favorites category, we need to show/hide this pin
-            showPlace(place, place.first.isFavorite)
-        }
-
-        // Alert the user
-        toast(getString(stringIds.first, place.first.name))
-    }
-
-    /**
-     * Makes the [place] [visible] or not
-     */
-    private fun showPlace(place: Pair<Place, Marker>, visible: Boolean) {
-        place.second.isVisible = visible
-        if (visible) {
-            shownPlaces.add(place)
-        }
-    }
-
-    /**
-     * Filters the current places by the selected category
-     */
-    private fun filterByCategory() {
-        // Reset the current places
-        shownPlaces.clear()
-
-        // Go through the places
-        places.forEach { showPlace(it, it.first.isWithinCategory(category)) }
-
-        // Filter also by the search String if there is one
-        filterBySearchString()
-    }
-
-    /**
-     * Filters the current places by the entered search String
-     */
-    private fun filterBySearchString() {
-        // If there is no search String, just show everything
-        if (searchString.isEmpty()) {
-            shownPlaces.forEach { it.second.isVisible = true }
+        if (markers.isNotEmpty()) {
+            // Don't continue if the markers have already been created
             return
         }
 
-        // Keep track of the shown place if there's only one
-        val shownPlaces = shownPlaces.filter {
-            val visible = it.first.name.toLowerCase().contains(searchString.toLowerCase())
-            it.second.isVisible = visible
-            visible
+        places.mapTo(markers) {
+            val marker = map.addMarker(
+                MarkerOptions()
+                    .position(LatLng(it.coordinates.latitude, it.coordinates.longitude))
+                    .draggable(false)
+            )
+
+            Pair(it.id, marker)
         }
 
-        // If you're showing only one place, focus on that place
-        if (shownPlaces.count() == 1) {
-            map?.animateCamera(CameraUpdateFactory.newLatLng(shownPlaces.first().second.position))
-        }
+        // Re-post the shown places to show them on the now loaded map
+        mapViewModel.shownPlaces.postValue(mapViewModel.shownPlaces.value)
+
+        // Click on the place sent with the intent, if there is one
+        mapViewModel.onPlaceChosen(intent.getIntExtra(Constants.ID, -1))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -319,76 +284,25 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             .bearing(-54f)
             .tilt(0f)
             .build()
-        map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
         if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_REQUEST)) {
             // Show the user's location if we have the permission to
             @SuppressLint("MissingPermission")
-            map?.isMyLocationEnabled = true
+            googleMap.isMyLocationEnabled = true
         }
 
-        map?.setOnMarkerClickListener(this)
+        googleMap.setOnMarkerClickListener(this)
 
-        doAsync {
-            val placeId = intent.getIntExtra(Constants.ID, -1)
-
-            placeDao.getPlaces().mapNotNullTo(places) {
-                // Create a marker for this
-                val marker = googleMap.addMarker(
-                    MarkerOptions()
-                        .position(it.coordinates)
-                        .draggable(false)
-                        .visible(true)
-                ) ?: return@mapNotNullTo null
-
-                Pair(it, marker)
-            }
-
-            // Find the place that was in the intent, if there was one
-            val marker = places.firstOrNull { it.first.id == placeId }?.second
-
-            // Filter
-            filterByCategory()
-
-            onMarkerClick(marker)
-        }
+        // Populate the markers
+        populateMarkers(mapViewModel.places.value)
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
-        // If there was a marker that was selected before set it back to red
-        place?.second?.setIcon(
-            BitmapDescriptorFactory.defaultMarker(
-                BitmapDescriptorFactory.HUE_RED
-            )
-        )
+        // Find the corresponding place Id
+        val placeId = markers.firstOrNull { it.second == marker }?.first ?: -1
 
-        // Pull up the info container
-        infoContainer.isVisible = true
-
-        // Find the concerned place
-        place = places.firstOrNull { it.second == marker }
-
-        if (place == null) {
-            Timber.e("Tapped place marker was not found")
-            return false
-        }
-
-        //Set it to blue
-        place?.second?.setIcon(
-            BitmapDescriptorFactory.defaultMarker(
-                BitmapDescriptorFactory.HUE_AZURE
-            )
-        )
-
-        // Set up the info
-        placeTitle.text = place?.first?.name
-        address.text = place?.first?.address
-
-        // Set up the favorite text
-        favorite.setText(
-            if (place?.first?.isFavorite == true)
-                R.string.map_favorites_remove else R.string.map_favorites_add
-        )
+        mapViewModel.onPlaceChosen(placeId)
 
         return false
     }

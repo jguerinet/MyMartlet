@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
+import com.google.firebase.firestore.FirebaseFirestore
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.exception.MinervaException
@@ -88,6 +89,13 @@ class SplashActivity : BaseActivity() {
 
             // Initialize the McGillService
             mcGillManager.init()
+
+            // Get the Firestore info to refresh it all
+            FirebaseFirestore.getInstance().apply {
+                collection(Constants.Firebase.CATEGORIES).get()
+                collection(Constants.Firebase.PLACES).get()
+                collection(Constants.Firebase.REGISTRATION_TERMS).get()
+            }
 
             // Start downloading the Config
             startService<ConfigDownloadService>()

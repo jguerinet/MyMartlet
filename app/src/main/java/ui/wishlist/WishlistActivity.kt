@@ -26,11 +26,12 @@ import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.util.manager.HomepageManager
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.util.room.daos.CourseResultDao
+import com.guerinet.suitcase.coroutines.ioDispatcher
 import kotlinx.android.synthetic.main.view_courses.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import retrofit2.Call
@@ -44,9 +45,10 @@ import retrofit2.Response
  */
 class WishlistActivity : DrawerActivity() {
 
-    private val registerTermsPref by inject<RegisterTermsPref>()
-
     private val courseResultDao by inject<CourseResultDao>()
+
+    /** List of terms the user can register in, an empty list if none available */
+    private var registrationTerms = listOf<Term>()
 
     /**
      * Current term, null if none possible (no semesters to register for)
@@ -67,9 +69,6 @@ class WishlistActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wishlist)
-
-        // Load the first registration currentTerm if there is one
-        term = registerTermsPref.terms.firstOrNull()
     }
 
     override fun onResume() {
@@ -78,11 +77,11 @@ class WishlistActivity : DrawerActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (!registerTermsPref.terms.isEmpty()) {
+        if (registrationTerms.isNotEmpty()) {
             menuInflater.inflate(R.menu.refresh, menu)
 
             // Allow user to change the semester if there is more than 1 semester
-            if (registerTermsPref.terms.size > 1) {
+            if (registrationTerms.size > 1) {
                 menuInflater.inflate(R.menu.change_semester, menu)
             }
             return true
@@ -105,18 +104,30 @@ class WishlistActivity : DrawerActivity() {
     }
 
     private fun changeSemester() {
-        TermDialogHelper(this, this, term, true) {
+        TermDialogHelper(this, this, term, registrationTerms) {
             term = it
             update()
         }
     }
 
     private fun update() {
-        // Set the title if there is a currentTerm
-        title = term?.getString(this)
+        launch {
+            if (term == null) {
+                registrationTerms = withContext(ioDispatcher) { Term.loadRegistrationTerms() }
 
-        // Reload the adapter
-        wishlistHelper.update(term)
+                // If there is no term set yet, take the first registration term available
+                term = registrationTerms.firstOrNull()
+
+                // Reload the menu once we have gotten the registration terms
+                invalidateOptionsMenu()
+            }
+
+            // Set the title if there is a currentTerm
+            title = term?.getString(this@WishlistActivity)
+
+            // Reload the adapter
+            wishlistHelper.update(term)
+        }
     }
 
     /**

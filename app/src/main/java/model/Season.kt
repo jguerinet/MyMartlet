@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2019 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ enum class Season(val title: String) {
         /**
          * Returns the [Season] for the [title]
          */
-        fun getSeasonFromTitle(title: String): Season = when {
+        fun getSeasonFromTitle(title: String?): Season = when {
             title.equals(Season.FALL.title, ignoreCase = true) -> Season.FALL
             title.equals(Season.WINTER.title, ignoreCase = true) -> Season.WINTER
             title.equals(Season.SUMMER.title, ignoreCase = true) -> Season.SUMMER

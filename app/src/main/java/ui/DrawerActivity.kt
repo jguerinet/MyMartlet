@@ -20,9 +20,11 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -36,7 +38,6 @@ import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
 import com.twitter.sdk.android.tweetcomposer.TweetComposer
-import kotlinx.android.synthetic.main.activity_ebill.*
 import kotlinx.android.synthetic.main.drawer.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.startActivity
@@ -59,7 +60,9 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
         ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0)
     }
 
-    private val drawerLayout by lazy { find<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawerLayout) }
+    private val drawerLayout by lazy { find<DrawerLayout>(R.id.drawerLayout) }
+
+    private val mainView by lazy { find<View>(R.id.mainView) }
 
     private val facebookCallbackManager: CallbackManager = CallbackManager.Factory.create()
 

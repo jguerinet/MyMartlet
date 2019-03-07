@@ -1,95 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainView"
-        android:animateLayoutChanges="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <include layout="@layout/toolbar"/>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
         <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/container"/>
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <FrameLayout
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/placeTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/placeTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/infoContainer"
-            android:visibility="gone">
+            android:layout_marginStart="8dp"
+            android:paddingLeft="@dimen/padding_micro"
+            android:paddingRight="@dimen/padding_micro"
+            android:textSize="@dimen/text_medium"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/address"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Place Title" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/placeTitle"
-                android:textSize="@dimen/text_medium"
-                android:textStyle="bold"
-                android:paddingLeft="@dimen/padding_micro"
-                android:paddingRight="@dimen/padding_micro"/>
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingLeft="@dimen/padding_micro"
+            android:paddingRight="@dimen/padding_micro"
+            android:textSize="@dimen/text_small"
+            app:layout_constraintBottom_toTopOf="@+id/directions"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Place Address" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/address"
-                android:textSize="@dimen/text_small"
-                android:paddingLeft="@dimen/padding_micro"
-                android:paddingRight="@dimen/padding_micro"/>
+        <Button
+            android:id="@+id/directions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:drawableStart="@drawable/ic_directions"
+            android:drawablePadding="8dp"
+            android:singleLine="true"
+            android:text="@string/map_directions"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <Button
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/directions"
-                    android:text="@string/map_directions"
-                    android:singleLine="true"
-                    android:gravity="start|center_vertical"
-                    android:drawablePadding="@dimen/padding_micro"
-                    android:drawableLeft="@drawable/ic_directions"
-                    android:drawableStart="@drawable/ic_directions"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-
-                <Button
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/favorite"
-                    android:padding="@dimen/padding_small"
-                    android:text="@string/map_favorites_add"
-                    android:singleLine="true"
-                    android:gravity="start|center_vertical"
-                    android:drawablePadding="@dimen/padding_micro"
-                    android:drawableLeft="@drawable/ic_star"
-                    android:drawableStart="@drawable/ic_star"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/drawer"/>
 
