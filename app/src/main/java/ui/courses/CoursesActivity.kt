@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.RegistrationError
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
@@ -33,12 +32,9 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
-import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.mymartlet.viewmodel.CoursesViewModel
-import com.guerinet.suitcase.coroutines.ioDispatcher
-import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
@@ -46,9 +42,7 @@ import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
 import kotlinx.android.synthetic.main.view_courses.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -161,48 +155,16 @@ class CoursesActivity : DrawerActivity(), TimberTag {
     }
 
     /**
-     * Refreshes the list of courses for the given currentTerm and the user's transcript
+     * Refreshes the list of courses for the current [term]
      */
     private fun refresh() {
         if (!canRefresh()) {
             return
         }
 
-        val term = coursesViewModel.term.value ?: error("Term was null")
+        // TODO Deal with the progress bar
 
-        // Download the courses for this currentTerm
-        mcGillService.oldSchedule(term).enqueue(object : Callback<List<Course>> {
-            override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>) {
-                launch(uiDispatcher) {
-
-                    withContext(ioDispatcher) {
-                        courseDao.update(response.body() ?: listOf(), term)
-                    }
-
-                    // Update the view
-                    update()
-                    toolbarProgress.isVisible = false
-                }
-
-                // Download the transcript (if ever the user has new semesters on their transcript)
-                mcGillService.oldTranscript().enqueue(object : Callback<TranscriptResponse> {
-                    override fun onResponse(
-                        call: Call<TranscriptResponse>,
-                        response: Response<TranscriptResponse>
-                    ) {
-                        launch(Dispatchers.IO) {
-                            transcriptDao.update(response.body()!!.transcript)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<TranscriptResponse>, t: Throwable) =
-                        handleError("refreshing transcript", t)
-                })
-            }
-
-            override fun onFailure(call: Call<List<Course>>, t: Throwable) =
-                handleError("refreshing courses", t)
-        })
+        launch { coursesViewModel.refreshCourses() }
     }
 
     /**
