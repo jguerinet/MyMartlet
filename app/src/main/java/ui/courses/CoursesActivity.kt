@@ -32,8 +32,6 @@ import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
-import com.guerinet.mymartlet.util.room.daos.CourseDao
-import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.mymartlet.viewmodel.CoursesViewModel
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
@@ -64,13 +62,9 @@ class CoursesActivity : DrawerActivity(), TimberTag {
 
     private val coursesViewModel by viewModel<CoursesViewModel>()
 
-    private val courseDao by inject<CourseDao>()
-
     private val defaultTermPref by inject<DefaultTermPref>()
 
     private val registerTermsPref by inject<RegisterTermsPref>()
-
-    private val transcriptDao by inject<TranscriptDao>()
 
     private val adapter: CoursesAdapter by lazy { CoursesAdapter(empty) }
 
