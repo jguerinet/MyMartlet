@@ -112,11 +112,6 @@ class CoursesActivity : DrawerActivity(), TimberTag {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        update()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.refresh, menu)
         menuInflater.inflate(R.menu.change_semester, menu)
@@ -127,10 +122,8 @@ class CoursesActivity : DrawerActivity(), TimberTag {
         when (item.itemId) {
             R.id.action_change_semester -> {
                 TermDialogHelper(this, this, coursesViewModel.term.value, false) {
-                    // Set the default currentTerm
+                    // Set the default term. This will kick off the updating of the UI
                     defaultTermPref.term = it
-
-                    update()
                     refresh()
                 }
                 return true
@@ -141,17 +134,6 @@ class CoursesActivity : DrawerActivity(), TimberTag {
             }
             else -> return super.onOptionsItemSelected(item)
         }
-    }
-
-    /**
-     * Updates all of the info in the view
-     */
-    private fun update() {
-        // User can unregister if the current currentTerm is in the list of terms to register for
-        val canUnregister = registerTermsPref.terms.contains(term)
-
-        // Change the text and the visibility if we are in the list of currently registered courses
-        register.isVisible = canUnregister
     }
 
     /**
