@@ -113,20 +113,20 @@ class CoursesActivity : DrawerActivity(), TimberTag {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_change_semester -> {
                 TermDialogHelper(this, this, coursesViewModel.term.value, false) {
                     // Set the default term. This will kick off the updating of the UI
                     defaultTermPref.term = it
                     refresh()
                 }
-                return true
+                true
             }
             R.id.action_refresh -> {
                 refresh()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
