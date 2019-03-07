@@ -24,14 +24,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.RegistrationError
-import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.util.extensions.errorDialog
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
-import com.guerinet.mymartlet.util.prefs.RegisterTermsPref
 import com.guerinet.mymartlet.viewmodel.CoursesViewModel
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
@@ -64,11 +62,7 @@ class CoursesActivity : DrawerActivity(), TimberTag {
 
     private val defaultTermPref by inject<DefaultTermPref>()
 
-    private val registerTermsPref by inject<RegisterTermsPref>()
-
     private val adapter: CoursesAdapter by lazy { CoursesAdapter(empty) }
-
-    private var term: Term = defaultTermPref.term
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
