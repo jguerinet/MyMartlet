@@ -171,7 +171,7 @@ class CoursesActivity : DrawerActivity(), TimberTag {
         val term = coursesViewModel.term.value ?: error("Term was null")
 
         // Download the courses for this currentTerm
-        mcGillService.schedule(term).enqueue(object : Callback<List<Course>> {
+        mcGillService.oldSchedule(term).enqueue(object : Callback<List<Course>> {
             override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>) {
                 launch(uiDispatcher) {
 

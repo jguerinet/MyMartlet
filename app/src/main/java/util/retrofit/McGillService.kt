@@ -46,10 +46,15 @@ interface McGillService {
     fun login(@Field("sid") username: String, @Field("PIN") password: String): Call<ResponseBody>
 
     /**
-     * Retrieves the user's schedule for the [term]
+     * Old way of retrieving the user's schedule for the [term]. Should be phased out completely
      */
     @GET("bwskfshd.P_CrseSchdDetl")
     fun oldSchedule(@Query("term_in") term: Term): Call<List<Course>>
+
+    /**
+     * Retrieves the user's schedule for the [term]
+     */
+    fun schedule(@Query("term_in") term: Term): Deferred<List<Course>>
 
     /**
      * Old way of getting the transcript. Should be phased out completely
