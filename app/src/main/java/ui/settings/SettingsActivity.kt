@@ -36,6 +36,7 @@ import com.guerinet.suitcase.io.getFileUri
 import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.Utils
+import com.guerinet.suitcase.util.extensions.openUrl
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -116,6 +117,15 @@ class SettingsActivity : DrawerActivity(), TimberTag {
                 textId = R.string.title_about
                 icon(Position.START, R.drawable.ic_info)
                 onClick { startActivity<AboutActivity>() }
+            }
+
+            // Privacy Policy
+            text {
+                text = "Privacy Policy"
+                icon(Position.START, R.drawable.ic_info)
+                onClick {
+                    openUrl("https://github.com/jguerinet/MyMartlet/blob/master/privacy-policy.md")
+                }
             }
 
             // Bug Report
