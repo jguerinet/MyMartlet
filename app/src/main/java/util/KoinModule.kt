@@ -66,7 +66,7 @@ val appModule: Module = module {
     single { FAnalytics(androidContext()) } bind Analytics::class
 
     // Clear Manager
-    single { ClearManager(get(), get(), get(), get(), get(Prefs.REMEMBER_USERNAME)) }
+    single { ClearManager(get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get()) }
 
     // HomePageManager
     single { HomepageManager(get(), androidContext()) }
