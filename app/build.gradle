@@ -38,7 +38,7 @@ if (project.hasProperty(fileName)) {
 
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 1
+def versionPatch = 4
 def versionBuild = 3
 
 apply plugin: 'com.android.application'
