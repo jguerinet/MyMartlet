@@ -85,7 +85,7 @@ android {
 
         release {
             if (releaseProps != null) {
-                storeFile releaseProps.storeFile
+                storeFile file(releaseProps.storeFile)
                 storePassword releaseProps.storePassword
                 keyAlias releaseProps.keyAlias
                 keyPassword releaseProps.keyPassword
