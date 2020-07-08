@@ -1,0 +1,24 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run.
+on:
+  push:
+    branches: [ github-actions ]
+  pull_request:
+    branches: [ github-actions ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out the repository under $GITHUB_WORKSPACE
+    - uses: actions/checkout@v2
+
+    - name: Install Gems
+      run: bundle install
+
+    - name: Increment Build Number
+      run: ./gradlew incrementBuildNumber
