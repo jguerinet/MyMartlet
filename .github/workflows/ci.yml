@@ -42,8 +42,8 @@ jobs:
 
     - name: Install Gems
       run: |
-        bundle install
         bundle config path vendor/bundle
+        bundle install
 
     - name: Increment Build Number
       run: ./gradlew incrementBuildNumber
