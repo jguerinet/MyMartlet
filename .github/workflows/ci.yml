@@ -61,9 +61,10 @@ jobs:
         # Grab the version name from the generated APK
         export VERSION=$($ANDROID_HOME/build-tools/$BUILD_TOOLS/aapt dump badging app/build/outputs/apk/debug/app-debug.apk | grep versionName | awk '{print $4}' | grep -o [0-9].*[0-9])
         echo "::set-env name=version::$VERSION"
+        echo "Version $VERSION"
     
     - name: Deploy Dev
       run: echo 'To Do Deploy Dev'
     
     - name: Commit Version Number
-      run: echo 'To Do Commit Version Number, version $version'
+      run: echo "To Do Commit Version Number, version $version"
