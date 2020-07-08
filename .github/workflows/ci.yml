@@ -16,6 +16,7 @@ jobs:
     steps:
     # Check out the repository under $GITHUB_WORKSPACE
     - uses: actions/checkout@v2
+      
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1.39.0
       with:
@@ -26,3 +27,18 @@ jobs:
 
     - name: Increment Build Number
       run: ./gradlew incrementBuildNumber
+
+    - name: Assemble Debug
+      run: ./gradlew clean assembleDebug
+    
+    - name: Run Unit Tests
+      run: ./gradlew testDebugUnitTest
+      
+    - name: Extract Version Number
+      run: echo 'To Do Extract Version Number'
+    
+    - name: Deploy Dev
+      run: echo 'To Do Deploy Dev'
+    
+    - name: Commit Version Number
+      run: echo 'To Do Commit Version Number'
