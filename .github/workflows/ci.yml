@@ -16,6 +16,8 @@ jobs:
     steps:
     # Check out the repository under $GITHUB_WORKSPACE
     - uses: actions/checkout@v2
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1.39.0
 
     - name: Install Gems
       run: bundle install
