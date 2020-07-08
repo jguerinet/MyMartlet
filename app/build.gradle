@@ -205,4 +205,6 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 }
 
+apply from: "https://raw.githubusercontent.com/jguerinet/Gradle-Scripts/master/android-increment-build.gradle"
+
 apply plugin: 'com.google.gms.google-services'
