@@ -46,10 +46,15 @@ jobs:
       run: ./gradlew testDebugUnitTest
       
     - name: Extract Version Number
-      run: echo 'To Do Extract Version Number'
+      run: |
+        # Get the latest build tools
+        export BUILD_TOOLS=$($ANDROID_HOME/tools/bin/sdkmanager --list | grep "build-tools/" | awk '{ print $3 }' | tail -1)
+        # Grab the version name from the generated APK
+        export VERSION=$($ANDROID_HOME/build-tools/$BUILD_TOOLS/aapt dump badging app/build/outputs/apk/$title/app-$title.apk | grep versionName | awk '{print $4}' | grep -o [0-9].*[0-9])
+        echo "::set-env name=version::$VERSION"
     
     - name: Deploy Dev
       run: echo 'To Do Deploy Dev'
     
     - name: Commit Version Number
-      run: echo 'To Do Commit Version Number'
+      run: echo 'To Do Commit Version Number, version $version'
