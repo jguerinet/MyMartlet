@@ -33,8 +33,17 @@ jobs:
         GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
       run: echo $GOOGLE_SERVICES > app/google-services.json
 
+    - name: Cache Gems
+      uses: actions/cache@v2.0.0
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: ${{ runner.os }}-gem-
+
     - name: Install Gems
-      run: bundle install
+      run: |
+        bundle install
+        bundle config path vendor/bundle
 
     - name: Increment Build Number
       run: ./gradlew incrementBuildNumber
@@ -50,7 +59,7 @@ jobs:
         # Get the latest build tools
         export BUILD_TOOLS=$($ANDROID_HOME/tools/bin/sdkmanager --list | grep "build-tools/" | awk '{ print $3 }' | tail -1)
         # Grab the version name from the generated APK
-        export VERSION=$($ANDROID_HOME/build-tools/$BUILD_TOOLS/aapt dump badging app/build/outputs/apk/$title/app-$title.apk | grep versionName | awk '{print $4}' | grep -o [0-9].*[0-9])
+        export VERSION=$($ANDROID_HOME/build-tools/$BUILD_TOOLS/aapt dump badging app/build/outputs/apk/debug/app-debug.apk | grep versionName | awk '{print $4}' | grep -o [0-9].*[0-9])
         echo "::set-env name=version::$VERSION"
     
     - name: Deploy Dev
