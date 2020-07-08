@@ -1,33 +1,64 @@
 language: android
+# Taken directly from the Travis website
+dist: trusty
 jdk:
-    - oraclejdk8
+  - oraclejdk8
 android:
-    components:
-        - tools
-        - platform-tools
-        - tools
-        - build-tools-28.0.3
-        - android-28
-        - extra-google-m2repository
-        - extra-android-m2repository
-    licenses:
-        - ".+"
+  components:
+    - tools
+    - platform-tools
+    - tools
+    - build-tools-28.0.3
+    - android-28
+    - extra-google-m2repository
+    - extra-android-m2repository
+  licenses:
+    # Accept all licenses
+    - ".+"
+
 branches:
-    except:
-        - "/^v[0-9]+/"
+  except:
+    - "/^v[0-9]+/"
+
 before_install:
-    - openssl aes-256-cbc -K $encrypted_086c609a4c10_key -iv $encrypted_086c609a4c10_iv
-      -in google-services.json.enc -out app/google-services.json -d
-    - yes | sdkmanager "platforms;android-28"
+  # Decrypt the google-services.json file stored in Travis and put it in the right spot
+  - openssl aes-256-cbc -K $encrypted_086c609a4c10_key -iv $encrypted_086c609a4c10_iv
+    -in google-services.json.enc -out app/google-services.json -d
+
+# Taken directly from the Travis website
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+# Run all unit tests and assemble the debug build
+jobs: 
+  include:
+    - stage: "Install Gems"
+      script: "bundle install"
+    - stage: "Increment Build Number"
+      script: "./gradlew incrementBuildNumber"
+    - stage: "Assemble Debug"
+      script: "./gradle clean assembleDebug"
+    - stage: "Run Unit Tests"
+      script: "./gradle testDebugUnitTest"
+    - stage: "Extract Version Number"
+      script: ""
+    - stage: "Deploy Dev"
+      script: ""
+    - stage: "Commit Version Number"
+      script: ""
+  
 script:
     - chmod +x gradlew
     - "./gradlew testDebugUnitTest assembleDebug"
 notifications:
     email: false
+
 sudo: false
+
+# Taken directly from the Travis website
 cache:
     directories:
-        - "$HOME/.m2"
         - "$HOME/.gradle/caches/"
         - "$HOME/.gradle/wrapper/"
         - "$HOME/.android/build-cache"
