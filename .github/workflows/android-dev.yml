@@ -1,0 +1,79 @@
+# Workflow to build, test and push the dev version whenever a change is made to the develop branch
+name: Dev Build
+
+# Controls when the action will run.
+on:
+  push:
+    branches: [ develop ]
+    # Ignore documentation changes
+    paths-ignore:
+      - README.md
+      - CHANGELOG.md
+      - privacy-policy.md
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+  
+      - name: Clone Repo
+        uses: actions/checkout@v2
+
+      - name: Cache Gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: ${{ runner.os }}-gem-
+
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
+        
+      - name: Setup JDK
+        uses: actions/setup-java@v1.3.0
+        with:
+          java-version: 1.8
+        
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.39.0
+        with:
+          ruby-version: '2.6'
+
+      - name: Decode google-services.json
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+        run: echo $GOOGLE_SERVICES > app/google-services.json
+
+      - name: Install Gems
+        run: |
+          bundle config path vendor/bundle
+          bundle install
+
+      - name: Increment Build Number
+        run: ./gradlew incrementBuildNumber
+
+      - name: Assemble Debug
+        run: ./gradlew clean assembleDebug
+      
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
+        
+      - name: Extract Version Number
+        run: |
+          # Get the latest build tools
+          export BUILD_TOOLS=$($ANDROID_HOME/tools/bin/sdkmanager --list | grep "build-tools/" | awk '{ print $3 }' | tail -1)
+          # Grab the version name from the generated APK
+          export VERSION=$($ANDROID_HOME/build-tools/$BUILD_TOOLS/aapt dump badging app/build/outputs/apk/debug/app-debug.apk | grep versionName | awk '{print $4}' | grep -o [0-9].*[0-9])
+          echo "::set-env name=version::$VERSION"
+      
+      - name: Deploy Dev
+        run: bundle exec fastlane dev
+      
+      - name: TODO Commit Version Number
+        run: echo "To Do Commit Version Number, version $version"
+
