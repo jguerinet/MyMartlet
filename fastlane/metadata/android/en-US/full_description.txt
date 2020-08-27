@@ -1,0 +1,12 @@
+MyMartlet is a mobile app that will be convenient for every student in McGill University. With the intention of creating mobile platform for MyMcGill portal, this application allows McGill students to easily access various information such as schedules and transcripts simply by logging into the app with the McGill email account. You can also register and drop classes as well as creating a wishlist of courses you may want to take at McGill. The application also includes detailed campus map with filtering options and directions so you can find your class buildings or your favorite McGill food services . You can even customize your own map by filtering your favorite locations so that only they will show on the map. As a bonus, we include a quick walkthrough so that you can set up your McGill email with your native Android email app. All features are available in both English and French for your convenience.
+
+MyMartlet is not official and was not created by McGill University. It was created independently by McGill students.
+
+List of features
+Schedule - automatically populated with all your registered classes. They even have links to Docuum to help your study. Coming soon: links to classroom on the app map.
+Transcript - contains your grades of all your semesters at McGill and your GPA.
+MyCourses - mobile access to MyCourses. You are automatically logged in.
+Class list - the list of classes you’re currently registered for at McGill. You can unregister to drop any class.
+Search for course - search for McGill courses that you are interested in. You can register for them or add them to wishlist for registering later.
+Campus map - a detailed map of both McGill campuses with their services. You can filter through categories or add locations to favorites or even find directions to go to a particular location.
+eBills - helps you keep track of the money you owe or paid to McGill.
