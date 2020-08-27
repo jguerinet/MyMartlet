@@ -49,17 +49,14 @@ jobs:
         with:
           ruby-version: '2.6'
 
-      - name: Decode google-services.json
-        env:
-          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
-        run: echo $GOOGLE_SERVICES > app/google-services.json
-
       - name: Setup Secrets
         env: 
           GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
           GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
           PRIVATE_PROPERTIES: ${{ secrets.PRIVATE_PROPERTIES }}
         run: |
+          echo $GOOGLE_SERVICES | base64 -di > app/google-services.json
+        
           # Create the .signing folder, add the signing related files
           cd ..
           mkdir .signing
@@ -71,8 +68,6 @@ jobs:
           echo "::set-env name=GRADLE_USER_HOME::$HOME/.gradle"
           cd ~/.gradle
           echo "$GRADLE_PROPERTIES" | base64 -di > ./gradle.properties
-
-          echo $GOOGLE_SERVICES | base64 -di > app/google-services.json
 
       - name: Install Gems
         run: |
