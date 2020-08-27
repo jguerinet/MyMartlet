@@ -1,24 +1,29 @@
 # Workflow to build, test and push the dev version whenever a change is made to the develop branch
 name: Dev Build
 
-# Controls when the action will run.
 on:
   push:
     branches: [ develop ]
     # Ignore documentation changes
-    paths-ignore:
-      - README.md
-      - CHANGELOG.md
-      - privacy-policy.md
+    paths-ignore: [ '*.md' ]
 
 jobs:
   build:
+    # Skip commits with "skip ci" in the message, i.e. commits created by GitHub Actions
+    if: contains(github.event.head_commit.message, 'skip ci') == false
     runs-on: ubuntu-latest
 
     steps:
   
+      - name: Cancel Queued/In Progress Workflows
+        uses: styfle/cancel-workflow-action@0.4.1
+        with:
+          access_token: ${{ github.token }}
+
       - name: Clone Repo
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Cache Gems
         uses: actions/cache@v2
@@ -49,10 +54,33 @@ jobs:
           GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
         run: echo $GOOGLE_SERVICES > app/google-services.json
 
+      - name: Setup Secrets
+        env: 
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+          GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
+          PRIVATE_PROPERTIES: ${{ secrets.PRIVATE_PROPERTIES }}
+        run: |
+          # Create the .signing folder, add the signing related files
+          cd ..
+          mkdir .signing
+          cd .signing
+          echo "$PRIVATE_PROPERTIES" | base64 -di > private.properties
+          
+          # Create the user-level gradle.properties
+          mkdir -p ~/.gradle/
+          echo "::set-env name=GRADLE_USER_HOME::$HOME/.gradle"
+          cd ~/.gradle
+          echo "$GRADLE_PROPERTIES" | base64 -di > ./gradle.properties
+
+          echo $GOOGLE_SERVICES | base64 -di > app/google-services.json
+
       - name: Install Gems
         run: |
           bundle config path vendor/bundle
           bundle install
+
+      - name: Install Firebase
+        run: sudo npm install -g firebase-tools
 
       - name: Increment Build Number
         run: ./gradlew incrementBuildNumber
@@ -68,12 +96,31 @@ jobs:
           # Get the latest build tools
           export BUILD_TOOLS=$($ANDROID_HOME/tools/bin/sdkmanager --list | grep "build-tools/" | awk '{ print $3 }' | tail -1)
           # Grab the version name from the generated APK
-          export VERSION=$($ANDROID_HOME/build-tools/$BUILD_TOOLS/aapt dump badging app/build/outputs/apk/debug/app-debug.apk | grep versionName | awk '{print $4}' | grep -o [0-9].*[0-9])
-          echo "::set-env name=version::$VERSION"
+          version=$($ANDROID_HOME/build-tools/$BUILD_TOOLS/aapt dump badging app/build/outputs/apk/debug/app-debug.apk | grep versionName | awk '{print $4}' | grep -o [0-9].*[0-9])
+          echo "::set-env name=VERSION::$version"
       
+      - name: Assemble Dev APK
+        run: ./gradlew clean assembleDev
+
       - name: Deploy Dev
+        env: 
+            FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: bundle exec fastlane dev
       
-      - name: TODO Commit Version Number
-        run: echo "To Do Commit Version Number, version $version"
+      - name: Commit & Tag Version
+        run: |
+          # Add all files
+          git add . || exit 1
+          
+          # Commit
+          git commit -m"v$VERSION, skip ci" || exit 1
+
+          # Tag
+          git tag "$VERSION"
+          
+          # Pull
+          git pull --rebase || exit 1
+
+          # Push
+          git push --force && git push --tags || exit 1
 
