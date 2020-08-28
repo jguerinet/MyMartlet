@@ -1,6 +1,6 @@
 # MyMartlet - Android
 
-[![Build Status](https://travis-ci.com/jguerinet/MyMartlet.svg?branch=develop)](https://travis-ci.com/jguerinet/MyMartlet)
+[![Dev Build](https://github.com/jguerinet/MyMartlet/workflows/Dev%20Build/badge.svg?branch=develop)](https://github.com/jguerinet/MyMartlet/actions?query=workflow%3A%22Dev+Build%22)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6764bc77236c4209a230db91bb2cf441)](https://app.codacy.com/app/jguerinet/MyMartlet?utm_source=github.com&utm_medium=referral&utm_content=jguerinet/MyMartlet&utm_campaign=Badge_Grade_Dashboard)
 
 ## Summary
