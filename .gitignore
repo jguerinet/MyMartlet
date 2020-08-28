@@ -67,3 +67,6 @@ fastlane/report.xml
 private.properties
 signing.properties
 google-services.json
+
+## Gems
+vendor/bundle/
