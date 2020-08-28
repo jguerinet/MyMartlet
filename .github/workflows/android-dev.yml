@@ -104,6 +104,10 @@ jobs:
       
       - name: Commit & Tag Version
         run: |
+          # Set the user info
+          git config --global user.email "julienguerinet@gmail.com"
+          git config --global user.name "Julien Guerinet (Auto Commit)"
+
           # Add all files
           git add . || exit 1
           
