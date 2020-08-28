@@ -94,7 +94,14 @@ android {
     }
 
     buildTypes {
+
         debug {
+            signingConfig signingConfigs.debug
+            applicationIdSuffix '.debug'
+            versionNameSuffix ".${versionBuild}"
+        }
+
+        dev {
             signingConfig signingConfigs.debug
             applicationIdSuffix '.debug'
             versionNameSuffix ".${versionBuild}"
