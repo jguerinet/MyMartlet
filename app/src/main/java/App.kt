@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package com.guerinet.mymartlet
 
 import android.app.Application
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
+import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.guerinet.morf.Morf
 import com.guerinet.mymartlet.util.appModule
 import com.guerinet.mymartlet.util.dbModule
@@ -33,8 +33,8 @@ import com.orhanobut.hawk.Hawk
 import com.twitter.sdk.android.core.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.twitter.sdk.android.core.TwitterConfig
-import io.fabric.sdk.android.Fabric
-import org.koin.android.ext.android.startKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 import java.net.SocketTimeoutException
 
@@ -48,7 +48,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         initializeTimber()
-        initializeFabric()
+        initializeCrashlytics()
         initializeAndroidThreeTen()
         initializeKoin()
         initializeHawk()
@@ -62,34 +62,40 @@ class App : Application() {
             Timber.plant(object : ProductionTree() {
 
                 override fun log(priority: Int, tag: String?, message: String) =
-                    Crashlytics.log(priority, tag, message)
+                    FirebaseCrashlytics
+                        .getInstance()
+                        .log("${getPriorityChar(priority)}/$tag: $message")
 
                 override fun logException(t: Throwable) {
                     // Don't log socket timeouts
                     if (t is SocketTimeoutException) {
                         return
                     }
+                    FirebaseCrashlytics.getInstance().recordException(t)
+                }
 
-                    Crashlytics.logException(t)
+                private fun getPriorityChar(priority: Int) = when (priority) {
+                    Log.ASSERT -> 'A'
+                    Log.DEBUG -> 'D'
+                    Log.ERROR -> 'E'
+                    Log.INFO -> 'I'
+                    Log.WARN -> 'W'
+                    else -> 'V'
                 }
             })
         }
     }
 
-    private fun initializeFabric() {
-        val crashlytics = Crashlytics.Builder()
-            .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-            .build()
-        Fabric.with(this, crashlytics)
-    }
+    private fun initializeCrashlytics() =
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
 
     private fun initializeAndroidThreeTen() = AndroidThreeTen.init(this)
 
-    private fun initializeKoin() = startKoin(
-        this,
-        listOf(appModule, dbModule, networkModule, prefsModule, viewModelsModule),
-        logger = KoinLogger()
-    )
+    private fun initializeKoin() = startKoin {
+        KoinLogger()
+        androidContext(this@App)
+        modules(appModule, dbModule, networkModule, prefsModule, viewModelsModule)
+    }
 
     private fun initializeHawk() = Hawk.init(this).build()
 
@@ -101,7 +107,6 @@ class App : Application() {
     }
 
     private fun initializeTwitter() {
-        // Fabric, Twitter, Crashlytics
         val authConfig = TwitterAuthConfig(BuildConfig.TWITTER_KEY, BuildConfig.TWITTER_SECRET)
         val twitterConfig = TwitterConfig.Builder(this)
             .twitterAuthConfig(authConfig)
