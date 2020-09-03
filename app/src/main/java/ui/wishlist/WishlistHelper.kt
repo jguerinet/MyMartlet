@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package com.guerinet.mymartlet.ui.wishlist
 import android.view.View
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
-import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.RegistrationError
 import com.guerinet.mymartlet.model.Term
@@ -34,8 +33,8 @@ import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
 import kotlinx.android.synthetic.main.view_courses.view.*
 import org.jetbrains.anko.toast
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -147,7 +146,7 @@ class WishlistHelper(
                         return
                     }
 
-                    val errorCourses = courses.mapNotNull { it as? Course }.toMutableList()
+                    val errorCourses = courses.mapNotNull { it }.toMutableList()
 
                     // Prepare the error message String
                     val errorMessage = body.joinToString(separator = "\n") {

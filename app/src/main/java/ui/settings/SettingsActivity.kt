@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ import okio.buffer
 import okio.sink
 import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import java.io.File
 import java.io.IOException
 import java.util.Comparator
@@ -59,7 +60,7 @@ class SettingsActivity : DrawerActivity(), TimberTag {
 
     override val currentPage = HomepageManager.HomePage.SETTINGS
 
-    private val twentyFourHourPref by inject<BooleanPref>(Prefs.SCHEDULE_24HR)
+    private val twentyFourHourPref by inject<BooleanPref>(named(Prefs.SCHEDULE_24HR))
 
     private val updateDao by inject<UpdateDao>()
 

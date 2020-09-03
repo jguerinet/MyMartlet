@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,6 +61,7 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -78,9 +79,9 @@ import java.util.Stack
  */
 class ScheduleActivity : DrawerActivity() {
 
-    private val firstOpenPref by inject<BooleanPref>(Prefs.IS_FIRST_OPEN)
+    private val firstOpenPref by inject<BooleanPref>(named(Prefs.IS_FIRST_OPEN))
 
-    private val twentyFourHourPref by inject<BooleanPref>(Prefs.SCHEDULE_24HR)
+    private val twentyFourHourPref by inject<BooleanPref>(named(Prefs.SCHEDULE_24HR))
 
     private val defaultTermPref by inject<DefaultTermPref>()
 

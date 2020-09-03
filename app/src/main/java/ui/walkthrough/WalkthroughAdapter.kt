@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.suitcase.analytics.event
 import com.guerinet.suitcase.dialog.singleListDialog
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.util.Comparator
 
 /**

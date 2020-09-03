@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import java.io.IOException
 
 /**
@@ -61,11 +62,11 @@ class SplashActivity : BaseActivity() {
 
     private val mcGillManager by inject<McGillManager>()
 
-    private val rememberUsernamePref by inject<BooleanPref>(Prefs.REMEMBER_USERNAME)
+    private val rememberUsernamePref by inject<BooleanPref>(named(Prefs.REMEMBER_USERNAME))
 
-    private val minVersionPref by inject<IntPref>(Prefs.MIN_VERSION)
+    private val minVersionPref by inject<IntPref>(named(Prefs.MIN_VERSION))
 
-    private val eulaPref by inject<BooleanPref>(Prefs.EULA)
+    private val eulaPref by inject<BooleanPref>(named(Prefs.EULA))
 
     private val usernamePref by inject<UsernamePref>()
 

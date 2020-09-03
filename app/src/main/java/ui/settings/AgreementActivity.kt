@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.suitcase.prefs.BooleanPref
 import kotlinx.android.synthetic.main.activity_agreement.*
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 
 /**
  * Displays the EULA
@@ -34,7 +35,7 @@ import org.koin.android.ext.android.inject
  */
 class AgreementActivity : BaseActivity() {
 
-    private val eulaPref by inject<BooleanPref>(Prefs.EULA)
+    private val eulaPref by inject<BooleanPref>(named(Prefs.EULA))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

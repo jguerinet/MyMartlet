@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import com.guerinet.suitcase.date.extensions.rfc1123String
 import com.guerinet.suitcase.prefs.IntPref
 import com.guerinet.suitcase.util.extensions.isConnected
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import org.threeten.bp.ZonedDateTime
 import retrofit2.Call
 import timber.log.Timber
@@ -38,9 +39,9 @@ class ConfigDownloadService : JobIntentService() {
 
     private val configService by inject<ConfigService>()
 
-    private val imsConfigPref by inject<NullDatePref>(Prefs.IMS_CONFIG)
+    private val imsConfigPref by inject<NullDatePref>(named(Prefs.IMS_CONFIG))
 
-    private val minVersionPref by inject<IntPref>(Prefs.MIN_VERSION)
+    private val minVersionPref by inject<IntPref>(named(Prefs.MIN_VERSION))
 
     override fun onHandleWork(intent: Intent) {
         if (!isConnected) {

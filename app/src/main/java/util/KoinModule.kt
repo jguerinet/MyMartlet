@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@
 package com.guerinet.mymartlet.util
 
 import android.content.Context
-import android.preference.PreferenceManager
 import android.view.inputmethod.InputMethodManager
+import androidx.preference.PreferenceManager
+import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
@@ -42,11 +43,15 @@ import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level
+import okhttp3.logging.HttpLoggingInterceptor.Logger
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.ext.koin.viewModel
-import org.koin.dsl.module.Module
-import org.koin.dsl.module.module
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.Module
+import org.koin.core.qualifier.named
+import org.koin.dsl.bind
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
@@ -66,7 +71,7 @@ val appModule: Module = module {
     single { FAnalytics(androidContext()) } bind Analytics::class
 
     // Clear Manager
-    single { ClearManager(get(), get(), get(), get(Prefs.REMEMBER_USERNAME), get()) }
+    single { ClearManager(get(), get(), get(), get(named(Prefs.REMEMBER_USERNAME)), get()) }
 
     // HomePageManager
     single { HomepageManager(get(), androidContext()) }
@@ -127,15 +132,16 @@ val networkModule: Module = module {
 
     // HttpLoggingInterceptor
     single {
-        HttpLoggingInterceptor { message -> Timber.tag("OkHttp").i(message) }
-            .apply { level = HttpLoggingInterceptor.Level.BASIC }
+        HttpLoggingInterceptor(object : Logger {
+            override fun log(message: String) = Timber.tag("OkHttp").i(message)
+        }).apply { level = if (BuildConfig.DEBUG) Level.BODY else Level.BASIC }
     } bind Interceptor::class
 
     // McGillService
     single { get<McGillManager>().mcGillService }
 
     // OkHttp
-    single { OkHttpClient.Builder().addInterceptor(get()).build() }
+    single { OkHttpClient.Builder().addInterceptor(get<Interceptor>()).build() }
 
     // Retrofit
     single {
@@ -159,21 +165,21 @@ val prefsModule: Module = module {
     // UsernamePref
     single { UsernamePref(get(), get()) }
 
-    single(Prefs.EULA) { BooleanPref(get(), Prefs.EULA, false) }
+    single(named(Prefs.EULA)) { BooleanPref(get(), Prefs.EULA, false) }
 
-    single(Prefs.GRADE_CHECKER) { BooleanPref(get(), Prefs.GRADE_CHECKER, false) }
+    single(named(Prefs.GRADE_CHECKER)) { BooleanPref(get(), Prefs.GRADE_CHECKER, false) }
 
-    single(Prefs.IMS_CONFIG) { NullDatePref(get(), Prefs.IMS_CONFIG, null) }
+    single(named(Prefs.IMS_CONFIG)) { NullDatePref(get(), Prefs.IMS_CONFIG, null) }
 
-    single(Prefs.IS_FIRST_OPEN) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
+    single(named(Prefs.IS_FIRST_OPEN)) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
 
-    single(Prefs.MIN_VERSION) { IntPref(get(), Prefs.MIN_VERSION, -1) }
+    single(named(Prefs.MIN_VERSION)) { IntPref(get(), Prefs.MIN_VERSION, -1) }
 
-    single(Prefs.REMEMBER_USERNAME) { BooleanPref(get(), Prefs.REMEMBER_USERNAME, true) }
+    single(named(Prefs.REMEMBER_USERNAME)) { BooleanPref(get(), Prefs.REMEMBER_USERNAME, true) }
 
-    single(Prefs.SCHEDULE_24HR) { BooleanPref(get(), Prefs.SCHEDULE_24HR, false) }
+    single(named(Prefs.SCHEDULE_24HR)) { BooleanPref(get(), Prefs.SCHEDULE_24HR, false) }
 
-    single(Prefs.SEAT_CHECKER) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
+    single(named(Prefs.SEAT_CHECKER)) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
 }
 
 val viewModelsModule = module {

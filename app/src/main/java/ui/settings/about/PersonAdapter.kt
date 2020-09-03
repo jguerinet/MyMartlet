@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@ import com.guerinet.suitcase.ui.extensions.setTextSizeId
 import com.guerinet.suitcase.util.extensions.openUrl
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_person.view.*
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 /**
  * Displays the developer in the About page

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2020 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,15 +64,15 @@ class McGillManager(
 
         override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
             // Save the cookies per URL host
-            cookieStore[url.host()] = cookies
+            cookieStore[url.host] = cookies
         }
 
         override fun loadForRequest(url: HttpUrl): List<Cookie> {
             // Use the cookies for the given URL host (if none, use an empty list)
-            val cookies = cookieStore[url.host()] ?: mutableListOf()
+            val cookies = cookieStore[url.host] ?: mutableListOf()
 
             // Go through the cookies and remove the proxy ones
-            return cookies.filter { !it.name().toLowerCase().contains("proxy") }
+            return cookies.filter { !it.name.toLowerCase().contains("proxy") }
         }
     }
 
@@ -87,17 +87,17 @@ class McGillManager(
                 val response = chain.proceed(request)
 
                 // If this is the login request, don't continue
-                if (request.method().equals("POST", ignoreCase = true)) {
+                if (request.method.equals("POST", ignoreCase = true)) {
                     // This is counting on the fact that the only POST request is for login
                     response
                 } else {
                     // Go through the cookies
-                    val cookie = response.headers().values("Set-Cookie")
+                    val cookie = response.headers.values("Set-Cookie")
                         // Filter the cookies to check if there is an empty session Id
                         .firstOrNull { it.contains("SESSID=;") }
 
-                        if (cookie != null) {
-                            // Try logging in (if there's an error, it will be thrown)
+                    if (cookie != null) {
+                        // Try logging in (if there's an error, it will be thrown)
                             login()
 
                         // Successfully logged them back in, try retrieving the data again
