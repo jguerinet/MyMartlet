@@ -132,8 +132,8 @@ class McGillManager(
         // Get the body, error out if empty
         val body = response.body()?.string() ?: return Result.Failure(MinervaException())
 
-        if (!body.contains("WELCOME")) {
-            // If we're not on the Welcome page, then the user entered wrong info
+        if (!body.contains("twbkwbis.P_GenMenu?name=bmenu.P_MainMnu")) {
+            // If we're not told to move to the main menu, then the user entered wrong info
             return Result.Failure(MinervaException())
         }
         return Result.EmptySuccess()
