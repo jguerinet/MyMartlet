@@ -117,21 +117,27 @@ class MyCoursesActivity : DrawerActivity() {
         @Suppress("DEPRECATION")
         webView.settings.saveFormData = false
         webView.loadUrl(
-            "https://mycourses2.mcgill.ca/Shibboleth.sso/Login?entityID=" +
-                "https://shibboleth.mcgill.ca/idp/shibboleth&target=https%3A%2F%2Fmycourses2" +
-                ".mcgill.ca%2Fd2l%2FshibbolethSSO%2Flogin.d2l"
+            "https://mycourses2.mcgill.ca/d2l/lp/auth/saml/login"
         )
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 // Preload the user's information
-                view.loadUrl(
-                    "javascript:(function f(){" +
-                        "(document.getElementsByName('j_username')[0]).value='" +
-                        usernamePref.full + "';" +
-                        "(document.getElementsByName('j_password')[0]).value='" +
-                        Hawk.get<String>(Prefs.PASSWORD) +
-                        "'; document.getElementsByName('_eventId_proceed')[0].click();})()"
-                )
+                if (url.startsWith("https://login.microsoftonline.com/")) {
+                    view.loadUrl(
+                        "javascript:(function f(){" +
+                            "(document.getElementsByName('loginfmt')[0]).value='" +
+                            usernamePref.full +
+                            "';})()"
+                    )
+                }
+                if (url.startsWith("https://adfs.mcgill.ca/")) {
+                    view.loadUrl(
+                        "javascript:(function g(){" +
+                            "document.getElementById('passwordInput').value='" +
+                            Hawk.get<String>(Prefs.PASSWORD) +
+                            "'; document.getElementById('submitButton').click();})()"
+                    )
+                }
                 view.isVisible = true
             }
         }
