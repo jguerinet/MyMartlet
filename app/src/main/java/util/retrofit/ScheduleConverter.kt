@@ -188,13 +188,13 @@ class ScheduleConverter : Converter.Factory(), Converter<ResponseBody, List<Cour
                         //Make sure it isn't noon
                         val startPM =
                             times[0].split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
-                        if (startPM == "PM" && startHour != 12) {
+                        if ((startPM == "PM" || startPM == "pm") && startHour != 12) {
                             startHour += 12
                         }
 
                         val endPM =
                             times[1].split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
-                        if (endPM == "PM" && endHour != 12) {
+                        if ((endPM == "PM" || endPM == "pm") && endHour != 12) {
                             endHour += 12
                         }
 
