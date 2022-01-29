@@ -19,7 +19,7 @@ package com.guerinet.mymartlet.ui.courses
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
@@ -78,9 +78,9 @@ class CoursesActivity : DrawerActivity() {
 
         // Format the unregister button
         register.setText(R.string.courses_unregister)
-        register.setWidthAndHeight(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+        register.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
         )
         register.setOnClickListener { unregister() }
 
