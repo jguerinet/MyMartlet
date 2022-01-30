@@ -68,6 +68,9 @@ object Versions {
         // Don't update this as 1.10.x breaks the converters
         const val JSOUP = "1.9.1"
 
+        // Used by the parser module
+        const val JSOUP_NEW = "1.11.3"
+
         object AndroidX {
             const val APPCOMPAT = "1.2.0"
             const val BROWSER = "1.2.0"
@@ -178,6 +181,7 @@ object Deps {
             "com.squareup.retrofit2:converter-moshi:${Versions.Android.RETROFIT}"
         const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.Android.RETROFIT}"
         const val JSOUP = "org.jsoup:jsoup:${Versions.Android.JSOUP}"
+        const val JSOUP_NEW = "org.jsoup:jsoup:${Versions.Android.JSOUP_NEW}"
 
 
         object AndroidX {

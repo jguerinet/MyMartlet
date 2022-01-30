@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+plugins {
+    id("java-library")
+    kotlin("jvm") version Versions.KOTLIN
+}
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-
-    implementation "org.threeten:threetenbp:1.3.8"
-    implementation "org.jsoup:jsoup:1.11.3"
+    implementation(Deps.Android.THREETEN)
+    implementation(Deps.Android.JSOUP_NEW)
 }
 
 sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
-    test.java.srcDirs += 'src/test/kotlin'
+    main.java.srcDirs += "src/main/kotlin"
+    test.java.srcDirs += "src/test/kotlin"
 }
-
-sourceCompatibility = "8"
-targetCompatibility = "8"
