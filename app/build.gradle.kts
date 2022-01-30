@@ -122,8 +122,9 @@ android {
     }
 
     lint {
-        isAbortOnError = true
-        warning("MissingTranslation")
+        // TODO
+//        isAbortOnError = true
+//        warning("MissingTranslation")
     }
 }
 
