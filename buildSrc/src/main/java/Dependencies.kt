@@ -92,7 +92,9 @@ object Deps {
             "com.google.gms:google-services:${Versions.Plugins.GOOGLE_SERVICES}"
         const val KOTLINX_SERIALIZATION =
             "org.jetbrains.kotlin:kotlin-serialization:${Versions.KOTLIN}"
+        const val SPOTLESS = "com.diffplug.spotless"
         const val SQL_DELIGHT = "${SqlDelight.BASE}:gradle-plugin:${Versions.SQLDELIGHT}"
+        const val VERSIONS = "com.github.ben-manes.versions"
     }
 
     const val KERMIT = "co.touchlab:kermit:${Versions.KERMIT}"
