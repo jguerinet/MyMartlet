@@ -21,7 +21,7 @@ object Versions {
     /* Plugins */
     object Plugins {
         const val ANDROID = "7.1.0"
-        const val FIREBASE_CRASHLYTICS = "2.5.2"
+        const val FIREBASE_CRASHLYTICS = "2.8.1"
         const val GOOGLE_SERVICES = "4.3.10"
         const val SPOTLESS = "6.2.0"
         const val VERSIONS = "0.41.0"
@@ -52,8 +52,9 @@ object Versions {
         const val MATERIAL = "1.5.0"
         const val MATERIAL_DIALOGS = "3.3.0"
         const val MORF = "6.1.0"
-        const val PLAY_SERVICES = "18.0.2"
-        const val SUITCASE = "6.0.0"
+        const val PLAY_SERVICES_ANALYTICS = "18.0.1"
+        const val PLAY_SERVICES_MAPS = "18.0.2"
+        const val SUITCASE = "6.0.1"
         const val RETROFIT_COROUTINES_ADAPTER = "0.9.2"
         const val THREETEN = "1.3.1"
         const val TIMBER = "5.0.1"
@@ -113,7 +114,7 @@ object Deps {
     }
 
     object Firebase {
-        const val BASE = "com.google.firebase:firebase"
+        internal const val BASE = "com.google.firebase:firebase"
         const val BOM = "$BASE-bom:${Versions.Android.FIREBASE}"
         const val ANALYTICS = "$BASE-analytics-ktx"
         const val CRASHLYTICS = "$BASE-crashlytics-ktx"
@@ -210,9 +211,9 @@ object Deps {
 
         object PlayServices {
             const val ANALYTICS =
-                "com.google.android.gms:play-services-analytics:${Versions.Android.PLAY_SERVICES}"
+                "com.google.android.gms:play-services-analytics:${Versions.Android.PLAY_SERVICES_ANALYTICS}"
             const val MAPS =
-                "com.google.android.gms:play-services-maps:${Versions.Android.PLAY_SERVICES}"
+                "com.google.android.gms:play-services-maps:${Versions.Android.PLAY_SERVICES_MAPS}"
         }
 
         object Suitcase {

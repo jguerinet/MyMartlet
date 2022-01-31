@@ -157,7 +157,6 @@ dependencies {
     implementation(Deps.Android.PlayServices.MAPS)
     implementation(Deps.Android.MATERIAL)
     implementation(Deps.Firebase.BOM)
-    implementation(Deps.Firebase.BASE)
     implementation(Deps.Firebase.ANALYTICS)
     implementation(Deps.Firebase.CRASHLYTICS)
     implementation(Deps.Firebase.FIRESTORE)
