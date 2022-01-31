@@ -16,21 +16,21 @@
 
 object Versions {
 
-    const val KOTLIN = "1.4.32"
+    const val KOTLIN = "1.6.10"
 
     /* Plugins */
     object Plugins {
-        const val ANDROID = "7.0.4"
+        const val ANDROID = "7.1.0"
         const val FIREBASE_CRASHLYTICS = "2.5.2"
-        const val GOOGLE_SERVICES = "4.3.5"
-        const val SPOTLESS = "5.12.4"
-        const val VERSIONS = "0.38.0"
+        const val GOOGLE_SERVICES = "4.3.10"
+        const val SPOTLESS = "6.2.0"
+        const val VERSIONS = "0.41.0"
     }
 
     /* Common */
-    const val COROUTINES = "1.4.3-native-mt"
+    const val COROUTINES = "1.6.0"
     const val KERMIT = "0.1.8"
-    const val KOIN = "3.0.1"
+    const val KOIN = "3.1.5"
     const val KOTLINX_DATE_TIME = "0.2.0"
     const val KTOR = "1.5.4"
     const val MULTIPLATFORM_SETTINGS = "0.7.6"
@@ -47,21 +47,21 @@ object Versions {
         const val MIN_SDK = 21
         const val TARGET_SDK = 30
 
-        const val FACEBOOK = "7.1.0"
-        const val FIREBASE = "27.1.0"
-        const val MATERIAL = "1.3.0"
+        const val FACEBOOK = "12.3.0"
+        const val FIREBASE = "29.0.4"
+        const val MATERIAL = "1.5.0"
         const val MATERIAL_DIALOGS = "3.3.0"
         const val MORF = "6.1.0"
-        const val PLAY_SERVICES = "18.0.1"
-        const val SUITCASE = "5.2.0"
+        const val PLAY_SERVICES = "18.0.2"
+        const val SUITCASE = "6.0.0"
         const val RETROFIT_COROUTINES_ADAPTER = "0.9.2"
-        const val THREETEN = "1.2.4"
-        const val TIMBER = "4.7.1"
+        const val THREETEN = "1.3.1"
+        const val TIMBER = "5.0.1"
         const val HAWK = "2.0.1"
         const val PAGE_INDICATOR = "v.1.0.3"
-        const val MOSHI = "1.9.3"
-        const val OKHTTP = "4.8.1"
-        const val OKIO = "2.7.0"
+        const val MOSHI = "1.13.0"
+        const val OKHTTP = "4.9.3"
+        const val OKIO = "3.0.0"
         const val PICASSO = "2.71828"
         const val RETROFIT = "2.9.0"
 
@@ -72,14 +72,14 @@ object Versions {
         const val JSOUP_NEW = "1.11.3"
 
         object AndroidX {
-            const val APPCOMPAT = "1.2.0"
-            const val BROWSER = "1.2.0"
+            const val APPCOMPAT = "1.4.1"
+            const val BROWSER = "1.4.0"
             const val CARDVIEW = "1.0.0"
-            const val CONSTRAINT_LAYOUT = "2.0.4"
-            const val CORE_KTX = "1.3.2"
-            const val FRAGMENT_KTX = "1.2.5"
-            const val LIFECYCLE = "2.4.0-alpha01"
-            const val RECYCLERVIEW = "1.2.0"
+            const val CONSTRAINT_LAYOUT = "2.1.3"
+            const val CORE_KTX = "1.7.0"
+            const val FRAGMENT_KTX = "1.4.1"
+            const val LIFECYCLE = "2.4.0"
+            const val RECYCLERVIEW = "1.2.1"
             const val ROOM = "2.4.1"
         }
     }
