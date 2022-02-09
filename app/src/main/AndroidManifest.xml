@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.guerinet.mymartlet" >
 
     <!-- (Normal) -->
@@ -26,14 +27,16 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.MyMartlet"
-        android:vmSafeMode="true" >
+        android:vmSafeMode="true"
+        tools:ignore="LockedOrientationActivity">
 
-        <activity android:name="com.guerinet.mymartlet.ui.BaseActivity"/>
+        <activity android:name="com.guerinet.mymartlet.ui.BaseActivity" />
 
         <activity
             android:name="com.guerinet.mymartlet.ui.SplashActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" >
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -114,19 +117,17 @@
             android:label="@string/title_agreement"
             android:screenOrientation="portrait" />
 
-        <receiver
-            android:name="com.guerinet.mymartlet.util.background.BootReceiver"
-            android:enabled="false" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="@string/facebook_provider"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
 
         <!-- Services -->
 
         <service
             android:name="com.guerinet.mymartlet.util.service.ConfigDownloadService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service android:name="com.guerinet.mymartlet.util.background.CheckerService" />
 
@@ -135,10 +136,14 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="@string/facebook_provider"
-            android:exported="true" />
+        <receiver
+            android:name="com.guerinet.mymartlet.util.background.BootReceiver"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <!-- Fabric -->
         <meta-data
