@@ -20,8 +20,8 @@ plugins {
 }
 
 dependencies {
-    implementation(Deps.Android.THREETEN)
     implementation(Deps.Android.JSOUP_NEW)
+    implementation(Deps.KOTLINX_DATE_TIME)
 }
 
 java {

@@ -34,7 +34,7 @@ object Versions {
     const val KOTLINX_DATE_TIME = "0.2.0"
     const val KTOR = "1.5.4"
     const val MULTIPLATFORM_SETTINGS = "0.7.6"
-    const val SPLITTIES = "3.0.0-beta01"
+    const val SPLITTIES = "3.0.0"
     const val SQLDELIGHT = "1.5.0"
 
     object Moko {
@@ -54,10 +54,8 @@ object Versions {
         const val MORF = "6.1.0"
         const val PLAY_SERVICES_ANALYTICS = "18.0.1"
         const val PLAY_SERVICES_MAPS = "18.0.2"
-        const val SUITCASE = "6.0.1"
+        const val SUITCASE = "7.0.3"
         const val RETROFIT_COROUTINES_ADAPTER = "0.9.2"
-        const val THREETEN = "1.3.1"
-        const val TIMBER = "5.0.1"
         const val HAWK = "2.0.1"
         const val PAGE_INDICATOR = "v.1.0.3"
         const val MOSHI = "1.13.0"
@@ -167,8 +165,6 @@ object Deps {
         const val MORF = "com.guerinet:morf:${Versions.Android.MORF}"
         const val RETROFIT_COROUTINES_ADAPTER =
             "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${Versions.Android.RETROFIT_COROUTINES_ADAPTER}"
-        const val THREETEN = "com.jakewharton.threetenabp:threetenabp:${Versions.Android.THREETEN}"
-        const val TIMBER = "com.jakewharton.timber:timber:${Versions.Android.TIMBER}"
         const val HAWK = "com.orhanobut:hawk:${Versions.Android.HAWK}"
         const val PAGE_INDICATOR =
             "com.github.romandanylyk:PageIndicatorView:${Versions.Android.PAGE_INDICATOR}"
@@ -218,18 +214,18 @@ object Deps {
 
         object Suitcase {
             private const val BASE = "com.guerinet.Suitcase"
-            const val ANALYTICS = "$BASE:analytics:${Versions.Android.SUITCASE}"
             const val COROUTINES = "$BASE:coroutines:${Versions.Android.SUITCASE}"
             const val DATE = "$BASE:date:${Versions.Android.SUITCASE}"
+            const val DATE_ANDROID = "$BASE:date-android:${Versions.Android.SUITCASE}"
             const val DIALOG = "$BASE:dialog:${Versions.Android.SUITCASE}"
             const val FIREBASE_ANALYTICS = "$BASE:firebase-analytics:${Versions.Android.SUITCASE}"
             const val IO = "$BASE:io:${Versions.Android.SUITCASE}"
             const val LIFECYCLE = "$BASE:lifecycle:${Versions.Android.SUITCASE}"
             const val LOG = "$BASE:log:${Versions.Android.SUITCASE}"
-            const val PREFS = "$BASE:prefs:${Versions.Android.SUITCASE}"
+            const val SETTINGS = "$BASE:settings:${Versions.Android.SUITCASE}"
             const val ROOM = "$BASE:room:${Versions.Android.SUITCASE}"
             const val UI = "$BASE:ui:${Versions.Android.SUITCASE}"
-            const val UTILS = "$BASE:utils:${Versions.Android.SUITCASE}"
+            const val UTIL = "$BASE:utils:${Versions.Android.SUITCASE}"
         }
     }
 }
