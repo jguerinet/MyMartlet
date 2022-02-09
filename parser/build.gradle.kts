@@ -16,7 +16,7 @@
 
 plugins {
     id("java-library")
-    kotlin("jvm") version Versions.KOTLIN
+    kotlin("jvm")
 }
 
 dependencies {
@@ -24,7 +24,7 @@ dependencies {
     implementation(Deps.Android.JSOUP_NEW)
 }
 
-sourceSets {
-    main.java.srcDirs += "src/main/kotlin"
-    test.java.srcDirs += "src/test/kotlin"
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
