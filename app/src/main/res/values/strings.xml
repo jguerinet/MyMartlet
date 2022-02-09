@@ -2,7 +2,6 @@
 <resources>
 
     <!-- Titles -->
-    <string name="app_name">MyMartlet</string>
     <string name="title_desktop">Desktop Site</string>
     <string name="title_schedule">My Schedule</string>
     <string name="title_transcript">My Transcript</string>
