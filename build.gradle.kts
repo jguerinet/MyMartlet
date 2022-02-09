@@ -93,28 +93,3 @@ spotless {
         endWithNewline()
     }
 }
-
-///**
-// * Generates the Changelog file from the XML file
-// */
-//task generateChangeLogMd() {
-//    def parsedProjectXml = new XmlParser()
-//            .parse("$project.rootDir/app/src/main/res/xml/changelog.xml")
-//    def sw = new StringWriter()
-//    sw.append("# Change Log\n")
-//    parsedProjectXml.depthFirst().each {
-//        switch (it.name()) {
-//            case "version":
-//                sw.append("\n## ${it.@title}\n")
-//                break
-//            case "item":
-//                if (it.@text?.trim())
-//                    sw.append("* ${it.@text}\n")
-//        }
-//    }
-//    def docsDir = new File("$project.rootDir/docs")
-//    docsDir.mkdirs()
-//    def changeLogMd = new File(docsDir, "CHANGELOG.md")
-//    changeLogMd.createNewFile()
-//    changeLogMd.write(sw.toString())
-//}
