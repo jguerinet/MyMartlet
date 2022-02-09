@@ -59,8 +59,7 @@ android {
         versionCode =
             versionMajor * 10000000 + versionMinor * 100000 + versionPatch * 1000 + versionBuild
         versionName = "$versionMajor.$versionMinor.${versionPatch}"
-        // TODO
-//        buildConfigField("int", "BUILD_NUMBER", versionBuild)
+        buildConfigField("int", "BUILD_NUMBER", versionBuild.toString())
     }
 
     signingConfigs {
@@ -84,32 +83,31 @@ android {
 
     buildTypes {
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = ".$versionBuild"
+            initBuildType(signingConfigs, "MyMartlet Dev")
         }
 
         create("dev") {
-            // TODO initWith no longer exists, but the replacement has not been specified
-            // https://issuetracker.google.com/issues/186798050
-            // initWith(getByName("debug"))
+            initWith(getByName("debug"))
             setMatchingFallbacks(listOf("release", "debug"))
         }
 
         getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false
+            initBuildType(signingConfigs, "MyMartlet", isDebug = false)
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
     packagingOptions {
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/license.txt")
-        exclude("META-INF/notice.txt")
+        resources.excludes.addAll(
+            listOf(
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE.txt",
+                "META-INF/LICENSE",
+                "META-INF/NOTICE",
+                "META-INF/license.txt",
+                "META-INF/notice.txt"
+            )
+        )
     }
 
     compileOptions {
@@ -122,21 +120,10 @@ android {
     }
 
     lint {
-        // TODO
-//        isAbortOnError = true
-//        warning("MissingTranslation")
+        abortOnError = true
+        warning.add("MissingTranslation")
     }
 }
-
-// TODO
-//// Set the Facebook/Twitter keys from the private properties file (null if not defined)
-//android.buildTypes.each { type ->
-//    type.buildConfigField 'String', 'TWITTER_KEY', privateProps?.twitterKey ?: '"TWITTER_KEY"'
-//    type.buildConfigField 'String', 'TWITTER_SECRET', privateProps?.twitterSecret ?: '"TWITTER_SECRET"'
-//    def facebookAppId = privateProps?.facebookAppId ?: '"FACEBOOK_ID"'
-//    type.resValue 'string', 'facebook_app_id', facebookAppId
-//    type.resValue 'string', 'facebook_provider', 'com.facebook.app.FacebookContentProvider' + facebookAppId
-//}
 
 dependencies {
     implementation(Deps.Android.AndroidX.APPCOMPAT)
@@ -189,6 +176,43 @@ dependencies {
     implementation(Deps.Android.JSOUP)
     implementation(Deps.Koin.CORE)
     implementation(Deps.Koin.ANDROID)
+}
+
+fun com.android.build.api.dsl.ApplicationBuildType.initBuildType(
+    signingConfigs: NamedDomainObjectContainer<out com.android.build.api.dsl.ApkSigningConfig>,
+    appName: String,
+    isDebug: Boolean = true
+) {
+    // Twitter Keys
+    buildConfigField("string", "TWITTER_KEY", getPrivateProperty("twitterKey", "TWITTER_KEY"))
+    buildConfigField(
+        "string",
+        "TWITTER_SECRET",
+        getPrivateProperty("twitterSecret", "TWITTER_SECRET")
+    )
+
+    // Facebook Keys
+    val facebookAppId = getPrivateProperty("facebookAppId", "FACEBOOK_ID")
+    resValue("string", "facebook_app_id", facebookAppId)
+    resValue(
+        "string",
+        "facebook_provider",
+        "com.facebook.app.FacebookContentProvider$facebookAppId"
+    )
+
+    resValue("string", "app_name", appName)
+
+    if (isDebug) {
+        applicationIdSuffix = ".debug"
+        versionNameSuffix = ".$versionBuild"
+    }
+    val signingConfigName = if (isDebug) "debug" else "release"
+    signingConfig = signingConfigs.getByName(signingConfigName)
+    isDebuggable = isDebug
+}
+
+fun getPrivateProperty(id: String, defaultValue: String): String {
+    return privateProps?.getProperty(id) ?: defaultValue
 }
 
 apply(from = "https://raw.githubusercontent.com/jguerinet/Gradle-Scripts/main/android-kotlin-increment-build.gradle")
