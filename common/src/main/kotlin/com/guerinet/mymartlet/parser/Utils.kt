@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
-include(":app", ":common", ":parser")
-rootProject.name = "MyMartlet"
+package com.guerinet.mymartlet.parser
+
+internal inline fun <T : Any?> T.ifNull(action: () -> Unit): T {
+    if (this == null) {
+        action()
+    }
+    return this
+}

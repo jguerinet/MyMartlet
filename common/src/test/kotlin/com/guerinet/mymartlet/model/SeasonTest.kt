@@ -14,5 +14,26 @@
  * limitations under the License.
  */
 
-include(":app", ":common", ":parser")
-rootProject.name = "MyMartlet"
+package com.guerinet.mymartlet.model
+
+import kotlin.test.Test
+import kotlin.test.assertTrue
+
+/**
+ * Tests for [Season]
+ *
+ * @author Allan Wang
+ * @since 2.3.2
+ */
+class SeasonTest {
+
+    /**
+     * Ensures that season comparisons are valid.
+     * Comparisons should be based on chronological order.
+     */
+    @Test
+    fun comparisons() {
+        assertTrue(Season.WINTER < Season.SUMMER, "winter < summer")
+        assertTrue(Season.SUMMER < Season.FALL, "summer < fall")
+    }
+}

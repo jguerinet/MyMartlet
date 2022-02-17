@@ -14,5 +14,15 @@
  * limitations under the License.
  */
 
-include(":app", ":common", ":parser")
-rootProject.name = "MyMartlet"
+package com.guerinet.mymartlet.model
+
+import org.threeten.bp.LocalDate
+
+/**
+ * Ebil entry
+ */
+data class Statement(
+    val date: LocalDate,
+    val dueDate: LocalDate,
+    val amount: Double
+)

@@ -14,5 +14,17 @@
  * limitations under the License.
  */
 
-include(":app", ":common", ":parser")
-rootProject.name = "MyMartlet"
+plugins {
+    id("java-library")
+    kotlin("jvm")
+}
+
+dependencies {
+    implementation(Deps.Android.JSOUP_NEW)
+    implementation(Deps.KOTLINX_DATE_TIME)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}

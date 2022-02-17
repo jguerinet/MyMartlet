@@ -14,5 +14,9 @@
  * limitations under the License.
  */
 
-include(":app", ":common", ":parser")
-rootProject.name = "MyMartlet"
+package com.guerinet.mymartlet.parser
+
+/**
+ * Default table entry for most parsers
+ */
+internal const val DISPLAY_TABLE_QUERY = "table.datadisplaytable"

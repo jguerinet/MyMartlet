@@ -14,5 +14,31 @@
  * limitations under the License.
  */
 
-include(":app", ":common", ":parser")
-rootProject.name = "MyMartlet"
+package com.guerinet.mymartlet.parser
+
+/**
+ * Debugger for parsers to track messages.
+ * This is useful in identify when a parser fails.
+ *
+ * @author Allan Wang
+ * @since 2.3.2
+ */
+interface ParseDebugger {
+    /**
+     * Debug message from parser.
+     */
+    fun debug(message: String)
+
+    /**
+     * Message sent before a premature return.
+     */
+    fun notFound(message: String)
+}
+
+/**
+ * Default parser debugger that ignores all messages.
+ */
+internal object ParseDebuggerNoOp : ParseDebugger {
+    override fun debug(message: String) = Unit
+    override fun notFound(message: String) = Unit
+}
