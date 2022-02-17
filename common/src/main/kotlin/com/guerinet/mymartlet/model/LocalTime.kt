@@ -17,14 +17,33 @@
 package com.guerinet.mymartlet.model
 
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.atTime
 
 /**
- * Ebill entry
+ * Representation of a timezone independent time (does not yet exist in Kotlinx date-time)
+ *  https://github.com/Kotlin/kotlinx-datetime/issues/57
  * @author Julien Guerinet
- * @since 1.0.0
+ * @since 3.0.0
  */
-data class Statement(
-    val date: LocalDate,
-    val dueDate: LocalDate,
-    val amount: Double
+data class LocalTime(
+    val hour: Int,
+    val minute: Int,
+    val second: Int = 0,
+    val nanosecond: Int = 0,
+)
+
+val LocalDateTime.time
+    get() = LocalTime(
+        hour = hour,
+        minute = minute,
+        second = second,
+        nanosecond = nanosecond,
+    )
+
+fun LocalDate.atTime(localTime: LocalTime) = atTime(
+    hour = localTime.hour,
+    minute = localTime.minute,
+    second = localTime.second,
+    nanosecond = localTime.nanosecond,
 )

@@ -21,6 +21,7 @@ plugins {
 
 dependencies {
     implementation(Deps.Android.JSOUP_NEW)
+    implementation(Deps.Android.Suitcase.DATE)
     implementation(Deps.KOTLINX_DATE_TIME)
 }
 

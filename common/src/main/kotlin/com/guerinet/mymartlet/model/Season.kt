@@ -20,23 +20,16 @@ package com.guerinet.mymartlet.model
  * Different seasons a term can be in
  * @author Julien Guerinet
  * @since 1.0.0
- *
- * Migrated since 2.3.2
  */
 enum class Season(val title: String, val number: String) {
-    /**
-     * January - April
-     */
+
+    /** January, February, March, April */
     WINTER("Winter", "01"),
 
-    /**
-     * May, June, July
-     */
+    /** May, June, July */
     SUMMER("Summer", "05"),
 
-    /**
-     * September - December
-     */
+    /** September, October, November, December */
     FALL("Fall", "09");
 
     companion object {
@@ -44,17 +37,15 @@ enum class Season(val title: String, val number: String) {
         /**
          * Returns the [Season] for the [title], or null if none exists
          */
-        fun getSeasonFromTitle(title: String): Season? =
-            Season.values().firstOrNull {
-                title.equals(it.title, ignoreCase = true)
-            }
+        fun getSeasonFromTitle(title: String): Season? = values().firstOrNull {
+            title.equals(it.title, ignoreCase = true)
+        }
 
         /**
          * Returns the [Season] for the [number], or null if none exists
          */
-        fun getSeasonFromNumber(number: String): Season? =
-            Season.values().firstOrNull {
-                number.equals(it.number, ignoreCase = true)
-            }
+        fun getSeasonFromNumber(number: String): Season? = values().firstOrNull {
+            number.equals(it.number, ignoreCase = true)
+        }
     }
 }

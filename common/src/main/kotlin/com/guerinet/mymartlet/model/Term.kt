@@ -16,28 +16,24 @@
 
 package com.guerinet.mymartlet.model
 
-import org.threeten.bp.LocalDate
+import com.guerinet.suitcase.date.extensions.today
+import kotlinx.datetime.LocalDate
 
 /**
  * One class term, consisting of a season and a year
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * Migrated since 2.3.2
- *
  * @property season Term [Season]
  * @property year Term year
  */
 data class Term(val season: Season, val year: Int) : Comparable<Term> {
 
-    /**
-     * Term Id, for parsing errors
-     */
+    /** Term Id, for parsing errors */
     val id = "${season.title} $year"
 
     override fun compareTo(other: Term): Int =
-        year.compareTo(other.year).takeIf { it != 0 }
-            ?: season.compareTo(other.season)
+        year.compareTo(other.year).takeIf { it != 0 } ?: season.compareTo(other.season)
 
     /**
      * Returns the term in the format used by McGill
@@ -49,7 +45,7 @@ data class Term(val season: Season, val year: Int) : Comparable<Term> {
          * Returns today's corresponding term
          */
         fun currentTerm(): Term {
-            val today = LocalDate.now()
+            val today = LocalDate.today
             val year = today.year
 
             return when (today.monthValue) {

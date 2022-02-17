@@ -16,9 +16,8 @@
 
 package com.guerinet.mymartlet.model
 
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalTime
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 
 /**
  * A course in the user's schedule or one that a user can register for
@@ -62,14 +61,11 @@ data class Course(
     val endDate: LocalDate
 ) {
     companion object {
-        /**
-         * @return A start time that will yield 0 for the rounded start time
-         */
-        val defaultStartTime = LocalTime.of(0, 5)
 
-        /**
-         * @return An end time that will yield 0 for the rounded end time
-         */
-        val defaultEndTime = LocalTime.of(0, 55)
+        /** Start time that will yield 0 for the rounded start time*/
+        val defaultStartTime = LocalTime(0, 5)
+
+        /** End time that will yield 0 for the rounded end time */
+        val defaultEndTime = LocalTime(0, 55)
     }
 }
