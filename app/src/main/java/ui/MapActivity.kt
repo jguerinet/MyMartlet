@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import android.widget.AutoCompleteTextView
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.fragment.app.transaction
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -38,7 +37,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.guerinet.morf.TextViewItem
-import com.guerinet.morf.morf
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.place.Place
@@ -48,7 +46,6 @@ import com.guerinet.mymartlet.viewmodel.MapViewModel
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
-import com.guerinet.suitcase.ui.extensions.setDrawableTint
 import com.guerinet.suitcase.util.Utils
 import com.guerinet.suitcase.util.extensions.hasPermission
 import kotlinx.android.synthetic.main.activity_map.*
@@ -163,6 +160,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         directions.setOnClickListener { getDirections() }
     }
 
+    @SuppressLint("SoonBlockedPrivateApi")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search, menu)
 
@@ -257,14 +255,17 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
             return
         }
 
-        places.mapTo(markers) {
+        places.mapNotNullTo(markers) {
             val marker = map.addMarker(
                 MarkerOptions()
                     .position(LatLng(it.coordinates.latitude, it.coordinates.longitude))
                     .draggable(false)
             )
-
-            Pair(it.id, marker)
+            if (marker != null) {
+                Pair(it.id, marker)
+            } else {
+                null
+            }
         }
 
         // Re-post the shown places to show them on the now loaded map
@@ -298,7 +299,7 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
         populateMarkers(mapViewModel.places.value)
     }
 
-    override fun onMarkerClick(marker: Marker?): Boolean {
+    override fun onMarkerClick(marker: Marker): Boolean {
         // Find the corresponding place Id
         val placeId = markers.firstOrNull { it.second == marker }?.first ?: -1
 

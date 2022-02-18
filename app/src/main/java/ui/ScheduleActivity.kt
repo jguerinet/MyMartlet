@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,28 +48,18 @@ import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
-import com.guerinet.suitcase.date.extensions.getLongDateString
-import com.guerinet.suitcase.prefs.BooleanPref
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.guerinet.suitcase.util.extensions.openUrl
-import kotlinx.android.synthetic.main.activity_schedule.*
-import kotlinx.android.synthetic.main.fragment_day.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalTime
-import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.temporal.ChronoUnit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.util.Locale
 import java.util.Stack
 
 /**
@@ -535,8 +525,8 @@ class ScheduleActivity : DrawerActivity() {
                 textColor = color
                 onClick {
                     openUrl(
-                        "http://www.docuum.com/mcgill/${course.subject.toLowerCase()}" +
-                            "/${course.number}"
+                        "http://www.docuum.com/mcgill/${course.subject.lowercase(Locale.getDefault())}" +
+                                "/${course.number}"
                     )
                 }
             }

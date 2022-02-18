@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.widget.ProgressBar
 import androidx.annotation.CallSuper
@@ -32,12 +33,12 @@ import com.guerinet.mymartlet.model.exception.MinervaException
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.extensions.broadcast
 import com.guerinet.mymartlet.util.extensions.errorDialog
+import com.guerinet.mymartlet.util.extensions.start
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.suitcase.analytics.Analytics
 import com.guerinet.suitcase.coroutines.CoroutineActivity
 import com.guerinet.suitcase.util.extensions.isConnected
-import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
@@ -48,9 +49,9 @@ import timber.log.Timber
  */
 open class BaseActivity : CoroutineActivity() {
 
-    val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
+    val toolbar: Toolbar by lazy { findViewById(R.id.toolbar) }
 
-    val toolbarProgress: ProgressBar by lazy { findViewById<ProgressBar>(R.id.toolbar_progress) }
+    val toolbarProgress: ProgressBar by lazy { findViewById(R.id.toolbar_progress) }
 
     val analytics by inject<Analytics>()
 
@@ -61,7 +62,7 @@ open class BaseActivity : CoroutineActivity() {
     /**
      * Handler for posting delayed actions
      */
-    protected var handler = Handler()
+    protected var handler = Handler(Looper.getMainLooper())
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -158,7 +159,7 @@ open class BaseActivity : CoroutineActivity() {
                 // Log the user out
                 clearManager.clearUserInfo()
                 // Bring them back to the SplashActivity with an exception
-                startActivity<SplashActivity>(Constants.EXCEPTION to MinervaException())
+                start<SplashActivity>(Constants.EXCEPTION to MinervaException())
                 finish()
             }
         }

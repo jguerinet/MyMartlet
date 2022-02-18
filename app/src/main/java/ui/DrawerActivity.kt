@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,19 +33,14 @@ import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareDialog
 import com.google.android.material.navigation.NavigationView
 import com.guerinet.mymartlet.R
+import com.guerinet.mymartlet.util.extensions.start
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
-import com.twitter.sdk.android.tweetcomposer.TweetComposer
-import kotlinx.android.synthetic.main.drawer.*
-import org.jetbrains.anko.find
-import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
+import com.guerinet.suitcase.util.extensions.toast
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import java.net.MalformedURLException
-import java.net.URL
 
 /**
  * Base class for all of the activities with the main navigation drawer
@@ -60,9 +55,11 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
         ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0)
     }
 
-    private val drawerLayout by lazy { find<DrawerLayout>(R.id.drawerLayout) }
+    private val drawerLayout: DrawerLayout by lazy { findViewById(R.id.drawerLayout) }
 
-    private val mainView by lazy { find<View>(R.id.mainView) }
+    private val drawer: NavigationView by lazy { findViewById(R.id.drawer) }
+
+    private val mainView: View by lazy { findViewById(R.id.mainView) }
 
     private val facebookCallbackManager: CallbackManager = CallbackManager.Factory.create()
 
@@ -120,10 +117,6 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
                 shareOnFacebook()
                 true
             }
-            R.id.twitter -> {
-                shareOnTwitter()
-                true
-            }
             R.id.logout -> {
                 logout()
                 true
@@ -171,7 +164,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
                 analytics.event("logout")
                 clearManager.clearUserInfo()
                 // Go back to SplashActivity
-                startActivity<SplashActivity>()
+                start<SplashActivity>()
                 finish()
             }
             cancelButton {}
@@ -196,7 +189,7 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
             override fun onSuccess(result: Sharer.Result) {
                 if (result.postId != null) {
                     // Let the user know they posted successfully
-                    toast(R.string.social_post_success)
+                    toast(getString(R.string.social_post_success))
                     analytics.event("facebook_successful_post")
                 } else {
                     Timber.i("Facebook post cancelled")
@@ -209,21 +202,10 @@ abstract class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemS
 
             override fun onError(e: FacebookException) {
                 Timber.e(e, "Error posting to Facebook")
-                toast(R.string.social_post_failure)
+                toast(getString(R.string.social_post_failure))
                 analytics.event("facebook_failed_post")
             }
         })
         dialog.show(content)
-    }
-
-    private fun shareOnTwitter() {
-        try {
-            TweetComposer.Builder(this)
-                .text(getString(R.string.social_twitter_message_android, "Android"))
-                .url(URL(getString(R.string.social_link_android)))
-                .show()
-        } catch (e: MalformedURLException) {
-            Timber.e(e, "Twitter URL malformed")
-        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,7 @@ import com.guerinet.mymartlet.util.viewModelsModule
 import com.guerinet.suitcase.log.KoinLogger
 import com.guerinet.suitcase.log.ProductionTree
 import com.guerinet.suitcase.util.extensions.getColorCompat
-import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orhanobut.hawk.Hawk
-import com.twitter.sdk.android.core.Twitter
-import com.twitter.sdk.android.core.TwitterAuthConfig
-import com.twitter.sdk.android.core.TwitterConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -49,11 +45,9 @@ class App : Application() {
         super.onCreate()
         initializeTimber()
         initializeCrashlytics()
-        initializeAndroidThreeTen()
         initializeKoin()
         initializeHawk()
         initializeMorf()
-        initializeTwitter()
     }
 
     private fun initializeTimber() {
@@ -89,8 +83,6 @@ class App : Application() {
     private fun initializeCrashlytics() =
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
 
-    private fun initializeAndroidThreeTen() = AndroidThreeTen.init(this)
-
     private fun initializeKoin() = startKoin {
         KoinLogger()
         androidContext(this@App)
@@ -104,15 +96,6 @@ class App : Application() {
         drawablePaddingId = R.dimen.padding_small
         paddingId = R.dimen.padding_small
         iconColor = getColorCompat(R.color.red)
-    }
-
-    private fun initializeTwitter() {
-        val authConfig = TwitterAuthConfig(BuildConfig.TWITTER_KEY, BuildConfig.TWITTER_SECRET)
-        val twitterConfig = TwitterConfig.Builder(this)
-            .twitterAuthConfig(authConfig)
-            .debug(BuildConfig.DEBUG)
-            .build()
-        Twitter.initialize(twitterConfig)
     }
 
 //    companion object {
