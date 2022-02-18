@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import com.guerinet.mymartlet.model.Statement
 import com.guerinet.mymartlet.model.transcript.Transcript
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
 import com.guerinet.mymartlet.util.room.converters.DayOfWeekListConverter
+import com.guerinet.mymartlet.util.room.converters.LocalTimeConverter
 import com.guerinet.mymartlet.util.room.converters.TermConverter
 import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.CourseResultDao
@@ -36,7 +37,6 @@ import com.guerinet.mymartlet.util.room.daos.StatementDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptCourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.room.converter.LocalDateConverter
-import com.guerinet.room.converter.LocalTimeConverter
 
 /**
  * Database with all of the user's information

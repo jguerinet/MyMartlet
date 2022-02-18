@@ -43,11 +43,7 @@ allprojects {
 
 /* Versions Configuration */
 
-tasks.named(
-    "dependencyUpdates",
-    com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask::class
-).configure {
-    // Don't allow unstable versions if the current version is stable
+tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
     rejectVersionIf {
         isUnstable(candidate.version) && !isUnstable(currentVersion)
     }

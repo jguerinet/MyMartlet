@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,10 @@ package com.guerinet.mymartlet.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.guerinet.suitcase.date.extensions.getMediumDateString
-import com.guerinet.suitcase.date.extensions.getShortTimeString
+import com.guerinet.suitcase.date.android.extensions.getMediumDateString
 import com.guerinet.suitcase.util.Utils
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalTime
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 import timber.log.Timber
 
 /**
@@ -110,5 +108,5 @@ open class Course(
      *  If the date is within the date range and that the course is offered on that day
      */
     fun isForDate(date: LocalDate): Boolean =
-        !date.isBefore(startDate) && !date.isAfter(endDate) && days.contains(date.dayOfWeek)
+        date in startDate..endDate && days.contains(date.dayOfWeek)
 }

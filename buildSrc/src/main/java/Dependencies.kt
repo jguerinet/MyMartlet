@@ -47,6 +47,7 @@ object Versions {
         const val MIN_SDK = 21
         const val TARGET_SDK = 31
 
+        const val DESUGARING = "1.1.5"
         const val FACEBOOK = "12.3.0"
         const val FIREBASE = "29.0.4"
         const val MATERIAL = "1.5.0"
@@ -157,6 +158,7 @@ object Deps {
     /* Dependencies for the Android app */
     object Android {
 
+        const val DESUGARING = "com.android.tools:desugar_jdk_libs:${Versions.Android.DESUGARING}"
         const val FACEBOOK =
             "com.facebook.android:facebook-android-sdk:${Versions.Android.FACEBOOK}"
         const val MATERIAL = "com.google.android.material:material:${Versions.Android.MATERIAL}"

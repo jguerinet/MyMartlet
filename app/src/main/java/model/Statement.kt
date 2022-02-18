@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.threeten.bp.LocalDate
+import kotlinx.datetime.LocalDate
 
 /**
  * One statement in the user's ebill

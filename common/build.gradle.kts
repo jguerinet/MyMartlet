@@ -15,17 +15,104 @@
  */
 
 plugins {
-    id("java-library")
-    kotlin("jvm")
+    kotlin("multiplatform")
+    // id("co.touchlab.native.cocoapods")
+    id("com.android.library")
+//    id("com.squareup.sqldelight")
 }
 
-dependencies {
-    implementation(Deps.Android.JSOUP_NEW)
-    implementation(Deps.Android.Suitcase.DATE)
-    implementation(Deps.KOTLINX_DATE_TIME)
+android {
+    compileSdk = Versions.Android.TARGET_SDK
+    defaultConfig {
+        minSdk = Versions.Android.MIN_SDK
+        targetSdk = Versions.Android.TARGET_SDK
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    lint {
+        warningsAsErrors = true
+        abortOnError = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "1.11"
+        }
+    }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+kotlin {
+    android()
+    // Revert to just ios() when gradle plugin can properly resolve it
+    val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
+    if (onPhone) {
+        iosArm64("ios")
+    } else {
+        iosX64("ios")
+    }
+
+    version = "1.1"
+
+    sourceSets["commonMain"].dependencies {
+//        implementation(Deps.MultiplatformSettings.CORE)
+        implementation(Deps.Koin.CORE)
+//        implementation(Deps.Ktor.COMMON_CORE)
+//        implementation(Deps.Ktor.COMMON_JSON)
+//        implementation(Deps.Ktor.COMMON_LOGGING)
+//        implementation(Deps.Ktor.COMMON_SERIALIZATION)
+//        implementation(Deps.SqlDelight.RUNTIME)
+//        api(Deps.Kermit.CORE)
+//        api(Deps.Kermit.CRASHLYTICS)
+//        api(Deps.Moko.MVVM)
+//        api(Deps.Moko.PERMISSIONS)
+        api(Deps.KOTLINX_DATE_TIME)
+        api(Deps.Android.Suitcase.DATE)
+    }
+
+    sourceSets["commonTest"].dependencies {
+    }
+
+    sourceSets["androidMain"].dependencies {
+//        implementation(kotlin("stdlib", Versions.KOTLIN))
+//        implementation(Deps.Android.AndroidX.CORE_KTX)
+//        implementation(Deps.Coroutines.ANDROID)
+//        implementation(Deps.Koin.ANDROID)
+//        implementation(Deps.Koin.ANDROID_COMPOSE)
+//        implementation(Deps.Ktor.ANDROID)
+//        implementation(Deps.Moko.MVVM) {
+//            exclude("org.jetbrains.kotlinx")
+//        }
+//        implementation(Deps.SqlDelight.DRIVER_ANDROID)
+//        api(Deps.Android.Suitcase.DATE_ANDROID)
+//        implementation(Deps.Android.Suitcase.UTILS)
+    }
+
+    sourceSets["androidTest"].dependencies {
+    }
+
+    sourceSets["iosMain"].dependencies {
+        implementation(Deps.Ktor.IOS)
+        implementation(Deps.SqlDelight.DRIVER_IOS)
+    }
+
+    // cocoapodsext {
+    //     summary = "Common library for the Chilly app"
+    //     homepage = "https://github.com/ChillyBandz/Chilly-App"
+    //     framework {
+    //         isStatic = false
+    //         export(Deps.KERMIT)
+    //         transitiveExport = true
+    //     }
+    // }
 }
+
+//sqldelight {
+//    database("DBNAME") {
+//        packageName = "com.guerinet.mymartlet.common.db"
+//    }
+//}

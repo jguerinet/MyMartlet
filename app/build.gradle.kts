@@ -111,6 +111,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -126,6 +127,7 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(Deps.Android.DESUGARING)
     implementation(Deps.Android.AndroidX.APPCOMPAT)
     implementation(Deps.Android.AndroidX.BROWSER)
     implementation(Deps.Android.AndroidX.CARDVIEW)

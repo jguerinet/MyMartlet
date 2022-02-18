@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,8 @@ import android.content.Context
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.extensions.get
 import com.guerinet.mymartlet.util.firestore
-import org.threeten.bp.LocalDate
+import com.guerinet.suitcase.date.extensions.today
+import kotlinx.datetime.LocalDate
 import java.io.Serializable
 
 /**
@@ -92,10 +93,10 @@ class Term(val season: Season, val year: Int) : Serializable {
          * Returns today's corresponding term
          */
         fun currentTerm(): Term {
-            val today = LocalDate.now()
+            val today = LocalDate.today
             val year = today.year
 
-            return when (today.monthValue) {
+            return when (today.monthNumber) {
                 in 9..12 -> Term(Season.FALL, year)
                 in 1..4 -> Term(Season.WINTER, year)
                 else -> Term(Season.SUMMER, year)
