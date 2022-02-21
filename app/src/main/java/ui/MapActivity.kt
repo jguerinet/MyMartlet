@@ -23,9 +23,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.fragment.app.transaction
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -37,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.guerinet.morf.TextViewItem
+import com.guerinet.morf.morf
 import com.guerinet.morf.util.Position
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.place.Place
@@ -46,9 +50,9 @@ import com.guerinet.mymartlet.viewmodel.MapViewModel
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
+import com.guerinet.suitcase.ui.extensions.setDrawableTint
 import com.guerinet.suitcase.util.Utils
 import com.guerinet.suitcase.util.extensions.hasPermission
-import kotlinx.android.synthetic.main.activity_map.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -65,6 +69,11 @@ class MapActivity : DrawerActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClic
     override val tag: String = "MapActivity"
 
     private val mapViewModel by viewModel<MapViewModel>()
+
+    private val container: LinearLayout by lazy { findViewById(R.id.container) }
+    private val placeTitle: TextView by lazy { findViewById(R.id.placeTitle) }
+    private val address: TextView by lazy { findViewById(R.id.address) }
+    private val directions: Button by lazy { findViewById(R.id.directions) }
 
     private var map: GoogleMap? = null
 
