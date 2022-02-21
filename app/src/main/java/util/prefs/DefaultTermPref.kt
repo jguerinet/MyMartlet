@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,26 +18,20 @@ package com.guerinet.mymartlet.util.prefs
 
 import android.content.SharedPreferences
 import com.guerinet.mymartlet.model.Term
-import com.guerinet.suitcase.prefs.NullStringPref
+import com.guerinet.suitcase.settings.NullStringSetting
+import com.russhwolf.settings.Settings
 
 /**
  * Stores the user's default [Term] in the [SharedPreferences]
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class DefaultTermPref(prefs: SharedPreferences) : NullStringPref(prefs, "default_term", null) {
+class DefaultTermPref(settings: Settings) :
+    NullStringSetting(settings, "default_term", null) {
 
-    private var currentTerm: Term? = null
-
-    var term: Term = value?.run { Term.parseTerm(this) } ?: Term.currentTerm()
+    var term: Term
+        get() = value?.run { Term.parseTerm(this) } ?: Term.currentTerm()
         set(value) {
-            this.currentTerm = value
             super.value = value.id
         }
-
-    override fun clear() {
-        super.clear()
-        // Clear the instance
-        currentTerm = null
-    }
 }

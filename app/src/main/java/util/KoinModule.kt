@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package com.guerinet.mymartlet.util
 
 import android.content.Context
+import android.preference.PreferenceManager
 import android.view.inputmethod.InputMethodManager
-import androidx.preference.PreferenceManager
 import com.guerinet.mymartlet.BuildConfig
 import com.guerinet.mymartlet.util.manager.ClearManager
 import com.guerinet.mymartlet.util.manager.HomepageManager
@@ -35,10 +35,11 @@ import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.room.UpdateDb
 import com.guerinet.suitcase.analytics.Analytics
 import com.guerinet.suitcase.analytics.FAnalytics
-import com.guerinet.suitcase.date.NullDatePref
-import com.guerinet.suitcase.prefs.BooleanPref
-import com.guerinet.suitcase.prefs.IntPref
+import com.guerinet.suitcase.date.NullDateSetting
+import com.guerinet.suitcase.settings.BooleanSetting
+import com.guerinet.suitcase.settings.IntSetting
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.russhwolf.settings.AndroidSettings
 import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -90,6 +91,9 @@ val appModule: Module = module {
 
     // Shared Prefs
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
+
+    // Settings
+    single { AndroidSettings(get()) }
 
     // UpdateManager
     single { UpdateManager(get(), get()) }
@@ -165,21 +169,21 @@ val prefsModule: Module = module {
     // UsernamePref
     single { UsernamePref(get(), get()) }
 
-    single(named(Prefs.EULA)) { BooleanPref(get(), Prefs.EULA, false) }
+    single(named(Prefs.EULA)) { BooleanSetting(get(), Prefs.EULA, false) }
 
-    single(named(Prefs.GRADE_CHECKER)) { BooleanPref(get(), Prefs.GRADE_CHECKER, false) }
+    single(named(Prefs.GRADE_CHECKER)) { BooleanSetting(get(), Prefs.GRADE_CHECKER, false) }
 
-    single(named(Prefs.IMS_CONFIG)) { NullDatePref(get(), Prefs.IMS_CONFIG, null) }
+    single(named(Prefs.IMS_CONFIG)) { NullDateSetting(get(), Prefs.IMS_CONFIG, null) }
 
-    single(named(Prefs.IS_FIRST_OPEN)) { BooleanPref(get(), Prefs.IS_FIRST_OPEN, true) }
+    single(named(Prefs.IS_FIRST_OPEN)) { BooleanSetting(get(), Prefs.IS_FIRST_OPEN, true) }
 
-    single(named(Prefs.MIN_VERSION)) { IntPref(get(), Prefs.MIN_VERSION, -1) }
+    single(named(Prefs.MIN_VERSION)) { IntSetting(get(), Prefs.MIN_VERSION, -1) }
 
-    single(named(Prefs.REMEMBER_USERNAME)) { BooleanPref(get(), Prefs.REMEMBER_USERNAME, true) }
+    single(named(Prefs.REMEMBER_USERNAME)) { BooleanSetting(get(), Prefs.REMEMBER_USERNAME, true) }
 
-    single(named(Prefs.SCHEDULE_24HR)) { BooleanPref(get(), Prefs.SCHEDULE_24HR, false) }
+    single(named(Prefs.SCHEDULE_24HR)) { BooleanSetting(get(), Prefs.SCHEDULE_24HR, false) }
 
-    single(named(Prefs.SEAT_CHECKER)) { BooleanPref(get(), Prefs.SEAT_CHECKER, false) }
+    single(named(Prefs.SEAT_CHECKER)) { BooleanSetting(get(), Prefs.SEAT_CHECKER, false) }
 }
 
 val viewModelsModule = module {

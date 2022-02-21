@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 package com.guerinet.mymartlet.util.prefs
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.guerinet.mymartlet.R
-import com.guerinet.suitcase.prefs.NullStringPref
+import com.guerinet.suitcase.settings.NullStringSetting
+import com.russhwolf.settings.Settings
 
 /**
  * Stores and loads the user's username (McGill email)
  * @author Julien Guerinet
  * @since 1.0.0
  */
-class UsernamePref(context: Context, prefs: SharedPreferences) :
-    NullStringPref(prefs, "username", null) {
+class UsernamePref(context: Context, settings: Settings) :
+    NullStringSetting(settings, "username", null) {
 
     private val emailSuffix: String = context.getString(R.string.login_email)
 
