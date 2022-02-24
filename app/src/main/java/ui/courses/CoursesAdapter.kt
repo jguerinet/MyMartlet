@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.guerinet.mymartlet.ui.courses
 
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -24,7 +25,6 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.suitcase.ui.BaseListAdapter
-import kotlinx.android.synthetic.main.item_course.view.*
 
 /**
  * Displays the user's list of [Course]s
@@ -49,6 +49,14 @@ internal class CoursesAdapter(emptyView: TextView) :
 
     internal inner class CourseHolder(parent: ViewGroup) :
         BaseHolder<Course>(parent, R.layout.item_course) {
+
+        private val code by lazy<TextView> { itemView.findViewById(R.id.code) }
+        private val title by lazy<TextView> { itemView.findViewById(R.id.title) }
+        private val type by lazy<TextView> { itemView.findViewById(R.id.type) }
+        private val credits by lazy<TextView> { itemView.findViewById(R.id.credits) }
+        private val days by lazy<TextView> { itemView.findViewById(R.id.days) }
+        private val hours by lazy<TextView> { itemView.findViewById(R.id.hours) }
+        private val checkBox by lazy<CheckBox> { itemView.findViewById(R.id.checkBox) }
 
         override fun bind(position: Int, item: Course) {
             itemView.apply {
