@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,13 @@ package com.guerinet.mymartlet.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.google.firebase.firestore.FirebaseFirestore
 import com.guerinet.mymartlet.BuildConfig
@@ -30,6 +35,7 @@ import com.guerinet.mymartlet.ui.settings.AgreementActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.extensions.errorDialog
+import com.guerinet.mymartlet.util.extensions.intentFor
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.manager.UpdateManager
@@ -39,16 +45,13 @@ import com.guerinet.mymartlet.util.service.ConfigDownloadService
 import com.guerinet.mymartlet.util.thread.UserDownloader
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
-import com.guerinet.suitcase.prefs.BooleanPref
-import com.guerinet.suitcase.prefs.IntPref
+import com.guerinet.suitcase.settings.BooleanSetting
+import com.guerinet.suitcase.settings.IntSetting
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
 import com.orhanobut.hawk.Hawk
-import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.startActivityForResult
-import org.jetbrains.anko.startService
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 import java.io.IOException
@@ -62,11 +65,11 @@ class SplashActivity : BaseActivity() {
 
     private val mcGillManager by inject<McGillManager>()
 
-    private val rememberUsernamePref by inject<BooleanPref>(named(Prefs.REMEMBER_USERNAME))
+    private val rememberUsernamePref by inject<BooleanSetting>(named(Prefs.REMEMBER_USERNAME))
 
-    private val minVersionPref by inject<IntPref>(named(Prefs.MIN_VERSION))
+    private val minVersionPref by inject<IntSetting>(named(Prefs.MIN_VERSION))
 
-    private val eulaPref by inject<BooleanPref>(named(Prefs.EULA))
+    private val eulaPref by inject<BooleanSetting>(named(Prefs.EULA))
 
     private val usernamePref by inject<UsernamePref>()
 
@@ -75,6 +78,16 @@ class SplashActivity : BaseActivity() {
     private val updateManager by inject<UpdateManager>()
 
     private val homePageManager by inject<HomepageManager>()
+
+    private val versionButton by lazy<Button> { findViewById(R.id.versionButton) }
+    private val loginButton by lazy<Button> { findViewById(R.id.loginButton) }
+    private val minVersionContainer by lazy<View> { findViewById(R.id.minVersionContainer) }
+    private val loginContainer by lazy<View> { findViewById(R.id.loginContainer) }
+    private val progressContainer by lazy<View> { findViewById(R.id.progressContainer) }
+    private val progressText by lazy<TextView> { findViewById(R.id.progressText) }
+    private val username by lazy<EditText> { findViewById(R.id.username) }
+    private val password by lazy<EditText> { findViewById(R.id.password) }
+    private val rememberUsername by lazy<CheckBox> { findViewById(R.id.rememberUsername) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,11 +112,13 @@ class SplashActivity : BaseActivity() {
             }
 
             // Start downloading the Config
-            startService<ConfigDownloadService>()
+            startService(Intent(this@SplashActivity, ConfigDownloadService::class.java))
 
             if (!eulaPref.value) {
                 // If the user has not accepted the EULA, show it before continuing
-                startActivityForResult<AgreementActivity>(AGREEMENT_CODE, Prefs.EULA to true)
+                startActivityForResult(
+                    intentFor<AgreementActivity>(Prefs.EULA to true), AGREEMENT_CODE
+                )
             } else {
                 // If not, go to the next screen
                 withContext(uiDispatcher) { showNextScreen() }
