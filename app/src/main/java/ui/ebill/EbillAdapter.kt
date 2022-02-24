@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@ package com.guerinet.mymartlet.ui.ebill
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Statement
-import com.guerinet.suitcase.date.extensions.getLongDateString
+import com.guerinet.suitcase.date.android.extensions.getLongDateString
 import com.guerinet.suitcase.ui.BaseListAdapter
 import com.guerinet.suitcase.util.extensions.getColorCompat
-import kotlinx.android.synthetic.main.item_statement.view.*
 
 /**
  * Adapter used for the ebill page
@@ -42,6 +42,10 @@ internal class EbillAdapter : BaseListAdapter<Statement>(ItemCallback()) {
 
     internal class StatementHolder(parent: ViewGroup) :
         BaseHolder<Statement>(parent, R.layout.item_statement) {
+
+        private val date by lazy<TextView> { itemView.findViewById(R.id.date) }
+        private val dueDate by lazy<TextView> { itemView.findViewById(R.id.dueDate) }
+        private val amount by lazy<TextView> { itemView.findViewById(R.id.amount) }
 
         @SuppressLint("SetTextI18n")
         override fun bind(position: Int, item: Statement) {
