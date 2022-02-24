@@ -30,17 +30,23 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.viewpager.widget.ViewPager
 import com.guerinet.morf.Morf
 import com.guerinet.morf.morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
+import com.guerinet.mymartlet.model.LocalTime
 import com.guerinet.mymartlet.model.Term
+import com.guerinet.mymartlet.model.atTime
 import com.guerinet.mymartlet.model.place.Place
+import com.guerinet.mymartlet.model.time
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
 import com.guerinet.mymartlet.util.Prefs
+import com.guerinet.mymartlet.util.extensions.intentFor
+import com.guerinet.mymartlet.util.extensions.start
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.retrofit.TranscriptConverter.TranscriptResponse
@@ -48,11 +54,22 @@ import com.guerinet.mymartlet.util.room.daos.CourseDao
 import com.guerinet.mymartlet.util.room.daos.TranscriptDao
 import com.guerinet.suitcase.coroutines.bgDispatcher
 import com.guerinet.suitcase.coroutines.uiDispatcher
+import com.guerinet.suitcase.date.android.extensions.getLongDateString
+import com.guerinet.suitcase.date.extensions.today
+import com.guerinet.suitcase.settings.BooleanSetting
 import com.guerinet.suitcase.util.extensions.getColorCompat
 import com.guerinet.suitcase.util.extensions.openUrl
+import com.guerinet.suitcase.util.extensions.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
+import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.until
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 import retrofit2.Call
@@ -69,9 +86,9 @@ import java.util.Stack
  */
 class ScheduleActivity : DrawerActivity() {
 
-    private val firstOpenPref by inject<BooleanPref>(named(Prefs.IS_FIRST_OPEN))
+    private val firstOpenPref by inject<BooleanSetting>(named(Prefs.IS_FIRST_OPEN))
 
-    private val twentyFourHourPref by inject<BooleanPref>(named(Prefs.SCHEDULE_24HR))
+    private val twentyFourHourPref by inject<BooleanSetting>(named(Prefs.SCHEDULE_24HR))
 
     private val defaultTermPref by inject<DefaultTermPref>()
 
@@ -79,12 +96,14 @@ class ScheduleActivity : DrawerActivity() {
 
     private val transcriptDao by inject<TranscriptDao>()
 
+    private val viewPager: ViewPager by lazy { findViewById(R.id.viewPager) }
+
     private var term: Term = defaultTermPref.term
 
     private val courses: MutableList<Course> = mutableListOf()
 
     // We need this to know which week to show in the landscape orientation
-    private var date: LocalDate = LocalDate.now()
+    private var date: LocalDate = LocalDate.today
 
     override val currentPage = HomepageManager.HomePage.SCHEDULE
 
@@ -110,7 +129,7 @@ class ScheduleActivity : DrawerActivity() {
         // Check if this is the first time the user is using the app
         if (firstOpenPref.value) {
             // Show them the walkthrough if it is
-            startActivity<WalkthroughActivity>(Prefs.IS_FIRST_OPEN to true)
+            start<WalkthroughActivity>(Prefs.IS_FIRST_OPEN to true)
             // Save the fact that the walkthrough has been seen at least once
             firstOpenPref.value = false
         }
@@ -183,13 +202,13 @@ class ScheduleActivity : DrawerActivity() {
             updateCourses()
 
             // Date is by default set to today
-            date = LocalDate.now()
+            date = LocalDate.today
 
             // Check if we are in the current semester
             if (term != Term.currentTerm()) {
                 // If not, find the starting date of this semester instead of using today
                 for (course in courses) {
-                    if (course.startDate.isBefore(date)) {
+                    if (course.startDate < date) {
                         date = course.startDate
                     }
                 }
@@ -308,8 +327,6 @@ class ScheduleActivity : DrawerActivity() {
      * Renders the portrait view
      */
     private fun renderPortraitView() {
-        val viewPager = this.viewPager ?: throw IllegalStateException("No ViewPager found")
-
         val adapter = ScheduleAdapter()
 
         // Set up the ViewPager
@@ -357,9 +374,10 @@ class ScheduleActivity : DrawerActivity() {
         // Go through the list of courses, find which ones are for the given date
         val courses = this.courses.filter { it.isForDate(date) }
 
-        // Set up the DateTimeFormatter we're going to use for the hours
-        val pattern = if (twentyFourHourPref.value) "HH:mm" else "hh a"
-        val formatter = DateTimeFormatter.ofPattern(pattern)
+        // TODO
+//        // Set up the DateTimeFormatter we're going to use for the hours
+//        val pattern = if (twentyFourHourPref.value) "HH:mm" else "hh a"
+//        val formatter = DateTimeFormatter.ofPattern(pattern)
 
         // This will be used of an end time of a course when it is added to the schedule container
         var currentCourseEndTime: LocalTime? = null
@@ -371,7 +389,8 @@ class ScheduleActivity : DrawerActivity() {
 
             // Put the correct time
             val time = timetableCell.findViewById<TextView>(R.id.cell_time)
-            time.text = LocalTime.MIDNIGHT.withHour(hour).format(formatter)
+            val localDateTime = LocalDate.today.atTime(hour, 0)
+            time.text = localDateTime.time.getShortTimeString()
 
             // Add it to the right container
             timetableContainer.addView(timetableCell)
@@ -383,7 +402,7 @@ class ScheduleActivity : DrawerActivity() {
                 var currentCourse: Course? = null
 
                 // Get the current time
-                val currentTime = LocalTime.of(hour, min)
+                val currentTime = LocalTime(hour, min)
 
                 // if currentCourseEndTime = null (no course is being added) or it is equal to
                 //  the current time in min (end of a course being added) we need to add a new view
@@ -423,16 +442,21 @@ class ScheduleActivity : DrawerActivity() {
                         location.text = currentCourse.location
 
                         // Find out how long this course is in terms of blocks of 30 min
-                        val length = ChronoUnit.MINUTES.between(
-                            currentCourse.roundedStartTime,
-                            currentCourse.roundedEndTime
-                        ).toInt() / 30
+                        val start = LocalDate
+                            .today
+                            .atTime(currentCourse.roundedStartTime)
+                            .toInstant(TimeZone.UTC)
+                        val end = LocalDate
+                            .today
+                            .atTime(currentCourse.roundedEndTime)
+                            .toInstant(TimeZone.UTC)
+
+                        val length = start.until(end, DateTimeUnit.MINUTE).toInt() / 30
 
                         // Set the height of the view depending on this height
                         val lp = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
-                            resources
-                                .getDimension(R.dimen.cell_30min_height).toInt() * length
+                            resources.getDimension(R.dimen.cell_30min_height).toInt() * length
                         )
                         scheduleCell.layoutParams = lp
 
@@ -614,7 +638,7 @@ class ScheduleActivity : DrawerActivity() {
         override fun getCount() = 1000000
 
         fun getDate(position: Int): LocalDate =
-            startingDate.plusDays((position - startingDateIndex).toLong())
+            startingDate.plus(position - startingDateIndex, DateTimeUnit.DAY)
 
         // This is to force the refreshing of all of the views when the view is reloaded
         override fun getItemPosition(`object`: Any): Int =
@@ -623,6 +647,15 @@ class ScheduleActivity : DrawerActivity() {
         override fun isViewFromObject(view: View, `object`: Any): Boolean = view == `object`
 
         inner class DayHolder(val view: View) {
+
+            private val dayTitle by lazy<TextView> { view.findViewById(R.id.dayTitle) }
+            private val dayDate by lazy<TextView> { view.findViewById(R.id.dayDate) }
+            private val timetableContainer by lazy<LinearLayout> {
+                view.findViewById(R.id.timetableContainer)
+            }
+            private val scheduleContainer by lazy<LinearLayout> {
+                view.findViewById(R.id.scheduleContainer)
+            }
 
             internal fun bind(date: LocalDate) {
                 // Set the titles

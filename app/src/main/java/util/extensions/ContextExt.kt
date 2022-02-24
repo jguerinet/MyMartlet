@@ -74,6 +74,17 @@ inline fun <reified T : Activity> Context.start(vararg params: Pair<String, Any?
 }
 
 /**
+ * Creates an intent for an activity [T] with some intent [params]
+ */
+inline fun <reified T : Activity> Context.intentFor(vararg params: Pair<String, Any?>): Intent {
+    val intent = Intent(this, T::class.java)
+    if (params.isNotEmpty()) {
+        intent.fillIntentArguments(params)
+    }
+    return intent
+}
+
+/**
  * Takes a list of [params] and adds them to the [Intent]
  */
 fun Intent.fillIntentArguments(params: Array<out Pair<String, Any?>>) {
