@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.manager.HomepageManager
@@ -28,7 +29,6 @@ import com.guerinet.mymartlet.viewmodel.EbillViewModel
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
-import kotlinx.android.synthetic.main.activity_ebill.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,6 +47,8 @@ class EbillActivity : DrawerActivity(), TimberTag {
     private val ebillViewModel by viewModel<EbillViewModel>()
 
     private val adapter by lazy { EbillAdapter() }
+
+    private val list by lazy<RecyclerView> { findViewById(R.id.list) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
