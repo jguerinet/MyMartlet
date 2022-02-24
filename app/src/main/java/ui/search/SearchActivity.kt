@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.TimePicker
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
@@ -28,20 +34,19 @@ import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.DayUtils
+import com.guerinet.mymartlet.util.extensions.getView
+import com.guerinet.mymartlet.util.extensions.start
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.suitcase.coroutines.ioDispatcher
 import com.guerinet.suitcase.log.TimberTag
 import com.guerinet.suitcase.util.Device
-import kotlinx.android.synthetic.main.activity_search.*
+import com.guerinet.suitcase.util.extensions.toast
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
-import org.threeten.bp.DayOfWeek
+import kotlinx.datetime.DayOfWeek
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
 
 /**
  * Allows a user to search for courses that they can register for
@@ -59,6 +64,28 @@ class SearchActivity : DrawerActivity(), TimberTag {
     private var isAllOptionsShown = false
 
     override val currentPage = HomepageManager.HomePage.SEARCH_COURSES
+
+    private val searchEmpty by lazy<TextView> { findViewById(R.id.searchEmpty) }
+    private val searchContainer by lazy<View> { findViewById(R.id.searchContainer) }
+    private val searchButton by lazy<Button> { findViewById(R.id.searchButton) }
+    private val termSelector by lazy<TextView> { findViewById(R.id.termSelector) }
+    private val termContainer by lazy<View> { findViewById(R.id.termContainer) }
+    private val startTime by lazy<TimePicker> { findViewById(R.id.startTime) }
+    private val endTime by lazy<TimePicker> { findViewById(R.id.endTime) }
+    private val moreOptionsButton by lazy<Button> { findViewById(R.id.moreOptionsButton) }
+    private val moreOptionsContainer by lazy<View> { findViewById(R.id.moreOptionsContainer) }
+    private val subject by lazy<EditText> { findViewById(R.id.subject) }
+    private val minCredits by lazy<EditText> { findViewById(R.id.minCredits) }
+    private val maxCredits by lazy<EditText> { findViewById(R.id.maxCredits) }
+    private val monday by lazy<CheckBox> { findViewById(R.id.monday) }
+    private val tuesday by lazy<CheckBox> { findViewById(R.id.tuesday) }
+    private val wednesday by lazy<CheckBox> { findViewById(R.id.wednesday) }
+    private val thursday by lazy<CheckBox> { findViewById(R.id.thursday) }
+    private val friday by lazy<CheckBox> { findViewById(R.id.friday) }
+    private val saturday by lazy<CheckBox> { findViewById(R.id.saturday) }
+    private val sunday by lazy<CheckBox> { findViewById(R.id.sunday) }
+    private val number by lazy<EditText> { findViewById(R.id.number) }
+    private val courseTitle by getView<EditText>(R.id.courseTitle)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,10 +142,10 @@ class SearchActivity : DrawerActivity(), TimberTag {
         // Subject Input
         val subject = this.subject.text.toString().toUpperCase().trim()
         if (subject.isEmpty()) {
-            toast(R.string.registration_error_no_faculty)
+            toast(getString(R.string.registration_error_no_faculty))
             return
         } else if (!subject.matches("[A-Za-z]{4}".toRegex())) {
-            toast(R.string.registration_invalid_subject)
+            toast(getString(R.string.registration_invalid_subject))
             return
         }
 
@@ -127,7 +154,7 @@ class SearchActivity : DrawerActivity(), TimberTag {
         val maxCredits = this.maxCredits.text.toString().toIntOrNull() ?: 0
 
         if (maxCredits < minCredits) {
-            toast(R.string.registration_error_credits)
+            toast(getString(R.string.registration_error_credits))
             return
         }
 
@@ -203,7 +230,7 @@ class SearchActivity : DrawerActivity(), TimberTag {
                     toolbarProgress.isVisible = false
                     val body = response.body()
                     if (body != null) {
-                        startActivity<SearchResultsActivity>(
+                        start<SearchResultsActivity>(
                             Constants.TERM to term,
                             Constants.COURSES to (body as ArrayList<CourseResult>)
                         )

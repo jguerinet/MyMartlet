@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package com.guerinet.mymartlet.util.extensions
 
 import android.app.Activity
+import android.view.View
+import androidx.annotation.IdRes
 import com.guerinet.suitcase.log.TimberTag
 
 /**
@@ -40,3 +42,5 @@ fun <T : Any?, A> A.assertNotNull(
     }
     return obj
 }
+
+inline fun <reified T : View> Activity.getView(@IdRes id: Int): Lazy<T> = lazy { findViewById(id) }
