@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.retrofit.ConfigService
-import com.guerinet.suitcase.date.NullDatePref
-import com.guerinet.suitcase.date.extensions.rfc1123String
-import com.guerinet.suitcase.prefs.IntPref
+import com.guerinet.suitcase.date.NullDateSetting
+import com.guerinet.suitcase.date.android.extensions.rfc1123String
+import com.guerinet.suitcase.settings.IntSetting
 import com.guerinet.suitcase.util.extensions.isConnected
+import kotlinx.datetime.Clock
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
-import org.threeten.bp.ZonedDateTime
 import retrofit2.Call
 import timber.log.Timber
 
@@ -39,9 +39,9 @@ class ConfigDownloadService : JobIntentService() {
 
     private val configService by inject<ConfigService>()
 
-    private val imsConfigPref by inject<NullDatePref>(named(Prefs.IMS_CONFIG))
+    private val imsConfigPref by inject<NullDateSetting>(named(Prefs.IMS_CONFIG))
 
-    private val minVersionPref by inject<IntPref>(named(Prefs.MIN_VERSION))
+    private val minVersionPref by inject<IntSetting>(named(Prefs.MIN_VERSION))
 
     override fun onHandleWork(intent: Intent) {
         if (!isConnected) {
@@ -57,17 +57,17 @@ class ConfigDownloadService : JobIntentService() {
     /**
      * Returns the ims String based on the [pref] to use for the call
      */
-    private fun getIMS(pref: NullDatePref): String? = pref.date.rfc1123String
+    private fun getIMS(pref: NullDateSetting): String? = pref.date.rfc1123String
 
     /**
      * Executes the [call] and updates the [imsPref] if successful. Returns the response object,
      * null if there was an error
      */
-    private fun <T> executeRequest(call: Call<T>, imsPref: NullDatePref): T? {
+    private fun <T> executeRequest(call: Call<T>, imsPref: NullDateSetting): T? {
         return try {
             val response = call.execute()
             if (response.isSuccessful) {
-                imsPref.date = ZonedDateTime.now()
+                imsPref.date = Clock.System.now()
             }
             response.body()
         } catch (e: Exception) {
