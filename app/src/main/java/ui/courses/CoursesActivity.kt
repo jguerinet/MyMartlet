@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,12 @@ package com.guerinet.mymartlet.ui.courses
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Course
 import com.guerinet.mymartlet.model.RegistrationError
@@ -38,12 +42,10 @@ import com.guerinet.suitcase.coroutines.ioDispatcher
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
-import com.guerinet.suitcase.ui.extensions.setWidthAndHeight
-import kotlinx.android.synthetic.main.view_courses.*
+import com.guerinet.suitcase.util.extensions.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
@@ -69,11 +71,16 @@ class CoursesActivity : DrawerActivity() {
 
     override val currentPage = HomepageManager.HomePage.COURSES
 
+    private val empty by lazy<TextView> { findViewById(R.id.empty) }
+    private val list by lazy<RecyclerView> { findViewById(R.id.list) }
+    private val register by lazy<Button> { findViewById(R.id.register) }
+    private val wishlist by lazy<Button> { findViewById(R.id.button) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wishlist)
 
-        list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        list.layoutManager = LinearLayoutManager(this)
         list.adapter = adapter
 
         // Format the unregister button
@@ -197,13 +204,13 @@ class CoursesActivity : DrawerActivity() {
 
         if (courses.size > 10) {
             // Too many courses
-            toast(R.string.courses_too_many_courses)
+            toast(getString(R.string.courses_too_many_courses))
             return
         }
 
         if (courses.isEmpty()) {
             // No courses
-            toast(R.string.courses_none_selected)
+            toast(getString(R.string.courses_none_selected))
             return
         }
 
@@ -226,7 +233,7 @@ class CoursesActivity : DrawerActivity() {
                             // If there are no errors, show the success message
                             val body = response.body()
                             if (body == null || body.isEmpty()) {
-                                toast(R.string.unregistration_success)
+                                toast(getString(R.string.unregistration_success))
                                 return
                             }
 
