@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,15 @@ package com.guerinet.mymartlet.ui.wishlist
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.DayUtils
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.suitcase.ui.BaseListAdapter
-import kotlinx.android.synthetic.main.item_course.view.*
 
 /**
  * Displays the list of courses in the user's wish list or after a course search
@@ -60,6 +61,17 @@ internal class WishlistAdapter(private val empty: TextView) :
 
     internal inner class CourseHolder(parent: ViewGroup) :
         BaseHolder<CourseResult>(parent, R.layout.item_course) {
+
+        private val code by itemView.getView<TextView>(R.id.code)
+        private val credits by itemView.getView<TextView>(R.id.credits)
+        private val title by itemView.getView<TextView>(R.id.title)
+        private val spots by itemView.getView<TextView>(R.id.spots)
+        private val type by itemView.getView<TextView>(R.id.type)
+        private val waitlistRemaining by itemView.getView<TextView>(R.id.waitlistRemaining)
+        private val days by itemView.getView<TextView>(R.id.days)
+        private val hours by itemView.getView<TextView>(R.id.hours)
+        private val dates by itemView.getView<TextView>(R.id.dates)
+        private val checkBox by itemView.getView<CheckBox>(R.id.checkBox)
 
         override fun bind(position: Int, item: CourseResult) {
             itemView.apply {
