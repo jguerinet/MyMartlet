@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
 package com.guerinet.mymartlet.util;
 
 import com.guerinet.mymartlet.model.Course;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.LocalTime;
-import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -59,10 +59,10 @@ public class CourseCalendar {
             + "END:VTIMEZONE";
     private static final String mTZID = String.format("TZID=\"%s\"", mTZName);
 
-    private String mPattern;
-    private boolean mRecurring;
-    private boolean mRounded;
-    private List<Course> mClasses;
+    private final String mPattern;
+    private final boolean mRecurring;
+    private final boolean mRounded;
+    private final List<Course> mClasses;
 
     /**
      * Constructor for the CourseCalendar class
@@ -187,25 +187,27 @@ public class CourseCalendar {
         LocalDate startDate;
         LocalTime startTime, endTime;
         LocalDateTime firstClassBegin, firstClassEnd, lastDay;
-        if (mRounded) {
-            startTime = item.getRoundedStartTime();
-            endTime = item.getRoundedEndTime();
-        } else {
-            startTime = item.getStartTime();
-            endTime = item.getEndTime();
-        }
-        startDate = item.getStartDate();
-        firstClassBegin = LocalDateTime.of(startDate, startTime);
-        firstClassEnd = LocalDateTime.of(startDate, endTime);
-        lastDay = LocalDateTime.of(item.getEndDate(), LocalTime.of(23, 0));
-        if (mRecurring) {
-            event = makeEvent(summary, description, location, firstClassBegin,
-                    firstClassEnd, lastDay);
-        } else {
-            event = makeEvent(summary, description, location, firstClassBegin,
-                    firstClassEnd);
-        }
-        return event;
+        // TODO
+//        if (mRounded) {
+//            startTime = item.getRoundedStartTime();
+//            endTime = item.getRoundedEndTime();
+//        } else {
+//            startTime = item.getStartTime();
+//            endTime = item.getEndTime();
+//        }
+//        startDate = item.getStartDate();
+//        firstClassBegin = LocalDateTime.of(startDate, startTime);
+//        firstClassEnd = LocalDateTime.of(startDate, endTime);
+//        lastDay = LocalDateTime.of(item.getEndDate(), LocalTime.of(23, 0));
+//        if (mRecurring) {
+//            event = makeEvent(summary, description, location, firstClassBegin,
+//                    firstClassEnd, lastDay);
+//        } else {
+//            event = makeEvent(summary, description, location, firstClassBegin,
+//                    firstClassEnd);
+//        }
+//        return event;
+        return null;
     }
 
     /**
@@ -407,13 +409,15 @@ public class CourseCalendar {
      */
     @SuppressWarnings("unused")
     private String makeEventStart(Course item) {
-        LocalTime startTime;
-        if (mRounded) {
-            startTime = item.getRoundedStartTime();
-        } else {
-            startTime = item.getStartTime();
-        }
-        return makeEventStart(LocalDateTime.of(item.getStartDate(), startTime));
+        // TODO
+//        LocalTime startTime;
+//        if (mRounded) {
+//            startTime = item.getRoundedStartTime();
+//        } else {
+//            startTime = item.getStartTime();
+//        }
+//        return makeEventStart(LocalDateTime.of(item.getStartDate(), startTime));
+        return null;
     }
 
     /**
@@ -435,13 +439,15 @@ public class CourseCalendar {
      */
     @SuppressWarnings("unused")
     private String makeEventEnd(Course item) {
-        LocalTime endTime;
-        if (mRounded) {
-            endTime = item.getRoundedEndTime();
-        } else {
-            endTime = item.getEndTime();
-        }
-        return makeEventEnd(LocalDateTime.of(item.getEndDate(), endTime));
+        // TODO
+//        LocalTime endTime;
+//        if (mRounded) {
+//            endTime = item.getRoundedEndTime();
+//        } else {
+//            endTime = item.getEndTime();
+//        }
+//        return makeEventEnd(LocalDateTime.of(item.getEndDate(), endTime));
+        return null;
     }
 
     /**
@@ -487,7 +493,9 @@ public class CourseCalendar {
      */
     @SuppressWarnings("unused")
     private String makeEventRecurrence(Course item) {
-        return makeEventRecurrence(LocalDateTime.of(item.getEndDate(), LocalTime.of(23, 0)));
+        // TODO
+//        return makeEventRecurrence(LocalDateTime.of(item.getEndDate(), LocalTime.of(23, 0)));
+        return null;
     }
 
     /**
