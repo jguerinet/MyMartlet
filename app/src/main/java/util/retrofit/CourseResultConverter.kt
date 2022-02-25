@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,21 @@ package com.guerinet.mymartlet.util.retrofit
 
 import androidx.core.util.Pair
 import com.guerinet.mymartlet.model.CourseResult
+import com.guerinet.mymartlet.model.LocalTime
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.DayUtils
+import com.guerinet.suitcase.date.extensions.today
 import com.squareup.moshi.Types
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalTime
 import retrofit2.Converter
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.ArrayList
 
 /**
  * Retrofit converter to parse a list of course results when searching for courses
@@ -95,8 +95,8 @@ class CourseResultConverter : Converter.Factory(), Converter<ResponseBody, List<
             var capacity = 0
             var seatsRemaining = 0
             var waitlistRemaining = 0
-            var startDate: LocalDate? = LocalDate.now()
-            var endDate: LocalDate? = LocalDate.now()
+            var startDate: LocalDate? = LocalDate.today
+            var endDate: LocalDate? = LocalDate.today
 
             try {
                 var i = 0
@@ -176,13 +176,14 @@ class CourseResultConverter : Converter.Factory(), Converter<ResponseBody, List<
                                 }
 
                                 val endPM =
-                                    times[1].split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+                                    times[1].split(" ".toRegex()).dropLastWhile { it.isEmpty() }
+                                        .toTypedArray()[1]
                                 if (endPM == "PM" && endHour != 12) {
                                     endHour += 12
                                 }
 
-                                startTime = LocalTime.of(startHour, startMinute)
-                                endTime = LocalTime.of(endHour, endMinute)
+                                startTime = LocalTime(startHour, startMinute)
+                                endTime = LocalTime(endHour, endMinute)
                             } catch (e: NumberFormatException) {
                                 //Courses sometimes don't have assigned times
                                 startTime = ScheduleConverter.defaultStartTime
@@ -238,7 +239,7 @@ class CourseResultConverter : Converter.Factory(), Converter<ResponseBody, List<
      */
     fun parseDate(term: Term, date: String): LocalDate {
         val dateFields = date.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        return LocalDate.of(
+        return LocalDate(
             term.year, Integer.parseInt(dateFields[0]),
             Integer.parseInt(dateFields[1])
         )
