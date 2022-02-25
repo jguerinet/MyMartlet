@@ -16,34 +16,16 @@
 
 package com.guerinet.mymartlet.util.extensions
 
-import android.app.Activity
 import android.view.View
 import androidx.annotation.IdRes
-import com.guerinet.suitcase.log.TimberTag
 
 /**
- * Activity extensions
+ * Extensions for the View class
  * @author Julien Guerinet
- * @since 2.0.0
+ * @since 3.0.0
  */
-
-/**
- * Asserts that the [obj] is not null, and finishes the activity, shows an error toast, and logs
- *  and exception using the object [name] (if supplied, defaults to null) if it is null.
- */
-fun <T : Any?, A> A.assertNotNull(
-    obj: T?,
-    name: String? = null
-): T? where A : Activity, A : TimberTag {
-    if (obj == null) {
-        errorToast()
-        name?.apply { timber.e(IllegalArgumentException("$this was null")) }
-        finish()
-    }
-    return obj
-}
 
 /**
  * Returns the view of type [T] with [id], lazily loaded
  */
-inline fun <reified T : View> Activity.getView(@IdRes id: Int): Lazy<T> = lazy { findViewById(id) }
+inline fun <reified T : View> View.getView(@IdRes id: Int): Lazy<T> = lazy { findViewById(id) }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,19 +19,21 @@ package com.guerinet.mymartlet.ui.settings.about
 import android.content.Intent
 import android.graphics.Typeface
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.guerinet.mymartlet.R
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.suitcase.analytics.Analytics
 import com.guerinet.suitcase.ui.BaseRecyclerViewAdapter
 import com.guerinet.suitcase.ui.extensions.setPaddingId
 import com.guerinet.suitcase.ui.extensions.setTextSizeId
 import com.guerinet.suitcase.util.extensions.openUrl
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_person.view.*
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * Displays the developer in the About page
@@ -91,6 +93,11 @@ class PersonAdapter : BaseRecyclerViewAdapter(), KoinComponent {
      */
     internal inner class PersonHolder(parent: ViewGroup) :
         BaseRecyclerViewAdapter.BaseHolder(parent, R.layout.item_person) {
+
+        private val name by itemView.getView<TextView>(R.id.name)
+        private val picture by itemView.getView<ImageView>(R.id.picture)
+        private val linkedIn by itemView.getView<Button>(R.id.linkedIn)
+        private val email by itemView.getView<Button>(R.id.email)
 
         override fun bind(position: Int) {
             val person = items[position] as? Person
