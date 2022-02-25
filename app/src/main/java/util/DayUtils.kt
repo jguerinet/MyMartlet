@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.guerinet.mymartlet.util
 
 import androidx.annotation.StringRes
 import com.guerinet.mymartlet.R
-import org.threeten.bp.DayOfWeek
+import kotlinx.datetime.DayOfWeek
 
 /**
  * Utility methods for the days of the week
