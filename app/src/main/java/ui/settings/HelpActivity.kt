@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,16 @@
 package com.guerinet.mymartlet.ui.settings
 
 import android.os.Bundle
+import android.widget.LinearLayout
 import com.guerinet.morf.morf
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.walkthrough.WalkthroughActivity
+import com.guerinet.mymartlet.util.extensions.getView
+import com.guerinet.mymartlet.util.extensions.start
 import com.guerinet.suitcase.dialog.neutralDialog
 import com.guerinet.suitcase.util.extensions.openPlayStoreApp
 import com.guerinet.suitcase.util.extensions.openUrl
-import kotlinx.android.synthetic.main.activity_help.*
-import org.jetbrains.anko.startActivity
 
 /**
  * Displays useful information to the user
@@ -34,6 +35,8 @@ import org.jetbrains.anko.startActivity
  * @since 1.0.0
  */
 class HelpActivity : BaseActivity() {
+
+    private val container by getView<LinearLayout>(R.id.container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +48,7 @@ class HelpActivity : BaseActivity() {
             // EULA
             text {
                 textId = R.string.title_agreement
-                onClick { startActivity<AgreementActivity>() }
+                onClick { start<AgreementActivity>() }
             }
 
             // Email
@@ -65,7 +68,7 @@ class HelpActivity : BaseActivity() {
             // Help
             text {
                 textId = R.string.help_walkthrough
-                onClick { startActivity<WalkthroughActivity>() }
+                onClick { start<WalkthroughActivity>() }
             }
 
             // McGill App
