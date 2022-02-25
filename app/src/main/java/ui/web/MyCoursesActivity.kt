@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,14 +33,14 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.extensions.errorDialog
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.suitcase.util.Utils
 import com.guerinet.suitcase.util.extensions.hasPermission
 import com.guerinet.suitcase.util.extensions.isConnected
+import com.guerinet.suitcase.util.extensions.toast
 import com.orhanobut.hawk.Hawk
-import kotlinx.android.synthetic.main.activity_web.*
-import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 
 /**
@@ -54,6 +54,8 @@ class MyCoursesActivity : DrawerActivity() {
     private val usernamePref by inject<UsernamePref>()
 
     override val currentPage = HomepageManager.HomePage.MY_COURSES
+
+    private val webView by getView<WebView>(R.id.webView)
 
     @SuppressLint("SetJavaScriptEnabled", "NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -164,7 +166,7 @@ class MyCoursesActivity : DrawerActivity() {
                 } else {
                     R.string.storage_permission_refused
                 }
-                toast(stringId)
+                toast(getString(stringId))
             }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
