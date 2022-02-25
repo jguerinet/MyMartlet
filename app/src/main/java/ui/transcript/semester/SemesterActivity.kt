@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,17 @@
 package com.guerinet.mymartlet.ui.transcript.semester
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
 import com.guerinet.mymartlet.util.extensions.assertNotNull
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.mymartlet.viewmodel.SemesterViewModel
 import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
-import kotlinx.android.synthetic.main.activity_semester.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -40,6 +42,13 @@ class SemesterActivity : BaseActivity(), TimberTag {
     private val semesterViewModel by viewModel<SemesterViewModel>()
 
     private val adapter: SemesterAdapter by lazy { SemesterAdapter() }
+
+    private val list by getView<RecyclerView>(android.R.id.list)
+    private val degreeName by getView<TextView>(R.id.degreeName)
+    private val program by getView<TextView>(R.id.program)
+    private val gpa by getView<TextView>(R.id.gpa)
+    private val credits by getView<TextView>(R.id.credits)
+    private val fullTime by getView<TextView>(R.id.fullTime)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
