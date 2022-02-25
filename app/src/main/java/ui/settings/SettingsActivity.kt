@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.guerinet.mymartlet.ui.settings
 import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
+import android.widget.LinearLayout
 import com.guerinet.morf.TextViewItem
 import com.guerinet.morf.morf
 import com.guerinet.morf.util.Position
@@ -27,6 +28,8 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.settings.about.AboutActivity
 import com.guerinet.mymartlet.util.Prefs
+import com.guerinet.mymartlet.util.extensions.getView
+import com.guerinet.mymartlet.util.extensions.start
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.room.UpdateDao
 import com.guerinet.suitcase.coroutines.bgDispatcher
@@ -34,20 +37,17 @@ import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.dialog.singleListDialog
 import com.guerinet.suitcase.io.getFileUri
 import com.guerinet.suitcase.log.TimberTag
-import com.guerinet.suitcase.prefs.BooleanPref
+import com.guerinet.suitcase.settings.BooleanSetting
 import com.guerinet.suitcase.util.Utils
 import com.guerinet.suitcase.util.extensions.openUrl
-import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.sink
-import org.jetbrains.anko.startActivity
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 import java.io.File
 import java.io.IOException
-import java.util.Comparator
 
 /**
  * Allows the user to change the app settings
@@ -60,9 +60,11 @@ class SettingsActivity : DrawerActivity(), TimberTag {
 
     override val currentPage = HomepageManager.HomePage.SETTINGS
 
-    private val twentyFourHourPref by inject<BooleanPref>(named(Prefs.SCHEDULE_24HR))
+    private val twentyFourHourPref by inject<BooleanSetting>(named(Prefs.SCHEDULE_24HR))
 
     private val updateDao by inject<UpdateDao>()
+
+    private val container by getView<LinearLayout>(R.id.container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,14 +112,14 @@ class SettingsActivity : DrawerActivity(), TimberTag {
             text {
                 textId = R.string.title_help
                 icon(Position.START, R.drawable.ic_help)
-                onClick { startActivity<HelpActivity>() }
+                onClick { start<HelpActivity>() }
             }
 
             // About
             text {
                 textId = R.string.title_about
                 icon(Position.START, R.drawable.ic_info)
-                onClick { startActivity<AboutActivity>() }
+                onClick { start<AboutActivity>() }
             }
 
             // Privacy Policy
