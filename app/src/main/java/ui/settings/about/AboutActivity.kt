@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,13 @@
 package com.guerinet.mymartlet.ui.settings.about
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.suitcase.util.extensions.openUrl
-import kotlinx.android.synthetic.main.activity_about.*
 
 /**
  * Displays information about the team
@@ -30,6 +32,9 @@ import kotlinx.android.synthetic.main.activity_about.*
  * @since 1.0.0
  */
 class AboutActivity : BaseActivity() {
+
+    private val list by getView<RecyclerView>(android.R.id.list)
+    private val github by getView<Button>(R.id.github)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
