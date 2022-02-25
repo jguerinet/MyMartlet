@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 package com.guerinet.mymartlet.ui.search
 
 import android.os.Bundle
+import android.view.View
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistHelper
 import com.guerinet.mymartlet.util.Constants
-import kotlinx.android.synthetic.main.view_courses.*
-import java.util.ArrayList
+import com.guerinet.mymartlet.util.extensions.getView
 
 /**
  * Shows the results of the search from the SearchActivity
@@ -33,6 +33,8 @@ import java.util.ArrayList
  */
 class SearchResultsActivity : BaseActivity() {
 
+    private val mainView by getView<View>(R.id.mainView)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_courses)
@@ -40,6 +42,7 @@ class SearchResultsActivity : BaseActivity() {
 
         // Get the info from the intent
         val term = intent.getSerializableExtra(Constants.TERM) as? Term ?: error("Missing term")
+
         @Suppress("UNCHECKED_CAST")
         val courses = intent.getSerializableExtra(Constants.COURSES)
             as? ArrayList<CourseResult> ?: error("Missing course results")
