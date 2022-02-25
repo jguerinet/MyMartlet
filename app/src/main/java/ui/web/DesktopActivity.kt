@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,13 @@ import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.extensions.errorDialog
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.suitcase.util.extensions.isConnected
 import com.orhanobut.hawk.Hawk
-import kotlinx.android.synthetic.main.activity_web.*
 import org.koin.android.ext.android.inject
+import java.util.Locale
 
 /**
  * Shows the desktop page of MyMcGill
@@ -42,6 +43,8 @@ class DesktopActivity : DrawerActivity() {
     private val usernamePref by inject<UsernamePref>()
 
     override val currentPage = HomepageManager.HomePage.DESKTOP
+
+    private val webView by getView<WebView>(R.id.webView)
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,13 +69,13 @@ class DesktopActivity : DrawerActivity() {
             loadUrl("https://mymcgill.mcgill.ca/portal/page/portal/")
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView, url: String) {
-                    if (url.toLowerCase().contains("login")) {
+                    if (url.lowercase(Locale.getDefault()).contains("login")) {
                         // Only log them in if they're not already
                         view.loadUrl(
                             "javascript:(function(){document.getElementById('username')" +
-                                ".value=${usernamePref.full}';document.getElementById('password')" +
-                                ".value='${Hawk.get<String>(Prefs.PASSWORD)}'; " + "document." +
-                                "getElementsByClassName('mainSubmit').submit.click(); })()"
+                                    ".value=${usernamePref.full}';document.getElementById('password')" +
+                                    ".value='${Hawk.get<String>(Prefs.PASSWORD)}'; " + "document." +
+                                    "getElementsByClassName('mainSubmit').submit.click(); })()"
                         )
                     }
                     view.isVisible = true
