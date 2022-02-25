@@ -18,6 +18,7 @@ package com.guerinet.mymartlet.util.retrofit
 
 import com.guerinet.mymartlet.model.Statement
 import com.squareup.moshi.Types
+import kotlinx.datetime.toKotlinLocalDate
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import retrofit2.Converter
@@ -99,10 +100,7 @@ class EbillConverter : Converter.Factory(), Converter<ResponseBody, List<Stateme
             }
 
             // Add the new statement
-            val realDate = kotlinx.datetime.LocalDate(date.year, date.month, date.dayOfMonth)
-            val realDudeDate =
-                kotlinx.datetime.LocalDate(dueDate.year, dueDate.month, dueDate.dayOfMonth)
-            statements.add(Statement(realDate, realDudeDate, amount))
+            statements.add(Statement(date.toKotlinLocalDate(), dueDate.toKotlinLocalDate(), amount))
             i += 2
         }
         return statements

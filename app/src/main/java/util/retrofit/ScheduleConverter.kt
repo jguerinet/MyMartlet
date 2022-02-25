@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +18,22 @@ package com.guerinet.mymartlet.util.retrofit
 
 import androidx.core.util.Pair
 import com.guerinet.mymartlet.model.Course
+import com.guerinet.mymartlet.model.LocalTime
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.util.DayUtils
 import com.squareup.moshi.Types
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.toKotlinLocalDate
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalTime
-import org.threeten.bp.format.DateTimeFormatter
 import retrofit2.Converter
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.ArrayList
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /**
@@ -193,13 +193,14 @@ class ScheduleConverter : Converter.Factory(), Converter<ResponseBody, List<Cour
                         }
 
                         val endPM =
-                            times[1].split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+                            times[1].split(" ".toRegex()).dropLastWhile { it.isEmpty() }
+                                .toTypedArray()[1]
                         if ((endPM == "PM" || endPM == "pm") && endHour != 12) {
                             endHour += 12
                         }
 
-                        startTime = LocalTime.of(startHour, startMinute)
-                        endTime = LocalTime.of(endHour, endMinute)
+                        startTime = LocalTime(startHour, startMinute)
+                        endTime = LocalTime(endHour, endMinute)
                     } catch (e: NumberFormatException) {
                         //Some classes don't have assigned times
                         startTime = defaultStartTime
@@ -226,7 +227,8 @@ class ScheduleConverter : Converter.Factory(), Converter<ResponseBody, List<Cour
                             // Placeholder term, will be replaced
                             Term.currentTerm(),
                             subject, number, title, crn, section, startTime, endTime,
-                            days, type, location, instructor, credits, startDate, endDate
+                            days, type, location, instructor, credits,
+                            startDate.toKotlinLocalDate(), endDate.toKotlinLocalDate()
                         )
                     )
                 }
@@ -263,12 +265,12 @@ class ScheduleConverter : Converter.Factory(), Converter<ResponseBody, List<Cour
          * @return A start time that will yield 0 for the rounded start time
          */
         val defaultStartTime: LocalTime
-            get() = LocalTime.of(0, 5)
+            get() = LocalTime(0, 5)
 
         /**
          * @return An end time that will yield 0 for the rounded end time
          */
         val defaultEndTime: LocalTime
-            get() = LocalTime.of(0, 55)
+            get() = LocalTime(0, 55)
     }
 }
