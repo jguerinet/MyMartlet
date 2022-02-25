@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,21 @@ package com.guerinet.mymartlet.ui.wishlist
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.core.view.isVisible
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.DrawerActivity
 import com.guerinet.mymartlet.ui.dialog.list.TermDialogHelper
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.util.room.daos.CourseResultDao
 import com.guerinet.suitcase.coroutines.ioDispatcher
-import kotlinx.android.synthetic.main.view_courses.*
+import com.guerinet.suitcase.util.extensions.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Response
@@ -54,6 +55,8 @@ class WishlistActivity : DrawerActivity() {
      * Current term, null if none possible (no semesters to register for)
      */
     private var term: Term? = null
+
+    private val mainView by getView<View>(R.id.mainView)
 
     private val wishlistHelper: WishlistHelper by lazy {
         WishlistHelper(this, mainView, false)
