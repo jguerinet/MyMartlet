@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import android.content.Context
 import android.content.Intent
 import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.UsernamePref
-import com.guerinet.suitcase.prefs.BooleanPref
+import com.guerinet.suitcase.settings.BooleanSetting
 import com.orhanobut.hawk.Hawk
 import java.util.Calendar
 
@@ -37,14 +37,16 @@ import java.util.Calendar
 class BootReceiver : BroadcastReceiver() {
 
     var usernamePref: UsernamePref? = null
+
     /**
-     * Seat checker [BooleanPref]
+     * Seat checker [BooleanSetting]
      */
-    var seatCheckerPref: BooleanPref? = null
+    var seatCheckerPref: BooleanSetting? = null
+
     /**
-     * Grade checker [BooleanPref]
+     * Grade checker [BooleanSetting]
      */
-    var gradeCheckerPref: BooleanPref? = null
+    var gradeCheckerPref: BooleanSetting? = null
 
     override fun onReceive(context: Context, intent: Intent) {
         setAlarm(
