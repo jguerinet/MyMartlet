@@ -48,7 +48,7 @@ data class Term(val season: Season, val year: Int) : Comparable<Term> {
             val today = LocalDate.today
             val year = today.year
 
-            return when (today.monthValue) {
+            return when (today.monthNumber) {
                 in 9..12 -> Term(Season.FALL, year)
                 in 1..4 -> Term(Season.WINTER, year)
                 else -> Term(Season.SUMMER, year)
