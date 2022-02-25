@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.guerinet.mymartlet.util.Prefs
 import com.guerinet.mymartlet.util.prefs.DefaultTermPref
 import com.guerinet.mymartlet.util.prefs.UsernamePref
 import com.guerinet.mymartlet.util.room.UserDb
-import com.guerinet.suitcase.prefs.BooleanPref
+import com.guerinet.suitcase.settings.BooleanSetting
 import com.orhanobut.hawk.Hawk
 
 /**
@@ -32,7 +32,7 @@ class ClearManager(
     private val usernamePref: UsernamePref,
     private val homepageManager: HomepageManager,
     private val defaultTermPref: DefaultTermPref,
-    private val rememberUsernamePref: BooleanPref,
+    private val rememberUsernamePref: BooleanSetting,
     private val userDb: UserDb
 ) {
 

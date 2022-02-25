@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@ package com.guerinet.mymartlet.util.manager
 
 import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
-
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.MapActivity
 import com.guerinet.mymartlet.ui.ScheduleActivity
@@ -33,7 +31,8 @@ import com.guerinet.mymartlet.ui.transcript.TranscriptActivity
 import com.guerinet.mymartlet.ui.web.DesktopActivity
 import com.guerinet.mymartlet.ui.web.MyCoursesActivity
 import com.guerinet.mymartlet.ui.wishlist.WishlistActivity
-import com.guerinet.suitcase.prefs.IntPref
+import com.guerinet.suitcase.settings.IntSetting
+import com.russhwolf.settings.Settings
 import kotlin.reflect.KClass
 
 /**
@@ -41,11 +40,11 @@ import kotlin.reflect.KClass
  * @author Julien Guerinet
  * @since 1.0.0
  *
- * @param prefs [SharedPreferences] instance
+ * @param settings [Settings] instance
  * @property context App context
  */
-class HomepageManager(prefs: SharedPreferences, private val context: Context) : IntPref(
-    prefs,
+class HomepageManager(settings: Settings, private val context: Context) : IntSetting(
+    settings,
     "home_page", HomePage.SCHEDULE.ordinal
 ) {
 
