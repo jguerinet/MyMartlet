@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,18 @@ package com.guerinet.mymartlet.ui.transcript
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.DrawerActivity
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.mymartlet.util.manager.HomepageManager
 import com.guerinet.mymartlet.viewmodel.TranscriptViewModel
 import com.guerinet.suitcase.coroutines.uiDispatcher
 import com.guerinet.suitcase.lifecycle.observe
 import com.guerinet.suitcase.log.TimberTag
-import kotlinx.android.synthetic.main.activity_transcript.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -46,6 +48,10 @@ class TranscriptActivity : DrawerActivity(), TimberTag {
     private val transcriptViewModel by viewModel<TranscriptViewModel>()
 
     private val adapter by lazy { TranscriptAdapter() }
+
+    private val list by getView<RecyclerView>(android.R.id.list)
+    private val cgpa by getView<TextView>(R.id.cgpa)
+    private val credits by getView<TextView>(R.id.credits)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
