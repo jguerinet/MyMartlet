@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,12 @@
 package com.guerinet.mymartlet.ui.transcript.semester
 
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.transcript.TranscriptCourse
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.suitcase.ui.BaseListAdapter
-import kotlinx.android.synthetic.main.item_transcript_course.view.*
 
 /**
  * Displays the list of courses for a semester
@@ -40,6 +41,12 @@ internal class SemesterAdapter : BaseListAdapter<TranscriptCourse>(ItemCallback(
 
     internal class CourseHolder(parent: ViewGroup) :
         BaseHolder<TranscriptCourse>(parent, R.layout.item_transcript_course) {
+
+        private val code by itemView.getView<TextView>(R.id.code)
+        private val grade by itemView.getView<TextView>(R.id.grade)
+        private val title by itemView.getView<TextView>(R.id.title)
+        private val credits by itemView.getView<TextView>(R.id.credits)
+        private val average by itemView.getView<TextView>(R.id.average)
 
         override fun bind(position: Int, item: TranscriptCourse) {
             itemView.apply {
