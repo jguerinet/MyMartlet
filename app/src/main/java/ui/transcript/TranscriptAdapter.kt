@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,15 @@
 package com.guerinet.mymartlet.ui.transcript
 
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.Semester
 import com.guerinet.mymartlet.ui.transcript.semester.SemesterActivity
 import com.guerinet.mymartlet.util.Constants
+import com.guerinet.mymartlet.util.extensions.getView
+import com.guerinet.mymartlet.util.extensions.start
 import com.guerinet.suitcase.ui.BaseListAdapter
-import kotlinx.android.synthetic.main.item_semester.view.*
-import org.jetbrains.anko.startActivity
 
 /**
  * Populates the list of semesters on the transcript page
@@ -43,13 +44,16 @@ internal class TranscriptAdapter : BaseListAdapter<Semester>(ItemCallback()) {
     internal class SemesterHolder(parent: ViewGroup) :
         BaseHolder<Semester>(parent, R.layout.item_semester) {
 
+        private val name by itemView.getView<TextView>(R.id.name)
+        private val gpa by itemView.getView<TextView>(R.id.gpa)
+
         override fun bind(position: Int, item: Semester) {
             itemView.apply {
                 name.text = item.getName(context)
                 gpa.text = context.getString(R.string.transcript_termGPA, item.gpa.toString())
 
                 setOnClickListener {
-                    context.startActivity<SemesterActivity>(Constants.ID to item.id)
+                    context.start<SemesterActivity>(Constants.ID to item.id)
                 }
             }
         }
