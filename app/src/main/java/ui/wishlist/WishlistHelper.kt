@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,17 @@
 package com.guerinet.mymartlet.ui.wishlist
 
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.model.CourseResult
 import com.guerinet.mymartlet.model.RegistrationError
 import com.guerinet.mymartlet.model.Term
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.extensions.errorDialog
+import com.guerinet.mymartlet.util.extensions.getView
 import com.guerinet.mymartlet.util.manager.McGillManager
 import com.guerinet.mymartlet.util.retrofit.McGillService
 import com.guerinet.mymartlet.util.room.daos.CourseResultDao
@@ -31,10 +35,9 @@ import com.guerinet.suitcase.analytics.Analytics
 import com.guerinet.suitcase.dialog.cancelButton
 import com.guerinet.suitcase.dialog.okButton
 import com.guerinet.suitcase.dialog.showDialog
-import kotlinx.android.synthetic.main.view_courses.view.*
-import org.jetbrains.anko.toast
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import com.guerinet.suitcase.util.extensions.toast
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -60,7 +63,12 @@ class WishlistHelper(
 
     private val mcGillService by inject<McGillService>()
 
-    private val adapter: WishlistAdapter by lazy { WishlistAdapter(container.empty) }
+    private val adapter: WishlistAdapter by lazy { WishlistAdapter(empty) }
+
+    private val list by container.getView<RecyclerView>(android.R.id.list)
+    private val wishlist by container.getView<Button>(R.id.wishlist)
+    private val register by container.getView<Button>(R.id.register)
+    private val empty by container.getView<TextView>(android.R.id.empty)
 
     init {
         container.apply {
@@ -102,9 +110,9 @@ class WishlistHelper(
         val courses = adapter.checkedCourses
         when {
             // Too many courses
-            courses.size > 10 -> activity.toast(R.string.courses_too_many_courses)
+            courses.size > 10 -> activity.toast(activity.getString(R.string.courses_too_many_courses))
             // No Courses
-            courses.isEmpty() -> activity.toast(R.string.courses_none_selected)
+            courses.isEmpty() -> activity.toast(activity.getString(R.string.courses_none_selected))
             else -> {
                 // Execute registration of checked classes in a new thread
                 if (!activity.canRefresh()) {
@@ -141,7 +149,7 @@ class WishlistHelper(
 
                     if (body == null || body.isEmpty()) {
                         // If there are no errors, show the success message
-                        activity.toast(R.string.registration_success)
+                        activity.toast(activity.getString(R.string.registration_success))
                         courses.forEach { courseResultDao.delete(it) }
                         return
                     }
