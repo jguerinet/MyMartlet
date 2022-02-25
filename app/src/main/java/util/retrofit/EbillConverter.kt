@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@ import com.guerinet.mymartlet.model.Statement
 import com.squareup.moshi.Types
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
-import org.threeten.bp.LocalDate
-import org.threeten.bp.format.DateTimeFormatter
 import retrofit2.Converter
 import retrofit2.Retrofit
 import timber.log.Timber
@@ -29,6 +27,8 @@ import java.io.IOException
 import java.lang.reflect.Type
 import java.text.NumberFormat
 import java.text.ParseException
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /**
@@ -71,6 +71,7 @@ class EbillConverter : Converter.Factory(), Converter<ResponseBody, List<Stateme
             val cells = rows[i].getElementsByTag("td")
 
             // Parse the statement and due dates
+            // TODO This uses Java libraries instead of Kotlinx
             val date = LocalDate.parse(cells[0].text().trim(), dtf)
             val dueDate = LocalDate.parse(cells[3].text().trim(), dtf)
 
@@ -98,7 +99,10 @@ class EbillConverter : Converter.Factory(), Converter<ResponseBody, List<Stateme
             }
 
             // Add the new statement
-            statements.add(Statement(date, dueDate, amount))
+            val realDate = kotlinx.datetime.LocalDate(date.year, date.month, date.dayOfMonth)
+            val realDudeDate =
+                kotlinx.datetime.LocalDate(dueDate.year, dueDate.month, dueDate.dayOfMonth)
+            statements.add(Statement(realDate, realDudeDate, amount))
             i += 2
         }
         return statements
