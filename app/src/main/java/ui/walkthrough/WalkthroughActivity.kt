@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,14 @@
 package com.guerinet.mymartlet.ui.walkthrough
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.core.view.isInvisible
 import androidx.viewpager.widget.ViewPager
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Constants
-import kotlinx.android.synthetic.main.activity_walkthrough.*
+import com.guerinet.mymartlet.util.extensions.getView
+import com.rd.PageIndicatorView
 
 /**
  * Displays the walkthrough the first time the user opens the app or through the app settings
@@ -30,6 +32,12 @@ import kotlinx.android.synthetic.main.activity_walkthrough.*
  * @since 1.0.0
  */
 class WalkthroughActivity : BaseActivity() {
+
+    private val viewPager by getView<ViewPager>(R.id.viewPager)
+    private val indicator by getView<PageIndicatorView>(R.id.indicator)
+    private val back by getView<Button>(R.id.back)
+    private val next by getView<Button>(R.id.next)
+    private val close by getView<Button>(R.id.close)
 
     private val adapter: WalkthroughAdapter by lazy {
         val isFirstOpen = intent.getBooleanExtra(Constants.FIRST_OPEN, false)
