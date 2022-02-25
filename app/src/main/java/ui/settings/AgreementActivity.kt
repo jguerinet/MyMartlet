@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Julien Guerinet
+ * Copyright 2014-2022 Julien Guerinet
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@ package com.guerinet.mymartlet.ui.settings
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import com.guerinet.mymartlet.R
 import com.guerinet.mymartlet.ui.BaseActivity
 import com.guerinet.mymartlet.util.Prefs
-import com.guerinet.suitcase.prefs.BooleanPref
-import kotlinx.android.synthetic.main.activity_agreement.*
+import com.guerinet.mymartlet.util.extensions.getView
+import com.guerinet.suitcase.settings.BooleanSetting
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 
@@ -35,7 +36,11 @@ import org.koin.core.qualifier.named
  */
 class AgreementActivity : BaseActivity() {
 
-    private val eulaPref by inject<BooleanPref>(named(Prefs.EULA))
+    private val eulaPref by inject<BooleanSetting>(named(Prefs.EULA))
+
+    private val buttonsContainer by getView<View>(R.id.buttonsContainer)
+    private val agree by getView<Button>(R.id.agree)
+    private val decline by getView<Button>(R.id.decline)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
